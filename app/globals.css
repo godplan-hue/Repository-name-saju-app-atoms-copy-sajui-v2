@@ -1,58 +1,8 @@
 @import "tailwindcss";
 
 @media (max-width: 768px) {
-  * {
-    box-sizing: border-box !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-  }
-
-  body {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* 맨 위 제목 */
-  h2 {
-    font-size: 24px !important;
-    line-height: 1.4 !important;
-    max-width: 100% !important;
-    padding: 0 12px !important;
-  }
-
-  /* 모든 p 태그 */
-  p {
-    font-size: 12px !important;
-    line-height: 1.4 !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-
-  /* 모든 div */
-  div {
-    word-break: break-word !important;
-    overflow-x: hidden !important;
-  }
-
-  /* 섹션 */
-  section {
-    padding: 12px !important;
-  }
-
-  /* 패키지 박스 - 세로 배치 */
-  [style*="display: flex"][style*="justifyContent: space-between"] {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 8px !important;
-  }
-
-  /* 모든 a 태그 */
-  a {
-    word-break: break-word !important;
-  }
-}
-@media (max-width: 768px) {
-  [style*="gridTemplateColumns: 1fr 1fr"] {
+  div[style*="gridTemplateColumns: 1fr 1fr"] {
+    display: grid !important;
     grid-template-columns: 1fr !important;
   }
 }
