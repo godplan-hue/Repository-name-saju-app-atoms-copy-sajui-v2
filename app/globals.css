@@ -51,3 +51,8 @@
     word-break: break-word !important;
   }
 }
+@media (max-width: 768px) {
+  [style*="gridTemplateColumns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
