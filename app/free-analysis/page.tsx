@@ -9,7 +9,19 @@ export default function FreeAnalysis() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (name === "phone") {
+      const phoneOnly = value.replace(/[^0-9]/g, "");
+      let formatted = phoneOnly;
+      if (phoneOnly.length > 3 && phoneOnly.length <= 7) {
+        formatted = phoneOnly.slice(0, 3) + "-" + phoneOnly.slice(3);
+      } else if (phoneOnly.length > 7) {
+        formatted = phoneOnly.slice(0, 3) + "-" + phoneOnly.slice(3, 7) + "-" + phoneOnly.slice(7, 11);
+      }
+      setFormData(prev => ({ ...prev, [name]: formatted }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleAnalyze = async () => {
@@ -30,7 +42,7 @@ export default function FreeAnalysis() {
           <h1 style={{ textAlign: "center", color: "#fbbf24", marginBottom: 40, fontSize: "clamp(20px, 5vw, 32px)", fontWeight: 900 }}>🔮 무료 사주 분석</h1>
 
           {step === 1 && (
-            <div style={{ background: "rgba(139,92,246,0.65)", padding: 24, borderRadius: 12, border: "1px solid rgba(139,92,246,0.85)" }}>
+            <div style={{ background: "rgba(139,92,246,0.85)", padding: 24, borderRadius: 12, border: "1px solid rgba(139,92,246,1)" }}>
               <div style={{ marginBottom: 20 }}>
                 <label style={{ display: "block", marginBottom: 8, fontWeight: 700, color: "#fbbf24", fontSize: 14 }}>이름</label>
                 <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="홍길동" style={{ width: "100%", padding: "12px", borderRadius: 8, border: "none", fontSize: 14, boxSizing: "border-box" }} />
@@ -41,7 +53,7 @@ export default function FreeAnalysis() {
               </div>
               <div style={{ marginBottom: 20 }}>
                 <label style={{ display: "block", marginBottom: 8, fontWeight: 700, color: "#fbbf24", fontSize: 14 }}>전화번호</label>
-                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="010-0000-0000" style={{ width: "100%", padding: "12px", borderRadius: 8, border: "none", fontSize: 14, boxSizing: "border-box" }} />
+                <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="01012345678" maxLength={13} style={{ width: "100%", padding: "12px", borderRadius: 8, border: "none", fontSize: 14, boxSizing: "border-box" }} />
               </div>
               <button onClick={handleAnalyze} style={{ width: "100%", padding: 12, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>분석 시작</button>
             </div>
@@ -50,12 +62,12 @@ export default function FreeAnalysis() {
           {step === 2 && (
             <div style={{ textAlign: "center" }}>
               {analyzing ? (
-                <div style={{ background: "rgba(139,92,246,0.65)", padding: 40, borderRadius: 12, border: "1px solid rgba(139,92,246,0.85)" }}>
+                <div style={{ background: "rgba(139,92,246,0.85)", padding: 40, borderRadius: 12, border: "1px solid rgba(139,92,246,1)" }}>
                   <p style={{ fontSize: 16, marginBottom: 30, color: "#f5f5f5" }}>AI가 당신의 사주를 분석 중입니다...</p>
                   <div style={{ fontSize: 40 }}>🔄</div>
                 </div>
               ) : (
-                <div style={{ background: "rgba(139,92,246,0.65)", padding: 24, borderRadius: 12, border: "1px solid rgba(139,92,246,0.85)" }}>
+                <div style={{ background: "rgba(139,92,246,0.85)", padding: 24, borderRadius: 12, border: "1px solid rgba(139,92,246,1)" }}>
                   <p style={{ marginBottom: 20, lineHeight: 1.8, color: "#f5f5f5", fontSize: 14 }}>분석이 완료되었습니다!<br/><br/>더 자세한 분석 결과를 원하시나요?</p>
                   <button style={{ width: "100%", padding: 12, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>🎁 유료 패키지 보기</button>
                 </div>
