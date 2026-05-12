@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function FreeAnalysis() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
   const [analyzing, setAnalyzing] = useState(false);
@@ -32,6 +34,10 @@ export default function FreeAnalysis() {
     setAnalyzing(true);
     setStep(2);
     setTimeout(() => setAnalyzing(false), 2000);
+  };
+
+  const handlePayment = () => {
+    router.push("/payment");
   };
 
   return (
@@ -69,7 +75,7 @@ export default function FreeAnalysis() {
               ) : (
                 <div style={{ background: "rgba(108,64,200,0.9)", padding: 24, borderRadius: 12, border: "1px solid rgba(139,92,246,1)" }}>
                   <p style={{ marginBottom: 20, lineHeight: 1.8, color: "#f5f5f5", fontSize: 14 }}>분석이 완료되었습니다!<br/><br/>더 자세한 분석 결과를 원하시나요?</p>
-                  <button style={{ width: "100%", padding: 12, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>🎁 유료 패키지 보기</button>
+                  <button onClick={handlePayment} style={{ width: "100%", padding: 12, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>🎁 유료 패키지 보기</button>
                 </div>
               )}
             </div>
