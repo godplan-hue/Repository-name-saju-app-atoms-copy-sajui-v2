@@ -26,14 +26,14 @@ export default function Payment() {
       name: "프리미엄", 
       price: "₩24,900", 
       features: ["wealth", "love", "health", "yearly", "analysis"],
-      desc: "재물운 + 연애운 + 건강운 + 올해 운세 + 전체 사주분석"
+      desc: "재물운 + 연애운 + 건강운<br/>+ 올해 운세 + 전체 사주분석"
     },
     { 
       id: "couple", 
       name: "커플팩", 
       price: "₩29,900", 
       features: ["today", "monthly", "yearly", "wealth", "love", "health", "family", "couple"],
-      desc: "남녀 각각 8개 운세 + 궁합 분석"
+      desc: "남녀 각각 8개 운세<br/>+ 궁합 분석"
     }
   ];
 
@@ -68,21 +68,37 @@ export default function Payment() {
             <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: selectedPackage === pkg.name ? "rgba(251,191,36,0.2)" : "rgba(108,64,200,0.9)", border: selectedPackage === pkg.name ? "2px solid #fbbf24" : "1px solid rgba(139,92,246,0.8)", borderRadius: 12, padding: 20, cursor: "pointer", transition: "all 0.3s" }}>
               <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.name}</h3>
               <p style={{ color: "#f5f5f5", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.price}</p>
-              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 10px 0" }}>{pkg.desc}</p>
+              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 10px 0", lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: pkg.desc }} />
               <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: 0 }}>📊 {pkg.features.length}개 운세 포함</p>
             </div>
           ))}
         </div>
 
-        <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 40 }}>
-          <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 선택된 운세</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 12, background: "rgba(108,64,200,0.5)", padding: 20, borderRadius: 12 }}>
-            {fortuneItems.map(item => (
-              <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "rgba(251,191,36,0.3)" : "rgba(139,92,246,0.3)", border: selectedFeatures.includes(item.id) ? "2px solid #fbbf24" : "1px solid rgba(139,92,246,0.5)", borderRadius: 10, padding: 12, textAlign: "center" }}>
-                <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-                <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, margin: 0 }}>{item.name}</p>
-              </div>
-            ))}
+        <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 40, background: "#f5f5f5", padding: 24, borderRadius: 12 }}>
+          <h3 style={{ color: "#1a1a1a", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 선택된 운세</h3>
+          
+          <div style={{ marginBottom: 20 }}>
+            <h4 style={{ color: "#1a1a1a", fontSize: 13, fontWeight: 700, marginBottom: 12 }}>첫 번째 (4개)</h4>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+              {fortuneItems.slice(0, 4).map(item => (
+                <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "rgba(251,191,36,0.3)" : "rgba(139,92,246,0.2)", border: selectedFeatures.includes(item.id) ? "2px solid #fbbf24" : "1px solid rgba(139,92,246,0.5)", borderRadius: 10, padding: 12, textAlign: "center" }}>
+                  <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
+                  <p style={{ color: "#1a1a1a", fontSize: 11, fontWeight: 700, margin: 0 }}>{item.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 style={{ color: "#1a1a1a", fontSize: 13, fontWeight: 700, marginBottom: 12 }}>두 번째 (4개)</h4>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+              {fortuneItems.slice(4, 8).map(item => (
+                <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "rgba(251,191,36,0.3)" : "rgba(139,92,246,0.2)", border: selectedFeatures.includes(item.id) ? "2px solid #fbbf24" : "1px solid rgba(139,92,246,0.5)", borderRadius: 10, padding: 12, textAlign: "center" }}>
+                  <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
+                  <p style={{ color: "#1a1a1a", fontSize: 11, fontWeight: 700, margin: 0 }}>{item.name}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
