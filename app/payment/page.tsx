@@ -85,11 +85,11 @@ export default function Payment() {
           
           {isMobile ? (
             <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
-              30페이지 기본분석부터<br/>150페이지 완벽분석까<br/>당신의 성격, 재물운, 연애운,<br/>건강운, 직업 추천,<br/>올해 운세까지
+              30페이지 기본분석부터<br/>150페이지 완벽분석까지<br/>당신의 성격, 재물운, 연애운,<br/>건강운, 직업 추천,<br/>올해 운세까지
             </p>
           ) : (
             <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
-              30페이지 기본분석부터 150페이지 완벽분석까<br/>당신의 성격, 재물운, 연애운, 건강운, 직업 추천, 올해 운세까지
+              30페이지 기본분석부터 150페이지 완벽분석까지<br/>당신의 성격, 재물운, 연애운, 건강운, 직업 추천, 올해 운세까지
             </p>
           )}
         </section>
@@ -118,7 +118,7 @@ export default function Payment() {
         <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 40, background: "#f5f5f5", padding: 24, borderRadius: 12 }}>
           <h3 style={{ color: "#1a1a1a", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 선택된 운세</h3>
           
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
             {fortuneItems.map(item => (
               <div key={item.id} onClick={() => {
                 if (selectedFeatures.includes(item.id)) {
@@ -126,9 +126,9 @@ export default function Payment() {
                 } else {
                   setSelectedFeatures([...selectedFeatures, item.id]);
                 }
-              }} style={{ background: selectedFeatures.includes(item.id) ? "#ff1493" : "#e0e0e0", border: selectedFeatures.includes(item.id) ? "2px solid #ff69b4" : "1px solid #cccccc", borderRadius: 10, padding: 12, textAlign: "center", cursor: "pointer" }}>
+              }} style={{ background: selectedFeatures.includes(item.id) ? "#ff1493" : "#e0e0e0", border: selectedFeatures.includes(item.id) ? "2px solid #ff69b4" : "1px solid #cccccc", borderRadius: 10, padding: 12, textAlign: "center", cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                 <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-                <p style={{ color: selectedFeatures.includes(item.id) ? "#ffffff" : "#1a1a1a", fontSize: 12, fontWeight: 900, margin: 0 }}>{item.name}</p>
+                <p style={{ color: selectedFeatures.includes(item.id) ? "#ffffff" : "#1a1a1a", fontSize: 11, fontWeight: 900, margin: 0, whiteSpace: "normal", wordBreak: "keep-all" }}>{item.name}</p>
               </div>
             ))}
           </div>
