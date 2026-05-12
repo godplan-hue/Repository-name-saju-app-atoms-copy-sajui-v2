@@ -132,7 +132,7 @@ export default function Home() {
         <section style={{ padding: "40px 16px", borderRadius: 12, background: "rgba(0,0,0,0.6)" }}>
           <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 24 }}>실제 이용자 후기</h3>
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 12 }}>
-            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "220px", display: "flex", flexDirection: "column" }}>
+            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "320px", display: "flex", flexDirection: "column" }}>
               <div style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, lineHeight: 1.5, marginBottom: 12, width: "100%", boxSizing: "border-box" }}>
                 처음엔 반신반의했는데 정말 놀랐어요
               </div>
@@ -144,12 +144,19 @@ export default function Home() {
                 <br/>
                 그런데 제 성격, 기질,<br/>
                 앞으로의 운의 흐름까지<br/>
-                정확하게 맞춰서 놀랐습니다.
+                정확하게 맞춰서 놀랐습니다.<br/>
+                <br/>
+                특히 올해 제 재물운과<br/>
+                직장 운에 대한 조언이<br/>
+                정말 도움 됐어요.<br/>
+                <br/>
+                지금 이 앱 없이는<br/>
+                못 살 정도로 애용 중입니다.
               </div>
               <p style={{ color: "#fbbf24", fontSize: 10, fontWeight: 900, margin: "8px 0 0 0" }}>* 김혜진</p>
             </div>
 
-            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "220px", display: "flex", flexDirection: "column" }}>
+            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "320px", display: "flex", flexDirection: "column" }}>
               <div style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, lineHeight: 1.5, marginBottom: 12, width: "100%", boxSizing: "border-box" }}>
                 인생 계획 세우는 데 진짜 도움됨
               </div>
@@ -161,12 +168,18 @@ export default function Home() {
                 <br/>
                 일반적인 운세 예측을 넘어서<br/>
                 연애운, 재물운, 건강운까지<br/>
-                섬세하게 풀어서 설명해주니까
+                섬세하게 풀어서 설명해주니까<br/>
+                단순히 재미로만 보는 게 아니라<br/>
+                실제 인생 계획을 세우는 데<br/>
+                큰 도움이 됩니다.<br/>
+                <br/>
+                이제 중요한 결정을 할 때마다<br/>
+                이 앱을 참고해요.
               </div>
               <p style={{ color: "#fbbf24", fontSize: 10, fontWeight: 900, margin: "8px 0 0 0" }}>* 이재우</p>
             </div>
 
-            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "220px", display: "flex", flexDirection: "column" }}>
+            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "320px", display: "flex", flexDirection: "column" }}>
               <div style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, lineHeight: 1.5, marginBottom: 12, width: "100%", boxSizing: "border-box" }}>
                 친구들 모두에게 추천하고 싶을 정도
               </div>
@@ -177,7 +190,12 @@ export default function Home() {
                 <br/>
                 앞으로 어떤 시기에 어떤 조심이 필요한지,<br/>
                 어떤 기회가 올 수 있는지<br/>
-                구체적으로 알려줘서
+                구체적으로 알려줘서<br/>
+                미래에 대한 불안감도 줄어들었어요.<br/>
+                <br/>
+                가족, 친구들에게도<br/>
+                많이 추천하고 있습니다.<br/>
+                정말 만족합니다!
               </div>
               <p style={{ color: "#fbbf24", fontSize: 10, fontWeight: 900, margin: "8px 0 0 0" }}>* 박연지</p>
             </div>
