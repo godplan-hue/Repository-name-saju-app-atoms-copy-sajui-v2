@@ -78,7 +78,7 @@ export default function Payment() {
         </section>
 
         {/* 패키지 선택 */}
-        <h2 style={{ textAlign: "center", color: "#ea580c", marginBottom: 40, fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900 }}>💳 패키지 선택</h2>
+        <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 40, fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900 }}>💳 패키지 선택</h2>
 
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => (
@@ -103,9 +103,15 @@ export default function Payment() {
           
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
             {fortuneItems.map(item => (
-              <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "#fbbf24" : "#e0e0e0", border: selectedFeatures.includes(item.id) ? "2px solid #f59e0b" : "1px solid #cccccc", borderRadius: 10, padding: 12, textAlign: "center" }}>
+              <div key={item.id} onClick={() => {
+                if (selectedFeatures.includes(item.id)) {
+                  setSelectedFeatures(selectedFeatures.filter(f => f !== item.id));
+                } else {
+                  setSelectedFeatures([...selectedFeatures, item.id]);
+                }
+              }} style={{ background: selectedFeatures.includes(item.id) ? "#ff1493" : "#e0e0e0", border: selectedFeatures.includes(item.id) ? "2px solid #ff69b4" : "1px solid #cccccc", borderRadius: 10, padding: 12, textAlign: "center", cursor: "pointer" }}>
                 <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-                <p style={{ color: "#1a1a1a", fontSize: 12, fontWeight: 900, margin: 0 }}>{item.name}</p>
+                <p style={{ color: selectedFeatures.includes(item.id) ? "#ffffff" : "#1a1a1a", fontSize: 12, fontWeight: 900, margin: 0 }}>{item.name}</p>
               </div>
             ))}
           </div>
@@ -126,6 +132,7 @@ export default function Payment() {
               <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
               <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>9,900~29,900</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>9,900~29,900원</p>
             </div>
 
             <div style={{ textAlign: "center" }}>
@@ -144,7 +151,7 @@ export default function Payment() {
           <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
             📄 {currentPages}페이지
           </p>
-          <button onClick={handlePayment} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: "pointer" }}>💳 결제하기</button>
+          <button onClick={handlePayment} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: "pointer" }}>💳 결제하기</button>
         </div>
       </div>
     </main>
