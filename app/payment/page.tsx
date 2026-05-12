@@ -70,11 +70,11 @@ export default function Payment() {
         
         {/* 상단 설명 */}
         <section style={{ maxWidth: 800, margin: "0 auto 60px", textAlign: "center" }}>
-          <h1 style={{ color: "#d4af37", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>정확한 사주 원국 분석</h1>
+          <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>정확한 사주 원국 분석</h1>
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 12, lineHeight: 1.8 }}>음양오행·천간지지 십성 완벽 분석</p>
-          <p style={{ color: "#991b1b", fontSize: 13, fontWeight: 700, marginBottom: 24 }}>최고 수준의 사주 분석</p>
+          <p style={{ color: "#ff9999", fontSize: 14, fontWeight: 900, marginBottom: 24 }}>최고 수준의 사주 분석</p>
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 32, lineHeight: 1.8 }}>당신의 인생을 완벽하게 읽어드립니다</p>
-          <p style={{ color: "#991b1b", fontSize: 13, fontWeight: 700, marginBottom: 24 }}>50페이지 기본분석부터 150페이지 완벽분석까지<br/>당신의 성격, 재물운, 연애운, 건강운, 직업 추천, 올해 운세까지 모두 포함!</p>
+          <p style={{ color: "#ff9999", fontSize: 14, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>50페이지 기본분석부터 150페이지 완벽분석까지<br/>당신의 성격, 재물운, 연애운, 건강운, 직업 추천, 올해 운세까지 모두 포함!</p>
         </section>
 
         {/* 패키지 선택 */}
@@ -97,24 +97,24 @@ export default function Payment() {
           <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 선택된 운세</h3>
           
           <div style={{ marginBottom: 20 }}>
-            <h4 style={{ color: "#fbbf24", fontSize: 13, fontWeight: 700, marginBottom: 12 }}>첫 번째 (4개)</h4>
+            <h4 style={{ color: "#ffffff", fontSize: 13, fontWeight: 700, marginBottom: 12 }}>첫 번째 (4개)</h4>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
               {fortuneItems.slice(0, 4).map(item => (
-                <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "rgba(251,191,36,0.4)" : "rgba(251,191,36,0.2)", border: selectedFeatures.includes(item.id) ? "2px solid #fbbf24" : "1px solid rgba(251,191,36,0.5)", borderRadius: 10, padding: 12, textAlign: "center" }}>
+                <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.15)", border: selectedFeatures.includes(item.id) ? "2px solid #ffffff" : "1px solid rgba(255,255,255,0.4)", borderRadius: 10, padding: 12, textAlign: "center" }}>
                   <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-                  <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: 0 }}>{item.name}</p>
+                  <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 700, margin: 0 }}>{item.name}</p>
                 </div>
               ))}
             </div>
           </div>
 
           <div>
-            <h4 style={{ color: "#fbbf24", fontSize: 13, fontWeight: 700, marginBottom: 12 }}>두 번째 (4개)</h4>
+            <h4 style={{ color: "#ffffff", fontSize: 13, fontWeight: 700, marginBottom: 12 }}>두 번째 (4개)</h4>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
               {fortuneItems.slice(4, 8).map(item => (
-                <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "rgba(251,191,36,0.4)" : "rgba(251,191,36,0.2)", border: selectedFeatures.includes(item.id) ? "2px solid #fbbf24" : "1px solid rgba(251,191,36,0.5)", borderRadius: 10, padding: 12, textAlign: "center" }}>
+                <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.15)", border: selectedFeatures.includes(item.id) ? "2px solid #ffffff" : "1px solid rgba(255,255,255,0.4)", borderRadius: 10, padding: 12, textAlign: "center" }}>
                   <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-                  <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: 0 }}>{item.name}</p>
+                  <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 700, margin: 0 }}>{item.name}</p>
                 </div>
               ))}
             </div>
@@ -129,19 +129,19 @@ export default function Payment() {
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>50-150페이지 완벽분석</h3>
-              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700 }}>기본분석(30P)부터 VIP 커플팩(150P)까지</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>기본분석(30P)부터 VIP 커플팩(150P)까지</p>
             </div>
 
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
-              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700 }}>9,900~29,900</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>9,900~29,900</p>
             </div>
 
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginbottom: 8 }}>즉시 다운로드</h3>
-              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700 }}>3분 이내 PDF 완성</p>
+              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>즉시 다운로드</h3>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3분 이내 PDF 완성</p>
             </div>
           </div>
         </section>
