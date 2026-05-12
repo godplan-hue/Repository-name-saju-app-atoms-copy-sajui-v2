@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 
@@ -13,16 +13,66 @@ export default function Home() {
   }, []);
 
   const features = [
-    { title: "AI 정밀 분석", icon: "⚡", desc: "최신 AI 기술로 당신의 사주팔자를 정확하게 읽어냅니다. 오행과 십간십이지를 바탕으로 숨겨진 운의 흐름을 찾아내세요." },
-    { title: "운세 분석", icon: "📈", desc: "인생의 모든 영역을 한눈에 파악하세요. 총운·재물운·연애운·건강운·직업운 등 운세를 완벽하게 분석합니다. 올해 당신이 집중해야 할 것이 무엇인지 알려줍니다." },
-    { title: "궁합 분석", icon: "💕", desc: "상대방의 생년월일만으로 운명의 인연을 읽다. 두 사람의 관계 패턴, 연애의 강점과 주의점, 함께할 미래까지 구체적으로 봅니다. 숫자가 아닌 가능성으로 만나는 당신의 궁합." },
-    { title: "개인정보 보호", icon: "🔒", desc: "당신의 정보는 100% 안전합니다. 입력하신 생년월일, 성명 등 모든 정보는 분석 후 즉시 삭제됩니다. 최신 암호화 기술로 보호되는 완벽한 보안 시스템." }
+    { 
+      title: "AI 정밀 분석", 
+      icon: "⚡", 
+      desc: (
+        <>
+          최신 AI 기술로 당신의<br/>
+          사주팔자를 정확하게 읽어냅니다.<br/>
+          <br/>
+          오행과 십간십이지를 바탕으로<br/>
+          숨겨진 운의 흐름을 찾아내세요.
+        </>
+      )
+    },
+    { 
+      title: "운세 분석", 
+      icon: "📈", 
+      desc: (
+        <>
+          인생의 모든 영역을 한눈에파악하세요.<br/>
+          총운·재물운·연애운·건강운·직업운 등<br/>
+          운세를 완벽하게 분석합니다.<br/>
+          <br/>
+          올해 당신이 집중해야할것이<br/>
+          무엇인지 알려줍니다.
+        </>
+      )
+    },
+    { 
+      title: "궁합 분석", 
+      icon: "💕", 
+      desc: (
+        <>
+          상대방의 생년월일만으로 운명의 인연을 읽다.<br/>
+          두 사람의 관계 패턴, 연애의 강점과 주의점,<br/>
+          <br/>
+          함께할 미래까지 구체적으로 봅니다.<br/>
+          숫자가 아닌 가능성으로 만나는 당신의 궁합.
+        </>
+      )
+    },
+    { 
+      title: "개인정보 보호", 
+      icon: "🔒", 
+      desc: (
+        <>
+          당신의 정보는 100% 안전합니다.<br/>
+          입력하신 생년월일, 성명 등<br/>
+          모든 정보는 분석 후 즉시 삭제됩니다.<br/>
+          <br/>
+          최신 암호화 기술로 보호되는<br/>
+          완벽한 보안 시스템.
+        </>
+      )
+    }
   ];
 
   const steps = [
-    { num: "01", icon: "✏️", title: "정보 입력", desc: "이름, 성별, 생년월일을 입력하세요" },
-    { num: "02", icon: "🤖", title: "AI 분석", desc: "AI가 사주궁합을 정밀하게 분석합니다" },
-    { num: "03", icon: "📄", title: "결과 확인", desc: "최고의 운세 분석 결과를 확인하세요" }
+    { num: "01", icon: "✏️", title: "정보 입력", desc: isMobile ? "이름, 성별, 생년월일을\n입력하세요" : "이름, 성별, 생년월일을 입력하세요" },
+    { num: "02", icon: "🤖", title: "AI 분석", desc: isMobile ? "AI가 사주궁합을\n정밀하게 분석합니다" : "AI가 사주궁합을 정밀하게 분석합니다" },
+    { num: "03", icon: "📄", title: "결과 확인", desc: "최고의 운세 분석 결과을 확인하세요" }
   ];
 
   return (
@@ -38,7 +88,7 @@ export default function Home() {
         </header>
 
         <section style={{ padding: "60px 20px 40px", textAlign: "center" }}>
-          <div style={{ display: "inline-block", padding: "6px 16px", borderRadius: 999, background: "rgba(139,92,246,0.6)", border: "1px solid rgba(245,158,11,0.8)", color: "#f5f5f5", fontSize: 11, fontWeight: 700, marginBottom: 16 }}>✨ 누적 분석 127,483건 돌파</div>
+          <div style={{ display: "inline-block", padding: "12px 24px", borderRadius: 999, background: "rgba(139,92,246,0.6)", border: "1px solid rgba(245,158,11,0.8)", color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 16 }}>✨ 누적 분석 127,483건 돌파</div>
           <div style={{ width: 100, height: 100, margin: "0 auto 24px", borderRadius: "12px", backgroundImage: "url('/b17b07628f3f401ea692dbd75575ba0f.webp')", backgroundSize: "cover", backgroundPosition: "center", border: "2px solid rgba(245,158,11,0.5)", boxShadow: "0 0 50px rgba(245,158,11,0.3)", transform: "rotate(15deg)" }} />
           <h2 style={{ fontSize: "clamp(24px, 5vw, 40px)", fontWeight: 900, lineHeight: 1.3, margin: "0 auto 12px", color: "#d8c7ff" }}>당신의 운명을<br />AI가 풀어드립니다</h2>
           <p style={{ color: "#f5f5f5", fontSize: "clamp(12px, 2vw, 14px)", fontWeight: 700, lineHeight: 1.6, marginBottom: 16 }}>생년월일만 입력하면 AI가 사주팔자를 정밀 분석하여<br />총운, 재물운, 연애운, 건강운, 직업운을 알려드립니다</p>
@@ -50,28 +100,30 @@ export default function Home() {
           <a href="/free-analysis" style={{ display: "inline-block", padding: "12px 32px", borderRadius: 10, fontSize: "clamp(12px, 2vw, 14px)", fontWeight: 900, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", textDecoration: "none", boxShadow: "0 8px 30px rgba(251,191,36,0.4)", cursor: "pointer" }}>🔮 무료로 내 사주 보기</a>
         </section>
 
-        <section style={{ padding: "40px 16px" }}>
+        <section style={{ padding: "40px 8px" }}>
           <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 24 }}>점운</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(160px, 1fr))", gap: 12 }}>
             {features.map((feature, i) => (
-              <div key={i} style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(139,92,246,0.85)", borderRadius: 10, padding: "12px", textAlign: "center", minHeight: "200px", display: "flex", flexDirection: "column" }}>
-                <div style={{ fontSize: 18, marginBottom: 8 }}>{feature.icon}</div>
-                <h4 style={{ color: "#fbbf24", fontWeight: 900, fontSize: 12, margin: "0 0 8px 0" }}>{feature.title}</h4>
-                <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, lineHeight: 1.5, margin: 0, flex: 1, wordBreak: "keep-all", overflowWrap: "break-word" }}>{feature.desc}</p>
+              <div key={i} style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(139,92,246,0.85)", borderRadius: 10, padding: "16px 12px", textAlign: "center", minHeight: "auto", display: "flex", flexDirection: "column" }}>
+                <div style={{ fontSize: 20, marginBottom: 10 }}>{feature.icon}</div>
+                <h4 style={{ color: "#fbbf24", fontWeight: 900, fontSize: 13, margin: "0 0 10px 0" }}>{feature.title}</h4>
+                <p style={{ color: "#f5f5f5", fontSize: isMobile ? 10 : 11, fontWeight: 700, lineHeight: 1.7, margin: 0, flex: 1, width: "100%", boxSizing: "border-box" }}>
+                  {feature.desc}
+                </p>
               </div>
             ))}
           </div>
         </section>
 
-        <section style={{ padding: "40px 16px" }}>
+        <section style={{ padding: "40px 8px" }}>
           <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 24 }}>3단계로 간단하게</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
             {steps.map((step, i) => (
               <div key={i} style={{ textAlign: "center" }}>
-                <div style={{ width: 50, height: 50, borderRadius: "50%", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", fontWeight: 900, fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px" }}>{step.num}</div>
-                <div style={{ fontSize: 20, marginBottom: 8 }}>{step.icon}</div>
-                <h4 style={{ color: "#fbbf24", fontWeight: 900, fontSize: 13, margin: "0 0 6px 0" }}>{step.title}</h4>
-                <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, margin: 0, wordBreak: "keep-all", overflowWrap: "break-word" }}>{step.desc}</p>
+                <div style={{ width: 45, height: 45, borderRadius: "50%", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 8px" }}>{step.num}</div>
+                <div style={{ fontSize: 18, marginBottom: 6 }}>{step.icon}</div>
+                <h4 style={{ color: "#fbbf24", fontWeight: 900, fontSize: 12, margin: "0 0 4px 0" }}>{step.title}</h4>
+                <p style={{ color: "#f5f5f5", fontSize: 10, fontWeight: 700, margin: 0, lineHeight: isMobile ? 1.6 : 1.4, whiteSpace: "pre-line" }}>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -79,20 +131,55 @@ export default function Home() {
 
         <section style={{ padding: "40px 16px", borderRadius: 12, background: "rgba(0,0,0,0.6)" }}>
           <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 24 }}>실제 이용자 후기</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12 }}>
-            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px" }}>
-              <div style={{ color: "#f5f5f5", fontSize: isMobile ? 9 : 10, fontWeight: 700, lineHeight: 1.6, marginBottom: 10, wordBreak: "keep-all", overflowWrap: "break-word" }}>★ ★ ★ ★ ★<br/><br/>처음엔 반신반의했는데 정말 놀랐어요<br/><br/>사주 앱을 깔아보게 된 건 친구 추천 때문이었는데, 솔직히 AI가 사주를 얼마나 잘 분석할 수 있을까 싶었거든요.<br/><br/>그런데 제 성격, 기질, 앞으로의 운의 흐름까지 정확하게 맞춰서 놀랐습니다.<br/><br/>특히 올해 제 재물운과 직장 운에 대한 조언이 정말 도움 됐어요.<br/><br/>지금 이 앱 없이는 못 살 정도로 애용 중입니다.</div>
-              <p style={{ color: "#fbbf24", fontSize: isMobile ? 9 : 10, fontWeight: 900, margin: 0 }}>* 김혜진</p>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 12 }}>
+            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "220px", display: "flex", flexDirection: "column" }}>
+              <div style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, lineHeight: 1.5, marginBottom: 12, width: "100%", boxSizing: "border-box" }}>
+                처음엔 반신반의했는데 정말 놀랐어요
+              </div>
+              <div style={{ color: "#f5f5f5", fontSize: 10, fontWeight: 700, lineHeight: 1.6, flex: isMobile ? 0 : 1, width: "100%", boxSizing: "border-box", paddingRight: "6px" }}>
+                ★ ★ ★ ★ ★<br/>
+                사주 앱을 깐건 친구 추천 때문인데,<br/>
+                AI가 사주를 잘 분석할 수 있을까?<br/>
+                솔직히 걱정 했었거든요.<br/>
+                <br/>
+                그런데 제 성격, 기질,<br/>
+                앞으로의 운의 흐름까지<br/>
+                정확하게 맞춰서 놀랐습니다.
+              </div>
+              <p style={{ color: "#fbbf24", fontSize: 10, fontWeight: 900, margin: "8px 0 0 0" }}>* 김혜진</p>
             </div>
 
-            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px" }}>
-              <div style={{ color: "#f5f5f5", fontSize: isMobile ? 9 : 10, fontWeight: 700, lineHeight: 1.6, marginBottom: 10, wordBreak: "keep-all", overflowWrap: "break-word" }}>★ ★ ★ ★ ★<br/><br/>인생 계획 세우는 데 진짜 도움됨<br/><br/>여러 사주 앱을 써봤지만 이렇게 상세하고 신뢰감 있는 분석은 처음이에요.<br/><br/>일반적인 운세 예측을 넘어서 연애운, 재물운, 건강운까지 섬세하게 풀어서 설명해주니까 단순히 재미로만 보는 게 아니라 실제 인생 계획을 세우는 데 큰 도움이 됩니다.<br/><br/>이제 중요한 결정을 할 때마다 이 앱을 참고해요.</div>
-              <p style={{ color: "#fbbf24", fontSize: isMobile ? 9 : 10, fontWeight: 900, margin: 0 }}>* 이재우</p>
+            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "220px", display: "flex", flexDirection: "column" }}>
+              <div style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, lineHeight: 1.5, marginBottom: 12, width: "100%", boxSizing: "border-box" }}>
+                인생 계획 세우는 데 진짜 도움됨
+              </div>
+              <div style={{ color: "#f5f5f5", fontSize: 10, fontWeight: 700, lineHeight: 1.6, flex: isMobile ? 0 : 1, width: "100%", boxSizing: "border-box", paddingRight: "6px" }}>
+                ★ ★ ★ ★ ★<br/>
+                여러 사주 앱을 써봤지만<br/>
+                이렇게 상세하고 신뢰감 있는<br/>
+                분석은 처음이에요.<br/>
+                <br/>
+                일반적인 운세 예측을 넘어서<br/>
+                연애운, 재물운, 건강운까지<br/>
+                섬세하게 풀어서 설명해주니까
+              </div>
+              <p style={{ color: "#fbbf24", fontSize: 10, fontWeight: 900, margin: "8px 0 0 0" }}>* 이재우</p>
             </div>
 
-            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px" }}>
-              <div style={{ color: "#f5f5f5", fontSize: isMobile ? 9 : 10, fontWeight: 700, lineHeight: 1.6, marginBottom: 10, wordBreak: "keep-all", overflowWrap: "break-word" }}>★ ★ ★ ★ ★<br/><br/>친구들 모두에게 추천하고 싶을 정도<br/><br/>AI 사주 분석이라고 해서 대충할 줄 알았는데, 정말 깊이 있게 제 운세를 읽어주더라고요.<br/><br/>앞으로 어떤 시기에 어떤 조심이 필요한지, 어떤 기회가 올 수 있는지 구체적으로 알려줘서 미래에 대한 불안감도 줄어들었어요.<br/><br/>가족, 친구들에게도 많이 추천하고 있습니다. 정말 만족합니다!</div>
-              <p style={{ color: "#fbbf24", fontSize: isMobile ? 9 : 10, fontWeight: 900, margin: 0 }}>* 박연지</p>
+            <div style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "220px", display: "flex", flexDirection: "column" }}>
+              <div style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, lineHeight: 1.5, marginBottom: 12, width: "100%", boxSizing: "border-box" }}>
+                친구들 모두에게 추천하고 싶을 정도
+              </div>
+              <div style={{ color: "#f5f5f5", fontSize: 10, fontWeight: 700, lineHeight: 1.6, flex: isMobile ? 0 : 1, width: "100%", boxSizing: "border-box", paddingRight: "6px" }}>
+                ★ ★ ★ ★ ★<br/>
+                AI 사주 분석이라고 해서 대충할 줄 알았는데,<br/>
+                정말 깊이 있게 제 운세를 읽어주더라고요.<br/>
+                <br/>
+                앞으로 어떤 시기에 어떤 조심이 필요한지,<br/>
+                어떤 기회가 올 수 있는지<br/>
+                구체적으로 알려줘서
+              </div>
+              <p style={{ color: "#fbbf24", fontSize: 10, fontWeight: 900, margin: "8px 0 0 0" }}>* 박연지</p>
             </div>
           </div>
         </section>
