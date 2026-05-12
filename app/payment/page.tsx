@@ -1,10 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Payment() {
   const [selectedPackage, setSelectedPackage] = useState("베이직");
   const [selectedFeatures, setSelectedFeatures] = useState(["wealth", "love", "health"]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const packages = [
     { 
@@ -74,7 +82,16 @@ export default function Payment() {
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 12, lineHeight: 1.8 }}>음양오행·천간지지 십성 완벽 분석</p>
           <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24 }}>최고 수준의 사주 분석</p>
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 32, lineHeight: 1.8 }}>당신의 인생을 완벽하게 읽어드립니다</p>
-          <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>50페이지 기본분석부터 150페이지 완벽분석까지<br/>당신의 성격, 재물운, 연애운, 건강운, 직업 추천, 올해 운세까지</p>
+          
+          {isMobile ? (
+            <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
+              30페이지 기본분석부터<br/>150페이지 완벽분석까<br/>당신의 성격, 재물운, 연애운,<br/>건강운, 직업 추천,<br/>올해 운세까지
+            </p>
+          ) : (
+            <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
+              30페이지 기본분석부터 150페이지 완벽분석까<br/>당신의 성격, 재물운, 연애운, 건강운, 직업 추천, 올해 운세까지
+            </p>
+          )}
         </section>
 
         {/* 패키지 선택 */}
