@@ -25,122 +25,59 @@ export default function Refund() {
             <p style={{ color: "#ff1493", fontSize: 14, fontWeight: 900, margin: 0 }}>⚠️ 중요: 본 환불정책은 「전자상거래 등에서의 소비자보호에 관한 법률」을 기준으로 합니다.</p>
           </section>
 
-          {/* 1. 환불 기준 */}
+          {/* 1. 기본 원칙 */}
           <section style={{ marginBottom: 30 }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>1. 환불 기준</h2>
-            
-            <p style={{ color: "#90EE90", fontSize: 14, fontWeight: 900, marginBottom: 8 }}>✅ 환불 가능한 경우:</p>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>1. 기본 원칙</h2>
+            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>점운의 사주 분석 결과는 디지털 콘텐츠입니다.<br/>고객이 다운로드하면 서비스 이용이 완료됩니다.</p>
+          </section>
+
+          {/* 2. 환불 가능 조건 */}
+          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>2. 환불 가능 조건 (7일 이내)</h2>
+            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>다음의 경우 현금 환불 또는 1회 재분석을 선택할 수 있습니다:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
-              <li>• PDF 다운로드 이전 환불 요청</li>
-              <li>• 중복 결제 (같은 상품 2회 이상 결제)</li>
-              <li>• 회사 측 기술 오류로 인한 결제</li>
-              <li>• 결제 후 7일 이내 요청</li>
+              <li>• 심각한 기술 오류로 인한 분석 실패</li>
+              <li>• 명백한 오타 또는 문법 오류</li>
+              <li>• 내용 누락 또는 손상</li>
+              <li>• 회사 시스템 오류로 인한 결함</li>
             </ul>
-
-            <p style={{ color: "#ff6b6b", fontSize: 14, fontWeight: 900, marginBottom: 8 }}>❌ 환불 불가능한 경우:</p>
+            <p style={{ color: "#90EE90", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>담당자 검토 후 오류가 확인되면:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• PDF 다운로드 후 요청 (디지털 상품 특성)</li>
-              <li>• 결과물 내용에 대한 만족도 불만족</li>
-              <li>• 고객 실수로 인한 결제</li>
+              <li>• A) 현금 환불 (100%)</li>
+              <li>• B) 1회 재분석 제공</li>
+              <li>• (고객이 선택)</li>
+            </ul>
+          </section>
+
+          {/* 3. 환불 불가능한 경우 */}
+          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>3. 환불 불가능한 경우</h2>
+            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20 }}>
+              <li>• 분석 결과의 내용에 만족하지 않음</li>
+              <li>• 고객의 실수로 인한 결제</li>
+              <li>• 기대치와 다른 결과</li>
               <li>• 7일 초과 후 요청</li>
-              <li>• 명백한 환불 악용 시도</li>
             </ul>
           </section>
 
-          {/* 2. 환불 절차 및 기간 */}
+          {/* 4. 환불 신청 방법 */}
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>2. 환불 절차 및 기간</h2>
-            
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>① 환불 신청:</p>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>4. 환불 신청 방법</h2>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• 방법: support@joomeun.com 이메일 신청</li>
-              <li>• 필수 정보: 주문번호, 결제 수단, 환불 사유</li>
+              <li>• 이메일: junga6783@gmail.com</li>
+              <li>• 필수 정보: 주문번호, 결제 수단, 오류 내용 상세 설명</li>
             </ul>
-
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>② 환불 심사:</p>
+            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>처리 과정:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• 기간: 신청 후 3일 이내</li>
-              <li>• 결과: 이메일로 안내</li>
-            </ul>
-
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>③ 환불 처리:</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• 승인 후 5일 이내 환불</li>
-              <li>• 카드 결제: 3~5일 소요</li>
-              <li>• 계좌이체: 1~2일 소요</li>
-              <li>• 휴대폰 결제: 해당 통신사 기준</li>
+              <li>• 담당자 검토: 3~5일</li>
+              <li>• 처리: 5일 이내 (환불) 또는 즉시 (재분석)</li>
             </ul>
           </section>
 
-          {/* 3. 디지털 상품 환불 정책 */}
-          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>3. 디지털 상품 환불 정책</h2>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>① 디지털 상품의 특성:</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• 사주 분석 PDF는 디지털 상품입니다</li>
-              <li>• 다운로드 시점부터 제공되는 서비스</li>
-              <li>• 다운로드 = 이용 완료</li>
-            </ul>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>② 환불 정책:</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• 다운로드 전: 100% 환불 가능</li>
-              <li>• 다운로드 후: 환불 불가 (단, 회사 오류 제외)</li>
-              <li>• 전자상거래법 준수 (디지털상품 특례)</li>
-            </ul>
-          </section>
-
-          {/* 4. 특수 환불 사항 */}
-          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>4. 특수 상황별 환불</h2>
-            
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>① 중복 결제:</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• 자동 감지 및 즉시 환불</li>
-              <li>• 처리 기간: 1일 이내</li>
-            </ul>
-
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>② 회사 기술 오류:</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• 환불율: 100%</li>
-              <li>• 처리 기간: 1일 이내</li>
-              <li>• 재분석 제공 가능</li>
-            </ul>
-
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>③ 결제 취소 요청:</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20 }}>
-              <li>• PDF 미다운로드 상태: 결제 취소 가능</li>
-              <li>• 즉시 처리 (카드사 확인 후)</li>
-            </ul>
-          </section>
-
-          {/* 5. 분쟁 해결 */}
-          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 분쟁 해결 절차</h2>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>① 1단계 (직접 해결):</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• support@joomeun.com으로 문의</li>
-              <li>• 3일 이내 답변</li>
-            </ul>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>② 2단계 (중재):</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• 한국소비자원 (www.kca.go.kr)</li>
-              <li>• 1670-0947</li>
-            </ul>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>③ 3단계 (소송):</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20 }}>
-              <li>• 관할 법원에 소송</li>
-              <li>• 소비자 보호법에 따라 진행</li>
-            </ul>
-          </section>
-
-          {/* 6. 문의 */}
+          {/* 5. 7일 초과 */}
           <section style={{ paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>6. 문의</h2>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20 }}>
-              <li>• 이메일: support@joomeun.com</li>
-              <li>• 응답 기간: 3일 이내</li>
-              <li>• 정책 변경: 30일 전 공지</li>
-            </ul>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 7일 초과</h2>
+            <p style={{ color: "#ff6b6b", fontSize: 13, fontWeight: 700, lineHeight: 1.8 }}>환불 불가능합니다.</p>
           </section>
         </div>
 
