@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Payment() {
+  const router = useRouter();
   const [selectedPackage, setSelectedPackage] = useState("베이직");
   const [selectedFeatures, setSelectedFeatures] = useState(["wealth", "love", "health"]);
   const [isMobile, setIsMobile] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -60,13 +63,51 @@ export default function Payment() {
     { id: "couple", icon: "👫", name: "궁합 분석" }
   ];
 
-  const handlePackageSelect = (pkg) => {
+  const handlePackageSelect = (pkg: any) => {
     setSelectedPackage(pkg.name);
     setSelectedFeatures(pkg.features);
   };
 
-  const handlePayment = () => {
-    alert(`${selectedPackage} 패키지 (${selectedFeatures.length}개 운세, ${packages.find(p => p.name === selectedPackage)?.pages}페이지)가 선택되었습니다. 결제 진행 예정`);
+  const handlePayment = async () => {
+    setIsProcessing(true);
+    const currentPages = packages.find(p => p.name === selectedPackage)?.pages || 30;
+    
+    try {
+      // 프리미엄/커플팩은 병렬 호출
+      if (selectedPackage === "프리미엄" || selectedPackage === "VIP 커플팩") {
+        const tokensPerCall = selectedPackage === "프리미엄" ? 50 : 75;
+        
+        // 2회 병렬 호출
+        const promise1 = fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 1000,
+            messages: [{ role: "user", content: `사주 분석 (1/2): ${tokensPerCall}페이지 분석 요청` }]
+          })
+        });
+
+        const promise2 = fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 1000,
+            messages: [{ role: "user", content: `사주 분석 (2/2): ${tokensPerCall}페이지 분석 요청` }]
+          })
+        });
+
+        await Promise.all([promise1, promise2]);
+      }
+      
+      router.push(`/payment-complete?package=${selectedPackage}&pages=${currentPages}`);
+    } catch (error) {
+      alert("결제 처리 중 오류가 발생했습니다.");
+      console.error(error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const currentPages = packages.find(p => p.name === selectedPackage)?.pages || 30;
@@ -167,7 +208,7 @@ export default function Payment() {
           <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
             📄 {currentPages}페이지
           </p>
-          <button onClick={handlePayment} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: "pointer" }}>💳 결제하기</button>
+          <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1 }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
         </div>
       </div>
     </main>
