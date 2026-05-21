@@ -87,7 +87,13 @@ export async function POST(request: NextRequest) {
       const regex = new RegExp(`\\[${section}\\]([^\\[]*?)(?=\\[|$)`, 's');
       const match = text.match(regex);
       if (match && match[1]) {
-        return match[1].trim();
+        let result = match[1].trim();
+        // 문장 끝에 줄바꿈 추가 (입니다. 다. 습니다. 등)
+        result = result.replace(/([입니다다습니다]\.)/g, '$1\n\n');
+        result = result.replace(/([습니다다])\n/g, '$1\n\n');
+        // 연속된 줄바꿈 정리
+        result = result.replace(/\n\n\n+/g, '\n\n');
+        return result;
       }
       return "분석 완료";
     };
