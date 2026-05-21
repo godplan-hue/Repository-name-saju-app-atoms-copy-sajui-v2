@@ -4,145 +4,13 @@ export async function POST(request: NextRequest) {
   try {
     const { name, email, birth, birthHour, gender } = await request.json();
 
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "API 키가 설정되지 않았습니다" },
-        { status: 500 }
-      );
-    }
-
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 2500,
-        messages: [
-          {
-            role: "user",
-            content: `이름: ${name}
-생년월일: ${birth}
-생시: ${birthHour}
-성별: ${gender}
-
-당신은 전문 사주 분석가입니다. 다음 5가지를 작성하세요.
-
-**절대 지켜야 할 규칙:**
-1. 각 문장 끝에 반드시 빈 줄 추가 (\n\n)
-2. 문장은 절대 중간에 끊지 말기
-3. 각 섹션마다 최소 4줄 이상
-4. 마크다운 형식 사용:
-
-[이름 분석]
-첫 번째 문장입니다.
-
-두 번째 문장입니다.
-
-세 번째 문장입니다.
-
-네 번째 문장입니다.
-
-[재물운]
-첫 번째 문장입니다.
-
-두 번째 문장입니다.
-
-세 번째 문장입니다.
-
-네 번째 문장입니다.
-
-[연애운]
-첫 번째 문장입니다.
-
-두 번째 문장입니다.
-
-세 번째 문장입니다.
-
-네 번째 문장입니다.
-
-[건강운]
-첫 번째 문장입니다.
-
-두 번째 문장입니다.
-
-세 번째 문장입니다.
-
-네 번째 문장입니다.
-
-[궁합 분석]
-첫 번째 문장입니다.
-
-두 번째 문장입니다.
-
-세 번째 문장입니다.
-
-네 번째 문장입니다.
-
-**중요: 각 문장 끝에 빈 줄을 반드시 추가하세요!**`,
-          },
-        ],
-      }),
-    });
-
-    if (!response.ok) {
-      let errorMessage = "Claude API 오류";
-      try {
-        const errorData = await response.json();
-        errorMessage = errorData.error?.message || JSON.stringify(errorData);
-      } catch (parseError) {
-        const textError = await response.text();
-        errorMessage = textError || response.statusText;
-      }
-      return NextResponse.json(
-        { error: errorMessage },
-        { status: response.status }
-      );
-    }
-
-    const data = await response.json();
-
-    let analysisText = "";
-    
-    if (data.content && Array.isArray(data.content) && data.content.length > 0) {
-      const firstContent = data.content[0];
-      if (firstContent.type === "text") {
-        analysisText = firstContent.text;
-      }
-    }
-
-    const parseSection = (text: string, section: string): string => {
-      const regex = new RegExp(`\\[${section}\\]([^\\[]*?)(?=\\[|$)`, 's');
-      const match = text.match(regex);
-      if (match && match[1]) {
-        let result = match[1].trim();
-        
-        // 이미 있는 줄바꿈 유지
-        if (result.includes('\n\n')) {
-          return result;
-        }
-        
-        // 없으면 강제로 추가
-        result = result
-          .split('\n')
-          .filter(line => line.trim())
-          .join('\n\n');
-        
-        return result;
-      }
-      return "분석 완료";
-    };
-
+    // 무료: 템플릿만 사용 (API 호출 안 함)
     const result = {
-      name: parseSection(analysisText, "이름 분석"),
-      wealthLuck: parseSection(analysisText, "재물운"),
-      loveLuck: parseSection(analysisText, "연애운"),
-      healthLuck: parseSection(analysisText, "건강운"),
-      couple: parseSection(analysisText, "궁합 분석"),
+      name: getNameTemplate(name),
+      wealthLuck: getWealthTemplate(birth),
+      loveLuck: getLoveTemplate(birth),
+      healthLuck: getHealthTemplate(birth),
+      couple: getCoupleTemplate(birth),
       yearlyLuck: getYearlyTemplate(birth),
       monthlyLuck: getMonthlyTemplate(birth),
       fullAnalysis: getFullTemplate(birth),
@@ -155,6 +23,85 @@ export async function POST(request: NextRequest) {
       { error: "서버 오류가 발생했습니다" },
       { status: 500 }
     );
+  }
+}
+
+function getNameTemplate(name: string): string {
+  return `${name}님의 이름은 깊은 의미를 담고 있습니다.\n\n각 글자가 지닌 뜻을 통해 당신의 성격과 운명을 알 수 있습니다.\n\n긍정적인 기운이 가득한 이름입니다.\n\n당신의 이름은 좋은 운을 불러옵니다.`;
+}
+
+function getWealthTemplate(birth: string): string {
+  const year = parseInt(birth.split("-")[0]);
+  
+  if (year >= 1970 && year < 1980) {
+    return `당신의 재물운은 꾸준한 상승세를 보입니다.\n\n중년 이후 본격적인 재물 증식이 시작됩니다.\n\n부동산과 투자를 통해 자산을 늘릴 수 있습니다.\n\n인내심 있는 노력이 결실을 맺을 것입니다.`;
+  } else if (year >= 1980 && year < 1990) {
+    return `당신은 안정적인 재물 관리 능력을 가지고 있습니다.\n\n초반에는 기초를 다지는 시간이 될 것입니다.\n\n30대 후반부터 재물운이 본격화됩니다.\n\n꾸준한 노력으로 좋은 성과를 얻을 수 있습니다.`;
+  } else if (year >= 1990 && year < 2000) {
+    return `당신의 재물운은 활기차고 역동적입니다.\n\n새로운 기회들이 자주 찾아올 것입니다.\n\n창의적인 활동으로 재물을 모을 수 있습니다.\n\n긍정적인 마음으로 도전하면 성공합니다.`;
+  } else {
+    return `당신은 창의적인 재물 관리 능력을 가지고 있습니다.\n\n새로운 아이디어로 수입을 창출할 수 있습니다.\n\n도전적인 시도가 좋은 결과를 가져올 것입니다.\n\n긍정적인 태도가 재물을 불러옵니다.`;
+  }
+}
+
+function getLoveTemplate(birth: string): string {
+  const month = parseInt(birth.split("-")[1]);
+  
+  if (month >= 1 && month <= 3) {
+    return `당신의 연애운은 진중하고 깊습니다.\n\n진심 어린 관계를 지향하는 성향입니다.\n\n한 번 마음을 정하면 오래 함께합니다.\n\n배우자와 깊은 이해와 신뢰를 나눕니다.`;
+  } else if (month >= 4 && month <= 6) {
+    return `당신의 연애운은 따뜻하고 포용적입니다.\n\n많은 사람들에게 호감을 받는 매력이 있습니다.\n\n안정적이고 행복한 관계를 만들 수 있습니다.\n\n가정에서 큰 행복을 찾을 것입니다.`;
+  } else if (month >= 7 && month <= 9) {
+    return `당신의 연애운은 활기차고 긍정적입니다.\n\n새로운 만남이 자주 찾아올 것입니다.\n\n즐겁고 신나는 관계를 선호합니다.\n\n함께 성장할 수 있는 파트너를 만날 것입니다.`;
+  } else {
+    return `당신의 연애운은 성숙하고 현명합니다.\n\n시간이 지날수록 더 깊어지는 사랑을 경험합니다.\n\n서로를 존중하는 관계를 만듭니다.\n\n행복한 결혼 생활을 이룰 것입니다.`;
+  }
+}
+
+function getHealthTemplate(birth: string): string {
+  const year = parseInt(birth.split("-")[0]);
+  
+  if (year >= 1970 && year < 1980) {
+    return `당신의 건강운은 전반적으로 양호합니다.\n\n규칙적인 생활로 건강을 유지할 수 있습니다.\n\n중년 이후 정기적인 건강검진이 중요합니다.\n\n적당한 운동으로 장수할 수 있습니다.`;
+  } else if (year >= 1980 && year < 1990) {
+    return `당신은 강인한 체질을 타고났습니다.\n\n스트레스 관리가 건강의 핵심입니다.\n\n충분한 수면과 운동으로 활력을 유지하세요.\n\n건강한 생활 습관이 좋은 미래를 만듭니다.`;
+  } else if (year >= 1990 && year < 2000) {
+    return `당신의 건강운은 매우 좋습니다.\n\n활동적인 생활로 건강을 유지할 수 있습니다.\n\n긍정적인 마음가짐이 건강을 지킵니다.\n\n규칙적인 운동으로 더욱 건강해질 것입니다.`;
+  } else {
+    return `당신은 건강한 체질을 가지고 있습니다.\n\n균형 잡힌 생활로 건강을 지킬 수 있습니다.\n\n마음의 평온이 육체 건강을 만듭니다.\n\n긍정적인 생각이 건강을 지켜줍니다.`;
+  }
+}
+
+function getCoupleTemplate(birth: string): string {
+  const year = parseInt(birth.split("-")[0]);
+  const animalYear = (year - 1900) % 12;
+  const animals = ["쥐", "소", "호랑이", "토끼", "뱀", "말", "양", "원숭이", "닭", "개", "돼지", ""];
+  const currentAnimal = animals[animalYear];
+  
+  if (animalYear === 0) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 용띠와 원숭이띠입니다.\n\n상호 보완적인 관계를 만들 수 있습니다.\n\n서로를 이해하고 존중하면 좋은 관계입니다.\n\n함께 성장하는 부부가 될 수 있습니다.`;
+  } else if (animalYear === 1) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 쥐띠와 뱀띠입니다.\n\n안정적이고 오래가는 관계를 만듭니다.\n\n신뢰와 성실로 가정을 이룹니다.\n\n깊은 사랑으로 행복한 가정을 꾸립니다.`;
+  } else if (animalYear === 2) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 말띠와 개띠입니다.\n\n활발하고 즐거운 관계를 만듭니다.\n\n함께 도전하고 성취할 수 있습니다.\n\n신나는 인생을 함께 할 수 있습니다.`;
+  } else if (animalYear === 3) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 양띠와 돼지띠입니다.\n\n부드럽고 따뜻한 관계를 만듭니다.\n\n상대를 배려하는 마음으로 행복합니다.\n\n평화로운 가정을 이룰 수 있습니다.`;
+  } else if (animalYear === 4) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 소띠와 닭띠입니다.\n\n깊이 있는 관계를 만들 수 있습니다.\n\n서로를 이해하는 지혜로운 부부입니다.\n\n조화로운 가정을 이룰 것입니다.`;
+  } else if (animalYear === 5) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 호랑이띠와 개띠입니다.\n\n역동적이고 활기찬 관계를 만듭니다.\n\n함께 새로운 경험을 쌓을 수 있습니다.\n\n즐거운 인생 여정을 함께 합니다.`;
+  } else if (animalYear === 6) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 토끼띠와 돼지띠입니다.\n\n부드럽고 온화한 관계를 만듭니다.\n\n서로를 배려하는 마음이 깊습니다.\n\n따뜻한 가정을 이룰 것입니다.`;
+  } else if (animalYear === 7) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 쥐띠와 용띠입니다.\n\n재미있고 신나는 관계를 만듭니다.\n\n서로를 웃게 만드는 부부입니다.\n\n행복한 결혼 생활을 할 것입니다.`;
+  } else if (animalYear === 8) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 뱀띠와 소띠입니다.\n\n솔직하고 진심 어린 관계를 만듭니다.\n\n서로를 소중히 여기는 부부입니다.\n\n신뢰로 이루어진 가정을 꾸립니다.`;
+  } else if (animalYear === 9) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 호랑이띠와 말띠입니다.\n\n성실하고 진지한 관계를 만듭니다.\n\n서로 지켜주는 마음이 깊습니다.\n\n든든한 가정을 이룰 것입니다.`;
+  } else if (animalYear === 10) {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 토끼띠와 양띠입니다.\n\n따뜻하고 포근한 관계를 만듭니다.\n\n서로를 보듬는 마음이 깊습니다.\n\n행복한 가정을 이룰 것입니다.`;
+  } else {
+    return `${currentAnimal}띠인 당신과 잘 맞는 상대는 쥐띠와 원숭이띠입니다.\n\n역동적이고 성공적인 관계를 만듭니다.\n\n함께 큰 꿈을 이룰 수 있습니다.\n\n위대한 부부가 될 것입니다.`;
   }
 }
 

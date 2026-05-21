@@ -144,7 +144,7 @@ export default function FreeAnalysis() {
   };
 
   const handleShare = () => {
-    const text = `${formData.name}님의 사주 분석 결과를 확인해보세요! 🔮`;
+    const text = `${formData.name}님의 사주 분석 결과를 확인해보세요!`;
     const url = window.location.origin + "/free-analysis";
     
     if (navigator.share) {
@@ -160,19 +160,7 @@ export default function FreeAnalysis() {
   };
 
   const handleDownloadPDF = () => {
-    const element = document.getElementById("result-content");
-    if (!element) return;
-
-    const html2pdf = require("html2pdf.js");
-    const opt = {
-      margin: 10,
-      filename: `${formData.name}_사주분석.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { orientation: "portrait", unit: "mm", format: "a4" }
-    };
-
-    html2pdf().set(opt).from(element).save();
+    alert("PDF 기능은 준비 중입니다!");
   };
 
   // Step 7: 결과 페이지
@@ -189,7 +177,7 @@ export default function FreeAnalysis() {
     };
 
     return (
-      <main style={{ minHeight: "100vh", background: "#f5f5f5", color: "#333", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
+      <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)", color: "#333", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "relative", zIndex: 10, padding: isMobile ? "20px 16px" : "40px 16px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <div style={{ maxWidth: isMobile ? "100%" : "900px", margin: "0 auto", width: "100%" }}>
             <h1 style={{ textAlign: "center", color: "#d4af37", marginBottom: isMobile ? 25 : 40, fontSize: isMobile ? "26px" : "36px", fontWeight: 900 }}>🔮 사주 분석 결과</h1>
@@ -197,7 +185,7 @@ export default function FreeAnalysis() {
             {analyzing ? (
               <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: isMobile ? 40 : 60, borderRadius: 12, textAlign: "center" }}>
                 <p style={{ fontSize: isMobile ? 16 : 20, marginBottom: 30, color: "#333", fontWeight: 700 }}>사주를 정밀 분석 중입니다</p>
-                <p style={{ fontSize: isMobile ? 13 : 16, marginBottom: 20, color: "#666" }}>당신의 사주팔자를 AI가 분석 중입니다.....</p>
+                <p style={{ fontSize: isMobile ? 13 : 16, marginBottom: 20, color: "#666" }}>당신의 사주팔자를 분석 중입니다</p>
                 <div style={{ fontSize: isMobile ? 40 : 60 }}>🔄</div>
               </div>
             ) : (
@@ -349,7 +337,7 @@ export default function FreeAnalysis() {
                 <p style={{ color: "#666", fontSize: isMobile ? 13 : 15, fontWeight: 700, marginBottom: 10, lineHeight: 1.6, margin: "0 0 10px 0" }}>모르시면 "모름"을 선택하셔도 됩니다</p>
                 <p style={{ color: "#ec4899", fontSize: isMobile ? 12 : 14, fontWeight: 700, marginBottom: 0, margin: 0 }}>태어난 시간(시주)</p>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr", gap: isMobile ? 10 : 12, marginBottom: isMobile ? 22 : 28, maxHeight: isMobile ? "420px" : "380px", overflowY: "auto", paddingRight: "5px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr", gap: isMobile ? 10 : 12, marginBottom: isMobile ? 22 : 28, maxHeight: isMobile ? "420px" : "380px", overflowY: "auto" }}>
                 {birthHours.map(hour => (
                   <button
                     key={hour.value}
