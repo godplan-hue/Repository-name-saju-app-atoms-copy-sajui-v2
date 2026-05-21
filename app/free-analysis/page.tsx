@@ -143,6 +143,38 @@ export default function FreeAnalysis() {
     }
   };
 
+  const handleShare = () => {
+    const text = `${formData.name}님의 사주 분석 결과를 확인해보세요! 🔮`;
+    const url = window.location.origin + "/free-analysis";
+    
+    if (navigator.share) {
+      navigator.share({
+        title: "무료 사주 분석",
+        text: text,
+        url: url,
+      });
+    } else {
+      const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+      window.open(shareUrl, "_blank");
+    }
+  };
+
+  const handleDownloadPDF = () => {
+    const element = document.getElementById("result-content");
+    if (!element) return;
+
+    const html2pdf = require("html2pdf.js");
+    const opt = {
+      margin: 10,
+      filename: `${formData.name}_사주분석.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { orientation: "portrait", unit: "mm", format: "a4" }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  };
+
   // Step 7: 결과 페이지
   if (step === 7) {
     const result = analysisResult || {
@@ -157,59 +189,68 @@ export default function FreeAnalysis() {
     };
 
     return (
-      <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)", color: "#333", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
+      <main style={{ minHeight: "100vh", background: "#f5f5f5", color: "#333", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "relative", zIndex: 10, padding: isMobile ? "20px 16px" : "40px 16px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <div style={{ maxWidth: isMobile ? "100%" : "900px", margin: "0 auto", width: "100%" }}>
             <h1 style={{ textAlign: "center", color: "#d4af37", marginBottom: isMobile ? 25 : 40, fontSize: isMobile ? "26px" : "36px", fontWeight: 900 }}>🔮 사주 분석 결과</h1>
 
             {analyzing ? (
               <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: isMobile ? 40 : 60, borderRadius: 12, textAlign: "center" }}>
-                <p style={{ fontSize: isMobile ? 16 : 20, marginBottom: 30, color: "#333", fontWeight: 700 }}>사주를 분석하고 있습니다</p>
-                <p style={{ fontSize: isMobile ? 13 : 16, marginBottom: 20, color: "#666" }}>{formData.name}님의 사주팔자를 AI가 정밀 분석 중입니다.....</p>
+                <p style={{ fontSize: isMobile ? 16 : 20, marginBottom: 30, color: "#333", fontWeight: 700 }}>사주를 정밀 분석 중입니다</p>
+                <p style={{ fontSize: isMobile ? 13 : 16, marginBottom: 20, color: "#666" }}>당신의 사주팔자를 AI가 분석 중입니다.....</p>
                 <div style={{ fontSize: isMobile ? 40 : 60 }}>🔄</div>
               </div>
             ) : (
               <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: isMobile ? 25 : 50, borderRadius: 12 }}>
-                {/* 생시 필요 5개 - 먼저 */}
-                <div style={{ marginBottom: isMobile ? 25 : 35 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>📝 이름 분석</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.name}</p>
+                {/* 공유/저장 버튼 - 위 */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isMobile ? 10 : 12, marginBottom: isMobile ? 25 : 35 }}>
+                  <button onClick={handleShare} style={{ padding: isMobile ? 13 : 16, background: "linear-gradient(135deg, #00bcd4, #0097a7)", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: isMobile ? 13 : 15, cursor: "pointer" }}>📱 공유하기</button>
+                  <button onClick={handleDownloadPDF} style={{ padding: isMobile ? 13 : 16, background: "linear-gradient(135deg, #ff9800, #f57c00)", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: isMobile ? 13 : 15, cursor: "pointer" }}>📄 PDF 저장</button>
                 </div>
 
-                <div style={{ marginBottom: isMobile ? 25 : 35 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>💎 재물운</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.wealthLuck}</p>
-                </div>
+                {/* 결과 컨텐츠 */}
+                <div id="result-content">
+                  {/* 생시 필요 5개 - 먼저 */}
+                  <div style={{ marginBottom: isMobile ? 25 : 35 }}>
+                    <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>📝 이름 분석</h2>
+                    <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.name}</p>
+                  </div>
 
-                <div style={{ marginBottom: isMobile ? 25 : 35 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>💕 연애운</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.loveLuck}</p>
-                </div>
+                  <div style={{ marginBottom: isMobile ? 25 : 35 }}>
+                    <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>💎 재물운</h2>
+                    <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.wealthLuck}</p>
+                  </div>
 
-                <div style={{ marginBottom: isMobile ? 25 : 35 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>🌿 건강운</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.healthLuck}</p>
-                </div>
+                  <div style={{ marginBottom: isMobile ? 25 : 35 }}>
+                    <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>💕 연애운</h2>
+                    <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.loveLuck}</p>
+                  </div>
 
-                <div style={{ marginBottom: isMobile ? 35 : 45 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>👫 궁합 분석</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.couple}</p>
-                </div>
+                  <div style={{ marginBottom: isMobile ? 25 : 35 }}>
+                    <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>🌿 건강운</h2>
+                    <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.healthLuck}</p>
+                  </div>
 
-                {/* 생시 불필요 3개 - 템플릿 */}
-                <div style={{ marginBottom: isMobile ? 25 : 35, opacity: 0.9 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>☀️ 올해 운세</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.yearlyLuck}</p>
-                </div>
+                  <div style={{ marginBottom: isMobile ? 35 : 45 }}>
+                    <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>👫 궁합 분석</h2>
+                    <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.couple}</p>
+                  </div>
 
-                <div style={{ marginBottom: isMobile ? 25 : 35, opacity: 0.9 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>🌙 월별 운세</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.monthlyLuck}</p>
-                </div>
+                  {/* 생시 불필요 3개 - 템플릿 */}
+                  <div style={{ marginBottom: isMobile ? 25 : 35, opacity: 0.9 }}>
+                    <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>☀️ 올해 운세</h2>
+                    <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.yearlyLuck}</p>
+                  </div>
 
-                <div style={{ marginBottom: isMobile ? 35 : 45, opacity: 0.9 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>🎋 전체 사주분석</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.fullAnalysis}</p>
+                  <div style={{ marginBottom: isMobile ? 25 : 35, opacity: 0.9 }}>
+                    <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>🌙 월별 운세</h2>
+                    <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.monthlyLuck}</p>
+                  </div>
+
+                  <div style={{ marginBottom: isMobile ? 35 : 45, opacity: 0.9 }}>
+                    <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>🎋 전체 사주분석</h2>
+                    <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.fullAnalysis}</p>
+                  </div>
                 </div>
 
                 <div style={{ background: "#fff3cd", padding: isMobile ? 18 : 22, borderRadius: 8, marginBottom: isMobile ? 20 : 28 }}>
