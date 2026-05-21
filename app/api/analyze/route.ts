@@ -30,35 +30,60 @@ export async function POST(request: NextRequest) {
 생시: ${birthHour}
 성별: ${gender}
 
-당신은 전문 사주 분석가입니다. 다음 6가지를 상세하게 작성하세요:
+당신은 전문 사주 분석가입니다. 다음 5가지를 매우 상세하게 작성하세요.
 
-1. **이름 간단풀이**: ${name}의 이름 의미, 성격, 특징을 상세히 분석
-2. **총운**: 전체 운의 흐름, 인생 패턴을 구체적으로 분석
-3. **재물운**: 재물 흐름, 경제 운, 재정 관리 방법을 상세히 분석
-4. **연애운**: 연애 패턴, 결혼 운, 가정 운을 구체적으로 분석
-5. **건강운**: 건강 상태, 주의해야 할 질환, 건강 관리 방법을 상세히 분석
-6. **직업운**: 적성, 추천 직업, 커리어 방향을 구체적으로 분석
+각 섹션을 작성할 때는:
+- 각 문장을 새 줄에 작성
+- 문장 사이에 빈 줄 추가
+- 4줄 이상 작성
+- 긍정적인 톤 유지
+- 구체적이고 현실적인 분석
 
-각 섹션마다 상세하고 구체적인 내용을 담되, 긍정적인 톤으로 작성하세요.
-
-다음 형식으로 반드시 작성하세요:
+정확한 형식:
 [이름 간단풀이]
-내용
+첫 번째 문장입니다.
 
-[총운]
-내용
+두 번째 문장입니다.
+
+세 번째 문장입니다.
+
+네 번째 문장입니다.
 
 [재물운]
-내용
+첫 번째 문장입니다.
+
+두 번째 문장입니다.
+
+세 번째 문장입니다.
+
+네 번째 문장입니다.
 
 [연애운]
-내용
+첫 번째 문장입니다.
+
+두 번째 문장입니다.
+
+세 번째 문장입니다.
+
+네 번째 문장입니다.
 
 [건강운]
-내용
+첫 번째 문장입니다.
 
-[직업운]
-내용`,
+두 번째 문장입니다.
+
+세 번째 문장입니다.
+
+네 번째 문장입니다.
+
+[궁합 분석]
+첫 번째 문장입니다.
+
+두 번째 문장입니다.
+
+세 번째 문장입니다.
+
+네 번째 문장입니다.`,
           },
         ],
       }),
@@ -90,7 +115,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 텍스트 파싱
     const parseSection = (text: string, section: string): string => {
       const regex = new RegExp(`\\[${section}\\]([^\\[]*?)(?=\\[|$)`, 's');
       const match = text.match(regex);
@@ -102,11 +126,13 @@ export async function POST(request: NextRequest) {
 
     const result = {
       name: parseSection(analysisText, "이름 간단풀이"),
-      totalLuck: parseSection(analysisText, "총운"),
       wealthLuck: parseSection(analysisText, "재물운"),
       loveLuck: parseSection(analysisText, "연애운"),
       healthLuck: parseSection(analysisText, "건강운"),
-      jobLuck: parseSection(analysisText, "직업운"),
+      couple: parseSection(analysisText, "궁합 분석"),
+      yearlyLuck: getYearlyTemplate(birth),
+      monthlyLuck: getMonthlyTemplate(birth),
+      fullAnalysis: getFullTemplate(birth),
     };
 
     return NextResponse.json({ result });
@@ -117,4 +143,48 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function getYearlyTemplate(birth: string): string {
+  const year = birth.split("-")[0];
+  const templates: { [key: string]: string } = {
+    "197": `${year}년생 당신에게 올해는 새로운 도전의 시작입니다.\n새로운 기회가 찾아올 것입니다.\n변화를 두려워하지 마세요.\n올해는 성장의 해가 될 것입니다.`,
+    "198": `${year}년생 당신에게 올해는 안정과 성장이 함께할 시기입니다.\n기초를 다지는 한 해가 될 것입니다.\n인내심이 필요한 시간입니다.\n좋은 결실을 맺을 수 있습니다.`,
+    "199": `${year}년생 당신에게 올해는 새로운 시작입니다.\n도전할 준비를 하세요.\n좋은 기회가 찾아올 것입니다.\n긍정적인 에너지로 가득할 것입니다.`,
+    "200": `${year}년생 당신에게 올해는 성장의 시간입니다.\n꿈을 향해 나아갈 시기입니다.\n노력이 빛날 한 해입니다.\n새로운 가능성이 열릴 것입니다.`,
+  };
+
+  for (const [key, value] of Object.entries(templates)) {
+    if (year.startsWith(key)) {
+      return value;
+    }
+  }
+  
+  return `올해는 새로운 변화와 성장이 함께할 시기입니다.\n긍정적인 에너지로 한 해를 시작하세요.\n좋은 기회를 놓치지 마세요.\n당신의 노력이 빛날 것입니다.`;
+}
+
+function getMonthlyTemplate(birth: string): string {
+  const month = parseInt(birth.split("-")[1]);
+  const monthNames = ["", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+  const monthTexts: { [key: number]: string } = {
+    1: `${monthNames[month]}은 새로운 시작의 달입니다.\n신선한 에너지가 넘칠 것입니다.\n계획을 세우기에 좋은 시기입니다.\n긍정적인 변화가 시작될 것입니다.`,
+    2: `${monthNames[month]}은 관계가 중요한 달입니다.\n주변 사람들과의 소통이 좋습니다.\n새로운 인연을 기대해보세요.\n따뜻한 감정으로 가득할 것입니다.`,
+    3: `${monthNames[month]}은 성장의 달입니다.\n새로운 도전을 시작하기 좋은 시기입니다.\n활동적인 에너지가 넘칠 것입니다.\n좋은 결과를 기대할 수 있습니다.`,
+    4: `${monthNames[month]}은 안정의 달입니다.\n기초를 다지기에 적합합니다.\n차분한 마음으로 일을 진행하세요.\n좋은 결과가 나타날 것입니다.`,
+    5: `${monthNames[month]}은 행운의 달입니다.\n긍정적인 에너지가 가득합니다.\n새로운 기회가 찾아올 것입니다.\n활발한 활동을 시작하기 좋습니다.`,
+    6: `${monthNames[month]}은 성찰의 달입니다.\n내면을 돌아보기에 좋은 시기입니다.\n차분한 마음으로 계획을 세우세요.\n새로운 방향을 찾을 수 있습니다.`,
+    7: `${monthNames[month]}은 변화의 달입니다.\n새로운 시작을 준비해보세요.\n창의적인 에너지가 넘칩니다.\n좋은 기회를 포착할 수 있습니다.`,
+    8: `${monthNames[month]}은 성과의 달입니다.\n노력의 결실이 나타날 것입니다.\n자신감을 가지고 나아가세요.\n행운이 함께할 것입니다.`,
+    9: `${monthNames[month]}은 조화의 달입니다.\n인간관계가 좋아질 것입니다.\n평온함이 찾아올 것입니다.\n좋은 협력을 기대할 수 있습니다.`,
+    10: `${monthNames[month]}은 수확의 달입니다.\n그동안의 노력이 빛날 것입니다.\n긍정적인 변화가 일어날 것입니다.\n좋은 소식을 기대해보세요.`,
+    11: `${monthNames[month]}은 준비의 달입니다.\n앞으로의 계획을 세우기 좋습니다.\n차분한 마음으로 계획하세요.\n새로운 시작을 준비할 수 있습니다.`,
+    12: `${monthNames[month]}은 마무리의 달입니다.\n한 해를 정리하기에 좋은 시기입니다.\n감사한 마음으로 마무리하세요.\n새로운 에너지를 준비하세요.`,
+  };
+
+  return monthTexts[month] || `이번 달은 새로운 기회와 가능성으로 가득합니다.\n긍정적인 에너지로 한 달을 보내세요.\n좋은 결과를 기대할 수 있습니다.\n당신의 노력이 빛날 것입니다.`;
+}
+
+function getFullTemplate(birth: string): string {
+  const [year, month, day] = birth.split("-");
+  return `${year}년 ${month}월 ${day}일 생 당신의 전체 사주 분석입니다.\n당신은 타고난 성격과 능력을 가지고 있습니다.\n인생 전체 흐름을 이해하는 것이 중요합니다.\n자신의 강점을 활용하여 삶을 설계해보세요.`;
 }

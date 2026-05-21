@@ -94,7 +94,7 @@ export default function FreeAnalysis() {
   };
 
   const handleAnalyze = async () => {
-    if (!formData.phone) {
+    if (!formData.phone.trim()) {
       alert("전화번호를 입력해주세요");
       return;
     }
@@ -143,15 +143,17 @@ export default function FreeAnalysis() {
     }
   };
 
-  // Step 7: 결과 페이지 (금색 배경)
+  // Step 7: 결과 페이지
   if (step === 7) {
     const result = analysisResult || {
       name: "분석 완료",
-      totalLuck: "분석 완료",
       wealthLuck: "분석 완료",
       loveLuck: "분석 완료",
       healthLuck: "분석 완료",
-      jobLuck: "분석 완료"
+      couple: "분석 완료",
+      yearlyLuck: "분석 완료",
+      monthlyLuck: "분석 완료",
+      fullAnalysis: "분석 완료",
     };
 
     return (
@@ -168,14 +170,10 @@ export default function FreeAnalysis() {
               </div>
             ) : (
               <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: isMobile ? 25 : 50, borderRadius: 12 }}>
+                {/* 생시 필요 5개 - 먼저 */}
                 <div style={{ marginBottom: isMobile ? 25 : 35 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>📝 이름 간단풀이</h2>
+                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>📝 이름 분석</h2>
                   <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.name}</p>
-                </div>
-
-                <div style={{ marginBottom: isMobile ? 25 : 35 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>⭐ 총운</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.totalLuck}</p>
                 </div>
 
                 <div style={{ marginBottom: isMobile ? 25 : 35 }}>
@@ -194,18 +192,34 @@ export default function FreeAnalysis() {
                 </div>
 
                 <div style={{ marginBottom: isMobile ? 35 : 45 }}>
-                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>💼 직업운</h2>
-                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.jobLuck}</p>
+                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>👫 궁합 분석</h2>
+                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.couple}</p>
+                </div>
+
+                {/* 생시 불필요 3개 - 템플릿 */}
+                <div style={{ marginBottom: isMobile ? 25 : 35, opacity: 0.9 }}>
+                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>☀️ 올해 운세</h2>
+                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.yearlyLuck}</p>
+                </div>
+
+                <div style={{ marginBottom: isMobile ? 25 : 35, opacity: 0.9 }}>
+                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>🌙 월별 운세</h2>
+                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.monthlyLuck}</p>
+                </div>
+
+                <div style={{ marginBottom: isMobile ? 35 : 45, opacity: 0.9 }}>
+                  <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10 }}>🎋 전체 사주분석</h2>
+                  <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 2.0, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.fullAnalysis}</p>
                 </div>
 
                 <div style={{ background: "#fff3cd", padding: isMobile ? 18 : 22, borderRadius: 8, marginBottom: isMobile ? 20 : 28 }}>
                   <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 700, lineHeight: 1.8, margin: 0, textAlign: "center" }}>
-                    ✨ <strong>더 자세한 분석</strong>은<br/>베이직 상세 분석 코스에서!
+                    ✨ <strong>더 자세한 분석</strong>은<br/>기본 분석 코스에서!
                   </p>
                 </div>
 
-                <button onClick={() => router.push("/payment")} style={{ width: "100%", padding: isMobile ? 15 : 17, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: isMobile ? 15 : 17, cursor: "pointer", marginBottom: 12 }}>🎁 베이직 상세 분석 (₩19,900)</button>
-                <p style={{ color: "#666", fontSize: isMobile ? 11 : 13, fontWeight: 700, textAlign: "center", margin: 0 }}>📄 75페이지 - 올해 운세 + 올해 월운 + 직업 추천 + 성격 분석 + 인생 운세</p>
+                <button onClick={() => router.push("/payment")} style={{ width: "100%", padding: isMobile ? 15 : 17, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: isMobile ? 15 : 17, cursor: "pointer", marginBottom: 12 }}>🎁 기본 분석 (₩9,900)</button>
+                <p style={{ color: "#666", fontSize: isMobile ? 11 : 13, fontWeight: 700, textAlign: "center", margin: 0 }}>📄 30페이지 - 올해 운세 + 월별 운세</p>
               </div>
             )}
           </div>
