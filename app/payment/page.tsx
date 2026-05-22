@@ -47,7 +47,7 @@ export default function Payment() {
     },
     { 
       id: "vip", 
-      name: "VIP", 
+      name: "VIP 커플팩", 
       price: "₩29,900", 
       pages: 150,
       features: ["name", "yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "analysis"],
