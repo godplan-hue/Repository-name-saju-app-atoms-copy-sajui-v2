@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 
 export default function Payment() {
   const router = useRouter();
-  const [selectedPackage, setSelectedPackage] = useState("베이직");
-  const [selectedFeatures, setSelectedFeatures] = useState(["wealth", "love", "health"]);
+  const [selectedPackage, setSelectedPackage] = useState("기본 분석");
+  const [selectedFeatures, setSelectedFeatures] = useState(["yearlyLuck", "monthlyLuck"]);
   const [isMobile, setIsMobile] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -23,44 +23,48 @@ export default function Payment() {
       name: "기본 분석", 
       price: "₩9,900", 
       pages: 30,
-      features: ["today", "monthly"],
-      desc: "오늘 운세 + 이번달 운세"
+      features: ["yearlyLuck", "monthlyLuck"],
+      count: 2,
+      desc: "올해 운세 + 월별 운세"
     },
     { 
       id: "standard", 
       name: "베이직", 
       price: "₩19,900", 
       pages: 75,
-      features: ["wealth", "love", "health"],
-      desc: "재물운 + 연애운 + 건강운"
+      features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"],
+      count: 4,
+      desc: "올해 운세 + 월별 운세<br/>+ 재물운 + 연애운"
     },
     { 
       id: "premium", 
       name: "프리미엄", 
       price: "₩24,900", 
       pages: 100,
-      features: ["wealth", "love", "health", "yearly", "analysis"],
-      desc: "재물운 + 연애운 + 건강운<br/>+ 올해 운세 + 전체 사주분석"
+      features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"],
+      count: 5,
+      desc: "올해 운세 + 월별 운세<br/>+ 재물운 + 연애운 + 건강운"
     },
     { 
-      id: "couple", 
-      name: "VIP 커플팩", 
+      id: "vip", 
+      name: "VIP", 
       price: "₩29,900", 
       pages: 150,
-      features: ["today", "monthly", "yearly", "analysis", "wealth", "love", "health", "couple"],
-      desc: "남녀 각각 8개 운세<br/>+ 궁합 분석"
+      features: ["name", "yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "analysis"],
+      count: 8,
+      desc: "본인 분석(8개) + 상대방 정보 입력<br/>궁합분석 포함"
     }
   ];
 
   const fortuneItems = [
-    { id: "today", icon: "☀️", name: "오늘 운세" },
-    { id: "monthly", icon: "🌙", name: "이번달 운세" },
-    { id: "yearly", icon: "🎋", name: "올해 운세" },
+    { id: "name", icon: "📝", name: "이름분석" },
+    { id: "yearlyLuck", icon: "☀️", name: "올해 운세" },
+    { id: "monthlyLuck", icon: "🌙", name: "월별 운세" },
     { id: "analysis", icon: "✨", name: "전체 사주분석" },
-    { id: "wealth", icon: "💎", name: "재물운 분석" },
-    { id: "love", icon: "💕", name: "연애운 분석" },
-    { id: "health", icon: "🌿", name: "건강운 분석" },
-    { id: "couple", icon: "👫", name: "궁합 분석" }
+    { id: "wealthLuck", icon: "💎", name: "재물운" },
+    { id: "loveLuck", icon: "💕", name: "연애운" },
+    { id: "healthLuck", icon: "🌿", name: "건강운" },
+    { id: "couple", icon: "👫", name: "궁합분석" }
   ];
 
   const handlePackageSelect = (pkg: any) => {
@@ -70,37 +74,9 @@ export default function Payment() {
 
   const handlePayment = async () => {
     setIsProcessing(true);
-    const currentPages = packages.find(p => p.name === selectedPackage)?.pages || 30;
     
     try {
-      // 프리미엄/커플팩은 병렬 호출
-      if (selectedPackage === "프리미엄" || selectedPackage === "VIP 커플팩") {
-        const tokensPerCall = selectedPackage === "프리미엄" ? 50 : 75;
-        
-        // 2회 병렬 호출
-        const promise1 = fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 1000,
-            messages: [{ role: "user", content: `사주 분석 (1/2): ${tokensPerCall}페이지 분석 요청` }]
-          })
-        });
-
-        const promise2 = fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 1000,
-            messages: [{ role: "user", content: `사주 분석 (2/2): ${tokensPerCall}페이지 분석 요청` }]
-          })
-        });
-
-        await Promise.all([promise1, promise2]);
-      }
-      
+      const currentPages = packages.find(p => p.name === selectedPackage)?.pages || 30;
       router.push(`/payment-complete?package=${selectedPackage}&pages=${currentPages}`);
     } catch (error) {
       alert("결제 처리 중 오류가 발생했습니다.");
@@ -110,7 +86,9 @@ export default function Payment() {
     }
   };
 
-  const currentPages = packages.find(p => p.name === selectedPackage)?.pages || 30;
+  const currentPackage = packages.find(p => p.name === selectedPackage);
+  const currentPages = currentPackage?.pages || 30;
+  const currentCount = currentPackage?.count || 2;
 
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://images.unsplash.com/photo-1719399184315-5ffab4006e18?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fCVFQyVCQiVBOCVFQyU4NSU4OSUyMCVFQyU5NSU4NCVFRCU4QSVCOHxlbnwwfHwwfHx8MA%3D%3D')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
@@ -126,11 +104,11 @@ export default function Payment() {
           
           {isMobile ? (
             <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
-              30페이지 기본분석부터<br/>150페이지 완벽분석까지<br/>당신의 성격, 재물운, 연애운,<br/>건강운, 직업 추천,<br/>올해 운세까지
+              30페이지 기본분석부터<br/>150페이지 완벽분석까지<br/>올해 운세, 월별 운세,<br/>재물운, 연애운, 건강운,<br/>궁합분석까지
             </p>
           ) : (
             <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
-              30페이지 기본분석부터 150페이지 완벽분석까지<br/>당신의 성격, 재물운, 연애운, 건강운, 직업 추천, 올해 운세까지
+              30페이지 기본분석부터 150페이지 완벽분석까지<br/>올해 운세, 월별 운세, 재물운, 연애운, 건강운, 궁합분석까지
             </p>
           )}
         </section>
@@ -144,7 +122,7 @@ export default function Payment() {
               <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.name}</h3>
               <p style={{ color: "#f5f5f5", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.price}</p>
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 10px 0", lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: pkg.desc }} />
-              <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: "0 0 6px 0" }}>📊 {pkg.features.length}개 운세</p>
+              <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: "0 0 6px 0" }}>🎯 {pkg.count}개 운세</p>
               <p style={{ color: "#f59e0b", fontSize: 11, fontWeight: 700, margin: 0 }}>📄 {pkg.pages}페이지</p>
             </div>
           ))}
@@ -157,17 +135,11 @@ export default function Payment() {
 
         {/* 선택된 운세 */}
         <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 40, background: "#f5f5f5", padding: 24, borderRadius: 12 }}>
-          <h3 style={{ color: "#1a1a1a", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 선택된 운세</h3>
+          <h3 style={{ color: "#1a1a1a", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 포함된 운세</h3>
           
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
             {fortuneItems.map(item => (
-              <div key={item.id} onClick={() => {
-                if (selectedFeatures.includes(item.id)) {
-                  setSelectedFeatures(selectedFeatures.filter(f => f !== item.id));
-                } else {
-                  setSelectedFeatures([...selectedFeatures, item.id]);
-                }
-              }} style={{ background: selectedFeatures.includes(item.id) ? "#ff1493" : "#e0e0e0", border: selectedFeatures.includes(item.id) ? "2px solid #ff69b4" : "1px solid #cccccc", borderRadius: 10, padding: 12, textAlign: "center", cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "#ff1493" : "#e0e0e0", border: selectedFeatures.includes(item.id) ? "2px solid #ff69b4" : "1px solid #cccccc", borderRadius: 10, padding: 12, textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                 <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
                 <p style={{ color: selectedFeatures.includes(item.id) ? "#ffffff" : "#1a1a1a", fontSize: 11, fontWeight: 900, margin: 0, whiteSpace: "normal", wordBreak: "keep-all" }}>{item.name}</p>
               </div>
@@ -183,7 +155,7 @@ export default function Payment() {
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>사주 완벽분석</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>기본분석(30P)부터<br/>VIP 커플팩(150P)까지</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>기본분석(30P)부터<br/>VIP(150P)까지</p>
             </div>
 
             <div style={{ textAlign: "center" }}>
@@ -204,6 +176,9 @@ export default function Payment() {
         <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900, marginBottom: 10 }}>
             선택된 패키지: <span style={{ color: "#fbbf24", fontWeight: 900 }}>{selectedPackage}</span>
+          </p>
+          <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 10 }}>
+            🎯 {currentCount}개 운세
           </p>
           <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
             📄 {currentPages}페이지
