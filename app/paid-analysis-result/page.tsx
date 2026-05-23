@@ -30,16 +30,16 @@ export default function PaidAnalysisResult() {
 
     return {
       // 생시 필요 5개 (맨 앞에 표시 - API 필요)
-      nameAnalysis: `"${name}"은(는) 밝고 긍정적인 에너지를 가진 이름입니다.\n주변 사람들에게 좋은 영향을 미치며,\n친화력이 우수합니다.`,
-      wealthLuck: `${name}님의 재물운은 매우 우호적입니다.\n투자와 사업에 좋은 운을 타고 있으며,\n올해는 경제적 성장이 예상됩니다.`,
-      loveLuck: `${name}님의 연애운은 긍정적입니다.\n새로운 인연을 만날 가능성이 높으며,\n기존 관계는 더욱 돈독해질 것입니다.`,
-      yearlyLuck: `올해 운세는 매우 긍정적입니다.\n새로운 기회와 도전이 많을 것이며,\n성공의 가능성이 높습니다.`,
-      monthlyLuck: `1월: 새로운 시작의 달\n2월: 준비와 계획의 달\n3월: 실행과 실현의 달\n(매월 다양한 변화가 예상됩니다)`,
+      nameAnalysis: `"${name}"은(는) 밝고 긍정적인 에너지를 가진 이름입니다.\n\n각 글자가 지닌 뜻을 통해\n당신의 성격과 운명을 알 수 있습니다.\n\n주변 사람들에게 좋은 영향을 미치며,\n친화력이 우수합니다.`,
+      wealthLuck: `${name}님의 재물운은 매우 우호적입니다.\n\n투자와 사업에 좋은 운을 타고 있으며,\n올해는 경제적 성장이 예상됩니다.`,
+      loveLuck: `${name}님의 연애운은 긍정적입니다.\n\n새로운 인연을 만날 가능성이 높으며,\n기존 관계는 더욱 돈독해질 것입니다.`,
+      yearlyLuck: `올해 운세는 매우 긍정적입니다.\n\n새로운 기회와 도전이 많을 것이며,\n성공의 가능성이 높습니다.`,
+      monthlyLuck: `1월: 새로운 시작의 달\n2월: 준비와 계획의 달\n3월: 실행과 실현의 달\n\n(매월 다양한 변화가 예상됩니다)`,
 
       // 생시 불필요 3개 (아래에 표시 - 템플릿)
-      healthLuck: `${name}님의 건강운은 안정적입니다.\n규칙적인 운동과 식단 관리로\n더욱 건강한 한 해를 보낼 수 있습니다.`,
-      couple: `궁합 분석 결과 매우 좋습니다.\n상호 존중과 이해가 바탕이 되어\n행복한 관계를 유지할 수 있습니다.`,
-      fullAnalysis: `당신의 사주는 매우 특별합니다.\n음양오행의 조화가 잘 이루어져 있으며,\n인생의 모든 분야에서 발전이 예상됩니다.`,
+      healthLuck: `${name}님의 건강운은 안정적입니다.\n\n규칙적인 운동과 식단 관리로\n더욱 건강한 한 해를 보낼 수 있습니다.`,
+      couple: `궁합 분석 결과 매우 좋습니다.\n\n상호 존중과 이해가 바탕이 되어\n행복한 관계를 유지할 수 있습니다.`,
+      fullAnalysis: `당신의 사주는 매우 특별합니다.\n\n음양오행의 조화가 잘 이루어져 있으며,\n인생의 모든 분야에서 발전이 예상됩니다.`,
     };
   };
 
@@ -185,31 +185,13 @@ export default function PaidAnalysisResult() {
       style={{
         minHeight: "100vh",
         background:
-          "linear-gradient(135deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)",
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1711510778620-0f287fb5500f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-        color: "white",
+          "linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)",
+        color: "#333",
         fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: "rgba(0, 0, 0, 0.55)",
-          zIndex: 1,
-          pointerEvents: "none",
-        }}
-      />
-
       <div
         style={{
           position: "relative",
@@ -230,7 +212,7 @@ export default function PaidAnalysisResult() {
                 fontSize: "clamp(28px, 5vw, 36px)",
                 fontWeight: 900,
                 marginBottom: 12,
-                color: "#fbbf24",
+                color: "#1a1a1a",
               }}
             >
               {paidInfo?.name || "사용자"}님의 사주 분석
@@ -238,7 +220,7 @@ export default function PaidAnalysisResult() {
             <p
               style={{
                 fontSize: 16,
-                color: "#f5f5f5",
+                color: "#555",
                 fontWeight: 700,
                 margin: 0,
               }}
@@ -250,17 +232,17 @@ export default function PaidAnalysisResult() {
           {/* 정보 박스 */}
           <div
             style={{
-              background: "rgba(108,64,200,0.3)",
+              background: "rgba(139,92,246,0.2)",
               padding: 20,
               borderRadius: 12,
               marginBottom: 24,
-              border: "1px solid rgba(251,191,36,0.3)",
+              border: "2px solid rgba(139,92,246,0.4)",
             }}
           >
             <p
               style={{
                 fontSize: 13,
-                color: "#fbbf24",
+                color: "#333",
                 fontWeight: 700,
                 margin: "0 0 12px 0",
               }}
@@ -271,7 +253,7 @@ export default function PaidAnalysisResult() {
               <p
                 style={{
                   fontSize: 13,
-                  color: "#fbbf24",
+                  color: "#333",
                   fontWeight: 700,
                   margin: 0,
                 }}
@@ -286,19 +268,21 @@ export default function PaidAnalysisResult() {
             <div
               key={item.key}
               style={{
-                background: "rgba(255,255,255,0.05)",
+                background: "rgba(255,255,255,0.7)",
                 padding: 20,
                 borderRadius: 12,
                 marginBottom: 16,
-                border: "1px solid rgba(251,191,36,0.2)",
+                border: "2px solid rgba(255,215,0,0.4)",
               }}
             >
               <h2
                 style={{
                   fontSize: 16,
                   fontWeight: 900,
-                  color: "#fbbf24",
+                  color: "#1a1a1a",
                   margin: "0 0 12px 0",
+                  borderBottom: "2px solid #ffd700",
+                  paddingBottom: 8,
                 }}
               >
                 {item.label}
@@ -307,7 +291,7 @@ export default function PaidAnalysisResult() {
                 style={{
                   fontSize: 14,
                   fontWeight: 700,
-                  color: "#f5f5f5",
+                  color: "#333",
                   lineHeight: 1.8,
                   margin: 0,
                   whiteSpace: "pre-wrap",
@@ -327,8 +311,8 @@ export default function PaidAnalysisResult() {
               style={{
                 width: "100%",
                 padding: 14,
-                background: "linear-gradient(135deg, #fbbf24, #f59e0b)",
-                color: "black",
+                background: "linear-gradient(135deg, #ff1493, #ff69b4)",
+                color: "white",
                 border: "none",
                 borderRadius: 10,
                 fontWeight: 900,
@@ -347,8 +331,8 @@ export default function PaidAnalysisResult() {
                 width: "100%",
                 padding: 14,
                 background: "rgba(139,92,246,0.3)",
-                color: "#f5f5f5",
-                border: "1px solid rgba(139,92,246,0.8)",
+                color: "#333",
+                border: "2px solid rgba(139,92,246,0.6)",
                 borderRadius: 10,
                 fontWeight: 900,
                 fontSize: 15,
@@ -362,11 +346,12 @@ export default function PaidAnalysisResult() {
           {/* 정보 박스 */}
           <div
             style={{
-              background: "#fff3cd",
+              background: "rgba(255,255,255,0.8)",
               padding: "18px 16px",
               borderRadius: 8,
               marginTop: 28,
               textAlign: "center",
+              border: "2px solid rgba(255,215,0,0.5)",
             }}
           >
             <p
