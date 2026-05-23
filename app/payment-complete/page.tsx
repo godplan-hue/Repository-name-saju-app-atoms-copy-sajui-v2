@@ -164,11 +164,11 @@ export default function PaymentComplete() {
 
           <button onClick={handleDownload} disabled={isGenerating} style={{ width: "100%", padding: 14, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: isGenerating ? "not-allowed" : "pointer", marginBottom: 12, opacity: isGenerating ? 0.6 : 1 }}>📥 {isGenerating ? "PDF 생성 중..." : "PDF 다운로드"}</button>
 
-          <button onClick={() => router.push("/paid-analysis")} style={{ width: "100%", padding: 14, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12 }}>🔮 유료분석 보기</button>
+          <button onClick={() => router.push("/paid-info-input")} style={{ width: "100%", padding: 14, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12 }}>🔮 유료분석 보기</button>
 
-          <button onClick={handleHome} style={{ width: "100%", padding: 14, background: "rgba(139,92,246,0.3)", color: "#f5f5f5", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>← 홈으로 돌아가기</button>
+          <button onClick={handleHome} style={{ width: "100%", padding: 14, background: "rgba(139,92,246,0.3)", color: "#f5f5f5", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12 }}>← 홈으로 돌아가기</button>
 
-          <p style={{ color: "#999999", fontSize: 12, fontWeight: 700, marginTop: 24 }}>이메일로 영수증이 발송되었습니다.</p>
+          <p style={{ color: "#999999", fontSize: 12, fontWeight: 700, marginTop: 0 }}>이메일로 영수증이 발송되었습니다.</p>
         </div>
       </div>
     </main>
