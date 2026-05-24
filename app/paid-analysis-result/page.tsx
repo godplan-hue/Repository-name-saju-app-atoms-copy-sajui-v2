@@ -1,3 +1,5 @@
+// app/paid-analysis-result/page.tsx
+
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
