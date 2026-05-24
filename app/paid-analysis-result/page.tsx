@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-export default function PaidAnalysisResult() {
+function PaidAnalysisResultContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [paidInfo, setPaidInfo] = useState<any>(null);
@@ -71,7 +71,6 @@ export default function PaidAnalysisResult() {
   const handleDownload = async () => {
     setIsGenerating(true);
     try {
-      // 제목 페이지
       const pdfContent = document.createElement("div");
       pdfContent.style.width = "210mm";
       pdfContent.style.height = "auto";
@@ -113,7 +112,6 @@ export default function PaidAnalysisResult() {
       const imgData = canvas.toDataURL("image/png");
       pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
 
-      // 분석 결과 페이지
       const items = getDisplayItems();
       for (let i = 0; i < items.length; i++) {
         pdf.addPage();
@@ -329,5 +327,13 @@ export default function PaidAnalysisResult() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function PaidAnalysisResult() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <PaidAnalysisResultContent />
+    </Suspense>
   );
 }
