@@ -13,7 +13,6 @@ export default function PaidAnalysisResult() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
-    // localStorage에서 정보 읽기
     const infoStr = localStorage.getItem("paidAnalysisInfo");
     const pkg = searchParams.get("package") || "베이직";
 
@@ -23,34 +22,29 @@ export default function PaidAnalysisResult() {
     setPackageName(pkg);
   }, [searchParams]);
 
-  // 더미 분석 데이터
   const getAnalysisData = () => {
     const name = paidInfo?.name || "사용자";
     const hasTime = paidInfo?.birthTime && paidInfo.birthTime !== "00:00";
 
     return {
-      // 생시 필요 5개 (맨 앞에 표시 - API 필요)
       nameAnalysis: `"${name}"은(는) 밝고 긍정적인\n에너지를 가진 이름입니다.\n\n각 글자가 지닌 뜻을 통해\n당신의 성격과 운명을 알 수 있습니다.\n\n주변 사람들에게 좋은 영향을 미치며,\n친화력이 우수합니다.`,
       wealthLuck: `재물운은 매우 우호적입니다.\n\n투자와 사업에 좋은 운을 타고 있으며,\n올해는 경제적 성장이 예상됩니다.`,
       loveLuck: `연애운은 긍정적입니다.\n\n새로운 인연을 만날 가능성이 높으며,\n기존 관계는 더욱 돈독해질 것입니다.`,
       yearlyLuck: `올해 운세는 매우 긍정적입니다.\n\n새로운 기회와 도전이 많을 것이며,\n성공의 가능성이 높습니다.`,
       monthlyLuck: `1월: 새로운 시작의 달\n2월: 준비와 계획의 달\n3월: 실행과 실현의 달\n\n(매월 다양한 변화가 예상됩니다)`,
 
-      // 생시 불필요 3개 (아래에 표시 - 템플릿)
       healthLuck: `건강운은 안정적입니다.\n\n규칙적인 운동과 식단 관리로\n더욱 건강한 한 해를 보낼 수 있습니다.`,
       couple: `궁합 분석 결과 매우 좋습니다.\n\n상호 존중과 이해가 바탕이 되어\n행복한 관계를 유지할 수 있습니다.`,
       fullAnalysis: `사주는 매우 특별합니다.\n\n음양오행의 조화가 잘 이루어져 있으며,\n인생의 모든 분야에서 발전이 예상됩니다.`,
     };
   };
 
-  // 코스별로 보여줄 항목
   const getDisplayItems = () => {
     const data = getAnalysisData();
     const hasTime = paidInfo?.birthTime && paidInfo.birthTime !== "00:00";
 
     let items = [];
 
-    // 생시 필요 5개 (맨 앞에 - API 필요)
     if (hasTime) {
       items.push(
         { key: "nameAnalysis", label: "📝 이름분석", value: data.nameAnalysis },
@@ -61,7 +55,6 @@ export default function PaidAnalysisResult() {
       );
     }
 
-    // 생시 불필요 3개 (아래에 - 템플릿)
     items.push(
       { key: "healthLuck", label: "🌿 건강운", value: data.healthLuck },
       { key: "couple", label: "👫 궁합분석", value: data.couple },
@@ -81,33 +74,36 @@ export default function PaidAnalysisResult() {
       const pdfContent = document.createElement("div");
       pdfContent.style.width = "210mm";
       pdfContent.style.height = "297mm";
-      pdfContent.style.padding = "15mm";
-      pdfContent.style.background =
-        "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
-      pdfContent.style.fontFamily =
-        "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
+      pdfContent.style.padding = "0";
+      pdfContent.style.margin = "0";
+      pdfContent.style.border = "none";
+      pdfContent.style.background = "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
+      pdfContent.style.fontFamily = "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
       pdfContent.style.color = "#333";
       pdfContent.style.display = "flex";
       pdfContent.style.flexDirection = "column";
-      pdfContent.style.justifyContent = "flex-start";
+      pdfContent.style.justifyContent = "center";
       pdfContent.style.alignItems = "center";
       pdfContent.style.position = "absolute";
       pdfContent.style.left = "-9999px";
+      pdfContent.style.boxSizing = "border-box";
 
       const page1 = document.createElement("div");
       page1.style.width = "100%";
-      page1.style.padding = "10mm 0";
+      page1.style.height = "100%";
       page1.style.display = "flex";
       page1.style.flexDirection = "column";
-      page1.style.justifyContent = "flex-start";
+      page1.style.justifyContent = "center";
       page1.style.alignItems = "center";
       page1.style.textAlign = "center";
       page1.style.background = "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
+      page1.style.padding = "0";
+      page1.style.margin = "0";
       page1.innerHTML = `
-        <div style="font-size: 40px; margin-bottom: 5px; color: #1a1a1a;">🔮</div>
-        <h1 style="font-size: 28px; font-weight: 900; margin: 3px 0; color: #1a1a1a;">점운</h1>
-        <p style="font-size: 14px; font-weight: 700; margin: 8px 0 2px 0; color: #333;">${paidInfo?.name || "사용자"}님의 사주 분석</p>
-        <p style="font-size: 12px; font-weight: 700; color: #555; margin: 0;">${packageName} 패키지</p>
+        <div style="font-size: 48px; margin-bottom: 10px;">🔮</div>
+        <h1 style="font-size: 36px; font-weight: 900; margin: 5px 0;">점운</h1>
+        <p style="font-size: 16px; font-weight: 700; margin: 10px 0 5px 0;">${paidInfo?.name || "사용자"}님의 사주 분석</p>
+        <p style="font-size: 14px; font-weight: 700; margin: 0;">${packageName} 패키지</p>
       `;
       pdfContent.appendChild(page1);
       document.body.appendChild(pdfContent);
@@ -116,6 +112,7 @@ export default function PaidAnalysisResult() {
         scale: 2,
         backgroundColor: "#fffacd",
         logging: false,
+        useCORS: true,
       });
 
       const pdf = new jsPDF({
@@ -127,7 +124,6 @@ export default function PaidAnalysisResult() {
       const imgData = canvas.toDataURL("image/png");
       pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
 
-      // 분석 결과 페이지 추가
       const items = getDisplayItems();
       for (let i = 0; i < items.length; i++) {
         pdf.addPage();
@@ -135,23 +131,26 @@ export default function PaidAnalysisResult() {
         pageContent.style.width = "210mm";
         pageContent.style.height = "297mm";
         pageContent.style.padding = "15mm";
-        pageContent.style.background =
-          "linear-gradient(135deg, #fff8dc 0%, #fffacd 100%)";
-        pageContent.style.fontFamily =
-          "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
+        pageContent.style.margin = "0";
+        pageContent.style.border = "none";
+        pageContent.style.background = "linear-gradient(135deg, #fff8dc 0%, #fffacd 100%)";
+        pageContent.style.fontFamily = "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
         pageContent.style.color = "#333";
         pageContent.style.position = "absolute";
         pageContent.style.left = "-9999px";
         pageContent.style.boxSizing = "border-box";
+        pageContent.style.display = "flex";
+        pageContent.style.flexDirection = "column";
+        pageContent.style.overflow = "hidden";
 
         pageContent.innerHTML = `
-          <h2 style="font-size: 20px; font-weight: 900; margin: 0 0 10px 0; color: #1a1a1a; border-bottom: 2px solid #ffd700; padding-bottom: 8px;">
+          <h2 style="font-size: 20px; font-weight: 900; margin: 0 0 12px 0; border-bottom: 2px solid #ffd700; padding-bottom: 8px;">
             ${items[i].label}
           </h2>
-          <p style="font-size: 13px; font-weight: 700; line-height: 1.6; color: #333; margin: 0; white-space: pre-wrap;">
+          <p style="font-size: 13px; font-weight: 700; line-height: 1.7; color: #333; margin: 0; white-space: pre-wrap; flex: 1;">
             ${items[i].value}
           </p>
-          <p style="font-size: 9px; font-weight: 700; color: #888; text-align: right; margin-top: 20px;">
+          <p style="font-size: 9px; font-weight: 700; color: #888; text-align: right; margin-top: 10px;">
             점운 AI 사주 분석 | ${new Date().getFullYear()}년 ${new Date().getMonth() + 1}월
           </p>
         `;
@@ -161,6 +160,7 @@ export default function PaidAnalysisResult() {
           scale: 2,
           backgroundColor: "#fffacd",
           logging: false,
+          useCORS: true,
         });
 
         const pageImgData = pageCanvas.toDataURL("image/png");
@@ -185,8 +185,7 @@ export default function PaidAnalysisResult() {
     <main
       style={{
         minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)",
+        background: "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)",
         color: "#333",
         fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
         position: "relative",
@@ -265,7 +264,7 @@ export default function PaidAnalysisResult() {
           </div>
 
           {/* 분석 결과 */}
-          {displayItems.map((item, index) => (
+          {displayItems.map((item) => (
             <div
               key={item.key}
               style={{
