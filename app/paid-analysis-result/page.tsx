@@ -2,8 +2,6 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 
 function PaidAnalysisResultContent() {
   const router = useRouter();
@@ -24,7 +22,6 @@ function PaidAnalysisResultContent() {
 
   const getAnalysisData = () => {
     const name = paidInfo?.name || "사용자";
-    const hasTime = paidInfo?.birthTime && paidInfo.birthTime !== "00:00";
 
     return {
       nameAnalysis: `"${name}"은(는) 밝고 긍정적인\n에너지를 가진 이름입니다.\n\n각 글자가 지닌 뜻을 통해\n당신의 성격과 운명을 알 수 있습니다.\n\n주변 사람들에게 좋은 영향을 미치며,\n친화력이 우수합니다.`,
@@ -32,7 +29,6 @@ function PaidAnalysisResultContent() {
       loveLuck: `연애운은 긍정적입니다.\n\n새로운 인연을 만날 가능성이 높으며,\n기존 관계는 더욱 돈독해질 것입니다.`,
       yearlyLuck: `올해 운세는 매우 긍정적입니다.\n\n새로운 기회와 도전이 많을 것이며,\n성공의 가능성이 높습니다.`,
       monthlyLuck: `1월: 새로운 시작의 달\n2월: 준비와 계획의 달\n3월: 실행과 실현의 달\n\n(매월 다양한 변화가 예상됩니다)`,
-
       healthLuck: `건강운은 안정적입니다.\n\n규칙적인 운동과 식단 관리로\n더욱 건강한 한 해를 보낼 수 있습니다.`,
       couple: `궁합 분석 결과 매우 좋습니다.\n\n상호 존중과 이해가 바탕이 되어\n행복한 관계를 유지할 수 있습니다.`,
       fullAnalysis: `사주는 매우 특별합니다.\n\n음양오행의 조화가 잘 이루어져 있으며,\n인생의 모든 분야에서 발전이 예상됩니다.`,
@@ -53,6 +49,10 @@ function PaidAnalysisResultContent() {
         { key: "yearlyLuck", label: "☀️ 올해 운세", value: data.yearlyLuck },
         { key: "monthlyLuck", label: "🌙 월별 운세", value: data.monthlyLuck }
       );
+    } else {
+      items.push(
+        { key: "nameAnalysis", label: "📝 이름분석", value: data.nameAnalysis }
+      );
     }
 
     items.push(
@@ -69,97 +69,86 @@ function PaidAnalysisResultContent() {
   };
 
   const handleDownload = async () => {
+    if (!paidInfo) {
+      alert("사용자 정보를 찾을 수 없습니다.");
+      return;
+    }
+
     setIsGenerating(true);
+
     try {
-      const pdfContent = document.createElement("div");
-      pdfContent.style.width = "210mm";
-      pdfContent.style.height = "auto";
-      pdfContent.style.padding = "20mm";
-      pdfContent.style.margin = "0";
-      pdfContent.style.border = "none";
-      pdfContent.style.background = "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
-      pdfContent.style.fontFamily = "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
-      pdfContent.style.display = "flex";
-      pdfContent.style.flexDirection = "column";
-      pdfContent.style.justifyContent = "flex-start";
-      pdfContent.style.alignItems = "center";
-      pdfContent.style.position = "absolute";
-      pdfContent.style.left = "-9999px";
+      const html2pdf = (await import("html2pdf.js")).default;
 
-      pdfContent.innerHTML = `
-        <div style="text-align: center; width: 100%;">
-          <div style="font-size: 48px; margin-bottom: 10px;">🔮</div>
-          <h1 style="font-size: 36px; font-weight: 900; margin: 5px 0;">점운</h1>
-          <p style="font-size: 16px; font-weight: 700; margin: 10px 0 5px 0;">${paidInfo?.name || "사용자"}님의 사주 분석</p>
-          <p style="font-size: 14px; font-weight: 700; margin: 0;">${packageName} 패키지</p>
-        </div>
+      let htmlContent = `
+        <div style="margin: 0; padding: 0;">
+          <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box; padding: 40px; margin: 0; page-break-after: avoid;">
+            <div style="font-size: 80px; margin-bottom: 30px;">🔮</div>
+            <h1 style="font-size: 48px; font-weight: 900; margin: 0 0 30px 0; color: #1a1a1a;">점운</h1>
+            <p style="font-size: 24px; font-weight: 700; margin: 0 0 50px 0; color: #333;">${paidInfo.name}님의 사주 분석</p>
+            <p style="font-size: 16px; font-weight: 700; color: #666;">${packageName} 패키지</p>
+          </div>
       `;
-      document.body.appendChild(pdfContent);
-
-      const canvas = await html2canvas(pdfContent, {
-        scale: 2,
-        backgroundColor: "#fffacd",
-        logging: false,
-        useCORS: true,
-      });
-
-      const pdf = new jsPDF({
-        orientation: "p",
-        unit: "mm",
-        format: "a4",
-      });
-
-      const imgData = canvas.toDataURL("image/png");
-      pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
 
       const items = getDisplayItems();
-      for (let i = 0; i < items.length; i++) {
-        pdf.addPage();
-        const pageContent = document.createElement("div");
-        pageContent.style.width = "210mm";
-        pageContent.style.height = "297mm";
-        pageContent.style.padding = "5mm 10mm";
-        pageContent.style.margin = "0";
-        pageContent.style.background = "linear-gradient(135deg, #fff8dc 0%, #fffacd 100%)";
-        pageContent.style.fontFamily = "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
-        pageContent.style.position = "absolute";
-        pageContent.style.left = "-9999px";
-        pageContent.style.boxSizing = "border-box";
-        pageContent.style.display = "flex";
-        pageContent.style.flexDirection = "column";
-        pageContent.style.justifyContent = "flex-start";
-
-        pageContent.innerHTML = `
-          <h2 style="font-size: 18px; font-weight: 900; margin: 0 0 10px 0; border-bottom: 2px solid #ffd700; padding-bottom: 6px; color: #1a1a1a;">
-            ${items[i].label}
-          </h2>
-          <p style="font-size: 12px; font-weight: 700; line-height: 1.6; color: #333; margin: 0; white-space: pre-wrap;">
-            ${items[i].value}
-          </p>
-          <p style="font-size: 8px; font-weight: 700; color: #888; text-align: right; margin-top: 8px;">
-            점운 AI 사주 분석 | ${new Date().getFullYear()}년 ${new Date().getMonth() + 1}월
-          </p>
+      
+      items.forEach((item, index) => {
+        htmlContent += `
+          <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: flex-start; padding: 30px; box-sizing: border-box; margin: 0;">
+            <div style="width: 100%; background-color: #FFFACD; padding: 25px; border-radius: 8px; box-sizing: border-box;">
+              <h2 style="font-size: 20px; font-weight: 900; border-bottom: 3px solid #FFD700; padding-bottom: 10px; margin: 0 0 15px 0; color: #1a1a1a;">${item.label}</h2>
+              <p style="font-size: 13px; font-weight: 600; line-height: 1.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word;">${item.value}</p>
+              <p style="font-size: 9px; color: #999; text-align: right; margin-top: 10px;">점운 AI 사주 분석</p>
+            </div>
+          </div>
         `;
+      });
 
-        document.body.appendChild(pageContent);
-        const pageCanvas = await html2canvas(pageContent, {
+      htmlContent += `
+        <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; box-sizing: border-box; margin: 0; text-align: center;">
+          <div style="width: 80%; background-color: #FFFACD; padding: 50px; border-radius: 8px; box-sizing: border-box;">
+            <p style="font-size: 28px; font-weight: 900; color: #1a1a1a; margin: 0 0 20px 0;">감사합니다</p>
+            <p style="font-size: 16px; font-weight: 700; color: #333; margin: 0 0 30px 0; line-height: 1.8;">
+              귀하의 사주 분석을 위해 저희 서비스를 이용해주셔서<br/>
+              진심으로 감사드립니다.
+            </p>
+            <p style="font-size: 13px; color: #666; margin: 0;">점운 AI 사주 분석</p>
+          </div>
+        </div>
+      `;
+
+      const element = document.createElement("div");
+      element.innerHTML = htmlContent;
+      element.style.margin = "0";
+      element.style.padding = "0";
+
+      const opt: any = {
+        margin: 0,
+        filename: `점운_${paidInfo.name}_${packageName}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { 
           scale: 2,
-          backgroundColor: "#fffacd",
-          logging: false,
           useCORS: true,
-        });
+          logging: false,
+          backgroundColor: "#FFD700",
+          allowTaint: true
+        },
+        jsPDF: { 
+          orientation: "p",
+          unit: "mm",
+          format: "a4",
+          compress: false
+        }
+      };
 
-        const pageImgData = pageCanvas.toDataURL("image/png");
-        pdf.addImage(pageImgData, "PNG", 0, 0, 210, 297);
-        document.body.removeChild(pageContent);
-      }
+      html2pdf()
+        .set(opt)
+        .from(element)
+        .save();
 
-      pdf.save(`점운_${paidInfo?.name || "사용자"}_${packageName}_분석.pdf`);
-      document.body.removeChild(pdfContent);
       alert("PDF가 다운로드되었습니다!");
     } catch (error) {
+      console.error("PDF 생성 에러:", error);
       alert("PDF 생성 중 오류가 발생했습니다.");
-      console.error(error);
     } finally {
       setIsGenerating(false);
     }
