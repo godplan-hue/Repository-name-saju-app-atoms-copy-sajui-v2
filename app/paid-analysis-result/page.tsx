@@ -81,7 +81,7 @@ export default function PaidAnalysisResult() {
       const pdfContent = document.createElement("div");
       pdfContent.style.width = "210mm";
       pdfContent.style.height = "297mm";
-      pdfContent.style.padding = "20mm";
+      pdfContent.style.padding = "15mm";
       pdfContent.style.background =
         "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
       pdfContent.style.fontFamily =
@@ -96,7 +96,7 @@ export default function PaidAnalysisResult() {
 
       const page1 = document.createElement("div");
       page1.style.width = "100%";
-      page1.style.padding = "20mm 0";
+      page1.style.padding = "10mm 0";
       page1.style.display = "flex";
       page1.style.flexDirection = "column";
       page1.style.justifyContent = "flex-start";
@@ -104,10 +104,10 @@ export default function PaidAnalysisResult() {
       page1.style.textAlign = "center";
       page1.style.background = "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
       page1.innerHTML = `
-        <div style="font-size: 48px; margin-bottom: 10px; color: #1a1a1a;">🔮</div>
-        <h1 style="font-size: 36px; font-weight: 900; margin: 5px 0; color: #1a1a1a;">점운</h1>
-        <p style="font-size: 18px; font-weight: 700; margin: 15px 0 5px 0; color: #333;">${paidInfo?.name || "사용자"}님의 사주 분석</p>
-        <p style="font-size: 14px; font-weight: 700; color: #555; margin: 0;">${packageName} 패키지</p>
+        <div style="font-size: 40px; margin-bottom: 5px; color: #1a1a1a;">🔮</div>
+        <h1 style="font-size: 28px; font-weight: 900; margin: 3px 0; color: #1a1a1a;">점운</h1>
+        <p style="font-size: 14px; font-weight: 700; margin: 8px 0 2px 0; color: #333;">${paidInfo?.name || "사용자"}님의 사주 분석</p>
+        <p style="font-size: 12px; font-weight: 700; color: #555; margin: 0;">${packageName} 패키지</p>
       `;
       pdfContent.appendChild(page1);
       document.body.appendChild(pdfContent);
@@ -134,7 +134,7 @@ export default function PaidAnalysisResult() {
         const pageContent = document.createElement("div");
         pageContent.style.width = "210mm";
         pageContent.style.height = "297mm";
-        pageContent.style.padding = "20mm";
+        pageContent.style.padding = "15mm";
         pageContent.style.background =
           "linear-gradient(135deg, #fff8dc 0%, #fffacd 100%)";
         pageContent.style.fontFamily =
@@ -142,15 +142,16 @@ export default function PaidAnalysisResult() {
         pageContent.style.color = "#333";
         pageContent.style.position = "absolute";
         pageContent.style.left = "-9999px";
+        pageContent.style.boxSizing = "border-box";
 
         pageContent.innerHTML = `
-          <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 15px; color: #1a1a1a; border-bottom: 3px solid #ffd700; padding-bottom: 10px;">
+          <h2 style="font-size: 20px; font-weight: 900; margin: 0 0 10px 0; color: #1a1a1a; border-bottom: 2px solid #ffd700; padding-bottom: 8px;">
             ${items[i].label}
           </h2>
-          <p style="font-size: 14px; font-weight: 700; line-height: 1.8; color: #333; margin: 0; white-space: pre-wrap;">
+          <p style="font-size: 13px; font-weight: 700; line-height: 1.6; color: #333; margin: 0; white-space: pre-wrap;">
             ${items[i].value}
           </p>
-          <p style="font-size: 10px; font-weight: 700; color: #888; text-align: right; margin-top: 30px;">
+          <p style="font-size: 9px; font-weight: 700; color: #888; text-align: right; margin-top: 20px;">
             점운 AI 사주 분석 | ${new Date().getFullYear()}년 ${new Date().getMonth() + 1}월
           </p>
         `;
