@@ -71,6 +71,7 @@ export default function PaidAnalysisResult() {
   const handleDownload = async () => {
     setIsGenerating(true);
     try {
+      // 제목 페이지
       const pdfContent = document.createElement("div");
       pdfContent.style.width = "210mm";
       pdfContent.style.height = "297mm";
@@ -79,33 +80,21 @@ export default function PaidAnalysisResult() {
       pdfContent.style.border = "none";
       pdfContent.style.background = "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
       pdfContent.style.fontFamily = "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
-      pdfContent.style.color = "#333";
       pdfContent.style.display = "flex";
       pdfContent.style.flexDirection = "column";
       pdfContent.style.justifyContent = "center";
       pdfContent.style.alignItems = "center";
       pdfContent.style.position = "absolute";
       pdfContent.style.left = "-9999px";
-      pdfContent.style.boxSizing = "border-box";
 
-      const page1 = document.createElement("div");
-      page1.style.width = "100%";
-      page1.style.height = "100%";
-      page1.style.display = "flex";
-      page1.style.flexDirection = "column";
-      page1.style.justifyContent = "center";
-      page1.style.alignItems = "center";
-      page1.style.textAlign = "center";
-      page1.style.background = "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
-      page1.style.padding = "0";
-      page1.style.margin = "0";
-      page1.innerHTML = `
-        <div style="font-size: 48px; margin-bottom: 10px;">🔮</div>
-        <h1 style="font-size: 36px; font-weight: 900; margin: 5px 0;">점운</h1>
-        <p style="font-size: 16px; font-weight: 700; margin: 10px 0 5px 0;">${paidInfo?.name || "사용자"}님의 사주 분석</p>
-        <p style="font-size: 14px; font-weight: 700; margin: 0;">${packageName} 패키지</p>
+      pdfContent.innerHTML = `
+        <div style="text-align: center;">
+          <div style="font-size: 48px; margin-bottom: 10px;">🔮</div>
+          <h1 style="font-size: 36px; font-weight: 900; margin: 5px 0;">점운</h1>
+          <p style="font-size: 16px; font-weight: 700; margin: 10px 0 5px 0;">${paidInfo?.name || "사용자"}님의 사주 분석</p>
+          <p style="font-size: 14px; font-weight: 700; margin: 0;">${packageName} 패키지</p>
+        </div>
       `;
-      pdfContent.appendChild(page1);
       document.body.appendChild(pdfContent);
 
       const canvas = await html2canvas(pdfContent, {
@@ -124,33 +113,29 @@ export default function PaidAnalysisResult() {
       const imgData = canvas.toDataURL("image/png");
       pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
 
+      // 분석 결과 페이지
       const items = getDisplayItems();
       for (let i = 0; i < items.length; i++) {
         pdf.addPage();
         const pageContent = document.createElement("div");
         pageContent.style.width = "210mm";
         pageContent.style.height = "297mm";
-        pageContent.style.padding = "15mm";
+        pageContent.style.padding = "10mm 15mm";
         pageContent.style.margin = "0";
-        pageContent.style.border = "none";
         pageContent.style.background = "linear-gradient(135deg, #fff8dc 0%, #fffacd 100%)";
         pageContent.style.fontFamily = "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
-        pageContent.style.color = "#333";
         pageContent.style.position = "absolute";
         pageContent.style.left = "-9999px";
         pageContent.style.boxSizing = "border-box";
-        pageContent.style.display = "flex";
-        pageContent.style.flexDirection = "column";
-        pageContent.style.overflow = "hidden";
 
         pageContent.innerHTML = `
-          <h2 style="font-size: 20px; font-weight: 900; margin: 0 0 12px 0; border-bottom: 2px solid #ffd700; padding-bottom: 8px;">
+          <h2 style="font-size: 18px; font-weight: 900; margin: 0 0 10px 0; border-bottom: 2px solid #ffd700; padding-bottom: 6px; color: #1a1a1a;">
             ${items[i].label}
           </h2>
-          <p style="font-size: 13px; font-weight: 700; line-height: 1.7; color: #333; margin: 0; white-space: pre-wrap; flex: 1;">
+          <p style="font-size: 12px; font-weight: 700; line-height: 1.6; color: #333; margin: 0; white-space: pre-wrap;">
             ${items[i].value}
           </p>
-          <p style="font-size: 9px; font-weight: 700; color: #888; text-align: right; margin-top: 10px;">
+          <p style="font-size: 8px; font-weight: 700; color: #888; text-align: right; margin-top: 8px;">
             점운 AI 사주 분석 | ${new Date().getFullYear()}년 ${new Date().getMonth() + 1}월
           </p>
         `;
@@ -204,7 +189,6 @@ export default function PaidAnalysisResult() {
         }}
       >
         <div style={{ maxWidth: 600, margin: "0 auto", width: "100%" }}>
-          {/* 제목 */}
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <div style={{ fontSize: 70, marginBottom: 16, filter: "brightness(0.9)" }}>🔮</div>
             <h1
@@ -229,7 +213,6 @@ export default function PaidAnalysisResult() {
             </p>
           </div>
 
-          {/* 정보 박스 */}
           <div
             style={{
               background: "linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%)",
@@ -263,7 +246,6 @@ export default function PaidAnalysisResult() {
             )}
           </div>
 
-          {/* 분석 결과 */}
           {displayItems.map((item) => (
             <div
               key={item.key}
@@ -303,7 +285,6 @@ export default function PaidAnalysisResult() {
             </div>
           ))}
 
-          {/* 버튼 그룹 */}
           <div style={{ marginTop: 32 }}>
             <button
               onClick={handleDownload}
