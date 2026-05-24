@@ -31,15 +31,15 @@ export default function PaidAnalysisResult() {
     return {
       // 생시 필요 5개 (맨 앞에 표시 - API 필요)
       nameAnalysis: `"${name}"은(는) 밝고 긍정적인\n에너지를 가진 이름입니다.\n\n각 글자가 지닌 뜻을 통해\n당신의 성격과 운명을 알 수 있습니다.\n\n주변 사람들에게 좋은 영향을 미치며,\n친화력이 우수합니다.`,
-      wealthLuck: `${name}님의 재물운은 매우 우호적입니다.\n\n투자와 사업에 좋은 운을 타고 있으며,\n올해는 경제적 성장이 예상됩니다.`,
-      loveLuck: `${name}님의 연애운은 긍정적입니다.\n\n새로운 인연을 만날 가능성이 높으며,\n기존 관계는 더욱 돈독해질 것입니다.`,
+      wealthLuck: `재물운은 매우 우호적입니다.\n\n투자와 사업에 좋은 운을 타고 있으며,\n올해는 경제적 성장이 예상됩니다.`,
+      loveLuck: `연애운은 긍정적입니다.\n\n새로운 인연을 만날 가능성이 높으며,\n기존 관계는 더욱 돈독해질 것입니다.`,
       yearlyLuck: `올해 운세는 매우 긍정적입니다.\n\n새로운 기회와 도전이 많을 것이며,\n성공의 가능성이 높습니다.`,
       monthlyLuck: `1월: 새로운 시작의 달\n2월: 준비와 계획의 달\n3월: 실행과 실현의 달\n\n(매월 다양한 변화가 예상됩니다)`,
 
       // 생시 불필요 3개 (아래에 표시 - 템플릿)
-      healthLuck: `${name}님의 건강운은 안정적입니다.\n\n규칙적인 운동과 식단 관리로\n더욱 건강한 한 해를 보낼 수 있습니다.`,
+      healthLuck: `건강운은 안정적입니다.\n\n규칙적인 운동과 식단 관리로\n더욱 건강한 한 해를 보낼 수 있습니다.`,
       couple: `궁합 분석 결과 매우 좋습니다.\n\n상호 존중과 이해가 바탕이 되어\n행복한 관계를 유지할 수 있습니다.`,
-      fullAnalysis: `당신의 사주는 매우 특별합니다.\n\n음양오행의 조화가 잘 이루어져 있으며,\n인생의 모든 분야에서 발전이 예상됩니다.`,
+      fullAnalysis: `사주는 매우 특별합니다.\n\n음양오행의 조화가 잘 이루어져 있으며,\n인생의 모든 분야에서 발전이 예상됩니다.`,
     };
   };
 
@@ -83,38 +83,38 @@ export default function PaidAnalysisResult() {
       pdfContent.style.height = "297mm";
       pdfContent.style.padding = "20mm";
       pdfContent.style.background =
-        "linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)";
+        "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
       pdfContent.style.fontFamily =
         "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
       pdfContent.style.color = "#333";
       pdfContent.style.display = "flex";
       pdfContent.style.flexDirection = "column";
-      pdfContent.style.justifyContent = "center";
+      pdfContent.style.justifyContent = "flex-start";
       pdfContent.style.alignItems = "center";
       pdfContent.style.position = "absolute";
       pdfContent.style.left = "-9999px";
 
       const page1 = document.createElement("div");
       page1.style.width = "100%";
-      page1.style.height = "100%";
+      page1.style.padding = "20mm 0";
       page1.style.display = "flex";
       page1.style.flexDirection = "column";
-      page1.style.justifyContent = "center";
+      page1.style.justifyContent = "flex-start";
       page1.style.alignItems = "center";
       page1.style.textAlign = "center";
-      page1.style.background = "linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)";
+      page1.style.background = "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)";
       page1.innerHTML = `
-        <div style="font-size: 48px; margin-bottom: 20px; color: #1a1a1a;">🔮</div>
-        <h1 style="font-size: 42px; font-weight: 900; margin-bottom: 10px; color: #1a1a1a;">점운</h1>
-        <p style="font-size: 24px; font-weight: 700; margin-bottom: 40px; color: #333;">${paidInfo?.name || "사용자"}님의 사주 분석</p>
-        <p style="font-size: 18px; font-weight: 700; color: #555;">${packageName} 패키지</p>
+        <div style="font-size: 48px; margin-bottom: 10px; color: #1a1a1a;">🔮</div>
+        <h1 style="font-size: 36px; font-weight: 900; margin: 5px 0; color: #1a1a1a;">점운</h1>
+        <p style="font-size: 18px; font-weight: 700; margin: 15px 0 5px 0; color: #333;">${paidInfo?.name || "사용자"}님의 사주 분석</p>
+        <p style="font-size: 14px; font-weight: 700; color: #555; margin: 0;">${packageName} 패키지</p>
       `;
       pdfContent.appendChild(page1);
       document.body.appendChild(pdfContent);
 
       const canvas = await html2canvas(pdfContent, {
         scale: 2,
-        backgroundColor: "#ffd700",
+        backgroundColor: "#fffacd",
         logging: false,
       });
 
@@ -144,13 +144,13 @@ export default function PaidAnalysisResult() {
         pageContent.style.left = "-9999px";
 
         pageContent.innerHTML = `
-          <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 20px; color: #1a1a1a; border-bottom: 3px solid #ffd700; padding-bottom: 10px;">
+          <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 15px; color: #1a1a1a; border-bottom: 3px solid #ffd700; padding-bottom: 10px;">
             ${items[i].label}
           </h2>
-          <p style="font-size: 14px; font-weight: 700; line-height: 1.8; color: #333; margin-bottom: 15px; white-space: pre-wrap;">
+          <p style="font-size: 14px; font-weight: 700; line-height: 1.8; color: #333; margin: 0; white-space: pre-wrap;">
             ${items[i].value}
           </p>
-          <p style="font-size: 12px; font-weight: 700; color: #888; text-align: right; margin-top: 40px;">
+          <p style="font-size: 10px; font-weight: 700; color: #888; text-align: right; margin-top: 30px;">
             점운 AI 사주 분석 | ${new Date().getFullYear()}년 ${new Date().getMonth() + 1}월
           </p>
         `;
