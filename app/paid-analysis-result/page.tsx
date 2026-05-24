@@ -30,7 +30,7 @@ export default function PaidAnalysisResult() {
 
     return {
       // 생시 필요 5개 (맨 앞에 표시 - API 필요)
-      nameAnalysis: `"${name}"은(는) 밝고 긍정적인 에너지를 가진 이름입니다.\n\n각 글자가 지닌 뜻을 통해\n당신의 성격과 운명을 알 수 있습니다.\n\n주변 사람들에게 좋은 영향을 미치며,\n친화력이 우수합니다.`,
+      nameAnalysis: `"${name}"은(는) 밝고 긍정적인\n에너지를 가진 이름입니다.\n\n각 글자가 지닌 뜻을 통해\n당신의 성격과 운명을 알 수 있습니다.\n\n주변 사람들에게 좋은 영향을 미치며,\n친화력이 우수합니다.`,
       wealthLuck: `${name}님의 재물운은 매우 우호적입니다.\n\n투자와 사업에 좋은 운을 타고 있으며,\n올해는 경제적 성장이 예상됩니다.`,
       loveLuck: `${name}님의 연애운은 긍정적입니다.\n\n새로운 인연을 만날 가능성이 높으며,\n기존 관계는 더욱 돈독해질 것입니다.`,
       yearlyLuck: `올해 운세는 매우 긍정적입니다.\n\n새로운 기회와 도전이 많을 것이며,\n성공의 가능성이 높습니다.`,
@@ -185,7 +185,7 @@ export default function PaidAnalysisResult() {
       style={{
         minHeight: "100vh",
         background:
-          "linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)",
+          "linear-gradient(135deg, #fffacd 0%, #ffffe0 100%)",
         color: "#333",
         fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
         position: "relative",
@@ -363,8 +363,8 @@ export default function PaidAnalysisResult() {
                 margin: 0,
               }}
             >
-              ✨ 분석 결과는 AI와
-템플릿을 결합하여 생성되었습니다! 🔮
+              분석 결과는 AI와 템플릿을
+결합하여 생성되었습니다!
             </p>
           </div>
         </div>
