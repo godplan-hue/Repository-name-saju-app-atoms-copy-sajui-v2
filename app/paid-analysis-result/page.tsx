@@ -206,7 +206,7 @@ export default function PaidAnalysisResult() {
         <div style={{ maxWidth: 600, margin: "0 auto", width: "100%" }}>
           {/* 제목 */}
           <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <div style={{ fontSize: 60, marginBottom: 16 }}>🔮</div>
+            <div style={{ fontSize: 70, marginBottom: 16, filter: "brightness(0.9)" }}>🔮</div>
             <h1
               style={{
                 fontSize: "clamp(28px, 5vw, 36px)",
@@ -232,7 +232,7 @@ export default function PaidAnalysisResult() {
           {/* 정보 박스 */}
           <div
             style={{
-              background: "rgba(139,92,246,0.2)",
+              background: "linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%)",
               padding: 20,
               borderRadius: 12,
               marginBottom: 24,
@@ -268,7 +268,7 @@ export default function PaidAnalysisResult() {
             <div
               key={item.key}
               style={{
-                background: "rgba(255,255,255,0.7)",
+                background: "linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%)",
                 padding: 20,
                 borderRadius: 12,
                 marginBottom: 16,
@@ -330,7 +330,7 @@ export default function PaidAnalysisResult() {
               style={{
                 width: "100%",
                 padding: 14,
-                background: "rgba(139,92,246,0.3)",
+                background: "linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%)",
                 color: "#333",
                 border: "2px solid rgba(139,92,246,0.6)",
                 borderRadius: 10,
@@ -341,31 +341,6 @@ export default function PaidAnalysisResult() {
             >
               ← 홈으로
             </button>
-          </div>
-
-          {/* 정보 박스 */}
-          <div
-            style={{
-              background: "rgba(255,255,255,0.8)",
-              padding: "18px 16px",
-              borderRadius: 8,
-              marginTop: 28,
-              textAlign: "center",
-              border: "2px solid rgba(255,215,0,0.5)",
-            }}
-          >
-            <p
-              style={{
-                color: "#333",
-                fontSize: "13px",
-                fontWeight: 700,
-                lineHeight: 1.5,
-                margin: 0,
-              }}
-            >
-              분석 결과는 AI와 템플릿을
-결합하여 생성되었습니다!
-            </p>
           </div>
         </div>
       </div>
