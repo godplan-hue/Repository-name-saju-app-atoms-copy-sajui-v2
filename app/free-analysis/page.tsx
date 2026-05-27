@@ -87,9 +87,18 @@ export default function FreeAnalysis() {
   ];
 
   const getAnalysisType = () => {
-    const hash = (formData.name + formData.birthYear + formData.birthMonth + formData.birthDay).charCodeAt(0) + 
-                 (formData.name + formData.birthYear + formData.birthMonth + formData.birthDay).length;
-    return analysisTypes[hash % analysisTypes.length];
+    const fullData = formData.name + formData.birthYear + formData.birthMonth + formData.birthDay;
+    let hash = 0;
+    
+    for (let i = 0; i < fullData.length; i++) {
+      hash += fullData.charCodeAt(i);
+    }
+    
+    hash += (parseInt(formData.birthMonth) * 7);
+    hash += (parseInt(formData.birthDay) * 13);
+    hash += (parseInt(formData.birthYear) * 3);
+    
+    return analysisTypes[Math.abs(hash) % analysisTypes.length];
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -270,7 +279,7 @@ export default function FreeAnalysis() {
         <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)", color: "#333", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "relative", zIndex: 10, padding: isMobile ? "20px 16px" : "40px 16px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <div style={{ maxWidth: isMobile ? "100%" : "900px", margin: "0 auto", width: "100%" }}>
-              <h1 style={{ textAlign: "center", color: "#d4af37", marginBottom: isMobile ? 25 : 40, fontSize: isMobile ? "26px" : "36px", fontWeight: 900, marginTop: 0 }}>🔮 사주 분석 결과</h1>
+              <h1 style={{ textAlign: "center", color: "#d4af37", marginBottom: isMobile ? 20 : 30, fontSize: isMobile ? "26px" : "36px", fontWeight: 900, marginTop: 0 }}>🔮 사주 분석 결과</h1>
 
               {analyzing ? (
                 <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: isMobile ? 40 : 60, borderRadius: 12, textAlign: "center" }}>
@@ -280,6 +289,11 @@ export default function FreeAnalysis() {
                 </div>
               ) : (
                 <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: isMobile ? 25 : 50, borderRadius: 12 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isMobile ? 10 : 12, marginBottom: isMobile ? 20 : 28 }}>
+                    <button onClick={handleShare} style={{ padding: isMobile ? 13 : 16, background: "linear-gradient(135deg, #00bcd4, #0097a7)", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: isMobile ? 13 : 15, cursor: "pointer" }}>📱 공유하기</button>
+                    <button onClick={handleDownloadPDF} style={{ padding: isMobile ? 13 : 16, background: "linear-gradient(135deg, #ff9800, #f57c00)", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: isMobile ? 13 : 15, cursor: "pointer" }}>📄 PDF 저장</button>
+                  </div>
+
                   <div style={{ background: "linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%)", padding: isMobile ? 20 : 25, borderRadius: 12, marginBottom: isMobile ? 15 : 20, border: "2px solid rgba(255,215,0,0.6)" }}>
                     <p style={{ fontSize: isMobile ? 11 : 12, fontWeight: 900, color: "#FF6B6B", margin: "0 0 8px 0", textAlign: "center" }}>{selectedType.category}</p>
                     <h2 style={{ fontSize: isMobile ? 14 : 15, fontWeight: 900, color: "#FF6B6B", margin: "0 0 12px 0", borderBottom: "2px solid #FF6B6B", paddingBottom: 8, marginTop: 0 }}>✨ {selectedType.title}</h2>
@@ -289,17 +303,12 @@ export default function FreeAnalysis() {
                     <p style={{ fontSize: isMobile ? 11 : 12, fontWeight: 900, color: "#FF6B6B", margin: "10px 0 6px 0" }}>🎯 당신의 변화</p>
                     <p style={{ fontSize: isMobile ? 11 : 12, fontWeight: 600, color: "#333", margin: "0 0 12px 0", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{selectedType.hidden1}</p>
 
-                    <div style={{ background: "rgba(255,215,0,0.15)", padding: "10px 12px", borderRadius: 8, filter: "blur(1.2px)", opacity: 0.8 }}>
+                    <div style={{ background: "rgba(255,215,0,0.15)", padding: "10px 12px", borderRadius: 8, filter: "blur(0.8px)", opacity: 0.8 }}>
                       <p style={{ fontSize: isMobile ? 10 : 11, fontWeight: 700, color: "#d4af37", margin: "0 0 6px 0" }}>🔮 유료분석에서 공개</p>
                       <p style={{ fontSize: isMobile ? 11 : 12, fontWeight: 600, color: "#333", margin: "0", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{selectedType.hidden2}</p>
                     </div>
 
                     <p style={{ fontSize: isMobile ? 10 : 11, fontWeight: 700, color: "#d4af37", margin: "12px 0 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {formData.name}님의 정확한 변화 시점과<br/>구체적 실행법이 모두 공개됩니다</p>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isMobile ? 10 : 12, marginBottom: isMobile ? 15 : 20 }}>
-                    <button onClick={handleShare} style={{ padding: isMobile ? 13 : 16, background: "linear-gradient(135deg, #00bcd4, #0097a7)", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: isMobile ? 13 : 15, cursor: "pointer" }}>📱 공유하기</button>
-                    <button onClick={handleDownloadPDF} style={{ padding: isMobile ? 13 : 16, background: "linear-gradient(135deg, #ff9800, #f57c00)", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: isMobile ? 13 : 15, cursor: "pointer" }}>📄 PDF 저장</button>
                   </div>
 
                   <button onClick={handleGoToPayment} style={{ width: "100%", padding: isMobile ? 15 : 17, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: isMobile ? 15 : 17, cursor: "pointer", marginBottom: isMobile ? 20 : 28 }}>💎 {selectedType.category} 완벽 공략법 보기</button>
@@ -320,27 +329,27 @@ export default function FreeAnalysis() {
                       <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 1.5, marginTop: 0, marginBottom: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.loveLuck}</p>
                     </div>
 
-                    <div style={{ marginBottom: isMobile ? 25 : 35 }}>
+                    <div style={{ marginBottom: isMobile ? 25 : 35, filter: "blur(2px)", opacity: 0.6 }}>
                       <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10, marginTop: 0 }}>🌿 건강운</h2>
                       <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 1.5, marginTop: 0, marginBottom: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.healthLuck}</p>
                     </div>
 
-                    <div style={{ marginBottom: isMobile ? 35 : 45 }}>
+                    <div style={{ marginBottom: isMobile ? 35 : 45, filter: "blur(2px)", opacity: 0.6 }}>
                       <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10, marginTop: 0 }}>👫 궁합 분석</h2>
                       <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 1.5, marginTop: 0, marginBottom: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.couple}</p>
                     </div>
 
-                    <div style={{ marginBottom: isMobile ? 25 : 35, opacity: 0.9 }}>
+                    <div style={{ marginBottom: isMobile ? 25 : 35, filter: "blur(2px)", opacity: 0.6 }}>
                       <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10, marginTop: 0 }}>☀️ 올해 운세</h2>
                       <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 1.5, marginTop: 0, marginBottom: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.yearlyLuck}</p>
                     </div>
 
-                    <div style={{ marginBottom: isMobile ? 25 : 35, opacity: 0.9 }}>
+                    <div style={{ marginBottom: isMobile ? 25 : 35, filter: "blur(2px)", opacity: 0.6 }}>
                       <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10, marginTop: 0 }}>🌙 월별 운세</h2>
                       <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 1.5, marginTop: 0, marginBottom: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.monthlyLuck}</p>
                     </div>
 
-                    <div style={{ marginBottom: isMobile ? 35 : 45, opacity: 0.9 }}>
+                    <div style={{ marginBottom: isMobile ? 35 : 45, filter: "blur(2px)", opacity: 0.6 }}>
                       <h2 style={{ color: "#d4af37", fontSize: isMobile ? 17 : 21, fontWeight: 900, marginBottom: isMobile ? 10 : 14, borderBottom: "3px solid #d4af37", paddingBottom: isMobile ? 8 : 10, marginTop: 0 }}>🎋 전체 사주분석</h2>
                       <p style={{ color: "#333", fontSize: isMobile ? 13 : 15, fontWeight: 500, lineHeight: 1.5, marginTop: 0, marginBottom: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{result.fullAnalysis}</p>
                     </div>
