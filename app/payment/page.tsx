@@ -1,7 +1,9 @@
 "use client";
 
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 
 export default function Payment() {
   const router = useRouter();
@@ -11,55 +13,58 @@ export default function Payment() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisName, setAnalysisName] = useState("");
 
+
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
-    
+   
     const name = sessionStorage.getItem("analysisName") || "분석 완료";
     setAnalysisName(name);
-    
+   
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
   const packages = [
-    { 
-      id: "basic", 
-      name: "기본 분석", 
-      price: "₩9,900", 
+    {
+      id: "basic",
+      name: "기본 분석",
+      price: "₩9,900",
       pages: 30,
       features: ["yearlyLuck", "monthlyLuck"],
       count: 2,
       desc: "올해 운세 + 월별 운세"
     },
-    { 
-      id: "standard", 
-      name: "베이직", 
-      price: "₩19,900", 
+    {
+      id: "standard",
+      name: "베이직",
+      price: "₩19,900",
       pages: 75,
       features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"],
       count: 4,
       desc: "올해 운세 + 월별 운세<br/>+ 재물운 + 연애운"
     },
-    { 
-      id: "premium", 
-      name: "프리미엄", 
-      price: "₩24,900", 
+    {
+      id: "premium",
+      name: "프리미엄",
+      price: "₩24,900",
       pages: 100,
       features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"],
       count: 5,
       desc: "올해 운세 + 월별 운세<br/>+ 재물운 + 연애운 + 건강운"
     },
-    { 
-      id: "vip", 
-      name: "VIP 커플팩", 
-      price: "₩29,900", 
+    {
+      id: "vip",
+      name: "VIP 커플팩",
+      price: "₩29,900",
       pages: 150,
       features: ["name", "yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "analysis"],
       count: 8,
       desc: "본인 분석(8개) + 상대방 정보 입력<br/>궁합분석 포함"
     }
   ];
+
 
   const fortuneItems = [
     { id: "name", icon: "📝", name: "이름분석" },
@@ -72,17 +77,23 @@ export default function Payment() {
     { id: "couple", icon: "👫", name: "궁합분석" }
   ];
 
+
   const handlePackageSelect = (pkg: any) => {
     setSelectedPackage(pkg.name);
     setSelectedFeatures(pkg.features);
   };
 
+
   const handlePayment = async () => {
     setIsProcessing(true);
-    
+   
     try {
       const currentPages = packages.find(p => p.name === selectedPackage)?.pages || 30;
-      router.push(`/paid-analysis-result?package=${encodeURIComponent(selectedPackage)}&pages=${currentPages}`);
+      
+      // sessionStorage에 package 저장
+      sessionStorage.setItem("selectedPackage", selectedPackage);
+      
+      router.push(`/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${currentPages}`);
     } catch (error) {
       alert("결제 처리 중 오류가 발생했습니다.");
       console.error(error);
@@ -91,22 +102,24 @@ export default function Payment() {
     }
   };
 
+
   const currentPackage = packages.find(p => p.name === selectedPackage);
   const currentPages = currentPackage?.pages || 30;
   const currentCount = currentPackage?.count || 2;
+
 
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://images.unsplash.com/photo-1719399184315-5ffab4006e18?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fCVFQyVCQiVBOCVFQyU4NSU4OSUyMCVFQyU5NSU4NCVFRCU4QSVCOHxlbnwwfHwwfHx8MA%3D%3D')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(194, 65, 12, 0.2)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px" }}>
-        
+       
         {/* 상단 설명 */}
         <section style={{ maxWidth: 800, margin: "0 auto 60px", textAlign: "center" }}>
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>정확한 사주 원국 분석</h1>
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 12, lineHeight: 1.8 }}>음양오행·천간지지 십성 완벽 분석</p>
           <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24 }}>최고 수준의 사주 분석</p>
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 32, lineHeight: 1.8 }}>당신의 인생을 완벽하게 읽어드립니다</p>
-          
+         
           {isMobile ? (
             <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
               30페이지 기본분석부터<br/>150페이지 완벽분석까지<br/>올해 운세, 월별 운세,<br/>재물운, 연애운, 건강운,<br/>궁합분석까지
@@ -118,8 +131,10 @@ export default function Payment() {
           )}
         </section>
 
+
         {/* 패키지 선택 */}
         <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 40, fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900 }}>💳 패키지 선택</h2>
+
 
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => (
@@ -133,15 +148,17 @@ export default function Payment() {
           ))}
         </div>
 
+
         {/* 가격 정보 */}
         <div style={{ maxWidth: 1000, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>💰 9,900~29,900원</p>
         </div>
 
+
         {/* 선택된 운세 */}
         <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 40, background: "#f5f5f5", padding: 24, borderRadius: 12 }}>
           <h3 style={{ color: "#1a1a1a", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 포함된 운세</h3>
-          
+         
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
             {fortuneItems.map(item => (
               <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "#ff1493" : "#e0e0e0", border: selectedFeatures.includes(item.id) ? "2px solid #ff69b4" : "1px solid #cccccc", borderRadius: 10, padding: 12, textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -152,10 +169,11 @@ export default function Payment() {
           </div>
         </div>
 
+
         {/* 왜 점운인가 */}
         <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
           <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>왜 점운인가?</h2>
-          
+         
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24 }}>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
@@ -163,11 +181,13 @@ export default function Payment() {
               <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>기본분석(30P)부터<br/>VIP(150P)까지</p>
             </div>
 
+
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
               <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>9,900~29,900원</p>
             </div>
+
 
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
@@ -176,6 +196,7 @@ export default function Payment() {
             </div>
           </div>
         </section>
+
 
         {/* 결제 버튼 */}
         <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
