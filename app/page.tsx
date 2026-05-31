@@ -1,5 +1,4 @@
-﻿// ===== app/page.tsx =====
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 
@@ -96,7 +95,10 @@ export default function Home() {
             <span style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700 }}>4.9/5.0 (2,847 리뷰)</span>
           </div>
           <div style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, marginBottom: 14 }}>⏱ 30초면 완료 · 회원가입 불필요 · 100% 무료</div>
-          <a href="/free-analysis" style={{ display: "inline-block", padding: "12px 32px", borderRadius: 10, fontSize: "clamp(13px, 2vw, 14px)", fontWeight: 900, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", textDecoration: "none", boxShadow: "0 8px 30px rgba(251,191,36,0.4)", cursor: "pointer" }}>🔮 무료 사주</a>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+            <a href="/free-analysis" style={{ display: "inline-block", padding: "12px 32px", borderRadius: 10, fontSize: "clamp(13px, 2vw, 14px)", fontWeight: 900, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", textDecoration: "none", boxShadow: "0 8px 30px rgba(251,191,36,0.4)", cursor: "pointer" }}>🔮 무료 사주</a>
+            <a href="/payment" style={{ display: "inline-block", padding: "12px 32px", borderRadius: 10, fontSize: "clamp(13px, 2vw, 14px)", fontWeight: 900, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", textDecoration: "none", boxShadow: "0 8px 30px rgba(255,20,147,0.4)", cursor: "pointer" }}>💎 유료 사주 분석</a>
+          </div>
         </section>
 
         <section style={{ padding: "30px 8px" }}>
@@ -145,7 +147,10 @@ export default function Home() {
         <section style={{ padding: "40px 16px", textAlign: "center" }}>
           <h3 style={{ color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 24px)", marginBottom: 10 }}>지금 바로</h3>
           <p style={{ color: "#f5f5f5", fontSize: "clamp(12px, 2vw, 15px)", fontWeight: 700, marginBottom: 18 }}>내 운명을 확인하세요</p>
-          <a href="/free-analysis" style={{ display: "inline-block", padding: "12px 40px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", borderRadius: 10, fontWeight: 900, fontSize: "clamp(12px, 2vw, 14px)", textDecoration: "none", boxShadow: "0 8px 30px rgba(251,191,36,0.4)", cursor: "pointer" }}>🔮 무료 사주</a>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+            <a href="/free-analysis" style={{ display: "inline-block", padding: "12px 40px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", borderRadius: 10, fontWeight: 900, fontSize: "clamp(12px, 2vw, 14px)", textDecoration: "none", boxShadow: "0 8px 30px rgba(251,191,36,0.4)", cursor: "pointer" }}>🔮 무료 사주</a>
+            <a href="/payment" style={{ display: "inline-block", padding: "12px 40px", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", borderRadius: 10, fontWeight: 900, fontSize: "clamp(12px, 2vw, 14px)", textDecoration: "none", boxShadow: "0 8px 30px rgba(255,20,147,0.4)", cursor: "pointer" }}>💎 유료 사주 분석</a>
+          </div>
         </section>
 
         <footer style={{ padding: "30px 16px", textAlign: "center", borderTop: "1px solid rgba(245,158,11,0.2)", background: "rgba(0,0,0,0.2)" }}>

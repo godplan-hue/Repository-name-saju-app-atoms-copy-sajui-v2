@@ -142,10 +142,16 @@ export default function FreeAnalysis() {
   };
 
   const handleAnalyze = async () => {
-    if (!formData.phone.trim()) {
-      alert("전화번호를 입력해주세요");
-      return;
-    }
+  if (!formData.phone.trim()) {
+    alert("전화번호를 입력해주세요");
+    return;
+  }
+
+  const selectedType = getAnalysisType();
+  sessionStorage.setItem("analysisCategory", selectedType.category);
+  sessionStorage.setItem("analysisTitle", selectedType.title);
+
+  setAnalyzing(true);
 
     if (usedFreeAnalysis) {
       alert(`❌ ${formData.name}님은 이미 무료 분석을 사용하셨습니다.\n\n유료 분석을 결제해주세요.`);
@@ -222,8 +228,11 @@ export default function FreeAnalysis() {
 
   const handleGoToPayment = () => {
     if (analysisResult) {
+      const selectedType = getAnalysisType();
       sessionStorage.setItem("analysisResult", JSON.stringify(analysisResult));
       sessionStorage.setItem("analysisName", formData.name);
+      sessionStorage.setItem("analysisCategory", selectedType.category);
+      sessionStorage.setItem("analysisTitle", selectedType.title);
     }
     router.push("/payment");
   };
