@@ -1,9 +1,7 @@
 "use client";
 
-
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
-
 
 function PaidAnalysisResultContent() {
   const router = useRouter();
@@ -12,7 +10,7 @@ function PaidAnalysisResultContent() {
   const [packageName, setPackageName] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
+  const [mounted, setMounted] = useState(false);
 
   const analysisAnswers: { [key: string]: string } = {
     "💰 돈-돈은 벌지만 자산은 안 늘어남": "당신은 충분히 벌고 있습니다. 문제는 돈이 들어올 때마다 나간다는 것이죠. 이것은 당신의 '금전 흐름의 법칙'을 모르기 때문입니다.\n\n올해 8월과 11월 사이가 당신의 황금 타이밍입니다. 이 시기에 투자를 시작하면 자산이 2배로 증식됩니다.\n\n특히 9월 첫주가 가장 중요한 시점입니다. 이때 결정한 투자가 당신의 재물운을 완전히 바꿀 것입니다.\n\n지금부터 매월 수입의 30%를 따로 떼어두세요. 9월이 오면 그 돈으로 당신의 첫 투자를 시작하십시오. 이것이 부자로 가는 정확한 길입니다.",
@@ -42,21 +40,21 @@ function PaidAnalysisResultContent() {
     "💍 결혼-자녀 계획이 안 이루어짐": "당신이 아이를 가지지 못하는 것은 신체적 이유보다 '타이밍'의 문제입니다.\n\n아이가 올 정확한 시점은 내년 5월부터 8월 사이입니다. 이 기간에 임신이 될 가능성이 매우 높습니다.\n\n지금 준비해야 할 것은 신체와 마음의 준비입니다. 건강한 생활, 충분한 휴식, 긍정적인 마음. 이 모든 것이 당신을 아이를 가질 수 있는 상태로 만들 것입니다.\n\n당신들의 자녀는 특별한 아이가 될 것입니다. 이 기간의 기다림이 당신을 더 좋은 부모로 만들 것입니다."
   };
 
-
   useEffect(() => {
+    setMounted(true);
     setIsMobile(window.innerWidth < 768);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
   useEffect(() => {
+    if (!mounted) return;
+
     const infoStr = sessionStorage.getItem("analysisResult");
     const category = sessionStorage.getItem("analysisCategory");
     const title = sessionStorage.getItem("analysisTitle");
     const pkg = sessionStorage.getItem("selectedPackage") || "기본 분석";
-
 
     if (infoStr) {
       try {
@@ -69,8 +67,7 @@ function PaidAnalysisResultContent() {
       }
     }
     setPackageName(pkg);
-  }, [searchParams]);
-
+  }, [mounted]);
 
   const getAnalysisData = () => {
     return {
@@ -85,21 +82,17 @@ function PaidAnalysisResultContent() {
     };
   };
 
-
   const getAnalysisAnswer = () => {
-    if (typeof window === "undefined") return "당신의 개인화된 비법이 여기에 공개됩니다.";
-    const category = sessionStorage.getItem("analysisCategory") || "💰 돈";
-    const title = sessionStorage.getItem("analysisTitle") || "돈은 벌지만 자산은 안 늘어남";
+    const category = sessionStorage?.getItem?.("analysisCategory") || "💰 돈";
+    const title = sessionStorage?.getItem?.("analysisTitle") || "돈은 벌지만 자산은 안 늘어남";
     const key = `${category}-${title}`;
     return analysisAnswers[key] || "당신의 개인화된 비법이 여기에 공개됩니다.";
   };
-
 
   const getDisplayItems = () => {
     const data = getAnalysisData();
     let apiItems = [];
     let templateItems = [];
-
 
     switch(packageName) {
       case "기본 분석":
@@ -150,10 +143,8 @@ function PaidAnalysisResultContent() {
         ];
     }
 
-
     return { apiItems, templateItems };
   };
-
 
   const handleDownload = async () => {
     if (!paidInfo) {
@@ -161,13 +152,10 @@ function PaidAnalysisResultContent() {
       return;
     }
 
-
     setIsGenerating(true);
-
 
     try {
       const html2pdf = (await import("html2pdf.js")).default;
-
 
       let htmlContent = `
         <div style="margin: 0; padding: 0;">
@@ -178,10 +166,8 @@ function PaidAnalysisResultContent() {
           </div>
       `;
 
-
       const answerContent = getAnalysisAnswer();
       const { apiItems, templateItems } = getDisplayItems();
-
 
       htmlContent += `
         <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: flex-start; padding: 30px; box-sizing: border-box; margin: 0;">
@@ -192,7 +178,6 @@ function PaidAnalysisResultContent() {
           </div>
         </div>
       `;
-
 
       apiItems.forEach((item) => {
         htmlContent += `
@@ -206,7 +191,6 @@ function PaidAnalysisResultContent() {
         `;
       });
 
-
       templateItems.forEach((item) => {
         htmlContent += `
           <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: flex-start; padding: 30px; box-sizing: border-box; margin: 0;">
@@ -218,7 +202,6 @@ function PaidAnalysisResultContent() {
           </div>
         `;
       });
-
 
       htmlContent += `
         <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; box-sizing: border-box; margin: 0; text-align: center;">
@@ -233,12 +216,10 @@ function PaidAnalysisResultContent() {
         </div>
       `;
 
-
       const element = document.createElement("div");
       element.innerHTML = htmlContent;
       element.style.margin = "0";
       element.style.padding = "0";
-
 
       const opt: any = {
         margin: 0,
@@ -259,12 +240,10 @@ function PaidAnalysisResultContent() {
         }
       };
 
-
       html2pdf()
         .set(opt)
         .from(element)
         .save();
-
 
       alert("PDF가 다운로드되었습니다!");
     } catch (error) {
@@ -275,11 +254,17 @@ function PaidAnalysisResultContent() {
     }
   };
 
+  if (!mounted) {
+    return (
+      <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div>로딩 중...</div>
+      </main>
+    );
+  }
 
   const { apiItems, templateItems } = getDisplayItems();
   const answerContent = getAnalysisAnswer();
   const totalCount = packageName === "기본 분석" ? 2 : packageName === "베이직" ? 4 : packageName === "프리미엄" ? 5 : packageName === "VIP 커플팩" ? 8 : 2;
-
 
   return (
     <main
@@ -330,7 +315,6 @@ function PaidAnalysisResultContent() {
             </p>
           </div>
 
-
           <div
             style={{
               background: "linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%)",
@@ -368,7 +352,6 @@ function PaidAnalysisResultContent() {
             </p>
           </div>
 
-
           <div
             style={{
               background: "linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%)",
@@ -399,7 +382,6 @@ function PaidAnalysisResultContent() {
               ✨ {totalCount}개 운세 포함
             </p>
           </div>
-
 
           {apiItems.map((item) => (
             <div
@@ -440,7 +422,6 @@ function PaidAnalysisResultContent() {
             </div>
           ))}
 
-
           {templateItems.map((item) => (
             <div
               key={item.key}
@@ -480,7 +461,6 @@ function PaidAnalysisResultContent() {
             </div>
           ))}
 
-
           <div style={{ marginTop: 32 }}>
             <button
               onClick={handleDownload}
@@ -501,7 +481,6 @@ function PaidAnalysisResultContent() {
             >
               📥 {isGenerating ? "PDF 생성 중..." : "PDF 다운로드"}
             </button>
-
 
             <button
               onClick={() => window.location.href = "/"}
@@ -525,7 +504,6 @@ function PaidAnalysisResultContent() {
     </main>
   );
 }
-
 
 export default function PaidAnalysisResult() {
   return (

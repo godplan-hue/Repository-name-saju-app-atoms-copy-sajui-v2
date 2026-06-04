@@ -70,14 +70,27 @@ export default function Refund() {
             <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>처리 과정:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
               <li>• 담당자 검토: 3~5일</li>
-              <li>• 처리: 5일 이내 (환불) 또는 즉시 (재분석)</li>
+              <li>• 처리: 7일 이내 (환불) 또는 즉시 (재분석)</li>
             </ul>
           </section>
 
           {/* 5. 7일 초과 */}
-          <section style={{ paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 7일 초과</h2>
-            <p style={{ color: "#ff6b6b", fontSize: 13, fontWeight: 700, lineHeight: 1.8 }}>환불 불가능합니다.</p>
+            <p style={{ color: "#ff6b6b", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginBottom: 0 }}>환불 불가능합니다.</p>
+          </section>
+
+          {/* 6. 파트너 회비 환불정책 */}
+          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>6. 파트너 회비 환불정책</h2>
+            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>아래 항목 중 하나라도 하면 환불 불가능:</p>
+            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
+              <li>• 파트너 자료(PDF/가이드) 다운로드</li>
+              <li>• 온라인 미팅 참석</li>
+              <li>• 고객분석 1건 이상 생성</li>
+              <li>• 파트너 카톡방 입장</li>
+            </ul>
+            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8 }}>7일 초과 → 무조건 환불불가</p>
           </section>
         </div>
 

@@ -155,12 +155,16 @@ export default function Home() {
 
         <footer style={{ padding: "30px 16px", textAlign: "center", borderTop: "1px solid rgba(245,158,11,0.2)", background: "rgba(0,0,0,0.2)" }}>
           <p style={{ color: "#999999", fontSize: 14, fontWeight: 600, margin: "0 0 12px 0" }}>© 2024 점운</p>
+          <div style={{ color: "#999999", fontSize: 12, fontWeight: 600, lineHeight: 1.8, marginBottom: 10 }}>
+            <p style={{ margin: "0 0 8px 0" }}>📧 이메일: junga6783@gmail.com</p>
+            <p style={{ margin: "0 0 12px 0" }}>응답기간: 7일 이내</p>
+          </div>
           <p style={{ color: "#999999", fontSize: 12, fontWeight: 600, margin: 0, lineHeight: 1.6 }}>
             <a href="/privacy" style={{ color: "#fbbf24", textDecoration: "none" }}>개인정보처리방침</a>
             {" | "}
-            <a href="/saju-info" style={{ color: "#fbbf24", textDecoration: "none" }}>사주정보</a>
+            <a href="/refund" style={{ color: "#fbbf24", textDecoration: "none" }}>환불정책</a>
             {" | "}
-            <a href="/support" style={{ color: "#fbbf24", textDecoration: "none" }}>고객지원</a>
+            <a href="/partner-policy" style={{ color: "#fbbf24", textDecoration: "none" }}>파트너정책</a>
           </p>
         </footer>
       </div>
