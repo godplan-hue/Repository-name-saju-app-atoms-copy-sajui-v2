@@ -72,9 +72,9 @@ export default function PaymentPartner() {
             {isProcessing ? "결제 처리 중..." : "💳 결제하기"}
           </button>
 
-          <button onClick={() => router.back()} style={{ width: "100%", padding: 14, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>
+          <a href={`/partner/apply-form?tier=${tier}`} style={{ display: "block", width: "100%", padding: 14, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textAlign: "center", textDecoration: "none" }}>
             ← 돌아가기
-          </button>
+          </a>
         </div>
       </div>
     </main>
