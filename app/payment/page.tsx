@@ -1,9 +1,7 @@
 "use client";
 
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 
 export default function Payment() {
   const router = useRouter();
@@ -13,18 +11,18 @@ export default function Payment() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisName, setAnalysisName] = useState("");
 
-
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-   
-    const name = sessionStorage.getItem("analysisName") || "분석 완료";
-    setAnalysisName(name);
-   
-    return () => window.removeEventListener("resize", handleResize);
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth < 768);
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      window.addEventListener("resize", handleResize);
+      
+      const name = sessionStorage.getItem("analysisName") || "분석 완료";
+      setAnalysisName(name);
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }
   }, []);
-
 
   const packages = [
     {
@@ -65,7 +63,6 @@ export default function Payment() {
     }
   ];
 
-
   const fortuneItems = [
     { id: "name", icon: "📝", name: "이름분석" },
     { id: "yearlyLuck", icon: "☀️", name: "올해 운세" },
@@ -77,23 +74,21 @@ export default function Payment() {
     { id: "couple", icon: "👫", name: "궁합분석" }
   ];
 
-
   const handlePackageSelect = (pkg: any) => {
     setSelectedPackage(pkg.name);
     setSelectedFeatures(pkg.features);
   };
 
-
   const handlePayment = async () => {
     setIsProcessing(true);
    
     try {
-      const currentPages = packages.find(p => p.name === selectedPackage)?.pages || 30;
-      
-      // sessionStorage에 package 저장
       sessionStorage.setItem("selectedPackage", selectedPackage);
       
-      router.push(`/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${currentPages}`);
+      const currentPackage = packages.find(p => p.name === selectedPackage);
+      const pages = currentPackage?.pages || 30;
+      
+      router.push(`/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${pages}`);
     } catch (error) {
       alert("결제 처리 중 오류가 발생했습니다.");
       console.error(error);
@@ -102,18 +97,15 @@ export default function Payment() {
     }
   };
 
-
   const currentPackage = packages.find(p => p.name === selectedPackage);
   const currentPages = currentPackage?.pages || 30;
   const currentCount = currentPackage?.count || 2;
-
 
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://images.unsplash.com/photo-1719399184315-5ffab4006e18?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fCVFQyVCQiVBOCVFQyU4NSU4OSUyMCVFQyU5NSU4NCVFRCU4QSVCOHxlbnwwfHwwfHx8MA%3D%3D')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(194, 65, 12, 0.2)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px" }}>
        
-        {/* 상단 설명 */}
         <section style={{ maxWidth: 800, margin: "0 auto 60px", textAlign: "center" }}>
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>정확한 사주 원국 분석</h1>
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 12, lineHeight: 1.8 }}>음양오행·천간지지 십성 완벽 분석</p>
@@ -131,10 +123,7 @@ export default function Payment() {
           )}
         </section>
 
-
-        {/* 패키지 선택 */}
         <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 40, fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900 }}>💳 패키지 선택</h2>
-
 
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => (
@@ -148,14 +137,10 @@ export default function Payment() {
           ))}
         </div>
 
-
-        {/* 가격 정보 */}
         <div style={{ maxWidth: 1000, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>💰 9,900~29,900원</p>
         </div>
 
-
-        {/* 선택된 운세 */}
         <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 40, background: "#f5f5f5", padding: 24, borderRadius: 12 }}>
           <h3 style={{ color: "#1a1a1a", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 포함된 운세</h3>
          
@@ -169,8 +154,6 @@ export default function Payment() {
           </div>
         </div>
 
-
-        {/* 왜 점운인가 */}
         <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
           <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>왜 점운인가?</h2>
          
@@ -181,13 +164,11 @@ export default function Payment() {
               <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>기본분석(30P)부터<br/>VIP(150P)까지</p>
             </div>
 
-
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
               <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>9,900~29,900원</p>
             </div>
-
 
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
@@ -197,8 +178,6 @@ export default function Payment() {
           </div>
         </section>
 
-
-        {/* 결제 버튼 */}
         <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900, marginBottom: 10 }}>
             선택된 패키지: <span style={{ color: "#fbbf24", fontWeight: 900 }}>{selectedPackage}</span>
@@ -209,7 +188,11 @@ export default function Payment() {
           <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
             📄 {currentPages}페이지
           </p>
-          <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1 }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
+          <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1, marginBottom: 12 }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
+          
+          <a href="/" style={{ display: "inline-block", padding: 12, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textDecoration: "none" }}>
+            ← 돌아가기
+          </a>
         </div>
       </div>
     </main>

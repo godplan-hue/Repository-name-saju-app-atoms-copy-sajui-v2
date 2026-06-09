@@ -1,30 +1,54 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function PaidInfoInput() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [name, setName] = useState("");
   const [birthYear, setBirthYear] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthDay, setBirthDay] = useState("");
   const [birthHour, setBirthHour] = useState("");
   const [birthMinute, setBirthMinute] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState("");
+  const [partnerName, setPartnerName] = useState("");
+  const [partnerBirthYear, setPartnerBirthYear] = useState("");
+  const [partnerBirthMonth, setPartnerBirthMonth] = useState("");
+  const [partnerBirthDay, setPartnerBirthDay] = useState("");
+  const [partnerBirthHour, setPartnerBirthHour] = useState("");
+  const [partnerBirthMinute, setPartnerBirthMinute] = useState("");
 
-  // 월 옵션 (1-12)
+  useEffect(() => {
+    setName("");
+    setBirthYear("");
+    setBirthMonth("");
+    setBirthDay("");
+    setBirthHour("");
+    setBirthMinute("");
+    setPartnerName("");
+    setPartnerBirthYear("");
+    setPartnerBirthMonth("");
+    setPartnerBirthDay("");
+    setPartnerBirthHour("");
+    setPartnerBirthMinute("");
+  }, []);
+
+  useEffect(() => {
+    const packageFromUrl = searchParams.get("package") || "";
+    if (packageFromUrl) {
+      setSelectedPackage(decodeURIComponent(packageFromUrl));
+    }
+  }, [searchParams]);
+
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
-
-  // 일 옵션 (1-31)
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
-
-  // 시간 옵션 (0-23)
   const hours = Array.from({ length: 24 }, (_, i) => i);
-
-  // 분 옵션 (0-59, 5분 단위)
   const minutes = Array.from({ length: 12 }, (_, i) => i * 5);
 
-  const handleAnalysis = () => {
+  const handleAnalysis = async () => {
     if (
       !name ||
       !birthYear ||
@@ -33,26 +57,55 @@ export default function PaidInfoInput() {
       birthHour === "" ||
       birthMinute === ""
     ) {
-      alert("모든 정보를 선택해주세요!");
+      alert("모든 정보를 입력해주세요!");
       return;
     }
 
-    // 데이터 포맷
-    const birthDate = `${birthYear}-${String(birthMonth).padStart(2, "0")}-${String(birthDay).padStart(2, "0")}`;
-    const birthTime = `${String(birthHour).padStart(2, "0")}:${String(birthMinute).padStart(2, "0")}`;
+    if (selectedPackage === "VIP 커플팩") {
+      if (
+        !partnerName ||
+        !partnerBirthYear ||
+        !partnerBirthMonth ||
+        !partnerBirthDay ||
+        partnerBirthHour === "" ||
+        partnerBirthMinute === ""
+      ) {
+        alert("상대방의 모든 정보를 입력해주세요!");
+        return;
+      }
+    }
 
-    // localStorage에 저장
-    localStorage.setItem(
-      "paidAnalysisInfo",
-      JSON.stringify({
-        name,
-        birthDate,
-        birthTime,
-      })
-    );
+    setIsLoading(true);
 
-    // 분석 결과 페이지로 이동
-    router.push("/paid-analysis-result");
+    try {
+      const birthDate = `${birthYear}-${String(birthMonth).padStart(2, "0")}-${String(birthDay).padStart(2, "0")}`;
+
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email: "user@example.com",
+          birth: birthDate,
+          planType: "paid",
+          partnerName: selectedPackage === "VIP 커플팩" ? partnerName : null,
+          partnerBirth: selectedPackage === "VIP 커플팩" ? `${partnerBirthYear}-${String(partnerBirthMonth).padStart(2, "0")}-${String(partnerBirthDay).padStart(2, "0")}` : null
+        })
+      });
+
+      const data = await res.json();
+
+      sessionStorage.setItem("analysisResult", JSON.stringify(data.result));
+      sessionStorage.setItem("analysisName", name);
+      sessionStorage.setItem("selectedPackage", selectedPackage);
+
+      router.push("/paid-analysis-result");
+    } catch (error) {
+      console.error("분석 실패:", error);
+      alert("분석 중 오류가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -97,7 +150,6 @@ export default function PaidInfoInput() {
         }}
       >
         <div style={{ maxWidth: 500, width: "100%" }}>
-          {/* 제목 */}
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <div style={{ fontSize: 60, marginBottom: 16 }}>🔮</div>
             <h1
@@ -122,7 +174,6 @@ export default function PaidInfoInput() {
             </p>
           </div>
 
-          {/* 입력 폼 */}
           <div
             style={{
               background: "rgba(108,64,200,0.3)",
@@ -132,204 +183,398 @@ export default function PaidInfoInput() {
               border: "1px solid rgba(251,191,36,0.3)",
             }}
           >
-            {/* 이름 입력 */}
-            <div style={{ marginBottom: 16 }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: "#fbbf24",
-                  marginBottom: 8,
-                }}
-              >
-                👤 이름
-              </label>
-              <input
-                type="text"
-                placeholder="예: 홍길동"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: 12,
-                  borderRadius: 8,
-                  border: "1px solid #fbbf24",
-                  background: "#fff",
-                  color: "#333",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  boxSizing: "border-box",
-                  fontFamily: "inherit",
-                }}
-              />
+            {/* 본인 정보 섹션 */}
+            <div style={{ marginBottom: 24, paddingBottom: 24, borderBottom: "2px solid rgba(251,191,36,0.5)" }}>
+              <h3 style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>📋 본인 정보</h3>
+
+              <div style={{ marginBottom: 16 }}>
+                <label
+                  style={{
+                    display: "block",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#fbbf24",
+                    marginBottom: 8,
+                  }}
+                >
+                  👤 이름
+                </label>
+                <input
+                  type="text"
+                  placeholder="예: 홍길동"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: 12,
+                    borderRadius: 8,
+                    border: "1px solid #fbbf24",
+                    background: "#fff",
+                    color: "#333",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    boxSizing: "border-box",
+                    fontFamily: "inherit",
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: 16 }}>
+                <label
+                  style={{
+                    display: "block",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#fbbf24",
+                    marginBottom: 8,
+                  }}
+                >
+                  📅 생년월일
+                </label>
+
+                <input
+                  type="number"
+                  placeholder="태어난 년도 (예: 1990)"
+                  value={birthYear}
+                  onChange={(e) => setBirthYear(e.target.value)}
+                  min="1900"
+                  max={new Date().getFullYear()}
+                  style={{
+                    width: "100%",
+                    padding: 12,
+                    marginBottom: 10,
+                    borderRadius: 8,
+                    border: "1px solid #fbbf24",
+                    background: "#fff",
+                    color: "#333",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    boxSizing: "border-box",
+                    fontFamily: "inherit",
+                  }}
+                />
+
+                <select
+                  value={birthMonth}
+                  onChange={(e) => setBirthMonth(e.target.value)}
+                  style={{
+                    width: "48%",
+                    padding: 12,
+                    marginRight: "4%",
+                    marginBottom: 10,
+                    borderRadius: 8,
+                    border: "1px solid #fbbf24",
+                    background: "#fff",
+                    color: "#333",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    boxSizing: "border-box",
+                    fontFamily: "inherit",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="">월 선택</option>
+                  {months.map((month) => (
+                    <option key={month} value={month}>
+                      {month}월
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={birthDay}
+                  onChange={(e) => setBirthDay(e.target.value)}
+                  style={{
+                    width: "48%",
+                    padding: 12,
+                    marginBottom: 10,
+                    borderRadius: 8,
+                    border: "1px solid #fbbf24",
+                    background: "#fff",
+                    color: "#333",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    boxSizing: "border-box",
+                    fontFamily: "inherit",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="">일 선택</option>
+                  {days.map((day) => (
+                    <option key={day} value={day}>
+                      {day}일
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div style={{ marginBottom: 0 }}>
+                <label
+                  style={{
+                    display: "block",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#fbbf24",
+                    marginBottom: 8,
+                  }}
+                >
+                  🕐 태어난 시간
+                </label>
+
+                <select
+                  value={birthHour}
+                  onChange={(e) => setBirthHour(e.target.value)}
+                  style={{
+                    width: "48%",
+                    padding: 12,
+                    marginRight: "4%",
+                    borderRadius: 8,
+                    border: "1px solid #fbbf24",
+                    background: "#fff",
+                    color: "#333",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    boxSizing: "border-box",
+                    fontFamily: "inherit",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="">시간</option>
+                  <option value="unknown">모름</option>
+                  {hours.map((hour) => (
+                    <option key={hour} value={hour}>
+                      {String(hour).padStart(2, "0")}시
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={birthMinute}
+                  onChange={(e) => setBirthMinute(e.target.value)}
+                  style={{
+                    width: "48%",
+                    borderRadius: 8,
+                    border: "1px solid #fbbf24",
+                    background: "#fff",
+                    color: "#333",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    padding: 12,
+                    boxSizing: "border-box",
+                    fontFamily: "inherit",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="">분</option>
+                  <option value="unknown">모름</option>
+                  {minutes.map((minute) => (
+                    <option key={minute} value={minute}>
+                      {String(minute).padStart(2, "0")}분
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            {/* 생년월일 */}
-            <div style={{ marginBottom: 16 }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: "#fbbf24",
-                  marginBottom: 8,
-                }}
-              >
-                📅 생년월일
-              </label>
+            {/* 상대방 정보 섹션 (VIP만) */}
+            {selectedPackage === "VIP 커플팩" && (
+              <div style={{ marginBottom: 0 }}>
+                <h3 style={{ color: "#ff1493", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>👥 상대방 정보</h3>
 
-              {/* 연도 입력 */}
-              <input
-                type="number"
-                placeholder="태어난 년도 (예: 1990)"
-                value={birthYear}
-                onChange={(e) => setBirthYear(e.target.value)}
-                min="1900"
-                max={new Date().getFullYear()}
-                style={{
-                  width: "100%",
-                  padding: 12,
-                  marginBottom: 10,
-                  borderRadius: 8,
-                  border: "1px solid #fbbf24",
-                  background: "#fff",
-                  color: "#333",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  boxSizing: "border-box",
-                  fontFamily: "inherit",
-                }}
-              />
+                <div style={{ marginBottom: 16 }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: "#ff1493",
+                      marginBottom: 8,
+                    }}
+                  >
+                    👥 상대방 이름
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="상대방 이름을 입력하세요"
+                    value={partnerName}
+                    onChange={(e) => setPartnerName(e.target.value)}
+                    style={{
+                      width: "100%",
+                      padding: 12,
+                      borderRadius: 8,
+                      border: "1px solid #ff1493",
+                      background: "#fff",
+                      color: "#333",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      boxSizing: "border-box",
+                      fontFamily: "inherit",
+                    }}
+                  />
+                </div>
 
-              {/* 월 선택 */}
-              <select
-                value={birthMonth}
-                onChange={(e) => setBirthMonth(e.target.value)}
-                style={{
-                  width: "48%",
-                  padding: 12,
-                  marginRight: "4%",
-                  marginBottom: 10,
-                  borderRadius: 8,
-                  border: "1px solid #fbbf24",
-                  background: "#fff",
-                  color: "#333",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  boxSizing: "border-box",
-                  fontFamily: "inherit",
-                  cursor: "pointer",
-                }}
-              >
-                <option value="">월 선택</option>
-                {months.map((month) => (
-                  <option key={month} value={month}>
-                    {month}월
-                  </option>
-                ))}
-              </select>
+                <div style={{ marginBottom: 16 }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: "#ff1493",
+                      marginBottom: 8,
+                    }}
+                  >
+                    📅 상대방 생년월일
+                  </label>
 
-              {/* 일 선택 */}
-              <select
-                value={birthDay}
-                onChange={(e) => setBirthDay(e.target.value)}
-                style={{
-                  width: "48%",
-                  padding: 12,
-                  marginBottom: 10,
-                  borderRadius: 8,
-                  border: "1px solid #fbbf24",
-                  background: "#fff",
-                  color: "#333",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  boxSizing: "border-box",
-                  fontFamily: "inherit",
-                  cursor: "pointer",
-                }}
-              >
-                <option value="">일 선택</option>
-                {days.map((day) => (
-                  <option key={day} value={day}>
-                    {day}일
-                  </option>
-                ))}
-              </select>
-            </div>
+                  <input
+                    type="number"
+                    placeholder="상대방 태어난 년도 (예: 1990)"
+                    value={partnerBirthYear}
+                    onChange={(e) => setPartnerBirthYear(e.target.value)}
+                    min="1900"
+                    max={new Date().getFullYear()}
+                    style={{
+                      width: "100%",
+                      padding: 12,
+                      marginBottom: 10,
+                      borderRadius: 8,
+                      border: "1px solid #ff1493",
+                      background: "#fff",
+                      color: "#333",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      boxSizing: "border-box",
+                      fontFamily: "inherit",
+                    }}
+                  />
 
-            {/* 태어난 시간 */}
-            <div style={{ marginBottom: 0 }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: "#fbbf24",
-                  marginBottom: 8,
-                }}
-              >
-                🕐 태어난 시간
-              </label>
+                  <select
+                    value={partnerBirthMonth}
+                    onChange={(e) => setPartnerBirthMonth(e.target.value)}
+                    style={{
+                      width: "48%",
+                      padding: 12,
+                      marginRight: "4%",
+                      marginBottom: 10,
+                      borderRadius: 8,
+                      border: "1px solid #ff1493",
+                      background: "#fff",
+                      color: "#333",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      boxSizing: "border-box",
+                      fontFamily: "inherit",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <option value="">월 선택</option>
+                    {months.map((month) => (
+                      <option key={month} value={month}>
+                        {month}월
+                      </option>
+                    ))}
+                  </select>
 
-              {/* 시간 선택 */}
-              <select
-                value={birthHour}
-                onChange={(e) => setBirthHour(e.target.value)}
-                style={{
-                  width: "48%",
-                  padding: 12,
-                  marginRight: "4%",
-                  borderRadius: 8,
-                  border: "1px solid #fbbf24",
-                  background: "#fff",
-                  color: "#333",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  boxSizing: "border-box",
-                  fontFamily: "inherit",
-                  cursor: "pointer",
-                }}
-              >
-                <option value="">시간</option>
-                {hours.map((hour) => (
-                  <option key={hour} value={hour}>
-                    {String(hour).padStart(2, "0")}시
-                  </option>
-                ))}
-              </select>
+                  <select
+                    value={partnerBirthDay}
+                    onChange={(e) => setPartnerBirthDay(e.target.value)}
+                    style={{
+                      width: "48%",
+                      padding: 12,
+                      marginBottom: 10,
+                      borderRadius: 8,
+                      border: "1px solid #ff1493",
+                      background: "#fff",
+                      color: "#333",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      boxSizing: "border-box",
+                      fontFamily: "inherit",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <option value="">일 선택</option>
+                    {days.map((day) => (
+                      <option key={day} value={day}>
+                        {day}일
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              {/* 분 선택 */}
-              <select
-                value={birthMinute}
-                onChange={(e) => setBirthMinute(e.target.value)}
-                style={{
-                  width: "48%",
-                  borderRadius: 8,
-                  border: "1px solid #fbbf24",
-                  background: "#fff",
-                  color: "#333",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  padding: 12,
-                  boxSizing: "border-box",
-                  fontFamily: "inherit",
-                  cursor: "pointer",
-                }}
-              >
-                <option value="">분</option>
-                {minutes.map((minute) => (
-                  <option key={minute} value={minute}>
-                    {String(minute).padStart(2, "0")}분
-                  </option>
-                ))}
-              </select>
-            </div>
+                <div style={{ marginBottom: 0 }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: "#ff1493",
+                      marginBottom: 8,
+                    }}
+                  >
+                    🕐 상대방 태어난 시간
+                  </label>
+
+                  <select
+                    value={partnerBirthHour}
+                    onChange={(e) => setPartnerBirthHour(e.target.value)}
+                    style={{
+                      width: "48%",
+                      padding: 12,
+                      marginRight: "4%",
+                      borderRadius: 8,
+                      border: "1px solid #ff1493",
+                      background: "#fff",
+                      color: "#333",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      boxSizing: "border-box",
+                      fontFamily: "inherit",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <option value="">시간</option>
+                    <option value="unknown">모름</option>
+                    {hours.map((hour) => (
+                      <option key={hour} value={hour}>
+                        {String(hour).padStart(2, "0")}시
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={partnerBirthMinute}
+                    onChange={(e) => setPartnerBirthMinute(e.target.value)}
+                    style={{
+                      width: "48%",
+                      borderRadius: 8,
+                      border: "1px solid #ff1493",
+                      background: "#fff",
+                      color: "#333",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      padding: 12,
+                      boxSizing: "border-box",
+                      fontFamily: "inherit",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <option value="">분</option>
+                    <option value="unknown">모름</option>
+                    {minutes.map((minute) => (
+                      <option key={minute} value={minute}>
+                        {String(minute).padStart(2, "0")}분
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* 분석 시작 버튼 */}
           <button
             onClick={handleAnalysis}
+            disabled={isLoading}
             style={{
               width: "100%",
               padding: 14,
@@ -339,24 +584,26 @@ export default function PaidInfoInput() {
               borderRadius: 10,
               fontWeight: 900,
               fontSize: 15,
-              cursor: "pointer",
+              cursor: isLoading ? "not-allowed" : "pointer",
               marginBottom: 12,
               transition: "all 0.3s ease",
+              opacity: isLoading ? 0.6 : 1,
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.transform = "scale(1.02)";
-              e.currentTarget.style.boxShadow =
-                "0 10px 25px rgba(255, 20, 147, 0.4)";
+              if (!isLoading) {
+                e.currentTarget.style.transform = "scale(1.02)";
+                e.currentTarget.style.boxShadow =
+                  "0 10px 25px rgba(255, 20, 147, 0.4)";
+              }
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.transform = "scale(1)";
               e.currentTarget.style.boxShadow = "none";
             }}
           >
-            분석 시작하기 ✨
+            {isLoading ? "분석 중..." : "분석 시작하기 ✨"}
           </button>
 
-          {/* 홈으로 돌아가기 버튼 */}
           <button
             onClick={() => router.push("/")}
             style={{
@@ -374,7 +621,6 @@ export default function PaidInfoInput() {
             ← 홈으로
           </button>
 
-          {/* 정보 박스 */}
           <div
             style={{
               background: "#fff3cd",

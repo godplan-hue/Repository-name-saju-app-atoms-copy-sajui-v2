@@ -14,6 +14,9 @@ export default function PaymentComplete() {
   useEffect(() => {
     const pkg = searchParams.get("package") || "베이직";
     const pg = searchParams.get("pages") || "75";
+    
+    sessionStorage.setItem("selectedPackage", pkg);
+    
     setPackageName(pkg);
     setPages(parseInt(pg));
   }, [searchParams]);
@@ -28,9 +31,9 @@ export default function PaymentComplete() {
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <div style={{ maxWidth: 500, margin: "0 auto", width: "100%", textAlign: "center" }}>
           <div style={{ fontSize: 80, marginBottom: 24 }}>✅</div>
-          
+         
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>결제 완료!</h1>
-          
+         
           <p style={{ color: "#f5f5f5", fontSize: 16, fontWeight: 700, marginBottom: 24, lineHeight: 1.8 }}>
             <span style={{ color: "#fbbf24", fontWeight: 900 }}>{packageName}</span> 패키지 결제가<br/>
             완료되었습니다!
@@ -43,7 +46,7 @@ export default function PaymentComplete() {
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: 0 }}>상태: <span style={{ color: "#90EE90", fontWeight: 900 }}>완료</span></p>
           </div>
 
-          <button onClick={() => router.push("/paid-info-input")} style={{ width: "100%", padding: 14, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12 }}>🔮 유료분석 보기</button>
+          <button onClick={() => router.push(`/paid-info-input?package=${encodeURIComponent(packageName)}`)} style={{ width: "100%", padding: 14, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12 }}>🔮 유료분석 보기</button>
 
           <button onClick={handleHome} style={{ width: "100%", padding: 14, background: "rgba(139,92,246,0.3)", color: "#f5f5f5", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12 }}>← 홈으로 돌아가기</button>
 
