@@ -57,7 +57,7 @@ export default function PaidInfoInput() {
       birthHour === "" ||
       birthMinute === ""
     ) {
-      alert("모든 정보를 입력해주세요!");
+      alert("모든 필수 정보를 입력해주세요!");
       return;
     }
 
@@ -87,23 +87,39 @@ export default function PaidInfoInput() {
           name,
           email: "user@example.com",
           birth: birthDate,
+          birthHour: birthHour === "unknown" ? "unknown" : String(birthHour).padStart(2, "0"),
           planType: "paid",
+          packageType: selectedPackage,
           partnerName: selectedPackage === "VIP 커플팩" ? partnerName : null,
-          partnerBirth: selectedPackage === "VIP 커플팩" ? `${partnerBirthYear}-${String(partnerBirthMonth).padStart(2, "0")}-${String(partnerBirthDay).padStart(2, "0")}` : null
+          partnerBirth: selectedPackage === "VIP 커플팩" ? `${partnerBirthYear}-${String(partnerBirthMonth).padStart(2, "0")}-${String(partnerBirthDay).padStart(2, "0")}` : null,
         })
       });
 
       const data = await res.json();
 
+      console.log("API 응답:", data);
+
+      if (!res.ok) {
+        console.error("API 오류:", data);
+        alert("분석 실패. 다시 시도해주세요.");
+        setIsLoading(false);
+        return;
+      }
+
+      if (!data.result) {
+        console.error("결과 없음:", data);
+        alert("분석 결과를 받을 수 없습니다.");
+        setIsLoading(false);
+        return;
+      }
+
       sessionStorage.setItem("analysisResult", JSON.stringify(data.result));
-      sessionStorage.setItem("analysisName", name);
       sessionStorage.setItem("selectedPackage", selectedPackage);
 
       router.push("/paid-analysis-result");
     } catch (error) {
-      console.error("분석 실패:", error);
+      console.error("분석 오류:", error);
       alert("분석 중 오류가 발생했습니다.");
-    } finally {
       setIsLoading(false);
     }
   };
@@ -160,7 +176,7 @@ export default function PaidInfoInput() {
                 color: "#fbbf24",
               }}
             >
-              유료 분석
+              점운 분석
             </h1>
             <p
               style={{
@@ -170,7 +186,7 @@ export default function PaidInfoInput() {
                 margin: 0,
               }}
             >
-              당신의 상세한 사주 정보를 입력해주세요
+              당신의 정보를 입력해주세요
             </p>
           </div>
 
@@ -183,9 +199,8 @@ export default function PaidInfoInput() {
               border: "1px solid rgba(251,191,36,0.3)",
             }}
           >
-            {/* 본인 정보 섹션 */}
             <div style={{ marginBottom: 24, paddingBottom: 24, borderBottom: "2px solid rgba(251,191,36,0.5)" }}>
-              <h3 style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>📋 본인 정보</h3>
+              <h3 style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>본인 정보</h3>
 
               <div style={{ marginBottom: 16 }}>
                 <label
@@ -197,11 +212,11 @@ export default function PaidInfoInput() {
                     marginBottom: 8,
                   }}
                 >
-                  👤 이름
+                  이름
                 </label>
                 <input
                   type="text"
-                  placeholder="예: 홍길동"
+                  placeholder="이름을 입력하세요"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   style={{
@@ -229,12 +244,12 @@ export default function PaidInfoInput() {
                     marginBottom: 8,
                   }}
                 >
-                  📅 생년월일
+                  생년월일
                 </label>
 
                 <input
                   type="number"
-                  placeholder="태어난 년도 (예: 1990)"
+                  placeholder="연도를 입력하세요 (예: 1990)"
                   value={birthYear}
                   onChange={(e) => setBirthYear(e.target.value)}
                   min="1900"
@@ -273,7 +288,7 @@ export default function PaidInfoInput() {
                     cursor: "pointer",
                   }}
                 >
-                  <option value="">월 선택</option>
+                  <option value="">월선택</option>
                   {months.map((month) => (
                     <option key={month} value={month}>
                       {month}월
@@ -299,27 +314,13 @@ export default function PaidInfoInput() {
                     cursor: "pointer",
                   }}
                 >
-                  <option value="">일 선택</option>
+                  <option value="">일선택</option>
                   {days.map((day) => (
                     <option key={day} value={day}>
                       {day}일
                     </option>
                   ))}
                 </select>
-              </div>
-
-              <div style={{ marginBottom: 0 }}>
-                <label
-                  style={{
-                    display: "block",
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: "#fbbf24",
-                    marginBottom: 8,
-                  }}
-                >
-                  🕐 태어난 시간
-                </label>
 
                 <select
                   value={birthHour}
@@ -328,6 +329,7 @@ export default function PaidInfoInput() {
                     width: "48%",
                     padding: 12,
                     marginRight: "4%",
+                    marginBottom: 10,
                     borderRadius: 8,
                     border: "1px solid #fbbf24",
                     background: "#fff",
@@ -339,7 +341,7 @@ export default function PaidInfoInput() {
                     cursor: "pointer",
                   }}
                 >
-                  <option value="">시간</option>
+                  <option value="">시간선택</option>
                   <option value="unknown">모름</option>
                   {hours.map((hour) => (
                     <option key={hour} value={hour}>
@@ -353,20 +355,20 @@ export default function PaidInfoInput() {
                   onChange={(e) => setBirthMinute(e.target.value)}
                   style={{
                     width: "48%",
+                    padding: 12,
+                    marginBottom: 10,
                     borderRadius: 8,
                     border: "1px solid #fbbf24",
                     background: "#fff",
                     color: "#333",
                     fontSize: 14,
                     fontWeight: 700,
-                    padding: 12,
                     boxSizing: "border-box",
                     fontFamily: "inherit",
                     cursor: "pointer",
                   }}
                 >
-                  <option value="">분</option>
-                  <option value="unknown">모름</option>
+                  <option value="">분선택</option>
                   {minutes.map((minute) => (
                     <option key={minute} value={minute}>
                       {String(minute).padStart(2, "0")}분
@@ -376,10 +378,9 @@ export default function PaidInfoInput() {
               </div>
             </div>
 
-            {/* 상대방 정보 섹션 (VIP만) */}
             {selectedPackage === "VIP 커플팩" && (
-              <div style={{ marginBottom: 0 }}>
-                <h3 style={{ color: "#ff1493", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>👥 상대방 정보</h3>
+              <div style={{ marginBottom: 24, paddingBottom: 24, borderBottom: "2px solid rgba(251,191,36,0.5)" }}>
+                <h3 style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>상대방 정보</h3>
 
                 <div style={{ marginBottom: 16 }}>
                   <label
@@ -387,11 +388,11 @@ export default function PaidInfoInput() {
                       display: "block",
                       fontSize: 13,
                       fontWeight: 700,
-                      color: "#ff1493",
+                      color: "#fbbf24",
                       marginBottom: 8,
                     }}
                   >
-                    👥 상대방 이름
+                    상대방 이름
                   </label>
                   <input
                     type="text"
@@ -402,7 +403,7 @@ export default function PaidInfoInput() {
                       width: "100%",
                       padding: 12,
                       borderRadius: 8,
-                      border: "1px solid #ff1493",
+                      border: "1px solid #fbbf24",
                       background: "#fff",
                       color: "#333",
                       fontSize: 14,
@@ -419,16 +420,16 @@ export default function PaidInfoInput() {
                       display: "block",
                       fontSize: 13,
                       fontWeight: 700,
-                      color: "#ff1493",
+                      color: "#fbbf24",
                       marginBottom: 8,
                     }}
                   >
-                    📅 상대방 생년월일
+                    상대방 생년월일
                   </label>
 
                   <input
                     type="number"
-                    placeholder="상대방 태어난 년도 (예: 1990)"
+                    placeholder="연도를 입력하세요 (예: 1990)"
                     value={partnerBirthYear}
                     onChange={(e) => setPartnerBirthYear(e.target.value)}
                     min="1900"
@@ -438,7 +439,7 @@ export default function PaidInfoInput() {
                       padding: 12,
                       marginBottom: 10,
                       borderRadius: 8,
-                      border: "1px solid #ff1493",
+                      border: "1px solid #fbbf24",
                       background: "#fff",
                       color: "#333",
                       fontSize: 14,
@@ -457,7 +458,7 @@ export default function PaidInfoInput() {
                       marginRight: "4%",
                       marginBottom: 10,
                       borderRadius: 8,
-                      border: "1px solid #ff1493",
+                      border: "1px solid #fbbf24",
                       background: "#fff",
                       color: "#333",
                       fontSize: 14,
@@ -467,7 +468,7 @@ export default function PaidInfoInput() {
                       cursor: "pointer",
                     }}
                   >
-                    <option value="">월 선택</option>
+                    <option value="">월선택</option>
                     {months.map((month) => (
                       <option key={month} value={month}>
                         {month}월
@@ -483,7 +484,7 @@ export default function PaidInfoInput() {
                       padding: 12,
                       marginBottom: 10,
                       borderRadius: 8,
-                      border: "1px solid #ff1493",
+                      border: "1px solid #fbbf24",
                       background: "#fff",
                       color: "#333",
                       fontSize: 14,
@@ -493,27 +494,13 @@ export default function PaidInfoInput() {
                       cursor: "pointer",
                     }}
                   >
-                    <option value="">일 선택</option>
+                    <option value="">일선택</option>
                     {days.map((day) => (
                       <option key={day} value={day}>
                         {day}일
                       </option>
                     ))}
                   </select>
-                </div>
-
-                <div style={{ marginBottom: 0 }}>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      color: "#ff1493",
-                      marginBottom: 8,
-                    }}
-                  >
-                    🕐 상대방 태어난 시간
-                  </label>
 
                   <select
                     value={partnerBirthHour}
@@ -522,8 +509,9 @@ export default function PaidInfoInput() {
                       width: "48%",
                       padding: 12,
                       marginRight: "4%",
+                      marginBottom: 10,
                       borderRadius: 8,
-                      border: "1px solid #ff1493",
+                      border: "1px solid #fbbf24",
                       background: "#fff",
                       color: "#333",
                       fontSize: 14,
@@ -533,7 +521,7 @@ export default function PaidInfoInput() {
                       cursor: "pointer",
                     }}
                   >
-                    <option value="">시간</option>
+                    <option value="">시간선택</option>
                     <option value="unknown">모름</option>
                     {hours.map((hour) => (
                       <option key={hour} value={hour}>
@@ -547,20 +535,20 @@ export default function PaidInfoInput() {
                     onChange={(e) => setPartnerBirthMinute(e.target.value)}
                     style={{
                       width: "48%",
+                      padding: 12,
+                      marginBottom: 10,
                       borderRadius: 8,
-                      border: "1px solid #ff1493",
+                      border: "1px solid #fbbf24",
                       background: "#fff",
                       color: "#333",
                       fontSize: 14,
                       fontWeight: 700,
-                      padding: 12,
                       boxSizing: "border-box",
                       fontFamily: "inherit",
                       cursor: "pointer",
                     }}
                   >
-                    <option value="">분</option>
-                    <option value="unknown">모름</option>
+                    <option value="">분선택</option>
                     {minutes.map((minute) => (
                       <option key={minute} value={minute}>
                         {String(minute).padStart(2, "0")}분
@@ -570,80 +558,25 @@ export default function PaidInfoInput() {
                 </div>
               </div>
             )}
-          </div>
 
-          <button
-            onClick={handleAnalysis}
-            disabled={isLoading}
-            style={{
-              width: "100%",
-              padding: 14,
-              background: "linear-gradient(135deg, #ff1493, #ff69b4)",
-              color: "white",
-              border: "none",
-              borderRadius: 10,
-              fontWeight: 900,
-              fontSize: 15,
-              cursor: isLoading ? "not-allowed" : "pointer",
-              marginBottom: 12,
-              transition: "all 0.3s ease",
-              opacity: isLoading ? 0.6 : 1,
-            }}
-            onMouseOver={(e) => {
-              if (!isLoading) {
-                e.currentTarget.style.transform = "scale(1.02)";
-                e.currentTarget.style.boxShadow =
-                  "0 10px 25px rgba(255, 20, 147, 0.4)";
-              }
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-          >
-            {isLoading ? "분석 중..." : "분석 시작하기 ✨"}
-          </button>
-
-          <button
-            onClick={() => router.push("/")}
-            style={{
-              width: "100%",
-              padding: 14,
-              background: "rgba(139,92,246,0.3)",
-              color: "#f5f5f5",
-              border: "1px solid rgba(139,92,246,0.8)",
-              borderRadius: 10,
-              fontWeight: 900,
-              fontSize: 15,
-              cursor: "pointer",
-            }}
-          >
-            ← 홈으로
-          </button>
-
-          <div
-            style={{
-              background: "#fff3cd",
-              padding: "18px 16px",
-              borderRadius: 8,
-              marginTop: 28,
-              textAlign: "center",
-            }}
-          >
-            <p
+            <button
+              onClick={handleAnalysis}
+              disabled={isLoading}
               style={{
-                color: "#333",
-                fontSize: "13px",
-                fontWeight: 700,
-                lineHeight: 1.5,
-                margin: 0,
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
+                width: "100%",
+                padding: 16,
+                background: isLoading ? "rgba(251,191,36,0.5)" : "linear-gradient(135deg, #fbbf24, #f59e0b)",
+                color: "#1a1a1a",
+                border: "none",
+                borderRadius: 10,
+                fontWeight: 900,
+                fontSize: 16,
+                cursor: isLoading ? "not-allowed" : "pointer",
+                fontFamily: "inherit",
               }}
             >
-              ✨ 정확한 정보 입력으로
-더 자세한 분석을 받으세요! 🔮
-            </p>
+              {isLoading ? "분석 중..." : "분석 시작"}
+            </button>
           </div>
         </div>
       </div>

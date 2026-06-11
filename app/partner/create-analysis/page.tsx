@@ -89,7 +89,7 @@ export default function PartnerCreateAnalysis() {
           name: formData.customerName,
           email: formData.customerEmail,
           birth: `${formData.birthYear}-${formData.birthMonth}-${formData.birthDay}`,
-          birthHour: formData.birthHour,
+          birthHour: formData.birthHour === "unknown" ? "unknown" : String(formData.birthHour).padStart(2, "0"),
           gender: formData.gender,
         }),
       });
@@ -102,15 +102,27 @@ export default function PartnerCreateAnalysis() {
 
       const data = await response.json();
 
-      // 분석 결과 저장
-      sessionStorage.setItem("analysisResult", JSON.stringify(data.result));
-      sessionStorage.setItem("analysisName", formData.customerName);
-      sessionStorage.setItem("selectedPackage", formData.packageType);
+      console.log("API 응답:", data);
 
-      // 결과 페이지로 이동
-      router.push("/partner/analysis-result");
+      // 분석 결과 저장
+      if (data && data.result) {
+        sessionStorage.setItem("analysisResult", JSON.stringify(data.result));
+        sessionStorage.setItem("analysisName", formData.customerName);
+        sessionStorage.setItem("selectedPackage", formData.packageType);
+
+        console.log("sessionStorage 저장 완료");
+
+        // 결과 페이지로 이동
+        router.push("/partner/analysis-result");
+      } else {
+        alert("분석 결과를 받지 못했습니다");
+        setAnalyzing(false);
+      }
     } catch (error) {
+      console.error("분석 오류:", error);
       alert("분석 중 오류가 발생했습니다");
+      setAnalyzing(false);
+    } finally {
       setAnalyzing(false);
     }
   };

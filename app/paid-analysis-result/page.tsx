@@ -157,35 +157,35 @@ function PaidAnalysisResultContent() {
     try {
       const html2pdf = (await import("html2pdf.js")).default;
 
-      let htmlContent = `
-        <div style="margin: 0; padding: 0;">
-          <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box; padding: 40px; margin: 0; page-break-after: avoid;">
-            <div style="font-size: 80px; margin-bottom: 30px;">🔮</div>
-            <h1 style="font-size: 48px; font-weight: 900; margin: 0 0 50px 0; color: #1a1a1a;">점운</h1>
-            <p style="font-size: 20px; font-weight: 700; margin: 0; color: #666;">${packageName} 패키지</p>
-          </div>
-      `;
-
       const answerContent = getAnalysisAnswer();
       const { apiItems, templateItems } = getDisplayItems();
 
+      let htmlContent = `<div style="margin: 0; padding: 0;">`;
+
       htmlContent += `
-        <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: flex-start; padding: 30px; box-sizing: border-box; margin: 0;">
-          <div style="width: 100%; background-color: #FFFACD; padding: 25px; border-radius: 8px; box-sizing: border-box;">
-            <h2 style="font-size: 20px; font-weight: 900; border-bottom: 3px solid #FF6B6B; padding-bottom: 10px; margin: 0 0 15px 0; color: #FF6B6B;">🔮 당신의 변화</h2>
-            <p style="font-size: 13px; font-weight: 600; line-height: 1.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word;">${answerContent}</p>
-            <p style="font-size: 9px; color: #999; text-align: right; margin-top: 10px;">점운 AI 사주 분석</p>
+        <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box; padding: 40px; margin: 0; page-break-after: always;">
+          <div style="font-size: 80px; margin-bottom: 30px;">🔮</div>
+          <h1 style="font-size: 48px; font-weight: 900; margin: 0 0 50px 0; color: #1a1a1a;">점운</h1>
+          <p style="font-size: 20px; font-weight: 700; margin: 0; color: #666;">${packageName} 패키지</p>
+        </div>
+      `;
+
+      htmlContent += `
+        <div style="width: 210mm; min-height: 297mm; background-color: #FFD700; padding: 50px; box-sizing: border-box; page-break-after: always;">
+          <div style="background-color: #FFFACD; padding: 50px; border-radius: 8px; box-sizing: border-box;">
+            <h2 style="font-size: 26px; font-weight: 900; border-bottom: 4px solid #FF6B6B; padding-bottom: 25px; margin: 0 0 40px 0; color: #FF6B6B;">🔮 당신의 변화</h2>
+            <p style="font-size: 18px; font-weight: 700; line-height: 2.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word; letter-spacing: 1.5px;">${answerContent}</p>
           </div>
         </div>
       `;
 
       apiItems.forEach((item) => {
         htmlContent += `
-          <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: flex-start; padding: 30px; box-sizing: border-box; margin: 0;">
-            <div style="width: 100%; background-color: #FFFACD; padding: 25px; border-radius: 8px; box-sizing: border-box;">
-              <h2 style="font-size: 20px; font-weight: 900; border-bottom: 3px solid #FFD700; padding-bottom: 10px; margin: 0 0 15px 0; color: #1a1a1a;">${item.label}</h2>
-              <p style="font-size: 13px; font-weight: 600; line-height: 1.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word;">${item.value}</p>
-              <p style="font-size: 9px; color: #999; text-align: right; margin-top: 10px;">점운 AI 사주 분석</p>
+          <div style="width: 210mm; min-height: 297mm; background-color: #FFD700; padding: 50px; box-sizing: border-box; page-break-after: always;">
+            <div style="background-color: #FFFACD; padding: 50px; border-radius: 8px; box-sizing: border-box;">
+              <h2 style="font-size: 26px; font-weight: 900; border-bottom
+              : 4px solid #FFD700; padding-bottom: 25px; margin: 0 0 40px 0; color: #1a1a1a;">${item.label}</h2>
+              <p style="font-size: 18px; font-weight: 700; line-height: 2.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word; letter-spacing: 1.5px;">${item.value}</p>
             </div>
           </div>
         `;
@@ -193,28 +193,26 @@ function PaidAnalysisResultContent() {
 
       templateItems.forEach((item) => {
         htmlContent += `
-          <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: flex-start; padding: 30px; box-sizing: border-box; margin: 0;">
-            <div style="width: 100%; background-color: #FFFACD; padding: 25px; border-radius: 8px; box-sizing: border-box;">
-              <h2 style="font-size: 20px; font-weight: 900; border-bottom: 3px solid #FFD700; padding-bottom: 10px; margin: 0 0 15px 0; color: #1a1a1a;">${item.label}</h2>
-              <p style="font-size: 13px; font-weight: 600; line-height: 1.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word;">${item.value}</p>
-              <p style="font-size: 9px; color: #999; text-align: right; margin-top: 10px;">점운 AI 사주 분석</p>
+          <div style="width: 210mm; min-height: 297mm; background-color: #FFD700; padding: 50px; box-sizing: border-box; page-break-after: always;">
+            <div style="background-color: #FFFACD; padding: 50px; border-radius: 8px; box-sizing: border-box;">
+              <h2 style="font-size: 26px; font-weight: 900; border-bottom: 4px solid #FFD700; padding-bottom: 25px; margin: 0 0 40px 0; color: #1a1a1a;">${item.label}</h2>
+              <p style="font-size: 18px; font-weight: 700; line-height: 2.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word; letter-spacing: 1.5px;">${item.value}</p>
             </div>
           </div>
         `;
       });
 
       htmlContent += `
-        <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; box-sizing: border-box; margin: 0; text-align: center;">
-          <div style="width: 80%; background-color: #FFFACD; padding: 50px; border-radius: 8px; box-sizing: border-box;">
-            <p style="font-size: 28px; font-weight: 900; color: #1a1a1a; margin: 0 0 20px 0;">감사합니다</p>
-            <p style="font-size: 16px; font-weight: 700; color: #333; margin: 0 0 30px 0; line-height: 1.8;">
-              귀하의 사주 분석을 위해 저희 서비스를 이용해주셔서<br/>
-              진심으로 감사드립니다.
-            </p>
-            <p style="font-size: 13px; color: #666; margin: 0;">점운 AI 사주 분석</p>
+        <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 50px; box-sizing: border-box;">
+          <div style="background-color: #FFFACD; padding: 60px; border-radius: 8px; text-align: center;">
+            <p style="font-size: 32px; font-weight: 900; color: #1a1a1a; margin: 0 0 30px 0;">감사합니다</p>
+            <p style="font-size: 18px; font-weight: 700; color: #333; margin: 0 0 20px 0; line-height: 2.2;">귀하의 사주 분석을 위해<br/>저희 서비스를 이용해주셔서<br/>진심으로 감사드립니다.</p>
+            <p style="font-size: 14px; color: #666; margin: 0;">점운 AI 사주 분석</p>
           </div>
         </div>
       `;
+
+      htmlContent += `</div>`;
 
       const element = document.createElement("div");
       element.innerHTML = htmlContent;
@@ -237,7 +235,8 @@ function PaidAnalysisResultContent() {
           unit: "mm",
           format: "a4",
           compress: false
-        }
+        },
+        pagebreak: { mode: ['css', 'legacy'] }
       };
 
       html2pdf()
@@ -339,7 +338,7 @@ function PaidAnalysisResultContent() {
             </h2>
             <p
               style={{
-                fontSize: isMobile ? 12 : 14,
+                fontSize: "16px",
                 fontWeight: 700,
                 color: "#333",
                 margin: 0,
@@ -408,7 +407,7 @@ function PaidAnalysisResultContent() {
               </h2>
               <p
                 style={{
-                  fontSize: 14,
+                  fontSize: "16px",
                   fontWeight: 700,
                   color: "#333",
                   lineHeight: 1.8,
@@ -447,7 +446,7 @@ function PaidAnalysisResultContent() {
               </h2>
               <p
                 style={{
-                  fontSize: 14,
+                  fontSize: "16px",
                   fontWeight: 700,
                   color: "#333",
                   lineHeight: 1.8,
