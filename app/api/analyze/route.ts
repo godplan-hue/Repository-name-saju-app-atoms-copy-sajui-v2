@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
+
 export async function POST(request: NextRequest) {
   try {
     const { name, email, birth, birthHour, gender, planType, partnerName, partnerBirth, packageType } = await request.json();
 
+
     console.log("분석 요청:", { name, email, birth, birthHour, planType, packageType });
+
 
     // 무료 분석: 템플릿만 사용 (API 호출 안 함)
     if (planType === "free") {
@@ -22,12 +25,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ result });
     }
 
+
     // 유료 분석: API 호출
-    let maxTokens = 30000;
-    if (packageType === "기본 분석") maxTokens = 30000;
-    else if (packageType === "베이직") maxTokens = 150000;
-    else if (packageType === "프리미엄") maxTokens = 200000;
-    else if (packageType === "VIP 커플팩") maxTokens = 300000;
+    let maxTokens = 10000;
+if (packageType === "기본 분석") maxTokens = 10000;
+else if (packageType === "베이직") maxTokens = 20000;
+else if (packageType === "프리미엄") maxTokens = 30000;
+else if (packageType === "VIP 커플팩") maxTokens = 40000;
+
 
     console.log(`Sonnet API 호출 시작 (${packageType}, max_tokens: ${maxTokens})...`);
    
@@ -41,7 +46,9 @@ export async function POST(request: NextRequest) {
       maxTokens
     });
 
+
     console.log("API 분석 완료");
+
 
     return NextResponse.json({ result: apiResult });
   } catch (error) {
@@ -53,10 +60,13 @@ export async function POST(request: NextRequest) {
   }
 }
 
+
 async function callSonnetAPI(userData: any): Promise<any> {
   const { name, birth, birthHour, partnerName, partnerBirth, packageType, maxTokens } = userData;
 
+
   let prompt = "";
+
 
   if (packageType === "기본 분석") {
     prompt = `당신은 전문 사주분석가입니다. 다음 정보로 사주분석을 해주세요.
@@ -85,6 +95,7 @@ ${partnerName ? `【상대방정보】이름: ${partnerName}, 생년월일: ${pa
 JSON 형식: {"yearlyLuck": "내용", "monthlyLuck": "내용", "name": "내용", "wealthLuck": "내용", "loveLuck": "내용", "healthLuck": "내용", "couple": "내용", "fullAnalysis": "내용"}`;
   }
 
+
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -105,19 +116,23 @@ JSON 형식: {"yearlyLuck": "내용", "monthlyLuck": "내용", "name": "내용",
       }),
     });
 
+
     if (!response.ok) {
       const errorData = await response.json();
       console.error("API 응답 오류:", errorData);
       throw new Error(`API 오류: ${response.statusText}`);
     }
 
+
     const data = await response.json();
     const content = data.content[0].text;
+
 
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       throw new Error("JSON 파싱 실패");
     }
+
 
     const result = JSON.parse(jsonMatch[0]);
     return result;
@@ -127,13 +142,15 @@ JSON 형식: {"yearlyLuck": "내용", "monthlyLuck": "내용", "name": "내용",
   }
 }
 
+
 function getNameTemplate(name: string): string {
   return `${name}님의 이름은 깊은 의미를 담고 있습니다.\n\n각 글자가 지닌 뜻을 통해 당신의 성격과 운명을 알 수 있습니다.\n\n긍정적인 기운이 가득한 이름입니다.\n\n당신의 이름은 좋은 운을 불러옵니다.`;
 }
 
+
 function getWealthTemplate(birth: string): string {
   const year = parseInt(birth.split("-")[0]);
-  
+ 
   if (year >= 1970 && year < 1980) {
     return `당신의 재물운은 꾸준한 상승세를 보입니다.\n\n중년 이후 본격적인 재물 증식이 시작됩니다.\n\n부동산과 투자를 통해 자산을 늘릴 수 있습니다.\n\n인내심 있는 노력이 결실을 맺을 것입니다.`;
   } else if (year >= 1980 && year < 1990) {
@@ -145,9 +162,10 @@ function getWealthTemplate(birth: string): string {
   }
 }
 
+
 function getLoveTemplate(birth: string): string {
   const month = parseInt(birth.split("-")[1]);
-  
+ 
   if (month >= 1 && month <= 3) {
     return `당신의 연애운은 진중하고 깊습니다.\n\n진심 어린 관계를 지향하는 성향입니다.\n\n한 번 마음을 정하면 오래 함께합니다.\n\n배우자와 깊은 이해와 신뢰를 나눕니다.`;
   } else if (month >= 4 && month <= 6) {
@@ -159,9 +177,10 @@ function getLoveTemplate(birth: string): string {
   }
 }
 
+
 function getHealthTemplate(birth: string): string {
   const year = parseInt(birth.split("-")[0]);
-  
+ 
   if (year >= 1970 && year < 1980) {
     return `당신의 건강운은 전반적으로 양호합니다.\n\n규칙적인 생활로 건강을 유지할 수 있습니다.\n\n중년 이후 정기적인 건강검진이 중요합니다.\n\n적당한 운동으로 장수할 수 있습니다.`;
   } else if (year >= 1980 && year < 1990) {
@@ -173,12 +192,13 @@ function getHealthTemplate(birth: string): string {
   }
 }
 
+
 function getCoupleTemplate(birth: string): string {
   const year = parseInt(birth.split("-")[0]);
   const animalYear = (year - 1900) % 12;
   const animals = ["쥐", "소", "호랑이", "토끼", "뱀", "말", "양", "원숭이", "닭", "개", "돼지", ""];
   const currentAnimal = animals[animalYear];
-  
+ 
   if (animalYear === 0) {
     return `${currentAnimal}띠인 당신과 잘 맞는 상대는 용띠와 원숭이띠입니다.\n\n상호 보완적인 관계를 만들 수 있습니다.\n\n서로를 이해하고 존중하면 좋은 관계입니다.\n\n함께 성장하는 부부가 될 수 있습니다.`;
   } else if (animalYear === 1) {
@@ -206,6 +226,7 @@ function getCoupleTemplate(birth: string): string {
   }
 }
 
+
 function getYearlyTemplate(birth: string): string {
   const year = birth.split("-")[0];
   const templates: { [key: string]: string } = {
@@ -215,14 +236,16 @@ function getYearlyTemplate(birth: string): string {
     "200": `${year}년생 당신에게 올해는 성장의 시간입니다.\n\n꿈을 향해 나아갈 시기입니다.\n\n노력이 빛날 한 해입니다.\n\n새로운 가능성이 열릴 것입니다.`,
   };
 
+
   for (const [key, value] of Object.entries(templates)) {
     if (year.startsWith(key)) {
       return value;
     }
   }
-  
+ 
   return `올해는 새로운 변화와 성장이 함께할 시기입니다.\n\n긍정적인 에너지로 한 해를 시작하세요.\n\n좋은 기회를 놓치지 마세요.\n\n당신의 노력이 빛날 것입니다.`;
 }
+
 
 function getMonthlyTemplate(birth: string): string {
   const month = parseInt(birth.split("-")[1]);
@@ -242,8 +265,10 @@ function getMonthlyTemplate(birth: string): string {
     12: `${monthNames[month]}은 마무리의 달입니다.\n\n한 해를 정리하기에 좋은 시기입니다.\n\n감사한 마음으로 마무리하세요.\n\n새로운 에너지를 준비하세요.`,
   };
 
+
   return monthTexts[month] || `이번 달은 새로운 기회와 가능성으로 가득합니다.\n\n긍정적인 에너지로 한 달을 보내세요.\n\n좋은 결과를 기대할 수 있습니다.\n\n당신의 노력이 빛날 것입니다.`;
 }
+
 
 function getFullTemplate(birth: string): string {
   const [year, month, day] = birth.split("-");
