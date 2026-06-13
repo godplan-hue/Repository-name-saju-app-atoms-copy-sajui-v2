@@ -57,6 +57,7 @@ export default function V2Profile() {
     gender: "", birthHour: "",
     phone: "", email: "",
   });
+  const [agreed, setAgreed] = useState(false);
 
   useEffect(() => {
     const n = localStorage.getItem("v2_user_name") ?? "";
@@ -178,7 +179,13 @@ export default function V2Profile() {
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <input
                 autoFocus type="tel" value={form.phone}
-                onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
+                onChange={e => {
+                  const digits = e.target.value.replace(/\D/g, "").slice(0, 11);
+                  let formatted = digits;
+                  if (digits.length > 3 && digits.length <= 7) formatted = `${digits.slice(0,3)}-${digits.slice(3)}`;
+                  else if (digits.length > 7) formatted = `${digits.slice(0,3)}-${digits.slice(3,7)}-${digits.slice(7)}`;
+                  setForm(p => ({ ...p, phone: formatted }));
+                }}
                 onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); (e.currentTarget.nextElementSibling as HTMLInputElement)?.focus(); } }}
                 placeholder="010-0000-0000" style={inp}
                 onFocus={e => (e.currentTarget.style.borderColor = "#ec4899")}
@@ -187,13 +194,34 @@ export default function V2Profile() {
               <input
                 type="email" value={form.email}
                 onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                onKeyDown={e => { if (e.key === "Enter") finish(); }}
+                onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); } }}
                 placeholder="example@email.com" style={inp}
                 onFocus={e => (e.currentTarget.style.borderColor = "#ec4899")}
                 onBlur={e => (e.currentTarget.style.borderColor = "rgba(236,72,153,0.25)")}
               />
-              <button onClick={finish}
-                style={{ padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.3)", marginTop: 4 }}>
+              {/* 개인정보 동의 */}
+              <div style={{ background: "#f9fafb", borderRadius: 14, padding: "14px 14px 12px", border: "1.5px solid rgba(236,72,153,0.12)" }}>
+                <p style={{ fontSize: 12, fontWeight: 900, color: "#374151", margin: "0 0 10px" }}>📋 개인정보 수집·이용 동의서</p>
+                <div style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.8, marginBottom: 12 }}>
+                  <div>• 수집 목적: 사주 분석 서비스 제공</div>
+                  <div>• 수집 항목: 이름, 생년월일, 성별, 출생시간, 전화번호, 이메일</div>
+                  <div>• 보유 기간: 3년</div>
+                  <div>• 동의 거부: 서비스 이용 불가</div>
+                </div>
+                <label style={{ display: "flex", alignItems: "center", gap: 9, cursor: "pointer" }}>
+                  <input
+                    type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
+                    style={{ width: 18, height: 18, accentColor: "#ec4899", cursor: "pointer", flexShrink: 0 }}
+                  />
+                  <span style={{ fontSize: 13, fontWeight: 800, color: agreed ? "#ec4899" : "#374151" }}>
+                    동의합니다 <span style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af" }}>(필수)</span>
+                  </span>
+                </label>
+              </div>
+              <button
+                onClick={() => { if (!agreed) { alert("개인정보 수집·이용에 동의해주세요."); return; } finish(); }}
+                disabled={!agreed}
+                style={{ padding: "14px 0", background: agreed ? G : "#e5e7eb", color: agreed ? "white" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: agreed ? "pointer" : "not-allowed", boxShadow: agreed ? "0 6px 20px rgba(236,72,153,0.3)" : "none", marginTop: 4 }}>
                 🔮 분석 시작
               </button>
             </div>
