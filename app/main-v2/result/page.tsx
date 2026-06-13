@@ -215,6 +215,7 @@ export default function V2Result() {
           style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12 }}
         >
           <div style={{ background: G, padding: "24px 20px", color: "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
+            <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 14px", letterSpacing: "-0.3px" }}>🐱 점운 · AI 사주 분석</p>
             <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
             <h1 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 12px", opacity: 0.9 }}>{profile?.name}님의 운세 분석</h1>
             <ScoreCircle score={scores?.total ?? 0} size={130} />
@@ -247,10 +248,6 @@ export default function V2Result() {
               {freeAnalysis}
             </p>
           </div>
-          <div style={{ padding: "8px 18px 14px", borderTop: "1px solid rgba(236,72,153,0.06)", display: "flex", justifyContent: "center", alignItems: "center", gap: 5 }}>
-            <span style={{ fontSize: 11 }}>🐱</span>
-            <span style={{ fontSize: 10, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운 · AI 사주 분석</span>
-          </div>
         </div>
 
         {/* ── 유료: 선택한 운세만 표시 ── */}
@@ -270,10 +267,6 @@ export default function V2Result() {
                 <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
                   {allAnalyses[c.key] ?? ""}
                 </p>
-              </div>
-              <div style={{ padding: "8px 18px 14px", borderTop: "1px solid rgba(236,72,153,0.06)", display: "flex", justifyContent: "center", alignItems: "center", gap: 5 }}>
-                <span style={{ fontSize: 11 }}>🐱</span>
-                <span style={{ fontSize: 10, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운 · AI 사주 분석</span>
               </div>
             </div>
           ))
