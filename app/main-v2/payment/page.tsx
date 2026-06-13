@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
@@ -8,149 +8,194 @@ const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const PLANS = [
   {
-    id: "lite",
-    name: "라이트",
+    id: "taste",
+    icon: "🦢",
+    name: "학 코스",
+    badge: null,
+    desc: "1회 AI 심층 분석",
     price: 990,
     priceStr: "₩990",
-    badge: null,
-    desc: "1개 심층 분석",
-    features: ["AI 심층 분석 1회", "상세 운세 텍스트", "럭키 아이템 분석"],
+    features: ["AI 심층 분석 1회", "전체 분석 텍스트 해제", "이미지 저장"],
     highlight: false,
-    packageName: "기본 분석",
-    pages: 30,
+    per: "1회",
+  },
+  {
+    id: "basic",
+    icon: "🐯",
+    name: "호랑이 코스",
+    badge: null,
+    desc: "3회 AI 심층 분석",
+    price: 2970,
+    priceStr: "₩2,970",
+    features: ["AI 심층 분석 3회", "재물·성공운 상세", "이미지 저장", "분석 공유"],
+    highlight: false,
+    per: "3회",
   },
   {
     id: "popular",
-    name: "인기",
-    price: 4990,
-    priceStr: "₩4,990",
+    icon: "🦚",
+    name: "봉황 코스",
     badge: "🔥 인기",
-    desc: "3개 심층 분석",
-    features: ["AI 심층 분석 3회", "재물·연애·건강 분석", "PDF 저장", "분석 공유 기능"],
+    desc: "5회 + 전 분야 분석",
+    price: 4950,
+    priceStr: "₩4,950",
+    features: ["AI 심층 분석 5회", "전 분야 상세 분석", "궁합 분석 포함", "이미지 저장"],
     highlight: true,
-    packageName: "베이직",
-    pages: 75,
+    per: "5회",
   },
   {
-    id: "unlimited",
-    name: "프리미엄",
-    price: 9990,
-    priceStr: "₩9,990",
+    id: "vip",
+    icon: "🐲",
+    name: "용 코스",
     badge: "👑 최고",
     desc: "무제한 심층 분석",
-    features: ["AI 심층 분석 무제한", "전 카테고리 분석", "궁합 분석 포함", "PDF 저장", "월별 운세 상세"],
+    price: 9990,
+    priceStr: "₩9,990",
+    features: ["AI 무제한 분석", "전 분야 + 사업운", "월별 운세 상세", "이미지 저장", "우선 상담"],
     highlight: false,
-    packageName: "프리미엄",
-    pages: 100,
+    per: "무제한",
   },
 ];
 
 export default function V2Payment() {
   const router = useRouter();
-  const [selected, setSelected] = useState("popular");
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [sel, setSel] = useState("taste");
+  const [busy, setBusy] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
 
-  const handlePay = async () => {
-    const plan = PLANS.find(p => p.id === selected);
-    if (!plan) return;
-    setIsProcessing(true);
-    sessionStorage.setItem("selectedPackage", plan.packageName);
-    // 실제 토스 결제 연동 시 여기서 토스 SDK 호출
-    // 현재는 payment-complete로 직접 이동
-    setTimeout(() => {
-      router.push(`/payment-complete?package=${encodeURIComponent(plan.packageName)}&pages=${plan.pages}`);
-    }, 800);
+  useEffect(() => {
+    const p = sessionStorage.getItem("v2_profile");
+    if (p) setProfile(JSON.parse(p));
+  }, []);
+
+  const plan = PLANS.find(p => p.id === sel)!;
+
+  const pay = async () => {
+    if (busy) return;
+    setBusy(true);
+
+    // 결제 후 유료 분석 호출 → result 갱신
+    try {
+      if (profile) {
+        // 기존 result에서 category 가져오기
+        const prevResult = JSON.parse(sessionStorage.getItem("v2_result") || "null");
+        const category = prevResult?.category ?? "✨ 총운";
+
+        const res = await fetch("/api/v2/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: profile.name,
+            birth: `${profile.birthYear}-${profile.birthMonth}-${profile.birthDay}`,
+            birthHour: profile.birthHour,
+            gender: profile.gender,
+            relationship: profile.relationship,
+            category,
+            planType: "paid",
+          }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const newResult = { ...data, category, profile };
+          sessionStorage.setItem("v2_result", JSON.stringify(newResult));
+        }
+      }
+
+      // 결제 완료 플래그 설정
+      sessionStorage.setItem("v2_paid", "1");
+      sessionStorage.setItem("v2_plan", sel);
+
+      // 결제 처리 딜레이 (UI 피드백)
+      await new Promise(r => setTimeout(r, 1200));
+
+      router.push("/main-v2/result");
+    } catch {
+      setBusy(false);
+      alert("결제 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
   };
-
-  const selectedPlan = PLANS.find(p => p.id === selected);
 
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
-      {/* 헤더 */}
-      <header style={{ height: 56, padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-        <button onClick={() => router.back()} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+      <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
+        <button onClick={() => router.back()} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
           <span style={{ fontSize: 18 }}>←</span>
-          <span style={{ fontSize: 14, color: "#6b7280", fontWeight: 600 }}>뒤로</span>
+          <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
         </button>
-        <span style={{ fontWeight: 900, fontSize: 15, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>포인트 충전</span>
-        <div style={{ width: 48 }} />
+        <span style={{ fontWeight: 900, fontSize: 14, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>결제</span>
+        <div style={{ width: 40 }} />
       </header>
 
-      <div style={{ maxWidth: 520, margin: "0 auto", padding: "28px 16px 80px" }}>
+      <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* 상단 배너 */}
-        <div style={{ background: G, borderRadius: 20, padding: "24px 20px", textAlign: "center", marginBottom: 28, color: "white" }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>💎</div>
-          <h1 style={{ fontSize: 20, fontWeight: 900, margin: "0 0 8px" }}>AI 심층 분석 포인트</h1>
-          <p style={{ fontSize: 13, opacity: 0.85, margin: 0, lineHeight: 1.6 }}>
-            무료 분석의 미리보기에서 보셨나요?<br />
-            포인트 충전으로 전체 분석을 확인하세요
+        {/* 배너 */}
+        <div style={{ background: G, borderRadius: 20, padding: "22px 18px", textAlign: "center", marginBottom: 20, color: "white" }}>
+          <div style={{ fontSize: 40, marginBottom: 8 }}>🔓</div>
+          <h1 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 6px" }}>전체 AI 심층 분석 해제</h1>
+          <p style={{ fontSize: 12, opacity: 0.85, margin: 0, lineHeight: 1.6 }}>
+            {profile ? `${profile.name}님의` : "내"} 운세를 완전히 해석해드립니다<br />
+            ₩990부터 시작 · 이미지 저장 포함
           </p>
         </div>
 
-        {/* 플랜 선택 */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 28 }}>
-          {PLANS.map(plan => (
-            <div
-              key={plan.id}
-              onClick={() => setSelected(plan.id)}
-              style={{
-                background: "white",
-                borderRadius: 20,
-                padding: "20px",
-                border: selected === plan.id
-                  ? "2px solid #ec4899"
-                  : "1.5px solid rgba(236,72,153,0.15)",
-                cursor: "pointer",
-                position: "relative",
-                transition: "all 0.2s",
-                boxShadow: selected === plan.id ? "0 8px 24px rgba(236,72,153,0.15)" : "0 2px 12px rgba(139,92,246,0.05)",
-              }}
-            >
-              {plan.badge && (
-                <div style={{ position: "absolute", top: -10, right: 16, background: G, color: "white", fontSize: 12, fontWeight: 900, padding: "4px 12px", borderRadius: 20, boxShadow: "0 4px 12px rgba(236,72,153,0.3)" }}>
-                  {plan.badge}
+        {/* 코스 목록 */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
+          {PLANS.map(p => (
+            <div key={p.id} onClick={() => setSel(p.id)}
+              style={{ background: "white", borderRadius: 20, padding: "16px 14px", border: sel === p.id ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.12)", cursor: "pointer", position: "relative", boxShadow: sel === p.id ? "0 6px 24px rgba(236,72,153,0.14)" : "0 2px 8px rgba(139,92,246,0.05)", transition: "all 0.15s" }}>
+
+              {p.badge && (
+                <div style={{ position: "absolute", top: -9, right: 14, background: G, color: "white", fontSize: 10, fontWeight: 900, padding: "3px 10px", borderRadius: 20 }}>{p.badge}</div>
+              )}
+
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ display: "flex", gap: 12, alignItems: "center", flex: 1 }}>
+                  {/* 라디오 */}
+                  <div style={{ width: 20, height: 20, borderRadius: "50%", border: sel === p.id ? "6px solid #ec4899" : "2px solid #d1d5db", flexShrink: 0, transition: "all 0.15s" }} />
+                  <span style={{ fontSize: 24 }}>{p.icon}</span>
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 900, color: sel === p.id ? "#ec4899" : "#1a1a2e" }}>{p.name}</div>
+                    <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 1 }}>{p.desc}</div>
+                  </div>
+                </div>
+                <div style={{ textAlign: "right", flexShrink: 0 }}>
+                  <div style={{ fontSize: 17, fontWeight: 900, color: sel === p.id ? "#ec4899" : "#1a1a2e" }}>{p.priceStr}</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af" }}>{p.per}</div>
+                </div>
+              </div>
+
+              {sel === p.id && (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 10 }}>
+                  {p.features.map(f => (
+                    <span key={f} style={{ fontSize: 10, color: "#8b5cf6", background: "#ede9fe", padding: "2px 8px", borderRadius: 20, fontWeight: 600 }}>✓ {f}</span>
+                  ))}
                 </div>
               )}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-                <div>
-                  <h3 style={{ fontSize: 17, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>{plan.name}</h3>
-                  <p style={{ fontSize: 13, color: "#6b7280", margin: 0, fontWeight: 600 }}>{plan.desc}</p>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: selected === plan.id ? "#ec4899" : "#1a1a2e" }}>{plan.priceStr}</div>
-                </div>
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {plan.features.map(f => (
-                  <span key={f} style={{ fontSize: 12, color: selected === plan.id ? "#8b5cf6" : "#6b7280", background: selected === plan.id ? "#ede9fe" : "#f9fafb", padding: "4px 10px", borderRadius: 20, fontWeight: 600 }}>
-                    ✓ {f}
-                  </span>
-                ))}
-              </div>
             </div>
           ))}
         </div>
 
-        {/* 결제 버튼 */}
-        <div style={{ background: "white", borderRadius: 20, padding: "20px", marginBottom: 16, border: "1.5px solid rgba(236,72,153,0.12)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
-            <span style={{ fontSize: 15, fontWeight: 700, color: "#374151" }}>선택한 플랜</span>
-            <span style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e" }}>{selectedPlan?.name} {selectedPlan?.priceStr}</span>
+        {/* 결제 버튼 영역 */}
+        <div style={{ background: "white", borderRadius: 20, padding: "16px 14px", border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: "#374151" }}>{plan.icon} {plan.name}</span>
+            <span style={{ fontSize: 17, fontWeight: 900, color: "#ec4899" }}>{plan.priceStr}</span>
           </div>
-          <button
-            onClick={handlePay}
-            disabled={isProcessing}
-            style={{ width: "100%", padding: "16px 0", background: isProcessing ? "#e5e7eb" : G, color: isProcessing ? "#9ca3af" : "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", boxShadow: isProcessing ? "none" : "0 8px 24px rgba(236,72,153,0.3)" }}
-          >
-            {isProcessing ? "결제 처리 중..." : `💳 ${selectedPlan?.priceStr} 결제하기`}
+
+          <button onClick={pay} disabled={busy}
+            style={{ width: "100%", padding: "15px 0", background: busy ? "#e5e7eb" : G, color: busy ? "#9ca3af" : "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: busy ? "not-allowed" : "pointer", boxShadow: busy ? "none" : "0 6px 20px rgba(236,72,153,0.3)", transition: "all 0.2s" }}>
+            {busy ? "⏳ 결제 처리 중..." : `💳 ${plan.priceStr} 결제하기`}
           </button>
         </div>
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "#9ca3af", lineHeight: 1.7, fontWeight: 500 }}>
-          🔒 결제는 토스페이먼츠를 통해 안전하게 처리됩니다<br />
-          결제 완료 후 즉시 이용 가능합니다
+        <div style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "center", marginBottom: 8 }}>
+          <span style={{ fontSize: 11, color: "#9ca3af" }}>🔒</span>
+          <span style={{ fontSize: 11, color: "#9ca3af" }}>토스페이먼츠로 안전하게 결제</span>
+        </div>
+        <p style={{ textAlign: "center", fontSize: 11, color: "#d1d5db", margin: 0, lineHeight: 1.6 }}>
+          결제 즉시 전체 분석 해제 · 이미지 저장 가능
         </p>
       </div>
     </main>
