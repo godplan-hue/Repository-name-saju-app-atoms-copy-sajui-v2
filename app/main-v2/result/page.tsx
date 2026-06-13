@@ -316,46 +316,6 @@ export default function V2Result() {
           </div>
         )}
 
-        {/* ── 유료: 코스 업셀 카드 ── */}
-        {paid && (
-          <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.12)", marginBottom: 12, overflow: "hidden" }}>
-            <div style={{ background: G, padding: "18px 18px 14px", color: "white", textAlign: "center" }}>
-              <div style={{ fontSize: 22, marginBottom: 4 }}>✨</div>
-              <h3 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 4px" }}>【전체 AI 심층 분석】</h3>
-              <p style={{ fontSize: 11, opacity: 0.85, margin: 0, lineHeight: 1.6 }}>
-                운세를 완전히 해석해드립니다<br />
-                ₩990부터 시작 · 이미지 저장&보관함 포함
-              </p>
-            </div>
-            <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
-              {[
-                { icon: "🦢", name: "학 코스", price: "₩990", features: ["AI 심층 분석"] },
-                { icon: "🐯", name: "호랑이 코스", price: "₩2,970", features: ["AI 심층 분석", "재물운+성공운 상세"] },
-                { icon: "🦚", name: "봉황 코스", price: "₩4,950", features: ["AI 심층 분석", "연애운+건강운 상세", "월별+오늘 운세 포함"], hot: true },
-                { icon: "🐲", name: "용 코스", price: "₩9,990", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
-              ].map(p => (
-                <div key={p.name} style={{ borderRadius: 16, border: `1.5px solid ${p.hot ? "#ec4899" : "rgba(236,72,153,0.12)"}`, padding: "12px 14px", background: p.hot ? "#fdf2f8" : "white", position: "relative" }}>
-                  {p.hot && <div style={{ position: "absolute", top: -8, right: 12, background: G, color: "white", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 20 }}>🔥 인기</div>}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                    <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{p.icon} {p.name}</span>
-                    <span style={{ fontSize: 14, fontWeight: 900, color: "#ec4899" }}>{p.price}</span>
-                  </div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                    {p.features.map(f => (
-                      <span key={f} style={{ fontSize: 10, color: "#8b5cf6", background: "#ede9fe", padding: "2px 8px", borderRadius: 20, fontWeight: 600 }}>✓ {f}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-              <button
-                onClick={() => router.push("/main-v2/payment")}
-                style={{ width: "100%", padding: "13px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.3)", marginTop: 2 }}>
-                💎 코스 선택하기
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* ── 유료: 이미지 저장 버튼 ── */}
         {paid && (
           <div style={{ marginBottom: 12 }}>
