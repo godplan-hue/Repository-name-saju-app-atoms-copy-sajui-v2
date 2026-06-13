@@ -74,7 +74,7 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
       name: r.profile?.name ?? "",
       category: r.category ?? "💰 재물운",
       scores: r.scores ?? {},
-      analysis: (r.analysis ?? "").slice(0, 100),
+      analysis: r.analysis ?? "",
       isPaid,
       allAnalyses: isPaid ? analyses : undefined,
     };
@@ -95,6 +95,7 @@ export default function V2Result() {
   const [paying, setPaying] = useState(false);
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
+  const [paidCats, setPaidCats] = useState<string[]>([]);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("v2_result");
@@ -110,6 +111,10 @@ export default function V2Result() {
     setPaid(isPaid);
     const analyses = isPaid ? (r.allAnalyses ?? {}) : {};
     setAllAnalyses(analyses);
+    if (isPaid) {
+      const saved = sessionStorage.getItem("v2_paid_cats");
+      setPaidCats(saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key));
+    }
     saveToHistory(r, isPaid, analyses);
   }, []);
 
@@ -142,12 +147,16 @@ export default function V2Result() {
     setPaying(true);
     try {
       sessionStorage.setItem("v2_paid", "1");
+      sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
       setPaid(true);
+      setPaidCats(selectedCats);
       await fetchPaid(result);
     } catch {
       alert("결제 처리 중 오류가 발생했습니다.");
       sessionStorage.removeItem("v2_paid");
+      sessionStorage.removeItem("v2_paid_cats");
       setPaid(false);
+      setPaidCats([]);
     } finally {
       setPaying(false);
     }
@@ -287,9 +296,9 @@ export default function V2Result() {
           </div>
         </div>
 
-        {/* ── 유료: 4개 카드 (연애/건강/성공/총운) ── */}
+        {/* ── 유료: 선택한 운세만 표시 ── */}
         {paid && Object.keys(allAnalyses).length > 0 && (
-          ALL_SCORE_CATS.filter(c => c.key !== "💰 재물운").map((c, i) => (
+          ALL_SCORE_CATS.filter(c => c.key !== "💰 재물운" && paidCats.includes(c.key)).map((c, i) => (
             <div
               key={c.key}
               ref={el => { cardRefs.current[2 + i] = el; }}

@@ -74,12 +74,6 @@ export default function V2Analysis() {
       const data = await res.json();
       const result = { ...data, category: selCat, followUp: selOpt, profile };
       sessionStorage.setItem("v2_result", JSON.stringify(result));
-
-      // 히스토리 저장
-      const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
-      hist.unshift({ id: Date.now(), date: new Date().toISOString(), name: profile.name, category: selCat, scores: data.scores, luckyColor: data.luckyColor, luckyNumber: data.luckyNumber, luckyDirection: data.luckyDirection, analysis: (data.analysis ?? "").slice(0, 80) + "...", fullAnalysis: data.analysis ?? "" });
-      localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 20)));
-
       router.push("/main-v2/result");
     } catch {
       alert("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
