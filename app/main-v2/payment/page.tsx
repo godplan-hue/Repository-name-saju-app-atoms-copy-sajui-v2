@@ -12,10 +12,10 @@ const PLANS = [
     icon: "🦢",
     name: "학 코스",
     badge: null,
-    desc: "1회 AI 심층 분석",
+    desc: "₩990",
     price: 990,
     priceStr: "₩990",
-    features: ["AI 심층 분석 1회", "전체 분석 텍스트 해제", "이미지 저장"],
+    features: ["AI 심층 분석"],
     highlight: false,
     per: "1회",
   },
@@ -24,10 +24,10 @@ const PLANS = [
     icon: "🐯",
     name: "호랑이 코스",
     badge: null,
-    desc: "3회 AI 심층 분석",
+    desc: "₩2,970",
     price: 2970,
     priceStr: "₩2,970",
-    features: ["AI 심층 분석 3회", "재물·성공운 상세", "이미지 저장", "분석 공유"],
+    features: ["AI 심층 분석", "재물운+성공운 상세"],
     highlight: false,
     per: "3회",
   },
@@ -36,10 +36,10 @@ const PLANS = [
     icon: "🦚",
     name: "봉황 코스",
     badge: "🔥 인기",
-    desc: "5회 + 전 분야 분석",
+    desc: "₩4,950",
     price: 4950,
     priceStr: "₩4,950",
-    features: ["AI 심층 분석 5회", "전 분야 상세 분석", "궁합 분석 포함", "이미지 저장"],
+    features: ["AI 심층 분석", "연애운+건강운 상세", "월별+오늘 운세 포함"],
     highlight: true,
     per: "5회",
   },
@@ -48,10 +48,10 @@ const PLANS = [
     icon: "🐲",
     name: "용 코스",
     badge: "👑 최고",
-    desc: "무제한 심층 분석",
+    desc: "₩9,990",
     price: 9990,
     priceStr: "₩9,990",
-    features: ["AI 무제한 분석", "전 분야 + 사업운", "월별 운세 상세", "이미지 저장", "우선 상담"],
+    features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"],
     highlight: false,
     per: "무제한",
   },
@@ -102,7 +102,7 @@ export default function V2Payment() {
         }
       }
 
-      // 결제 완료 플래그 설정
+      // 결제 완료 플래그 설정 (v2_paid_cats는 result에서 이미 설정됨, 덮어쓰지 않음)
       sessionStorage.setItem("v2_paid", "1");
       sessionStorage.setItem("v2_plan", sel);
 
@@ -133,10 +133,10 @@ export default function V2Payment() {
         {/* 배너 */}
         <div style={{ background: G, borderRadius: 20, padding: "22px 18px", textAlign: "center", marginBottom: 20, color: "white" }}>
           <div style={{ fontSize: 40, marginBottom: 8 }}>🔓</div>
-          <h1 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 6px" }}>전체 AI 심층 분석 해제</h1>
+          <h1 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 6px" }}>【전체 AI 심층 분석】</h1>
           <p style={{ fontSize: 12, opacity: 0.85, margin: 0, lineHeight: 1.6 }}>
-            {profile ? `${profile.name}님의` : "내"} 운세를 완전히 해석해드립니다<br />
-            ₩990부터 시작 · 이미지 저장 포함
+            운세를 완전히 해석해드립니다<br />
+            ₩990부터 시작 · 이미지 저장&보관함 포함
           </p>
         </div>
 

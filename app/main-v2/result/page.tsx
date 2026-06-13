@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
@@ -92,7 +92,6 @@ export default function V2Result() {
   const [paid, setPaid] = useState(false);
   const [allAnalyses, setAllAnalyses] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
-  const [paying, setPaying] = useState(false);
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const [paidCats, setPaidCats] = useState<string[]>([]);
@@ -115,51 +114,14 @@ export default function V2Result() {
       const saved = sessionStorage.getItem("v2_paid_cats");
       setPaidCats(saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key));
     }
-    saveToHistory(r, isPaid, analyses);
+    if (isPaid) saveToHistory(r, isPaid, analyses);
   }, []);
 
-  const fetchPaid = useCallback(async (r: any) => {
-    const res = await fetch("/api/v2/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: r.profile?.name,
-        birth: `${r.profile?.birthYear}-${r.profile?.birthMonth}-${r.profile?.birthDay}`,
-        birthHour: r.profile?.birthHour,
-        gender: r.profile?.gender,
-        relationship: r.profile?.relationship,
-        category: r.category,
-        planType: "paid",
-      }),
-    });
-    if (!res.ok) throw new Error("API error");
-    const data = await res.json();
-    const updated = { ...r, allAnalyses: data.allAnalyses, scores: data.scores, luckyColor: data.luckyColor, luckyNumber: data.luckyNumber, luckyDirection: data.luckyDirection };
-    sessionStorage.setItem("v2_result", JSON.stringify(updated));
-    setResult(updated);
-    const analyses = data.allAnalyses ?? {};
-    setAllAnalyses(analyses);
-    saveToHistory(updated, true, analyses);
-  }, []);
-
-  const handlePay = async () => {
-    if (paying || !result) return;
-    setPaying(true);
-    try {
-      sessionStorage.setItem("v2_paid", "1");
-      sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
-      setPaid(true);
-      setPaidCats(selectedCats);
-      await fetchPaid(result);
-    } catch {
-      alert("결제 처리 중 오류가 발생했습니다.");
-      sessionStorage.removeItem("v2_paid");
-      sessionStorage.removeItem("v2_paid_cats");
-      setPaid(false);
-      setPaidCats([]);
-    } finally {
-      setPaying(false);
-    }
+  const goToPay = () => {
+    if (selectedCats.length === 0) return;
+    sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
+    setShowSelect(false);
+    router.push("/main-v2/payment");
   };
 
   const saveImage = async () => {
@@ -258,11 +220,6 @@ export default function V2Result() {
             <ScoreCircle score={scores?.total ?? 0} size={130} />
             <p style={{ fontSize: 12, opacity: 0.75, margin: "8px 0 0", fontWeight: 600 }}>총운 점수</p>
           </div>
-          <div style={{ padding: "18px 18px 20px" }}>
-            {ALL_SCORE_CATS.filter(c => c.key !== "✨ 총운").map(c => (
-              <ScoreBar key={c.key} label={c.key} score={scores?.[c.scoreKey] ?? 0} color={c.color} />
-            ))}
-          </div>
           {/* 럭키 */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "0 18px 18px" }}>
             {[{ label: "행운 색", value: luckyColor, icon: "🎨" }, { label: "행운 숫자", value: luckyNumber, icon: "🔢" }, { label: "행운 방향", value: luckyDirection, icon: "🧭" }].map(item => (
@@ -347,7 +304,7 @@ export default function V2Result() {
             <div style={{ fontSize: 30, marginBottom: 8 }}>🔓</div>
             <h3 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 8px" }}>심층 운세 보기</h3>
             <p style={{ fontSize: 12, opacity: 0.85, margin: "0 0 18px", lineHeight: 1.7 }}>
-              운세당 ₩990 · 최대 4개 선택<br />각 최대 3,500자 · 이미지 저장 포함
+              운세당 ₩990 · 최대 4개 선택<br />각 최대 3,500자 · 이미지 저장&보관함 포함
             </p>
             <button
               onClick={() => setShowSelect(true)}
@@ -356,6 +313,46 @@ export default function V2Result() {
               💎 운세 선택하기 (개당 ₩990)
             </button>
             <p style={{ fontSize: 11, opacity: 0.6, margin: "9px 0 0" }}>🔒 토스페이먼츠 안전결제</p>
+          </div>
+        )}
+
+        {/* ── 유료: 코스 업셀 카드 ── */}
+        {paid && (
+          <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.12)", marginBottom: 12, overflow: "hidden" }}>
+            <div style={{ background: G, padding: "18px 18px 14px", color: "white", textAlign: "center" }}>
+              <div style={{ fontSize: 22, marginBottom: 4 }}>✨</div>
+              <h3 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 4px" }}>【전체 AI 심층 분석】</h3>
+              <p style={{ fontSize: 11, opacity: 0.85, margin: 0, lineHeight: 1.6 }}>
+                운세를 완전히 해석해드립니다<br />
+                ₩990부터 시작 · 이미지 저장&보관함 포함
+              </p>
+            </div>
+            <div style={{ padding: "14px 16px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
+              {[
+                { icon: "🦢", name: "학 코스", price: "₩990", features: ["AI 심층 분석"] },
+                { icon: "🐯", name: "호랑이 코스", price: "₩2,970", features: ["AI 심층 분석", "재물운+성공운 상세"] },
+                { icon: "🦚", name: "봉황 코스", price: "₩4,950", features: ["AI 심층 분석", "연애운+건강운 상세", "월별+오늘 운세 포함"], hot: true },
+                { icon: "🐲", name: "용 코스", price: "₩9,990", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
+              ].map(p => (
+                <div key={p.name} style={{ borderRadius: 16, border: `1.5px solid ${p.hot ? "#ec4899" : "rgba(236,72,153,0.12)"}`, padding: "12px 14px", background: p.hot ? "#fdf2f8" : "white", position: "relative" }}>
+                  {p.hot && <div style={{ position: "absolute", top: -8, right: 12, background: G, color: "white", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 20 }}>🔥 인기</div>}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                    <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{p.icon} {p.name}</span>
+                    <span style={{ fontSize: 14, fontWeight: 900, color: "#ec4899" }}>{p.price}</span>
+                  </div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                    {p.features.map(f => (
+                      <span key={f} style={{ fontSize: 10, color: "#8b5cf6", background: "#ede9fe", padding: "2px 8px", borderRadius: 20, fontWeight: 600 }}>✓ {f}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <button
+                onClick={() => router.push("/main-v2/payment")}
+                style={{ width: "100%", padding: "13px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.3)", marginTop: 2 }}>
+                💎 코스 선택하기
+              </button>
+            </div>
           </div>
         )}
 
@@ -374,7 +371,7 @@ export default function V2Result() {
           <button
             onClick={() => {
               if (!paid) { setShowSelect(true); }
-              else { sessionStorage.removeItem("v2_paid"); router.push("/main-v2/analysis"); }
+              else { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); router.push("/main-v2/analysis"); }
             }}
             style={{ padding: "12px 0", background: paid ? "white" : BG, color: paid ? "#8b5cf6" : "#ec4899", border: paid ? "1.5px solid #8b5cf6" : "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
             {paid ? "🔮 다시 분석" : "💎 ₩990 선택보기"}
@@ -439,15 +436,13 @@ export default function V2Result() {
 
             {/* 결제 버튼 */}
             <button
-              onClick={() => { setShowSelect(false); handlePay(); }}
-              disabled={paying || selectedCats.length === 0}
+              onClick={goToPay}
+              disabled={selectedCats.length === 0}
               style={{ width: "100%", padding: "16px 0", background: selectedCats.length > 0 ? G : "#e5e7eb", color: selectedCats.length > 0 ? "white" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: selectedCats.length > 0 ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 ? "0 6px 20px rgba(236,72,153,0.35)" : "none" }}
             >
-              {paying
-                ? "⏳ 분석 중..."
-                : selectedCats.length > 0
-                  ? `💎 ${selectedCats.length}개 운세 보기 · ₩${(selectedCats.length * 990).toLocaleString()}`
-                  : "운세를 선택하세요"}
+              {selectedCats.length > 0
+                ? `💎 ${selectedCats.length}개 운세 보기 · ₩${(selectedCats.length * 990).toLocaleString()}`
+                : "운세를 선택하세요"}
             </button>
             <button onClick={() => setShowSelect(false)}
               style={{ width: "100%", marginTop: 10, padding: "12px 0", background: "transparent", color: "#9ca3af", border: "none", fontSize: 13, cursor: "pointer" }}>
