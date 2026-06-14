@@ -207,10 +207,12 @@ function BannerSlider({ onStart }: { onStart: () => void }) {
 
   const b = BANNERS[cur];
 
+  const lineColors = ["#fff700", "#ffffff", "#ffd6f0"];
+
   return (
     <div style={{ padding: "16px 14px 0", maxWidth: 480, margin: "0 auto" }}>
       <div
-        style={{ height: 400, borderRadius: 20, position: "relative", overflow: "hidden", cursor: "pointer", boxShadow: "0 6px 28px rgba(139,92,246,0.18)" }}
+        style={{ height: 320, borderRadius: 20, position: "relative", overflow: "hidden", cursor: "pointer", boxShadow: "0 6px 28px rgba(139,92,246,0.18)", background: "#f9f0ff" }}
         onClick={onStart}
         onTouchStart={e => { startXRef.current = e.touches[0].clientX; }}
         onTouchEnd={e => {
@@ -221,18 +223,20 @@ function BannerSlider({ onStart }: { onStart: () => void }) {
         }}
       >
         <img src={b.img} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: b.fit, objectPosition: "center", transition: "opacity 0.4s" }} />
-        <div style={{ position: "absolute", inset: 0, padding: "24px 22px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-          <span style={{ display: "inline-block", background: b.badgeBg, color: "white", fontSize: 11, fontWeight: 900, padding: "4px 12px", borderRadius: 20, alignSelf: "flex-start" }}>{b.badge}</span>
-          <div>
-            {b.lines.map((line, i) => (
-              <p key={i} style={{ fontSize: i === 0 ? 22 : 14, fontWeight: i === 0 ? 900 : 700, color: "white", margin: i === 0 ? "0 0 6px" : "0 0 2px", lineHeight: 1.35, textShadow: "0 1px 6px rgba(0,0,0,0.3)" }}>{line}</p>
+        {/* 하단 텍스트 그라데이션 */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "38%", background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)", pointerEvents: "none" }} />
+        {/* 배지 */}
+        <span style={{ position: "absolute", top: 14, left: 16, display: "inline-block", background: b.badgeBg, color: "white", fontSize: 11, fontWeight: 900, padding: "4px 12px", borderRadius: 20, zIndex: 2 }}>{b.badge}</span>
+        {/* 텍스트 + 인디케이터 — 이미지 하단 안쪽 */}
+        <div style={{ position: "absolute", bottom: 14, left: 16, right: 16, zIndex: 2 }}>
+          {b.lines.map((line, i) => (
+            <p key={i} style={{ fontSize: i === 0 ? 17 : 12, fontWeight: i === 0 ? 900 : 700, color: lineColors[i] ?? "white", margin: "0 0 2px", lineHeight: 1.35, textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}>{line}</p>
+          ))}
+          <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+            {BANNERS.map((_, i) => (
+              <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i); }}
+                style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? "white" : "rgba(255,255,255,0.45)", transition: "all 0.3s ease", cursor: "pointer" }} />
             ))}
-            <div style={{ display: "flex", gap: 6, marginTop: 14 }}>
-              {BANNERS.map((_, i) => (
-                <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i); }}
-                  style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? "white" : "rgba(255,255,255,0.45)", transition: "all 0.3s ease", cursor: "pointer" }} />
-              ))}
-            </div>
           </div>
         </div>
       </div>
