@@ -287,11 +287,11 @@ export default function V2Result() {
           return (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
               {gridItems.map(c => (
-                <div key={c.key} style={{ background: "white", borderRadius: 20, border: c.isFree ? "2px solid rgba(34,197,94,0.4)" : "1.5px solid #e5e7eb", overflow: "hidden", position: "relative", opacity: c.isFree ? 1 : 0.7 }}>
+                <div key={c.key} style={{ background: "white", borderRadius: 20, border: c.isFree ? "2px solid rgba(34,197,94,0.4)" : "1.5px solid #e5e7eb", overflow: "hidden", position: "relative", opacity: 1 }}>
                   <div style={{ padding: "14px 12px 12px", textAlign: "center" }}>
                     <div style={{ fontSize: 32, marginBottom: 6 }}>{c.icon}</div>
-                    <div style={{ fontSize: 13, fontWeight: 900, color: c.isFree ? "#1a1a2e" : "#9ca3af", marginBottom: 3 }}>{c.label}</div>
-                    <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 8 }}>{c.desc}</div>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 3 }}>{c.label}</div>
+                    <div style={{ fontSize: 10, color: "#6b7280", marginBottom: 8 }}>{c.desc}</div>
                     {c.isFree
                       ? <span style={{ fontSize: 9, background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 8px", borderRadius: 20, fontWeight: 800 }}>FREE</span>
                       : <span style={{ fontSize: 9, background: "#f3f4f6", color: "#9ca3af", padding: "2px 8px", borderRadius: 20, fontWeight: 800 }}>₩990</span>
