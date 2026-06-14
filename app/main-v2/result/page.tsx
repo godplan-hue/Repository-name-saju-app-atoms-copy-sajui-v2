@@ -368,59 +368,83 @@ export default function V2Result() {
         )}
 
 
-        {/* ── 패키지: 이미지 저장 버튼 ── */}
-        {tier === "package" && (
-          <div style={{ marginBottom: 12 }}>
-            <button onClick={saveImage} disabled={saving}
-              style={{ width: "100%", padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.3)", opacity: saving ? 0.7 : 1 }}>
-              {saving ? "⏳ 저장 중..." : "🖼️ 이미지 저장"}
-            </button>
-          </div>
-        )}
-
-        {/* ── 공유 버튼 (무료 + 패키지) ── */}
-        {(tier === "free" || tier === "package") && (
-          <div style={{ marginBottom: 10 }}>
-            <button onClick={share}
-              style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
-              📤 공유하기
-            </button>
-          </div>
-        )}
-
-        {/* ── 보관함 버튼 (990원 + 패키지) ── */}
-        {(tier === "select" || tier === "package") && (
-          <div style={{ marginBottom: 10 }}>
-            <button onClick={() => router.push("/main-v2/history")}
-              style={{ width: "100%", padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid rgba(139,92,246,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.1)" }}>
-              📥 보관함 저장
-            </button>
-          </div>
-        )}
-
-        {/* ── 무료: 결제하기 버튼 ── */}
+        {/* ── 무료: 공유하기 + 유료 결제하기 ── */}
         {tier === "free" && (
-          <div style={{ marginBottom: 10 }}>
-            <button onClick={() => router.push("/main-v2/payment")}
-              style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-              💳 유료 운세 결제하기
-            </button>
-          </div>
+          <>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={share}
+                style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
+                📤 공유하기
+              </button>
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={() => router.push("/main-v2/payment")}
+                style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+                💳 유료 운세 결제하기
+              </button>
+            </div>
+          </>
         )}
 
-        {/* ── 다시 분석 버튼 ── */}
-        <div style={{ marginBottom: 10 }}>
-          <button
-            onClick={() => {
-              sessionStorage.removeItem("v2_paid");
-              sessionStorage.removeItem("v2_paid_cats");
-              sessionStorage.removeItem("price");
-              router.push(tier === "free" ? "/main-v2/analysis" : "/main-v2/payment");
-            }}
-            style={{ width: "100%", padding: "12px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
-            🔮 다시 분석
-          </button>
-        </div>
+        {/* ── 990원: 유료 결제하기 + 다시 분석 + 보관함 저장 ── */}
+        {tier === "select" && (
+          <>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={() => router.push("/main-v2/payment")}
+                style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+                💳 유료 운세 결제하기
+              </button>
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
+                style={{ width: "100%", padding: "12px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                🔮 다시 분석
+              </button>
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={() => router.push("/main-v2/history")}
+                style={{ width: "100%", padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid rgba(139,92,246,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.1)" }}>
+                📥 보관함 저장
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* ── 패키지(9900~29900): 공유하기 + 유료 결제하기 + 다시 분석 + 보관함 저장 + 이미지 저장 ── */}
+        {tier === "package" && (
+          <>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={share}
+                style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
+                📤 공유하기
+              </button>
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={() => router.push("/main-v2/payment")}
+                style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+                💳 유료 운세 결제하기
+              </button>
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
+                style={{ width: "100%", padding: "12px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                🔮 다시 분석
+              </button>
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={() => router.push("/main-v2/history")}
+                style={{ width: "100%", padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid rgba(139,92,246,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.1)" }}>
+                📥 보관함 저장
+              </button>
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <button onClick={saveImage} disabled={saving}
+                style={{ width: "100%", padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.3)", opacity: saving ? 0.7 : 1 }}>
+                {saving ? "⏳ 저장 중..." : "🖼️ 이미지 저장"}
+              </button>
+            </div>
+          </>
+        )}
         <button onClick={() => router.push("/main-v2")}
           style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
