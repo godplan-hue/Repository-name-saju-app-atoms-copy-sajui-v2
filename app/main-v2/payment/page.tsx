@@ -14,7 +14,7 @@ export default function Payment() {
     { key: "🎯 성공운", icon: "🎯" },
     { key: "✨ 총운",   icon: "✨" },
   ];
-  const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
+  const [selectedCats, setSelectedCats] = useState<string[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisName, setAnalysisName] = useState("");
@@ -209,7 +209,11 @@ export default function Payment() {
 
           {/* 운세 보기 버튼 */}
           <button
-            onClick={() => { const el = document.getElementById("fortune-select"); if (el) el.scrollIntoView({ behavior: "smooth" }); }}
+            onClick={() => {
+              if (selectedCats.length === 0) return;
+              const pkgName = selectedCats.map(c => c.replace(/\S+\s/, "")).join("+");
+              router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${selectedCats.length * 30}`);
+            }}
             disabled={selectedCats.length === 0}
             style={{ width: "100%", marginTop: 14, padding: "13px 0", background: selectedCats.length > 0 ? "linear-gradient(135deg, #ec4899, #8b5cf6)" : "#e5e7eb", color: selectedCats.length > 0 ? "white" : "#9ca3af", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: selectedCats.length > 0 ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 ? "0 4px 16px rgba(236,72,153,0.35)" : "none" }}
           >
