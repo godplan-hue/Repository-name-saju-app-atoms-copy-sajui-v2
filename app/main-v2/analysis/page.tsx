@@ -117,7 +117,7 @@ export default function V2Analysis() {
                   <button key={c.value}
                     onClick={() => { if (isFree) { setSelCat(c.value); setPhase("fu"); } }}
                     disabled={!isFree}
-                    style={{ padding: "22px 14px", borderRadius: 20, border: isFree ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.1)", background: isFree ? "white" : "#f9fafb", cursor: isFree ? "pointer" : "not-allowed", textAlign: "center", boxShadow: isFree ? "0 4px 20px rgba(236,72,153,0.18)" : "none", opacity: isFree ? 1 : 0.45, transition: "transform 0.15s, box-shadow 0.15s", position: "relative" }}
+                    style={{ padding: "22px 14px", borderRadius: 20, border: isFree ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.15)", background: isFree ? "white" : "#f9fafb", cursor: isFree ? "pointer" : "not-allowed", textAlign: "center", boxShadow: isFree ? "0 4px 20px rgba(236,72,153,0.18)" : "none", opacity: 1, transition: "transform 0.15s, box-shadow 0.15s", position: "relative" }}
                     onTouchStart={e => { if (isFree) e.currentTarget.style.transform = "scale(0.96)"; }}
                     onTouchEnd={e => { if (isFree) e.currentTarget.style.transform = "scale(1)"; }}
                     onMouseEnter={e => { if (isFree) { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(236,72,153,0.25)"; } }}
@@ -130,8 +130,8 @@ export default function V2Analysis() {
                       <div style={{ position: "absolute", top: 8, right: 8, background: "#e5e7eb", color: "#9ca3af", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20 }}>🔒</div>
                     )}
                     <div style={{ fontSize: 38, marginBottom: 8 }}>{c.icon}</div>
-                    <div style={{ fontSize: 15, fontWeight: 900, color: isFree ? "#1a1a2e" : "#9ca3af", marginBottom: 3 }}>{c.label}</div>
-                    <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600 }}>{c.desc}</div>
+                    <div style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", marginBottom: 3 }}>{c.label}</div>
+                    <div style={{ fontSize: 11, color: "#6b7280", fontWeight: 600 }}>{c.desc}</div>
                     {!isFree && <div style={{ fontSize: 10, color: "#ec4899", fontWeight: 800, marginTop: 4 }}>₩990</div>}
                   </button>
                 );
