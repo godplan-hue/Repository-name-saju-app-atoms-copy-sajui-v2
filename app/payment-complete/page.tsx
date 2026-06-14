@@ -42,7 +42,7 @@ export default function PaymentComplete() {
           <div style={{ background: "rgba(108,64,200,0.9)", padding: 24, borderRadius: 12, marginBottom: 24 }}>
             <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 700, margin: "0 0 12px 0" }}>📊 결제 정보</p>
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
-            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>페이지: <span style={{ fontWeight: 900 }}>{pages}페이지</span></p>
+            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분석 글자수: <span style={{ fontWeight: 900 }}>{((pages / 30) * 5500).toLocaleString()}자</span></p>
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: 0 }}>상태: <span style={{ color: "#90EE90", fontWeight: 900 }}>완료</span></p>
           </div>
 
