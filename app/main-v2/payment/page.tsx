@@ -134,7 +134,17 @@ export default function V2Payment() {
           <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
         </button>
         <span style={{ fontWeight: 900, fontSize: 14, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>결제</span>
-        <div style={{ width: 40 }} />
+        <button
+          onClick={() => {
+            const url = window.location.origin + "/main-v2";
+            const text = `🔮 AI 사주 분석\n₩990부터 시작 · 무료 오늘의 운세 포함\n\n${url}`;
+            if (navigator.share) navigator.share({ title: "점운 AI 사주", text, url }).catch(() => {});
+            else navigator.clipboard.writeText(text).then(() => alert("✅ 링크 복사됨!"));
+          }}
+          style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}
+        >
+          📤 공유
+        </button>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
