@@ -165,7 +165,9 @@ export default function V2Result() {
         });
         if (res.ok) {
           const data = await res.json();
-          const newResult = { ...data, category, profile };
+          const histId = result?.histId ?? Date.now();
+          const savedAt = result?.savedAt ?? new Date().toISOString();
+          const newResult = { ...data, category, profile, histId, savedAt };
           sessionStorage.setItem("v2_result", JSON.stringify(newResult));
         }
       }
