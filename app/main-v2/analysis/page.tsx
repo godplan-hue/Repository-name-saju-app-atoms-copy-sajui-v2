@@ -7,6 +7,7 @@ const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const CATS = [
+  { value: "🌟 오늘의 운세", icon: "🌟", label: "오늘의 운세", desc: "오늘 하루 기운" },
   { value: "💰 재물운", icon: "💰", label: "재물운", desc: "돈·투자·자산" },
   { value: "💕 연애운", icon: "💕", label: "연애운", desc: "사랑·인연·궁합" },
   { value: "🎯 성공운", icon: "🎯", label: "성공운", desc: "커리어·꿈·성취" },
@@ -15,6 +16,7 @@ const CATS = [
 ];
 
 const FU: Record<string, { q: string; opts: string[] }> = {
+  "🌟 오늘의 운세": { q: "오늘 어떤 기운이 궁금하세요?", opts: ["오늘 전체적인 운세", "오늘 좋은 시간대", "오늘 주의할 점", "오늘 행운 포인트"] },
   "💰 재물운": { q: "재물에서 지금 가장 고민은?", opts: ["돈을 더 벌고 싶어요", "투자·저축 고민", "부채 해결이 급해요", "새 수입원 찾기"] },
   "💕 연애운": { q: "연애에서 가장 원하는 게 뭔가요?", opts: ["좋은 인연 만나기", "현재 관계 개선", "이별 극복", "결혼·진지한 관계"] },
   "🎯 성공운": { q: "성공을 향해 지금 어떤 상황인가요?", opts: ["새 목표가 생겼어요", "인정받고 싶어요", "용기가 필요해요", "경쟁 중이에요"] },
@@ -105,12 +107,12 @@ export default function V2Analysis() {
             <div style={{ textAlign: "center", marginBottom: 28 }}>
               <div style={{ fontSize: 72, lineHeight: 1, marginBottom: 12, display: "inline-block", animation: "catBounce 2s ease-in-out infinite" }}>🐱</div>
               <h1 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px" }}>오늘의 무료 사주</h1>
-              <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>재물운 무료 분석 · 나머지는 ₩990</p>
+              <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>오늘의 운세 무료 분석 · 나머지는 ₩990</p>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               {CATS.map((c, i) => {
-                const isFree = c.value === "💰 재물운";
+                const isFree = c.value === "🌟 오늘의 운세";
                 return (
                   <button key={c.value}
                     onClick={() => { if (isFree) { setSelCat(c.value); setPhase("fu"); } }}

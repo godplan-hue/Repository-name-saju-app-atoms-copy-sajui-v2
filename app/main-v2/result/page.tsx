@@ -7,14 +7,16 @@ const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const ALL_SCORE_CATS = [
-  { key: "💰 재물운", scoreKey: "wealth", color: "#f59e0b", icon: "💰" },
-  { key: "💕 연애운", scoreKey: "love",   color: "#ec4899", icon: "💕" },
-  { key: "💪 건강운", scoreKey: "health", color: "#10b981", icon: "💪" },
-  { key: "🎯 성공운", scoreKey: "success",color: "#8b5cf6", icon: "🎯" },
-  { key: "✨ 총운",   scoreKey: "total",  color: "#6366f1", icon: "✨" },
+  { key: "🌟 오늘의 운세", scoreKey: "total",  color: "#f59e0b", icon: "🌟" },
+  { key: "💰 재물운",      scoreKey: "wealth", color: "#f59e0b", icon: "💰" },
+  { key: "💕 연애운",      scoreKey: "love",   color: "#ec4899", icon: "💕" },
+  { key: "💪 건강운",      scoreKey: "health", color: "#10b981", icon: "💪" },
+  { key: "🎯 성공운",      scoreKey: "success",color: "#8b5cf6", icon: "🎯" },
+  { key: "✨ 총운",        scoreKey: "total",  color: "#6366f1", icon: "✨" },
 ];
 
-const SELECT_CATS = ALL_SCORE_CATS.filter(c => c.key !== "💰 재물운");
+const FREE_CAT = "🌟 오늘의 운세";
+const SELECT_CATS = ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT);
 
 function ScoreCircle({ score, size = 120 }: { score: number; size?: number }) {
   const r = 44;
@@ -72,7 +74,7 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
       id: r.histId,
       date: r.savedAt ?? new Date().toISOString(),
       name: r.profile?.name ?? "",
-      category: r.category ?? "💰 재물운",
+      category: r.category ?? "🌟 오늘의 운세",
       scores: r.scores ?? {},
       analysis: r.analysis ?? "",
       isPaid,
@@ -233,14 +235,14 @@ export default function V2Result() {
           </div>
         </div>
 
-        {/* ── 재물운 무료 카드 ── */}
+        {/* ── 오늘의 운세 무료 카드 ── */}
         <div
           ref={el => { cardRefs.current[1] = el; }}
           style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(34,197,94,0.25)", marginBottom: 12 }}
         >
           <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>
-            <span style={{ fontSize: 22 }}>💰</span>
-            <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>재물운</span>
+            <span style={{ fontSize: 22 }}>🌟</span>
+            <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>오늘의 운세</span>
             <span style={{ fontSize: 10, background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>FREE</span>
           </div>
           <div style={{ padding: "14px 18px 20px" }}>
@@ -252,7 +254,7 @@ export default function V2Result() {
 
         {/* ── 유료: 선택한 운세만 표시 ── */}
         {paid && Object.keys(allAnalyses).length > 0 && (
-          ALL_SCORE_CATS.filter(c => c.key !== "💰 재물운" && paidCats.includes(c.key)).map((c, i) => (
+          ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map((c, i) => (
             <div
               key={c.key}
               ref={el => { cardRefs.current[2 + i] = el; }}
@@ -273,7 +275,7 @@ export default function V2Result() {
         )}
 
         {/* ── 미결제: 잠긴 카드 4개 ── */}
-        {!paid && ALL_SCORE_CATS.filter(c => c.key !== "💰 재물운").map(c => (
+        {!paid && ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT).map(c => (
           <div key={c.key} style={{ background: "white", borderRadius: 24, border: "1.5px solid #e5e7eb", marginBottom: 12, opacity: 0.65 }}>
             <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid #f3f4f6" }}>
               <span style={{ fontSize: 22 }}>{c.icon}</span>
