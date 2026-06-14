@@ -65,23 +65,27 @@ function ScoreBar({ label, score, color }: { label: string; score: number; color
   );
 }
 
-function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>) {
+function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>, paidCats: string[]) {
   if (!r?.histId || !isPaid) return;
   try {
     const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
-    const idx = hist.findIndex((h: any) => h.id === r.histId);
-    const entry = {
-      id: r.histId,
-      date: r.savedAt ?? new Date().toISOString(),
-      name: r.profile?.name ?? "",
-      category: r.category ?? "🌟 오늘의 운세",
-      scores: r.scores ?? {},
-      analysis: r.analysis ?? "",
-      isPaid,
-      allAnalyses: isPaid ? analyses : undefined,
-    };
-    if (idx >= 0) hist[idx] = entry;
-    else hist.unshift(entry);
+    const date = r.savedAt ?? new Date().toISOString();
+    const cats = paidCats.length > 0 ? paidCats : Object.keys(analyses);
+    cats.forEach((cat, i) => {
+      const id = r.histId + i;
+      const entry = {
+        id,
+        date,
+        name: r.profile?.name ?? "",
+        category: cat,
+        scores: r.scores ?? {},
+        analysis: analyses[cat] ?? "",
+        isPaid: true,
+      };
+      const idx = hist.findIndex((h: any) => h.id === id);
+      if (idx >= 0) hist[idx] = entry;
+      else hist.unshift(entry);
+    });
     localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
   } catch {}
 }
@@ -129,11 +133,13 @@ export default function V2Result() {
     setPaid(isPaid);
     const analyses = isPaid ? (r.allAnalyses ?? {}) : {};
     setAllAnalyses(analyses);
-    if (isPaid) {
+    const cats = (() => {
+      if (!isPaid) return [];
       const saved = sessionStorage.getItem("v2_paid_cats");
-      setPaidCats(saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key));
-    }
-    if (isPaid && Object.keys(analyses).length > 0) saveToHistory(r, isPaid, analyses);
+      return saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key);
+    })();
+    if (isPaid) setPaidCats(cats);
+    if (isPaid && Object.keys(analyses).length > 0) saveToHistory(r, isPaid, analyses, cats);
   }, []);
 
   const goToPay = () => {
