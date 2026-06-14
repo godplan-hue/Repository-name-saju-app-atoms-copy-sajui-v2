@@ -142,7 +142,7 @@ export default function Payment() {
           <div style={{ fontSize: 32, marginBottom: 8 }}>🔓</div>
           <h3 style={{ color: "#ffffff", fontSize: 18, fontWeight: 900, margin: "0 0 6px" }}>【전체 AI 심층 분석】</h3>
           <p style={{ color: "#f5f5f5", fontSize: 13, margin: "0 0 4px" }}>운세를 완전히 해석해드립니다</p>
-          <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&보관함 포함</p>
+          <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&amp;보관함 포함</p>
         </div>
 
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
@@ -159,7 +159,8 @@ export default function Payment() {
         </div>
 
         <div style={{ maxWidth: 1000, margin: "0 auto 40px", textAlign: "center" }}>
-          <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>💰 9,900~29,900원</p>
+          <p style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 4 }}>【사주 완벽분석】</p>
+          <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>990~29,900원</p>
         </div>
 
         <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 20, background: "#f5f5f5", padding: 24, borderRadius: 12 }}>
@@ -193,25 +194,25 @@ export default function Payment() {
         </div>
 
         <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
-          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>왜 점운인가?</h2>
+          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>【왜 점운인가?】</h2>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24 }}>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>사주 완벽분석</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>기본분석(30P)부터<br/>VIP(150P)까지</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>990원부터<br/>VIP 커플팩 분석까지</p>
             </div>
 
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>9,900~29,900원</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>990~29,900원</p>
             </div>
 
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>즉시 다운로드</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3분 이내 PDF 완성</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>30초 이내 완성</p>
             </div>
           </div>
         </section>
