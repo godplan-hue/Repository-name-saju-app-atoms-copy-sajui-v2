@@ -274,24 +274,39 @@ export default function V2Result() {
           ))
         )}
 
-        {/* ── 미결제: 잠긴 카드 4개 ── */}
-        {!paid && ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT).map(c => (
-          <div key={c.key} style={{ background: "white", borderRadius: 24, border: "1.5px solid #e5e7eb", marginBottom: 12, opacity: 0.65 }}>
-            <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid #f3f4f6" }}>
-              <span style={{ fontSize: 22 }}>{c.icon}</span>
-              <span style={{ fontSize: 14, fontWeight: 900, color: "#9ca3af" }}>{c.key.replace(/\S+\s/, "")}</span>
-              <span style={{ fontSize: 10, background: "#f3f4f6", color: "#9ca3af", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>🔒 잠금</span>
+        {/* ── 미결제: 2열 그리드 카드 ── */}
+        {!paid && (() => {
+          const gridItems = [
+            { key: FREE_CAT, icon: "🌟", label: "오늘의 운세", desc: "오늘 하루 기운", scoreKey: "total", isFree: true },
+            { key: "💰 재물운", icon: "💰", label: "재물운", desc: "돈·투자·자산", scoreKey: "wealth", isFree: false },
+            { key: "💕 연애운", icon: "💕", label: "연애운", desc: "사랑·인연·궁합", scoreKey: "love", isFree: false },
+            { key: "🎯 성공운", icon: "🎯", label: "성공운", desc: "커리어·꿈·성취", scoreKey: "success", isFree: false },
+            { key: "💪 건강운", icon: "💪", label: "건강운", desc: "몸·마음·활력", scoreKey: "health", isFree: false },
+            { key: "✨ 총운",   icon: "✨", label: "총운",   desc: "올해 전체 운세", scoreKey: "total", isFree: false },
+          ];
+          return (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+              {gridItems.map(c => (
+                <div key={c.key} style={{ background: "white", borderRadius: 20, border: c.isFree ? "2px solid rgba(34,197,94,0.4)" : "1.5px solid #e5e7eb", overflow: "hidden", position: "relative", opacity: c.isFree ? 1 : 0.7 }}>
+                  <div style={{ padding: "14px 12px 12px", textAlign: "center" }}>
+                    <div style={{ fontSize: 32, marginBottom: 6 }}>{c.icon}</div>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: c.isFree ? "#1a1a2e" : "#9ca3af", marginBottom: 3 }}>{c.label}</div>
+                    <div style={{ fontSize: 10, color: "#9ca3af", marginBottom: 8 }}>{c.desc}</div>
+                    {c.isFree
+                      ? <span style={{ fontSize: 9, background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 8px", borderRadius: 20, fontWeight: 800 }}>FREE</span>
+                      : <span style={{ fontSize: 9, background: "#f3f4f6", color: "#9ca3af", padding: "2px 8px", borderRadius: 20, fontWeight: 800 }}>₩990</span>
+                    }
+                  </div>
+                  {!c.isFree && (
+                    <div style={{ position: "absolute", top: 8, right: 8 }}>
+                      <span style={{ fontSize: 14 }}>🔒</span>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
-            <div style={{ padding: "14px 18px 20px", position: "relative" }}>
-              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, filter: "blur(6px)", userSelect: "none", pointerEvents: "none", wordBreak: "break-word" }}>
-                {`${profile?.name}님의 ${c.key.replace(/\S+\s/, "")}은 ${scores?.[c.scoreKey] ?? 70}점입니다. 강한 기운이 흐르는 지금, 새로운 기회를 놓치지 마세요. 구체적 행동 지침과 상반기·하반기 흐름을 확인하세요. 결제 후 전체 분석을 확인하실 수 있습니다.`}
-              </p>
-              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontSize: 26 }}>🔒</span>
-              </div>
-            </div>
-          </div>
-        ))}
+          );
+        })()}
 
         {/* ── 미결제: CTA 배너 ── */}
         {!paid && (
