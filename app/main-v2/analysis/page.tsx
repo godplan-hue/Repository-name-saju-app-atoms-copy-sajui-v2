@@ -8,11 +8,11 @@ const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const CATS = [
   { value: "🌟 오늘의 운세", icon: "🌟", label: "오늘의 운세", desc: "오늘 하루 기운" },
-  { value: "💰 재물운", icon: "💰", label: "재물운", desc: "돈·투자·자산" },
   { value: "💕 연애운", icon: "💕", label: "연애운", desc: "사랑·인연·궁합" },
   { value: "🎯 성공운", icon: "🎯", label: "성공운", desc: "커리어·꿈·성취" },
   { value: "💪 건강운", icon: "💪", label: "건강운", desc: "몸·마음·활력" },
   { value: "✨ 총운", icon: "✨", label: "총운", desc: "올해 전체 운세" },
+  { value: "💰 재물운", icon: "💰", label: "재물운", desc: "돈·투자·자산" },
 ];
 
 const FU: Record<string, { q: string; opts: string[] }> = {
@@ -111,13 +111,13 @@ export default function V2Analysis() {
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              {CATS.map((c, i) => {
+              {CATS.map(c => {
                 const isFree = c.value === "🌟 오늘의 운세";
                 return (
                   <button key={c.value}
                     onClick={() => { if (isFree) { setSelCat(c.value); setPhase("fu"); } }}
                     disabled={!isFree}
-                    style={{ padding: "22px 14px", borderRadius: 20, border: isFree ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.1)", background: isFree ? "white" : "#f9fafb", cursor: isFree ? "pointer" : "not-allowed", textAlign: "center", gridColumn: i === 4 ? "1 / -1" : undefined, boxShadow: isFree ? "0 4px 20px rgba(236,72,153,0.18)" : "none", opacity: isFree ? 1 : 0.45, transition: "transform 0.15s, box-shadow 0.15s", position: "relative" }}
+                    style={{ padding: "22px 14px", borderRadius: 20, border: isFree ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.1)", background: isFree ? "white" : "#f9fafb", cursor: isFree ? "pointer" : "not-allowed", textAlign: "center", boxShadow: isFree ? "0 4px 20px rgba(236,72,153,0.18)" : "none", opacity: isFree ? 1 : 0.45, transition: "transform 0.15s, box-shadow 0.15s", position: "relative" }}
                     onTouchStart={e => { if (isFree) e.currentTarget.style.transform = "scale(0.96)"; }}
                     onTouchEnd={e => { if (isFree) e.currentTarget.style.transform = "scale(1)"; }}
                     onMouseEnter={e => { if (isFree) { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(236,72,153,0.25)"; } }}
@@ -129,16 +129,17 @@ export default function V2Analysis() {
                     {!isFree && (
                       <div style={{ position: "absolute", top: 8, right: 8, background: "#e5e7eb", color: "#9ca3af", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20 }}>🔒</div>
                     )}
-                    <div style={{ fontSize: i === 4 ? 44 : 38, marginBottom: 8 }}>{c.icon}</div>
+                    <div style={{ fontSize: 38, marginBottom: 8 }}>{c.icon}</div>
                     <div style={{ fontSize: 15, fontWeight: 900, color: isFree ? "#1a1a2e" : "#9ca3af", marginBottom: 3 }}>{c.label}</div>
                     <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600 }}>{c.desc}</div>
+                    {!isFree && <div style={{ fontSize: 10, color: "#ec4899", fontWeight: 800, marginTop: 4 }}>₩990</div>}
                   </button>
                 );
               })}
             </div>
 
             <p style={{ textAlign: "center", fontSize: 12, color: "#9ca3af", marginTop: 16 }}>
-              💎 나머지 4개 운세는 결과 페이지에서 ₩990에 확인하세요
+              💎 나머지 5개 운세는 결과 페이지에서 ₩990에 확인하세요
             </p>
           </>
         )}
