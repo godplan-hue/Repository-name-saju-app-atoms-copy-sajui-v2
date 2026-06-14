@@ -502,6 +502,14 @@ export default function V2Result() {
           </div>
         )}
 
+        {/* ── 공유 버튼 ── */}
+        <div style={{ marginBottom: 10 }}>
+          <button onClick={share}
+            style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
+            📤 공유하기
+          </button>
+        </div>
+
         {/* ── 하단 버튼 ── */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
           <button
