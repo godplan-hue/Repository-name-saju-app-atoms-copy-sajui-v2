@@ -368,136 +368,6 @@ export default function V2Result() {
         )}
 
 
-        {/* ── 미결제: 인라인 결제 UI (payment 페이지 전체 내용) ── */}
-        {!paid && (
-          <>
-            {/* 배너 */}
-            <div style={{ background: G, borderRadius: 20, padding: "22px 18px", textAlign: "center", marginBottom: 20, color: "white" }}>
-              <div style={{ fontSize: 40, marginBottom: 8 }}>🔓</div>
-              <h1 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 6px" }}>【전체 AI 심층 분석】</h1>
-              <p style={{ fontSize: 12, opacity: 0.85, margin: 0, lineHeight: 1.6 }}>
-                운세를 완전히 해석해드립니다<br />
-                ₩990부터 시작 · 이미지 저장&보관함 포함
-              </p>
-            </div>
-
-            {/* 운세 선택 섹션 */}
-            <div style={{ background: "white", borderRadius: 20, padding: "20px 16px", marginBottom: 18, border: "1.5px solid rgba(236,72,153,0.12)" }}>
-              <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px", textAlign: "center" }}>어떤 운세를 확인할까요?</h2>
-              <p style={{ fontSize: 12, color: "#9ca3af", textAlign: "center", margin: "0 0 16px" }}>
-                {selectedCats.length > 0
-                  ? <><span style={{ color: "#ec4899", fontWeight: 800 }}>{selectedCats.length}개</span> 선택 · <span style={{ color: "#8b5cf6", fontWeight: 800 }}>₩{(selectedCats.length * 990).toLocaleString()}</span></>
-                  : "운세를 선택하세요"}
-              </p>
-
-              {/* 전체 선택 */}
-              <button
-                onClick={() => setSelectedCats(selectedCats.length === INLINE_SELECT_CATS.length ? [] : INLINE_SELECT_CATS.map(c => c.key))}
-                style={{ width: "100%", padding: "10px 16px", marginBottom: 12, background: selectedCats.length === INLINE_SELECT_CATS.length ? "#fdf2f8" : "white", border: `1.5px solid ${selectedCats.length === INLINE_SELECT_CATS.length ? "#ec4899" : "#e5e7eb"}`, borderRadius: 14, fontWeight: 800, fontSize: 13, color: selectedCats.length === INLINE_SELECT_CATS.length ? "#ec4899" : "#6b7280", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
-              >
-                <span>✨ 전체 선택</span>
-                <span style={{ fontSize: 16 }}>{selectedCats.length === INLINE_SELECT_CATS.length ? "☑️" : "⬜"}</span>
-              </button>
-
-              {/* 개별 운세 카드 */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
-                {INLINE_SELECT_CATS.map(c => {
-                  const on = selectedCats.includes(c.key);
-                  return (
-                    <button key={c.key}
-                      onClick={() => setSelectedCats(on ? selectedCats.filter(k => k !== c.key) : [...selectedCats, c.key])}
-                      style={{ padding: "14px 16px", border: `1.5px solid ${on ? c.color : "#e5e7eb"}`, borderRadius: 16, background: on ? `${c.color}10` : "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <span style={{ fontSize: 22 }}>{c.icon}</span>
-                        <div style={{ textAlign: "left" }}>
-                          <div style={{ fontSize: 14, fontWeight: 900, color: on ? c.color : "#374151" }}>{c.key.replace(/\S+\s/, "")}</div>
-                          <div style={{ fontSize: 11, color: "#9ca3af" }}>약 3,500자 심층 분석</div>
-                        </div>
-                      </div>
-                      <span style={{ fontSize: 18 }}>{on ? "✅" : "⬜"}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* 운세 선택 결제 버튼 */}
-              <button
-                onClick={() => {
-                  if (selectedCats.length === 0) return;
-                  goToPay();
-                }}
-                disabled={selectedCats.length === 0 || payBusy}
-                style={{ width: "100%", padding: "16px 0", background: selectedCats.length > 0 && !payBusy ? G : "#e5e7eb", color: selectedCats.length > 0 && !payBusy ? "white" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: selectedCats.length > 0 && !payBusy ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 && !payBusy ? "0 6px 20px rgba(236,72,153,0.35)" : "none" }}
-              >
-                {payBusy ? "⏳ 결제 처리 중..." : selectedCats.length > 0 ? `💎 ${selectedCats.length}개 운세 보기 · ₩${(selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
-              </button>
-            </div>
-
-            {/* 코스 목록 */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
-              {INLINE_PLANS.map(p => (
-                <div key={p.id} onClick={() => setSelPlan(p.id)}
-                  style={{ background: "white", borderRadius: 20, padding: "16px 14px", border: selPlan === p.id ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.12)", cursor: "pointer", position: "relative", boxShadow: selPlan === p.id ? "0 6px 24px rgba(236,72,153,0.14)" : "0 2px 8px rgba(139,92,246,0.05)", transition: "all 0.15s" }}>
-
-                  {p.badge && (
-                    <div style={{ position: "absolute", top: -9, right: 14, background: G, color: "white", fontSize: 10, fontWeight: 900, padding: "3px 10px", borderRadius: 20 }}>{p.badge}</div>
-                  )}
-
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div style={{ display: "flex", gap: 12, alignItems: "center", flex: 1 }}>
-                      <div style={{ width: 20, height: 20, borderRadius: "50%", border: selPlan === p.id ? "6px solid #ec4899" : "2px solid #d1d5db", flexShrink: 0, transition: "all 0.15s" }} />
-                      <span style={{ fontSize: 24 }}>{p.icon}</span>
-                      <div>
-                        <div style={{ fontSize: 14, fontWeight: 900, color: selPlan === p.id ? "#ec4899" : "#1a1a2e" }}>{p.name}</div>
-                        <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 1 }}>{p.desc}</div>
-                      </div>
-                    </div>
-                    <div style={{ textAlign: "right", flexShrink: 0 }}>
-                      <div style={{ fontSize: 17, fontWeight: 900, color: selPlan === p.id ? "#ec4899" : "#1a1a2e" }}>{p.priceStr}</div>
-                      <div style={{ fontSize: 10, color: "#9ca3af" }}>{p.per}</div>
-                    </div>
-                  </div>
-
-                  {selPlan === p.id && (
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 10 }}>
-                      {p.features.map(f => (
-                        <span key={f} style={{ fontSize: 10, color: "#8b5cf6", background: "#ede9fe", padding: "2px 8px", borderRadius: 20, fontWeight: 600 }}>✓ {f}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* 결제 버튼 영역 */}
-            {(() => {
-              const plan = INLINE_PLANS.find(p => p.id === selPlan)!;
-              return (
-                <div style={{ background: "white", borderRadius: 20, padding: "16px 14px", border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: "#374151" }}>{plan.icon} {plan.name}</span>
-                    <span style={{ fontSize: 17, fontWeight: 900, color: "#ec4899" }}>{plan.priceStr}</span>
-                  </div>
-
-                  <button onClick={payInline} disabled={payBusy}
-                    style={{ width: "100%", padding: "15px 0", background: payBusy ? "#e5e7eb" : G, color: payBusy ? "#9ca3af" : "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: payBusy ? "not-allowed" : "pointer", boxShadow: payBusy ? "none" : "0 6px 20px rgba(236,72,153,0.3)", transition: "all 0.2s" }}>
-                    {payBusy ? "⏳ 결제 처리 중..." : `💳 ${plan.priceStr} 결제하기`}
-                  </button>
-                </div>
-              );
-            })()}
-
-            <div style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "center", marginBottom: 8 }}>
-              <span style={{ fontSize: 11, color: "#9ca3af" }}>🔒</span>
-              <span style={{ fontSize: 11, color: "#9ca3af" }}>토스페이먼츠로 안전하게 결제</span>
-            </div>
-            <p style={{ textAlign: "center", fontSize: 11, color: "#d1d5db", margin: "0 0 14px", lineHeight: 1.6 }}>
-              결제 즉시 전체 분석 해제 · 이미지 저장 가능
-            </p>
-          </>
-        )}
-
         {/* ── 유료 패키지: 이미지 저장 버튼 ── */}
         {paid && planType !== "select" && (
           <div style={{ marginBottom: 12 }}>
@@ -518,20 +388,25 @@ export default function V2Result() {
           </div>
         )}
 
+        {/* ── 미결제: 결제하기 버튼 ── */}
+        {!paid && (
+          <div style={{ marginBottom: 10 }}>
+            <button onClick={() => router.push("/main-v2/payment")}
+              style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+              💳 유료 운세 결제하기
+            </button>
+          </div>
+        )}
+
         {/* ── 하단 버튼 ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-          <button
-            onClick={() => {
-              if (!paid) { window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); }
-              else { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); router.push("/main-v2/payment"); }
-            }}
-            style={{ padding: "12px 0", background: paid ? "white" : BG, color: paid ? "#8b5cf6" : "#ec4899", border: paid ? "1.5px solid #8b5cf6" : "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
-            {paid ? "🔮 다시 분석" : "💎 ₩990 선택보기"}
-          </button>
-          <button onClick={() => router.push("/main-v2/history")}
-            style={{ padding: "12px 0", background: "white", color: "#8b5cf6", border: "1.5px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
-            📂 보관함
-          </button>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 10 }}>
+          {paid && (
+            <button
+              onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); router.push("/main-v2/payment"); }}
+              style={{ padding: "12px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+              🔮 다시 분석
+            </button>
+          )}
         </div>
         <button onClick={() => router.push("/main-v2")}
           style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
