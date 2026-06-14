@@ -219,12 +219,18 @@ export default function HistoryDetail() {
         <div ref={cardRef} style={{ background: "white", borderRadius: 24, overflow: "hidden", border: "1.5px solid rgba(236,72,153,0.1)" }}>
 
           {/* 헤더 그래디언트 */}
-          <div style={{ background: G, padding: "24px 20px", color: "white", textAlign: "center" }}>
-            <div style={{ fontSize: 32, marginBottom: 6 }}>{item.category?.split(" ")[0] ?? "✨"}</div>
-            <h1 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 4px" }}>{item.name}님의 {item.category?.replace(/\S+\s/, "")}</h1>
-            <div style={{ fontSize: 12, opacity: 0.75 }}>{fmtDate(item.date)}</div>
-            <div style={{ fontSize: 36, fontWeight: 900, margin: "12px 0 2px" }}>{item.scores?.total ?? "—"}</div>
-            <div style={{ fontSize: 11, opacity: 0.8 }}>총운 점수</div>
+          <div style={{ background: G, color: "white", textAlign: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, padding: "10px 20px 0" }}>
+              <span style={{ fontSize: 13 }}>🐱</span>
+              <span style={{ fontSize: 13, fontWeight: 900 }}>점운 · AI 사주 분석</span>
+            </div>
+            <div style={{ padding: "14px 20px 24px" }}>
+              <div style={{ fontSize: 32, marginBottom: 6 }}>{item.category?.split(" ")[0] ?? "✨"}</div>
+              <h1 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 4px" }}>{item.name}님의 {item.category?.replace(/\S+\s/, "")}</h1>
+              <div style={{ fontSize: 12, opacity: 0.75 }}>{fmtDate(item.date)}</div>
+              <div style={{ fontSize: 36, fontWeight: 900, margin: "12px 0 2px" }}>{item.scores?.total ?? "—"}</div>
+              <div style={{ fontSize: 11, opacity: 0.8 }}>총운 점수</div>
+            </div>
           </div>
 
           {/* 분야별 점수 */}
@@ -261,11 +267,6 @@ export default function HistoryDetail() {
             </p>
           </div>
 
-          {/* 워터마크 */}
-          <div style={{ padding: "10px 18px 16px", borderTop: "1px solid rgba(236,72,153,0.08)", display: "flex", justifyContent: "center", alignItems: "center", gap: 5 }}>
-            <span style={{ fontSize: 13 }}>🐱</span>
-            <span style={{ fontSize: 11, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운 · AI 사주 분석</span>
-          </div>
         </div>
 
         {/* 하단 버튼 */}

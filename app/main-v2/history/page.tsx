@@ -170,9 +170,7 @@ export default function V2History() {
           <span style={{ fontSize: 18 }}>←</span>
           <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
         </button>
-        {hist.length > 0 && (
-          <button onClick={clear} style={{ padding: "5px 12px", background: "#fff1f2", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>전체 삭제</button>
-        )}
+        <button onClick={clear} style={{ padding: "5px 12px", background: "#fff1f2", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>전체 삭제</button>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "24px 16px 60px" }}>
