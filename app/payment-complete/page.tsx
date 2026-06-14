@@ -5,6 +5,15 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+const CHARS_MAP: Record<number, string> = {
+  30: "약 13,000자",
+  75: "약 26,000자",
+  100: "약 33,000자",
+  150: "약 50,000자",
+};
+
+const PKG_NAMES = ["기본 분석", "베이직", "프리미엄", "VIP 커플팩"];
+
 export default function PaymentComplete() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -14,9 +23,9 @@ export default function PaymentComplete() {
   useEffect(() => {
     const pkg = searchParams.get("package") || "베이직";
     const pg = searchParams.get("pages") || "75";
-    
+
     sessionStorage.setItem("selectedPackage", pkg);
-    
+
     setPackageName(pkg);
     setPages(parseInt(pg));
   }, [searchParams]);
@@ -31,9 +40,9 @@ export default function PaymentComplete() {
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <div style={{ maxWidth: 500, margin: "0 auto", width: "100%", textAlign: "center" }}>
           <div style={{ fontSize: 80, marginBottom: 24 }}>✅</div>
-         
+
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>결제 완료!</h1>
-         
+
           <p style={{ color: "#f5f5f5", fontSize: 16, fontWeight: 700, marginBottom: 24, lineHeight: 1.8 }}>
             <span style={{ color: "#fbbf24", fontWeight: 900 }}>{packageName}</span> 패키지 결제가<br/>
             완료되었습니다!
@@ -41,8 +50,17 @@ export default function PaymentComplete() {
 
           <div style={{ background: "rgba(108,64,200,0.9)", padding: 24, borderRadius: 12, marginBottom: 24 }}>
             <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 700, margin: "0 0 12px 0" }}>📊 결제 정보</p>
-            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
-            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분석 글자수: <span style={{ fontWeight: 900 }}>{((pages / 30) * 5500).toLocaleString()}자</span></p>
+            {PKG_NAMES.includes(packageName) ? (
+              <>
+                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
+                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분析 글자수: <span style={{ fontWeight: 900 }}>{CHARS_MAP[pages] ?? `약 ${((pages / 30) * 5500).toLocaleString()}자`}</span></p>
+              </>
+            ) : (
+              <>
+                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName.replace(/\+/g, ", ")}</span></p>
+                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분析 글자수: <span style={{ fontWeight: 900 }}>약 {((pages / 30) * 5500).toLocaleString()}자</span></p>
+              </>
+            )}
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: 0 }}>상태: <span style={{ color: "#90EE90", fontWeight: 900 }}>완료</span></p>
           </div>
 
