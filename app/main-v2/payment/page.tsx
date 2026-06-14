@@ -7,6 +7,14 @@ export default function Payment() {
   const router = useRouter();
   const [selectedPackage, setSelectedPackage] = useState("기본 분석");
   const [selectedFeatures, setSelectedFeatures] = useState(["yearlyLuck", "monthlyLuck"]);
+  const SELECT_CATS = [
+    { key: "💰 재물운", icon: "💰" },
+    { key: "💕 연애운", icon: "💕" },
+    { key: "💪 건강운", icon: "💪" },
+    { key: "🎯 성공운", icon: "🎯" },
+    { key: "✨ 총운",   icon: "✨" },
+  ];
+  const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const [isMobile, setIsMobile] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisName, setAnalysisName] = useState("");
@@ -123,7 +131,15 @@ export default function Payment() {
           )}
         </section>
 
-        <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 40, fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900 }}>💳 패키지 선택</h2>
+        <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 20, fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900 }}>💳 패키지 선택</h2>
+
+        {/* 헤더 배너 */}
+        <div style={{ maxWidth: 1200, margin: "0 auto 30px", background: "rgba(0,0,0,0.55)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 12, padding: "20px 24px", textAlign: "center" }}>
+          <div style={{ fontSize: 32, marginBottom: 8 }}>🔓</div>
+          <h3 style={{ color: "#ffffff", fontSize: 18, fontWeight: 900, margin: "0 0 6px" }}>【전체 AI 심층 분석】</h3>
+          <p style={{ color: "#f5f5f5", fontSize: 13, margin: "0 0 4px" }}>운세를 완전히 해석해드립니다</p>
+          <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&보관함 포함</p>
+        </div>
 
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => (
@@ -141,7 +157,7 @@ export default function Payment() {
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>💰 9,900~29,900원</p>
         </div>
 
-        <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 40, background: "#f5f5f5", padding: 24, borderRadius: 12 }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 20, background: "#f5f5f5", padding: 24, borderRadius: 12 }}>
           <h3 style={{ color: "#1a1a1a", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 포함된 운세</h3>
 
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
@@ -152,6 +168,53 @@ export default function Payment() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* 운세 선택 섹션 */}
+        <div style={{ maxWidth: 1000, margin: "0 auto 40px", background: "#f5f5f5", padding: "16px 20px", borderRadius: 12 }}>
+          <h2 style={{ color: "#1a1a1a", fontSize: 15, fontWeight: 900, marginBottom: 4 }}>어떤 운세를 확인할까요?</h2>
+          <p style={{ color: "#1a1a1a", fontSize: 11, marginBottom: 10 }}>
+            운세를 선택하세요
+            {selectedCats.length > 0 && <span style={{ color: "#1a1a1a", fontWeight: 700, marginLeft: 4 }}>({selectedCats.length}개 선택 · ₩{(selectedCats.length * 990).toLocaleString()})</span>}
+          </p>
+
+          <button
+            onClick={() => setSelectedCats(selectedCats.length === SELECT_CATS.length ? [] : SELECT_CATS.map(c => c.key))}
+            style={{ width: "100%", padding: "8px 14px", marginBottom: 8, background: selectedCats.length === SELECT_CATS.length ? "#fdf2f8" : "white", border: `1.5px solid ${selectedCats.length === SELECT_CATS.length ? "#ec4899" : "#e5e7eb"}`, borderRadius: 8, fontWeight: 800, fontSize: 12, color: selectedCats.length === SELECT_CATS.length ? "#ec4899" : "#6b7280", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+          >
+            <span>✨ 전체 선택</span>
+            <span style={{ fontSize: 14 }}>{selectedCats.length === SELECT_CATS.length ? "☑️" : "⬜"}</span>
+          </button>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {SELECT_CATS.map(c => {
+              const on = selectedCats.includes(c.key);
+              return (
+                <button key={c.key}
+                  onClick={() => setSelectedCats(on ? selectedCats.filter(k => k !== c.key) : [...selectedCats, c.key])}
+                  style={{ padding: "9px 14px", border: `1.5px solid ${on ? "#ec4899" : "#e5e7eb"}`, borderRadius: 8, background: on ? "#fdf2f8" : "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 16 }}>{c.icon}</span>
+                    <div style={{ textAlign: "left" }}>
+                      <span style={{ fontSize: 13, fontWeight: 900, color: on ? "#ec4899" : "#374151" }}>{c.key.replace(/\S+\s/, "")}</span>
+                      <span style={{ fontSize: 10, color: "#1a1a1a", marginLeft: 6 }}>약 5,500자</span>
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 15 }}>{on ? "✅" : "⬜"}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* 운세 보기 버튼 */}
+          <button
+            onClick={() => { const el = document.getElementById("fortune-select"); if (el) el.scrollIntoView({ behavior: "smooth" }); }}
+            disabled={selectedCats.length === 0}
+            style={{ width: "100%", marginTop: 14, padding: "13px 0", background: selectedCats.length > 0 ? "linear-gradient(135deg, #ec4899, #8b5cf6)" : "#e5e7eb", color: selectedCats.length > 0 ? "white" : "#9ca3af", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: selectedCats.length > 0 ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 ? "0 4px 16px rgba(236,72,153,0.35)" : "none" }}
+          >
+            {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 운세 보기 · ₩${(selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
+          </button>
         </div>
 
         <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>

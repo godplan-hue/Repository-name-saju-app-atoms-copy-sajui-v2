@@ -406,8 +406,8 @@ export default function V2Result() {
               {/* 운세 선택 결제 버튼 */}
               <button
                 onClick={() => {
-                  if (selectedCats.length === 0 || payBusy) return;
-                  payInline();
+                  if (selectedCats.length === 0) return;
+                  goToPay();
                 }}
                 disabled={selectedCats.length === 0 || payBusy}
                 style={{ width: "100%", padding: "16px 0", background: selectedCats.length > 0 && !payBusy ? G : "#e5e7eb", color: selectedCats.length > 0 && !payBusy ? "white" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: selectedCats.length > 0 && !payBusy ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 && !payBusy ? "0 6px 20px rgba(236,72,153,0.35)" : "none" }}
