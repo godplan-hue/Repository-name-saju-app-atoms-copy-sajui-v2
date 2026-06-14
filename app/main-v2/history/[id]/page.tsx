@@ -272,17 +272,13 @@ export default function HistoryDetail() {
         </div>
 
         {/* 하단 버튼 */}
-        <div style={{ display: "grid", gridTemplateColumns: item.isPaid ? "1fr 1fr" : "1fr", gap: 10, marginTop: 14 }}>
-          {item.isPaid && (
+        <div style={{ display: "grid", gridTemplateColumns: item.planType === "package" ? "1fr 1fr" : "1fr", gap: 10, marginTop: 14 }}>
+          {item.planType === "package" && (
             <button onClick={saveImage} disabled={saving}
               style={{ padding: "13px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.3)" }}>
               {saving ? "저장 중..." : "🖼️ 이미지 저장"}
             </button>
           )}
-          <button onClick={() => setShowSelect(true)}
-            style={{ padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
-            💎 다시 분석하기
-          </button>
         </div>
       </div>
 
