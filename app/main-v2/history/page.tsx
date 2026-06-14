@@ -17,6 +17,7 @@ interface Item {
   id: number; date: string; name: string; category: string;
   scores: { total: number; wealth: number; love: number; health: number; success: number };
   analysis: string;
+  isPaid?: boolean;
 }
 
 function fmtDate(iso: string) {
@@ -106,9 +107,11 @@ export default function V2History() {
   const [hist, setHist] = useState<Item[]>([]);
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
+  const [expanded, setExpanded] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    setHist(JSON.parse(localStorage.getItem("v2_history") || "[]"));
+    const all: Item[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
+    setHist(all.filter(item => item.isPaid === true));
   }, []);
 
   const clear = () => {
@@ -221,7 +224,28 @@ export default function V2History() {
                   ))}
                 </div>
 
-                <p style={{ fontSize: 12, color: "#6b7280", margin: 0, lineHeight: 1.6 }}>{item.analysis}</p>
+                <div>
+                  <p style={{ fontSize: 12, color: "#6b7280", margin: 0, lineHeight: 1.6,
+                    display: "-webkit-box", WebkitLineClamp: expanded.has(item.id) ? undefined : 3,
+                    WebkitBoxOrient: "vertical", overflow: expanded.has(item.id) ? "visible" : "hidden",
+                    whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                    {item.analysis}
+                  </p>
+                  {item.analysis && item.analysis.length > 120 && (
+                    <button
+                      onClick={e => {
+                        e.stopPropagation();
+                        setExpanded(prev => {
+                          const next = new Set(prev);
+                          next.has(item.id) ? next.delete(item.id) : next.add(item.id);
+                          return next;
+                        });
+                      }}
+                      style={{ marginTop: 6, background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, color: "#ec4899", padding: 0 }}>
+                      {expanded.has(item.id) ? "▲ 접기" : "▼ 더보기"}
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
 

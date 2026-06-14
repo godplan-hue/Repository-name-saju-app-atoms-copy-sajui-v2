@@ -66,7 +66,7 @@ function ScoreBar({ label, score, color }: { label: string; score: number; color
 }
 
 function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>) {
-  if (!r?.histId) return;
+  if (!r?.histId || !isPaid) return;
   try {
     const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
     const idx = hist.findIndex((h: any) => h.id === r.histId);
