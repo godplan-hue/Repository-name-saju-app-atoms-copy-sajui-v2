@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
@@ -154,6 +154,94 @@ function AnimalImg({
   );
 }
 
+const BANNERS = [
+  {
+    img: "https://images.pexels.com/photos/7682340/pexels-photo-7682340.jpeg?auto=compress&cs=tinysrgb&w=600",
+    badge: "🐱 점운",
+    badgeBg: G,
+    lines: ["점운에 오신 걸 환영합니다"],
+    overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(139,92,246,0.55) 100%)",
+    fit: "cover" as const,
+  },
+  {
+    img: "https://images.pexels.com/photos/3822843/pexels-photo-3822843.jpeg?auto=compress&cs=tinysrgb&w=600",
+    badge: "✨ 무료",
+    badgeBg: "#16a34a",
+    lines: ["무료인데 이렇게 자세히 나올 줄", "오늘의 운세 매일 무료로 확인"],
+    overlay: "linear-gradient(135deg, rgba(22,163,74,0.52) 0%, rgba(16,185,129,0.45) 100%)",
+    fit: "cover" as const,
+  },
+  {
+    img: "https://i.pinimg.com/736x/70/1e/77/701e778983540ac65d3049ed0ef2c51e.jpg",
+    badge: "💰 재물운",
+    badgeBg: "#b45309",
+    lines: ["돈 들어올 때 노젓는 비법"],
+    overlay: "linear-gradient(135deg, rgba(180,83,9,0.4) 0%, rgba(245,158,11,0.35) 100%)",
+    fit: "contain" as const,
+  },
+  {
+    img: "https://images.pexels.com/photos/3718515/pexels-photo-3718515.jpeg?auto=compress&cs=tinysrgb&w=600",
+    badge: "💕 연애운",
+    badgeBg: "#ec4899",
+    lines: ["사랑이 찾아오는 시기", "연애운 심층 분석", "내 인연의 흐름을 확인해보세요"],
+    overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(239,68,68,0.45) 100%)",
+    fit: "cover" as const,
+  },
+];
+
+function BannerSlider({ onStart }: { onStart: () => void }) {
+  const [cur, setCur] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const startXRef = useRef<number | null>(null);
+
+  const resetTimer = (next: number) => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => setCur(c => (c + 1) % BANNERS.length), 5000);
+    setCur(next);
+  };
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => setCur(c => (c + 1) % BANNERS.length), 5000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, []);
+
+  const b = BANNERS[cur];
+
+  return (
+    <div style={{ padding: "16px 14px 0", maxWidth: 480, margin: "0 auto" }}>
+      <div
+        style={{ height: 400, borderRadius: 20, position: "relative", overflow: "hidden", cursor: "pointer", boxShadow: "0 6px 28px rgba(139,92,246,0.18)" }}
+        onClick={onStart}
+        onTouchStart={e => { startXRef.current = e.touches[0].clientX; }}
+        onTouchEnd={e => {
+          if (startXRef.current === null) return;
+          const dx = e.changedTouches[0].clientX - startXRef.current;
+          if (Math.abs(dx) > 40) resetTimer(dx < 0 ? (cur + 1) % BANNERS.length : (cur - 1 + BANNERS.length) % BANNERS.length);
+          startXRef.current = null;
+        }}
+      >
+        <img src={b.img} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: b.fit, objectPosition: "center", transition: "opacity 0.4s" }} />
+        <div style={{ position: "absolute", inset: 0, background: b.overlay }} />
+        <div style={{ position: "absolute", inset: 0, padding: "24px 22px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <span style={{ display: "inline-block", background: b.badgeBg, color: "white", fontSize: 11, fontWeight: 900, padding: "4px 12px", borderRadius: 20, alignSelf: "flex-start" }}>{b.badge}</span>
+          <div>
+            {b.lines.map((line, i) => (
+              <p key={i} style={{ fontSize: i === 0 ? 22 : 14, fontWeight: i === 0 ? 900 : 700, color: "white", margin: i === 0 ? "0 0 6px" : "0 0 2px", lineHeight: 1.35, textShadow: "0 1px 6px rgba(0,0,0,0.3)" }}>{line}</p>
+            ))}
+            <div style={{ display: "flex", gap: 6, marginTop: 14 }}>
+              {BANNERS.map((_, i) => (
+                <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i); }}
+                  style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? "white" : "rgba(255,255,255,0.45)", transition: "all 0.3s ease", cursor: "pointer" }} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style={{ marginBottom: 32 }} />
+    </div>
+  );
+}
+
 export default function MainV2() {
   const router = useRouter();
   const [user, setUser] = useState<string | null>(null);
@@ -193,6 +281,9 @@ export default function MainV2() {
           <button onClick={() => router.push("/main-v2/history")} style={{ padding: "6px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>📂</button>
         </div>
       </header>
+
+      {/* 슬라이드 배너 */}
+      <BannerSlider onStart={() => router.push(user ? "/main-v2/analysis" : "/main-v2/login")} />
 
       {/* 히어로 */}
       <section style={{ padding: "24px 16px 0", textAlign: "center" }}>
@@ -351,30 +442,6 @@ export default function MainV2() {
         </div>
       </section>
 
-      {/* 후기 */}
-      <section style={{ padding: "0 14px 36px" }}>
-        <div style={{ maxWidth: 480, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 12px", textAlign: "center" }}>실제 이용자 후기 ⭐</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {[
-              { emoji: "🦢", name: "김혜진", stars: 5, title: "학 코스 무료인데 소름 돋았어요", body: "무료인데 이렇게 자세히 나올 줄 몰랐어요. 올해 재물운 흐름이 딱 맞았습니다.", bg: "#f0fdf4", color: "#16a34a" },
-              { emoji: "🐯", name: "이재우", stars: 5, title: "호랑이 코스 진짜 도움됐어요",   body: "점수로 보여주니 한눈에 파악이 돼요. 성공운 분석이 특히 정확했어요.", bg: "#fefce8", color: "#b45309" },
-              { emoji: "🐲", name: "박연지", stars: 5, title: "용 코스 가족 모두 추천해요",     body: "무제한으로 여러 카테고리 다 해봤는데, 가족들한테도 다 추천했어요!", bg: "#f5f3ff", color: "#6d28d9" },
-            ].map((r, i) => (
-              <div key={i} style={{ background: r.bg, borderRadius: 16, padding: "14px", border: `1.5px solid ${r.color}22` }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                  <span style={{ fontSize: 26 }}>{r.emoji}</span>
-                  <span style={{ fontSize: 12, color: "#f59e0b" }}>{"★".repeat(r.stars)}</span>
-                </div>
-                <div style={{ fontSize: 13, fontWeight: 900, color: r.color, marginBottom: 4 }}>{r.title}</div>
-                <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 4px", lineHeight: 1.6 }}>{r.body}</p>
-                <div style={{ fontSize: 11, color: "#d1d5db", textAlign: "right" }}>* {r.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 하단 CTA */}
       <section style={{ padding: "28px 16px 48px", textAlign: "center", background: "rgba(255,255,255,0.5)", borderTop: "1px solid rgba(236,72,153,0.1)" }}>
         <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
@@ -392,7 +459,7 @@ export default function MainV2() {
           <span>🐱</span>
           <span style={{ fontSize: 13, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운</span>
         </div>
-        <p style={{ color: "#9ca3af", fontSize: 11, margin: "0 0 5px" }}>© 2024 점운 · AI 동양 사주 분석</p>
+        <p style={{ color: "#9ca3af", fontSize: 11, margin: "0 0 5px" }}>© 2026 점운 · AI 동양 사주 분석</p>
         <div style={{ fontSize: 11 }}>
           <a href="/privacy" style={{ color: "#ec4899", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
           <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
