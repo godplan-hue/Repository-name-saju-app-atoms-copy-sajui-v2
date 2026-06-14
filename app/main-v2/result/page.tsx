@@ -105,6 +105,7 @@ export default function V2Result() {
   const [selPlan, setSelPlan] = useState("vip");
   const [payBusy, setPayBusy] = useState(false);
   const [planType, setPlanType] = useState("");
+  const [tier, setTier] = useState<"free" | "select" | "package">("free");
 
   const INLINE_PLANS = [
     { id: "vip", icon: "🐲", name: "용 코스", badge: "👑 최고", desc: "₩9,990", price: 9990, priceStr: "₩9,990", per: "무제한", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
@@ -129,18 +130,17 @@ export default function V2Result() {
     }
     setResult(r);
 
-    const PKG_NAMES = ["기본 분析", "베이직", "프리미엄", "VIP 커플팩"];
+    const price = sessionStorage.getItem("price") ?? "";
+    const PKG_PRICES_SET = ["9900", "19900", "24900", "29900"];
+    const isPackage = PKG_PRICES_SET.includes(price);
+    const isSelect = price === "990";
     const v2Paid = sessionStorage.getItem("v2_paid") === "1";
-    const selPkg = sessionStorage.getItem("selectedPackage") ?? "";
-    // fallback: payment-complete를 통해 왔을 때 selectedPackage로 티어 결정
-    const isPaid = v2Paid || !!selPkg;
+    const isPaid = isPackage || isSelect || v2Paid;
     const rawPlan = sessionStorage.getItem("v2_plan") ?? "";
-    const plan = v2Paid
-      ? rawPlan
-      : selPkg
-        ? (PKG_NAMES.includes(selPkg) ? "package" : "select")
-        : "";
+    const plan = isPackage ? "package" : isSelect ? "select" : (v2Paid ? rawPlan : "");
+    const detectedTier: "free" | "select" | "package" = isPackage ? "package" : isSelect ? "select" : "free";
 
+    setTier(detectedTier);
     setPaid(isPaid);
     setPlanType(plan);
     const analyses = isPaid ? (r.allAnalyses ?? {}) : {};
@@ -368,8 +368,8 @@ export default function V2Result() {
         )}
 
 
-        {/* ── 유료 패키지: 이미지 저장 버튼 ── */}
-        {paid && planType !== "select" && (
+        {/* ── 패키지: 이미지 저장 버튼 ── */}
+        {tier === "package" && (
           <div style={{ marginBottom: 12 }}>
             <button onClick={saveImage} disabled={saving}
               style={{ width: "100%", padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.3)", opacity: saving ? 0.7 : 1 }}>
@@ -378,8 +378,8 @@ export default function V2Result() {
           </div>
         )}
 
-        {/* ── 공유 버튼 (무료 + 패키지만) ── */}
-        {(!paid || planType !== "select") && (
+        {/* ── 공유 버튼 (무료 + 패키지) ── */}
+        {(tier === "free" || tier === "package") && (
           <div style={{ marginBottom: 10 }}>
             <button onClick={share}
               style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
@@ -388,8 +388,18 @@ export default function V2Result() {
           </div>
         )}
 
-        {/* ── 미결제: 결제하기 버튼 ── */}
-        {!paid && (
+        {/* ── 보관함 버튼 (990원 + 패키지) ── */}
+        {(tier === "select" || tier === "package") && (
+          <div style={{ marginBottom: 10 }}>
+            <button onClick={() => router.push("/main-v2/history")}
+              style={{ width: "100%", padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid rgba(139,92,246,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.1)" }}>
+              📥 보관함 저장
+            </button>
+          </div>
+        )}
+
+        {/* ── 무료: 결제하기 버튼 ── */}
+        {tier === "free" && (
           <div style={{ marginBottom: 10 }}>
             <button onClick={() => router.push("/main-v2/payment")}
               style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
@@ -398,15 +408,18 @@ export default function V2Result() {
           </div>
         )}
 
-        {/* ── 하단 버튼 ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 10 }}>
-          {paid && (
-            <button
-              onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); router.push("/main-v2/payment"); }}
-              style={{ padding: "12px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
-              🔮 다시 분석
-            </button>
-          )}
+        {/* ── 다시 분석 버튼 ── */}
+        <div style={{ marginBottom: 10 }}>
+          <button
+            onClick={() => {
+              sessionStorage.removeItem("v2_paid");
+              sessionStorage.removeItem("v2_paid_cats");
+              sessionStorage.removeItem("price");
+              router.push(tier === "free" ? "/main-v2/analysis" : "/main-v2/payment");
+            }}
+            style={{ width: "100%", padding: "12px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+            🔮 다시 분석
+          </button>
         </div>
         <button onClick={() => router.push("/main-v2")}
           style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
