@@ -6,6 +6,14 @@ import { useRouter } from "next/navigation";
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
+const SELECT_CATS = [
+  { key: "💰 재물운", icon: "💰", color: "#f59e0b" },
+  { key: "💕 연애운", icon: "💕", color: "#ec4899" },
+  { key: "💪 건강운", icon: "💪", color: "#10b981" },
+  { key: "🎯 성공운", icon: "🎯", color: "#8b5cf6" },
+  { key: "✨ 총운",   icon: "✨", color: "#6366f1" },
+];
+
 const PLANS = [
   {
     id: "taste",
@@ -60,6 +68,7 @@ const PLANS = [
 export default function V2Payment() {
   const router = useRouter();
   const [sel, setSel] = useState("taste");
+  const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const [busy, setBusy] = useState(false);
   const [profile, setProfile] = useState<any>(null);
 
@@ -138,6 +147,60 @@ export default function V2Payment() {
             운세를 완전히 해석해드립니다<br />
             ₩990부터 시작 · 이미지 저장&보관함 포함
           </p>
+        </div>
+
+        {/* 운세 선택 섹션 */}
+        <div style={{ background: "white", borderRadius: 20, padding: "20px 16px", marginBottom: 18, border: "1.5px solid rgba(236,72,153,0.12)" }}>
+          <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px", textAlign: "center" }}>어떤 운세를 확인할까요?</h2>
+          <p style={{ fontSize: 12, color: "#9ca3af", textAlign: "center", margin: "0 0 16px" }}>
+            {selectedCats.length > 0
+              ? <><span style={{ color: "#ec4899", fontWeight: 800 }}>{selectedCats.length}개</span> 선택 · <span style={{ color: "#8b5cf6", fontWeight: 800 }}>₩{(selectedCats.length * 990).toLocaleString()}</span></>
+              : "운세를 선택하세요"}
+          </p>
+
+          {/* 전체 선택 */}
+          <button
+            onClick={() => setSelectedCats(selectedCats.length === SELECT_CATS.length ? [] : SELECT_CATS.map(c => c.key))}
+            style={{ width: "100%", padding: "10px 16px", marginBottom: 12, background: selectedCats.length === SELECT_CATS.length ? "#fdf2f8" : "white", border: `1.5px solid ${selectedCats.length === SELECT_CATS.length ? "#ec4899" : "#e5e7eb"}`, borderRadius: 14, fontWeight: 800, fontSize: 13, color: selectedCats.length === SELECT_CATS.length ? "#ec4899" : "#6b7280", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+          >
+            <span>✨ 전체 선택</span>
+            <span style={{ fontSize: 16 }}>{selectedCats.length === SELECT_CATS.length ? "☑️" : "⬜"}</span>
+          </button>
+
+          {/* 개별 운세 카드 */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
+            {SELECT_CATS.map(c => {
+              const on = selectedCats.includes(c.key);
+              return (
+                <button key={c.key}
+                  onClick={() => setSelectedCats(on ? selectedCats.filter(k => k !== c.key) : [...selectedCats, c.key])}
+                  style={{ padding: "14px 16px", border: `1.5px solid ${on ? c.color : "#e5e7eb"}`, borderRadius: 16, background: on ? `${c.color}10` : "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontSize: 22 }}>{c.icon}</span>
+                    <div style={{ textAlign: "left" }}>
+                      <div style={{ fontSize: 14, fontWeight: 900, color: on ? c.color : "#374151" }}>{c.key.replace(/\S+\s/, "")}</div>
+                      <div style={{ fontSize: 11, color: "#9ca3af" }}>약 3,500자 심층 분석</div>
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 18 }}>{on ? "✅" : "⬜"}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* 운세 선택 결제 버튼 */}
+          <button
+            onClick={() => {
+              if (selectedCats.length === 0) return;
+              sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
+              pay();
+            }}
+            disabled={selectedCats.length === 0 || busy}
+            style={{ width: "100%", padding: "16px 0", background: selectedCats.length > 0 && !busy ? G : "#e5e7eb", color: selectedCats.length > 0 && !busy ? "white" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: selectedCats.length > 0 && !busy ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 && !busy ? "0 6px 20px rgba(236,72,153,0.35)" : "none" }}
+          >
+            {busy ? "⏳ 결제 처리 중..." : selectedCats.length > 0 ? `💎 ${selectedCats.length}개 운세 보기 · ₩${(selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
+          </button>
         </div>
 
         {/* 코스 목록 */}
