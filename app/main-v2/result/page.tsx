@@ -288,13 +288,27 @@ export default function V2Result() {
             </div>
           </div>
           {/* 럭키 */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "0 18px 18px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "0 18px 12px" }}>
             {[{ label: "행운 색", value: luckyColor, icon: "🎨" }, { label: "행운 숫자", value: luckyNumber, icon: "🔢" }, { label: "행운 방향", value: luckyDirection, icon: "🧭" }].map(item => (
               <div key={item.label} style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
                 <div style={{ fontSize: 20, marginBottom: 4 }}>{item.icon}</div>
                 <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>{item.label}</div>
                 <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{item.value}</div>
               </div>
+            ))}
+          </div>
+          {/* 6개 운세 점수 바 */}
+          <div style={{ padding: "4px 18px 18px" }}>
+            <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 14 }}>📊 분야별 운세 점수</div>
+            {[
+              { label: "🌟 오늘의 운세", key: "total",   color: "#f59e0b" },
+              { label: "💰 재물운",      key: "wealth",  color: "#f59e0b" },
+              { label: "💕 연애운",      key: "love",    color: "#ec4899" },
+              { label: "💪 건강운",      key: "health",  color: "#10b981" },
+              { label: "🎯 성공운",      key: "success", color: "#8b5cf6" },
+              { label: "✨ 총운",        key: "total",   color: "#6366f1" },
+            ].map(b => (
+              <ScoreBar key={b.label} label={b.label} score={scores?.[b.key as keyof typeof scores] ?? 0} color={b.color} />
             ))}
           </div>
         </div>

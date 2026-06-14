@@ -189,10 +189,12 @@ export default function HistoryDetail() {
   if (!item) return null;
 
   const bars = [
-    { label: "💰 재물운", key: "wealth", color: "#f59e0b" },
-    { label: "💕 연애운", key: "love", color: "#ec4899" },
-    { label: "💪 건강운", key: "health", color: "#10b981" },
-    { label: "🎯 성공운", key: "success", color: "#8b5cf6" },
+    { label: "🌟 오늘의 운세", key: "total",   color: "#f59e0b" },
+    { label: "💰 재물운",      key: "wealth",  color: "#f59e0b" },
+    { label: "💕 연애운",      key: "love",    color: "#ec4899" },
+    { label: "💪 건강운",      key: "health",  color: "#10b981" },
+    { label: "🎯 성공운",      key: "success", color: "#8b5cf6" },
+    { label: "✨ 총운",        key: "total",   color: "#6366f1" },
   ];
 
   return (
