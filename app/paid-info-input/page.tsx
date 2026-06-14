@@ -107,10 +107,19 @@ export default function PaidInfoInput() {
       const profile = { name, birthYear, birthMonth, birthDay, birthHour, gender: 'N', relationship: 'solo' };
       const result = { ...data, profile, histId: Date.now(), savedAt: new Date().toISOString() };
 
+      const PKG_PRICE_MAP: Record<string, string> = {
+        '기본 분析': '9900',
+        '베이직': '19900',
+        '프리미엄': '24900',
+        'VIP 커플팩': '29900',
+      };
+      const price = PKG_PRICE_MAP[selectedPackage] ?? '9900';
+
       sessionStorage.setItem('v2_result', JSON.stringify(result));
       sessionStorage.setItem('v2_paid', '1');
       sessionStorage.setItem('v2_plan', plan);
       sessionStorage.setItem('selectedPackage', selectedPackage);
+      sessionStorage.setItem('price', price);
 
       router.push('/main-v2/result');
     } catch (error) {
