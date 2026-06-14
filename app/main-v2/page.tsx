@@ -156,10 +156,12 @@ function AnimalImg({
 
 const BANNERS = [
   {
-    img: "https://i.pinimg.com/736x/07/69/26/076926fbb6e528eed85f1c5e3c40c16c.jpg",
+    img: "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg",
     badge: "🐱 점운",
     badgeBg: G,
-    lines: ["점운에 오신 걸 환영합니다", "특별 이벤트 사주 990원"],
+    lines: ["점운에 오신 걸 환영합니다", "특별이벤트", "사주 990원"],
+    lineSizes: [17, 20, 24],
+    lineColors: ["#fff700", "#ffffff", "#ff3b3b"],
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(139,92,246,0.55) 100%)",
     fit: "contain" as const,
   },
@@ -167,15 +169,18 @@ const BANNERS = [
     img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg",
     badge: "✨ 무료",
     badgeBg: "#16a34a",
-    lines: ["무료인데 이렇게 자세히 나올 줄", "오늘의 운세 매일 무료로 확인"],
+    lines: ["무료인데", "이렇게 자세히 알려준다고?", "오늘의 운세 매일 무료로 확인"],
+    lineSizes: [15, 11, 20],
     overlay: "linear-gradient(135deg, rgba(22,163,74,0.52) 0%, rgba(16,185,129,0.45) 100%)",
     fit: "contain" as const,
   },
   {
-    img: "https://i.pinimg.com/736x/70/1e/77/701e778983540ac65d3049ed0ef2c51e.jpg",
+    img: "https://i.pinimg.com/736x/2d/a5/2b/2da52b98d2ad341ad3b3f33d35dfd98f.jpg",
     badge: "💰 재물운",
     badgeBg: "#b45309",
-    lines: ["돈 들어올 때 노젓는 비법"],
+    lines: ["돈 들어올 때", "노젓는 비법"],
+    lineSizes: [18, 12],
+    lineColors: ["#f9a8d4", "#fff700"],
     overlay: "linear-gradient(135deg, rgba(180,83,9,0.4) 0%, rgba(245,158,11,0.35) 100%)",
     fit: "contain" as const,
   },
@@ -222,7 +227,7 @@ function BannerSlider({ onStart }: { onStart: () => void }) {
           startXRef.current = null;
         }}
       >
-        <img src={b.img} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: b.fit, objectPosition: "center", transition: "opacity 0.4s" }} />
+        <img src={b.img} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "opacity 0.4s" }} />
         {/* 하단 텍스트 그라데이션 */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "38%", background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)", pointerEvents: "none" }} />
         {/* 배지 */}
@@ -230,7 +235,7 @@ function BannerSlider({ onStart }: { onStart: () => void }) {
         {/* 텍스트 + 인디케이터 — 이미지 하단 안쪽 */}
         <div style={{ position: "absolute", bottom: 14, left: 16, right: 16, zIndex: 2 }}>
           {b.lines.map((line, i) => (
-            <p key={i} style={{ fontSize: i === 0 ? 17 : 12, fontWeight: i === 0 ? 900 : 700, color: lineColors[i] ?? "white", margin: "0 0 2px", lineHeight: 1.35, textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}>{line}</p>
+            <p key={i} style={{ fontSize: (b as any).lineSizes?.[i] ?? (i === 0 ? 17 : 12), fontWeight: i === 0 ? 900 : 700, color: (b as any).lineColors?.[i] ?? lineColors[i] ?? "white", margin: "0 0 2px", lineHeight: 1.35, textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}>{line}</p>
           ))}
           <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
             {BANNERS.map((_, i) => (
