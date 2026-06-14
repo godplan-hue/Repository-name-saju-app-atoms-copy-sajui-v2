@@ -294,7 +294,7 @@ export default function V2Result() {
                     <div style={{ fontSize: 10, color: "#6b7280", marginBottom: 8 }}>{c.desc}</div>
                     {c.isFree
                       ? <span style={{ fontSize: 9, background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 8px", borderRadius: 20, fontWeight: 800 }}>FREE</span>
-                      : <span style={{ fontSize: 9, background: "#f3f4f6", color: "#9ca3af", padding: "2px 8px", borderRadius: 20, fontWeight: 800 }}>₩990</span>
+                      : <span style={{ fontSize: 9, background: "#fff0f0", color: "#e11d48", padding: "2px 8px", borderRadius: 20, fontWeight: 800 }}>₩990</span>
                     }
                   </div>
                   {!c.isFree && (
@@ -314,7 +314,7 @@ export default function V2Result() {
             <div style={{ fontSize: 30, marginBottom: 8 }}>🔓</div>
             <h3 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 8px" }}>심층 운세 보기</h3>
             <p style={{ fontSize: 12, opacity: 0.85, margin: "0 0 18px", lineHeight: 1.7 }}>
-              운세당 ₩990 · 최대 4개 선택<br />각 최대 3,500자 · 이미지 저장&보관함 포함
+              운세당 ₩990 · 최대 5개 선택<br />각 최대 3,500자 · 이미지 저장&보관함 포함
             </p>
             <button
               onClick={() => setShowSelect(true)}
