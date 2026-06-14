@@ -101,14 +101,11 @@ export default function V2Result() {
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const [paidCats, setPaidCats] = useState<string[]>([]);
-  const [selPlan, setSelPlan] = useState("taste");
+  const [selPlan, setSelPlan] = useState("vip");
   const [payBusy, setPayBusy] = useState(false);
 
   const INLINE_PLANS = [
-    { id: "taste",   icon: "🦢", name: "학 코스",    badge: null,      desc: "₩990",   price: 990,  priceStr: "₩990",   per: "1회",   features: ["AI 심층 분석"] },
-    { id: "basic",   icon: "🐯", name: "호랑이 코스", badge: null,      desc: "₩2,970", price: 2970, priceStr: "₩2,970", per: "3회",   features: ["AI 심층 분석", "재물운+성공운 상세"] },
-    { id: "popular", icon: "🦚", name: "봉황 코스",   badge: "🔥 인기", desc: "₩4,950", price: 4950, priceStr: "₩4,950", per: "5회",   features: ["AI 심층 분석", "연애운+건강운 상세", "월별+오늘 운세 포함"] },
-    { id: "vip",     icon: "🐲", name: "용 코스",     badge: "👑 최고", desc: "₩9,990", price: 9990, priceStr: "₩9,990", per: "무제한", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
+    { id: "vip", icon: "🐲", name: "용 코스", badge: "👑 최고", desc: "₩9,990", price: 9990, priceStr: "₩9,990", per: "무제한", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
   ];
 
   const INLINE_SELECT_CATS = [
@@ -352,39 +349,6 @@ export default function V2Result() {
           ))
         )}
 
-        {/* ── 미결제: 2열 그리드 카드 ── */}
-        {!paid && (() => {
-          const gridItems = [
-            { key: FREE_CAT, icon: "🌟", label: "오늘의 운세", desc: "오늘 하루 기운", scoreKey: "total", isFree: true },
-            { key: "💰 재물운", icon: "💰", label: "재물운", desc: "돈·투자·자산", scoreKey: "wealth", isFree: false },
-            { key: "💕 연애운", icon: "💕", label: "연애운", desc: "사랑·인연·궁합", scoreKey: "love", isFree: false },
-            { key: "🎯 성공운", icon: "🎯", label: "성공운", desc: "커리어·꿈·성취", scoreKey: "success", isFree: false },
-            { key: "💪 건강운", icon: "💪", label: "건강운", desc: "몸·마음·활력", scoreKey: "health", isFree: false },
-            { key: "✨ 총운",   icon: "✨", label: "총운",   desc: "올해 전체 운세", scoreKey: "total", isFree: false },
-          ];
-          return (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-              {gridItems.map(c => (
-                <div key={c.key} style={{ background: "white", borderRadius: 20, border: c.isFree ? "2px solid rgba(34,197,94,0.4)" : "1.5px solid #e5e7eb", overflow: "hidden", position: "relative", opacity: 1 }}>
-                  <div style={{ padding: "14px 12px 12px", textAlign: "center" }}>
-                    <div style={{ fontSize: 32, marginBottom: 6 }}>{c.icon}</div>
-                    <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 3 }}>{c.label}</div>
-                    <div style={{ fontSize: 10, color: "#6b7280", marginBottom: 8 }}>{c.desc}</div>
-                    {c.isFree
-                      ? <span style={{ fontSize: 9, background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 8px", borderRadius: 20, fontWeight: 800 }}>FREE</span>
-                      : <span style={{ fontSize: 9, background: "#fff0f0", color: "#e11d48", padding: "2px 8px", borderRadius: 20, fontWeight: 800 }}>₩990</span>
-                    }
-                  </div>
-                  {!c.isFree && (
-                    <div style={{ position: "absolute", top: 8, right: 8 }}>
-                      <span style={{ fontSize: 14 }}>🔒</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          );
-        })()}
 
         {/* ── 미결제: 인라인 결제 UI (payment 페이지 전체 내용) ── */}
         {!paid && (

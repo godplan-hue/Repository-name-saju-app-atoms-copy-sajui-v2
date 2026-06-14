@@ -16,42 +16,6 @@ const SELECT_CATS = [
 
 const PLANS = [
   {
-    id: "taste",
-    icon: "🦢",
-    name: "학 코스",
-    badge: null,
-    desc: "₩990",
-    price: 990,
-    priceStr: "₩990",
-    features: ["AI 심층 분석"],
-    highlight: false,
-    per: "1회",
-  },
-  {
-    id: "basic",
-    icon: "🐯",
-    name: "호랑이 코스",
-    badge: null,
-    desc: "₩2,970",
-    price: 2970,
-    priceStr: "₩2,970",
-    features: ["AI 심층 분석", "재물운+성공운 상세"],
-    highlight: false,
-    per: "3회",
-  },
-  {
-    id: "popular",
-    icon: "🦚",
-    name: "봉황 코스",
-    badge: "🔥 인기",
-    desc: "₩4,950",
-    price: 4950,
-    priceStr: "₩4,950",
-    features: ["AI 심층 분석", "연애운+건강운 상세", "월별+오늘 운세 포함"],
-    highlight: true,
-    per: "5회",
-  },
-  {
     id: "vip",
     icon: "🐲",
     name: "용 코스",
@@ -67,7 +31,7 @@ const PLANS = [
 
 export default function V2Payment() {
   const router = useRouter();
-  const [sel, setSel] = useState("taste");
+  const [sel, setSel] = useState("vip");
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const [busy, setBusy] = useState(false);
   const [profile, setProfile] = useState<any>(null);
