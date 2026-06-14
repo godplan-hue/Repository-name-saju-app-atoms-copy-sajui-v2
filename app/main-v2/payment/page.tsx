@@ -14,7 +14,7 @@ export default function Payment() {
     { key: "🎯 성공운", icon: "🎯" },
     { key: "✨ 총운",   icon: "✨" },
   ];
-  const [selectedCats, setSelectedCats] = useState<string[]>([]);
+  const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const [isMobile, setIsMobile] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisName, setAnalysisName] = useState("");
@@ -187,12 +187,35 @@ export default function Payment() {
           </a>
         </div>
 
+        <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
+          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>왜 점운인가?</h2>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24 }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
+              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>사주 완벽분석</h3>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>기본분석(30P)부터<br/>VIP(150P)까지</p>
+            </div>
+
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
+              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>9,900~29,900원</p>
+            </div>
+
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
+              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>즉시 다운로드</h3>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3분 이내 PDF 완성</p>
+            </div>
+          </div>
+        </section>
+
         {/* 운세 선택 섹션 */}
         <div style={{ maxWidth: 1000, margin: "0 auto 40px", background: "#f5f5f5", padding: "16px 20px", borderRadius: 12 }}>
-          <h2 style={{ color: "#1a1a1a", fontSize: 15, fontWeight: 900, marginBottom: 4 }}>어떤 운세를 확인할까요?</h2>
-          <p style={{ color: "#1a1a1a", fontSize: 11, marginBottom: 10 }}>
-            운세를 선택하세요
-            {selectedCats.length > 0 && <span style={{ color: "#1a1a1a", fontWeight: 700, marginLeft: 4 }}>({selectedCats.length}개 선택 · ₩{(selectedCats.length * 990).toLocaleString()})</span>}
+          <h2 style={{ color: "#1a1a1a", fontSize: 15, fontWeight: 900, marginBottom: 6 }}>어떤 운세를 확인할까요?</h2>
+          <p style={{ fontSize: 13, fontWeight: 700, marginBottom: 10 }}>
+            <span style={{ color: "#1a1a1a" }}>(1개 선택 · </span><span style={{ color: "#ef4444", fontWeight: 900 }}>₩990</span><span style={{ color: "#1a1a1a" }}>)</span>
           </p>
 
           <button
@@ -237,30 +260,6 @@ export default function Payment() {
             {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 운세 보기 · ₩${(selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
           </button>
         </div>
-
-        <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
-          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>왜 점운인가?</h2>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24 }}>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>사주 완벽분석</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>기본분석(30P)부터<br/>VIP(150P)까지</p>
-            </div>
-
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>9,900~29,900원</p>
-            </div>
-
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>즉시 다운로드</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3분 이내 PDF 완성</p>
-            </div>
-          </div>
-        </section>
       </div>
     </main>
   );

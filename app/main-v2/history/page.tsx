@@ -18,6 +18,7 @@ interface Item {
   scores: { total: number; wealth: number; love: number; health: number; success: number };
   analysis: string;
   isPaid?: boolean;
+  planType?: string;
 }
 
 function fmtDate(iso: string) {
@@ -108,6 +109,14 @@ export default function V2History() {
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
   const [expanded, setExpanded] = useState<Set<number>>(new Set());
+
+  const shareItem = (item: Item, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = window.location.origin + "/main-v2";
+    const text = `${item.name}님의 ${item.category?.replace(/\S+\s/, "")} 분석 🔮\n총운 ${item.scores?.total}점\n\n📱 나도 무료로!\n${url}`;
+    if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
+    else navigator.clipboard.writeText(text).then(() => alert("✅ 링크 복사됨!"));
+  };
 
   useEffect(() => {
     const all: Item[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
@@ -206,11 +215,25 @@ export default function V2History() {
                     <div>
                       <div style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{item.name}님 · {item.category?.replace(/\S+\s/, "")}</div>
                       <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{fmtDate(item.date)}</div>
+                      {item.planType === "select"
+                        ? <span style={{ fontSize: 9, background: "#f3e8ff", color: "#8b5cf6", border: "1px solid #e9d5ff", padding: "1px 7px", borderRadius: 20, fontWeight: 700 }}>💎 990원</span>
+                        : <span style={{ fontSize: 9, background: "#fdf2f8", color: "#ec4899", border: "1px solid #fbcfe8", padding: "1px 7px", borderRadius: 20, fontWeight: 700 }}>📦 패키지</span>
+                      }
                     </div>
                   </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: sc(item.scores?.total ?? 0) }}>{item.scores?.total ?? "—"}</div>
-                    <div style={{ fontSize: 10, color: "#9ca3af" }}>총운</div>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+                    <div style={{ textAlign: "right" }}>
+                      <div style={{ fontSize: 22, fontWeight: 900, color: sc(item.scores?.total ?? 0) }}>{item.scores?.total ?? "—"}</div>
+                      <div style={{ fontSize: 10, color: "#9ca3af" }}>총운</div>
+                    </div>
+                    {item.planType !== "select" && (
+                      <button
+                        onClick={e => shareItem(item, e)}
+                        style={{ padding: "4px 10px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
+                      >
+                        📤 공유
+                      </button>
+                    )}
                   </div>
                 </div>
 

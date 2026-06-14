@@ -65,7 +65,7 @@ function ScoreBar({ label, score, color }: { label: string; score: number; color
   );
 }
 
-function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>, paidCats: string[]) {
+function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>, paidCats: string[], planType: string) {
   if (!r?.histId || !isPaid) return;
   try {
     const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
@@ -81,6 +81,7 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
         scores: r.scores ?? {},
         analysis: analyses[cat] ?? "",
         isPaid: true,
+        planType,
       };
       const idx = hist.findIndex((h: any) => h.id === id);
       if (idx >= 0) hist[idx] = entry;
@@ -103,6 +104,7 @@ export default function V2Result() {
   const [paidCats, setPaidCats] = useState<string[]>([]);
   const [selPlan, setSelPlan] = useState("vip");
   const [payBusy, setPayBusy] = useState(false);
+  const [planType, setPlanType] = useState("");
 
   const INLINE_PLANS = [
     { id: "vip", icon: "🐲", name: "용 코스", badge: "👑 최고", desc: "₩9,990", price: 9990, priceStr: "₩9,990", per: "무제한", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
@@ -128,6 +130,8 @@ export default function V2Result() {
     setResult(r);
     const isPaid = sessionStorage.getItem("v2_paid") === "1";
     setPaid(isPaid);
+    const plan = sessionStorage.getItem("v2_plan") ?? "";
+    setPlanType(plan);
     const analyses = isPaid ? (r.allAnalyses ?? {}) : {};
     setAllAnalyses(analyses);
     const cats = (() => {
@@ -136,12 +140,13 @@ export default function V2Result() {
       return saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key);
     })();
     if (isPaid) setPaidCats(cats);
-    if (isPaid && Object.keys(analyses).length > 0) saveToHistory(r, isPaid, analyses, cats);
+    if (isPaid && Object.keys(analyses).length > 0) saveToHistory(r, isPaid, analyses, cats, plan);
   }, []);
 
   const goToPay = () => {
     if (selectedCats.length === 0) return;
     sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
+    sessionStorage.setItem("v2_plan", "select");
     setShowSelect(false);
     router.push("/main-v2/payment");
   };
@@ -257,10 +262,12 @@ export default function V2Result() {
           <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
         </button>
         <div style={{ display: "flex", gap: 7 }}>
-          <button onClick={share} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
-            📱 공유
-          </button>
-          {paid && (
+          {(!paid || planType !== "select") && (
+            <button onClick={share} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+              📱 공유
+            </button>
+          )}
+          {paid && planType !== "select" && (
             <button onClick={saveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer" }}>
               {saving ? "⏳..." : "🖼️ 저장"}
             </button>
@@ -480,8 +487,8 @@ export default function V2Result() {
           </>
         )}
 
-        {/* ── 유료: 이미지 저장 버튼 ── */}
-        {paid && (
+        {/* ── 유료 패키지: 이미지 저장 버튼 ── */}
+        {paid && planType !== "select" && (
           <div style={{ marginBottom: 12 }}>
             <button onClick={saveImage} disabled={saving}
               style={{ width: "100%", padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.3)", opacity: saving ? 0.7 : 1 }}>
@@ -490,13 +497,15 @@ export default function V2Result() {
           </div>
         )}
 
-        {/* ── 공유 버튼 ── */}
-        <div style={{ marginBottom: 10 }}>
-          <button onClick={share}
-            style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
-            📤 공유하기
-          </button>
-        </div>
+        {/* ── 공유 버튼 (무료 + 패키지만) ── */}
+        {(!paid || planType !== "select") && (
+          <div style={{ marginBottom: 10 }}>
+            <button onClick={share}
+              style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
+              📤 공유하기
+            </button>
+          </div>
+        )}
 
         {/* ── 하단 버튼 ── */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
