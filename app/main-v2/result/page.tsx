@@ -21,17 +21,17 @@ const SELECT_CATS = ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT);
 type PkgCat = { apiKey: string; icon: string; label: string; color: string };
 const PKG_CAT_MAP: Record<string, PkgCat[]> = {
   "기본 분석": [
-    { apiKey: "✨ 총운",      icon: "☀️", label: "올해 운세", color: "#f59e0b" },
+    { apiKey: "☀️ 올해 운세", icon: "☀️", label: "올해 운세", color: "#f59e0b" },
     { apiKey: "📅 월별운세",  icon: "🌙", label: "월별 운세", color: "#0ea5e9" },
   ],
   "베이직": [
-    { apiKey: "✨ 총운",      icon: "☀️", label: "올해 운세", color: "#f59e0b" },
+    { apiKey: "☀️ 올해 운세", icon: "☀️", label: "올해 운세", color: "#f59e0b" },
     { apiKey: "📅 월별운세",  icon: "🌙", label: "월별 운세", color: "#0ea5e9" },
     { apiKey: "💰 재물운",    icon: "💎", label: "재물운",    color: "#f59e0b" },
     { apiKey: "💕 연애운",    icon: "💕", label: "연애운",    color: "#ec4899" },
   ],
   "프리미엄": [
-    { apiKey: "✨ 총운",      icon: "☀️", label: "올해 운세", color: "#f59e0b" },
+    { apiKey: "☀️ 올해 운세", icon: "☀️", label: "올해 운세", color: "#f59e0b" },
     { apiKey: "📅 월별운세",  icon: "🌙", label: "월별 운세", color: "#0ea5e9" },
     { apiKey: "💰 재물운",    icon: "💎", label: "재물운",    color: "#f59e0b" },
     { apiKey: "💕 연애운",    icon: "💕", label: "연애운",    color: "#ec4899" },
