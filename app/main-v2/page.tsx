@@ -156,20 +156,20 @@ function AnimalImg({
 
 const BANNERS = [
   {
-    img: "https://images.pexels.com/photos/7682340/pexels-photo-7682340.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://i.pinimg.com/736x/07/69/26/076926fbb6e528eed85f1c5e3c40c16c.jpg",
     badge: "🐱 점운",
     badgeBg: G,
-    lines: ["점운에 오신 걸 환영합니다"],
+    lines: ["점운에 오신 걸 환영합니다", "특별 이벤트 사주 990원"],
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(139,92,246,0.55) 100%)",
-    fit: "cover" as const,
+    fit: "contain" as const,
   },
   {
-    img: "https://images.pexels.com/photos/3822843/pexels-photo-3822843.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg",
     badge: "✨ 무료",
     badgeBg: "#16a34a",
     lines: ["무료인데 이렇게 자세히 나올 줄", "오늘의 운세 매일 무료로 확인"],
     overlay: "linear-gradient(135deg, rgba(22,163,74,0.52) 0%, rgba(16,185,129,0.45) 100%)",
-    fit: "cover" as const,
+    fit: "contain" as const,
   },
   {
     img: "https://i.pinimg.com/736x/70/1e/77/701e778983540ac65d3049ed0ef2c51e.jpg",
@@ -180,12 +180,12 @@ const BANNERS = [
     fit: "contain" as const,
   },
   {
-    img: "https://images.pexels.com/photos/3718515/pexels-photo-3718515.jpeg?auto=compress&cs=tinysrgb&w=600",
+    img: "https://i.pinimg.com/736x/8b/bc/25/8bbc258261ea953d149de68672016367.jpg",
     badge: "💕 연애운",
     badgeBg: "#ec4899",
     lines: ["사랑이 찾아오는 시기", "연애운 심층 분석", "내 인연의 흐름을 확인해보세요"],
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(239,68,68,0.45) 100%)",
-    fit: "cover" as const,
+    fit: "contain" as const,
   },
 ];
 
@@ -221,7 +221,6 @@ function BannerSlider({ onStart }: { onStart: () => void }) {
         }}
       >
         <img src={b.img} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: b.fit, objectPosition: "center", transition: "opacity 0.4s" }} />
-        <div style={{ position: "absolute", inset: 0, background: b.overlay }} />
         <div style={{ position: "absolute", inset: 0, padding: "24px 22px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           <span style={{ display: "inline-block", background: b.badgeBg, color: "white", fontSize: 11, fontWeight: 900, padding: "4px 12px", borderRadius: 20, alignSelf: "flex-start" }}>{b.badge}</span>
           <div>
