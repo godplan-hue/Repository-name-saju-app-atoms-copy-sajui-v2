@@ -133,7 +133,7 @@ export default function V2Result() {
       const saved = sessionStorage.getItem("v2_paid_cats");
       setPaidCats(saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key));
     }
-    if (isPaid) saveToHistory(r, isPaid, analyses);
+    if (isPaid && Object.keys(analyses).length > 0) saveToHistory(r, isPaid, analyses);
   }, []);
 
   const goToPay = () => {

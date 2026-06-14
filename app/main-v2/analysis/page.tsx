@@ -56,6 +56,9 @@ export default function V2Analysis() {
 
   const startAnalysis = async () => {
     if (!selOpt) { alert("옵션을 선택해주세요"); return; }
+    sessionStorage.removeItem("v2_paid");
+    sessionStorage.removeItem("v2_paid_cats");
+    sessionStorage.removeItem("v2_plan");
     setPhase("loading");
     try {
       const res = await fetch("/api/v2/analyze", {
