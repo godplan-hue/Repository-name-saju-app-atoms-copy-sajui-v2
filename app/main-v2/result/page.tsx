@@ -43,9 +43,9 @@ const PKG_CAT_MAP: Record<string, PkgCat[]> = {
     { apiKey: "💰 재물운",      icon: "💎", label: "재물운",       color: "#f59e0b" },
     { apiKey: "💕 연애운",      icon: "💕", label: "연애운",       color: "#ec4899" },
     { apiKey: "💪 건강운",      icon: "🌿", label: "건강운",       color: "#10b981" },
-    { apiKey: "🎯 성공운",      icon: "🎯", label: "성공운",       color: "#8b5cf6" },
-    { apiKey: "💼 사업운",      icon: "✨", label: "전체 사주분析", color: "#6366f1" },
-    { apiKey: "💍 결혼·궁합운", icon: "👫", label: "궁합분析",     color: "#f43f5e" },
+    { apiKey: "📝 이름분석",     icon: "📝", label: "이름분석",     color: "#6366f1" },
+    { apiKey: "💼 사업운",      icon: "✨", label: "전체 사주분석", color: "#8b5cf6" },
+    { apiKey: "💍 결혼·궁합운", icon: "👫", label: "궁합분석",     color: "#f43f5e" },
   ],
 };
 
