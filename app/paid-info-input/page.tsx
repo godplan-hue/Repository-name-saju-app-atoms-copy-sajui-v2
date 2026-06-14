@@ -10,30 +10,30 @@ export default function PaidInfoInput() {
   const [birthYear, setBirthYear] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthDay, setBirthDay] = useState("");
-  const [birthHour, setBirthHour] = useState("");
-  const [birthMinute, setBirthMinute] = useState("");
+  const [birthHour, setBirthHour] = useState("unknown");
+  const [birthMinute, setBirthMinute] = useState("unknown");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState("");
   const [partnerName, setPartnerName] = useState("");
   const [partnerBirthYear, setPartnerBirthYear] = useState("");
   const [partnerBirthMonth, setPartnerBirthMonth] = useState("");
   const [partnerBirthDay, setPartnerBirthDay] = useState("");
-  const [partnerBirthHour, setPartnerBirthHour] = useState("");
-  const [partnerBirthMinute, setPartnerBirthMinute] = useState("");
+  const [partnerBirthHour, setPartnerBirthHour] = useState("unknown");
+  const [partnerBirthMinute, setPartnerBirthMinute] = useState("unknown");
 
   useEffect(() => {
     setName("");
     setBirthYear("");
     setBirthMonth("");
     setBirthDay("");
-    setBirthHour("");
-    setBirthMinute("");
+    setBirthHour("unknown");
+    setBirthMinute("unknown");
     setPartnerName("");
     setPartnerBirthYear("");
     setPartnerBirthMonth("");
     setPartnerBirthDay("");
-    setPartnerBirthHour("");
-    setPartnerBirthMinute("");
+    setPartnerBirthHour("unknown");
+    setPartnerBirthMinute("unknown");
   }, []);
 
   useEffect(() => {
@@ -373,7 +373,7 @@ export default function PaidInfoInput() {
                     cursor: "pointer",
                   }}
                 >
-                  <option value="">분선택</option>
+                  <option value="unknown">모름</option>
                   {minutes.map((minute) => (
                     <option key={minute} value={minute}>
                       {String(minute).padStart(2, "0")}분
@@ -553,7 +553,7 @@ export default function PaidInfoInput() {
                       cursor: "pointer",
                     }}
                   >
-                    <option value="">분선택</option>
+                    <option value="unknown">모름</option>
                     {minutes.map((minute) => (
                       <option key={minute} value={minute}>
                         {String(minute).padStart(2, "0")}분

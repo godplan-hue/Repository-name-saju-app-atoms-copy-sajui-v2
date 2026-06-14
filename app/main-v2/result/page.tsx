@@ -38,13 +38,13 @@ const PKG_CAT_MAP: Record<string, PkgCat[]> = {
     { apiKey: "💪 건강운",    icon: "🌿", label: "건강운",    color: "#10b981" },
   ],
   "VIP 커플팩": [
-    { apiKey: "✨ 총운",        icon: "☀️", label: "올해 운세",    color: "#f59e0b" },
+    { apiKey: "☀️ 올해 운세",   icon: "☀️", label: "올해 운세",    color: "#f59e0b" },
     { apiKey: "📅 월별운세",    icon: "🌙", label: "월별 운세",    color: "#0ea5e9" },
     { apiKey: "💰 재물운",      icon: "💎", label: "재물운",       color: "#f59e0b" },
     { apiKey: "💕 연애운",      icon: "💕", label: "연애운",       color: "#ec4899" },
     { apiKey: "💪 건강운",      icon: "🌿", label: "건강운",       color: "#10b981" },
     { apiKey: "📝 이름분석",     icon: "📝", label: "이름분석",     color: "#6366f1" },
-    { apiKey: "💼 사업운",      icon: "✨", label: "전체 사주분석", color: "#8b5cf6" },
+    { apiKey: "💼 전체 사주분석", icon: "✨", label: "전체 사주분석", color: "#8b5cf6" },
     { apiKey: "💍 결혼·궁합운", icon: "👫", label: "궁합분석",     color: "#f43f5e" },
   ],
 };
