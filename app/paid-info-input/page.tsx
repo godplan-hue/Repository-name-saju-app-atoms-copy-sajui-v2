@@ -113,7 +113,7 @@ export default function PaidInfoInput() {
         '프리미엄': '24900',
         'VIP 커플팩': '29900',
       };
-      const price = PKG_PRICE_MAP[selectedPackage] ?? '9900';
+      const price = plan === 'select' ? '990' : (PKG_PRICE_MAP[selectedPackage] ?? '9900');
 
       sessionStorage.setItem('v2_result', JSON.stringify(result));
       sessionStorage.setItem('v2_paid', '1');

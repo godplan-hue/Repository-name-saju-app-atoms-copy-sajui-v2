@@ -18,6 +18,37 @@ const ALL_SCORE_CATS = [
 const FREE_CAT = "🌟 오늘의 운세";
 const SELECT_CATS = ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT);
 
+type PkgCat = { apiKey: string; icon: string; label: string; color: string };
+const PKG_CAT_MAP: Record<string, PkgCat[]> = {
+  "기본 분析": [
+    { apiKey: "✨ 총운",      icon: "☀️", label: "올해 운세", color: "#f59e0b" },
+    { apiKey: "📅 월별운세",  icon: "🌙", label: "월별 운세", color: "#0ea5e9" },
+  ],
+  "베이직": [
+    { apiKey: "✨ 총운",      icon: "☀️", label: "올해 운세", color: "#f59e0b" },
+    { apiKey: "📅 월별운세",  icon: "🌙", label: "월별 운세", color: "#0ea5e9" },
+    { apiKey: "💰 재물운",    icon: "💎", label: "재물운",    color: "#f59e0b" },
+    { apiKey: "💕 연애운",    icon: "💕", label: "연애운",    color: "#ec4899" },
+  ],
+  "프리미엄": [
+    { apiKey: "✨ 총운",      icon: "☀️", label: "올해 운세", color: "#f59e0b" },
+    { apiKey: "📅 월별운세",  icon: "🌙", label: "월별 운세", color: "#0ea5e9" },
+    { apiKey: "💰 재물운",    icon: "💎", label: "재물운",    color: "#f59e0b" },
+    { apiKey: "💕 연애운",    icon: "💕", label: "연애운",    color: "#ec4899" },
+    { apiKey: "💪 건강운",    icon: "🌿", label: "건강운",    color: "#10b981" },
+  ],
+  "VIP 커플팩": [
+    { apiKey: "✨ 총운",        icon: "☀️", label: "올해 운세",    color: "#f59e0b" },
+    { apiKey: "📅 월별운세",    icon: "🌙", label: "월별 운세",    color: "#0ea5e9" },
+    { apiKey: "💰 재물운",      icon: "💎", label: "재물운",       color: "#f59e0b" },
+    { apiKey: "💕 연애운",      icon: "💕", label: "연애운",       color: "#ec4899" },
+    { apiKey: "💪 건강운",      icon: "🌿", label: "건강운",       color: "#10b981" },
+    { apiKey: "🎯 성공운",      icon: "🎯", label: "성공운",       color: "#8b5cf6" },
+    { apiKey: "💼 사업운",      icon: "✨", label: "전체 사주분析", color: "#6366f1" },
+    { apiKey: "💍 결혼·궁합운", icon: "👫", label: "궁합분析",     color: "#f43f5e" },
+  ],
+};
+
 function ScoreCircle({ score, size = 120 }: { score: number; size?: number }) {
   const r = 44;
   const circ = 2 * Math.PI * r;
@@ -106,6 +137,7 @@ export default function V2Result() {
   const [payBusy, setPayBusy] = useState(false);
   const [planType, setPlanType] = useState("");
   const [tier, setTier] = useState<"free" | "select" | "package">("free");
+  const [pkgName, setPkgName] = useState("");
 
   const INLINE_PLANS = [
     { id: "vip", icon: "🐲", name: "용 코스", badge: "👑 최고", desc: "₩9,990", price: 9990, priceStr: "₩9,990", per: "무제한", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
@@ -141,6 +173,7 @@ export default function V2Result() {
     const detectedTier: "free" | "select" | "package" = isPackage ? "package" : isSelect ? "select" : "free";
 
     setTier(detectedTier);
+    if (isPackage) setPkgName(sessionStorage.getItem("selectedPackage") ?? "");
     setPaid(isPaid);
     setPlanType(plan);
     const analyses = isPaid ? (r.allAnalyses ?? {}) : {};
@@ -328,31 +361,30 @@ export default function V2Result() {
           </div>
         </div>
 
-        {/* ── 오늘의 운세 무료 카드 ── */}
-        <div
-          ref={el => { cardRefs.current[1] = el; }}
-          style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(34,197,94,0.25)", marginBottom: 12 }}
-        >
-          <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>
-            <span style={{ fontSize: 22 }}>🌟</span>
-            <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>오늘의 운세</span>
-            <span style={{ fontSize: 10, background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>FREE</span>
+        {/* ── 무료: 오늘의 운세 카드 ── */}
+        {tier === "free" && (
+          <div
+            ref={el => { cardRefs.current[1] = el; }}
+            style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(34,197,94,0.25)", marginBottom: 12 }}
+          >
+            <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>
+              <span style={{ fontSize: 22 }}>🌟</span>
+              <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>오늘의 운세</span>
+              <span style={{ fontSize: 10, background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>FREE</span>
+            </div>
+            <div style={{ padding: "14px 18px 20px" }}>
+              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                {freeAnalysis}
+              </p>
+            </div>
           </div>
-          <div style={{ padding: "14px 18px 20px" }}>
-            <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-              {freeAnalysis}
-            </p>
-          </div>
-        </div>
+        )}
 
-        {/* ── 유료: 선택한 운세만 표시 ── */}
-        {paid && Object.keys(allAnalyses).length > 0 && (
+        {/* ── 990원: 선택한 5개 운세 ── */}
+        {tier === "select" && Object.keys(allAnalyses).length > 0 && (
           ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map((c, i) => (
-            <div
-              key={c.key}
-              ref={el => { cardRefs.current[2 + i] = el; }}
-              style={{ background: "white", borderRadius: 24, border: `1.5px solid ${c.color}44`, marginBottom: 12 }}
-            >
+            <div key={c.key} ref={el => { cardRefs.current[2 + i] = el; }}
+              style={{ background: "white", borderRadius: 24, border: `1.5px solid ${c.color}44`, marginBottom: 12 }}>
               <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>
                 <span style={{ fontSize: 22 }}>{c.icon}</span>
                 <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{c.key.replace(/\S+\s/, "")}</span>
@@ -361,6 +393,25 @@ export default function V2Result() {
               <div style={{ padding: "14px 18px 20px" }}>
                 <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
                   {allAnalyses[c.key] ?? ""}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
+
+        {/* ── 패키지(9900~29900): 패키지별 운세 ── */}
+        {tier === "package" && Object.keys(allAnalyses).length > 0 && (
+          (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분析"]).filter(c => allAnalyses[c.apiKey]).map((c, i) => (
+            <div key={c.apiKey} ref={el => { cardRefs.current[2 + i] = el; }}
+              style={{ background: "white", borderRadius: 24, border: `1.5px solid ${c.color}44`, marginBottom: 12 }}>
+              <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>
+                <span style={{ fontSize: 22 }}>{c.icon}</span>
+                <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{c.label}</span>
+                <span style={{ fontSize: 10, background: G, color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>📦 패키지</span>
+              </div>
+              <div style={{ padding: "14px 18px 20px" }}>
+                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                  {allAnalyses[c.apiKey]}
                 </p>
               </div>
             </div>
