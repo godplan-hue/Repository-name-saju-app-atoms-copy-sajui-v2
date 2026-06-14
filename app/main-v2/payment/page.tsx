@@ -239,7 +239,7 @@ export default function Payment() {
             disabled={selectedCats.length === 0}
             style={{ width: "100%", marginTop: 14, padding: "13px 0", background: selectedCats.length > 0 ? "linear-gradient(135deg, #ec4899, #8b5cf6)" : "#e5e7eb", color: selectedCats.length > 0 ? "white" : "#9ca3af", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: selectedCats.length > 0 ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 ? "0 4px 16px rgba(236,72,153,0.35)" : "none" }}
           >
-            {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 운세 보기 · ₩${(selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
+            {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 결제하기 · ₩${(selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
           </button>
         </div>
 
