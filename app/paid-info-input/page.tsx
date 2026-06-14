@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -78,48 +78,44 @@ export default function PaidInfoInput() {
     setIsLoading(true);
 
     try {
-      const birthDate = `${birthYear}-${String(birthMonth).padStart(2, "0")}-${String(birthDay).padStart(2, "0")}`;
+      const birthDate = `${birthYear}-${String(birthMonth).padStart(2, '0')}-${String(birthDay).padStart(2, '0')}`;
 
-      const res = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/v2/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
-          email: "user@example.com",
           birth: birthDate,
-          birthHour: birthHour === "unknown" ? "unknown" : String(birthHour).padStart(2, "0"),
-          planType: "paid",
-          packageType: selectedPackage,
-          partnerName: selectedPackage === "VIP 커플팩" ? partnerName : null,
-          partnerBirth: selectedPackage === "VIP 커플팩" ? `${partnerBirthYear}-${String(partnerBirthMonth).padStart(2, "0")}-${String(partnerBirthDay).padStart(2, "0")}` : null,
-        })
+          birthHour: birthHour === 'unknown' ? 'unknown' : String(birthHour).padStart(2, '0'),
+          gender: 'N',
+          relationship: 'solo',
+          category: '🌟 오늘의 운세',
+          planType: 'paid',
+        }),
       });
+
+      if (!res.ok) {
+        alert('분析 실패. 다시 시도해주세요.');
+        setIsLoading(false);
+        return;
+      }
 
       const data = await res.json();
 
-      console.log("API 응답:", data);
+      const PKG_NAMES = ['기본 분析', '베이직', '프리미엄', 'VIP 커플팩'];
+      const plan = PKG_NAMES.includes(selectedPackage) ? 'package' : 'select';
+      const profile = { name, birthYear, birthMonth, birthDay, birthHour, gender: 'N', relationship: 'solo' };
+      const result = { ...data, profile, histId: Date.now(), savedAt: new Date().toISOString() };
 
-      if (!res.ok) {
-        console.error("API 오류:", data);
-        alert("분석 실패. 다시 시도해주세요.");
-        setIsLoading(false);
-        return;
-      }
+      sessionStorage.setItem('v2_result', JSON.stringify(result));
+      sessionStorage.setItem('v2_paid', '1');
+      sessionStorage.setItem('v2_plan', plan);
+      sessionStorage.setItem('selectedPackage', selectedPackage);
 
-      if (!data.result) {
-        console.error("결과 없음:", data);
-        alert("분석 결과를 받을 수 없습니다.");
-        setIsLoading(false);
-        return;
-      }
-
-      sessionStorage.setItem("analysisResult", JSON.stringify(data.result));
-      sessionStorage.setItem("selectedPackage", selectedPackage);
-
-      router.push("/paid-analysis-result");
+      router.push('/main-v2/result');
     } catch (error) {
-      console.error("분석 오류:", error);
-      alert("분석 중 오류가 발생했습니다.");
+      console.error('분析 오류:', error);
+      alert('분析 중 오류가 발생했습니다.');
       setIsLoading(false);
     }
   };

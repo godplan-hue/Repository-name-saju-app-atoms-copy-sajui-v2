@@ -128,9 +128,20 @@ export default function V2Result() {
       sessionStorage.setItem("v2_result", JSON.stringify(r));
     }
     setResult(r);
-    const isPaid = sessionStorage.getItem("v2_paid") === "1";
+
+    const PKG_NAMES = ["기본 분析", "베이직", "프리미엄", "VIP 커플팩"];
+    const v2Paid = sessionStorage.getItem("v2_paid") === "1";
+    const selPkg = sessionStorage.getItem("selectedPackage") ?? "";
+    // fallback: payment-complete를 통해 왔을 때 selectedPackage로 티어 결정
+    const isPaid = v2Paid || !!selPkg;
+    const rawPlan = sessionStorage.getItem("v2_plan") ?? "";
+    const plan = v2Paid
+      ? rawPlan
+      : selPkg
+        ? (PKG_NAMES.includes(selPkg) ? "package" : "select")
+        : "";
+
     setPaid(isPaid);
-    const plan = sessionStorage.getItem("v2_plan") ?? "";
     setPlanType(plan);
     const analyses = isPaid ? (r.allAnalyses ?? {}) : {};
     setAllAnalyses(analyses);
@@ -512,7 +523,7 @@ export default function V2Result() {
           <button
             onClick={() => {
               if (!paid) { window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); }
-              else { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); router.push("/main-v2/analysis"); }
+              else { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); router.push("/main-v2/payment"); }
             }}
             style={{ padding: "12px 0", background: paid ? "white" : BG, color: paid ? "#8b5cf6" : "#ec4899", border: paid ? "1.5px solid #8b5cf6" : "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
             {paid ? "🔮 다시 분석" : "💎 ₩990 선택보기"}
