@@ -22,7 +22,7 @@ export default function PaymentComplete() {
   }, [searchParams]);
 
   const handleHome = () => {
-    router.push("/");
+    router.push("/main-v2");
   };
 
   return (

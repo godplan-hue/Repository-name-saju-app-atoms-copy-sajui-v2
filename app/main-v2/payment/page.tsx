@@ -170,6 +170,23 @@ export default function Payment() {
           </div>
         </div>
 
+        <div style={{ maxWidth: 500, margin: "0 auto 40px", textAlign: "center" }}>
+          <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900, marginBottom: 10 }}>
+            선택된 패키지: <span style={{ color: "#fbbf24", fontWeight: 900 }}>{selectedPackage}</span>
+          </p>
+          <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 10 }}>
+            🎯 {currentCount}개 운세
+          </p>
+          <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
+            📄 {currentPages}페이지
+          </p>
+          <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1, marginBottom: 12 }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
+
+          <a href="/main-v2" style={{ display: "inline-block", padding: 12, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textDecoration: "none" }}>
+            ← 돌아가기
+          </a>
+        </div>
+
         {/* 운세 선택 섹션 */}
         <div style={{ maxWidth: 1000, margin: "0 auto 40px", background: "#f5f5f5", padding: "16px 20px", borderRadius: 12 }}>
           <h2 style={{ color: "#1a1a1a", fontSize: 15, fontWeight: 900, marginBottom: 4 }}>어떤 운세를 확인할까요?</h2>
@@ -244,23 +261,6 @@ export default function Payment() {
             </div>
           </div>
         </section>
-
-        <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
-          <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900, marginBottom: 10 }}>
-            선택된 패키지: <span style={{ color: "#fbbf24", fontWeight: 900 }}>{selectedPackage}</span>
-          </p>
-          <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 10 }}>
-            🎯 {currentCount}개 운세
-          </p>
-          <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
-            📄 {currentPages}페이지
-          </p>
-          <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1, marginBottom: 12 }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
-
-          <a href="/main-v2" style={{ display: "inline-block", padding: 12, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textDecoration: "none" }}>
-            ← 돌아가기
-          </a>
-        </div>
       </div>
     </main>
   );
