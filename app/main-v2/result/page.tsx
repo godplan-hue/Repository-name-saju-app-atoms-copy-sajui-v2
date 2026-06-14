@@ -20,7 +20,7 @@ const SELECT_CATS = ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT);
 
 type PkgCat = { apiKey: string; icon: string; label: string; color: string };
 const PKG_CAT_MAP: Record<string, PkgCat[]> = {
-  "기본 분析": [
+  "기본 분석": [
     { apiKey: "✨ 총운",      icon: "☀️", label: "올해 운세", color: "#f59e0b" },
     { apiKey: "📅 월별운세",  icon: "🌙", label: "월별 운세", color: "#0ea5e9" },
   ],
@@ -180,11 +180,25 @@ export default function V2Result() {
     setAllAnalyses(analyses);
     const cats = (() => {
       if (!isPaid) return [];
+      if (isPackage) {
+        const pkg = sessionStorage.getItem("selectedPackage") ?? "";
+        return (PKG_CAT_MAP[pkg] ?? PKG_CAT_MAP["기본 분석"]).map(c => c.apiKey);
+      }
       const saved = sessionStorage.getItem("v2_paid_cats");
       return saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key);
     })();
     if (isPaid) setPaidCats(cats);
-    if (isPaid && Object.keys(analyses).length > 0) saveToHistory(r, isPaid, analyses, cats, plan);
+    if (isPaid && Object.keys(analyses).length > 0) {
+      if (isPackage) {
+        const pkg = sessionStorage.getItem("selectedPackage") ?? "";
+        const pkgCats = PKG_CAT_MAP[pkg] ?? PKG_CAT_MAP["기본 분석"];
+        const labelAnalyses: Record<string, string> = {};
+        pkgCats.forEach(c => { labelAnalyses[`${c.icon} ${c.label}`] = analyses[c.apiKey] ?? ""; });
+        saveToHistory(r, isPaid, labelAnalyses, pkgCats.map(c => `${c.icon} ${c.label}`), plan);
+      } else {
+        saveToHistory(r, isPaid, analyses, cats, plan);
+      }
+    }
   }, []);
 
   const goToPay = () => {
@@ -401,7 +415,7 @@ export default function V2Result() {
 
         {/* ── 패키지(9900~29900): 패키지별 운세 ── */}
         {tier === "package" && Object.keys(allAnalyses).length > 0 && (
-          (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분析"]).filter(c => allAnalyses[c.apiKey]).map((c, i) => (
+          (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map((c, i) => (
             <div key={c.apiKey} ref={el => { cardRefs.current[2 + i] = el; }}
               style={{ background: "white", borderRadius: 24, border: `1.5px solid ${c.color}44`, marginBottom: 12 }}>
               <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>

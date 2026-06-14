@@ -59,6 +59,8 @@ export default function V2Analysis() {
     sessionStorage.removeItem("v2_paid");
     sessionStorage.removeItem("v2_paid_cats");
     sessionStorage.removeItem("v2_plan");
+    sessionStorage.removeItem("price");
+    sessionStorage.removeItem("selectedPackage");
     setPhase("loading");
     try {
       const res = await fetch("/api/v2/analyze", {

@@ -102,13 +102,13 @@ export default function PaidInfoInput() {
 
       const data = await res.json();
 
-      const PKG_NAMES = ['기본 분析', '베이직', '프리미엄', 'VIP 커플팩'];
+      const PKG_NAMES = ['기본 분석', '베이직', '프리미엄', 'VIP 커플팩'];
       const plan = PKG_NAMES.includes(selectedPackage) ? 'package' : 'select';
       const profile = { name, birthYear, birthMonth, birthDay, birthHour, gender: 'N', relationship: 'solo' };
       const result = { ...data, profile, histId: Date.now(), savedAt: new Date().toISOString() };
 
       const PKG_PRICE_MAP: Record<string, string> = {
-        '기본 분析': '9900',
+        '기본 분석': '9900',
         '베이직': '19900',
         '프리미엄': '24900',
         'VIP 커플팩': '29900',
