@@ -149,7 +149,7 @@ export default function V2Result() {
     try {
       const profile = result?.profile;
       if (profile) {
-        const category = result?.category ?? "✨ 총운";
+        const category = selectedCats.length > 0 ? selectedCats[0] : "💰 재물운";
         const res = await fetch("/api/v2/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -272,12 +272,14 @@ export default function V2Result() {
           ref={el => { cardRefs.current[0] = el; }}
           style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12 }}
         >
-          <div style={{ background: G, padding: "24px 20px", color: "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
-            <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 14px", letterSpacing: "-0.3px" }}>🐱 점운 · AI 사주 분석</p>
-            <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
-            <h1 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 12px", opacity: 0.9 }}>{profile?.name}님의 운세 분석</h1>
-            <ScoreCircle score={scores?.total ?? 0} size={130} />
-            <p style={{ fontSize: 12, opacity: 0.75, margin: "8px 0 0", fontWeight: 600 }}>총운 점수</p>
+          <div style={{ background: G, color: "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
+            <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>🐱 점운 · AI 사주 분석</p>
+            <div style={{ padding: "14px 20px 24px" }}>
+              <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
+              <h1 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 12px", opacity: 0.9 }}>{profile?.name}님의 운세 분석</h1>
+              <ScoreCircle score={scores?.total ?? 0} size={130} />
+              <p style={{ fontSize: 12, opacity: 0.75, margin: "8px 0 0", fontWeight: 600 }}>총운 점수</p>
+            </div>
           </div>
           {/* 럭키 */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "0 18px 18px" }}>
