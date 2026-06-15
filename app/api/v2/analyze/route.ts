@@ -384,6 +384,7 @@ function getPaidTemplate(name: string, birth: string, gender: string, category: 
   const hi = score >= 75;
   const mid = score >= 60;
   const level = hi ? "강한 길운" : mid ? "안정적인 기운" : "변화가 필요한 기운";
+  const personalBlock = getPersonalProfile(y, m, gender);
 
   // 올해 운세 전용 (연도 무관)
   if (category === "올해 운세") {
