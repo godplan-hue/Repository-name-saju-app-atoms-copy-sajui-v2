@@ -43,9 +43,10 @@ function cutAtSentence(text: string, maxLen: number): string {
 }
 
 // ── 1973년생 전용 재물운 템플릿 ──
-function get1973Template(name: string, score: number, genderKey: string): string {
+function get1973Template(name: string, score: number, genderKey: string, month: number = 1): string {
   const hi = score >= 75;
   const mid = score >= 60;
+  const personalBlock = getPersonalProfile(1973, month, genderKey === "M" ? "남" : "여");
 
   if (genderKey === "M") {
     return `${name}님의 재물운은 ${score}점입니다.
@@ -96,7 +97,7 @@ function getFreeTemplate(name: string, birth: string, gender: string, category: 
 
   // ── 년도별 전용 템플릿 우선 적용 ──
   if (category === "재물운" && y === 1973) {
-    return get1973Template(name, score, genderKey);
+    return get1973Template(name, score, genderKey, m);
   }
 
   // ── 오늘의 운세 무료 템플릿 (3,500자) ──
@@ -474,17 +475,18 @@ ${name}님, 당신의 이름은 당신만의 고유한 에너지와 스토리를
 
   // 1973년생 전용 (연애운·건강운·성공운만)
   if (y === 1973 && ["연애운", "건강운", "성공운"].includes(category)) {
-    return get1973PaidTemplate(name, score, G, category);
+    return get1973PaidTemplate(name, score, G, category, m);
   }
 
   // ── 범용 템플릿 ──
   return getGenericPaidTemplate(name, score, G, category, y, m);
 }
 
-function get1973PaidTemplate(name: string, score: number, G: string, category: string): string {
+function get1973PaidTemplate(name: string, score: number, G: string, category: string, month: number = 1): string {
   const hi = score >= 75;
   const mid = score >= 60;
   const level = hi ? "상승" : mid ? "안정" : "재정비";
+  const personalBlock = getPersonalProfile(1973, month, G === "M" ? "남" : "여");
   const zodiac = "계축년(癸丑年) 흑소";
   const age = "53세";
 
