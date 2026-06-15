@@ -80,6 +80,9 @@ export default function PaidInfoInput() {
     try {
       const birthDate = `${birthYear}-${String(birthMonth).padStart(2, '0')}-${String(birthDay).padStart(2, '0')}`;
 
+      const PKG_NAMES_PRE = ['기본 분석', '베이직', '프리미엄', 'VIP 커플팩'];
+      const prePlan = PKG_NAMES_PRE.includes(selectedPackage) ? 'package' : 'select';
+
       const res = await fetch('/api/v2/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -90,7 +93,7 @@ export default function PaidInfoInput() {
           gender: 'N',
           relationship: 'solo',
           category: '🌟 오늘의 운세',
-          planType: 'paid',
+          planType: prePlan,
         }),
       });
 
