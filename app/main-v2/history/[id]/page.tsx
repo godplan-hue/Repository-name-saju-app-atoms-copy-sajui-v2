@@ -135,7 +135,7 @@ export default function HistoryDetail() {
     }
   };
 
-  const handlePay = async (_cats: string[]) => {
+  const handlePay = async (cats: string[]) => {
     setPaying(true);
     try {
       const profile = sessionStorage.getItem("v2_profile");
@@ -145,6 +145,7 @@ export default function HistoryDetail() {
         return;
       }
       const p = JSON.parse(profile);
+      const category = cats[0] ?? "💰 재물운";
       const res = await fetch("/api/v2/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -154,7 +155,7 @@ export default function HistoryDetail() {
           birthHour: p.birthHour,
           gender: p.gender,
           relationship: p.relationship,
-          category: "💰 재물운",
+          category,
           planType: "paid",
         }),
       });
@@ -162,13 +163,15 @@ export default function HistoryDetail() {
       const data = await res.json();
       const result = {
         ...data,
-        category: "💰 재물운",
+        category,
         profile: p,
         histId: Date.now(),
         savedAt: new Date().toISOString(),
       };
       sessionStorage.setItem("v2_result", JSON.stringify(result));
       sessionStorage.setItem("v2_paid", "1");
+      sessionStorage.setItem("v2_plan", "select");
+      sessionStorage.setItem("v2_paid_cats", JSON.stringify(cats));
       router.push("/main-v2/result");
     } catch {
       alert("분석 중 오류가 발생했습니다.");
