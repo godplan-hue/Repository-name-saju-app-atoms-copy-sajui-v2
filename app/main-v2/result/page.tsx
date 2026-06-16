@@ -88,6 +88,23 @@ function getYourChangeType(name: string, birthYear: string | number, birthMonth:
   return target[Math.abs(hash) % target.length];
 }
 
+// 문장이 길 때 카드 너비에 맞춰 CSS로만 줄바꿈을 맡기면 문장마다 길이가 달라
+// 한쪽에 거의 다 차고 한 단어만 남는 식으로 들쭉날쭉해짐 — 그래서 일정 길이가
+// 넘는 문장은 중간 지점에 가장 가까운 띄어쓰기에서 직접 잘라 두 줄로 강제 분리함
+function splitLong(line: string, threshold = 22): string[] {
+  if (line.length <= threshold) return [line];
+  const mid = Math.floor(line.length / 2);
+  let best = -1;
+  let bestDist = Infinity;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] === " ") {
+      const dist = Math.abs(i - mid);
+      if (dist < bestDist) { bestDist = dist; best = i; }
+    }
+  }
+  if (best === -1) return [line];
+  return [line.slice(0, best), line.slice(best + 1)];
+}
 
 const ALL_SCORE_CATS = [
   { key: "🌟 오늘의 운세", scoreKey: "total",  color: "#f59e0b", icon: "🌟" },
@@ -341,18 +358,22 @@ export default function V2Result() {
       const html2canvas = (await import("html2canvas")).default;
       const elements = cardRefs.current.filter(Boolean) as HTMLDivElement[];
       if (elements.length === 0) { alert("저장할 내용이 없습니다."); return; }
+      // 카드마다 글자 길이가 달라 배율(scale)이 다르게 적용되면, 캡처된 캔버스 폭이
+      // 서로 달라져서 합칠 때 한쪽에 빈 공간(세로 선처럼 보이는 경계)이 생김 —
+      // 그래서 모든 카드에 동일한 배율을 적용하도록, 가장 긴 카드 기준으로 미리 계산해둠
+      const maxScrollHeight = Math.max(...elements.map(el => el.scrollHeight));
+      const sharedScale = maxScrollHeight > 6000 ? 1 : maxScrollHeight > 3000 ? 1.5 : 2;
       const canvases: HTMLCanvasElement[] = [];
       for (const el of elements) {
         const prevOv = el.style.overflow;
         const prevMH = el.style.maxHeight;
+        const prevOvX = el.style.overflowX;
         el.style.overflow = "visible";
+        el.style.overflowX = "hidden"; // 가로 스크롤바가 캡처될 때 세로 선처럼 보이는 것을 방지
         el.style.maxHeight = "none";
-        // 글자 수가 길어진 카드일수록 캔버스 최대 크기(보통 약 16,384px 또는
-        // 268,435,456 픽셀)를 넘기기 쉬워 scale을 내용 길이에 맞춰 동적으로 낮춤
-        const estScale = el.scrollHeight > 6000 ? 1 : el.scrollHeight > 3000 ? 1.5 : 2;
         const c = await html2canvas(el, {
-          backgroundColor: "#ffffff",
-          scale: estScale,
+          backgroundColor: tier === "package" ? "#fdf6e3" : "#ffffff",
+          scale: sharedScale,
           useCORS: true,
           logging: false,
           height: el.scrollHeight,
@@ -360,6 +381,7 @@ export default function V2Result() {
           windowHeight: el.scrollHeight,
         });
         el.style.overflow = prevOv;
+        el.style.overflowX = prevOvX;
         el.style.maxHeight = prevMH;
         canvases.push(c);
       }
@@ -387,7 +409,7 @@ export default function V2Result() {
           merged.width = Math.max(summary.width, c.width);
           merged.height = summary.height + 16 + c.height;
           const ctx = merged.getContext("2d")!;
-          ctx.fillStyle = "#f5f3ff";
+          ctx.fillStyle = "#fdf6e3";
           ctx.fillRect(0, 0, merged.width, merged.height);
           ctx.drawImage(summary, 0, 0);
           ctx.drawImage(c, 0, summary.height + 16);
@@ -512,9 +534,9 @@ export default function V2Result() {
         {/* ── 점수 요약 카드 ── */}
         <div
           ref={el => { cardRefs.current[0] = el; }}
-          style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12 }}
+          style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}
         >
-          <div style={{ background: tier === "package" ? G_NAVY : G, color: "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
+          <div style={{ background: tier === "package" ? "#eab308" : G, color: tier === "package" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
             <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>🐱 점운 · AI 사주 분석</p>
             <div style={{ padding: "14px 20px 24px" }}>
               <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
@@ -614,7 +636,7 @@ export default function V2Result() {
             "내일은 한 주를 준비하는 마음가짐이 중요한 흐름입니다.",
           ];
           return (
-            <div style={{ background: "linear-gradient(180deg, #fdf9ef 0%, #ffffff 14%)", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, overflow: "hidden", boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
+            <div style={{ background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, overflow: "hidden", boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
               <div style={{ background: G_PREMIUM, color: "white", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🪬 {profile?.name}님의 사주팔자 한눈에 보기</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "16px 18px" }}>
                 <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
@@ -659,7 +681,7 @@ export default function V2Result() {
               <span style={{ fontSize: 10, background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>FREE</span>
             </div>
             <div style={{ padding: "14px 18px 20px" }}>
-              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
+              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>
                 {freeAnalysis}
               </p>
             </div>
@@ -673,13 +695,16 @@ export default function V2Result() {
         {(tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
           const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
-          // 한 번 고른 관심사는 localStorage에 저장해서, 결제 후 새 분석 세션으로 넘어가도
-          // (followUp이 끊겨도) 다시 묻지 않고 그대로 이어서 보여줌
+          // 무료 화면: 이 화면에서 직접 고른 것(changeInterest)만 인정 — 예전에 저장된 값이 있어도
+          // 항상 버튼을 먼저 보여줌. 결제 후 화면(별도 세션이라 정보가 끊김)만 그 저장된 값을
+          // 조용히 이어받아 버튼 없이 바로 결과를 보여줌
           const savedInterest = typeof window !== "undefined" ? localStorage.getItem("v2_change_interest") : null;
-          const directInterest = changeInterest
-            ?? (interestOptions.includes(result?.followUp) ? result.followUp : null)
-            ?? (savedInterest && interestOptions.includes(savedInterest) ? savedInterest : null);
-          if (!directInterest) {
+          const directInterest = locked
+            ? changeInterest
+            : (changeInterest
+                ?? (interestOptions.includes(result?.followUp) ? result.followUp : null)
+                ?? (savedInterest && interestOptions.includes(savedInterest) ? savedInterest : null));
+          if (!directInterest && locked) {
             return (
               <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
                 <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화</div>
@@ -697,7 +722,7 @@ export default function V2Result() {
               </div>
             );
           }
-          const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest);
+          const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest ?? undefined);
           return (
             <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
               <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화{!locked && " — 전체 공개"}</div>
@@ -705,22 +730,22 @@ export default function V2Result() {
                 <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 800, margin: "0 0 6px" }}>{yc.category}</p>
                 <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px", borderBottom: "2px solid #fbbf24", paddingBottom: 8 }}>✨ {yc.title}</h3>
                 <div style={{ margin: "0 0 12px" }}>
-                  {yc.insight.split("\n").map((line, i) => (
-                    <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 700, fontStyle: "italic", lineHeight: 1.7, margin: 0, wordBreak: "keep-all" }}>{i === 0 ? `"${line}` : line}</p>
+                  {yc.insight.split("\n").flatMap(splitLong).map((line, i) => (
+                    <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 700, fontStyle: "italic", lineHeight: 1.6, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{i === 0 ? `"${line}` : line}</p>
                   ))}
                 </div>
                 <p style={{ fontSize: 11, color: "#f59e0b", fontWeight: 900, margin: "0 0 6px" }}>🎯 당신의 변화</p>
                 <div style={{ margin: "0 0 12px" }}>
-                  {yc.hidden1.split("\n").map((line, i) => (
-                    <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 600, lineHeight: 1.7, margin: 0, wordBreak: "keep-all" }}>{line}</p>
+                  {yc.hidden1.split("\n").flatMap(splitLong).map((line, i) => (
+                    <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 600, lineHeight: 1.6, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
                   ))}
                 </div>
                 {locked && (
                   <>
                     <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px", filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
                       <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 990원 결제 시 공개</p>
-                      {yc.hidden2.split("\n").map((line, i) => (
-                        <p key={i} style={{ fontSize: 11.5, color: "#333", fontWeight: 600, margin: 0, wordBreak: "keep-all" }}>{line}</p>
+                      {yc.hidden2.split("\n").flatMap(splitLong).map((line, i) => (
+                        <p key={i} style={{ fontSize: 11.5, color: "#333", fontWeight: 600, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
                       ))}
                     </div>
                     <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 <span style={{ display: "inline-block", background: "#ec4899", color: "white", fontWeight: 900, fontStyle: "normal", padding: "2px 10px", borderRadius: 8, margin: "0 2px" }}>990원 결제</span> 시 모두 공개됩니다</p>
@@ -743,7 +768,7 @@ export default function V2Result() {
                 <span style={{ fontSize: 10, background: G, color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>💎 심층</span>
               </div>
               <div style={{ padding: "14px 18px 20px" }}>
-                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
+                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>
                   {allAnalyses[c.key] ?? ""}
                 </p>
               </div>
@@ -755,7 +780,7 @@ export default function V2Result() {
         {tier === "package" && Object.keys(allAnalyses).length > 0 && (
           (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map((c, i) => (
             <div key={c.apiKey} ref={el => { cardRefs.current[2 + i] = el; }}
-              style={{ background: "linear-gradient(180deg, #fdf9ef 0%, #ffffff 14%)", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
+              style={{ background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
               <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(217,180,80,0.18)", background: "linear-gradient(90deg, rgba(217,180,80,0.10), transparent)" }}>
                 <span style={{ fontSize: 22 }}>{c.icon}</span>
                 <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{c.label}</span>
@@ -765,7 +790,7 @@ export default function V2Result() {
                 )}
               </div>
               <div style={{ padding: "14px 18px 20px" }}>
-                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
+                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>
                   {allAnalyses[c.apiKey]}
                 </p>
               </div>
@@ -921,6 +946,7 @@ export default function V2Result() {
           </div>
         </div>
       )}
+
     </main>
   );
 }
