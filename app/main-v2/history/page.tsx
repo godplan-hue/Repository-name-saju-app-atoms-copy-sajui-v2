@@ -191,9 +191,9 @@ export default function V2History() {
             <div style={{ fontSize: 72, marginBottom: 16 }}>😿</div>
             <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>분석 기록이 없어요</h2>
             <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 24px" }}>운세를 분석하면 여기에 저장됩니다</p>
-            <button onClick={() => router.push("/main-v2/analysis")}
+            <button onClick={() => router.push("/main-v2/payment")}
               style={{ padding: "13px 32px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
-              🔮 지금 분석하기
+              💎 지금 결제하고 분석하기
             </button>
           </div>
         ) : (
