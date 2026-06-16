@@ -230,6 +230,14 @@ function BannerSlider({ onStart }: { onStart: () => void }) {
         <img src={b.img} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "opacity 0.4s" }} />
         {/* 하단 텍스트 그라데이션 */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "38%", background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)", pointerEvents: "none" }} />
+        {/* 수동 다음 화살표 — 자동 회전은 그대로 유지, 클릭하면 즉시 다음으로 + 타이머 리셋 */}
+        <button
+          onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % BANNERS.length); }}
+          aria-label="다음 배너"
+          style={{ position: "absolute", top: "50%", right: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+        >
+          ›
+        </button>
         {/* 배지 */}
         <span style={{ position: "absolute", top: 14, left: 16, display: "inline-block", background: b.badgeBg, color: "white", fontSize: 11, fontWeight: 900, padding: "4px 12px", borderRadius: 20, zIndex: 2 }}>{b.badge}</span>
         {/* 텍스트 + 인디케이터 — 이미지 하단 안쪽 */}
