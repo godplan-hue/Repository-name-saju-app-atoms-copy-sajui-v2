@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
-const G_PREMIUM = "linear-gradient(135deg, #6d28d9, #4c1d95)";
+const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const ALL_SCORE_CATS = [
@@ -104,7 +104,9 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
     const date = r.savedAt ?? new Date().toISOString();
     const cats = paidCats.length > 0 ? paidCats : Object.keys(analyses);
     cats.forEach((cat, i) => {
-      const id = r.histId + i;
+      // histId + i(숫자)로만 만들면 비슷한 시각에 저장된 다른 분석과 ID가 겹쳐 서로 덮어쓸 수 있어,
+      // 카테고리 이름까지 포함한 문자열 ID로 만들어 충돌을 원천적으로 막음
+      const id = `${r.histId}_${cat}`;
       const entry = {
         id,
         date,
@@ -291,11 +293,22 @@ export default function V2Result() {
 
       // 9900원 이상 패키지(카테고리 여러 개)는 합쳐서 하나의 거대한 캔버스를 만들지 않고,
       // 카테고리별로 각각 따로 저장 — 캔버스 크기 한계로 인한 저장 실패를 원천적으로 줄임
+      // (요약 카드는 따로 빼지 않고, 각 카테고리 이미지 맨 위에 함께 붙여서 8장 모두에 들어가게 함)
       if (tier === "package" && canvases.length > 1) {
         const pkgCats = (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]);
-        canvases.forEach((c, i) => {
-          const label = i === 0 ? "총운요약" : (pkgCats[i - 1]?.label ?? `사주${i}`);
-          downloadCanvas(c, i, canvases.length, label);
+        const summary = canvases[0];
+        canvases.slice(1).forEach((c, i) => {
+          const label = pkgCats[i]?.label ?? `사주${i + 1}`;
+          // 요약 카드 + 해당 카테고리 카드를 위아래로 이어붙인 새 캔버스를 만들어 저장
+          const merged = document.createElement("canvas");
+          merged.width = Math.max(summary.width, c.width);
+          merged.height = summary.height + 16 + c.height;
+          const ctx = merged.getContext("2d")!;
+          ctx.fillStyle = "#f5f3ff";
+          ctx.fillRect(0, 0, merged.width, merged.height);
+          ctx.drawImage(summary, 0, 0);
+          ctx.drawImage(c, 0, summary.height + 16);
+          downloadCanvas(merged, i, canvases.length - 1, label);
         });
         return;
       }
@@ -344,7 +357,7 @@ export default function V2Result() {
           let y = 0;
           if (needsHeader) {
             const dpr = window.devicePixelRatio;
-            ctx.fillStyle = tier === "package" ? "#4c1d95" : "#ec4899";
+            ctx.fillStyle = tier === "package" ? "#a855f7" : "#ec4899";
             ctx.fillRect(0, 0, merged.width, headerH);
             ctx.fillStyle = "#ffffff";
             ctx.font = `900 ${22 * dpr}px 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
