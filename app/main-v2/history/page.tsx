@@ -249,7 +249,7 @@ export default function V2History() {
                   <p style={{ fontSize: 12, color: "#6b7280", margin: 0, lineHeight: 1.6,
                     display: "-webkit-box", WebkitLineClamp: expanded.has(item.id) ? undefined : 3,
                     WebkitBoxOrient: "vertical", overflow: expanded.has(item.id) ? "visible" : "hidden",
-                    whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                    whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
                     {item.analysis}
                   </p>
                   {item.analysis && item.analysis.length > 120 && (

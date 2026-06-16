@@ -241,7 +241,7 @@ export default function PartnerAnalysisResult() {
                   margin: 0,
                   lineHeight: 1.8,
                   whiteSpace: "pre-wrap",
-                  wordBreak: "break-word",
+                  wordBreak: "keep-all",
                 }}
               >
                 {tabs.find((t) => t.key === currentTab)?.data || "분석 결과를 불러올 수 없습니다..."}

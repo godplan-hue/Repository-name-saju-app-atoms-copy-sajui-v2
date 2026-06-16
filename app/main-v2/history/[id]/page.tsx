@@ -264,7 +264,7 @@ export default function HistoryDetail() {
           {/* 분석 전체 텍스트 — 잘림 없음 */}
           <div style={{ padding: "0 18px 20px" }}>
             <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 10 }}>🔮 {item.category} 상세 분석</div>
-            <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.85, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+            <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.85, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
               {item.fullAnalysis ?? item.analysis}
             </p>
           </div>

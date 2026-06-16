@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
+const G_NAVY = "linear-gradient(135deg, #3b5a82, #1f3a5f)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const YOUR_CHANGE_TYPES: { category: string; title: string; insight: string; hidden1: string; hidden2: string }[] = [
@@ -421,7 +422,7 @@ export default function V2Result() {
           let y = 0;
           if (needsHeader) {
             const dpr = window.devicePixelRatio;
-            ctx.fillStyle = tier === "package" ? "#a855f7" : "#ec4899";
+            ctx.fillStyle = tier === "package" ? "#2c4a73" : "#ec4899";
             ctx.fillRect(0, 0, merged.width, headerH);
             ctx.fillStyle = "#ffffff";
             ctx.font = `900 ${22 * dpr}px 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
@@ -495,7 +496,7 @@ export default function V2Result() {
           ref={el => { cardRefs.current[0] = el; }}
           style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12 }}
         >
-          <div style={{ background: tier === "package" ? G_PREMIUM : G, color: "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
+          <div style={{ background: tier === "package" ? G_NAVY : G, color: "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
             <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>🐱 점운 · AI 사주 분석</p>
             <div style={{ padding: "14px 20px 24px" }}>
               <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
@@ -554,9 +555,12 @@ export default function V2Result() {
                 </div>
               </div>
               <div style={{ padding: "0 18px 16px" }}>
-                <div style={{ background: "#fdf2f8", borderRadius: 14, padding: "12px 14px", textAlign: "center" }}>
-                  <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, lineHeight: 1.6 }}>🪬 내 성격과 재물 흐름을 더 자세히 알고 싶다면<br/>패키지에서 확인해보세요</div>
+                <div style={{ background: "#fdf2f8", borderRadius: 14, padding: "12px 14px", textAlign: "center", marginBottom: 10 }}>
+                  <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, lineHeight: 1.6 }}>🪬 내 성격과 재물 흐름, 더 자세히 알고 싶다면?</div>
                 </div>
+                <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
+                  💎 9,900원 패키지 결제하고 전체 확인하기
+                </button>
               </div>
             </div>
           );
@@ -637,7 +641,7 @@ export default function V2Result() {
               <span style={{ fontSize: 10, background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>FREE</span>
             </div>
             <div style={{ padding: "14px 18px 20px" }}>
-              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
                 {freeAnalysis}
               </p>
             </div>
@@ -660,7 +664,7 @@ export default function V2Result() {
                   <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 990원 결제 시 공개</p>
                   <p style={{ fontSize: 11.5, color: "#333", fontWeight: 600, margin: 0, whiteSpace: "pre-wrap" }}>{yc.hidden2}</p>
                 </div>
-                <p style={{ fontSize: 11, color: "#d4af37", fontWeight: 700, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 990원 결제 시 모두 공개됩니다</p>
+                <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 <span style={{ display: "inline-block", background: "#ec4899", color: "white", fontWeight: 900, fontStyle: "normal", padding: "2px 10px", borderRadius: 8, margin: "0 2px" }}>990원 결제</span> 시 모두 공개됩니다</p>
                 <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", marginTop: 14, padding: "13px 0", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>💎 {yc.category} 완벽 공략법 보기</button>
               </div>
             </div>
@@ -678,7 +682,7 @@ export default function V2Result() {
                 <span style={{ fontSize: 10, background: G, color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>💎 심층</span>
               </div>
               <div style={{ padding: "14px 18px 20px" }}>
-                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
                   {allAnalyses[c.key] ?? ""}
                 </p>
               </div>
@@ -700,7 +704,7 @@ export default function V2Result() {
                 )}
               </div>
               <div style={{ padding: "14px 18px 20px" }}>
-                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
                   {allAnalyses[c.apiKey]}
                 </p>
               </div>

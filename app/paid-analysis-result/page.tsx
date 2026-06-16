@@ -327,7 +327,7 @@ function PaidAnalysisResultContent() {
                 margin: 0,
                 lineHeight: 1.8,
                 whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
+                wordBreak: "keep-all",
               }}
             >
               {answerContent}
@@ -396,7 +396,7 @@ function PaidAnalysisResultContent() {
                   lineHeight: 1.8,
                   margin: 0,
                   whiteSpace: "pre-wrap",
-                  wordBreak: "break-word",
+                  wordBreak: "keep-all",
                 }}
               >
                 {item.value}
@@ -435,7 +435,7 @@ function PaidAnalysisResultContent() {
                   lineHeight: 1.8,
                   margin: 0,
                   whiteSpace: "pre-wrap",
-                  wordBreak: "break-word",
+                  wordBreak: "keep-all",
                 }}
               >
                 {item.value}
