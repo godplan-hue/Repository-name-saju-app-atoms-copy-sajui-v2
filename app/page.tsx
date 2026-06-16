@@ -1,119 +1,172 @@
-"use client";
+﻿"use client";
+
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  const packages = [
-    { name: "기본 분석", price: "9,900원", items: 2, desc: "2개 운세", color: "#f97316", titleColor: "#8b5cf6", includes: ["☀️ 오늘 운세", "🌙 이번달 운세"] },
-    { name: "베이직", price: "19,900원", items: 3, desc: "3개 운세", color: "#eab308", titleColor: "#a78bfa", includes: ["☀️ 오늘 운세", "🌙 이번달 운세", "🎋 올해 운세"] },
-    { name: "프리미엄", price: "24,900원", items: 5, desc: "5개 운세", color: "#b45309", titleColor: "#f59e0b", badge: "인기", includes: ["☀️ 오늘 운세", "🌙 이번달 운세", "🎋 올해 운세", "💎 재물운", "💕 연애운"] },
-    { name: "커플팩 ⭐", price: "29,900원", items: 8, desc: "8개 운세", color: "#be185d", titleColor: "#ec4899", includes: ["☀️ 오늘 운세", "🌙 이번달 운세", "🎋 올해 운세", "✨ 전체 사주분석", "💎 재물운", "💕 연애운", "🌿 건강운", "👫 궁합분석"] }
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const features = [
+    { 
+      title: "AI 정밀 분석", 
+      icon: "⚡", 
+      desc: "최신 AI 기술로\n당신의 사주팔자를\n정확하게 읽어냅니다.\n오행과 십간십이지를 바탕으로\n숨겨진 운의 흐름을 찾아내세요."
+    },
+    { 
+      title: "운세 분석", 
+      icon: "📈", 
+      desc: "인생의 모든 영역을 한눈에파악하세요.\n총운·재물운·연애운·건강운·직업운 등\n운세를 완벽하게 분석합니다.\n올해 당신이 집중해야할것이\n무엇인지 알려줍니다."
+    },
+    { 
+      title: "궁합 분석", 
+      icon: "💕", 
+      desc: "상대방의 생년월일만으로\n운명의 인연을 읽다.\n두 사람의 관계 패턴, 연애의 강점과 주의점,\n함께할 미래까지 구체적으로 봅니다.\n숫자가 아닌 가능성으로 만나는 당신의 궁합."
+    },
+    { 
+      title: "개인정보 보호", 
+      icon: "🔒", 
+      desc: "당신의 정보는 100% 안전합니다.\n입력하신 생년월일, 성명 등\n모든 정보는 분석 후 즉시 삭제됩니다.\n최신 암호화 기술로 보호되는\n완벽한 보안 시스템."
+    }
   ];
 
-  const fortunes = [
-    { icon: "☀️", name: "오늘 운세" },
-    { icon: "🌙", name: "이번달 운세" },
-    { icon: "🎋", name: "올해 운세" },
-    { icon: "✨", name: "전체 사주분석" },
-    { icon: "💎", name: "재물운 분석" },
-    { icon: "💕", name: "연애운 분석" },
-    { icon: "🌿", name: "건강운 분석" },
-    { icon: "👫", name: "궁합 분석" }
+  const stepsPC = [
+    { num: "01", icon: "✏️", title: "정보 입력", desc: "이름, 성별, 생년월일을 입력하세요" },
+    { num: "02", icon: "🤖", title: "AI 분석", desc: "AI가 사주를 정밀하게 분석합니다" },
+    { num: "03", icon: "📄", title: "결과 확인", desc: "최고의 운세 분석 결과을 확인하세요" }
+  ];
+
+  const stepsMobile = [
+    { num: "01", icon: "✏️", title: "정보 입력", desc: "이름, 성별,\n생년월일을\n입력하세요" },
+    { num: "02", icon: "🤖", title: "AI 분석", desc: "AI가 사주를\n정밀하게\n분석합니다" },
+    { num: "03", icon: "📄", title: "결과 확인", desc: "최고의 운세\n분석 결과을\n확인하세요" }
+  ];
+
+  const currentSteps = isMobile ? stepsMobile : stepsPC;
+
+  const reviews = [
+    {
+      title: "처음엔 반신반의했는데 정말 놀랐어요",
+      rating: "★ ★ ★ ★ ★",
+      content: "사주 앱을 깐건\n친구 추천 때문인데,\nAI가 사주를\n잘 분석할 수 있을까?\n솔직히 걱정 했었거든요.\n\n그런데 제 성격, 기질,\n앞으로의 운의 흐름까지\n정확하게 맞춰서 놀랐습니다.\n\n특히 올해 제 재물운과\n직장 운에 대한 조언이\n정말 도움 됐어요.\n\n지금 이 앱 없이는\n못 살 정도로 애용 중입니다.",
+      name: "*김혜진"
+    },
+    {
+      title: "인생 계획 세우는 데 진짜 도움됨",
+      rating: "★ ★ ★ ★ ★",
+      content: "여러 사주 앱을 써봤지만\n이렇게 상세하고 신뢰감 있는\n분석은 처음이에요.\n\n일반적인 운세 예측을 넘어서\n연애운, 재물운, 건강운까지\n섬세하게 풀어서 설명해주니까\n단순히 재미로만 보는 게 아니라\n실제 인생 계획을 세우는 데\n큰 도움이 됩니다.\n\n이제 중요한 결정을 할 때마다\n이 앱을 참고해요.",
+      name: "* 이재우"
+    },
+    {
+      title: "친구들 모두에게 추천하고 싶을 정도",
+      rating: "★ ★ ★ ★ ★",
+      content: "AI 사주 분석이라고 해서\n대충할 줄 알았는데,\n정말 깊이 있게\n제 운세를 읽어주더라고요.\n\n앞으로 어떤 시기에\n어떤 조심이 필요한지,\n어떤 기회가 올 수 있는지\n구체적으로 알려줘서\n미래에 대한 불안감도 줄어들었어요.\n\n가족, 친구들에게도\n많이 추천하고 있습니다.\n정말 만족합니다!",
+      name: "* 박연지"
+    }
   ];
 
   return (
-    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #0a0a0a 0%, #1a0820 50%, #0f0a2e 100%)", backgroundImage: "url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920&q=80')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(10, 10, 20, 0.7)", zIndex: 1, pointerEvents: "none" }} />
+    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)", backgroundImage: "url('https://images.unsplash.com/photo-1711510778620-0f287fb5500f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0, 0, 0, 0.55)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10 }}>
-        <header style={{ padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(245,158,11,0.2)", background: "rgba(0,0,0,0.5)" }}>
+        <header style={{ padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,0.6)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{ fontSize: 24 }}>✨</span>
-            <h1 style={{ fontSize: 20, fontWeight: 900, color: "#fbbf24", margin: 0, letterSpacing: "0.1em" }}>점운</h1>
+            <h1 style={{ fontSize: 20, fontWeight: 900, color: "#fbbf24", margin: 0 }}>점운</h1>
           </div>
-          <div style={{ display: "flex", gap: 16 }}>
-            <a href="/analyze" style={{ color: "#ffffff", fontSize: 14, fontWeight: 700, textDecoration: "none" }}>사주분석</a>
-            <a href="/saju-info" style={{ color: "#ffffff", fontSize: 14, fontWeight: 700, textDecoration: "none" }}>사주정보</a>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <a href="/free-analysis" style={{ padding: "8px 16px", background: "#fbbf24", color: "black", border: "none", borderRadius: 6, fontWeight: 900, cursor: "pointer", fontSize: 13, textDecoration: "none", display: "inline-block" }}>무료사주</a>
+            <a href="/saju-info" style={{ padding: "8px 16px", background: "#fbbf24", color: "black", border: "none", borderRadius: 6, fontWeight: 900, cursor: "pointer", fontSize: 13, textDecoration: "none", display: "inline-block" }}>사주정보</a>
           </div>
         </header>
 
-        <section style={{ padding: "80px 24px 60px", textAlign: "center", maxWidth: 900, margin: "0 auto" }}>
-          <div style={{ display: "inline-block", padding: "8px 20px", borderRadius: 999, background: "rgba(139,92,246,0.3)", border: "1px solid rgba(245,158,11,0.6)", color: "#ffffff", fontSize: 14, fontWeight: 700, marginBottom: 24 }}>✨ 누적 분석 127,483건 돌파</div>
-          <div style={{ width: 140, height: 140, margin: "0 auto 32px", borderRadius: "12px", backgroundImage: "url('/b17b07628f3f401ea692dbd75575ba0f.webp')", backgroundSize: "cover", backgroundPosition: "center", border: "2px solid rgba(245,158,11,0.5)", boxShadow: "0 0 50px rgba(245,158,11,0.3), 0 0 100px rgba(139,92,246,0.2), 0 8px 32px rgba(0,0,0,0.5)", transform: "rotate(15deg)" }} />
-          <h2 style={{ fontSize: "clamp(28px, 6vw, 56px)", fontWeight: 900, lineHeight: 1.3, margin: "0 auto 16px", color: "#fbbf24", textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>당신의 운명을<br />AI가 풀어드립니다</h2>
-          <p style={{ color: "#ffffff", fontSize: "clamp(14px, 2.5vw, 18px)", fontWeight: 700, lineHeight: 1.8, marginBottom: 20, textShadow: "0 1px 4px rgba(0,0,0,0.7)" }}>생년월일만 입력하면 AI가 사주팔자를 정밀 분석하여<br />총운, 재물운, 연애운, 건강운, 직업운을 알려드립니다</p>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginBottom: 20 }}>
-            <span style={{ color: "#f59e0b", fontSize: 18 }}>★★★★★</span>
-            <span style={{ color: "#ffffff", fontSize: 14, fontWeight: 700 }}>4.9/5.0 (2,847 리뷰)</span>
+        <section style={{ padding: "50px 20px 30px", textAlign: "center" }}>
+          <div style={{ display: "inline-block", padding: "12px 24px", borderRadius: 999, background: "rgba(139,92,246,0.6)", border: "1px solid rgba(245,158,11,0.8)", color: "#f5f5f5", fontSize: 13, fontWeight: 700, marginBottom: 16 }}>✨ 누적 분석 127,483건 돌파</div>
+          <div style={{ width: 100, height: 100, margin: "0 auto 20px", borderRadius: "12px", backgroundImage: "url('/b17b07628f3f401ea692dbd75575ba0f.webp')", backgroundSize: "cover", backgroundPosition: "center", border: "2px solid rgba(245,158,11,0.5)", boxShadow: "0 0 50px rgba(245,158,11,0.3)", transform: "rotate(15deg)" }} />
+          <h2 style={{ fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 900, lineHeight: 1.3, margin: "0 auto 12px", color: "#d8c7ff" }}>당신의 운명을<br />AI가 풀어드립니다</h2>
+          <p style={{ color: "#f5f5f5", fontSize: "clamp(13px, 2.5vw, 15px)", fontWeight: 700, lineHeight: 1.6, marginBottom: 14 }}>생년월일만 입력하면 AI가 사주팔자를 정밀 분석하여<br />총운, 재물운, 연애운, 건강운, 직업운을 알려드립니다</p>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginBottom: 14 }}>
+            <span style={{ color: "#f59e0b", fontSize: 16 }}>★★★★★</span>
+            <span style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700 }}>4.9/5.0 (2,847 리뷰)</span>
           </div>
-          <div style={{ display: "flex", justifyContent: "center", gap: 10, marginBottom: 32, flexWrap: "wrap" }}>
-            {["⏱ 30초 완성", "🚫 회원가입 필요 없음", "100% 무료"].map((text, i) => (<span key={i} style={{ background: "rgba(139,92,246,0.3)", border: "1px solid rgba(245,158,11,0.5)", borderRadius: 999, padding: "6px 12px", color: "#ffffff", fontSize: 12, fontWeight: 700 }}>{text}</span>))}
-          </div>
-          <a href="/free-analysis" style={{ display: "inline-block", padding: "16px 48px", borderRadius: 12, fontSize: "clamp(15px, 2.5vw, 18px)", fontWeight: 900, background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "black", textDecoration: "none", boxShadow: "0 8px 40px rgba(245,158,11,0.5)", letterSpacing: "0.05em", cursor: "pointer" }}>🔮 무료 사주 보기</a>
-          <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 800, marginTop: 12, textShadow: "0 1px 3px rgba(0,0,0,0.8)" }}>9,900원부터 시작 · 즉시 PDF 다운로드 · 50~200페이지</p>
-        </section>
-
-        <section style={{ padding: "40px 24px", maxWidth: 800, margin: "0 auto" }}>
-          <h3 style={{ textAlign: "center", color: "#ffffff", fontWeight: 900, fontSize: "clamp(18px, 3vw, 24px)", marginBottom: 28 }}>단 3단계로 완성</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
-            {[{ step: "1", icon: "✏️", title: "정보 입력", desc: "이름·성별·생년월일" }, { step: "2", icon: "🤖", title: "AI 분석", desc: "AI가 사주 정밀 분석" }, { step: "3", icon: "📄", title: "결과 확인", desc: "즉시 PDF 다운로드" }].map((item, i) => (<div key={i} style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.4)", borderRadius: 12, padding: "18px 12px", textAlign: "center" }}><div style={{ width: 32, height: 32, borderRadius: "50%", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "black", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px" }}>{item.step}</div><div style={{ fontSize: 22, marginBottom: 8 }}>{item.icon}</div><p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 13, marginBottom: 4 }}>{item.title}</p><p style={{ color: "#ffffff", fontSize: 13, margin: 0, fontWeight: 800 }}>{item.desc}</p></div>))}
+          <div style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, marginBottom: 14 }}>⏱ 3초면 완료 · 회원가입 불필요 · 100% 무료</div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+            <a href="/free-analysis" style={{ display: "inline-block", padding: "12px 32px", borderRadius: 10, fontSize: "clamp(13px, 2vw, 14px)", fontWeight: 900, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", textDecoration: "none", boxShadow: "0 8px 30px rgba(251,191,36,0.4)", cursor: "pointer" }}>🔮 무료 사주</a>
+            <a href="/payment" style={{ display: "inline-block", padding: "12px 32px", borderRadius: 10, fontSize: "clamp(13px, 2vw, 14px)", fontWeight: 900, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", textDecoration: "none", boxShadow: "0 8px 30px rgba(255,20,147,0.4)", cursor: "pointer" }}>💎 유료 사주 분석</a>
           </div>
         </section>
 
-        <section style={{ padding: "40px 24px 80px", maxWidth: 1200, margin: "0 auto" }}>
-          <h3 style={{ textAlign: "center", color: "#ffffff", fontWeight: 900, fontSize: "clamp(18px, 3vw, 28px)", marginBottom: 40 }}>💫 패키지 선택</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24 }}>
-            {packages.map((pkg, i) => (
-              <div key={i} style={{ background: `rgba(${pkg.color === "#b45309" ? "180,67,9" : pkg.color === "#be185d" ? "190,24,93" : pkg.color === "#eab308" ? "234,179,8" : "249,115,22"}, 0.15)`, border: "none", borderRadius: 16, padding: "28px 20px", position: "relative", display: "flex", flexDirection: "column" }}>
-                {pkg.badge && (
-                  <span style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "#fbbf24", color: "black", fontSize: 11, padding: "4px 12px", borderRadius: 999, fontWeight: 900 }}>
-                    {pkg.badge}
-                  </span>
-                )}
-                <h4 style={{ color: pkg.titleColor, fontWeight: 900, fontSize: 20, margin: "0 0 8px 0" }}>
-                  {pkg.name}
-                </h4>
-                <p style={{ color: pkg.titleColor, fontSize: 14, fontWeight: 800, margin: "0 0 16px 0" }}>
-                  {pkg.items}개 운세
+        <section style={{ padding: "30px 8px" }}>
+          <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 18 }}>점운</h3>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 12, maxWidth: isMobile ? "100%" : "900px", margin: "0 auto" }}>
+            {features.map((feature, i) => (
+              <div key={i} style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(139,92,246,0.85)", borderRadius: 10, padding: "14px", textAlign: "center", display: "flex", flexDirection: "column", minHeight: "220px" }}>
+                <div style={{ fontSize: 24, marginBottom: 8 }}>{feature.icon}</div>
+                <h4 style={{ color: "#fbbf24", fontWeight: 900, fontSize: 13, margin: "0 0 8px 0" }}>{feature.title}</h4>
+                <p style={{ color: "#f5f5f5", fontSize: "clamp(11px, 2.2vw, 13px)", fontWeight: 600, lineHeight: 1.7, margin: 0, flex: 1, whiteSpace: "pre-line" }}>
+                  {feature.desc}
                 </p>
-                <p style={{ color: pkg.color, fontWeight: 900, fontSize: 28, margin: "0 0 20px 0" }}>
-                  {pkg.price}
-                </p>
-                <div style={{ background: "rgba(0,0,0,0.3)", borderRadius: 10, padding: "12px", marginBottom: 16, flexGrow: 1 }}>
-                  <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: "0 0 8px 0" }}>
-                    📊 포함 항목
-                  </p>
-                  {pkg.includes.map((item, idx) => (
-                    <p key={idx} style={{ color: "#ffffff", fontSize: 11, fontWeight: 700, margin: "4px 0" }}>
-                      {item}
-                    </p>
-                  ))}
-                </div>
-                <a href={`/payment?package=${pkg.name}&price=${pkg.price}&items=${pkg.items}`} style={{ display: "block", background: `linear-gradient(135deg, ${pkg.color}, ${pkg.titleColor})`, color: "white", padding: "12px", borderRadius: 10, fontSize: 13, fontWeight: 900, textDecoration: "none", textAlign: "center", boxShadow: `0 6px 20px ${pkg.color}40`, cursor: "pointer", border: "none" }}>
-                  🔮 사주 분석 시작
-                </a>
               </div>
             ))}
           </div>
         </section>
 
-        <section style={{ padding: "0 24px 80px", maxWidth: 1000, margin: "0 auto" }}>
-          <h4 style={{ color: "#a78bfa", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 20, textAlign: "center" }}>🌟 분석 운세 종류</h4>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
-            {fortunes.slice(0, 4).map((item, i) => (
-              <div key={i} style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.3)", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
-                <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-                <p style={{ color: "#ffffff", fontSize: 12, fontWeight: 800, margin: 0 }}>{item.name}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
-            {fortunes.slice(4, 8).map((item, i) => (
-              <div key={i + 4} style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.3)", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
-                <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-                <p style={{ color: "#ffffff", fontSize: 12, fontWeight: 800, margin: 0 }}>{item.name}</p>
+        <section style={{ padding: "30px 8px" }}>
+          <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 18 }}>3단계로 간단하게</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, maxWidth: isMobile ? "100%" : "900px", margin: "0 auto" }}>
+            {currentSteps.map((step, i) => (
+              <div key={i} style={{ textAlign: "center" }}>
+                <div style={{ width: 45, height: 45, borderRadius: "50%", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 8px" }}>{step.num}</div>
+                <div style={{ fontSize: 18, marginBottom: 6 }}>{step.icon}</div>
+                <h4 style={{ color: "#fbbf24", fontWeight: 900, fontSize: 12, margin: "0 0 4px 0" }}>{step.title}</h4>
+                <p style={{ color: "#f5f5f5", fontSize: "clamp(10px, 2vw, 11px)", fontWeight: 700, margin: 0, lineHeight: 1.6, whiteSpace: "pre-line" }}>{step.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
+        <section style={{ padding: "30px 12px", borderRadius: 12, background: "rgba(0,0,0,0.6)", maxWidth: isMobile ? "100%" : "900px", margin: "0 auto" }}>
+          <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 18 }}>실제 이용자 후기</h3>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 12 }}>
+            {reviews.map((review, i) => (
+              <div key={i} style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 10, padding: "12px", minHeight: isMobile ? "auto" : "320px", display: "flex", flexDirection: "column" }}>
+                <div style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, lineHeight: 1.5, marginBottom: 10, whiteSpace: "pre-line" }}>{review.title}</div>
+                <div style={{ color: "#ff9500", fontSize: "clamp(10px, 2vw, 11px)", fontWeight: 700, lineHeight: 1.8, marginBottom: 8 }}>{review.rating}</div>
+                <div style={{ color: "#f5f5f5", fontSize: "clamp(10px, 1.8vw, 11px)", fontWeight: 600, lineHeight: 1.8, flex: isMobile ? 0 : 1, whiteSpace: "pre-line" }}>{review.content}</div>
+                <p style={{ color: "#fbbf24", fontSize: 10, fontWeight: 900, margin: "10px 0 0 0" }}>{review.name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section style={{ padding: "40px 16px", textAlign: "center" }}>
+          <h3 style={{ color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 24px)", marginBottom: 10 }}>지금 바로</h3>
+          <p style={{ color: "#f5f5f5", fontSize: "clamp(12px, 2vw, 15px)", fontWeight: 700, marginBottom: 18 }}>내 운명을 확인하세요</p>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+            <a href="/free-analysis" style={{ display: "inline-block", padding: "12px 40px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", borderRadius: 10, fontWeight: 900, fontSize: "clamp(12px, 2vw, 14px)", textDecoration: "none", boxShadow: "0 8px 30px rgba(251,191,36,0.4)", cursor: "pointer" }}>🔮 무료 사주</a>
+            <a href="/payment" style={{ display: "inline-block", padding: "12px 40px", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", borderRadius: 10, fontWeight: 900, fontSize: "clamp(12px, 2vw, 14px)", textDecoration: "none", boxShadow: "0 8px 30px rgba(255,20,147,0.4)", cursor: "pointer" }}>💎 유료 사주 분석</a>
+          </div>
+        </section>
+
+        <footer style={{ padding: "30px 16px", textAlign: "center", borderTop: "1px solid rgba(245,158,11,0.2)", background: "rgba(0,0,0,0.2)" }}>
+          <p style={{ color: "#999999", fontSize: 14, fontWeight: 600, margin: "0 0 12px 0" }}>© 2024 점운</p>
+          <div style={{ color: "#999999", fontSize: 12, fontWeight: 600, lineHeight: 1.8, marginBottom: 10 }}>
+            <p style={{ margin: "0 0 8px 0" }}>📧 이메일: junga6783@gmail.com</p>
+            <p style={{ margin: "0 0 12px 0" }}>응답기간: 7일 이내</p>
+          </div>
+          <p style={{ color: "#999999", fontSize: 12, fontWeight: 600, margin: 0, lineHeight: 1.6 }}>
+            <a href="/privacy" style={{ color: "#fbbf24", textDecoration: "none" }}>개인정보처리방침</a>
+            {" | "}
+            <a href="/refund" style={{ color: "#fbbf24", textDecoration: "none" }}>환불정책</a>
+            {" | "}
+            <a href="/partner-policy" style={{ color: "#fbbf24", textDecoration: "none" }}>파트너정책</a>
+          </p>
+        </footer>
       </div>
     </main>
   );
