@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
+const G_PREMIUM = "linear-gradient(135deg, #6d28d9, #4c1d95)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const ALL_SCORE_CATS = [
@@ -261,9 +262,12 @@ export default function V2Result() {
         const prevMH = el.style.maxHeight;
         el.style.overflow = "visible";
         el.style.maxHeight = "none";
+        // 글자 수가 길어진 카드일수록 캔버스 최대 크기(보통 약 16,384px 또는
+        // 268,435,456 픽셀)를 넘기기 쉬워 scale을 내용 길이에 맞춰 동적으로 낮춤
+        const estScale = el.scrollHeight > 6000 ? 1 : el.scrollHeight > 3000 ? 1.5 : 2;
         const c = await html2canvas(el, {
           backgroundColor: "#ffffff",
-          scale: 2,
+          scale: estScale,
           useCORS: true,
           logging: false,
           height: el.scrollHeight,
@@ -274,23 +278,90 @@ export default function V2Result() {
         el.style.maxHeight = prevMH;
         canvases.push(c);
       }
+      const MAX_CANVAS_HEIGHT = 14000; // 브라우저 캔버스 한계보다 여유 있게 안전선을 둠
       const totalH = canvases.reduce((s, c) => s + c.height, 0) + (canvases.length - 1) * 16;
-      const merged = document.createElement("canvas");
-      merged.width = canvases[0].width;
-      merged.height = totalH;
-      const ctx = merged.getContext("2d")!;
-      ctx.fillStyle = "#fdf2f8";
-      ctx.fillRect(0, 0, merged.width, merged.height);
-      let y = 0;
-      for (let i = 0; i < canvases.length; i++) {
-        ctx.drawImage(canvases[i], 0, y);
-        y += canvases[i].height + 16;
+
+      const downloadCanvas = (canvas: HTMLCanvasElement, idx: number, total: number, label?: string) => {
+        const link = document.createElement("a");
+        const suffix = label ? `_${label}` : (total > 1 ? `_${idx + 1}of${total}` : "");
+        link.download = `점운_${result?.profile?.name ?? "운세"}_${new Date().toLocaleDateString("ko")}${suffix}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      };
+
+      // 9900원 이상 패키지(카테고리 여러 개)는 합쳐서 하나의 거대한 캔버스를 만들지 않고,
+      // 카테고리별로 각각 따로 저장 — 캔버스 크기 한계로 인한 저장 실패를 원천적으로 줄임
+      if (tier === "package" && canvases.length > 1) {
+        const pkgCats = (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]);
+        canvases.forEach((c, i) => {
+          const label = i === 0 ? "총운요약" : (pkgCats[i - 1]?.label ?? `사주${i}`);
+          downloadCanvas(c, i, canvases.length, label);
+        });
+        return;
       }
-      const link = document.createElement("a");
-      link.download = `점운_${result?.profile?.name ?? "운세"}_${new Date().toLocaleDateString("ko")}.png`;
-      link.href = merged.toDataURL("image/png");
-      link.click();
-    } catch {
+
+      if (totalH <= MAX_CANVAS_HEIGHT) {
+        const merged = document.createElement("canvas");
+        merged.width = canvases[0].width;
+        merged.height = totalH;
+        const ctx = merged.getContext("2d")!;
+        ctx.fillStyle = tier === "package" ? "#f5f3ff" : "#fdf2f8";
+        ctx.fillRect(0, 0, merged.width, merged.height);
+        let y = 0;
+        for (let i = 0; i < canvases.length; i++) {
+          ctx.drawImage(canvases[i], 0, y);
+          y += canvases[i].height + 16;
+        }
+        downloadCanvas(merged, 0, 1);
+      } else {
+        // 내용이 길어 한 장에 다 못 담으면, 안전한 크기로 나눠서 여러 장으로 저장
+        const groups: HTMLCanvasElement[][] = [];
+        let cur: HTMLCanvasElement[] = [];
+        let curH = 0;
+        for (const c of canvases) {
+          if (curH + c.height > MAX_CANVAS_HEIGHT && cur.length > 0) {
+            groups.push(cur);
+            cur = [];
+            curH = 0;
+          }
+          cur.push(c);
+          curH += c.height + 16;
+        }
+        if (cur.length > 0) groups.push(cur);
+
+        groups.forEach((group, gi) => {
+          // 첫 장은 이미 브랜드 카드(🐱 점운)가 맨 위에 있으므로, 2번째 장부터는
+          // 어느 카테고리든 잘리지 않고 시작하는 것과 별개로 상단에 브랜드 헤더를 직접 그려 넣음
+          const needsHeader = gi > 0;
+          const headerH = needsHeader ? 80 * window.devicePixelRatio : 0;
+          const gH = group.reduce((s, c) => s + c.height, 0) + (group.length - 1) * 16 + headerH;
+          const merged = document.createElement("canvas");
+          merged.width = group[0].width;
+          merged.height = gH;
+          const ctx = merged.getContext("2d")!;
+          ctx.fillStyle = tier === "package" ? "#f5f3ff" : "#fdf2f8";
+          ctx.fillRect(0, 0, merged.width, merged.height);
+          let y = 0;
+          if (needsHeader) {
+            const dpr = window.devicePixelRatio;
+            ctx.fillStyle = tier === "package" ? "#4c1d95" : "#ec4899";
+            ctx.fillRect(0, 0, merged.width, headerH);
+            ctx.fillStyle = "#ffffff";
+            ctx.font = `900 ${22 * dpr}px 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(`🐱 점운 · AI 사주 분析 (${gi + 1}/${groups.length})`, merged.width / 2, headerH / 2);
+            y = headerH;
+          }
+          for (const c of group) {
+            ctx.drawImage(c, 0, y);
+            y += c.height + 16;
+          }
+          downloadCanvas(merged, gi, groups.length);
+        });
+      }
+    } catch (e) {
+      console.error("이미지 저장 실패:", e);
       alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요.");
     } finally {
       setSaving(false);
@@ -300,7 +371,14 @@ export default function V2Result() {
   const share = () => {
     if (!result) return;
     const url = window.location.origin + "/main-v2";
-    const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점\n\n📱 나도 무료로!\n${url}`;
+    let extra = "";
+    if (tier === "package" && result.profile?.birthYear) {
+      const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
+      const y = Number(result.profile.birthYear);
+      const gan = ganList[((y - 4) % 10 + 10) % 10];
+      extra = `\n${gan} 천간을 타고난 사주 심층 분析 결과예요 🪬`;
+    }
+    const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로!\n${url}`;
     if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
     else navigator.clipboard.writeText(text).then(() => alert("✅ 링크 복사됨!"));
   };
@@ -340,7 +418,7 @@ export default function V2Result() {
           ref={el => { cardRefs.current[0] = el; }}
           style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12 }}
         >
-          <div style={{ background: G, color: "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
+          <div style={{ background: tier === "package" ? G_PREMIUM : G, color: "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
             <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>🐱 점운 · AI 사주 분석</p>
             <div style={{ padding: "14px 20px 24px" }}>
               <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
@@ -374,6 +452,101 @@ export default function V2Result() {
             ))}
           </div>
         </div>
+
+        {/* ── 무료 전용: 사주팔자 맛보기 (띠+오행만, 천간은 패키지에서만 공개) ── */}
+        {tier === "free" && profile?.birthYear && (() => {
+          const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
+          const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
+          const ohEmoji: Record<string,string> = { "목":"🌳","화":"🔥","토":"⛰️","금":"⚪","수":"💧" };
+          const y = Number(profile.birthYear);
+          const z = zodiacList[((y - 4) % 12 + 12) % 12];
+          const oh = ohArr[((y - 4) % 10 + 10) % 10];
+          return (
+            <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
+              <div style={{ background: G, color: "white", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🔮 {profile?.name}님의 사주팔자 맛보기</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: "16px 18px" }}>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>🐉</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div>
+                </div>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>{ohEmoji[oh]}</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
+                </div>
+              </div>
+              <div style={{ padding: "0 18px 16px" }}>
+                <div style={{ background: "#fdf2f8", borderRadius: 14, padding: "12px 14px", textAlign: "center" }}>
+                  <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>🪬 천간(年柱)까지 보면 성격·재물 흐름이 더 자세히 나와요 — 패키지에서 확인하세요</div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* ── 패키지 전용: 사주팔자 한눈에 보기 + 오늘/내일의 한마디 ── */}
+        {tier === "package" && profile?.birthYear && (() => {
+          const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
+          const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
+          const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
+          const ohEmoji: Record<string,string> = { "목":"🌳","화":"🔥","토":"⛰️","금":"⚪","수":"💧" };
+          const y = Number(profile.birthYear);
+          const z = zodiacList[((y - 4) % 12 + 12) % 12];
+          const oh = ohArr[((y - 4) % 10 + 10) % 10];
+          const gan = ganList[((y - 4) % 10 + 10) % 10];
+          const dayMsgs = [
+            "오늘은 그동안 미뤄온 결정을 내리기 좋은 날입니다.",
+            "오늘은 사람과의 인연이 평소보다 강하게 작동하는 날입니다.",
+            "오늘은 돈과 관련된 작은 선택이 길게 영향을 미치는 날입니다.",
+            "오늘은 몸의 신호에 조금 더 귀 기울여야 하는 날입니다.",
+            "오늘은 새로운 시도를 해볼 만한 기운이 흐르는 날입니다.",
+            "오늘은 차분히 정리하고 돌아보기 좋은 날입니다.",
+            "오늘은 평소보다 직관을 믿어도 좋은 날입니다.",
+          ];
+          const dIdx = new Date().getDay();
+          const tomorrowMsgs = [
+            "내일은 가까운 사람과의 대화에서 좋은 기운이 들어옵니다.",
+            "내일은 작은 기회가 평소보다 눈에 잘 들어오는 흐름입니다.",
+            "내일은 재물과 관련된 신호를 눈여겨봐야 하는 흐름입니다.",
+            "내일은 몸과 마음을 챙기는 것이 우선인 흐름입니다.",
+            "내일은 새로운 인연이나 제안이 들어올 수 있는 흐름입니다.",
+            "내일은 오늘 한 결정의 결과가 서서히 드러나는 흐름입니다.",
+            "내일은 한 주를 준비하는 마음가짐이 중요한 흐름입니다.",
+          ];
+          return (
+            <div style={{ background: "linear-gradient(180deg, #fdf9ef 0%, #ffffff 14%)", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, overflow: "hidden", boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
+              <div style={{ background: G_PREMIUM, color: "white", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🪬 {profile?.name}님의 사주팔자 한눈에 보기</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "16px 18px" }}>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>🐉</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div>
+                </div>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>{ohEmoji[oh]}</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
+                </div>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>🌳</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>천간</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{gan}({gan === "갑" ? "甲" : gan === "을" ? "乙" : gan === "병" ? "丙" : gan === "정" ? "丁" : gan === "무" ? "戊" : gan === "기" ? "己" : gan === "경" ? "庚" : gan === "신" ? "辛" : gan === "임" ? "壬" : "癸"})</div>
+                </div>
+              </div>
+              <div style={{ padding: "0 18px 16px" }}>
+                <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px", marginBottom: 8 }}>
+                  <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🔮 오늘의 한마디</div>
+                  <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{dayMsgs[dIdx]}</div>
+                </div>
+                <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px" }}>
+                  <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🌙 내일의 예고</div>
+                  <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{tomorrowMsgs[(dIdx + 1) % 7]}</div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* ── 무료: 오늘의 운세 카드 ── */}
         {tier === "free" && (
@@ -417,11 +590,14 @@ export default function V2Result() {
         {tier === "package" && Object.keys(allAnalyses).length > 0 && (
           (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map((c, i) => (
             <div key={c.apiKey} ref={el => { cardRefs.current[2 + i] = el; }}
-              style={{ background: "white", borderRadius: 24, border: `1.5px solid ${c.color}44`, marginBottom: 12 }}>
-              <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>
+              style={{ background: "linear-gradient(180deg, #fdf9ef 0%, #ffffff 14%)", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
+              <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(217,180,80,0.18)", background: "linear-gradient(90deg, rgba(217,180,80,0.10), transparent)" }}>
                 <span style={{ fontSize: 22 }}>{c.icon}</span>
                 <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{c.label}</span>
-                <span style={{ fontSize: 10, background: G, color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>📦 패키지</span>
+                <span style={{ fontSize: 10, background: G_PREMIUM, color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>📦 패키지</span>
+                {c.apiKey === "💍 결혼·궁합운" && (
+                  <span style={{ fontSize: 10, background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>💞 궁합 {scores?.total ?? 0}%</span>
+                )}
               </div>
               <div style={{ padding: "14px 18px 20px" }}>
                 <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>

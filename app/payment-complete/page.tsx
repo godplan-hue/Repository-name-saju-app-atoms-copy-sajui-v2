@@ -6,10 +6,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const CHARS_MAP: Record<number, string> = {
-  30: "약 13,000자",
-  75: "약 26,000자",
-  100: "약 33,000자",
-  150: "약 50,000자",
+  30: "전문가급 심층 분析 포함",
+  75: "전문가급 심층 분析 포함",
+  100: "전문가급 심층 분析 포함",
+  150: "전문가급 심층 분析 포함",
 };
 
 const PKG_NAMES = ["기본 분석", "베이직", "프리미엄", "VIP 커플팩"];
@@ -53,12 +53,12 @@ export default function PaymentComplete() {
             {PKG_NAMES.includes(packageName) ? (
               <>
                 <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
-                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분析 글자수: <span style={{ fontWeight: 900 }}>{CHARS_MAP[pages] ?? `약 ${((pages / 30) * 5500).toLocaleString()}자`}</span></p>
+                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분析 수준: <span style={{ fontWeight: 900 }}>{CHARS_MAP[pages] ?? "전문가급 심층 분析 포함"}</span></p>
               </>
             ) : (
               <>
                 <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName.replace(/\+/g, ", ")}</span></p>
-                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분析 글자수: <span style={{ fontWeight: 900 }}>약 {((pages / 30) * 5500).toLocaleString()}자</span></p>
+                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분析 수준: <span style={{ fontWeight: 900 }}>전문가급 심층 분析 포함</span></p>
               </>
             )}
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: 0 }}>상태: <span style={{ color: "#90EE90", fontWeight: 900 }}>완료</span></p>

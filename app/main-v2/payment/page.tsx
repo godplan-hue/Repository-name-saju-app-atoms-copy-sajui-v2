@@ -40,7 +40,7 @@ export default function Payment() {
       pages: 30,
       features: ["yearlyLuck", "monthlyLuck"],
       count: 2,
-      chars: "약 13,000자",
+      chars: "전문가급 심층 분析",
       desc: "올해 운세 + 월별 운세"
     },
     {
@@ -50,7 +50,7 @@ export default function Payment() {
       pages: 75,
       features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"],
       count: 4,
-      chars: "약 26,000자",
+      chars: "전문가급 심층 분析",
       desc: "올해 운세 + 월별 운세 + 재물운 + 연애운"
     },
     {
@@ -60,7 +60,7 @@ export default function Payment() {
       pages: 100,
       features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"],
       count: 5,
-      chars: "약 33,000자",
+      chars: "전문가급 심층 분析",
       desc: "올해 운세 + 월별 운세 + 재물운 + 연애운 + 건강운"
     },
     {
@@ -70,7 +70,7 @@ export default function Payment() {
       pages: 150,
       features: ["name", "yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "analysis"],
       count: 8,
-      chars: "약 50,000자",
+      chars: "전문가급 심층 분析",
       desc: "본인 분석(8개) + 상대방 정보 입력<br/>궁합분석 포함"
     }
   ];
@@ -184,7 +184,7 @@ export default function Payment() {
             🎯 {currentCount}개 운세
           </p>
           <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
-            📄 {currentPackage?.chars ?? "약 13,000자"}
+            📄 {currentPackage?.chars ?? "전문가급 심층 분析"}
           </p>
           <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1, marginBottom: 12 }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
 
