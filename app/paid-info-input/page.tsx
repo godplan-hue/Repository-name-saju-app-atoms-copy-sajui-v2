@@ -94,6 +94,11 @@ export default function PaidInfoInput() {
           relationship: 'solo',
           category: '🌟 오늘의 운세',
           planType: prePlan,
+          partnerName: partnerName || undefined,
+          partnerBirth: (partnerBirthYear && partnerBirthMonth && partnerBirthDay)
+            ? `${partnerBirthYear}-${String(partnerBirthMonth).padStart(2,'0')}-${String(partnerBirthDay).padStart(2,'0')}`
+            : undefined,
+          partnerGender: 'N',
         }),
       });
 
