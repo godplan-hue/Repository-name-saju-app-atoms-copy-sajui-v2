@@ -243,6 +243,9 @@ export default function Payment() {
           <button
             onClick={() => {
               if (selectedCats.length === 0) return;
+              // 결제 후 결과 페이지가 "어떤 카테고리를 결제했는지" 알 수 있도록 반드시 저장해야 함
+              // (이게 없으면 결과 페이지가 기본값으로 5개 전부를 보여주는 버그가 생김)
+              sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
               const pkgName = selectedCats.map(c => c.replace(/\S+\s/, "")).join("+");
               router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${selectedCats.length * 30}`);
             }}
