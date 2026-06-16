@@ -14,7 +14,7 @@ const SELECT_CATS = [
 ];
 
 interface Item {
-  id: number; date: string; name: string; category: string;
+  id: string; date: string; name: string; category: string;
   scores: { total: number; wealth: number; love: number; health: number; success: number };
   analysis: string;
   isPaid?: boolean;
@@ -108,7 +108,7 @@ export default function V2History() {
   const [hist, setHist] = useState<Item[]>([]);
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
-  const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   const shareItem = (item: Item, e: React.MouseEvent) => {
     e.stopPropagation();

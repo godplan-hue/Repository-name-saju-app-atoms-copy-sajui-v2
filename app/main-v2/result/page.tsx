@@ -186,9 +186,9 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
     const date = r.savedAt ?? new Date().toISOString();
     const cats = paidCats.length > 0 ? paidCats : Object.keys(analyses);
     cats.forEach((cat, i) => {
-      // histId + i(숫자)로만 만들면 비슷한 시각에 저장된 다른 분석과 ID가 겹쳐 서로 덮어쓸 수 있어,
-      // 카테고리 이름까지 포함한 문자열 ID로 만들어 충돌을 원천적으로 막음
-      const id = `${r.histId}_${cat}`;
+      // 카테고리명(이모지+공백 포함)을 ID에 넣으면 상세페이지 이동 시 URL 인코딩 문제로
+      // 매칭이 깨지는 버그가 있었음 — 영문/숫자만 쓰는 안전한 ID로 변경 (충돌 방지는 유지)
+      const id = `${r.histId}-${i}`;
       const entry = {
         id,
         date,
@@ -673,7 +673,12 @@ export default function V2Result() {
         {(tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
           const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
-          const directInterest = changeInterest ?? (interestOptions.includes(result?.followUp) ? result.followUp : null);
+          // 한 번 고른 관심사는 localStorage에 저장해서, 결제 후 새 분석 세션으로 넘어가도
+          // (followUp이 끊겨도) 다시 묻지 않고 그대로 이어서 보여줌
+          const savedInterest = typeof window !== "undefined" ? localStorage.getItem("v2_change_interest") : null;
+          const directInterest = changeInterest
+            ?? (interestOptions.includes(result?.followUp) ? result.followUp : null)
+            ?? (savedInterest && interestOptions.includes(savedInterest) ? savedInterest : null);
           if (!directInterest) {
             return (
               <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
@@ -682,7 +687,7 @@ export default function V2Result() {
                   <p style={{ fontSize: 13, color: "#374151", fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>지금 가장 궁금한 게 있다면 골라보세요</p>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
                     {interestOptions.map(opt => (
-                      <button key={opt} onClick={() => setChangeInterest(opt)}
+                      <button key={opt} onClick={() => { localStorage.setItem("v2_change_interest", opt); setChangeInterest(opt); }}
                         style={{ padding: "10px 4px", borderRadius: 10, border: "1.5px solid #fbbf24", background: "#fffbeb", color: "#92400e", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
                         {opt}
                       </button>
@@ -699,23 +704,28 @@ export default function V2Result() {
               <div style={{ padding: "16px 18px 20px" }}>
                 <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 800, margin: "0 0 6px" }}>{yc.category}</p>
                 <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px", borderBottom: "2px solid #fbbf24", paddingBottom: 8 }}>✨ {yc.title}</h3>
-                <p style={{ fontSize: 12.5, color: "#374151", fontWeight: 700, fontStyle: "italic", lineHeight: 1.7, margin: "0 0 12px", whiteSpace: "pre-wrap" }}>"{yc.insight}"</p>
+                <div style={{ margin: "0 0 12px" }}>
+                  {yc.insight.split("\n").map((line, i) => (
+                    <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 700, fontStyle: "italic", lineHeight: 1.7, margin: 0, wordBreak: "keep-all" }}>{i === 0 ? `"${line}` : line}</p>
+                  ))}
+                </div>
                 <p style={{ fontSize: 11, color: "#f59e0b", fontWeight: 900, margin: "0 0 6px" }}>🎯 당신의 변화</p>
-                <p style={{ fontSize: 12.5, color: "#374151", fontWeight: 600, lineHeight: 1.7, margin: "0 0 12px", whiteSpace: "pre-wrap" }}>{yc.hidden1}</p>
-                {locked ? (
+                <div style={{ margin: "0 0 12px" }}>
+                  {yc.hidden1.split("\n").map((line, i) => (
+                    <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 600, lineHeight: 1.7, margin: 0, wordBreak: "keep-all" }}>{line}</p>
+                  ))}
+                </div>
+                {locked && (
                   <>
                     <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px", filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
                       <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 990원 결제 시 공개</p>
-                      <p style={{ fontSize: 11.5, color: "#333", fontWeight: 600, margin: 0, whiteSpace: "pre-wrap" }}>{yc.hidden2}</p>
+                      {yc.hidden2.split("\n").map((line, i) => (
+                        <p key={i} style={{ fontSize: 11.5, color: "#333", fontWeight: 600, margin: 0, wordBreak: "keep-all" }}>{line}</p>
+                      ))}
                     </div>
                     <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 <span style={{ display: "inline-block", background: "#ec4899", color: "white", fontWeight: 900, fontStyle: "normal", padding: "2px 10px", borderRadius: 8, margin: "0 2px" }}>990원 결제</span> 시 모두 공개됩니다</p>
                     <button onClick={() => router.push("/main-v2/payment?scrollTo=select")} style={{ width: "100%", marginTop: 14, padding: "13px 0", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>💎 {yc.category} 완벽 공략법 보기</button>
                   </>
-                ) : (
-                  <div style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 10, padding: "10px 12px" }}>
-                    <p style={{ fontSize: 10, color: "#16a34a", fontWeight: 800, margin: "0 0 6px" }}>✅ 결제 완료 — 전체 공개</p>
-                    <p style={{ fontSize: 11.5, color: "#333", fontWeight: 600, margin: 0, whiteSpace: "pre-wrap" }}>{yc.hidden2}</p>
-                  </div>
                 )}
               </div>
             </div>
