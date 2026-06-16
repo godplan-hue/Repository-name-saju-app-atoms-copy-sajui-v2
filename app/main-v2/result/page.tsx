@@ -61,14 +61,31 @@ const YOUR_CHANGE_TYPES: { category: string; title: string; insight: string; hid
     { category: "👶 자녀", title: "임신이나 출산 시기를 고민하고 있음", insight: "아이는 갖고 싶은데\n지금이 맞는 시기인지 계속 고민돼요", hidden1: "그 고민은 망설임이 아니라 신중하게 준비하는 마음이에요\n당신 사주에는 특히 순조로운 흐름이 작동하는 시기가 따로 있어요\n그 시기를 알면 결정이 훨씬 편안해집니다", hidden2: "가장 순조로운 정확한 시기\n그 전에 미리 준비해두면 좋은 것\n마음이 편안해지는 신호" },
 ];
 
-function getYourChangeType(name: string, birthYear: string | number, birthMonth: string | number, birthDay: string | number) {
+// 무료 분석에서 사용자가 직접 고른 카테고리(재물운/연애운/성공운/건강운 등)를
+// "당신의 변화" 50개 템플릿의 카테고리로 매핑 — 완전 무작위 매칭으로 인해
+// 기혼자에게 "비혼 고민" 같은 전혀 안 맞는 내용이 뜨는 문제를 줄임
+const SELECTED_CAT_TO_CHANGE_CAT: Record<string, string> = {
+  "💰 재물운": "💰 돈",
+  "💕 연애운": "💕 애정",
+  "🎯 성공운": "🎯 성공",
+  "💪 건강운": "💪 건강",
+};
+
+function getYourChangeType(name: string, birthYear: string | number, birthMonth: string | number, birthDay: string | number, selectedCategory?: string, directInterest?: string | null) {
   const fullData = String(name) + String(birthYear) + String(birthMonth) + String(birthDay);
   let hash = 0;
   for (let i = 0; i < fullData.length; i++) hash += fullData.charCodeAt(i);
   hash += (parseInt(String(birthMonth)) || 0) * 7;
   hash += (parseInt(String(birthDay)) || 0) * 13;
   hash += (parseInt(String(birthYear)) || 0) * 3;
-  return YOUR_CHANGE_TYPES[Math.abs(hash) % YOUR_CHANGE_TYPES.length];
+
+  // 사용자가 직접 고른 관심사(directInterest)가 가장 정확한 신호이고,
+  // 없으면 분석 시작 시 선택한 카테고리(selectedCategory) 매핑을 시도함
+  const mappedCat = directInterest ?? (selectedCategory ? SELECTED_CAT_TO_CHANGE_CAT[selectedCategory] : undefined);
+  const pool = mappedCat ? YOUR_CHANGE_TYPES.filter(t => t.category === mappedCat) : YOUR_CHANGE_TYPES;
+  const target = pool.length > 0 ? pool : YOUR_CHANGE_TYPES;
+
+  return target[Math.abs(hash) % target.length];
 }
 
 
@@ -198,6 +215,7 @@ export default function V2Result() {
   const [paid, setPaid] = useState(false);
   const [allAnalyses, setAllAnalyses] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [changeInterest, setChangeInterest] = useState<string | null>(null);
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const [paidCats, setPaidCats] = useState<string[]>([]);
@@ -648,9 +666,32 @@ export default function V2Result() {
           </div>
         )}
 
-        {/* ── 무료: 당신의 변화 (호기심 유발 미끼, 990원 결제 시 전체 공개) ── */}
+        {/* ── 무료: 당신의 변화 (호기심 유발 미끼, 990원 결제 시 전체 공개) ──
+             무료 흐름에서 "오늘의 운세" 선택 후 나오는 팔로우업 질문을 관심사 선택으로 바꿔서
+             (analysis/page.tsx의 FU["🌟 오늘의 운세"]), 그 답(result.followUp)으로 정확히 매칭함.
+             옛 세션처럼 followUp이 없는 경우에만 칩을 보여줘 직접 고르게 함(하위 호환) */}
         {tier === "free" && profile?.name && profile?.birthYear && (() => {
-          const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay);
+          const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
+          const directInterest = changeInterest ?? (interestOptions.includes(result?.followUp) ? result.followUp : null);
+          if (!directInterest) {
+            return (
+              <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
+                <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화</div>
+                <div style={{ padding: "16px 18px 20px" }}>
+                  <p style={{ fontSize: 13, color: "#374151", fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>지금 가장 궁금한 게 있다면 골라보세요</p>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+                    {interestOptions.map(opt => (
+                      <button key={opt} onClick={() => setChangeInterest(opt)}
+                        style={{ padding: "10px 4px", borderRadius: 10, border: "1.5px solid #fbbf24", background: "#fffbeb", color: "#92400e", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest);
           return (
             <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
               <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화</div>

@@ -94,7 +94,7 @@ export default function Home() {
             <span style={{ color: "#f59e0b", fontSize: 16 }}>★★★★★</span>
             <span style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700 }}>4.9/5.0 (2,847 리뷰)</span>
           </div>
-          <div style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, marginBottom: 14 }}>⏱ 30초면 완료 · 회원가입 불필요 · 100% 무료</div>
+          <div style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, marginBottom: 14 }}>⏱ 3초면 완료 · 회원가입 불필요 · 100% 무료</div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
             <a href="/free-analysis" style={{ display: "inline-block", padding: "12px 32px", borderRadius: 10, fontSize: "clamp(13px, 2vw, 14px)", fontWeight: 900, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", textDecoration: "none", boxShadow: "0 8px 30px rgba(251,191,36,0.4)", cursor: "pointer" }}>🔮 무료 사주</a>
             <a href="/payment" style={{ display: "inline-block", padding: "12px 32px", borderRadius: 10, fontSize: "clamp(13px, 2vw, 14px)", fontWeight: 900, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", textDecoration: "none", boxShadow: "0 8px 30px rgba(255,20,147,0.4)", cursor: "pointer" }}>💎 유료 사주 분석</a>

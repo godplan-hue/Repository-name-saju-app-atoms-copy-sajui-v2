@@ -362,7 +362,7 @@ export default function MainV2() {
         >
           🔮 무료 사주 시작
         </button>
-        <p style={{ fontSize: 11, color: "#9ca3af", marginBottom: 24 }}>⏱ 30초 완료 · 무료</p>
+        <p style={{ fontSize: 11, color: "#9ca3af", marginBottom: 24 }}>⏱ 3초 완료 · 무료</p>
       </section>
 
       {/* 하단 5개 카드 — 동일 크기/구조 */}

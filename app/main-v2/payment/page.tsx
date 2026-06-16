@@ -40,7 +40,7 @@ export default function Payment() {
       pages: 30,
       features: ["yearlyLuck", "monthlyLuck"],
       count: 2,
-      chars: "전문가급 심층 분析",
+      chars: "전문가급 심층 분석",
       desc: "올해 운세 + 월별 운세"
     },
     {
@@ -50,7 +50,7 @@ export default function Payment() {
       pages: 75,
       features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"],
       count: 4,
-      chars: "전문가급 심층 분析",
+      chars: "전문가급 심층 분석",
       desc: "올해 운세 + 월별 운세 + 재물운 + 연애운"
     },
     {
@@ -60,7 +60,7 @@ export default function Payment() {
       pages: 100,
       features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"],
       count: 5,
-      chars: "전문가급 심층 분析",
+      chars: "전문가급 심층 분석",
       desc: "올해 운세 + 월별 운세 + 재물운 + 연애운 + 건강운"
     },
     {
@@ -70,7 +70,7 @@ export default function Payment() {
       pages: 150,
       features: ["name", "yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "analysis"],
       count: 8,
-      chars: "전문가급 심층 분析",
+      chars: "전문가급 심층 분석",
       desc: "본인 분석(8개) + 상대방 정보 입력<br/>궁합분석 포함"
     }
   ];
@@ -150,10 +150,10 @@ export default function Payment() {
             <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: selectedPackage === pkg.name ? "rgba(251,191,36,0.2)" : "rgba(108,64,200,0.9)", border: selectedPackage === pkg.name ? "2px solid #fbbf24" : "1px solid rgba(139,92,246,0.8)", borderRadius: 12, padding: 20, cursor: "pointer", transition: "all 0.3s" }}>
               <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
               <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, margin: "0 0 8px 0", opacity: 0.85 }}>【심층 상세 분석】</p>
-              <p style={{ color: "#f5f5f5", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.price}</p>
+              <p style={{ color: "#ffffff", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.price}</p>
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 10px 0", lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: pkg.desc }} />
               <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: "0 0 6px 0" }}>🎯 {pkg.count}개 운세</p>
-              <p style={{ color: "#f59e0b", fontSize: 11, fontWeight: 700, margin: 0 }}>📄 {(pkg as any).chars}</p>
+              <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 700, margin: 0 }}>📄 {(pkg as any).chars}</p>
             </div>
           ))}
         </div>
@@ -184,7 +184,7 @@ export default function Payment() {
             🎯 {currentCount}개 운세
           </p>
           <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
-            📄 {currentPackage?.chars ?? "전문가급 심층 분析"}
+            📄 {currentPackage?.chars ?? "전문가급 심층 분석"}
           </p>
           <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1, marginBottom: 12 }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
 
@@ -262,7 +262,7 @@ export default function Payment() {
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>즉시 다운로드</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>30초 이내 완성</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3초 이내 완성</p>
             </div>
           </div>
         </section>
