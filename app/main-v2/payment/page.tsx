@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Payment() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedPackage, setSelectedPackage] = useState("기본 분석");
   const [selectedFeatures, setSelectedFeatures] = useState(["yearlyLuck", "monthlyLuck"]);
   const SELECT_CATS = [
@@ -31,6 +32,15 @@ export default function Payment() {
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
+
+  // "당신의 변화" 카드에서 들어온 경우 990원 선택 섹션으로 자동 스크롤
+  // (페이지 전체 순서는 그대로 유지하고, 이 경로로 온 사람만 헤매지 않게 함)
+  useEffect(() => {
+    if (searchParams.get("scrollTo") === "select") {
+      const el = document.getElementById("select-section");
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    }
+  }, [searchParams]);
 
   const packages = [
     {
@@ -194,7 +204,7 @@ export default function Payment() {
         </div>
 
         {/* 운세 선택 섹션 */}
-        <div style={{ maxWidth: 1000, margin: "0 auto 40px", background: "#f5f5f5", padding: "16px 20px", borderRadius: 12 }}>
+        <div id="select-section" style={{ maxWidth: 1000, margin: "0 auto 40px", background: "#f5f5f5", padding: "16px 20px", borderRadius: 12 }}>
           <h2 style={{ color: "#1a1a1a", fontSize: 15, fontWeight: 900, marginBottom: 6 }}>어떤 운세를 확인할까요?</h2>
           <p style={{ fontSize: 13, fontWeight: 700, marginBottom: 10 }}>
             <span style={{ color: "#1a1a1a" }}>(1개 선택 · </span><span style={{ color: "#ef4444", fontWeight: 900 }}>₩990</span><span style={{ color: "#1a1a1a" }}>)</span>

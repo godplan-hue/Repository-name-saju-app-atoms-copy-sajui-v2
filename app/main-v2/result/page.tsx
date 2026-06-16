@@ -666,11 +666,12 @@ export default function V2Result() {
           </div>
         )}
 
-        {/* ── 무료: 당신의 변화 (호기심 유발 미끼, 990원 결제 시 전체 공개) ──
-             무료 흐름에서 "오늘의 운세" 선택 후 나오는 팔로우업 질문을 관심사 선택으로 바꿔서
-             (analysis/page.tsx의 FU["🌟 오늘의 운세"]), 그 답(result.followUp)으로 정확히 매칭함.
-             옛 세션처럼 followUp이 없는 경우에만 칩을 보여줘 직접 고르게 함(하위 호환) */}
-        {tier === "free" && profile?.name && profile?.birthYear && (() => {
+        {/* ── 당신의 변화 ── 무료=블러+결제유도, 990원/9900원 결제자=전체 공개
+             무료 흐름의 "오늘의 운세" 팔로우업(관심사 선택)이 있으면 그걸 쓰고,
+             결제 후 화면(paid-info-input을 거쳐온 새 분석)처럼 그 값이 없으면
+             칩을 보여줘 직접 고르게 함 — 어떤 경우든 매칭 없이 무작위로 보여주지 않음 */}
+        {(tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
+          const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
           const directInterest = changeInterest ?? (interestOptions.includes(result?.followUp) ? result.followUp : null);
           if (!directInterest) {
@@ -694,19 +695,28 @@ export default function V2Result() {
           const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest);
           return (
             <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
-              <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화</div>
+              <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화{!locked && " — 전체 공개"}</div>
               <div style={{ padding: "16px 18px 20px" }}>
                 <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 800, margin: "0 0 6px" }}>{yc.category}</p>
                 <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px", borderBottom: "2px solid #fbbf24", paddingBottom: 8 }}>✨ {yc.title}</h3>
                 <p style={{ fontSize: 12.5, color: "#374151", fontWeight: 700, fontStyle: "italic", lineHeight: 1.7, margin: "0 0 12px", whiteSpace: "pre-wrap" }}>"{yc.insight}"</p>
                 <p style={{ fontSize: 11, color: "#f59e0b", fontWeight: 900, margin: "0 0 6px" }}>🎯 당신의 변화</p>
                 <p style={{ fontSize: 12.5, color: "#374151", fontWeight: 600, lineHeight: 1.7, margin: "0 0 12px", whiteSpace: "pre-wrap" }}>{yc.hidden1}</p>
-                <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px", filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
-                  <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 990원 결제 시 공개</p>
-                  <p style={{ fontSize: 11.5, color: "#333", fontWeight: 600, margin: 0, whiteSpace: "pre-wrap" }}>{yc.hidden2}</p>
-                </div>
-                <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 <span style={{ display: "inline-block", background: "#ec4899", color: "white", fontWeight: 900, fontStyle: "normal", padding: "2px 10px", borderRadius: 8, margin: "0 2px" }}>990원 결제</span> 시 모두 공개됩니다</p>
-                <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", marginTop: 14, padding: "13px 0", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>💎 {yc.category} 완벽 공략법 보기</button>
+                {locked ? (
+                  <>
+                    <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px", filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
+                      <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 990원 결제 시 공개</p>
+                      <p style={{ fontSize: 11.5, color: "#333", fontWeight: 600, margin: 0, whiteSpace: "pre-wrap" }}>{yc.hidden2}</p>
+                    </div>
+                    <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 <span style={{ display: "inline-block", background: "#ec4899", color: "white", fontWeight: 900, fontStyle: "normal", padding: "2px 10px", borderRadius: 8, margin: "0 2px" }}>990원 결제</span> 시 모두 공개됩니다</p>
+                    <button onClick={() => router.push("/main-v2/payment?scrollTo=select")} style={{ width: "100%", marginTop: 14, padding: "13px 0", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>💎 {yc.category} 완벽 공략법 보기</button>
+                  </>
+                ) : (
+                  <div style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 10, padding: "10px 12px" }}>
+                    <p style={{ fontSize: 10, color: "#16a34a", fontWeight: 800, margin: "0 0 6px" }}>✅ 결제 완료 — 전체 공개</p>
+                    <p style={{ fontSize: 11.5, color: "#333", fontWeight: 600, margin: 0, whiteSpace: "pre-wrap" }}>{yc.hidden2}</p>
+                  </div>
+                )}
               </div>
             </div>
           );
