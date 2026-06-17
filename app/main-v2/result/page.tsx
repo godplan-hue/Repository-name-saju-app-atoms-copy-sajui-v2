@@ -700,10 +700,12 @@ export default function V2Result() {
           const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
           // 결제(990원 선택/패키지 모두 paid-info-input에서 정보를 새로 입력하면서
-          // histId가 매번 새로 생기기 때문에, histId로 값을 구분하면 무료 때 고른 관심사가
-          // 결제 후에 절대 이어지지 않는 문제가 있었음 — 같은 브라우저의 구매 흐름 전체에서
-          // 선택값이 이어지도록 전역 키로 저장. 무료 화면은 그래도 항상 칩을 먼저 보여줌(위 locked 분기)
-          const interestKey = "v2_change_interest";
+          // histId가 매번 새로 생기기 때문에, histId로 구분하면 무료 때 고른 관심사가
+          // 결제 후에 이어지지 않았음. 반대로 전역 키 하나만 쓰면 같은 브라우저에서
+          // "다른 사람" 정보로 새로 결제해도 이전 사람의 선택이 그대로 묻어 들어가는
+          // 문제가 있었음 — 그래서 "이름+생년월일"(프로필 자체)로 키를 구분해서,
+          // 같은 사람의 무료→결제 흐름만 이어지고 다른 사람 정보를 넣으면 새로 물어보게 함
+          const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${profile.birthMonth}_${profile.birthDay}`;
           const savedInterest = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
           const directInterest = locked
             ? changeInterest
