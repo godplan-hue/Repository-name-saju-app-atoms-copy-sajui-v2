@@ -6,13 +6,14 @@ import { useRouter } from "next/navigation";
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
-// 가입 정보 입력 화면(관계/생년월일/성별/시간/연락처 5단계 전부 같은 화면) 배경 —
-// 매번 들어올 때마다 이 중 하나를 랜덤으로 골라 다양하게 보이게 함
-const PROFILE_BACKGROUNDS = [
-  "https://i.pinimg.com/736x/2f/ed/b1/2fedb10df1a36a480c48f71dffc7f0e8.jpg",
-  "https://i.pinimg.com/1200x/ef/d7/c3/efd7c3a7c5b44c9af7e7dfe1d03763c1.jpg",
-  "https://i.pinimg.com/1200x/71/9d/93/719d934c2052e2b945179e3e9205b06f.jpg",
-];
+// 가입 정보 입력 화면 — 5단계(관계/생년월일/성별/시간/연락처)마다 다른 배경 이미지
+const STEP_BACKGROUNDS: Record<number, string> = {
+  1: "https://i.pinimg.com/1200x/8c/f1/ef/8cf1ef883860345144847962ce26fc8f.jpg",
+  2: "https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg",
+  3: "https://i.pinimg.com/1200x/6d/df/69/6ddf69eba555283a55f2007a0d43699f.jpg",
+  4: "https://i.pinimg.com/1200x/39/45/02/394502f20b666c553e7f506fe2aec52d.jpg",
+  5: "https://i.pinimg.com/736x/de/36/33/de36332dd307cafef909ecdfdd2373cf.jpg",
+};
 
 const RELS = [
   { value: "나", icon: "🙋", label: "나" },
@@ -49,25 +50,25 @@ function isPrivacyAgreementValid(): boolean {
 
 const inp: React.CSSProperties = {
   width: "100%", padding: "13px 14px", borderRadius: 12,
-  border: "1.5px solid rgba(236,72,153,0.25)", fontSize: 15,
+  border: "1.5px solid rgba(251,191,36,0.4)", fontSize: 15,
   boxSizing: "border-box", outline: "none",
   fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
-  color: "#1a1a2e", background: "white",
+  color: "#1a1a2e", background: "rgba(255,255,255,0.85)",
+  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
 };
 
 // 이름은 로그인 화면(/main-v2/login)에서 이미 받기 때문에 여기서 다시 묻지 않음
 const STEPS = [
-  { icon: "🙋", title: "누구의 운세를 볼까요?", hint: "" },
+  { icon: "🐱", title: "누구의 운세를 볼까요?", hint: "" },
   { icon: "🎂", title: "생년월일을 입력해주세요", hint: "" },
-  { icon: "👤", title: "성별을 선택해주세요", hint: "" },
-  { icon: "🕐", title: "태어난 시를 선택해주세요", hint: "모르시면 '모름'을 선택해도 됩니다" },
-  { icon: "📱", title: "연락처를 입력해주세요", hint: "" },
+  { icon: "😼😻", title: "성별을 선택해주세요", hint: "" },
+  { icon: "🌙✨", title: "태어난 시를 선택해주세요", hint: "모르시면 '모름'을 선택해도 됩니다" },
+  { icon: "💌", title: "연락처를 입력해주세요", hint: "" },
 ];
 
 export default function V2Profile() {
   const router = useRouter();
   // 페이지를 새로 열 때 한 번만 랜덤으로 골라 5단계 내내 같은 배경 유지
-  const [bgImg] = useState(() => PROFILE_BACKGROUNDS[Math.floor(Math.random() * PROFILE_BACKGROUNDS.length)]);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     name: "", relationship: "나",
@@ -173,7 +174,7 @@ export default function V2Profile() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", backgroundImage: `url('${bgImg}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+    <main style={{ minHeight: "100vh", backgroundImage: `url('${STEP_BACKGROUNDS[step]}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
         <button onClick={() => step > 1 ? setStep(s => s - 1) : router.push("/main-v2")}
@@ -193,20 +194,20 @@ export default function V2Profile() {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "28px 16px 60px" }}>
 
         <div style={{ textAlign: "center", marginBottom: 22 }}>
-          <div style={{ fontSize: 56, lineHeight: 1, marginBottom: 10, display: "inline-block", animation: "bounce 2s ease-in-out infinite" }}>{cur.icon}</div>
-          <h1 style={{ fontSize: 19, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>{cur.title}</h1>
-          {cur.hint && <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>{cur.hint}</p>}
+          <div style={{ fontSize: 56, lineHeight: 1, marginBottom: 10, display: "inline-block", animation: "bounce 2s ease-in-out infinite", filter: step === 1 ? "grayscale(1) brightness(1.8) contrast(0.9)" : "none" }}>{cur.icon}</div>
+          <h1 style={{ fontSize: 19, fontWeight: 900, color: "#ffffff", margin: "0 0 4px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{cur.title}</h1>
+          {cur.hint && <p style={{ fontSize: 12, color: "#ffffff", margin: 0, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>{cur.hint}</p>}
         </div>
 
-        <div style={{ background: "white", borderRadius: 24, padding: "22px 16px", boxShadow: "0 6px 32px rgba(236,72,153,0.08)", border: "1.5px solid rgba(236,72,153,0.1)" }}>
+        <div style={{ background: "rgba(255,255,255,0.78)", backdropFilter: "blur(14px)", borderRadius: 24, padding: "22px 16px", boxShadow: "0 12px 40px rgba(0,0,0,0.18)", border: "1.5px solid rgba(251,191,36,0.45)" }}>
 
           {step === 1 && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 9 }}>
               {RELS.map(r => (
                 <button key={r.value} onClick={() => setForm(p => ({ ...p, relationship: r.value }))}
-                  style={{ padding: "15px 8px", borderRadius: 14, border: form.relationship === r.value ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.15)", background: form.relationship === r.value ? "#fdf2f8" : "white", cursor: "pointer", textAlign: "center" }}>
+                  style={{ padding: "15px 8px", borderRadius: 14, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
                   <div style={{ fontSize: 24, marginBottom: 4 }}>{r.icon}</div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: form.relationship === r.value ? "#ec4899" : "#374151" }}>{r.label}</div>
+                  <div style={{ fontSize: 11, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
                 </button>
               ))}
             </div>
@@ -231,9 +232,9 @@ export default function V2Profile() {
 
           {step === 3 && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              {[{ v: "남", label: "🧑 남성" }, { v: "여", label: "👩 여성" }].map(g => (
+              {[{ v: "남", label: "😼 남성" }, { v: "여", label: "😻 여성" }].map(g => (
                 <button key={g.v} onClick={() => setForm(p => ({ ...p, gender: g.v }))}
-                  style={{ padding: "20px 0", borderRadius: 16, border: form.gender === g.v ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.15)", background: form.gender === g.v ? "#fdf2f8" : "white", color: form.gender === g.v ? "#ec4899" : "#374151", fontWeight: 900, fontSize: 15, cursor: "pointer" }}>
+                  style={{ padding: "20px 0", borderRadius: 16, border: form.gender === g.v ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.gender === g.v ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.gender === g.v ? "#be185d" : "#374151", fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: form.gender === g.v ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
                   {g.label}
                 </button>
               ))}
@@ -244,7 +245,7 @@ export default function V2Profile() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7, maxHeight: 330, overflowY: "auto" }}>
               {HOURS.map(h => (
                 <button key={h.value} onClick={() => setForm(p => ({ ...p, birthHour: h.value }))}
-                  style={{ padding: "10px 6px", borderRadius: 12, border: form.birthHour === h.value ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.12)", background: form.birthHour === h.value ? "#fdf2f8" : "white", color: form.birthHour === h.value ? "#ec4899" : "#374151", fontWeight: 800, fontSize: 11, cursor: "pointer", textAlign: "center" }}>
+                  style={{ padding: "10px 6px", borderRadius: 12, border: form.birthHour === h.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.birthHour === h.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.birthHour === h.value ? "#be185d" : "#374151", fontWeight: 800, fontSize: 11, cursor: "pointer", textAlign: "center", boxShadow: form.birthHour === h.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
                   <div>{h.label}</div>
                   <div style={{ fontSize: 10, opacity: 0.6, marginTop: 2 }}>{h.time}</div>
                 </button>
@@ -265,20 +266,20 @@ export default function V2Profile() {
                 }}
                 onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); (e.currentTarget.nextElementSibling as HTMLInputElement)?.focus(); } }}
                 placeholder="010-0000-0000" style={inp}
-                onFocus={e => (e.currentTarget.style.borderColor = "#ec4899")}
-                onBlur={e => (e.currentTarget.style.borderColor = "rgba(236,72,153,0.25)")}
+                onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
+                onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")}
               />
               <input
                 type="email" value={form.email}
                 onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
                 onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); } }}
                 placeholder="example@email.com" style={inp}
-                onFocus={e => (e.currentTarget.style.borderColor = "#ec4899")}
-                onBlur={e => (e.currentTarget.style.borderColor = "rgba(236,72,153,0.25)")}
+                onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
+                onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")}
               />
               {/* 개인정보 동의 */}
-              <div style={{ background: "#f9fafb", borderRadius: 14, padding: "14px 14px 12px", border: "1.5px solid rgba(236,72,153,0.12)" }}>
-                <p style={{ fontSize: 12, fontWeight: 900, color: "#374151", margin: "0 0 10px" }}>📋 개인정보 수집·이용 동의서</p>
+              <div style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(6px)", borderRadius: 14, padding: "14px 14px 12px", border: "1.5px solid rgba(251,191,36,0.35)" }}>
+                <p style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>📋 개인정보 수집·이용 동의서</p>
                 <div style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.8, marginBottom: 12 }}>
                   <div>• 수집 목적: 사주 분석 서비스 제공</div>
                   <div>• 수집 항목: 이름, 생년월일, 성별, 출생시간, 전화번호, 이메일</div>
@@ -292,9 +293,9 @@ export default function V2Profile() {
                       localStorage.setItem("v2_privacy_agreed", e.target.checked ? "1" : "0");
                       if (e.target.checked) localStorage.setItem("v2_privacy_agreed_at", String(Date.now()));
                     }}
-                    style={{ width: 18, height: 18, accentColor: "#ec4899", cursor: "pointer", flexShrink: 0 }}
+                    style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }}
                   />
-                  <span style={{ fontSize: 13, fontWeight: 800, color: agreed ? "#ec4899" : "#374151" }}>
+                  <span style={{ fontSize: 13, fontWeight: 800, color: agreed ? "#be185d" : "#374151" }}>
                     동의합니다 <span style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af" }}>(필수)</span>
                   </span>
                 </label>
@@ -302,7 +303,7 @@ export default function V2Profile() {
               <button
                 onClick={() => { if (!agreed) { alert("개인정보 수집·이용에 동의해주세요."); return; } finish(); }}
                 disabled={!agreed}
-                style={{ padding: "14px 0", background: agreed ? G : "#e5e7eb", color: agreed ? "white" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: agreed ? "pointer" : "not-allowed", boxShadow: agreed ? "0 6px 20px rgba(236,72,153,0.3)" : "none", marginTop: 4 }}>
+                style={{ padding: "15px 0", background: agreed ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(0,0,0,0.1)", color: agreed ? "#1a0f2e" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: agreed ? "pointer" : "not-allowed", boxShadow: agreed ? "0 6px 22px rgba(251,191,36,0.4)" : "none", marginTop: 4 }}>
                 🔮 분석 시작
               </button>
             </div>
@@ -320,7 +321,7 @@ export default function V2Profile() {
           )}
         </div>
 
-        <p style={{ textAlign: "center", fontSize: 11, color: "#9ca3af", marginTop: 14 }}>🔒 입력 정보는 암호화 보호됩니다</p>
+        <p style={{ textAlign: "center", fontSize: 11, color: "#ffffff", fontWeight: 800, marginTop: 14, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>🔒 입력 정보는 암호화 보호됩니다</p>
       </div>
 
       <style jsx>{`

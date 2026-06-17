@@ -548,7 +548,7 @@ export default function V2Result() {
   const freeAnalysis: string = result.analysis ?? "";
 
   return (
-    <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+    <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/1200x/18/97/18/189718a8189930b86d2088d7f1250c2c.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       {/* 헤더 */}
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>

@@ -169,7 +169,7 @@ export default function PaidInfoInput() {
         background:
           "linear-gradient(135deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)",
         backgroundImage:
-          "url('https://images.unsplash.com/photo-1711510778620-0f287fb5500f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+          "url('https://i.pinimg.com/1200x/d8/c0/45/d8c045bc7a28f3036fbde4172db11cda.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
@@ -203,14 +203,14 @@ export default function PaidInfoInput() {
           justifyContent: "center",
         }}
       >
-        <div style={{ maxWidth: 500, width: "100%" }}>
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <div style={{ fontSize: 60, marginBottom: 16 }}>🔮</div>
+        <div style={{ maxWidth: 420, width: "100%" }}>
+          <div style={{ textAlign: "center", marginBottom: 18 }}>
+            <div style={{ fontSize: 40, marginBottom: 8 }}>🔮</div>
             <h1
               style={{
-                fontSize: "clamp(28px, 5vw, 36px)",
+                fontSize: "clamp(22px, 4vw, 28px)",
                 fontWeight: 900,
-                marginBottom: 12,
+                marginBottom: 8,
                 color: "#fbbf24",
               }}
             >
@@ -230,24 +230,24 @@ export default function PaidInfoInput() {
 
           <div
             style={{
-              background: "rgba(108,64,200,0.3)",
-              padding: 24,
+              background: "rgba(139,92,246,0.3)",
+              padding: 9,
               borderRadius: 12,
-              marginBottom: 24,
+              marginBottom: 14,
               border: "1px solid rgba(251,191,36,0.3)",
             }}
           >
-            <div style={{ marginBottom: 24, paddingBottom: 24, borderBottom: "2px solid rgba(251,191,36,0.5)" }}>
-              <h3 style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>본인 정보</h3>
+            <div style={{ marginBottom: 7, paddingBottom: 10, borderBottom: "2px solid rgba(251,191,36,0.5)" }}>
+              <h3 style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, marginBottom: 8 }}>본인 정보</h3>
 
-              <div style={{ marginBottom: 16 }}>
+              <div style={{ marginBottom: 8 }}>
                 <label
                   style={{
                     display: "block",
                     fontSize: 13,
                     fontWeight: 700,
                     color: "#fbbf24",
-                    marginBottom: 8,
+                    marginBottom: 5,
                   }}
                 >
                   이름
@@ -259,7 +259,7 @@ export default function PaidInfoInput() {
                   onChange={(e) => setName(e.target.value)}
                   style={{
                     width: "100%",
-                    padding: 12,
+                    padding: 9,
                     borderRadius: 8,
                     border: "1px solid #fbbf24",
                     background: "#fff",
@@ -272,7 +272,7 @@ export default function PaidInfoInput() {
                 />
               </div>
 
-              <div style={{ marginBottom: 16 }}>
+              <div style={{ marginBottom: 10 }}>
                 <label
                   style={{
                     display: "block",
@@ -294,8 +294,8 @@ export default function PaidInfoInput() {
                   max={new Date().getFullYear()}
                   style={{
                     width: "100%",
-                    padding: 12,
-                    marginBottom: 10,
+                    padding: 9,
+                    marginBottom: 7,
                     borderRadius: 8,
                     border: "1px solid #fbbf24",
                     background: "#fff",
@@ -312,9 +312,9 @@ export default function PaidInfoInput() {
                   onChange={(e) => setBirthMonth(e.target.value)}
                   style={{
                     width: "48%",
-                    padding: 12,
+                    padding: 9,
                     marginRight: "4%",
-                    marginBottom: 10,
+                    marginBottom: 7,
                     borderRadius: 8,
                     border: "1px solid #fbbf24",
                     background: "#fff",
@@ -339,8 +339,8 @@ export default function PaidInfoInput() {
                   onChange={(e) => setBirthDay(e.target.value)}
                   style={{
                     width: "48%",
-                    padding: 12,
-                    marginBottom: 10,
+                    padding: 9,
+                    marginBottom: 7,
                     borderRadius: 8,
                     border: "1px solid #fbbf24",
                     background: "#fff",
@@ -365,9 +365,9 @@ export default function PaidInfoInput() {
                   onChange={(e) => setBirthHour(e.target.value)}
                   style={{
                     width: "48%",
-                    padding: 12,
+                    padding: 9,
                     marginRight: "4%",
-                    marginBottom: 10,
+                    marginBottom: 7,
                     borderRadius: 8,
                     border: "1px solid #fbbf24",
                     background: "#fff",
@@ -393,8 +393,8 @@ export default function PaidInfoInput() {
                   onChange={(e) => setBirthMinute(e.target.value)}
                   style={{
                     width: "48%",
-                    padding: 12,
-                    marginBottom: 10,
+                    padding: 9,
+                    marginBottom: 7,
                     borderRadius: 8,
                     border: "1px solid #fbbf24",
                     background: "#fff",
@@ -439,7 +439,7 @@ export default function PaidInfoInput() {
                     onChange={(e) => setPartnerName(e.target.value)}
                     style={{
                       width: "100%",
-                      padding: 12,
+                      padding: 9,
                       borderRadius: 8,
                       border: "1px solid #fbbf24",
                       background: "#fff",
@@ -474,8 +474,8 @@ export default function PaidInfoInput() {
                     max={new Date().getFullYear()}
                     style={{
                       width: "100%",
-                      padding: 12,
-                      marginBottom: 10,
+                      padding: 9,
+                      marginBottom: 7,
                       borderRadius: 8,
                       border: "1px solid #fbbf24",
                       background: "#fff",
@@ -492,9 +492,9 @@ export default function PaidInfoInput() {
                     onChange={(e) => setPartnerBirthMonth(e.target.value)}
                     style={{
                       width: "48%",
-                      padding: 12,
+                      padding: 9,
                       marginRight: "4%",
-                      marginBottom: 10,
+                      marginBottom: 7,
                       borderRadius: 8,
                       border: "1px solid #fbbf24",
                       background: "#fff",
@@ -519,8 +519,8 @@ export default function PaidInfoInput() {
                     onChange={(e) => setPartnerBirthDay(e.target.value)}
                     style={{
                       width: "48%",
-                      padding: 12,
-                      marginBottom: 10,
+                      padding: 9,
+                      marginBottom: 7,
                       borderRadius: 8,
                       border: "1px solid #fbbf24",
                       background: "#fff",
@@ -545,9 +545,9 @@ export default function PaidInfoInput() {
                     onChange={(e) => setPartnerBirthHour(e.target.value)}
                     style={{
                       width: "48%",
-                      padding: 12,
+                      padding: 9,
                       marginRight: "4%",
-                      marginBottom: 10,
+                      marginBottom: 7,
                       borderRadius: 8,
                       border: "1px solid #fbbf24",
                       background: "#fff",
@@ -573,8 +573,8 @@ export default function PaidInfoInput() {
                     onChange={(e) => setPartnerBirthMinute(e.target.value)}
                     style={{
                       width: "48%",
-                      padding: 12,
-                      marginBottom: 10,
+                      padding: 9,
+                      marginBottom: 7,
                       borderRadius: 8,
                       border: "1px solid #fbbf24",
                       background: "#fff",

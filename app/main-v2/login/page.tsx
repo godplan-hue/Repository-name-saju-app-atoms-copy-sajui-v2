@@ -17,7 +17,7 @@ export default function V2Login() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/236x/1f/26/0a/1f260ae30d17ec101532acb7d9db4d54.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", display: "flex", flexDirection: "column" }}>
+    <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/1200x/c3/7e/76/c37e76474347881c307eb201f3643e38.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", display: "flex", flexDirection: "column" }}>
 
       {/* 헤더 */}
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
@@ -34,31 +34,31 @@ export default function V2Login() {
           <div style={{ textAlign: "center", marginBottom: 28 }}>
             <div style={{ fontSize: 76, lineHeight: 1, marginBottom: 12, display: "inline-block", animation: "catFloat 3s ease-in-out infinite" }}>🐱</div>
             <h1 style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px" }}>간편 시작</h1>
-            <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>로그인 없이도 바로 운세 확인</p>
+            <p style={{ fontSize: 14, color: "#ffffff", fontWeight: 900, margin: 0, textShadow: "0 2px 8px rgba(0,0,0,0.65)" }}>로그인 없이도 바로 운세 확인</p>
           </div>
 
           {/* 카드 */}
-          <div style={{ background: "white", borderRadius: 24, padding: "24px 20px", boxShadow: "0 8px 40px rgba(236,72,153,0.09)", border: "1.5px solid rgba(236,72,153,0.1)" }}>
+          <div style={{ background: "rgba(255,255,255,0.75)", backdropFilter: "blur(14px)", borderRadius: 24, padding: "24px 20px", boxShadow: "0 12px 40px rgba(0,0,0,0.18)", border: "1.5px solid rgba(251,191,36,0.45)" }}>
 
             <div>
-              <label style={{ fontSize: 13, fontWeight: 700, color: "#374151", display: "block", marginBottom: 8 }}>이름을 알려주세요</label>
+              <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>이름을 알려주세요</label>
               <input
                 autoFocus
                 type="text" value={name} onChange={e => setName(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && loginWithName()}
                 placeholder="홍길동"
-                style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1.5px solid rgba(236,72,153,0.3)", fontSize: 15, boxSizing: "border-box", outline: "none", fontFamily: "inherit", color: "#1a1a2e", background: "white" }}
-                onFocus={e => (e.currentTarget.style.borderColor = "#ec4899")}
-                onBlur={e => (e.currentTarget.style.borderColor = "rgba(236,72,153,0.3)")}
+                style={{ width: "100%", padding: "14px 16px", borderRadius: 12, border: "1.5px solid rgba(251,191,36,0.4)", fontSize: 15, boxSizing: "border-box", outline: "none", fontFamily: "inherit", color: "#1a1a2e", background: "rgba(255,255,255,0.9)" }}
+                onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
+                onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")}
               />
               <button onClick={loginWithName}
-                style={{ width: "100%", marginTop: 14, padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.3)" }}>
+                style={{ width: "100%", marginTop: 14, padding: "15px 0", background: "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.4)" }}>
                 시작하기 →
               </button>
             </div>
           </div>
 
-          <p style={{ textAlign: "center", fontSize: 11, color: "#9ca3af", marginTop: 18, lineHeight: 1.7 }}>
+          <p style={{ textAlign: "center", fontSize: 11, color: "#ffffff", marginTop: 18, lineHeight: 1.7, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>
             🔒 개인정보는 분석 즉시 암호화 보호됩니다<br />
             시작 시 <span style={{ color: "#ec4899", fontWeight: 700 }}>이용약관 및 개인정보처리방침</span>에 동의합니다
           </p>

@@ -92,7 +92,7 @@ export default function V2Analysis() {
   const fuData = FU[selCat];
 
   return (
-    <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+    <main style={{ minHeight: "100vh", backgroundImage: `url('${phase === "fu" ? "https://i.pinimg.com/1200x/01/10/df/0110df97c460033b4d698b4870ba2ff4.jpg" : "https://i.pinimg.com/1200x/c3/ca/03/c3ca038bfdf3e8843d02e1e8b9903abc.jpg"}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
         {/* "/main-v2/profile"은 저장된 정보가 있으면 곧바로 여기로 다시 건너뛰는
@@ -114,8 +114,8 @@ export default function V2Analysis() {
           <>
             <div style={{ textAlign: "center", marginBottom: 28 }}>
               <div style={{ fontSize: 72, lineHeight: 1, marginBottom: 12, display: "inline-block", animation: "catBounce 2s ease-in-out infinite" }}>🐱</div>
-              <h1 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px" }}>오늘의 무료 사주</h1>
-              <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>오늘의 운세 무료 분석 · 나머지는 ₩990</p>
+              <h1 style={{ fontSize: 20, fontWeight: 900, color: "#ffffff", margin: "0 0 6px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>오늘의 무료 사주</h1>
+              <p style={{ fontSize: 13, color: "#ffffff", fontWeight: 800, margin: 0, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>오늘의 운세 무료 분석 · 나머지는 <span style={{ color: "#000000", fontWeight: 900 }}>₩990</span></p>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -125,29 +125,29 @@ export default function V2Analysis() {
                   <button key={c.value}
                     onClick={() => { if (isFree) { setSelCat(c.value); setPhase("fu"); } }}
                     disabled={!isFree}
-                    style={{ padding: "22px 14px", borderRadius: 20, border: isFree ? "2px solid #ec4899" : "1.5px solid rgba(236,72,153,0.15)", background: isFree ? "white" : "#f9fafb", cursor: isFree ? "pointer" : "not-allowed", textAlign: "center", boxShadow: isFree ? "0 4px 20px rgba(236,72,153,0.18)" : "none", opacity: 1, transition: "transform 0.15s, box-shadow 0.15s", position: "relative" }}
+                    style={{ padding: "22px 14px", borderRadius: 20, border: isFree ? "2px solid #fbbf24" : "1.5px solid rgba(255,255,255,0.35)", background: isFree ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.35)", backdropFilter: "blur(10px)", cursor: isFree ? "pointer" : "not-allowed", textAlign: "center", boxShadow: isFree ? "0 6px 22px rgba(251,191,36,0.3)" : "0 4px 14px rgba(0,0,0,0.1)", opacity: 1, transition: "transform 0.15s, box-shadow 0.15s", position: "relative" }}
                     onTouchStart={e => { if (isFree) e.currentTarget.style.transform = "scale(0.96)"; }}
                     onTouchEnd={e => { if (isFree) e.currentTarget.style.transform = "scale(1)"; }}
-                    onMouseEnter={e => { if (isFree) { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(236,72,153,0.25)"; } }}
-                    onMouseLeave={e => { if (isFree) { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(236,72,153,0.18)"; } }}
+                    onMouseEnter={e => { if (isFree) { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 10px 28px rgba(251,191,36,0.4)"; } }}
+                    onMouseLeave={e => { if (isFree) { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 6px 22px rgba(251,191,36,0.3)"; } }}
                   >
                     {isFree && (
-                      <div style={{ position: "absolute", top: 8, right: 8, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20 }}>FREE</div>
+                      <div style={{ position: "absolute", top: 8, right: 8, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20 }}>FREE</div>
                     )}
                     {!isFree && (
-                      <div style={{ position: "absolute", top: 8, right: 8, background: "#e5e7eb", color: "#9ca3af", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20 }}>🔒</div>
+                      <div style={{ position: "absolute", top: 8, right: 8, background: "rgba(255,255,255,0.6)", color: "#9ca3af", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20 }}>🔒</div>
                     )}
                     <div style={{ fontSize: 38, marginBottom: 8 }}>{c.icon}</div>
-                    <div style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", marginBottom: 3 }}>{c.label}</div>
-                    <div style={{ fontSize: 11, color: "#6b7280", fontWeight: 600 }}>{c.desc}</div>
-                    {!isFree && <div style={{ fontSize: 10, color: "#ec4899", fontWeight: 800, marginTop: 4 }}>₩990</div>}
+                    <div style={{ fontSize: 15, fontWeight: 900, color: isFree ? "#1a1a2e" : "rgba(26,26,46,0.65)", marginBottom: 3 }}>{c.label}</div>
+                    <div style={{ fontSize: 11, color: isFree ? "#6b7280" : "rgba(107,114,128,0.75)", fontWeight: 600 }}>{c.desc}</div>
+                    {!isFree && <div style={{ fontSize: 10, color: "#be185d", fontWeight: 800, marginTop: 4 }}>₩990</div>}
                   </button>
                 );
               })}
             </div>
 
-            <p style={{ textAlign: "center", fontSize: 12, color: "#9ca3af", marginTop: 16 }}>
-              💎 나머지 5개 운세는 결과 페이지에서 ₩990에 확인하세요
+            <p style={{ textAlign: "center", fontSize: 12, color: "#ffffff", fontWeight: 800, marginTop: 16, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>
+              💎 나머지 5개 운세는 결과 페이지에서 <span style={{ color: "#000000", fontWeight: 900 }}>₩990</span>에 확인하세요
             </p>
           </>
         )}
@@ -157,8 +157,8 @@ export default function V2Analysis() {
           <>
             <div style={{ textAlign: "center", marginBottom: 24 }}>
               <div style={{ fontSize: 52, lineHeight: 1, marginBottom: 10 }}>{CATS.find(c => c.value === selCat)?.icon}</div>
-              <h1 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>{fuData.q}</h1>
-              <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>해당하는 상황을 선택해주세요</p>
+              <h1 style={{ fontSize: 18, fontWeight: 900, color: "#ffffff", margin: "0 0 4px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{fuData.q}</h1>
+              <p style={{ fontSize: 12, color: "#ffffff", margin: 0, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>해당하는 상황을 선택해주세요</p>
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
@@ -181,12 +181,12 @@ export default function V2Analysis() {
         {phase === "loading" && (
           <div style={{ textAlign: "center", padding: "80px 20px" }}>
             <div style={{ fontSize: 88, marginBottom: 24, display: "inline-block", animation: "spin 1.5s ease-in-out infinite" }}>🔮</div>
-            <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>{loadMsg}</h2>
-            <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 24px" }}>잠시만 기다려 주세요...</p>
-            <div style={{ height: 6, background: "rgba(236,72,153,0.1)", borderRadius: 99, overflow: "hidden", maxWidth: 260, margin: "0 auto" }}>
+            <h2 style={{ fontSize: 18, fontWeight: 900, color: "#ffffff", margin: "0 0 8px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{loadMsg}</h2>
+            <p style={{ fontSize: 13, color: "#ffffff", margin: "0 0 24px", textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>잠시만 기다려 주세요...</p>
+            <div style={{ height: 6, background: "rgba(255,255,255,0.3)", borderRadius: 99, overflow: "hidden", maxWidth: 260, margin: "0 auto" }}>
               <div style={{ height: "100%", background: G, borderRadius: 99, animation: "bar 2.5s ease-in-out infinite" }} />
             </div>
-            <p style={{ marginTop: 28, fontSize: 12, color: "#9ca3af" }}>✨ {profile.name}님의 {selCat}을 분석 중입니다</p>
+            <p style={{ marginTop: 28, fontSize: 12, color: "#ffffff", textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>✨ {profile.name}님의 {selCat}을 분석 중입니다</p>
           </div>
         )}
       </div>

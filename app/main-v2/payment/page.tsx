@@ -157,7 +157,7 @@ export default function Payment() {
 
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => (
-            <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: selectedPackage === pkg.name ? "rgba(251,191,36,0.2)" : "rgba(108,64,200,0.9)", border: selectedPackage === pkg.name ? "2px solid #fbbf24" : "1px solid rgba(139,92,246,0.8)", borderRadius: 12, padding: 20, cursor: "pointer", transition: "all 0.3s" }}>
+            <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: selectedPackage === pkg.name ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))" : "rgba(139,92,246,0.16)", backdropFilter: "blur(10px)", border: selectedPackage === pkg.name ? "2px solid #fbbf24" : "1px solid rgba(196,181,253,0.45)", borderRadius: 14, padding: 20, cursor: "pointer", transition: "all 0.3s", boxShadow: selectedPackage === pkg.name ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
               <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
               <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, margin: "0 0 8px 0", opacity: 0.85 }}>【심층 상세 분석】</p>
               <p style={{ color: "#ffffff", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.price}</p>
@@ -173,16 +173,19 @@ export default function Payment() {
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>990~29,900원</p>
         </div>
 
-        <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 20, background: "#f5f5f5", padding: 24, borderRadius: 12 }}>
-          <h3 style={{ color: "#1a1a1a", fontSize: 18, fontWeight: 900, marginBottom: 20 }}>✨ 포함된 운세</h3>
+        <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 20, background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 24, borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
+          <h3 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 20, letterSpacing: "-0.3px" }}>✨ 포함된 운세</h3>
 
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
-            {fortuneItems.map(item => (
-              <div key={item.id} style={{ background: selectedFeatures.includes(item.id) ? "#ff1493" : "#e0e0e0", border: selectedFeatures.includes(item.id) ? "2px solid #ff69b4" : "1px solid #cccccc", borderRadius: 10, padding: 12, textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-                <p style={{ color: selectedFeatures.includes(item.id) ? "#ffffff" : "#1a1a1a", fontSize: 11, fontWeight: 900, margin: 0, whiteSpace: "normal", wordBreak: "keep-all" }}>{item.name}</p>
-              </div>
-            ))}
+            {fortuneItems.map(item => {
+              const on = selectedFeatures.includes(item.id);
+              return (
+                <div key={item.id} style={{ background: on ? "linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25))" : "rgba(255,255,255,0.05)", border: on ? "1.5px solid #fbbf24" : "1px solid rgba(255,255,255,0.15)", borderRadius: 14, padding: 14, textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", boxShadow: on ? "0 4px 14px rgba(251,191,36,0.18)" : "none", transition: "all 0.15s" }}>
+                  <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
+                  <p style={{ color: on ? "#fbbf24" : "rgba(255,255,255,0.7)", fontSize: 11, fontWeight: 900, margin: 0, whiteSpace: "normal", wordBreak: "keep-all" }}>{item.name}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -204,36 +207,40 @@ export default function Payment() {
         </div>
 
         {/* 운세 선택 섹션 */}
-        <div id="select-section" style={{ maxWidth: 1000, margin: "0 auto 40px", background: "#f5f5f5", padding: "16px 20px", borderRadius: 12 }}>
-          <h2 style={{ color: "#1a1a1a", fontSize: 15, fontWeight: 900, marginBottom: 6 }}>어떤 운세를 확인할까요?</h2>
-          <p style={{ fontSize: 13, fontWeight: 700, marginBottom: 10 }}>
-            <span style={{ color: "#1a1a1a" }}>(1개 선택 · </span><span style={{ color: "#ef4444", fontWeight: 900 }}>₩990</span><span style={{ color: "#1a1a1a" }}>)</span>
+        <div id="select-section" style={{ maxWidth: 1000, margin: "0 auto 40px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: "24px 22px", borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
+          <h2 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 6, letterSpacing: "-0.3px" }}>✨ 어떤 운세를 확인할까요?</h2>
+          <p style={{ fontSize: 13, fontWeight: 700, marginBottom: 16 }}>
+            <span style={{ color: "rgba(255,255,255,0.7)" }}>1개 선택 · </span><span style={{ color: "#ff69b4", fontWeight: 900 }}>₩990</span>
           </p>
 
           <button
             onClick={() => setSelectedCats(selectedCats.length === SELECT_CATS.length ? [] : SELECT_CATS.map(c => c.key))}
-            style={{ width: "100%", padding: "8px 14px", marginBottom: 8, background: selectedCats.length === SELECT_CATS.length ? "#fdf2f8" : "white", border: `1.5px solid ${selectedCats.length === SELECT_CATS.length ? "#ec4899" : "#e5e7eb"}`, borderRadius: 8, fontWeight: 800, fontSize: 12, color: selectedCats.length === SELECT_CATS.length ? "#ec4899" : "#6b7280", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+            style={{ width: "100%", padding: "11px 16px", marginBottom: 10, background: selectedCats.length === SELECT_CATS.length ? "linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25))" : "rgba(255,255,255,0.06)", border: `1.5px solid ${selectedCats.length === SELECT_CATS.length ? "#fbbf24" : "rgba(255,255,255,0.18)"}`, borderRadius: 12, fontWeight: 800, fontSize: 13, color: selectedCats.length === SELECT_CATS.length ? "#fbbf24" : "rgba(255,255,255,0.8)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", transition: "all 0.15s" }}
           >
             <span>✨ 전체 선택</span>
-            <span style={{ fontSize: 14 }}>{selectedCats.length === SELECT_CATS.length ? "☑️" : "⬜"}</span>
+            <span style={{ width: 20, height: 20, borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12, background: selectedCats.length === SELECT_CATS.length ? "linear-gradient(135deg, #fbbf24, #f59e0b)" : "transparent", border: selectedCats.length === SELECT_CATS.length ? "none" : "1.5px solid rgba(255,255,255,0.3)", color: "#1a1a1a" }}>
+              {selectedCats.length === SELECT_CATS.length ? "✓" : ""}
+            </span>
           </button>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {SELECT_CATS.map(c => {
               const on = selectedCats.includes(c.key);
               return (
                 <button key={c.key}
                   onClick={() => setSelectedCats(on ? selectedCats.filter(k => k !== c.key) : [...selectedCats, c.key])}
-                  style={{ padding: "9px 14px", border: `1.5px solid ${on ? "#ec4899" : "#e5e7eb"}`, borderRadius: 8, background: on ? "#fdf2f8" : "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                  style={{ padding: "13px 16px", border: `1.5px solid ${on ? "#fbbf24" : "rgba(255,255,255,0.15)"}`, borderRadius: 14, background: on ? "linear-gradient(135deg, rgba(236,72,153,0.18), rgba(139,92,246,0.18))" : "rgba(255,255,255,0.05)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", transition: "all 0.15s", boxShadow: on ? "0 4px 14px rgba(251,191,36,0.15)" : "none" }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 16 }}>{c.icon}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontSize: 18 }}>{c.icon}</span>
                     <div style={{ textAlign: "left" }}>
-                      <span style={{ fontSize: 13, fontWeight: 900, color: on ? "#ec4899" : "#374151" }}>{c.key.replace(/\S+\s/, "")}</span>
-                      <span style={{ fontSize: 10, color: "#1a1a1a", marginLeft: 6 }}>약 5,500자</span>
+                      <span style={{ fontSize: 14, fontWeight: 900, color: on ? "#fbbf24" : "rgba(255,255,255,0.85)" }}>{c.key.replace(/\S+\s/, "")}</span>
+                      <span style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", marginLeft: 7 }}>약 5,500자</span>
                     </div>
                   </div>
-                  <span style={{ fontSize: 15 }}>{on ? "✅" : "⬜"}</span>
+                  <span style={{ width: 22, height: 22, borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, background: on ? "linear-gradient(135deg, #fbbf24, #f59e0b)" : "transparent", border: on ? "none" : "1.5px solid rgba(255,255,255,0.3)", color: "#1a1a1a", flexShrink: 0 }}>
+                    {on ? "✓" : ""}
+                  </span>
                 </button>
               );
             })}
@@ -250,7 +257,7 @@ export default function Payment() {
               router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${selectedCats.length * 30}`);
             }}
             disabled={selectedCats.length === 0}
-            style={{ width: "100%", marginTop: 14, padding: "13px 0", background: selectedCats.length > 0 ? "linear-gradient(135deg, #ec4899, #8b5cf6)" : "#e5e7eb", color: selectedCats.length > 0 ? "white" : "#9ca3af", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: selectedCats.length > 0 ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 ? "0 4px 16px rgba(236,72,153,0.35)" : "none" }}
+            style={{ width: "100%", marginTop: 18, padding: "15px 0", background: selectedCats.length > 0 ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(255,255,255,0.1)", color: selectedCats.length > 0 ? "#1a0f2e" : "rgba(255,255,255,0.4)", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: selectedCats.length > 0 ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 ? "0 6px 22px rgba(251,191,36,0.35)" : "none", letterSpacing: "-0.2px" }}
           >
             {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 결제하기 · ₩${(selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
           </button>
