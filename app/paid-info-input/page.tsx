@@ -22,18 +22,33 @@ export default function PaidInfoInput() {
   const [partnerBirthMinute, setPartnerBirthMinute] = useState("unknown");
 
   useEffect(() => {
-    setName("");
-    setBirthYear("");
-    setBirthMonth("");
-    setBirthDay("");
-    setBirthHour("unknown");
-    setBirthMinute("unknown");
     setPartnerName("");
     setPartnerBirthYear("");
     setPartnerBirthMonth("");
     setPartnerBirthDay("");
     setPartnerBirthHour("unknown");
     setPartnerBirthMinute("unknown");
+
+    // 한 번 입력한 본인 정보(이름/생년월일)는 localStorage에 저장돼 있으면
+    // 그대로 채워줌 — 결제할 때마다 똑같은 정보를 다시 입력하는 불편을 줄임.
+    // 이 페이지의 월/일 select는 0패딩 없는 값("5")을 쓰므로 숫자로 변환해서 채움
+    const saved = localStorage.getItem("v2_saved_profile");
+    if (saved) {
+      try {
+        const p = JSON.parse(saved);
+        setName(p.name ?? "");
+        setBirthYear(p.birthYear ?? "");
+        setBirthMonth(p.birthMonth ? String(Number(p.birthMonth)) : "");
+        setBirthDay(p.birthDay ? String(Number(p.birthDay)) : "");
+        return;
+      } catch {}
+    }
+    setName("");
+    setBirthYear("");
+    setBirthMonth("");
+    setBirthDay("");
+    setBirthHour("unknown");
+    setBirthMinute("unknown");
   }, []);
 
   useEffect(() => {
@@ -79,6 +94,11 @@ export default function PaidInfoInput() {
 
     try {
       const birthDate = `${birthYear}-${String(birthMonth).padStart(2, '0')}-${String(birthDay).padStart(2, '0')}`;
+
+      // 다음 방문 때(무료 흐름 포함) 그대로 채워줄 수 있도록 0패딩된 형태로 저장
+      localStorage.setItem('v2_saved_profile', JSON.stringify({
+        name, birthYear, birthMonth: String(birthMonth).padStart(2, '0'), birthDay: String(birthDay).padStart(2, '0'),
+      }));
 
       const PKG_NAMES_PRE = ['기본 분석', '베이직', '프리미엄', 'VIP 커플팩'];
       const prePlan = PKG_NAMES_PRE.includes(selectedPackage) ? 'package' : 'select';

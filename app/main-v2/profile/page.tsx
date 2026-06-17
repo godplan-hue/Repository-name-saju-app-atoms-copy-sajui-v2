@@ -60,6 +60,26 @@ export default function V2Profile() {
   const [agreed, setAgreed] = useState(false);
 
   useEffect(() => {
+    // 한 번 입력한 본인 정보는 localStorage에 저장해두고 다음 방문 때 그대로
+    // 채워줌 — 매번 생년월일을 다시 입력해야 하는 불편을 줄임
+    const saved = localStorage.getItem("v2_saved_profile");
+    if (saved) {
+      try {
+        const p = JSON.parse(saved);
+        setForm(prev => ({
+          ...prev,
+          name: p.name ?? prev.name,
+          birthYear: p.birthYear ?? prev.birthYear,
+          birthMonth: p.birthMonth ?? prev.birthMonth,
+          birthDay: p.birthDay ?? prev.birthDay,
+          gender: p.gender ?? prev.gender,
+          birthHour: p.birthHour ?? prev.birthHour,
+          phone: p.phone ?? prev.phone,
+          email: p.email ?? prev.email,
+        }));
+        return;
+      } catch {}
+    }
     const n = localStorage.getItem("v2_user_name") ?? "";
     if (n && !["카카오 사용자", "네이버 사용자", "Google 사용자"].includes(n))
       setForm(p => ({ ...p, name: n }));
@@ -71,6 +91,10 @@ export default function V2Profile() {
 
   const finish = () => {
     sessionStorage.setItem("v2_profile", JSON.stringify(form));
+    localStorage.setItem("v2_saved_profile", JSON.stringify({
+      name: form.name, birthYear: form.birthYear, birthMonth: form.birthMonth, birthDay: form.birthDay,
+      gender: form.gender, birthHour: form.birthHour, phone: form.phone, email: form.email,
+    }));
     router.push("/main-v2/analysis");
   };
 
