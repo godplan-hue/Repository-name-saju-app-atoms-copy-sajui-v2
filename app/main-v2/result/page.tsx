@@ -85,7 +85,11 @@ function getYourChangeType(name: string, birthYear: string | number, birthMonth:
   const pool = mappedCat ? YOUR_CHANGE_TYPES.filter(t => t.category === mappedCat) : YOUR_CHANGE_TYPES;
   const target = pool.length > 0 ? pool : YOUR_CHANGE_TYPES;
 
-  return target[Math.abs(hash) % target.length];
+  // "오늘의 운세"는 매일 제공되는데 같은 사람·같은 카테고리면 항상 같은 템플릿만
+  // 나오면 매일 봐도 똑같아서 이상함 — 날짜를 섞어 그날그날 풀 안에서 다음 템플릿으로
+  // 하루씩 돌아가게 함(같은 날 안에서는 그대로 고정, 다음 날엔 자동으로 다른 템플릿)
+  const daysSinceEpoch = Math.floor(Date.now() / 86400000);
+  return target[Math.abs(hash + daysSinceEpoch) % target.length];
 }
 
 // 문장이 길 때 카드 너비에 맞춰 CSS로만 줄바꿈을 맡기면 문장마다 길이가 달라
