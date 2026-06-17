@@ -725,7 +725,12 @@ export default function V2Result() {
                 </div>
               );
             }
-            const directInterest = changeInterest;
+            // 오늘 이미 칩을 한 번 고른 적이 있으면(아직 결제 전), 다시 들어와도 또
+            // 고르라고 하지 않고 그 선택을 그대로 이어서 보여줌 — 결제 전까지는
+            // 블러+결제유도 화면이 계속 유지됨
+            const savedInterestToday = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
+            const directInterest = changeInterest
+              ?? (savedInterestToday && interestOptions.includes(savedInterestToday) ? savedInterestToday : null);
             if (!directInterest) {
               return (
                 <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
