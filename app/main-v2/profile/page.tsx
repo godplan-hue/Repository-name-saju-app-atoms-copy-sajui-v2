@@ -73,7 +73,15 @@ export default function V2Profile() {
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
-    if (isPrivacyAgreementValid()) setAgreed(true);
+    // 동의 기록도 로그인한 이름과 저장된 정보의 이름이 같을 때만 유효 — 다른
+    // 사람으로 들어왔으면 이전 사람이 했던 동의를 그대로 가져오면 안 됨
+    const loggedInName = localStorage.getItem("v2_user_name") ?? "";
+    let sameName = true;
+    try {
+      const saved = localStorage.getItem("v2_saved_profile");
+      if (saved && loggedInName) sameName = JSON.parse(saved).name === loggedInName;
+    } catch {}
+    if (sameName && isPrivacyAgreementValid()) setAgreed(true);
   }, []);
 
   useEffect(() => {
@@ -82,11 +90,16 @@ export default function V2Profile() {
     // 평생 다시 묻지 않음. 다른 사람으로 보려면 로그아웃해서 정보를 지워야 함.
     // 다만 개인정보 동의는 3년 보유기간이 지나면 만료시켜 다시 동의를 받음
     const saved = localStorage.getItem("v2_saved_profile");
+    const loggedInName = localStorage.getItem("v2_user_name") ?? "";
     if (saved) {
       try {
         const p = JSON.parse(saved);
+        // 로그인에서 새 이름을 입력했는데 저장된 정보가 다른 사람 이름이면,
+        // 그 저장된 정보로 건너뛰거나 채우면 안 됨(다른 사람 정보가 그대로
+        // 쓰이는 사고가 됨) — 로그인한 이름과 일치할 때만 신뢰함
+        const sameName = !loggedInName || p.name === loggedInName;
         const complete = p.name && p.birthYear && p.birthMonth && p.birthDay && p.gender && p.birthHour;
-        if (complete && isPrivacyAgreementValid()) {
+        if (sameName && complete && isPrivacyAgreementValid()) {
           setRedirecting(true);
           sessionStorage.setItem("v2_profile", JSON.stringify({
             name: p.name, relationship: "나",
@@ -97,23 +110,24 @@ export default function V2Profile() {
           router.push("/main-v2/analysis");
           return;
         }
-        setForm(prev => ({
-          ...prev,
-          name: p.name ?? prev.name,
-          birthYear: p.birthYear ?? prev.birthYear,
-          birthMonth: p.birthMonth ?? prev.birthMonth,
-          birthDay: p.birthDay ?? prev.birthDay,
-          gender: p.gender ?? prev.gender,
-          birthHour: p.birthHour ?? prev.birthHour,
-          phone: p.phone ?? prev.phone,
-          email: p.email ?? prev.email,
-        }));
-        return;
+        if (sameName) {
+          setForm(prev => ({
+            ...prev,
+            name: p.name ?? prev.name,
+            birthYear: p.birthYear ?? prev.birthYear,
+            birthMonth: p.birthMonth ?? prev.birthMonth,
+            birthDay: p.birthDay ?? prev.birthDay,
+            gender: p.gender ?? prev.gender,
+            birthHour: p.birthHour ?? prev.birthHour,
+            phone: p.phone ?? prev.phone,
+            email: p.email ?? prev.email,
+          }));
+          return;
+        }
       } catch {}
     }
-    const n = localStorage.getItem("v2_user_name") ?? "";
-    if (n && !["카카오 사용자", "네이버 사용자", "Google 사용자"].includes(n))
-      setForm(p => ({ ...p, name: n }));
+    if (loggedInName && !["카카오 사용자", "네이버 사용자", "Google 사용자"].includes(loggedInName))
+      setForm(p => ({ ...p, name: loggedInName }));
   }, []);
 
   if (redirecting) return null;
