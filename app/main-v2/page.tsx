@@ -198,7 +198,7 @@ const BANNERS = [
 
 const FORTUNE_CATEGORIES = [
   { id: "yearly", title: "올해 운세", emoji: "🎍", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777" },
-  { id: "monthly", title: "월별 운세", emoji: "📆", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#6d28d9" },
+  { id: "monthly", title: "월별 운세", emoji: "📆", img: "https://i.pinimg.com/736x/26/b0/8e/26b08e17fba8ae7d44a34a2633dc05b4.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#6d28d9" },
   { id: "wealth", title: "재물운", emoji: "💰", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309" },
   { id: "love", title: "연애운", emoji: "💕", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d" },
   { id: "health", title: "건강운", emoji: "🍀", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a" },
@@ -219,13 +219,24 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
               onClick={() => onPick(cat.id)}
               style={{
                 aspectRatio: "1 / 1",
-                background: cat.bg, borderRadius: 16, cursor: "pointer",
+                background: (cat as any).img ? undefined : cat.bg, borderRadius: 16, cursor: "pointer",
+                position: "relative", overflow: "hidden",
                 display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                 boxShadow: `0 3px 14px ${cat.accent}1f`,
               }}
             >
-              <div style={{ fontSize: 24, marginBottom: 4 }}>{cat.emoji}</div>
-              <div style={{ fontSize: 10, fontWeight: 900, color: cat.accent, textAlign: "center", lineHeight: 1.2, padding: "0 2px" }}>{cat.title}</div>
+              {(cat as any).img ? (
+                <>
+                  <img src={(cat as any).img} alt={cat.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 55%)" }} />
+                  <div style={{ position: "relative", fontSize: 10, fontWeight: 900, color: "#fff", textAlign: "center", lineHeight: 1.2, padding: "0 2px", marginTop: "auto", marginBottom: 6, textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>{cat.title}</div>
+                </>
+              ) : (
+                <>
+                  <div style={{ fontSize: 24, marginBottom: 4 }}>{cat.emoji}</div>
+                  <div style={{ fontSize: 10, fontWeight: 900, color: cat.accent, textAlign: "center", lineHeight: 1.2, padding: "0 2px" }}>{cat.title}</div>
+                </>
+              )}
             </div>
           ))}
         </div>
