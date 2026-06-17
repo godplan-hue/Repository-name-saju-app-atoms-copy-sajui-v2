@@ -369,8 +369,15 @@ export default function MainV2() {
       {/* 슬라이드 배너 */}
       <BannerSlider onStart={() => router.push(user ? "/main-v2/profile" : "/main-v2/login")} />
 
-      {/* 운세 선택 — 8개 박스 그리드 */}
-      <FortuneGrid onPick={id => { sessionStorage.setItem("selectedFortune", id); router.push("/main-v2/payment"); }} />
+      {/* 운세 선택 — 8개 박스 그리드
+          고관심·고가치(재물운/연애운/전체사주분석/궁합분석/이름분석)는 패키지(9,900원+) 결제로,
+          가벼운 입문용(올해운세/월별운세/건강운)은 무료 체험으로 유도해 전환율을 분리함 */}
+      <FortuneGrid onPick={id => {
+        sessionStorage.setItem("selectedFortune", id);
+        const FREE_ROUTE_IDS = new Set(["yearly", "monthly", "health"]);
+        if (FREE_ROUTE_IDS.has(id)) router.push(user ? "/main-v2/profile" : "/main-v2/login");
+        else router.push("/main-v2/payment");
+      }} />
 
       {/* 히어로 */}
       <section style={{ padding: "24px 16px 0", textAlign: "center" }}>
