@@ -705,7 +705,10 @@ export default function V2Result() {
           // "다른 사람" 정보로 새로 결제해도 이전 사람의 선택이 그대로 묻어 들어가는
           // 문제가 있었음 — 그래서 "이름+생년월일"(프로필 자체)로 키를 구분해서,
           // 같은 사람의 무료→결제 흐름만 이어지고 다른 사람 정보를 넣으면 새로 물어보게 함
-          const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${profile.birthMonth}_${profile.birthDay}`;
+          // main-v2/profile(무료)은 월/일을 "05"처럼 0패딩해서 저장하고
+          // paid-info-input(결제 직행)은 "5"처럼 패딩 없이 저장해서, 같은 사람·같은
+          // 생일이어도 문자열이 달라 키가 안 맞는 문제가 있었음 — 숫자로 정규화해서 비교
+          const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}`;
           const savedInterest = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
           const directInterest = locked
             ? changeInterest
