@@ -322,7 +322,7 @@ export default function MainV2() {
 
   const handleCourse = (c: typeof COURSES[0]) => {
     if (c.id === "free") {
-      router.push(user ? "/main-v2/analysis" : "/main-v2/login");
+      router.push(user ? "/main-v2/profile" : "/main-v2/login");
     } else {
       sessionStorage.setItem("selectedPackage", c.packageName ?? "");
       router.push(`/payment-complete?package=${encodeURIComponent(c.packageName ?? "")}&pages=${c.pages}`);
@@ -350,7 +350,7 @@ export default function MainV2() {
       </header>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider onStart={() => router.push(user ? "/main-v2/analysis" : "/main-v2/login")} />
+      <BannerSlider onStart={() => router.push(user ? "/main-v2/profile" : "/main-v2/login")} />
 
       {/* 운세 선택 — 8개 박스 그리드 */}
       <FortuneGrid onPick={id => { sessionStorage.setItem("selectedFortune", id); router.push("/main-v2/payment"); }} />
@@ -399,7 +399,7 @@ export default function MainV2() {
         <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
         <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
         <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 18px" }}>다섯 신령한 동물이 당신의 길을 안내합니다 🐾</p>
-        <button onClick={() => router.push(user ? "/main-v2/analysis" : "/main-v2/login")}
+        <button onClick={() => router.push(user ? "/main-v2/profile" : "/main-v2/login")}
           style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 8px 28px rgba(236,72,153,0.35)" }}>
           🔮 무료 학 코스 시작
         </button>
