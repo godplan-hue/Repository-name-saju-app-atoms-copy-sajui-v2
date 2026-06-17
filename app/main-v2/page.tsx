@@ -202,7 +202,7 @@ const FORTUNE_CATEGORIES = [
   { id: "wealth", title: "재물운", emoji: "💰", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309" },
   { id: "love", title: "연애운", emoji: "💕", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d" },
   { id: "health", title: "건강운", emoji: "🍀", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a" },
-  { id: "compatibility", title: "궁합분석", emoji: "💑", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8" },
+  { id: "compatibility", title: "궁합분석", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8" },
   { id: "naming", title: "이름분석", emoji: "✍️", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490" },
   { id: "full", title: "전체 사주분석", emoji: "🔮", img: "https://i.pinimg.com/736x/83/02/5e/83025ec3d960580b277cc7ce00f8c0c8.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d" },
 ];
