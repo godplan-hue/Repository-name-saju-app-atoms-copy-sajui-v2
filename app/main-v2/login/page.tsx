@@ -13,6 +13,10 @@ export default function V2Login() {
   const loginWithName = () => {
     if (!name.trim()) { alert("이름을 입력해주세요"); return; }
     localStorage.setItem("v2_user_name", name.trim());
+    // 로그인할 때마다 새 세션 번호를 발급 — 같은 로그인 세션 안에서는 프로필
+    // 입력 화면을 건너뛰고, 로그아웃 후 다시 로그인하면 그 예쁜 화면을 한 번 더
+    // 보여주기 위한 기준값(main-v2/profile에서 사용)
+    localStorage.setItem("v2_login_session_id", String(Date.now()));
     router.push("/main-v2/profile");
   };
 

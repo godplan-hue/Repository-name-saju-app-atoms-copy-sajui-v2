@@ -355,6 +355,8 @@ export default function MainV2() {
                     localStorage.removeItem("v2_user_name");
                     localStorage.removeItem("v2_saved_profile");
                     localStorage.removeItem("v2_privacy_agreed");
+                    localStorage.removeItem("v2_login_session_id");
+                    localStorage.removeItem("v2_profile_shown_session");
                     sessionStorage.removeItem("v2_profile");
                     sessionStorage.removeItem("v2_result");
                     setUser(null);

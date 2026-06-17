@@ -97,10 +97,15 @@ export default function V2Profile() {
 
   useEffect(() => {
     // 무료(오늘의 운세) 다시보기: 한 번 입력한 본인 정보가 완전하면 이 화면 자체를
-    // 보여주지 않고 곧바로 분석으로 건너뜀 — 다른 사람으로 보려면 로그아웃 필요.
+    // 보여주지 않고 곧바로 분석으로 건너뜀 — 단, "같은 로그인 세션" 안에서만.
+    // 로그아웃 후 다시 로그인하면(=새 세션) 예쁜 화면을 한 번 더 보여주고, 그
+    // 세션 안에서는 그 다음부터 건너뜀. 다른 사람으로 보려면 로그아웃 필요.
     // 개인정보 동의는 3년 보유기간이 지나면 만료시켜 다시 동의를 받음
     const saved = localStorage.getItem("v2_saved_profile");
     const loggedInName = localStorage.getItem("v2_user_name") ?? "";
+    const loginSessionId = localStorage.getItem("v2_login_session_id") ?? "";
+    const shownForSession = localStorage.getItem("v2_profile_shown_session") ?? "";
+    const alreadyShownThisSession = loginSessionId !== "" && loginSessionId === shownForSession;
     if (saved) {
       try {
         const p = JSON.parse(saved);
@@ -109,7 +114,7 @@ export default function V2Profile() {
         // 쓰이는 사고가 됨) — 로그인한 이름과 일치할 때만 신뢰함
         const sameName = !loggedInName || p.name === loggedInName;
         const complete = p.name && p.birthYear && p.birthMonth && p.birthDay && p.gender && p.birthHour;
-        if (sameName && complete && isPrivacyAgreementValid()) {
+        if (sameName && complete && isPrivacyAgreementValid() && alreadyShownThisSession) {
           setRedirecting(true);
           sessionStorage.setItem("v2_profile", JSON.stringify({
             name: p.name, relationship: "나",
@@ -155,6 +160,10 @@ export default function V2Profile() {
       name: form.name, birthYear: form.birthYear, birthMonth: form.birthMonth, birthDay: form.birthDay,
       gender: form.gender, birthHour: form.birthHour, phone: form.phone, email: form.email,
     }));
+    // 이번 로그인 세션에서는 이미 화면을 봤다고 기록 — 같은 세션 안에서 또
+    // 들어오면 건너뛰고, 로그아웃 후 다시 로그인하면(새 세션) 다시 보여줌
+    const loginSessionId = localStorage.getItem("v2_login_session_id");
+    if (loginSessionId) localStorage.setItem("v2_profile_shown_session", loginSessionId);
     router.push("/main-v2/analysis");
   };
 
