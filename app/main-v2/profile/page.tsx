@@ -6,6 +6,14 @@ import { useRouter } from "next/navigation";
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
+// 가입 정보 입력 화면(관계/생년월일/성별/시간/연락처 5단계 전부 같은 화면) 배경 —
+// 매번 들어올 때마다 이 중 하나를 랜덤으로 골라 다양하게 보이게 함
+const PROFILE_BACKGROUNDS = [
+  "https://i.pinimg.com/736x/2f/ed/b1/2fedb10df1a36a480c48f71dffc7f0e8.jpg",
+  "https://i.pinimg.com/1200x/ef/d7/c3/efd7c3a7c5b44c9af7e7dfe1d03763c1.jpg",
+  "https://i.pinimg.com/1200x/71/9d/93/719d934c2052e2b945179e3e9205b06f.jpg",
+];
+
 const RELS = [
   { value: "나", icon: "🙋", label: "나" },
   { value: "배우자", icon: "💑", label: "배우자" },
@@ -58,6 +66,8 @@ const STEPS = [
 
 export default function V2Profile() {
   const router = useRouter();
+  // 페이지를 새로 열 때 한 번만 랜덤으로 골라 5단계 내내 같은 배경 유지
+  const [bgImg] = useState(() => PROFILE_BACKGROUNDS[Math.floor(Math.random() * PROFILE_BACKGROUNDS.length)]);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     name: "", relationship: "나",
@@ -163,7 +173,7 @@ export default function V2Profile() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/1200x/71/9d/93/719d934c2052e2b945179e3e9205b06f.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+    <main style={{ minHeight: "100vh", backgroundImage: `url('${bgImg}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
         <button onClick={() => step > 1 ? setStep(s => s - 1) : router.push("/main-v2")}
