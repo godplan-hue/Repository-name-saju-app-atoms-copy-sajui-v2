@@ -492,7 +492,7 @@ export default function V2Result() {
             ctx.font = `900 ${22 * dpr}px 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillText(`🐱 점운 · AI 사주 분析 (${gi + 1}/${groups.length})`, merged.width / 2, headerH / 2);
+            ctx.fillText(`🐱 점운 · AI 사주 분석 (${gi + 1}/${groups.length})`, merged.width / 2, headerH / 2);
             y = headerH;
           }
           for (const c of group) {
@@ -518,7 +518,7 @@ export default function V2Result() {
       const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
       const y = Number(result.profile.birthYear);
       const gan = ganList[((y - 4) % 10 + 10) % 10];
-      extra = `\n${gan} 천간을 타고난 사주 심층 분析 결과예요 🪬`;
+      extra = `\n${gan} 천간을 타고난 사주 심층 분석 결과예요 🪬`;
     }
     const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로!\n${url}`;
     if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});

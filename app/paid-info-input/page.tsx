@@ -128,7 +128,7 @@ export default function PaidInfoInput() {
       });
 
       if (!res.ok) {
-        alert('분析 실패. 다시 시도해주세요.');
+        alert('분석 실패. 다시 시도해주세요.');
         setIsLoading(false);
         return;
       }
@@ -156,8 +156,8 @@ export default function PaidInfoInput() {
 
       router.push('/main-v2/result');
     } catch (error) {
-      console.error('분析 오류:', error);
-      alert('분析 중 오류가 발생했습니다.');
+      console.error('분석 오류:', error);
+      alert('분석 중 오류가 발생했습니다.');
       setIsLoading(false);
     }
   };
