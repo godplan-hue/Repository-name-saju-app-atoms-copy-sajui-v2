@@ -204,7 +204,7 @@ const FORTUNE_CATEGORIES = [
   { id: "health", title: "건강운", emoji: "🍀", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a" },
   { id: "compatibility", title: "궁합분석", emoji: "💑", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8" },
   { id: "naming", title: "이름분석", emoji: "✍️", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490" },
-  { id: "full", title: "전체 사주분석", emoji: "🔮", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d" },
+  { id: "full", title: "전체 사주분석", emoji: "🔮", img: "https://i.pinimg.com/736x/83/02/5e/83025ec3d960580b277cc7ce00f8c0c8.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d" },
 ];
 
 function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
