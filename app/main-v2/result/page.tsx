@@ -308,6 +308,22 @@ export default function V2Result() {
     }
   }, []);
 
+  // "당신의 변화" 전체공개를 오늘 처음 보여주는 거라면, 그 사실을 localStorage에
+  // 기록 — 렌더링 함수 안에서 직접 쓰지 않고 여기(useEffect)에서만 써야 함
+  useEffect(() => {
+    const p = result?.profile;
+    if (!p?.name || !p?.birthYear) return;
+    if (tier !== "select" && tier !== "package") return;
+    const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
+    const todayKey = new Date().toDateString();
+    const interestKey = `v2_change_interest_${p.name}_${p.birthYear}_${Number(p.birthMonth)}_${Number(p.birthDay)}_${todayKey}`;
+    const consumedKey = `${interestKey}_consumed`;
+    const savedInterest = localStorage.getItem(interestKey);
+    if (savedInterest && interestOptions.includes(savedInterest) && localStorage.getItem(consumedKey) !== "1") {
+      localStorage.setItem(consumedKey, "1");
+    }
+  }, [tier, result]);
+
   const goToPay = () => {
     if (selectedCats.length === 0) return;
     sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
@@ -780,11 +796,14 @@ export default function V2Result() {
             );
           }
 
-          // 유료: 무료에서 실제로 고른 적이 있어야만, 그리고 아직 한 번도 안 보여줬을 때만 노출
+          // 유료: 무료에서 실제로 고른 적이 있어야만, 그리고 아직 한 번도 안 보여줬을 때만 노출.
+          // "다 봤다"는 표시는 별도의 useEffect에서 하고(아래 참고) 여기서는 읽기만 함 —
+          // 렌더링 중에 직접 localStorage.setItem을 하면 리액트가 순수성 검사를 위해
+          // 렌더를 두 번 호출할 때 두 번째 호출에서 "이미 다 봤음"으로 읽혀서 바로
+          // 사라져 보이는 버그가 있었음
           const savedInterest = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
           const alreadyConsumed = typeof window !== "undefined" && localStorage.getItem(consumedKey) === "1";
           if (!savedInterest || !interestOptions.includes(savedInterest) || alreadyConsumed) return null;
-          if (typeof window !== "undefined") localStorage.setItem(consumedKey, "1");
           const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, savedInterest);
           return (
             <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
