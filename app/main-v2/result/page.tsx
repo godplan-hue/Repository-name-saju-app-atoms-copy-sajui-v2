@@ -700,15 +700,16 @@ export default function V2Result() {
           const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
           // 무료 화면: 이 화면에서 직접 고른 것(changeInterest)만 인정 — 예전에 저장된 값이 있어도
-          // 항상 버튼을 먼저 보여줌. 결제 후 화면(별도 세션이라 정보가 끊김)만 그 저장된 값을
-          // 조용히 이어받아 버튼 없이 바로 결과를 보여줌
+          // 항상 버튼을 먼저 보여줌. 유료 화면은 무료 흐름을 거쳐온 followUp/저장된 관심사가
+          // 있으면 그걸 조용히 이어받아 바로 보여주고, 결제 직행(무료 흐름을 건너뛴 경우)처럼
+          // 매칭할 단서가 전혀 없을 때는 무작위로 보여주지 않고 똑같이 칩을 먼저 보여줌
           const savedInterest = typeof window !== "undefined" ? localStorage.getItem("v2_change_interest") : null;
           const directInterest = locked
             ? changeInterest
             : (changeInterest
                 ?? (interestOptions.includes(result?.followUp) ? result.followUp : null)
                 ?? (savedInterest && interestOptions.includes(savedInterest) ? savedInterest : null));
-          if (!directInterest && locked) {
+          if (!directInterest) {
             return (
               <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
                 <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화</div>
