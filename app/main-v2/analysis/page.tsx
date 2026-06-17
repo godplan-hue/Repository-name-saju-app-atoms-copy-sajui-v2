@@ -95,7 +95,10 @@ export default function V2Analysis() {
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-        <button onClick={() => phase === "fu" ? setPhase("cat") : router.push("/main-v2/profile")}
+        {/* "/main-v2/profile"은 저장된 정보가 있으면 곧바로 여기로 다시 건너뛰는
+            화면이라, 뒤로가기 목적지로 쓰면 분석↔프로필 사이를 무한 왕복하게
+            됨(브라우저가 "리디렉션 너무 많음"으로 처리) — 메인으로 보냄 */}
+        <button onClick={() => phase === "fu" ? setPhase("cat") : router.push("/main-v2")}
           style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
           <span style={{ fontSize: 18 }}>←</span>
           <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
