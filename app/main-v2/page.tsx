@@ -156,7 +156,7 @@ function AnimalImg({
 
 const BANNERS = [
   {
-    img: "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg",
+    img: "https://i.pinimg.com/736x/31/38/d3/3138d37b753299b5f3dbed30e9f2b668.jpg",
     badge: "🐱 점운",
     badgeBg: G,
     lines: ["점운에 오신 걸 환영합니다", "특별이벤트", "사주 990원"],
