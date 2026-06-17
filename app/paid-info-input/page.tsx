@@ -95,8 +95,13 @@ export default function PaidInfoInput() {
     try {
       const birthDate = `${birthYear}-${String(birthMonth).padStart(2, '0')}-${String(birthDay).padStart(2, '0')}`;
 
-      // 다음 방문 때(무료 흐름 포함) 그대로 채워줄 수 있도록 0패딩된 형태로 저장
+      // 다음 방문 때(무료 흐름 포함) 그대로 채워줄 수 있도록 0패딩된 형태로 저장.
+      // 이 페이지는 성별/태어난시/연락처를 안 받으므로, 기존에 저장돼 있던 값(예: 무료
+      // 흐름에서 입력한 성별 등)을 통째로 덮어쓰지 않고 이름/생년월일만 덮어써서 병합
+      let prevSaved: Record<string, string> = {};
+      try { prevSaved = JSON.parse(localStorage.getItem('v2_saved_profile') || '{}'); } catch {}
       localStorage.setItem('v2_saved_profile', JSON.stringify({
+        ...prevSaved,
         name, birthYear, birthMonth: String(birthMonth).padStart(2, '0'), birthDay: String(birthDay).padStart(2, '0'),
       }));
 
