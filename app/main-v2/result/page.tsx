@@ -699,15 +699,17 @@ export default function V2Result() {
         {(tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
           const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
-          // 무료 화면: 이 화면에서 직접 고른 것(changeInterest)만 인정 — 예전에 저장된 값이 있어도
-          // 항상 버튼을 먼저 보여줌. 유료 화면은 같은 세션의 무료 흐름에서 넘어온 followUp이
-          // 있으면 그걸 조용히 이어받아 바로 보여주고, 결제 직행(무료 흐름을 건너뛴 경우)처럼
-          // 매칭할 단서가 전혀 없을 때는 무작위로 보여주지 않고 똑같이 칩을 먼저 보여줌.
-          // localStorage 값은 전혀 다른 사람·다른 분석에서도 그대로 남아있어 신뢰할 수 없으므로
-          // 더 이상 폴백으로 쓰지 않음(칩을 고른 화면 표시용으로만 기록)
+          // localStorage 키를 histId로 구분해서 저장 — 같은 분석(인라인 결제 후 reload처럼
+          // histId가 그대로 유지되는 경우)은 골랐던 칩을 그대로 이어받아 다시 안 물어보고,
+          // 완전히 새로운 분석(결제 직행으로 새 정보 입력 등 histId가 새로 생기는 경우)은
+          // 예전 값과 무관하게 매번 칩을 다시 보여줌
+          const interestKey = `v2_change_interest_${result?.histId ?? ""}`;
+          const savedInterest = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
           const directInterest = locked
             ? changeInterest
-            : (changeInterest ?? (interestOptions.includes(result?.followUp) ? result.followUp : null));
+            : (changeInterest
+                ?? (interestOptions.includes(result?.followUp) ? result.followUp : null)
+                ?? (savedInterest && interestOptions.includes(savedInterest) ? savedInterest : null));
           if (!directInterest) {
             return (
               <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
@@ -716,7 +718,7 @@ export default function V2Result() {
                   <p style={{ fontSize: 13, color: "#374151", fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>지금 가장 궁금한 게 있다면 골라보세요</p>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
                     {interestOptions.map(opt => (
-                      <button key={opt} onClick={() => { localStorage.setItem("v2_change_interest", opt); setChangeInterest(opt); }}
+                      <button key={opt} onClick={() => { localStorage.setItem(interestKey, opt); setChangeInterest(opt); }}
                         style={{ padding: "10px 4px", borderRadius: 10, border: "1.5px solid #fbbf24", background: "#fffbeb", color: "#92400e", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
                         {opt}
                       </button>
