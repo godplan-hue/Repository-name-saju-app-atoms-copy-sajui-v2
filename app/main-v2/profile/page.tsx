@@ -79,10 +79,6 @@ export default function V2Profile() {
   // 개인정보 동의도 한 번 체크하면 localStorage에 저장해 다음 방문 때 그대로
   // 체크된 상태로 시작 — 매번 다시 동의 체크를 해야 하는 불편을 줄임
   const [agreed, setAgreed] = useState(false);
-  // 한 번 정보를 다 채워서 저장한 적이 있으면 이 화면 자체를 다시 보여주지 않고
-  // 곧바로 분석으로 건너뛰기 위한 플래그 — 다른 사람으로 보려면 로그아웃 후 다시 시작
-  const [redirecting, setRedirecting] = useState(false);
-
   useEffect(() => {
     // 동의 기록도 로그인한 이름과 저장된 정보의 이름이 같을 때만 유효 — 다른
     // 사람으로 들어왔으면 이전 사람이 했던 동의를 그대로 가져오면 안 됨
@@ -96,35 +92,18 @@ export default function V2Profile() {
   }, []);
 
   useEffect(() => {
-    // 한 번 입력한 본인 정보는 localStorage에 저장해두고, 그 다음부터는 이 입력
-    // 화면 자체를 영구적으로 건너뛰고 곧바로 분석으로 넘어감 — 오늘이든 내일이든
-    // 평생 다시 묻지 않음. 다른 사람으로 보려면 로그아웃해서 정보를 지워야 함.
-    // 다만 개인정보 동의는 3년 보유기간이 지나면 만료시켜 다시 동의를 받음
+    // 한 번 입력한 본인 정보는 localStorage에 저장해두고, 다음 방문 때 화면은
+    // 그대로 보여주되(예쁜 배경 이미지도 그대로 보이게) 내용은 자동으로 채워서
+    // "다음"만 누르면 바로 넘어가게 함 — 화면 자체를 건너뛰지는 않음
     const saved = localStorage.getItem("v2_saved_profile");
     const loggedInName = localStorage.getItem("v2_user_name") ?? "";
     if (saved) {
       try {
         const p = JSON.parse(saved);
         // 로그인에서 새 이름을 입력했는데 저장된 정보가 다른 사람 이름이면,
-        // 그 저장된 정보로 건너뛰거나 채우면 안 됨(다른 사람 정보가 그대로
-        // 쓰이는 사고가 됨) — 로그인한 이름과 일치할 때만 신뢰함
+        // 그 저장된 정보로 채우면 안 됨(다른 사람 정보가 그대로 쓰이는 사고가 됨)
+        // — 로그인한 이름과 일치할 때만 신뢰함
         const sameName = !loggedInName || p.name === loggedInName;
-        const complete = p.name && p.birthYear && p.birthMonth && p.birthDay && p.gender && p.birthHour;
-        if (sameName && complete && isPrivacyAgreementValid()) {
-          setRedirecting(true);
-          sessionStorage.setItem("v2_profile", JSON.stringify({
-            name: p.name, relationship: "나",
-            birthYear: p.birthYear, birthMonth: p.birthMonth, birthDay: p.birthDay,
-            gender: p.gender, birthHour: p.birthHour,
-            phone: p.phone ?? "", email: p.email ?? "",
-          }));
-          // push가 아니라 replace — 이건 사용자가 직접 보지 못하는 자동 건너뛰기라
-          // push로 하면 브라우저 히스토리에 보이지 않는 항목이 계속 쌓여서, 뒤로가기를
-          // 여러 번 눌러도 안 돌아가다가 결국 앱보다 더 이전(엉뚱한 외부 페이지)으로
-          // 튕겨나가는 문제가 있었음
-          router.replace("/main-v2/analysis");
-          return;
-        }
         if (sameName) {
           setForm(prev => ({
             ...prev,
@@ -144,8 +123,6 @@ export default function V2Profile() {
     if (loggedInName && !["카카오 사용자", "네이버 사용자", "Google 사용자"].includes(loggedInName))
       setForm(p => ({ ...p, name: loggedInName }));
   }, []);
-
-  if (redirecting) return null;
 
   const TOTAL = 5;
   const progress = (step / TOTAL) * 100;
