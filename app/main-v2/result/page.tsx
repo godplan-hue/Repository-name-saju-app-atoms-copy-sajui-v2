@@ -814,6 +814,11 @@ export default function V2Result() {
           );
         })()}
 
+        {/* 임시 디버그 표시 — 확인 끝나면 삭제 예정 */}
+        <div style={{ background: "#fef3c7", padding: "8px 14px", fontSize: 11, color: "#92400e", wordBreak: "break-all", marginBottom: 12, borderRadius: 8 }}>
+          디버그2 — tier:{tier} / profile있음:{profile ? "예" : "아니오"} / 이름:{profile?.name ?? "없음"} / 생일년도:{profile?.birthYear ?? "없음"} / price세션:{typeof window !== "undefined" ? (sessionStorage.getItem("price") ?? "없음") : ""} / v2paid세션:{typeof window !== "undefined" ? (sessionStorage.getItem("v2_paid") ?? "없음") : ""}
+        </div>
+
         {/* ── 990원: 선택한 5개 운세 ── */}
         {tier === "select" && Object.keys(allAnalyses).length > 0 && (
           ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map((c, i) => (
