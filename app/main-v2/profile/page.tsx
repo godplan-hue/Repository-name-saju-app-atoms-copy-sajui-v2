@@ -163,7 +163,7 @@ export default function V2Profile() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+    <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/736x/2f/ed/b1/2fedb10df1a36a480c48f71dffc7f0e8.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
         <button onClick={() => step > 1 ? setStep(s => s - 1) : router.push("/main-v2")}
