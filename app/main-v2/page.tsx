@@ -212,20 +212,20 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
     <section style={{ padding: "0 14px 28px" }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
         <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 12px", textAlign: "center" }}>운세 선택</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 150px)", justifyContent: "center", gap: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
             <div
               key={cat.id}
               onClick={() => onPick(cat.id)}
               style={{
-                width: 150, height: 150,
-                background: cat.bg, borderRadius: 20, cursor: "pointer",
+                aspectRatio: "1 / 1",
+                background: cat.bg, borderRadius: 16, cursor: "pointer",
                 display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                 boxShadow: `0 3px 14px ${cat.accent}1f`,
               }}
             >
-              <div style={{ fontSize: 36, marginBottom: 8 }}>{cat.emoji}</div>
-              <div style={{ fontSize: 15, fontWeight: 900, color: cat.accent, textAlign: "center" }}>{cat.title}</div>
+              <div style={{ fontSize: 24, marginBottom: 4 }}>{cat.emoji}</div>
+              <div style={{ fontSize: 10, fontWeight: 900, color: cat.accent, textAlign: "center", lineHeight: 1.2, padding: "0 2px" }}>{cat.title}</div>
             </div>
           ))}
         </div>
