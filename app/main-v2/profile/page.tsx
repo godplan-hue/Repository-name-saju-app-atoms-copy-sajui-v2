@@ -107,7 +107,11 @@ export default function V2Profile() {
             gender: p.gender, birthHour: p.birthHour,
             phone: p.phone ?? "", email: p.email ?? "",
           }));
-          router.push("/main-v2/analysis");
+          // push가 아니라 replace — 이건 사용자가 직접 보지 못하는 자동 건너뛰기라
+          // push로 하면 브라우저 히스토리에 보이지 않는 항목이 계속 쌓여서, 뒤로가기를
+          // 여러 번 눌러도 안 돌아가다가 결국 앱보다 더 이전(엉뚱한 외부 페이지)으로
+          // 튕겨나가는 문제가 있었음
+          router.replace("/main-v2/analysis");
           return;
         }
         if (sameName) {
