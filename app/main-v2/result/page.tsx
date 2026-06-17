@@ -815,9 +815,19 @@ export default function V2Result() {
         })()}
 
         {/* 임시 디버그 표시 — 확인 끝나면 삭제 예정 */}
-        <div style={{ background: "#fef3c7", padding: "8px 14px", fontSize: 11, color: "#92400e", wordBreak: "break-all", marginBottom: 12, borderRadius: 8 }}>
-          디버그2 — tier:{tier} / profile있음:{profile ? "예" : "아니오"} / 이름:{profile?.name ?? "없음"} / 생일년도:{profile?.birthYear ?? "없음"} / price세션:{typeof window !== "undefined" ? (sessionStorage.getItem("price") ?? "없음") : ""} / v2paid세션:{typeof window !== "undefined" ? (sessionStorage.getItem("v2_paid") ?? "없음") : ""}
-        </div>
+        {profile?.name && profile?.birthYear && (() => {
+          const interestOptionsDbg = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
+          const todayKeyDbg = new Date().toDateString();
+          const keyDbg = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${todayKeyDbg}`;
+          const savedDbg = typeof window !== "undefined" ? localStorage.getItem(keyDbg) : null;
+          const consumedDbg = typeof window !== "undefined" ? localStorage.getItem(`${keyDbg}_consumed`) : null;
+          const willShow = tier === "free" ? true : (!!savedDbg && interestOptionsDbg.includes(savedDbg) && consumedDbg !== "1");
+          return (
+            <div style={{ background: "#fef3c7", padding: "8px 14px", fontSize: 11, color: "#92400e", wordBreak: "break-all", marginBottom: 12, borderRadius: 8 }}>
+              디버그3 — tier:{tier} / 키:{keyDbg} / 저장값:{savedDbg ?? "없음"} / consumed:{consumedDbg ?? "없음"} / 유료에서표시여부:{willShow ? "표시함" : "숨김(null 반환)"}
+            </div>
+          );
+        })()}
 
         {/* ── 990원: 선택한 5개 운세 ── */}
         {tier === "select" && Object.keys(allAnalyses).length > 0 && (
