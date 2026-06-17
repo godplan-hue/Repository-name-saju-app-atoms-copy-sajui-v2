@@ -342,7 +342,24 @@ export default function MainV2() {
         </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
           {user
-            ? <span style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 700 }}>{user}님 👋</span>
+            ? (
+              <>
+                <span style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 700 }}>{user}님 👋</span>
+                <button
+                  onClick={() => {
+                    if (!confirm("로그아웃하시겠어요? 다른 분 정보로 새로 시작할 수 있어요.")) return;
+                    localStorage.removeItem("v2_user_name");
+                    localStorage.removeItem("v2_saved_profile");
+                    localStorage.removeItem("v2_privacy_agreed");
+                    sessionStorage.removeItem("v2_profile");
+                    sessionStorage.removeItem("v2_result");
+                    setUser(null);
+                  }}
+                  style={{ padding: "6px 10px", background: "#f3f4f6", color: "#9ca3af", border: "none", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+                  로그아웃
+                </button>
+              </>
+            )
             : <button onClick={() => router.push("/main-v2/login")} style={{ padding: "6px 14px", background: G, color: "white", border: "none", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>로그인</button>
           }
           <button onClick={() => router.push("/main-v2/history")} style={{ padding: "6px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>📂</button>

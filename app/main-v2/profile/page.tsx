@@ -60,18 +60,34 @@ export default function V2Profile() {
   // 개인정보 동의도 한 번 체크하면 localStorage에 저장해 다음 방문 때 그대로
   // 체크된 상태로 시작 — 매번 다시 동의 체크를 해야 하는 불편을 줄임
   const [agreed, setAgreed] = useState(false);
+  // 한 번 정보를 다 채워서 저장한 적이 있으면 이 화면 자체를 다시 보여주지 않고
+  // 곧바로 분석으로 건너뛰기 위한 플래그 — 다른 사람으로 보려면 로그아웃 후 다시 시작
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("v2_privacy_agreed") === "1") setAgreed(true);
   }, []);
 
   useEffect(() => {
-    // 한 번 입력한 본인 정보는 localStorage에 저장해두고 다음 방문 때 그대로
-    // 채워줌 — 매번 생년월일을 다시 입력해야 하는 불편을 줄임
+    // 한 번 입력한 본인 정보는 localStorage에 저장해두고, 그 다음부터는 이 입력
+    // 화면 자체를 영구적으로 건너뛰고 곧바로 분석으로 넘어감 — 오늘이든 내일이든
+    // 평생 다시 묻지 않음. 다른 사람으로 보려면 로그아웃해서 정보를 지워야 함
     const saved = localStorage.getItem("v2_saved_profile");
     if (saved) {
       try {
         const p = JSON.parse(saved);
+        const complete = p.name && p.birthYear && p.birthMonth && p.birthDay && p.gender && p.birthHour;
+        if (complete) {
+          setRedirecting(true);
+          sessionStorage.setItem("v2_profile", JSON.stringify({
+            name: p.name, relationship: "나",
+            birthYear: p.birthYear, birthMonth: p.birthMonth, birthDay: p.birthDay,
+            gender: p.gender, birthHour: p.birthHour,
+            phone: p.phone ?? "", email: p.email ?? "",
+          }));
+          router.push("/main-v2/analysis");
+          return;
+        }
         setForm(prev => ({
           ...prev,
           name: p.name ?? prev.name,
@@ -90,6 +106,8 @@ export default function V2Profile() {
     if (n && !["카카오 사용자", "네이버 사용자", "Google 사용자"].includes(n))
       setForm(p => ({ ...p, name: n }));
   }, []);
+
+  if (redirecting) return null;
 
   const TOTAL = 5;
   const progress = (step / TOTAL) * 100;
