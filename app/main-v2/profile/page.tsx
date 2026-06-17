@@ -135,6 +135,7 @@ export default function V2Profile() {
         <div style={{ height: "100%", width: `${progress}%`, background: G, transition: "width 0.4s ease", borderRadius: "0 4px 4px 0" }} />
       </div>
 
+
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "28px 16px 60px" }}>
 
         <div style={{ textAlign: "center", marginBottom: 22 }}>
