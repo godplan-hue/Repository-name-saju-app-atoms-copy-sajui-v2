@@ -231,6 +231,9 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
 export default function V2Result() {
   const router = useRouter();
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // saving 상태(state)는 갱신이 비동기라 버튼을 빠르게 두 번 누르면 재진입 체크를
+  // 통과해버려 저장이 중복 실행될 수 있음 — ref는 즉시 갱신되므로 이걸로 막음
+  const savingRef = useRef(false);
 
   const [result, setResult] = useState<any>(null);
   const [paid, setPaid] = useState(false);
@@ -372,7 +375,8 @@ export default function V2Result() {
   };
 
   const saveImage = async () => {
-    if (saving) return;
+    if (savingRef.current) return;
+    savingRef.current = true;
     setSaving(true);
     try {
       const html2canvas = (await import("html2canvas")).default;
@@ -518,6 +522,7 @@ export default function V2Result() {
       console.error("이미지 저장 실패:", e);
       alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요.");
     } finally {
+      savingRef.current = false;
       setSaving(false);
     }
   };
