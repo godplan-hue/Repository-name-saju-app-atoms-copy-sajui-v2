@@ -715,6 +715,11 @@ export default function V2Result() {
             : (changeInterest
                 ?? (interestOptions.includes(result?.followUp) ? result.followUp : null)
                 ?? (savedInterest && interestOptions.includes(savedInterest) ? savedInterest : null));
+          // 이미 한 번이라도(무료든 유료든) 답을 받아본 적이 있으면, 그 뒤로 보는
+          // "다른" 사주(이 프로필 고유 키에 저장된 값이 없는 경우)에서는 칩 선택 화면을
+          // 다시 띄우지 않고 섹션 자체를 숨김 — 매번 똑같은 박스가 반복 노출되는 걸 방지
+          const hasSeenFeature = typeof window !== "undefined" && localStorage.getItem("v2_change_feature_seen") === "1";
+          if (hasSeenFeature && !directInterest) return null;
           if (!directInterest) {
             return (
               <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
@@ -723,7 +728,7 @@ export default function V2Result() {
                   <p style={{ fontSize: 13, color: "#374151", fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>지금 가장 궁금한 게 있다면 골라보세요</p>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
                     {interestOptions.map(opt => (
-                      <button key={opt} onClick={() => { localStorage.setItem(interestKey, opt); setChangeInterest(opt); }}
+                      <button key={opt} onClick={() => { localStorage.setItem(interestKey, opt); localStorage.setItem("v2_change_feature_seen", "1"); setChangeInterest(opt); }}
                         style={{ padding: "10px 4px", borderRadius: 10, border: "1.5px solid #fbbf24", background: "#fffbeb", color: "#92400e", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
                         {opt}
                       </button>
