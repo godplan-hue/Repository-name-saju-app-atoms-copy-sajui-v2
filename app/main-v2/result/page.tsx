@@ -692,56 +692,84 @@ export default function V2Result() {
           </div>
         )}
 
-        {/* ── 당신의 변화 ── 무료=블러+결제유도, 990원/9900원 결제자=전체 공개
-             무료 흐름의 "오늘의 운세" 팔로우업(관심사 선택)이 있으면 그걸 쓰고,
-             결제 후 화면(paid-info-input을 거쳐온 새 분석)처럼 그 값이 없으면
-             칩을 보여줘 직접 고르게 함 — 어떤 경우든 매칭 없이 무작위로 보여주지 않음 */}
+        {/* ── 당신의 변화 ── 원래 목적은 "무료 결과를 본 사람에게 결제를 유도"하는 것뿐이라,
+             이미 결제한 사람에게는 더 이상 보여줄 이유가 없음(결제 직행도 마찬가지 — 유도할
+             대상이 아예 아니었으므로 칩도 안 보여줌). 그래서:
+             - 무료(tier=free): 항상 칩 선택 → 고르면 hidden2를 블러+결제 유도 버튼으로 보여줌
+             - 유료(select/package): 무료에서 실제로 골랐던 적이 있는 사람한테만, 결제 후
+               딱 한 번 전체 공개로 보여주고(보너스 성격), 그 다음부터는(같은 사람 재구매 포함)
+               다시 보여주지 않음. 결제 직행(고른 적 없음)은 섹션 자체를 표시하지 않음 */}
         {(tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
           const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
-          // 결제(990원 선택/패키지 모두 paid-info-input에서 정보를 새로 입력하면서
-          // histId가 매번 새로 생기기 때문에, histId로 구분하면 무료 때 고른 관심사가
-          // 결제 후에 이어지지 않았음. 반대로 전역 키 하나만 쓰면 같은 브라우저에서
-          // "다른 사람" 정보로 새로 결제해도 이전 사람의 선택이 그대로 묻어 들어가는
-          // 문제가 있었음 — 그래서 "이름+생년월일"(프로필 자체)로 키를 구분해서,
-          // 같은 사람의 무료→결제 흐름만 이어지고 다른 사람 정보를 넣으면 새로 물어보게 함
-          // main-v2/profile(무료)은 월/일을 "05"처럼 0패딩해서 저장하고
-          // paid-info-input(결제 직행)은 "5"처럼 패딩 없이 저장해서, 같은 사람·같은
-          // 생일이어도 문자열이 달라 키가 안 맞는 문제가 있었음 — 숫자로 정규화해서 비교
-          const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}`;
-          const savedInterest = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
-          const directInterest = locked
-            ? changeInterest
-            : (changeInterest
-                ?? (interestOptions.includes(result?.followUp) ? result.followUp : null)
-                ?? (savedInterest && interestOptions.includes(savedInterest) ? savedInterest : null));
-          // 이미 한 번이라도(무료든 유료든) 답을 받아본 적이 있으면, 그 뒤로 보는
-          // "다른" 사주(이 프로필 고유 키에 저장된 값이 없는 경우)에서는 칩 선택 화면을
-          // 다시 띄우지 않고 섹션 자체를 숨김 — 매번 똑같은 박스가 반복 노출되는 걸 방지
-          const hasSeenFeature = typeof window !== "undefined" && localStorage.getItem("v2_change_feature_seen") === "1";
-          if (hasSeenFeature && !directInterest) return null;
-          if (!directInterest) {
+          // main-v2/profile(무료)은 월/일을 "05"처럼 0패딩해서 저장하고 paid-info-input(결제
+          // 직행)은 "5"처럼 패딩 없이 저장해서, 같은 사람·같은 생일이어도 키가 안 맞을 수 있어
+          // 숫자로 정규화해서 비교. 날짜를 키에 포함시켜 "오늘 하루"만 유지되고
+          // 다음 날 새로 무료 분석을 하면 다시 한 번 보여주도록 자동 초기화되게 함
+          const todayKey = new Date().toDateString();
+          const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${todayKey}`;
+          const consumedKey = `${interestKey}_consumed`;
+
+          if (locked) {
+            const directInterest = changeInterest;
+            if (!directInterest) {
+              return (
+                <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
+                  <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화</div>
+                  <div style={{ padding: "16px 18px 20px" }}>
+                    <p style={{ fontSize: 13, color: "#374151", fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>지금 가장 궁금한 게 있다면 골라보세요</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+                      {interestOptions.map(opt => (
+                        <button key={opt} onClick={() => { localStorage.setItem(interestKey, opt); setChangeInterest(opt); }}
+                          style={{ padding: "10px 4px", borderRadius: 10, border: "1.5px solid #fbbf24", background: "#fffbeb", color: "#92400e", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+            const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest);
             return (
               <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
                 <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화</div>
                 <div style={{ padding: "16px 18px 20px" }}>
-                  <p style={{ fontSize: 13, color: "#374151", fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>지금 가장 궁금한 게 있다면 골라보세요</p>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-                    {interestOptions.map(opt => (
-                      <button key={opt} onClick={() => { localStorage.setItem(interestKey, opt); localStorage.setItem("v2_change_feature_seen", "1"); setChangeInterest(opt); }}
-                        style={{ padding: "10px 4px", borderRadius: 10, border: "1.5px solid #fbbf24", background: "#fffbeb", color: "#92400e", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
-                        {opt}
-                      </button>
+                  <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 800, margin: "0 0 6px" }}>{yc.category}</p>
+                  <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px", borderBottom: "2px solid #fbbf24", paddingBottom: 8 }}>✨ {yc.title}</h3>
+                  <div style={{ margin: "0 0 12px" }}>
+                    {yc.insight.split("\n").flatMap(splitLong).map((line, i) => (
+                      <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 700, fontStyle: "italic", lineHeight: 1.6, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{i === 0 ? `"${line}` : line}</p>
                     ))}
                   </div>
+                  <p style={{ fontSize: 11, color: "#f59e0b", fontWeight: 900, margin: "0 0 6px" }}>🎯 당신의 변화</p>
+                  <div style={{ margin: "0 0 12px" }}>
+                    {yc.hidden1.split("\n").flatMap(splitLong).map((line, i) => (
+                      <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 600, lineHeight: 1.6, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
+                    ))}
+                  </div>
+                  <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px", filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
+                    <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 990원 결제 시 공개</p>
+                    {yc.hidden2.split("\n").flatMap(splitLong).map((line, i) => (
+                      <p key={i} style={{ fontSize: 13, color: "#1a1a2e", fontWeight: 700, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
+                    ))}
+                  </div>
+                  <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 <span style={{ display: "inline-block", background: "#ec4899", color: "white", fontWeight: 900, fontStyle: "normal", padding: "2px 10px", borderRadius: 8, margin: "0 2px" }}>990원 결제</span> 시 모두 공개됩니다</p>
+                  <button onClick={() => router.push("/main-v2/payment?scrollTo=select")} style={{ width: "100%", marginTop: 14, padding: "13px 0", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>💎 {yc.category} 완벽 공략법 보기</button>
                 </div>
               </div>
             );
           }
-          const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest ?? undefined);
+
+          // 유료: 무료에서 실제로 고른 적이 있어야만, 그리고 아직 한 번도 안 보여줬을 때만 노출
+          const savedInterest = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
+          const alreadyConsumed = typeof window !== "undefined" && localStorage.getItem(consumedKey) === "1";
+          if (!savedInterest || !interestOptions.includes(savedInterest) || alreadyConsumed) return null;
+          if (typeof window !== "undefined") localStorage.setItem(consumedKey, "1");
+          const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, savedInterest);
           return (
             <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
-              <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화{!locked && " — 전체 공개"}</div>
+              <div style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a1a1a", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🎯 {profile.name}님의 변화 — 전체 공개</div>
               <div style={{ padding: "16px 18px 20px" }}>
                 <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 800, margin: "0 0 6px" }}>{yc.category}</p>
                 <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px", borderBottom: "2px solid #fbbf24", paddingBottom: 8 }}>✨ {yc.title}</h3>
@@ -756,25 +784,12 @@ export default function V2Result() {
                     <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 600, lineHeight: 1.6, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
                   ))}
                 </div>
-                {locked ? (
-                  <>
-                    <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px", filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
-                      <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 990원 결제 시 공개</p>
-                      {yc.hidden2.split("\n").flatMap(splitLong).map((line, i) => (
-                        <p key={i} style={{ fontSize: 13, color: "#1a1a2e", fontWeight: 700, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
-                      ))}
-                    </div>
-                    <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 <span style={{ display: "inline-block", background: "#ec4899", color: "white", fontWeight: 900, fontStyle: "normal", padding: "2px 10px", borderRadius: 8, margin: "0 2px" }}>990원 결제</span> 시 모두 공개됩니다</p>
-                    <button onClick={() => router.push("/main-v2/payment?scrollTo=select")} style={{ width: "100%", marginTop: 14, padding: "13px 0", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>💎 {yc.category} 완벽 공략법 보기</button>
-                  </>
-                ) : (
-                  <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px" }}>
-                    <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 구체적인 변화 시점</p>
-                    {yc.hidden2.split("\n").flatMap(splitLong).map((line, i) => (
-                      <p key={i} style={{ fontSize: 13, color: "#1a1a2e", fontWeight: 700, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
-                    ))}
-                  </div>
-                )}
+                <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px" }}>
+                  <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 구체적인 변화 시점</p>
+                  {yc.hidden2.split("\n").flatMap(splitLong).map((line, i) => (
+                    <p key={i} style={{ fontSize: 13, color: "#1a1a2e", fontWeight: 700, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
+                  ))}
+                </div>
               </div>
             </div>
           );
