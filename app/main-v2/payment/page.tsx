@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { findDiscountCode, recordSettlement, type PartnerDiscountCode } from "@/lib/partnerTiers";
+import { findDiscountCode, recordSettlement, isMonthlyLimitReached, type PartnerDiscountCode } from "@/lib/partnerTiers";
 
 export default function Payment() {
   const router = useRouter();
@@ -18,6 +18,11 @@ export default function Payment() {
   const applyDiscountCode = () => {
     const found = findDiscountCode(discountInput);
     if (!found) { setDiscountError("유효하지 않은 할인코드입니다."); setAppliedDiscount(null); return; }
+    if (isMonthlyLimitReached(found)) {
+      setDiscountError("이 파트너의 이번 달 판매 한도가 모두 차서 코드를 사용할 수 없습니다. 다음 달에 다시 시도해주세요.");
+      setAppliedDiscount(null);
+      return;
+    }
     setAppliedDiscount(found);
     setDiscountError("");
   };

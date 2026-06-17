@@ -13,7 +13,7 @@ export interface PartnerTier {
 }
 
 export const PARTNER_TIERS: PartnerTier[] = [
-  { id: "free", name: "무료", annualFee: 0, monthlyLimit: 30, revenueSharePercent: 30 },
+  { id: "free", name: "무료", annualFee: 0, monthlyLimit: 50, revenueSharePercent: 30 },
   { id: "silver", name: "실버", annualFee: 150000, monthlyLimit: 150, revenueSharePercent: 40 },
   { id: "gold", name: "골드", annualFee: 350000, monthlyLimit: 300, revenueSharePercent: 45 },
   { id: "platinum", name: "플래티넘", annualFee: 1000000, monthlyLimit: 600, revenueSharePercent: 55 },
@@ -116,4 +116,20 @@ export function getSettlements(): SettlementRecord[] {
   } catch {
     return [];
   }
+}
+
+// 이번 달(현재 월) 기준 해당 파트너가 이미 몇 명에게 판매했는지
+export function getMonthlyUsageCount(partnerName: string): number {
+  const now = new Date();
+  return getSettlements().filter(r => {
+    const d = new Date(r.date);
+    return r.partnerName === partnerName && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  }).length;
+}
+
+// 이 할인코드(=파트너)가 이번 달 한도를 이미 다 썼는지
+export function isMonthlyLimitReached(discount: PartnerDiscountCode): boolean {
+  const tier = getPartnerTier(discount.tierId);
+  if (tier.monthlyLimit === null) return false;
+  return getMonthlyUsageCount(discount.partnerName) >= tier.monthlyLimit;
 }

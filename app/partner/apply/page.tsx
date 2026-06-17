@@ -8,10 +8,10 @@ export default function PartnerApply() {
   const [selectedTier, setSelectedTier] = useState("");
 
   const tiers = [
-    { name: "무료", fee: "₩0", month: "월 30명", revenue: "30%", value: "free" },
-    { name: "실버", fee: "₩150,000", month: "월 150명", revenue: "40%", value: "silver" },
-    { name: "골드", fee: "₩350,000", month: "월 300명", revenue: "45%", value: "gold" },
-    { name: "플래티넘", fee: "₩1,000,000", month: "월 600명", revenue: "55%", value: "platinum" },
+    { name: "무료", fee: "₩0", month: "월 50명(연 최대 600명)", revenue: "30%", value: "free" },
+    { name: "실버", fee: "₩150,000", month: "월 150명(연 최대 1,800명)", revenue: "40%", value: "silver" },
+    { name: "골드", fee: "₩350,000", month: "월 300명(연 최대 3,600명)", revenue: "45%", value: "gold" },
+    { name: "플래티넘", fee: "₩1,000,000", month: "월 600명(연 최대 7,200명)", revenue: "55%", value: "platinum" },
     { name: "다이아", fee: "₩2,000,000", month: "무제한", revenue: "70%", value: "diamond" }
   ];
 
