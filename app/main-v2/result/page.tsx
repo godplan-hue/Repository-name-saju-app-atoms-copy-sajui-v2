@@ -426,19 +426,31 @@ export default function V2Result() {
       if (tier === "package" && canvases.length > 1) {
         const pkgCats = (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]);
         const summary = canvases[0];
+        const failedLabels: string[] = [];
         canvases.slice(1).forEach((c, i) => {
           const label = pkgCats[i]?.label ?? `사주${i + 1}`;
-          // 요약 카드 + 해당 카테고리 카드를 위아래로 이어붙인 새 캔버스를 만들어 저장
-          const merged = document.createElement("canvas");
-          merged.width = Math.max(summary.width, c.width);
-          merged.height = summary.height + 16 + c.height;
-          const ctx = merged.getContext("2d")!;
-          ctx.fillStyle = "#fdf6e3";
-          ctx.fillRect(0, 0, merged.width, merged.height);
-          ctx.drawImage(summary, 0, 0);
-          ctx.drawImage(c, 0, summary.height + 16);
-          downloadCanvas(merged, i, canvases.length - 1, label);
+          try {
+            // 요약 카드 + 해당 카테고리 카드를 위아래로 이어붙인 새 캔버스를 만들어 저장.
+            // 특정 카테고리(예: 건강운) 내용이 유난히 길면 합친 높이가 브라우저 캔버스
+            // 한계를 넘어 조용히 실패(빈 이미지/다운로드 누락)할 수 있어서, 한계를
+            // 넘으면 비율을 유지한 채 줄여서라도 안전하게 저장되도록 함
+            const rawHeight = summary.height + 16 + c.height;
+            const scale = rawHeight > MAX_CANVAS_HEIGHT ? MAX_CANVAS_HEIGHT / rawHeight : 1;
+            const merged = document.createElement("canvas");
+            merged.width = Math.round(Math.max(summary.width, c.width) * scale);
+            merged.height = Math.round(rawHeight * scale);
+            const ctx = merged.getContext("2d")!;
+            ctx.fillStyle = "#fdf6e3";
+            ctx.fillRect(0, 0, merged.width, merged.height);
+            ctx.drawImage(summary, 0, 0, summary.width * scale, summary.height * scale);
+            ctx.drawImage(c, 0, (summary.height + 16) * scale, c.width * scale, c.height * scale);
+            downloadCanvas(merged, i, canvases.length - 1, label);
+          } catch (e) {
+            console.error(`이미지 저장 실패(${label}):`, e);
+            failedLabels.push(label);
+          }
         });
+        if (failedLabels.length > 0) alert(`다음 항목은 이미지 저장에 실패했습니다: ${failedLabels.join(", ")}`);
         return;
       }
 
