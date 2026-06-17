@@ -29,9 +29,16 @@ export default function PaidInfoInput() {
     setPartnerBirthHour("unknown");
     setPartnerBirthMinute("unknown");
 
-    // 한 번 입력한 본인 정보(이름/생년월일)는 localStorage에 저장돼 있으면
-    // 그대로 채워줌 — 결제할 때마다 똑같은 정보를 다시 입력하는 불편을 줄임.
-    // 이 페이지의 월/일 select는 0패딩 없는 값("5")을 쓰므로 숫자로 변환해서 채움
+    // 한 번 입력한 본인 정보는 localStorage에 저장돼 있으면 전부 채워줌 — 결제할
+    // 때마다 똑같은 정보를 다시 입력하는 불편을 줄이고 "다음"만 누르면 되게 함.
+    // 이 페이지의 월/일 select는 0패딩 없는 값("5")을 쓰므로 숫자로 변환해서 채움.
+    // 태어난시는 main-v2/profile이 전통 12간지 체계("00"=자시 등)를 쓰고 이
+    // 페이지는 0~23시 체계를 써서 형식이 달라, 각 간지의 시작 시각으로 변환함
+    // (분은 profile 쪼에 저장된 게 없어서 채울 수 없음 — "모름" 유지)
+    const HOUR_PERIOD_TO_24H: Record<string, string> = {
+      "00": "23", "01": "1", "02": "3", "03": "5", "04": "7", "05": "9",
+      "06": "11", "07": "13", "08": "15", "09": "17", "10": "19", "11": "21",
+    };
     const saved = localStorage.getItem("v2_saved_profile");
     if (saved) {
       try {
@@ -40,6 +47,7 @@ export default function PaidInfoInput() {
         setBirthYear(p.birthYear ?? "");
         setBirthMonth(p.birthMonth ? String(Number(p.birthMonth)) : "");
         setBirthDay(p.birthDay ? String(Number(p.birthDay)) : "");
+        setBirthHour(p.birthHour && HOUR_PERIOD_TO_24H[p.birthHour] ? HOUR_PERIOD_TO_24H[p.birthHour] : "unknown");
         return;
       } catch {}
     }
