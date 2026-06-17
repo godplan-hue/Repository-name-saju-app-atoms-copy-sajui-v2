@@ -715,6 +715,16 @@ export default function V2Result() {
           const consumedKey = `${interestKey}_consumed`;
 
           if (locked) {
+            // 오늘 이미 결제로 전체공개를 받은 적이 있으면, 무료 쪽에서 또 칩을 고르고
+            // 결제해도 더 안 보여줄 거라서 — 헷갈리지 않게 칩/결제유도 대신 안내만 보여줌
+            const alreadyConsumedToday = typeof window !== "undefined" && localStorage.getItem(consumedKey) === "1";
+            if (alreadyConsumedToday) {
+              return (
+                <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden", padding: "18px", textAlign: "center" }}>
+                  <p style={{ fontSize: 13, fontWeight: 800, color: "#9ca3af", margin: 0 }}>🎁 오늘의 "당신의 변화"는 이미 받으셨어요<br />내일 다시 만나요!</p>
+                </div>
+              );
+            }
             const directInterest = changeInterest;
             if (!directInterest) {
               return (
