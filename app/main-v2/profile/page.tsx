@@ -31,6 +31,14 @@ const HOURS = [
   { label: "모름", value: "unknown", time: "모르는 경우" },
 ];
 
+// 개인정보 보유 기간 3년 — 동의한 지 3년이 지나면 자동 건너뛰기를 멈추고 동의를 다시 받음
+const PRIVACY_AGREEMENT_VALID_MS = 3 * 365 * 24 * 60 * 60 * 1000;
+function isPrivacyAgreementValid(): boolean {
+  if (localStorage.getItem("v2_privacy_agreed") !== "1") return false;
+  const agreedAt = Number(localStorage.getItem("v2_privacy_agreed_at") ?? "0");
+  return agreedAt > 0 && Date.now() - agreedAt < PRIVACY_AGREEMENT_VALID_MS;
+}
+
 const inp: React.CSSProperties = {
   width: "100%", padding: "13px 14px", borderRadius: 12,
   border: "1.5px solid rgba(236,72,153,0.25)", fontSize: 15,
@@ -65,19 +73,20 @@ export default function V2Profile() {
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("v2_privacy_agreed") === "1") setAgreed(true);
+    if (isPrivacyAgreementValid()) setAgreed(true);
   }, []);
 
   useEffect(() => {
     // 한 번 입력한 본인 정보는 localStorage에 저장해두고, 그 다음부터는 이 입력
     // 화면 자체를 영구적으로 건너뛰고 곧바로 분석으로 넘어감 — 오늘이든 내일이든
-    // 평생 다시 묻지 않음. 다른 사람으로 보려면 로그아웃해서 정보를 지워야 함
+    // 평생 다시 묻지 않음. 다른 사람으로 보려면 로그아웃해서 정보를 지워야 함.
+    // 다만 개인정보 동의는 3년 보유기간이 지나면 만료시켜 다시 동의를 받음
     const saved = localStorage.getItem("v2_saved_profile");
     if (saved) {
       try {
         const p = JSON.parse(saved);
         const complete = p.name && p.birthYear && p.birthMonth && p.birthDay && p.gender && p.birthHour;
-        if (complete) {
+        if (complete && isPrivacyAgreementValid()) {
           setRedirecting(true);
           sessionStorage.setItem("v2_profile", JSON.stringify({
             name: p.name, relationship: "나",
@@ -250,7 +259,11 @@ export default function V2Profile() {
                 </div>
                 <label style={{ display: "flex", alignItems: "center", gap: 9, cursor: "pointer" }}>
                   <input
-                    type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); localStorage.setItem("v2_privacy_agreed", e.target.checked ? "1" : "0"); }}
+                    type="checkbox" checked={agreed} onChange={e => {
+                      setAgreed(e.target.checked);
+                      localStorage.setItem("v2_privacy_agreed", e.target.checked ? "1" : "0");
+                      if (e.target.checked) localStorage.setItem("v2_privacy_agreed_at", String(Date.now()));
+                    }}
                     style={{ width: 18, height: 18, accentColor: "#ec4899", cursor: "pointer", flexShrink: 0 }}
                   />
                   <span style={{ fontSize: 13, fontWeight: 800, color: agreed ? "#ec4899" : "#374151" }}>
