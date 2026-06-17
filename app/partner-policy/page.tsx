@@ -30,12 +30,13 @@ export default function PartnerPolicy() {
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>2. 등급별 혜택</h2>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
-              <li>• 무료: 연회비 ₩0 / 월 20명 한도 / 수익 20%</li>
-              <li>• 실버: 연회비 ₩150,000 / 월 100명 한도 / 수익 30%</li>
-              <li>• 골드: 연회비 ₩350,000 / 월 200명 한도 / 수익 40%</li>
-              <li>• 플래: 연회비 ₩1,000,000 / 월 400명 한도 / 수익 45%</li>
-              <li>• 다이아: 연회비 ₩2,000,000 / 무제한 / 수익 50%</li>
+              <li>• 무료: 연회비 ₩0 / 월 30명 한도 / 수익 30%</li>
+              <li>• 실버: 연회비 ₩150,000 / 월 150명 한도 / 수익 40%</li>
+              <li>• 골드: 연회비 ₩350,000 / 월 300명 한도 / 수익 45%</li>
+              <li>• 플래티넘: 연회비 ₩1,000,000 / 월 600명 한도 / 수익 55%</li>
+              <li>• 다이아: 연회비 ₩2,000,000 / 무제한 / 수익 70%</li>
             </ul>
+            <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 0 }}>※ 수익률은 결제금액에서 카드(PG) 수수료와 부가세를 차감한 순수익 기준입니다.</p>
           </section>
 
           {/* 3. 수수료율 */}

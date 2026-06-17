@@ -1,10 +1,13 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getSettlements, type SettlementRecord } from "@/lib/partnerTiers";
 export default function AdminSettlement() {
   const router = useRouter();
+  const [records, setRecords] = useState<SettlementRecord[]>([]);
   useEffect(() => {
     if (!localStorage.getItem("adminId")) router.push("/admin/login");
+    setRecords(getSettlements());
   }, [router]);
   const handleLogout = () => {
     localStorage.removeItem("adminId");
@@ -31,22 +34,28 @@ export default function AdminSettlement() {
             <thead>
               <tr style={{ borderBottom: "2px solid #ddd" }}>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>파트너</th>
-                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>월</th>
-                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>매출</th>
-                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>수수료</th>
-                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>정산액</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>일시</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>결제금액</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>수수료+부가세</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>파트너 정산액</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>상태</th>
               </tr>
             </thead>
             <tbody>
-              <tr style={{ borderBottom: "1px solid #eee" }}>
-                <td style={{ padding: "12px", color: "#666" }}>테스트파트너</td>
-                <td style={{ padding: "12px", color: "#666" }}>2026.06</td>
-                <td style={{ padding: "12px", color: "#666" }}>₩0</td>
-                <td style={{ padding: "12px", color: "#666" }}>₩0</td>
-                <td style={{ padding: "12px", color: "#666" }}>₩0</td>
-                <td style={{ padding: "12px", color: "#666" }}>대기중</td>
-              </tr>
+              {records.length === 0 ? (
+                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 할인코드로 결제된 내역이 없습니다.</td></tr>
+              ) : (
+                records.map(r => (
+                  <tr key={r.id} style={{ borderBottom: "1px solid #eee" }}>
+                    <td style={{ padding: "12px", color: "#666" }}>{r.partnerName}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{new Date(r.date).toLocaleString("ko-KR")}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>₩{r.grossAmount.toLocaleString()}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>₩{(r.pgFee + r.vat).toLocaleString()}</td>
+                    <td style={{ padding: "12px", color: "#666", fontWeight: 700 }}>₩{r.partnerShare.toLocaleString()}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>대기중(매월 25일 정산)</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -11,10 +11,10 @@ export default function PaymentPartner() {
   const [showRefund, setShowRefund] = useState(false);
 
   const tierInfo: { [key: string]: { name: string; fee: number; month: string; revenue: string } } = {
-    silver: { name: "실버", fee: 150000, month: "월 100명", revenue: "30%" },
-    gold: { name: "골드", fee: 350000, month: "월 200명", revenue: "40%" },
-    platinum: { name: "플래티넘", fee: 1000000, month: "월 400명", revenue: "45%" },
-    diamond: { name: "다이아", fee: 2000000, month: "무제한", revenue: "50%" }
+    silver: { name: "실버", fee: 150000, month: "월 150명", revenue: "40%" },
+    gold: { name: "골드", fee: 350000, month: "월 300명", revenue: "45%" },
+    platinum: { name: "플래티넘", fee: 1000000, month: "월 600명", revenue: "55%" },
+    diamond: { name: "다이아", fee: 2000000, month: "무제한", revenue: "70%" }
   };
 
   const info = tierInfo[tier] || tierInfo.silver;

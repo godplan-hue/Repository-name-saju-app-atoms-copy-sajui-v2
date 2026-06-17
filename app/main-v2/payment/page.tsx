@@ -2,12 +2,32 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { findDiscountCode, recordSettlement, type PartnerDiscountCode } from "@/lib/partnerTiers";
 
 export default function Payment() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedPackage, setSelectedPackage] = useState("기본 분석");
   const [selectedFeatures, setSelectedFeatures] = useState(["yearlyLuck", "monthlyLuck"]);
+  // 파트너 할인코드 — 입력해서 적용하면 결제금액에 할인이 들어가고, 결제 시
+  // 수수료·부가세 뗀 정산액이 자동으로 계산·기록됨(지급은 매월 한 번 모아서)
+  const [discountInput, setDiscountInput] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState<PartnerDiscountCode | null>(null);
+  const [discountError, setDiscountError] = useState("");
+
+  const applyDiscountCode = () => {
+    const found = findDiscountCode(discountInput);
+    if (!found) { setDiscountError("유효하지 않은 할인코드입니다."); setAppliedDiscount(null); return; }
+    setAppliedDiscount(found);
+    setDiscountError("");
+  };
+
+  const finalPrice = (originalPrice: number) => {
+    if (!appliedDiscount) return originalPrice;
+    const discounted = Math.round(originalPrice * (1 - appliedDiscount.discountPercent / 100));
+    recordSettlement(appliedDiscount, originalPrice);
+    return discounted;
+  };
   const SELECT_CATS = [
     { key: "💰 재물운", icon: "💰" },
     { key: "💕 연애운", icon: "💕" },
@@ -109,8 +129,10 @@ export default function Payment() {
 
       const currentPackage = packages.find(p => p.name === selectedPackage);
       const pages = currentPackage?.pages || 30;
+      const originalPrice = Number((currentPackage?.price ?? "0").replace(/[^0-9]/g, ""));
+      const paidPrice = finalPrice(originalPrice); // 할인 적용 + 정산 자동 계산/기록
 
-      router.push(`/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${pages}`);
+      router.push(`/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${pages}&paid=${paidPrice}`);
     } catch (error) {
       alert("결제 처리 중 오류가 발생했습니다.");
       console.error(error);
@@ -155,12 +177,39 @@ export default function Payment() {
           <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&amp;보관함 포함</p>
         </div>
 
+        {/* 파트너 할인코드 */}
+        <div style={{ maxWidth: 480, margin: "0 auto 30px" }}>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input
+              value={discountInput}
+              onChange={e => setDiscountInput(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && applyDiscountCode()}
+              placeholder="🎟️ 파트너 할인코드 입력(선택)"
+              style={{ flex: 1, padding: "10px 14px", borderRadius: 10, border: "1px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 13, fontWeight: 700, outline: "none" }}
+            />
+            <button onClick={applyDiscountCode} style={{ padding: "10px 18px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a0f2e", fontWeight: 900, fontSize: 13, cursor: "pointer" }}>적용</button>
+          </div>
+          {appliedDiscount && (
+            <p style={{ color: "#90EE90", fontSize: 12, fontWeight: 800, marginTop: 8, marginBottom: 0 }}>✅ {appliedDiscount.discountPercent}% 할인 적용됨 ({appliedDiscount.partnerName} 파트너 코드)</p>
+          )}
+          {discountError && (
+            <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, marginTop: 8, marginBottom: 0 }}>{discountError}</p>
+          )}
+        </div>
+
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => (
             <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: selectedPackage === pkg.name ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))" : "rgba(139,92,246,0.16)", backdropFilter: "blur(10px)", border: selectedPackage === pkg.name ? "2px solid #fbbf24" : "1px solid rgba(196,181,253,0.45)", borderRadius: 14, padding: 20, cursor: "pointer", transition: "all 0.3s", boxShadow: selectedPackage === pkg.name ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
               <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
               <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, margin: "0 0 8px 0", opacity: 0.85 }}>【심층 상세 분석】</p>
-              <p style={{ color: "#ffffff", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.price}</p>
+              {appliedDiscount ? (
+                <p style={{ margin: "0 0 10px 0" }}>
+                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: 700, textDecoration: "line-through", marginRight: 8 }}>{pkg.price}</span>
+                  <span style={{ color: "#90EE90", fontSize: 24, fontWeight: 900 }}>₩{Math.round(Number(pkg.price.replace(/[^0-9]/g, "")) * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}</span>
+                </p>
+              ) : (
+                <p style={{ color: "#ffffff", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.price}</p>
+              )}
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 10px 0", lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: pkg.desc }} />
               <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: "0 0 6px 0" }}>🎯 {pkg.count}개 운세</p>
               <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 700, margin: 0 }}>📄 {(pkg as any).chars}</p>
@@ -254,12 +303,14 @@ export default function Payment() {
               // (이게 없으면 결과 페이지가 기본값으로 5개 전부를 보여주는 버그가 생김)
               sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
               const pkgName = selectedCats.map(c => c.replace(/\S+\s/, "")).join("+");
-              router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${selectedCats.length * 30}`);
+              const originalPrice = selectedCats.length * 990;
+              const paidPrice = finalPrice(originalPrice); // 할인 적용 + 정산 자동 계산/기록
+              router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${selectedCats.length * 30}&paid=${paidPrice}`);
             }}
             disabled={selectedCats.length === 0}
             style={{ width: "100%", marginTop: 18, padding: "15px 0", background: selectedCats.length > 0 ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(255,255,255,0.1)", color: selectedCats.length > 0 ? "#1a0f2e" : "rgba(255,255,255,0.4)", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: selectedCats.length > 0 ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 ? "0 6px 22px rgba(251,191,36,0.35)" : "none", letterSpacing: "-0.2px" }}
           >
-            {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 결제하기 · ₩${(selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
+            {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 결제하기 · ₩${(appliedDiscount ? Math.round(selectedCats.length * 990 * (1 - appliedDiscount.discountPercent / 100)) : selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
           </button>
         </div>
 
