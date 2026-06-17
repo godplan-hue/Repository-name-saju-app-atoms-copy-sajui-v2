@@ -197,7 +197,7 @@ const BANNERS = [
 ];
 
 const FORTUNE_CATEGORIES = [
-  { id: "yearly", title: "올해 운세", emoji: "🎍", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777" },
+  { id: "yearly", title: "올해 운세", emoji: "🎍", img: "https://i.pinimg.com/736x/31/38/d3/3138d37b753299b5f3dbed30e9f2b668.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777" },
   { id: "monthly", title: "월별 운세", emoji: "📆", img: "https://i.pinimg.com/736x/26/b0/8e/26b08e17fba8ae7d44a34a2633dc05b4.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#6d28d9" },
   { id: "wealth", title: "재물운", emoji: "💰", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309" },
   { id: "love", title: "연애운", emoji: "💕", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d" },
