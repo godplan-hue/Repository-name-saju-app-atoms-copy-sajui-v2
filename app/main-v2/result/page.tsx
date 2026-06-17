@@ -699,11 +699,11 @@ export default function V2Result() {
         {(tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
           const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
-          // localStorage 키를 histId로 구분해서 저장 — 같은 분석(인라인 결제 후 reload처럼
-          // histId가 그대로 유지되는 경우)은 골랐던 칩을 그대로 이어받아 다시 안 물어보고,
-          // 완전히 새로운 분석(결제 직행으로 새 정보 입력 등 histId가 새로 생기는 경우)은
-          // 예전 값과 무관하게 매번 칩을 다시 보여줌
-          const interestKey = `v2_change_interest_${result?.histId ?? ""}`;
+          // 결제(990원 선택/패키지 모두 paid-info-input에서 정보를 새로 입력하면서
+          // histId가 매번 새로 생기기 때문에, histId로 값을 구분하면 무료 때 고른 관심사가
+          // 결제 후에 절대 이어지지 않는 문제가 있었음 — 같은 브라우저의 구매 흐름 전체에서
+          // 선택값이 이어지도록 전역 키로 저장. 무료 화면은 그래도 항상 칩을 먼저 보여줌(위 locked 분기)
+          const interestKey = "v2_change_interest";
           const savedInterest = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
           const directInterest = locked
             ? changeInterest
