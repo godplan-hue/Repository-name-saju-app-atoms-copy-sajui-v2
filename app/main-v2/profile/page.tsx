@@ -57,7 +57,13 @@ export default function V2Profile() {
     gender: "", birthHour: "",
     phone: "", email: "",
   });
+  // 개인정보 동의도 한 번 체크하면 localStorage에 저장해 다음 방문 때 그대로
+  // 체크된 상태로 시작 — 매번 다시 동의 체크를 해야 하는 불편을 줄임
   const [agreed, setAgreed] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("v2_privacy_agreed") === "1") setAgreed(true);
+  }, []);
 
   useEffect(() => {
     // 한 번 입력한 본인 정보는 localStorage에 저장해두고 다음 방문 때 그대로
@@ -234,7 +240,7 @@ export default function V2Profile() {
                 </div>
                 <label style={{ display: "flex", alignItems: "center", gap: 9, cursor: "pointer" }}>
                   <input
-                    type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
+                    type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); localStorage.setItem("v2_privacy_agreed", e.target.checked ? "1" : "0"); }}
                     style={{ width: 18, height: 18, accentColor: "#ec4899", cursor: "pointer", flexShrink: 0 }}
                   />
                   <span style={{ fontSize: 13, fontWeight: 800, color: agreed ? "#ec4899" : "#374151" }}>
