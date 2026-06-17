@@ -39,9 +39,9 @@ const inp: React.CSSProperties = {
   color: "#1a1a2e", background: "white",
 };
 
+// 이름은 로그인 화면(/main-v2/login)에서 이미 받기 때문에 여기서 다시 묻지 않음
 const STEPS = [
   { icon: "🙋", title: "누구의 운세를 볼까요?", hint: "" },
-  { icon: "📝", title: "이름을 알려주세요", hint: "" },
   { icon: "🎂", title: "생년월일을 입력해주세요", hint: "" },
   { icon: "👤", title: "성별을 선택해주세요", hint: "" },
   { icon: "🕐", title: "태어난 시를 선택해주세요", hint: "모르시면 '모름'을 선택해도 됩니다" },
@@ -91,7 +91,7 @@ export default function V2Profile() {
       setForm(p => ({ ...p, name: n }));
   }, []);
 
-  const TOTAL = 6;
+  const TOTAL = 5;
   const progress = (step / TOTAL) * 100;
   const cur = STEPS[step - 1];
 
@@ -107,11 +107,10 @@ export default function V2Profile() {
   const next = () => {
     const ok: Record<number, boolean> = {
       1: !!form.relationship,
-      2: !!form.name.trim(),
-      3: !!(form.birthYear && form.birthMonth && form.birthDay),
-      4: !!form.gender,
-      5: !!form.birthHour,
-      6: true, // 선택 입력
+      2: !!(form.birthYear && form.birthMonth && form.birthDay),
+      3: !!form.gender,
+      4: !!form.birthHour,
+      5: true, // 선택 입력
     };
     if (!ok[step]) { alert("정보를 입력해주세요"); return; }
     if (step < TOTAL) { setStep(s => s + 1); return; }
@@ -159,14 +158,6 @@ export default function V2Profile() {
           )}
 
           {step === 2 && (
-            <input autoFocus type="text" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-              onKeyDown={e => e.key === "Enter" && next()}
-              placeholder="홍길동" style={inp}
-              onFocus={e => (e.currentTarget.style.borderColor = "#ec4899")}
-              onBlur={e => (e.currentTarget.style.borderColor = "rgba(236,72,153,0.25)")} />
-          )}
-
-          {step === 3 && (
             <div>
               <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 8 }}>
                 <input type="number" value={form.birthYear} onChange={e => setForm(p => ({ ...p, birthYear: e.target.value }))}
@@ -183,7 +174,7 @@ export default function V2Profile() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 3 && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               {[{ v: "남", label: "🧑 남성" }, { v: "여", label: "👩 여성" }].map(g => (
                 <button key={g.v} onClick={() => setForm(p => ({ ...p, gender: g.v }))}
@@ -194,7 +185,7 @@ export default function V2Profile() {
             </div>
           )}
 
-          {step === 5 && (
+          {step === 4 && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7, maxHeight: 330, overflowY: "auto" }}>
               {HOURS.map(h => (
                 <button key={h.value} onClick={() => setForm(p => ({ ...p, birthHour: h.value }))}
@@ -206,7 +197,7 @@ export default function V2Profile() {
             </div>
           )}
 
-          {step === 6 && (
+          {step === 5 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <input
                 autoFocus type="tel" value={form.phone}
@@ -258,7 +249,7 @@ export default function V2Profile() {
             </div>
           )}
 
-          {step < 6 && (
+          {step < TOTAL && (
             <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: step > 1 ? "1fr 2fr" : "1fr", gap: 10 }}>
               {step > 1 && (
                 <button onClick={() => setStep(s => s - 1)} style={{ padding: "14px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>← 이전</button>
