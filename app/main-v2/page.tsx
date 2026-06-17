@@ -199,7 +199,7 @@ const BANNERS = [
 const FORTUNE_CATEGORIES = [
   { id: "yearly", title: "올해 운세", emoji: "🎍", img: "https://i.pinimg.com/736x/48/bf/19/48bf198b7a648cf4032cde8a501d8606.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777" },
   { id: "monthly", title: "월별 운세", emoji: "📆", img: "https://i.pinimg.com/736x/26/b0/8e/26b08e17fba8ae7d44a34a2633dc05b4.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#6d28d9" },
-  { id: "wealth", title: "재물운", emoji: "💰", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309" },
+  { id: "wealth", title: "재물운", emoji: "💰", img: "https://i.pinimg.com/736x/70/1e/77/701e778983540ac65d3049ed0ef2c51e.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309" },
   { id: "love", title: "연애운", emoji: "💕", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d" },
   { id: "health", title: "건강운", emoji: "🍀", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a" },
   { id: "compatibility", title: "궁합분석", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8" },
