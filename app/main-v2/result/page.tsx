@@ -799,6 +799,18 @@ export default function V2Result() {
           );
         })()}
 
+        {/* 임시 디버그 표시 — 확인 끝나면 삭제 예정 */}
+        {profile?.name && profile?.birthYear && (() => {
+          const key = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${new Date().toDateString()}`;
+          const val = typeof window !== "undefined" ? localStorage.getItem(key) : null;
+          const consumed = typeof window !== "undefined" ? localStorage.getItem(`${key}_consumed`) : null;
+          return (
+            <div style={{ background: "#fef3c7", padding: "8px 14px", fontSize: 11, color: "#92400e", wordBreak: "break-all", marginBottom: 12, borderRadius: 8 }}>
+              디버그 — tier:{tier} / 이름:{profile.name} / 생일:{profile.birthYear}-{profile.birthMonth}-{profile.birthDay} / 키:{key} / 저장된값:{val ?? "없음"} / consumed:{consumed ?? "없음"}
+            </div>
+          );
+        })()}
+
         {/* ── 990원: 선택한 5개 운세 ── */}
         {tier === "select" && Object.keys(allAnalyses).length > 0 && (
           ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map((c, i) => (
