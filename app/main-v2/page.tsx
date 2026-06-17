@@ -374,12 +374,16 @@ export default function MainV2() {
       <BannerSlider onStart={route => router.push(route === "package" ? "/main-v2/payment" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
 
       {/* 운세 선택 — 8개 박스 그리드
-          고관심·고가치(재물운/연애운/전체사주분석/궁합분석/이름분석)는 패키지(9,900원+) 결제로,
-          가벼운 입문용(올해운세/월별운세/건강운)은 무료 체험으로 유도해 전환율을 분리함 */}
+          가벼운 입문용(올해운세/월별운세/건강운)은 무료 체험으로,
+          재물운/연애운은 990원 단품 결제(배너의 9,900원 패키지와 가격대를 분리해
+          단계적 전환을 유도), 나머지 고가치(전체사주분석/궁합분석/이름분석)는
+          패키지(9,900원+) 결제로 보냄 */}
       <FortuneGrid onPick={id => {
         sessionStorage.setItem("selectedFortune", id);
         const FREE_ROUTE_IDS = new Set(["yearly", "monthly", "health"]);
+        const SELECT_ROUTE_IDS = new Set(["wealth", "love"]);
         if (FREE_ROUTE_IDS.has(id)) router.push(user ? "/main-v2/profile" : "/main-v2/login");
+        else if (SELECT_ROUTE_IDS.has(id)) router.push("/main-v2/payment?scrollTo=select");
         else router.push("/main-v2/payment");
       }} />
 
