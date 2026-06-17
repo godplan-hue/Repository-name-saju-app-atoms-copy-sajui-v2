@@ -197,14 +197,14 @@ const BANNERS = [
 ];
 
 const FORTUNE_CATEGORIES = [
-  { id: "saju", title: "사주", desc: "오늘의 사주만 무료 확인", emoji: "🐱", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777" },
-  { id: "compatibility", title: "궁합", desc: "두 사람 궁합 점수 확인", emoji: "💑", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d" },
-  { id: "daewoon", title: "대운", desc: "내 인생 일대 흐름 확인", emoji: "🌊", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8" },
-  { id: "taekil", title: "택일", desc: "결혼·이사 좋은 날 잡기", emoji: "📅", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309" },
-  { id: "yearly", title: "연도별 운세", desc: "연도별 길흉운 확인", emoji: "📈", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#6d28d9" },
-  { id: "naming", title: "작명", desc: "이름 풀이 & 작명 상담", emoji: "✍️", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490" },
-  { id: "daily", title: "일일운세", desc: "오늘의 운세 무료 확인", emoji: "🔮", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d" },
-  { id: "ask", title: "무엇이든 물어보세요", desc: "AI 사주 상담 1:1 질문", emoji: "🐑", bg: "linear-gradient(145deg, #f3f4f6, #e5e7eb)", accent: "#374151" },
+  { id: "yearly", title: "올해 운세", emoji: "🎍", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777" },
+  { id: "monthly", title: "월별 운세", emoji: "📆", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#6d28d9" },
+  { id: "wealth", title: "재물운", emoji: "💰", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309" },
+  { id: "love", title: "연애운", emoji: "💕", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d" },
+  { id: "health", title: "건강운", emoji: "🍀", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a" },
+  { id: "compatibility", title: "궁합분석", emoji: "💑", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8" },
+  { id: "naming", title: "이름분석", emoji: "✍️", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490" },
+  { id: "full", title: "전체 사주분석", emoji: "🔮", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d" },
 ];
 
 function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
@@ -212,26 +212,20 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
     <section style={{ padding: "0 14px 28px" }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
         <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 12px", textAlign: "center" }}>운세 선택</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 150px)", justifyContent: "center", gap: 12 }}>
           {FORTUNE_CATEGORIES.map(cat => (
             <div
               key={cat.id}
               onClick={() => onPick(cat.id)}
               style={{
-                background: cat.bg, borderRadius: 20, padding: "16px 14px", cursor: "pointer",
-                position: "relative", overflow: "hidden", minHeight: 140,
-                display: "flex", flexDirection: "column", justifyContent: "space-between",
+                width: 150, height: 150,
+                background: cat.bg, borderRadius: 20, cursor: "pointer",
+                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                 boxShadow: `0 3px 14px ${cat.accent}1f`,
               }}
             >
-              <div>
-                <div style={{ fontSize: 28, marginBottom: 6 }}>{cat.emoji}</div>
-                <div style={{ fontSize: 19, fontWeight: 900, color: cat.accent, marginBottom: 4, lineHeight: 1.2 }}>{cat.title}</div>
-                <div style={{ fontSize: 11, color: "#6b7280", fontWeight: 600 }}>{cat.desc}</div>
-              </div>
-              <span style={{ alignSelf: "flex-end", fontSize: 10, fontWeight: 800, background: cat.accent, color: "white", padding: "4px 10px", borderRadius: 20, marginTop: 8 }}>
-                보러가기 →
-              </span>
+              <div style={{ fontSize: 36, marginBottom: 8 }}>{cat.emoji}</div>
+              <div style={{ fontSize: 15, fontWeight: 900, color: cat.accent, textAlign: "center" }}>{cat.title}</div>
             </div>
           ))}
         </div>
@@ -348,7 +342,7 @@ export default function MainV2() {
       <BannerSlider onStart={() => router.push(user ? "/main-v2/analysis" : "/main-v2/login")} />
 
       {/* 운세 선택 — 8개 박스 그리드 */}
-      <FortuneGrid onPick={id => router.push(`/main-v2/profile?course=${id}`)} />
+      <FortuneGrid onPick={id => { sessionStorage.setItem("selectedFortune", id); router.push("/main-v2/payment"); }} />
 
       {/* 히어로 */}
       <section style={{ padding: "24px 16px 0", textAlign: "center" }}>
