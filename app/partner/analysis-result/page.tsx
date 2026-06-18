@@ -12,6 +12,7 @@ export default function PartnerAnalysisResult() {
   const [isMobile, setIsMobile] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentTab, setCurrentTab] = useState("name");
+  const [isFreeTier, setIsFreeTier] = useState(false);
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -28,6 +29,8 @@ export default function PartnerAnalysisResult() {
     setAnalysisResults(JSON.parse(result));
     setCustomerName(name || "고객");
     setPackageType(pkg || "기본 분석");
+    // 무료등급 파트너는 이미지(PDF) 다운로드 불가 — 유료등급부터 가능
+    setIsFreeTier((localStorage.getItem("partnerTier") || "free") === "free");
   }, [router]);
 
   const tabs = [
@@ -42,7 +45,7 @@ export default function PartnerAnalysisResult() {
   ];
 
   const handleDownloadPDF = async () => {
-    if (!analysisResults) return;
+    if (!analysisResults || isFreeTier) return;
 
     setIsGenerating(true);
 
@@ -249,23 +252,32 @@ export default function PartnerAnalysisResult() {
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-              <button
-                onClick={handleDownloadPDF}
-                disabled={isGenerating}
-                style={{
-                  padding: "16px",
-                  background: isGenerating ? "#ccc" : "linear-gradient(135deg, #ff1493, #ff69b4)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "10px",
-                  fontWeight: 900,
-                  fontSize: "15px",
-                  cursor: isGenerating ? "not-allowed" : "pointer",
-                  opacity: isGenerating ? 0.6 : 1,
-                }}
-              >
-                📄 {isGenerating ? "생성 중..." : "PDF 다운로드"}
-              </button>
+              {isFreeTier ? (
+                <button
+                  onClick={() => alert("PDF/이미지 다운로드는 유료 등급(실버 이상)부터 가능합니다. 등급 업그레이드 후 이용해주세요.")}
+                  style={{ padding: "16px", background: "#ccc", color: "#666", border: "none", borderRadius: "10px", fontWeight: 900, fontSize: "15px", cursor: "pointer" }}
+                >
+                  🔒 PDF 다운로드(유료 등급)
+                </button>
+              ) : (
+                <button
+                  onClick={handleDownloadPDF}
+                  disabled={isGenerating}
+                  style={{
+                    padding: "16px",
+                    background: isGenerating ? "#ccc" : "linear-gradient(135deg, #ff1493, #ff69b4)",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "10px",
+                    fontWeight: 900,
+                    fontSize: "15px",
+                    cursor: isGenerating ? "not-allowed" : "pointer",
+                    opacity: isGenerating ? 0.6 : 1,
+                  }}
+                >
+                  📄 {isGenerating ? "생성 중..." : "PDF 다운로드"}
+                </button>
+              )}
 
               <button
                 onClick={() => router.push("/partner/create-analysis")}
