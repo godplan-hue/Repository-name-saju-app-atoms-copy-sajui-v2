@@ -219,7 +219,7 @@ export default function PartnerLogin() {
               marginBottom: 0,
             }}
           >
-            테스트 계정: test@partner.com / 1234
+            아직 계정이 없으신가요? <a href="/partner/apply" style={{ color: "#667eea", fontWeight: 700 }}>파트너 가입하기</a>
           </p>
         </div>
       </main>
