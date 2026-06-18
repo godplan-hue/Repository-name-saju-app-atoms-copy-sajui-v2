@@ -19,6 +19,23 @@ export default function PaymentPartner() {
 
   const info = tierInfo[tier] || tierInfo.silver;
 
+  const [discountInput, setDiscountInput] = useState("");
+  const [discountPercent, setDiscountPercent] = useState(0);
+  const [discountError, setDiscountError] = useState("");
+  const finalFee = Math.round(info.fee * (1 - discountPercent / 100));
+
+  const applyDiscountCode = async () => {
+    try {
+      const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(discountInput)}`);
+      if (!res.ok) { setDiscountError("유효하지 않은 할인코드입니다."); setDiscountPercent(0); return; }
+      const data = await res.json();
+      setDiscountPercent(data.code.discountPercent);
+      setDiscountError("");
+    } catch {
+      setDiscountError("할인코드 확인 중 오류가 발생했습니다.");
+    }
+  };
+
   const handlePayment = () => {
     setIsProcessing(true);
     setTimeout(async () => {
@@ -30,6 +47,13 @@ export default function PaymentPartner() {
       }
       const formData = JSON.parse(raw);
       try {
+        if (discountPercent > 0) {
+          await fetch("/api/promo-codes", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: discountInput }),
+          });
+        }
         const res = await fetch("/api/partner/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -38,7 +62,7 @@ export default function PaymentPartner() {
         const data = await res.json();
         if (!res.ok) { alert(data.error || "가입에 실패했습니다."); setIsProcessing(false); return; }
         sessionStorage.removeItem("partnerSignupData");
-        alert(`${info.name} 파트너 가입이 완료되었습니다!\n결제 금액: ₩${info.fee.toLocaleString()}\n로그인 후 분석 생성 도구를 바로 이용하실 수 있습니다.`);
+        alert(`${info.name} 파트너 가입이 완료되었습니다!\n결제 금액: ₩${finalFee.toLocaleString()}\n로그인 후 분석 생성 도구를 바로 이용하실 수 있습니다.`);
         router.push("/partner/login");
       } catch {
         alert("가입 처리 중 오류가 발생했습니다.");
@@ -60,10 +84,37 @@ export default function PaymentPartner() {
           <div style={{ background: "rgba(139,92,246,0.65)", padding: 20, borderRadius: 12, marginBottom: 24 }}>
             <h2 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 16px 0" }}>{info.name} 등급</h2>
             <div style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8 }}>
-              <p style={{ margin: "0 0 8px 0" }}>💰 연회비: ₩{info.fee.toLocaleString()}</p>
+              {discountPercent > 0 ? (
+                <p style={{ margin: "0 0 8px 0" }}>
+                  💰 연회비: <span style={{ textDecoration: "line-through", opacity: 0.6 }}>₩{info.fee.toLocaleString()}</span>{" "}
+                  <span style={{ color: "#90EE90" }}>₩{finalFee.toLocaleString()}</span>
+                </p>
+              ) : (
+                <p style={{ margin: "0 0 8px 0" }}>💰 연회비: ₩{info.fee.toLocaleString()}</p>
+              )}
               <p style={{ margin: "0 0 8px 0" }}>📊 월 한도: {info.month}</p>
               <p style={{ margin: "0" }}>💵 사용료 할인: {info.revenue}</p>
             </div>
+          </div>
+
+          {/* 할인코드 */}
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ display: "flex", gap: 8 }}>
+              <input
+                value={discountInput}
+                onChange={e => setDiscountInput(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && applyDiscountCode()}
+                placeholder="🎟️ 할인코드 입력(선택)"
+                style={{ flex: 1, padding: "10px 14px", borderRadius: 10, border: "1px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 13, fontWeight: 700, outline: "none" }}
+              />
+              <button onClick={applyDiscountCode} style={{ padding: "10px 18px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a0f2e", fontWeight: 900, fontSize: 13, cursor: "pointer" }}>적용</button>
+            </div>
+            {discountPercent > 0 && (
+              <p style={{ color: "#90EE90", fontSize: 12, fontWeight: 800, marginTop: 8, marginBottom: 0 }}>✅ {discountPercent}% 할인 적용됨{discountPercent >= 100 ? " (무료)" : ""}</p>
+            )}
+            {discountError && (
+              <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, marginTop: 8, marginBottom: 0 }}>{discountError}</p>
+            )}
           </div>
 
           {/* 환불정책 (접기/펼치기) */}
