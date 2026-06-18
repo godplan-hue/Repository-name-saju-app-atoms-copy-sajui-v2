@@ -26,6 +26,19 @@ export function getPartnerTier(id: string): PartnerTier {
   return PARTNER_TIERS.find(t => t.id === id) ?? PARTNER_TIERS[0];
 }
 
+// PARTNER_TIERS 배열 순서 = 등급 순서(낮음 -> 높음)
+export function getTierIndex(id: string): number {
+  const idx = PARTNER_TIERS.findIndex(t => t.id === id);
+  return idx === -1 ? 0 : idx;
+}
+
+// 업그레이드 시 새 등급 연회비에서 기존에 낸 연회비를 뺀 차액만 추가로 내면 됨
+export function calculateUpgradeFee(currentTierId: string, newTierId: string): number {
+  const current = getPartnerTier(currentTierId);
+  const next = getPartnerTier(newTierId);
+  return Math.max(0, next.annualFee - current.annualFee);
+}
+
 export interface UsageCharge {
   listPrice: number;        // 패키지 정가
   baseFee: number;          // 정가 × (100-등급할인%) — 부가세 전 우리 매출

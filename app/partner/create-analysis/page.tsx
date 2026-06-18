@@ -197,6 +197,20 @@ export default function PartnerCreateAnalysis() {
             </div>
             <div style={{ display: "flex", gap: "10px" }}>
             <button
+              onClick={() => router.push("/partner/upgrade")}
+              style={{
+                padding: "10px 20px",
+                background: "#fff3e0",
+                color: "#ff9500",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              ⭐ 등급업그레이드
+            </button>
+            <button
               onClick={() => router.push("/partner/archive")}
               style={{
                 padding: "10px 20px",
