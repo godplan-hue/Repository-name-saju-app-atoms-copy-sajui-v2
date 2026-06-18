@@ -112,6 +112,23 @@ export default function PartnerCreateAnalysis() {
 
         console.log("sessionStorage 저장 완료");
 
+        // 보관함에 영구 저장 — 고객이 "못받았다"고 하면 나중에 다시 꺼내 보낼 수 있어야 함
+        fetch("/api/partner/archive", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            partnerId,
+            customerName: formData.customerName,
+            customerEmail: formData.customerEmail,
+            customerPhone: formData.customerPhone,
+            birth: `${formData.birthYear}-${formData.birthMonth}-${formData.birthDay}`,
+            birthHour: formData.birthHour,
+            gender: formData.gender,
+            packageType: formData.packageType,
+            result: data.result,
+          }),
+        }).catch(err => console.error("보관함 저장 실패:", err));
+
         // 결과 페이지로 이동
         router.push("/partner/analysis-result");
       } else {
@@ -162,6 +179,21 @@ export default function PartnerCreateAnalysis() {
                 {partnerTier} | 파트너 분석 생성
               </p>
             </div>
+            <div style={{ display: "flex", gap: "10px" }}>
+            <button
+              onClick={() => router.push("/partner/archive")}
+              style={{
+                padding: "10px 20px",
+                background: "#eef0ff",
+                color: "#667eea",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              📁 보관함
+            </button>
             <button
               onClick={() => {
                 localStorage.removeItem("partnerId");
@@ -181,6 +213,7 @@ export default function PartnerCreateAnalysis() {
             >
               로그아웃
             </button>
+            </div>
           </div>
 
           {/* 메인 폼 */}
