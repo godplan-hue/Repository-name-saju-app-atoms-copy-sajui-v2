@@ -17,6 +17,7 @@ export async function GET() {
         customerPhone: v.customerPhone,
         packageType: v.packageType,
         consentGiven: !!v.consentGiven,
+        charge: v.charge,
         createdAt: v.createdAt,
       });
     });

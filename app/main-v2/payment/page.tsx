@@ -2,29 +2,28 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { type PartnerDiscountCode } from "@/lib/partnerTiers";
+interface PromoCode {
+  code: string;
+  discountPercent: number;
+  note: string;
+  active: boolean;
+}
 
 export default function Payment() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedPackage, setSelectedPackage] = useState("기본 분석");
   const [selectedFeatures, setSelectedFeatures] = useState(["yearlyLuck", "monthlyLuck"]);
-  // 파트너 할인코드 — 입력해서 적용하면 결제금액에 할인이 들어가고, 결제 시
-  // 수수료·부가세 뗀 정산액이 자동으로 계산·기록됨(지급은 매월 한 번 모아서)
+  // 할인코드 — 관리자가 원하는 손님에게만 골라서 주는 프로모션 코드(파트너와는 무관)
   const [discountInput, setDiscountInput] = useState("");
-  const [appliedDiscount, setAppliedDiscount] = useState<PartnerDiscountCode | null>(null);
+  const [appliedDiscount, setAppliedDiscount] = useState<PromoCode | null>(null);
   const [discountError, setDiscountError] = useState("");
 
   const applyDiscountCode = async () => {
     try {
-      const res = await fetch(`/api/partner/discount-codes?code=${encodeURIComponent(discountInput)}`);
+      const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(discountInput)}`);
       if (!res.ok) { setDiscountError("유효하지 않은 할인코드입니다."); setAppliedDiscount(null); return; }
       const data = await res.json();
-      if (data.limitReached) {
-        setDiscountError("이 파트너의 이번 달 판매 한도가 모두 차서 코드를 사용할 수 없습니다. 다음 달에 다시 시도해주세요.");
-        setAppliedDiscount(null);
-        return;
-      }
       setAppliedDiscount(data.code);
       setDiscountError("");
     } catch {
@@ -32,20 +31,20 @@ export default function Payment() {
     }
   };
 
-  // 결제 시점에 서버에서 할인코드 재검증 + 정산 기록까지 한번에 처리
+  // 결제 시점에 서버에서 코드 재검증 + 사용횟수 기록
   const finalPrice = async (originalPrice: number): Promise<number> => {
     if (!appliedDiscount) return originalPrice;
     try {
-      const res = await fetch("/api/partner/checkout", {
-        method: "POST",
+      const res = await fetch("/api/promo-codes", {
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: appliedDiscount.code, originalPrice }),
+        body: JSON.stringify({ code: appliedDiscount.code }),
       });
       const data = await res.json();
       if (!data.success) { alert(data.error || "할인코드 적용에 실패했습니다."); return originalPrice; }
-      return data.customerPaid;
+      return Math.round(originalPrice * (1 - data.discountPercent / 100));
     } catch {
-      alert("정산 처리 중 오류가 발생했습니다. 할인 없이 진행합니다.");
+      alert("할인코드 처리 중 오류가 발생했습니다. 할인 없이 진행합니다.");
       return originalPrice;
     }
   };
@@ -211,7 +210,7 @@ export default function Payment() {
             <button onClick={applyDiscountCode} style={{ padding: "10px 18px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a0f2e", fontWeight: 900, fontSize: 13, cursor: "pointer" }}>적용</button>
           </div>
           {appliedDiscount && (
-            <p style={{ color: "#90EE90", fontSize: 12, fontWeight: 800, marginTop: 8, marginBottom: 0 }}>✅ {appliedDiscount.discountPercent}% 할인 적용됨 ({appliedDiscount.partnerName} 파트너 코드)</p>
+            <p style={{ color: "#90EE90", fontSize: 12, fontWeight: 800, marginTop: 8, marginBottom: 0 }}>✅ {appliedDiscount.discountPercent}% 할인 적용됨</p>
           )}
           {discountError && (
             <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, marginTop: 8, marginBottom: 0 }}>{discountError}</p>

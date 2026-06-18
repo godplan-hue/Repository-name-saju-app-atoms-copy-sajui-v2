@@ -54,7 +54,7 @@ export default function PartnerApplyForm() {
         });
         const data = await res.json();
         if (!res.ok) { alert(data.error || "가입에 실패했습니다."); return; }
-        alert(`가입이 완료되었습니다!\n할인코드: ${data.discountCode}\n이 코드를 고객에게 안내해주세요.`);
+        alert("가입이 완료되었습니다! 로그인 후 분석 생성 도구를 바로 이용하실 수 있습니다.");
         router.push("/partner/login");
       } finally {
         setSubmitting(false);

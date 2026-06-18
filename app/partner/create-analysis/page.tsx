@@ -110,16 +110,9 @@ export default function PartnerCreateAnalysis() {
 
       console.log("API 응답:", data);
 
-      // 분석 결과 저장
+      // 분석 결과 저장 — 이 시점에 사용료가 즉시 계산·청구됨(보관함 저장과 동시)
       if (data && data.result) {
-        sessionStorage.setItem("analysisResult", JSON.stringify(data.result));
-        sessionStorage.setItem("analysisName", formData.customerName);
-        sessionStorage.setItem("selectedPackage", formData.packageType);
-
-        console.log("sessionStorage 저장 완료");
-
-        // 보관함에 영구 저장 — 고객이 "못받았다"고 하면 나중에 다시 꺼내 보낼 수 있어야 함
-        fetch("/api/partner/archive", {
+        const archiveRes = await fetch("/api/partner/archive", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -135,7 +128,22 @@ export default function PartnerCreateAnalysis() {
             result: data.result,
             consentGiven,
           }),
-        }).catch(err => console.error("보관함 저장 실패:", err));
+        });
+        const archiveData = await archiveRes.json();
+        if (!archiveRes.ok) {
+          alert(archiveData.error || "보관함 저장에 실패했습니다.");
+          setAnalyzing(false);
+          return;
+        }
+
+        sessionStorage.setItem("analysisResult", JSON.stringify(data.result));
+        sessionStorage.setItem("analysisName", formData.customerName);
+        sessionStorage.setItem("selectedPackage", formData.packageType);
+
+        const charge = archiveData.charge;
+        if (charge) {
+          alert(`분석 생성 완료!\n사용료 ₩${charge.totalCharge.toLocaleString()}이 청구되었습니다(부가세 포함).\n※ 현재는 시뮬레이션이며, 실제 결제 연동 전 단계입니다.`);
+        }
 
         // 결과 페이지로 이동
         router.push("/partner/analysis-result");

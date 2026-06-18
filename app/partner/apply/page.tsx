@@ -8,10 +8,10 @@ export default function PartnerApply() {
   const [selectedTier, setSelectedTier] = useState("");
 
   const tiers = [
-    { name: "무료", fee: "₩0", month: "월 50명(연 최대 600명)", revenue: "30%", value: "free" },
-    { name: "실버", fee: "₩150,000", month: "월 150명(연 최대 1,800명)", revenue: "40%", value: "silver" },
-    { name: "골드", fee: "₩350,000", month: "월 300명(연 최대 3,600명)", revenue: "45%", value: "gold" },
-    { name: "플래티넘", fee: "₩1,000,000", month: "월 600명(연 최대 7,200명)", revenue: "55%", value: "platinum" },
+    { name: "무료", fee: "₩0", month: "월 50건(연 최대 600건)", revenue: "30%", value: "free" },
+    { name: "실버", fee: "₩150,000", month: "월 150건(연 최대 1,800건)", revenue: "40%", value: "silver" },
+    { name: "골드", fee: "₩350,000", month: "월 300건(연 최대 3,600건)", revenue: "45%", value: "gold" },
+    { name: "플래티넘", fee: "₩1,000,000", month: "월 600건(연 최대 7,200건)", revenue: "55%", value: "platinum" },
     { name: "다이아", fee: "₩2,000,000", month: "무제한", revenue: "70%", value: "diamond" }
   ];
 
@@ -38,7 +38,7 @@ export default function PartnerApply() {
               <h2 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 16px 0" }}>{tier.name}</h2>
               <p style={{ color: "#f5f5f5", fontSize: 20, fontWeight: 900, margin: "0 0 12px 0" }}>{tier.fee}</p>
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 8px 0" }}>한도: {tier.month}</p>
-              <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: "0 0 16px 0" }}>수익: {tier.revenue}</p>
+              <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: "0 0 16px 0" }}>사용료 {tier.revenue} 할인</p>
               <button onClick={() => handleApply(tier.value)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>가입하기</button>
             </div>
           ))}
@@ -48,8 +48,8 @@ export default function PartnerApply() {
         <div style={{ background: "rgba(108,64,200,0.15)", padding: 30, borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)" }}>
           <h3 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12, marginTop: 0 }}>📋 파트너 정보</h3>
           <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
-            <li>• 정산은 매월 25일에 진행됩니다</li>
-            <li>• 무료 등급은 추가 비용이 없습니다</li>
+            <li>• 분석 1건 생성할 때마다 등급별 할인이 적용된 사용료가 즉시 청구됩니다</li>
+            <li>• 무료 등급은 추가 비용이 없습니다(분석 생성 시 사용료만 발생)</li>
             <li>• 등급 업그레이드는 언제든 가능합니다</li>
             <li>• 자세한 정책은 파트너 정책 페이지에서 확인하세요</li>
           </ul>

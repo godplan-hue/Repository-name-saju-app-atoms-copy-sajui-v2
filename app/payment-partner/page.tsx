@@ -11,9 +11,9 @@ export default function PaymentPartner() {
   const [showRefund, setShowRefund] = useState(false);
 
   const tierInfo: { [key: string]: { name: string; fee: number; month: string; revenue: string } } = {
-    silver: { name: "실버", fee: 150000, month: "월 150명(연 최대 1,800명)", revenue: "40%" },
-    gold: { name: "골드", fee: 350000, month: "월 300명(연 최대 3,600명)", revenue: "45%" },
-    platinum: { name: "플래티넘", fee: 1000000, month: "월 600명(연 최대 7,200명)", revenue: "55%" },
+    silver: { name: "실버", fee: 150000, month: "월 150건(연 최대 1,800건)", revenue: "40%" },
+    gold: { name: "골드", fee: 350000, month: "월 300건(연 최대 3,600건)", revenue: "45%" },
+    platinum: { name: "플래티넘", fee: 1000000, month: "월 600건(연 최대 7,200건)", revenue: "55%" },
     diamond: { name: "다이아", fee: 2000000, month: "무제한", revenue: "70%" }
   };
 
@@ -38,7 +38,7 @@ export default function PaymentPartner() {
         const data = await res.json();
         if (!res.ok) { alert(data.error || "가입에 실패했습니다."); setIsProcessing(false); return; }
         sessionStorage.removeItem("partnerSignupData");
-        alert(`${info.name} 파트너 가입이 완료되었습니다!\n결제 금액: ₩${info.fee.toLocaleString()}\n할인코드: ${data.discountCode}\n이 코드를 고객에게 안내해주세요.`);
+        alert(`${info.name} 파트너 가입이 완료되었습니다!\n결제 금액: ₩${info.fee.toLocaleString()}\n로그인 후 분석 생성 도구를 바로 이용하실 수 있습니다.`);
         router.push("/partner/login");
       } catch {
         alert("가입 처리 중 오류가 발생했습니다.");
@@ -62,7 +62,7 @@ export default function PaymentPartner() {
             <div style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8 }}>
               <p style={{ margin: "0 0 8px 0" }}>💰 연회비: ₩{info.fee.toLocaleString()}</p>
               <p style={{ margin: "0 0 8px 0" }}>📊 월 한도: {info.month}</p>
-              <p style={{ margin: "0" }}>💵 수익률: {info.revenue}</p>
+              <p style={{ margin: "0" }}>💵 사용료 할인: {info.revenue}</p>
             </div>
           </div>
 
