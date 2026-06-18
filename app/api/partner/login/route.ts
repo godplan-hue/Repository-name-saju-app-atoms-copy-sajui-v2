@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       partnerId, partnerName: partnerData.name, partnerTier: partnerData.tier, email: partnerData.email,
+      businessName: partnerData.businessName || partnerData.name,
     });
   } catch (error) {
     console.error("Partner login error:", error);

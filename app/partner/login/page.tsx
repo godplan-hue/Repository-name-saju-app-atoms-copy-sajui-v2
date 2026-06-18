@@ -45,6 +45,7 @@ export default function PartnerLogin() {
       localStorage.setItem("partnerId", data.partnerId);
       localStorage.setItem("partnerName", data.partnerName);
       localStorage.setItem("partnerTier", data.partnerTier);
+      localStorage.setItem("partnerBusinessName", data.businessName);
       
       router.push("/partner/create-analysis");
     } catch (err) {

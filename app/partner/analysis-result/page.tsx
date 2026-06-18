@@ -13,6 +13,7 @@ export default function PartnerAnalysisResult() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentTab, setCurrentTab] = useState("name");
   const [isFreeTier, setIsFreeTier] = useState(false);
+  const [businessName, setBusinessName] = useState("");
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -31,6 +32,8 @@ export default function PartnerAnalysisResult() {
     setPackageType(pkg || "기본 분석");
     // 무료등급 파트너는 이미지(PDF) 다운로드 불가 — 유료등급부터 가능
     setIsFreeTier((localStorage.getItem("partnerTier") || "free") === "free");
+    // 결과지에 점운 대신 표시할 파트너 상호명
+    setBusinessName(localStorage.getItem("partnerBusinessName") || "");
   }, [router]);
 
   const tabs = [
@@ -67,7 +70,7 @@ export default function PartnerAnalysisResult() {
       let htmlContent = `
         <div style="width: 800px; background: #FFD700; padding: 50px 40px; text-align: center; box-sizing: border-box;">
           <div style="font-size: 60px; margin-bottom: 20px;">🔮</div>
-          <h1 style="font-size: 36px; font-weight: 900; margin: 0 0 10px; color: #1a1a1a;">사주 분석</h1>
+          <h1 style="font-size: 36px; font-weight: 900; margin: 0 0 10px; color: #1a1a1a;">${businessName || "사주 분석"}</h1>
           <p style="font-size: 16px; font-weight: 700; margin: 0; color: #666;">${customerName}님 · ${packageType} 결과지</p>
         </div>
       `;
@@ -88,7 +91,7 @@ export default function PartnerAnalysisResult() {
           <div style="background: #FFFACD; padding: 40px; border-radius: 8px; box-sizing: border-box;">
             <p style="font-size: 24px; font-weight: 900; color: #1a1a1a; margin: 0 0 16px;">감사합니다</p>
             <p style="font-size: 15px; font-weight: 700; color: #333; margin: 0 0 20px; line-height: 1.8;">
-              ${customerName}님의 사주 분석을 위해<br/>저희 사주 서비스를 이용해주셔서 진심으로 감사합니다.
+              ${customerName}님의 사주 분석을 위해<br/>${businessName || "저희 사주 서비스"}를 이용해주셔서 진심으로 감사합니다.
             </p>
             <p style="font-size: 12px; color: #666; margin: 0;">사주 궁금하면 다시 방문해주세요</p>
           </div>
@@ -137,7 +140,7 @@ export default function PartnerAnalysisResult() {
       >
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
           <h1 style={{ textAlign: "center", color: "#d4af37", marginBottom: 30, fontSize: "36px", fontWeight: 900, marginTop: 0 }}>
-            🔮 분석 결과
+            🔮 {businessName || "분석 결과"}
           </h1>
 
           <div

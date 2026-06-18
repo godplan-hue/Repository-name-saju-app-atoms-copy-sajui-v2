@@ -10,8 +10,8 @@ function hashPassword(password: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, name, phone, tier } = await request.json();
-    if (!email || !password || !name) {
+    const { email, password, name, phone, tier, businessName } = await request.json();
+    if (!email || !password || !name || !businessName) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
 
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     const partnerTier = tier || "free";
     const partnerRef = await db.ref("partners").push({
-      email, password: hashPassword(password), name, phone: phone || "",
+      email, password: hashPassword(password), name, phone: phone || "", businessName,
       tier: partnerTier, createdAt: new Date().toISOString(),
     });
 
