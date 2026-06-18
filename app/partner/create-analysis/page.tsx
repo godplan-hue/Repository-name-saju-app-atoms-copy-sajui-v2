@@ -11,6 +11,7 @@ export default function PartnerCreateAnalysis() {
   const [partnerTier, setPartnerTier] = useState("");
   const [isMobile, setIsMobile] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
+  const [consentGiven, setConsentGiven] = useState(false);
 
   const [formData, setFormData] = useState({
     customerName: "",
@@ -79,6 +80,11 @@ export default function PartnerCreateAnalysis() {
       return;
     }
 
+    if (!consentGiven) {
+      alert("고객 개인정보 수집·이용 동의를 받았는지 확인 체크박스를 선택해주세요");
+      return;
+    }
+
     setAnalyzing(true);
 
     try {
@@ -118,6 +124,7 @@ export default function PartnerCreateAnalysis() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             partnerId,
+            partnerName,
             customerName: formData.customerName,
             customerEmail: formData.customerEmail,
             customerPhone: formData.customerPhone,
@@ -126,6 +133,7 @@ export default function PartnerCreateAnalysis() {
             gender: formData.gender,
             packageType: formData.packageType,
             result: data.result,
+            consentGiven,
           }),
         }).catch(err => console.error("보관함 저장 실패:", err));
 
@@ -439,6 +447,20 @@ export default function PartnerCreateAnalysis() {
                 </button>
               ))}
             </div>
+
+            {/* 고객 동의 확인 */}
+            <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "20px", padding: "14px", background: "#f8f8ff", border: "2px solid #ddd", borderRadius: "8px", cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={consentGiven}
+                onChange={(e) => setConsentGiven(e.target.checked)}
+                style={{ marginTop: "3px", width: "16px", height: "16px", flexShrink: 0 }}
+              />
+              <span style={{ fontSize: "13px", color: "#333", fontWeight: 600, lineHeight: 1.6 }}>
+                이 고객으로부터 <b>개인정보(이름, 생년월일, 연락처 등) 수집·이용에 대한 동의</b>를 직접 받았으며,
+                이 정보가 분석 결과 생성을 위해 점운(회사)에도 전달·저장됨을 고객에게 안내했음을 확인합니다.
+              </span>
+            </label>
 
             {/* 분석 버튼 */}
             <button

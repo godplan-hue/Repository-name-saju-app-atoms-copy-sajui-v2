@@ -16,12 +16,7 @@ export default function PartnerApply() {
   ];
 
   const handleApply = (tier: string) => {
-    if (tier === "free") {
-      alert("무료 파트너 가입이 완료되었습니다!");
-      router.push("/partner/login");
-    } else {
-      router.push(`/partner/apply-form?tier=${tier}`);
-    }
+    router.push(`/partner/apply-form?tier=${tier}`);
   };
 
   return (

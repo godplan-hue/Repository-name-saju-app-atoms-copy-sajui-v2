@@ -29,7 +29,9 @@ export default function PartnerApplyForm() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = () => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async () => {
     if (!formData.name || !formData.email || !formData.password || !formData.phone) {
       alert("모든 정보를 입력해주세요!");
       return;
@@ -38,6 +40,28 @@ export default function PartnerApplyForm() {
       alert("비밀번호는 4자 이상이어야 합니다!");
       return;
     }
+
+    sessionStorage.setItem("partnerSignupData", JSON.stringify(formData));
+
+    if (tier === "free") {
+      // 무료 등급은 결제가 없으니 바로 가입 처리
+      setSubmitting(true);
+      try {
+        const res = await fetch("/api/partner/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...formData, tier }),
+        });
+        const data = await res.json();
+        if (!res.ok) { alert(data.error || "가입에 실패했습니다."); return; }
+        alert(`가입이 완료되었습니다!\n할인코드: ${data.discountCode}\n이 코드를 고객에게 안내해주세요.`);
+        router.push("/partner/login");
+      } finally {
+        setSubmitting(false);
+      }
+      return;
+    }
+
     router.push(`/payment-partner?tier=${tier}`);
   };
 
@@ -67,8 +91,8 @@ export default function PartnerApplyForm() {
           </div>
 
           {/* 버튼 */}
-          <button onClick={handleSubmit} style={{ width: "100%", padding: 14, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12 }}>
-            계속하기
+          <button onClick={handleSubmit} disabled={submitting} style={{ width: "100%", padding: 14, background: submitting ? "#999" : "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: submitting ? "not-allowed" : "pointer", marginBottom: 12 }}>
+            {submitting ? "처리중..." : "계속하기"}
           </button>
 
           <a href="/partner/apply" style={{ display: "block", textAlign: "center", padding: 14, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textDecoration: "none" }}>

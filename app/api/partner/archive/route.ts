@@ -7,14 +7,18 @@ import { db } from "@/lib/firebase";
 // 직접 가입해도(별개의 localStorage 기반 가입) 이 보관함과는 섞이지 않음.
 export async function POST(request: NextRequest) {
   try {
-    const { partnerId, customerName, customerEmail, customerPhone, birth, birthHour, gender, packageType, result } = await request.json();
+    const { partnerId, partnerName, customerName, customerEmail, customerPhone, birth, birthHour, gender, packageType, result, consentGiven } = await request.json();
     if (!partnerId || !customerName || !result) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
+    if (!consentGiven) {
+      return NextResponse.json({ error: "고객 개인정보 수집·이용 동의를 확인해야 저장할 수 있습니다." }, { status: 400 });
+    }
     const entry = {
+      partnerName: partnerName || "",
       customerName, customerEmail: customerEmail || "", customerPhone: customerPhone || "",
       birth: birth || "", birthHour: birthHour || "", gender: gender || "",
-      packageType: packageType || "기본 분석", result, createdAt: new Date().toISOString(),
+      packageType: packageType || "기본 분석", result, consentGiven: true, createdAt: new Date().toISOString(),
     };
     const ref = await db.ref(`partnerArchive/${partnerId}`).push(entry);
     return NextResponse.json({ success: true, id: ref.key });

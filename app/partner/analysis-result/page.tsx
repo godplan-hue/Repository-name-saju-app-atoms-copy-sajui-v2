@@ -44,105 +44,77 @@ export default function PartnerAnalysisResult() {
     { key: "full", label: "전체 분석", data: analysisResults?.fullAnalysis },
   ];
 
-  const handleDownloadPDF = async () => {
+  const handleSaveImage = async () => {
     if (!analysisResults || isFreeTier) return;
 
     setIsGenerating(true);
 
     try {
-      const html2pdf = (await import("html2pdf.js")).default;
+      const html2canvas = (await import("html2canvas")).default;
+
+      const sectionTabs = packageType === "기본" || packageType === "베이직"
+        ? [
+            { label: "이름 분석", data: analysisResults.name },
+            { label: "전체 분석", data: analysisResults.fullAnalysis },
+          ]
+        : [
+            { label: "이름 분석", data: analysisResults.name },
+            { label: "재운", data: analysisResults.wealthLuck },
+            { label: "애정운", data: analysisResults.loveLuck },
+            { label: "건강운", data: analysisResults.healthLuck },
+          ];
 
       let htmlContent = `
-        <div style="margin: 0; padding: 0;">
-          <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box; padding: 40px; margin: 0;">
-            <div style="font-size: 80px; margin-bottom: 30px;">🔮</div>
-            <h1 style="font-size: 48px; font-weight: 900; margin: 0 0 50px 0; color: #1a1a1a;">사주 분석</h1>
-            <p style="font-size: 20px; font-weight: 700; margin: 0; color: #666;">${packageType} 결과지</p>
-          </div>
+        <div style="width: 800px; background: #FFD700; padding: 50px 40px; text-align: center; box-sizing: border-box;">
+          <div style="font-size: 60px; margin-bottom: 20px;">🔮</div>
+          <h1 style="font-size: 36px; font-weight: 900; margin: 0 0 10px; color: #1a1a1a;">사주 분석</h1>
+          <p style="font-size: 16px; font-weight: 700; margin: 0; color: #666;">${customerName}님 · ${packageType} 결과지</p>
+        </div>
       `;
 
-      if (packageType === "기본" || packageType === "베이직") {
-        const basicTabs = [
-          { label: "이름 분석", data: analysisResults.name },
-          { label: "전체 분석", data: analysisResults.fullAnalysis },
-        ];
-
-        basicTabs.forEach((tab) => {
-          htmlContent += `
-            <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: flex-start; padding: 30px; box-sizing: border-box; margin: 0;">
-              <h2 style="font-size: 24px; font-weight: 900; color: #1a1a1a; margin: 0 0 20px 0;">${tab.label}</h2>
-              <div style="width: 100%; background-color: #FFFACD; padding: 25px; border-radius: 8px; box-sizing: border-box;">
-                <p style="font-size: 13px; font-weight: 600; line-height: 1.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word;">${tab.data || "분석 결과를 불러올 수 없습니다"}</p>
-              </div>
+      sectionTabs.forEach((tab) => {
+        htmlContent += `
+          <div style="width: 800px; background: #FFD700; padding: 30px 40px; box-sizing: border-box;">
+            <h2 style="font-size: 22px; font-weight: 900; color: #1a1a1a; margin: 0 0 16px;">${tab.label}</h2>
+            <div style="background: #FFFACD; padding: 24px; border-radius: 8px; box-sizing: border-box;">
+              <p style="font-size: 14px; font-weight: 600; line-height: 1.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word;">${tab.data || "분석 결과를 불러올 수 없습니다"}</p>
             </div>
-          `;
-        });
-      } else {
-        const premiumTabs = [
-          { label: "이름 분석", data: analysisResults.name },
-          { label: "재운", data: analysisResults.wealthLuck },
-          { label: "애정운", data: analysisResults.loveLuck },
-          { label: "건강운", data: analysisResults.healthLuck },
-        ];
-
-        premiumTabs.forEach((tab) => {
-          htmlContent += `
-            <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: flex-start; padding: 30px; box-sizing: border-box; margin: 0;">
-              <h2 style="font-size: 24px; font-weight: 900; color: #1a1a1a; margin: 0 0 20px 0;">${tab.label}</h2>
-              <div style="width: 100%; background-color: #FFFACD; padding: 25px; border-radius: 8px; box-sizing: border-box;">
-                <p style="font-size: 13px; font-weight: 600; line-height: 1.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word;">${tab.data || "분석 결과를 불러올 수 없습니다"}</p>
-              </div>
-            </div>
-          `;
-        });
-      }
+          </div>
+        `;
+      });
 
       htmlContent += `
-        <div style="width: 210mm; height: 297mm; background-color: #FFD700; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; box-sizing: border-box; margin: 0; text-align: center;">
-          <div style="width: 80%; background-color: #FFFACD; padding: 50px; border-radius: 8px; box-sizing: border-box;">
-            <p style="font-size: 28px; font-weight: 900; color: #1a1a1a; margin: 0 0 20px 0;">감사합니다</p>
-            <p style="font-size: 16px; font-weight: 700; color: #333; margin: 0 0 30px 0; line-height: 1.8;">
-              ${customerName}님의 사주 분석을 위해<br/>
-              저희 사주 서비스를 이용해주셔서 진심으로 감사합니다.
+        <div style="width: 800px; background: #FFD700; padding: 40px; text-align: center; box-sizing: border-box;">
+          <div style="background: #FFFACD; padding: 40px; border-radius: 8px; box-sizing: border-box;">
+            <p style="font-size: 24px; font-weight: 900; color: #1a1a1a; margin: 0 0 16px;">감사합니다</p>
+            <p style="font-size: 15px; font-weight: 700; color: #333; margin: 0 0 20px; line-height: 1.8;">
+              ${customerName}님의 사주 분석을 위해<br/>저희 사주 서비스를 이용해주셔서 진심으로 감사합니다.
             </p>
-            <p style="font-size: 13px; color: #666; margin: 0;">사주 궁금하면 다시 방문해주세요</p>
+            <p style="font-size: 12px; color: #666; margin: 0;">사주 궁금하면 다시 방문해주세요</p>
           </div>
         </div>
       `;
 
       const element = document.createElement("div");
       element.innerHTML = htmlContent;
-      element.style.margin = "0";
-      element.style.padding = "0";
+      element.style.position = "fixed";
+      element.style.top = "-99999px";
+      element.style.left = "0";
+      document.body.appendChild(element);
 
-      const opt: any = {
-        margin: 0,
-        filename: `사주_${customerName}_${packageType}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-          backgroundColor: "#FFD700",
-          allowTaint: true,
-        },
-        jsPDF: {
-          orientation: "p",
-          unit: "mm",
-          format: "a4",
-          compress: false,
-        },
-      };
-
-      html2pdf()
-        .set(opt)
-        .from(element)
-        .save();
-
-      alert("PDF가 다운로드되었습니다");
+      try {
+        const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false, backgroundColor: "#FFD700" });
+        const link = document.createElement("a");
+        link.download = `사주_${customerName}_${packageType}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        alert("이미지가 다운로드되었습니다");
+      } finally {
+        document.body.removeChild(element);
+      }
     } catch (error) {
-      console.error("PDF 생성 오류:", error);
-      alert("PDF 생성 중 오류가 발생했습니다");
+      console.error("이미지 생성 오류:", error);
+      alert("이미지 생성 중 오류가 발생했습니다");
     } finally {
       setIsGenerating(false);
     }
@@ -254,14 +226,14 @@ export default function PartnerAnalysisResult() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
               {isFreeTier ? (
                 <button
-                  onClick={() => alert("PDF/이미지 다운로드는 유료 등급(실버 이상)부터 가능합니다. 등급 업그레이드 후 이용해주세요.")}
+                  onClick={() => alert("이미지 다운로드는 유료 등급(실버 이상)부터 가능합니다. 등급 업그레이드 후 이용해주세요.")}
                   style={{ padding: "16px", background: "#ccc", color: "#666", border: "none", borderRadius: "10px", fontWeight: 900, fontSize: "15px", cursor: "pointer" }}
                 >
-                  🔒 PDF 다운로드(유료 등급)
+                  🔒 이미지 저장(유료 등급)
                 </button>
               ) : (
                 <button
-                  onClick={handleDownloadPDF}
+                  onClick={handleSaveImage}
                   disabled={isGenerating}
                   style={{
                     padding: "16px",
@@ -275,7 +247,7 @@ export default function PartnerAnalysisResult() {
                     opacity: isGenerating ? 0.6 : 1,
                   }}
                 >
-                  📄 {isGenerating ? "생성 중..." : "PDF 다운로드"}
+                  🖼️ {isGenerating ? "생성 중..." : "이미지 저장"}
                 </button>
               )}
 

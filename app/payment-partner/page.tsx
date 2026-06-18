@@ -21,9 +21,29 @@ export default function PaymentPartner() {
 
   const handlePayment = () => {
     setIsProcessing(true);
-    setTimeout(() => {
-      alert(`${info.name} 파트너 가입이 완료되었습니다!\n결제 금액: ₩${info.fee.toLocaleString()}`);
-      router.push("/partner/login");
+    setTimeout(async () => {
+      const raw = sessionStorage.getItem("partnerSignupData");
+      if (!raw) {
+        alert("가입 정보를 찾을 수 없습니다. 다시 신청해주세요.");
+        router.push("/partner/apply");
+        return;
+      }
+      const formData = JSON.parse(raw);
+      try {
+        const res = await fetch("/api/partner/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...formData, tier }),
+        });
+        const data = await res.json();
+        if (!res.ok) { alert(data.error || "가입에 실패했습니다."); setIsProcessing(false); return; }
+        sessionStorage.removeItem("partnerSignupData");
+        alert(`${info.name} 파트너 가입이 완료되었습니다!\n결제 금액: ₩${info.fee.toLocaleString()}\n할인코드: ${data.discountCode}\n이 코드를 고객에게 안내해주세요.`);
+        router.push("/partner/login");
+      } catch {
+        alert("가입 처리 중 오류가 발생했습니다.");
+        setIsProcessing(false);
+      }
     }, 2000);
   };
 
