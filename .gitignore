@@ -24,6 +24,11 @@
 .DS_Store
 *.pem
 
+# firebase service account key (절대 커밋 금지)
+*firebase-adminsdk*.json
+*serviceAccountKey*.json
+firebase-service-account.json
+
 # debug
 npm-debug.log*
 yarn-debug.log*

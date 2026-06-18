@@ -4,7 +4,7 @@ import * as path from "path";
 
 const serviceAccountPath = path.join(
   process.cwd(),
-  "saju-app-atoms-firebase-adminsdk-fbsvc-f2e47152fa.json"
+  "firebase-service-account.json"
 );
 
 const serviceAccount = JSON.parse(

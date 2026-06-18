@@ -48,8 +48,9 @@ export function calculatePartnerSettlement(grossAmount: number, tierId: string):
 }
 
 // ── 파트너 할인코드 ──────────────────────────────────────────
-// 실제 DB가 아직 없어서 localStorage에 보관. 나중에 진짜 DB(Firebase 등)가
-// 연결되면 이 부분만 API 호출로 바꾸면 됨
+// 실제 데이터(코드 조회/검증, 정산 기록)는 Firebase Realtime Database에
+// 저장되고, app/api/partner/discount-codes, /checkout, /settlements 가
+// 서버에서 처리한다. 여기 타입들은 클라이언트에서 API 응답을 다룰 때 씀.
 export interface PartnerDiscountCode {
   code: string;
   discountPercent: number; // 고객이 받는 할인율
@@ -58,78 +59,10 @@ export interface PartnerDiscountCode {
   active: boolean;
 }
 
-const DISCOUNT_CODES_KEY = "v2_partner_discount_codes";
-const SETTLEMENTS_KEY = "v2_partner_settlements";
-
-export function getDiscountCodes(): PartnerDiscountCode[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(DISCOUNT_CODES_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch {}
-  // 처음엔 테스트용 코드 하나를 기본으로 넣어둠
-  const seed: PartnerDiscountCode[] = [
-    { code: "SUMMER2024", discountPercent: 20, partnerName: "테스트파트너", tierId: "silver", active: true },
-  ];
-  localStorage.setItem(DISCOUNT_CODES_KEY, JSON.stringify(seed));
-  return seed;
-}
-
-export function findDiscountCode(code: string): PartnerDiscountCode | null {
-  const found = getDiscountCodes().find(c => c.code.toUpperCase() === code.trim().toUpperCase() && c.active);
-  return found ?? null;
-}
-
 export interface SettlementRecord extends SettlementBreakdown {
   id: string;
   date: string;
   partnerName: string;
   discountCode: string;
   customerPaid: number; // 할인 적용 후 실제 결제액(=grossAmount)
-}
-
-export function recordSettlement(discount: PartnerDiscountCode, originalPrice: number): SettlementRecord {
-  const customerPaid = Math.round(originalPrice * (1 - discount.discountPercent / 100));
-  const breakdown = calculatePartnerSettlement(customerPaid, discount.tierId);
-  const record: SettlementRecord = {
-    ...breakdown,
-    id: `${Date.now()}`,
-    date: new Date().toISOString(),
-    partnerName: discount.partnerName,
-    discountCode: discount.code,
-    customerPaid,
-  };
-  if (typeof window !== "undefined") {
-    try {
-      const list: SettlementRecord[] = JSON.parse(localStorage.getItem(SETTLEMENTS_KEY) || "[]");
-      list.unshift(record);
-      localStorage.setItem(SETTLEMENTS_KEY, JSON.stringify(list.slice(0, 200)));
-    } catch {}
-  }
-  return record;
-}
-
-export function getSettlements(): SettlementRecord[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(localStorage.getItem(SETTLEMENTS_KEY) || "[]");
-  } catch {
-    return [];
-  }
-}
-
-// 이번 달(현재 월) 기준 해당 파트너가 이미 몇 명에게 판매했는지
-export function getMonthlyUsageCount(partnerName: string): number {
-  const now = new Date();
-  return getSettlements().filter(r => {
-    const d = new Date(r.date);
-    return r.partnerName === partnerName && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-  }).length;
-}
-
-// 이 할인코드(=파트너)가 이번 달 한도를 이미 다 썼는지
-export function isMonthlyLimitReached(discount: PartnerDiscountCode): boolean {
-  const tier = getPartnerTier(discount.tierId);
-  if (tier.monthlyLimit === null) return false;
-  return getMonthlyUsageCount(discount.partnerName) >= tier.monthlyLimit;
 }

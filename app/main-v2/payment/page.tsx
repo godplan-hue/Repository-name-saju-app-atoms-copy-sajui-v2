@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { findDiscountCode, recordSettlement, isMonthlyLimitReached, type PartnerDiscountCode } from "@/lib/partnerTiers";
+import { type PartnerDiscountCode } from "@/lib/partnerTiers";
 
 export default function Payment() {
   const router = useRouter();
@@ -15,23 +15,39 @@ export default function Payment() {
   const [appliedDiscount, setAppliedDiscount] = useState<PartnerDiscountCode | null>(null);
   const [discountError, setDiscountError] = useState("");
 
-  const applyDiscountCode = () => {
-    const found = findDiscountCode(discountInput);
-    if (!found) { setDiscountError("유효하지 않은 할인코드입니다."); setAppliedDiscount(null); return; }
-    if (isMonthlyLimitReached(found)) {
-      setDiscountError("이 파트너의 이번 달 판매 한도가 모두 차서 코드를 사용할 수 없습니다. 다음 달에 다시 시도해주세요.");
-      setAppliedDiscount(null);
-      return;
+  const applyDiscountCode = async () => {
+    try {
+      const res = await fetch(`/api/partner/discount-codes?code=${encodeURIComponent(discountInput)}`);
+      if (!res.ok) { setDiscountError("유효하지 않은 할인코드입니다."); setAppliedDiscount(null); return; }
+      const data = await res.json();
+      if (data.limitReached) {
+        setDiscountError("이 파트너의 이번 달 판매 한도가 모두 차서 코드를 사용할 수 없습니다. 다음 달에 다시 시도해주세요.");
+        setAppliedDiscount(null);
+        return;
+      }
+      setAppliedDiscount(data.code);
+      setDiscountError("");
+    } catch {
+      setDiscountError("할인코드 확인 중 오류가 발생했습니다.");
     }
-    setAppliedDiscount(found);
-    setDiscountError("");
   };
 
-  const finalPrice = (originalPrice: number) => {
+  // 결제 시점에 서버에서 할인코드 재검증 + 정산 기록까지 한번에 처리
+  const finalPrice = async (originalPrice: number): Promise<number> => {
     if (!appliedDiscount) return originalPrice;
-    const discounted = Math.round(originalPrice * (1 - appliedDiscount.discountPercent / 100));
-    recordSettlement(appliedDiscount, originalPrice);
-    return discounted;
+    try {
+      const res = await fetch("/api/partner/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: appliedDiscount.code, originalPrice }),
+      });
+      const data = await res.json();
+      if (!data.success) { alert(data.error || "할인코드 적용에 실패했습니다."); return originalPrice; }
+      return data.customerPaid;
+    } catch {
+      alert("정산 처리 중 오류가 발생했습니다. 할인 없이 진행합니다.");
+      return originalPrice;
+    }
   };
   const SELECT_CATS = [
     { key: "💰 재물운", icon: "💰" },
@@ -135,7 +151,7 @@ export default function Payment() {
       const currentPackage = packages.find(p => p.name === selectedPackage);
       const pages = currentPackage?.pages || 30;
       const originalPrice = Number((currentPackage?.price ?? "0").replace(/[^0-9]/g, ""));
-      const paidPrice = finalPrice(originalPrice); // 할인 적용 + 정산 자동 계산/기록
+      const paidPrice = await finalPrice(originalPrice); // 할인 적용 + 정산 자동 계산/기록
 
       router.push(`/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${pages}&paid=${paidPrice}`);
     } catch (error) {
@@ -302,14 +318,14 @@ export default function Payment() {
 
           {/* 운세 보기 버튼 */}
           <button
-            onClick={() => {
+            onClick={async () => {
               if (selectedCats.length === 0) return;
               // 결제 후 결과 페이지가 "어떤 카테고리를 결제했는지" 알 수 있도록 반드시 저장해야 함
               // (이게 없으면 결과 페이지가 기본값으로 5개 전부를 보여주는 버그가 생김)
               sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
               const pkgName = selectedCats.map(c => c.replace(/\S+\s/, "")).join("+");
               const originalPrice = selectedCats.length * 990;
-              const paidPrice = finalPrice(originalPrice); // 할인 적용 + 정산 자동 계산/기록
+              const paidPrice = await finalPrice(originalPrice); // 할인 적용 + 정산 자동 계산/기록
               router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${selectedCats.length * 30}&paid=${paidPrice}`);
             }}
             disabled={selectedCats.length === 0}
