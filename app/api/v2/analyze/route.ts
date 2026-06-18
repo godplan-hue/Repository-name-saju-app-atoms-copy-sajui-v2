@@ -255,7 +255,7 @@ ${hi
 }`;
   }
 
-  const templates: Record<string, Record<string, Record<string, string>>> = {
+  const templates: Record<string, Record<string, string>> = {
     "재물운": {
       "M_high": `${name}님의 재물운은 ${score}점입니다.
 

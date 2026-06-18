@@ -93,8 +93,8 @@ function PaidAnalysisResultContent() {
 
   const getDisplayItems = () => {
     const data = getAnalysisData();
-    let apiItems = [];
-    let templateItems = [];
+    let apiItems: { key: string; label: string; value: string }[] = [];
+    let templateItems: { key: string; label: string; value: string }[] = [];
 
     switch(packageName) {
       case "기본 분석":
