@@ -377,10 +377,8 @@ export default function MainV2() {
 
       {/* 헤드라인 */}
       <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
-        <h1 style={{ fontSize: 25, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px" }}>
-          {[..."고양이가 읽는 나의 운명"].map((ch, i) => (
-            <span key={i} style={{ display: "inline-block", color: "#8b2f8f", animation: "waveGlow 2.4s ease-in-out infinite", animationDelay: `${i * 0.08}s` }}>{ch === " " ? " " : ch}</span>
-          ))}
+        <h1 style={{ fontSize: 25, fontWeight: 900, color: "#7c2d92", margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", animation: "waveGlow 2.4s ease-in-out infinite" }}>
+          고양이가 읽는 나의 운명
         </h1>
         <p style={{ fontSize: 13, color: "#b45309", fontWeight: 600, letterSpacing: "0.2px", margin: "0 0 12px" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
