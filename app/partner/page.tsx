@@ -44,7 +44,7 @@ export default function PartnerLanding() {
   const stepsMobile = [
     { num: "01", icon: "✏️", title: "파트너 가입", desc: "이름, 상호명,\n이메일만\n입력하면 끝" },
     { num: "02", icon: "🤖", title: "고객정보 입력", desc: "고객 이름과\n생년월일만\n입력" },
-    { num: "03", icon: "📄", title: "결과지 전달", desc: "내 상호명으로\n된 결과지를\n바로 전달" }
+    { num: "03", icon: "📄", title: "결과지 전달", desc: "내 상호명으로 된\n결과지를\n바로 전달" }
   ];
 
   const currentSteps = isMobile ? stepsMobile : stepsPC;
