@@ -389,10 +389,10 @@ export default function MainV2() {
 
       {/* 가격 신뢰 후킹 문구 */}
       <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
-        <div style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg, rgba(45,16,62,0.95), rgba(74,26,84,0.92))", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 14, padding: "16px 18px", textAlign: "center", boxShadow: "0 4px 18px rgba(74,26,84,0.35)" }}>
+        <div style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg, rgba(45,16,62,0.95), rgba(74,26,84,0.92))", border: "2px solid rgba(251,191,36,0.75)", borderRadius: 14, padding: "16px 18px", textAlign: "center", boxShadow: "0 4px 18px rgba(74,26,84,0.35)" }}>
           <div style={{ position: "absolute", top: 0, left: 0, width: "40%", height: "200%", background: "linear-gradient(100deg, transparent, rgba(255,255,255,0.55), transparent)", animation: "shimmerSweep 3.2s ease-in-out infinite", pointerEvents: "none" }} />
           <p style={{ position: "relative", fontSize: 13, fontWeight: 800, color: "#f9a8d4", margin: "0 0 5px" }}>혹시 소문 듣고 오셨나요?</p>
-          <p style={{ position: "relative", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.5, color: "#fbbf24" }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
+          <p style={{ position: "relative", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.5, color: "#fbbf24", animation: "textGlow 1.8s ease-in-out infinite" }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
         </div>
       </div>
 
@@ -475,9 +475,9 @@ export default function MainV2() {
           50%  { transform: translateX(350%) skewX(-15deg); }
           100% { transform: translateX(350%) skewX(-15deg); }
         }
-        @keyframes textShine {
-          0%   { background-position: 200% center; }
-          100% { background-position: -200% center; }
+        @keyframes textGlow {
+          0%, 100% { text-shadow: 0 0 3px rgba(251,191,36,0.3); }
+          50%      { text-shadow: 0 0 12px rgba(251,191,36,0.95), 0 0 4px rgba(255,255,255,0.7); }
         }
         ::-webkit-scrollbar { display: none; }
       `}</style>
