@@ -12,7 +12,7 @@ export default function PartnerPolicy() {
         
         {/* 헤더 */}
         <div style={{ marginBottom: 40 }}>
-          <button onClick={() => router.back()} style={{ background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", padding: "10px 16px", borderRadius: 8, fontWeight: 900, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
+          <button onClick={() => router.push("/partner")} style={{ background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", padding: "10px 16px", borderRadius: 8, fontWeight: 900, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>파트너 정책</h1>
           <p style={{ color: "#999999", fontSize: 12 }}>시행일: 2026년 5월 16일 | 최종 수정일: 2026년 5월 16일</p>
         </div>
@@ -55,9 +55,19 @@ export default function PartnerPolicy() {
             </ul>
           </section>
 
-          {/* 5. 파트너 회비 환불정책 */}
+          {/* 5. 결과지 발송 방식 */}
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 파트너 회비 환불정책</h2>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 결과지 발송 방식</h2>
+            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
+              <li>• 결과지에는 "점운" 대신 파트너님이 등록하신 상호명이 자동으로 표시됩니다(가입 시 한 번만 등록하면 이후 모든 결과지에 자동 적용)</li>
+              <li>• 실버 등급 이상부터는 결과지를 고객 이메일로 점운 사이트에서 바로 자동 발송할 수 있습니다</li>
+              <li>• 무료 등급은 자동 발송 기능을 이용할 수 없으며, 이미지를 직접 다운로드하여 고객에게 전달해야 합니다</li>
+            </ul>
+          </section>
+
+          {/* 6. 파트너 회비 환불정책 */}
+          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>6. 파트너 회비 환불정책</h2>
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>아래 항목 중 하나라도 하면 환불 불가능:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
               <li>• 파트너 자료(PDF/가이드) 다운로드</li>
@@ -71,7 +81,7 @@ export default function PartnerPolicy() {
 
         {/* 하단 버튼 */}
         <div style={{ marginTop: 40, textAlign: "center", marginBottom: 40 }}>
-          <button onClick={() => router.back()} style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", padding: "12px 24px", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>동의하고 돌아가기</button>
+          <button onClick={() => router.push("/partner")} style={{ background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", padding: "12px 24px", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>동의하고 돌아가기</button>
         </div>
       </div>
     </main>
