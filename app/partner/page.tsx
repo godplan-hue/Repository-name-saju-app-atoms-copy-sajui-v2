@@ -104,7 +104,7 @@ export default function PartnerLanding() {
                 <div style={{ width: 45, height: 45, borderRadius: "50%", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 8px" }}>{step.num}</div>
                 <div style={{ fontSize: 18, marginBottom: 6 }}>{step.icon}</div>
                 <h4 style={{ color: "#fbbf24", fontWeight: 900, fontSize: 12, margin: "0 0 4px 0" }}>{step.title}</h4>
-                <p style={{ color: "#f5f5f5", fontSize: "clamp(10px, 2vw, 11px)", fontWeight: 700, margin: 0, lineHeight: 1.6, whiteSpace: "pre-line" }}>{step.desc}</p>
+                <p style={{ color: "#f5f5f5", fontSize: !isMobile ? "clamp(8px, 1.6vw, 9px)" : "clamp(10px, 2vw, 11px)", fontWeight: 700, margin: 0, lineHeight: 1.6, whiteSpace: !isMobile ? "nowrap" : "pre-line", wordBreak: "keep-all" }}>{step.desc}</p>
               </div>
             ))}
           </div>
