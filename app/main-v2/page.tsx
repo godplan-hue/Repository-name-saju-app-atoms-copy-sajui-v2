@@ -201,12 +201,12 @@ const BANNERS = [
 ];
 
 const FORTUNE_CATEGORIES = [
-  { id: "free", title: "오늘의 무료운세", emoji: "🌟", img: "/saju-cat.png", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료", priceBg: "#16a34a" },
+  { id: "free", title: "오늘의 무료운세", emoji: "🌟", img: "/saju-cat.png", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료", priceBg: "#f59e0b" },
   { id: "yearly", title: "올해 운세", emoji: "🎍", img: "https://i.pinimg.com/736x/48/bf/19/48bf198b7a648cf4032cde8a501d8606.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900~", priceBg: "#db2777" },
   { id: "monthly", title: "월별 운세", emoji: "📆", img: "https://i.pinimg.com/736x/26/b0/8e/26b08e17fba8ae7d44a34a2633dc05b4.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#6d28d9", price: "₩9,900~", priceBg: "#6d28d9" },
   { id: "wealth", title: "재물운", emoji: "💰", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309", price: "₩990", priceBg: "#b45309" },
   { id: "love", title: "연애운", emoji: "💕", img: "https://i.pinimg.com/736x/4f/02/13/4f0213abf6635336a4b3719554766624.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990", priceBg: "#be185d" },
-  { id: "health", title: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/f4/87/93/f48793b2c1de83b280bc1a85fed49b98.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "💎 프리미엄 전용", priceBg: "#16a34a" },
+  { id: "health", title: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/f4/87/93/f48793b2c1de83b280bc1a85fed49b98.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "💎 프리미엄 전용", priceBg: "#f59e0b" },
   { id: "compatibility", title: "궁합분석", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
   { id: "naming", title: "이름분석", emoji: "✍️", img: "https://i.pinimg.com/736x/bc/7c/f6/bc7cf6c186ee2e763c4bd7230098eba3.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "👑 VIP 전용", priceBg: "#6d28d9" },
   { id: "full", title: "전체 사주분석", emoji: "🔮", img: "https://i.pinimg.com/736x/ae/de/ed/aedeed21b3fe364f8bb4c2f6f0356225.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
@@ -214,8 +214,7 @@ const FORTUNE_CATEGORIES = [
 
 function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
   return (
-    <section style={{ padding: "0 14px 28px" }}>
-      <div style={{ maxWidth: 480, margin: "0 auto" }}>
+    <div style={{ padding: "0 14px 28px", maxWidth: 480, margin: "0 auto" }}>
         <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 12px", textAlign: "center" }}>운세 선택</h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
@@ -246,8 +245,7 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
             </div>
           ))}
         </div>
-      </div>
-    </section>
+    </div>
   );
 }
 
