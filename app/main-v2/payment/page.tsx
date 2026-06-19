@@ -209,10 +209,10 @@ function PaymentInner() {
         <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 20, fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900 }}>💳 패키지 선택</h2>
 
         {/* 헤더 배너 */}
-        <div style={{ maxWidth: 1200, margin: "0 auto 30px", background: "rgba(0,0,0,0.55)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 12, padding: "20px 24px", textAlign: "center" }}>
-          <div style={{ fontSize: 32, marginBottom: 8 }}>🔓</div>
-          <h3 style={{ color: "#ffffff", fontSize: 18, fontWeight: 900, margin: "0 0 6px" }}>【전체 AI 심층 분석】</h3>
-          <p style={{ color: "#f5f5f5", fontSize: 13, margin: "0 0 4px" }}>운세를 완전히 해석해드립니다</p>
+        <div style={{ maxWidth: 1200, margin: "0 auto 30px", background: "linear-gradient(135deg, rgba(20,10,40,0.6), rgba(74,26,84,0.45))", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 16, padding: "26px 24px", textAlign: "center", boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
+          <div style={{ fontSize: 30, marginBottom: 10 }}>🔓</div>
+          <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 8px", letterSpacing: "0.5px" }}>전체 AI 심층 분석</h3>
+          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, margin: "0 0 6px" }}>운세를 완전히 해석해드립니다</p>
           <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&amp;보관함 포함</p>
         </div>
 
