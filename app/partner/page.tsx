@@ -123,9 +123,7 @@ export default function PartnerLanding() {
           <p style={{ color: "#999999", fontSize: 12, fontWeight: 600, margin: 0, lineHeight: 1.6 }}>
             <a href="/privacy" style={{ color: "#fbbf24", textDecoration: "none" }}>개인정보처리방침</a>
             {" | "}
-            <a href="/refund" style={{ color: "#fbbf24", textDecoration: "none" }}>환불정책</a>
-            {" | "}
-            <a href="/partner-policy" style={{ color: "#fbbf24", textDecoration: "none" }}>파트너정책</a>
+            <a href="/partner-policy" style={{ color: "#fbbf24", textDecoration: "none" }}>파트너정책(환불정책 포함)</a>
           </p>
         </footer>
       </div>
