@@ -378,9 +378,11 @@ export default function MainV2() {
       {/* 헤드라인 */}
       <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
         <h1 style={{ fontSize: 25, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px" }}>
-          <span style={{ background: "linear-gradient(135deg, #be185d, #8b5cf6, #6d28d9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>고양이가 읽는 나의 운명</span>
+          {[..."고양이가 읽는 나의 운명"].map((ch, i) => (
+            <span key={i} style={{ display: "inline-block", color: "#8b2f8f", animation: "waveGlow 2.4s ease-in-out infinite", animationDelay: `${i * 0.08}s` }}>{ch === " " ? " " : ch}</span>
+          ))}
         </h1>
-        <p style={{ fontSize: 13, color: "#7c5cab", fontWeight: 600, letterSpacing: "0.2px", margin: "0 0 12px" }}>당신의 운명을 AI가 풀어드립니다</p>
+        <p style={{ fontSize: 13, color: "#b45309", fontWeight: 600, letterSpacing: "0.2px", margin: "0 0 12px" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
           {[
             { text: "⚡ AI 정밀분석", color: "#6d28d9", bg: "linear-gradient(135deg, #f3e8ff, #ede9fe)", border: "rgba(109,40,217,0.25)" },
@@ -493,6 +495,10 @@ export default function MainV2() {
         @keyframes bannerKeyGlow {
           0%, 100% { text-shadow: 0 1px 8px rgba(0,0,0,0.7); }
           50%      { text-shadow: 0 1px 8px rgba(0,0,0,0.7), 0 0 14px currentColor, 0 0 4px rgba(255,255,255,0.8); }
+        }
+        @keyframes waveGlow {
+          0%, 100% { text-shadow: 0 0 2px rgba(236,72,153,0.2); color: #8b2f8f; }
+          50%      { text-shadow: 0 0 10px rgba(236,72,153,0.9), 0 0 4px rgba(255,255,255,0.7); color: #ec4899; }
         }
         ::-webkit-scrollbar { display: none; }
       `}</style>
