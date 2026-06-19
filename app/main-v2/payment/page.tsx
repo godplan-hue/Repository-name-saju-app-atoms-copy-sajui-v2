@@ -239,18 +239,21 @@ function PaymentInner() {
         <div id="packages-section" style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => {
             const wlBadge = !highlightWealthLove ? null
-              : pkg.id === "standard" ? "💰 재물운·연애운 포함 · 가장 저렴"
-              : pkg.id === "vip" ? "👑 전부 다 포함 · 최고급"
+              : pkg.id === "standard" ? { prefix: "💰 재물운·연애운 포함 · ", highlight: "가장 저렴" }
+              : pkg.id === "vip" ? { prefix: "👑 전부 다 포함 · ", highlight: "최고급" }
               : null;
             const cardBg = selectedPackage === pkg.name
               ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))"
               : wlBadge
-              ? "linear-gradient(135deg, rgba(124,58,237,0.55), rgba(168,85,247,0.42))"
+              ? "linear-gradient(135deg, rgba(139,92,246,0.4), rgba(168,85,247,0.3))"
               : "rgba(139,92,246,0.16)";
             return (
             <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: cardBg, backdropFilter: "blur(10px)", border: selectedPackage === pkg.name ? "2px solid #fbbf24" : wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 14, padding: 20, cursor: "pointer", transition: "all 0.3s", boxShadow: selectedPackage === pkg.name ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
               {wlBadge && (
-                <p style={{ color: "#ff69b4", fontSize: 11, fontWeight: 900, margin: "0 0 6px 0" }}>{wlBadge}</p>
+                <p style={{ fontSize: 11, fontWeight: 900, margin: "0 0 6px 0", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}>
+                  <span style={{ color: "#ff3b3b" }}>{wlBadge.prefix}</span>
+                  <span style={{ color: "#ffffff" }}>{wlBadge.highlight}</span>
+                </p>
               )}
               <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
               <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, margin: "0 0 8px 0", opacity: 0.85 }}>【심층 상세 분석】</p>
