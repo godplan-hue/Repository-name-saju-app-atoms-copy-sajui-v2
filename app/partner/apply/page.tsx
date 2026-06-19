@@ -26,7 +26,7 @@ export default function PartnerApply() {
         
         {/* 헤더 */}
         <div style={{ marginBottom: 40, textAlign: "center" }}>
-          <a href="/" style={{ display: "inline-block", background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", padding: "10px 16px", borderRadius: 8, fontWeight: 900, cursor: "pointer", marginBottom: 20, textDecoration: "none" }}>← 돌아가기</a>
+          <a href="/partner" style={{ display: "inline-block", background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", padding: "10px 16px", borderRadius: 8, fontWeight: 900, cursor: "pointer", marginBottom: 20, textDecoration: "none" }}>← 돌아가기</a>
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 900, marginBottom: 12, marginTop: 0 }}>파트너 등급 선택</h1>
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 0 }}>점운과 함께 수익을 창출하세요</p>
         </div>
@@ -37,7 +37,10 @@ export default function PartnerApply() {
             <div key={tier.value} style={{ background: "rgba(139,92,246,0.65)", border: "2px solid rgba(245,158,11,0.4)", borderRadius: 12, padding: 20, textAlign: "center", cursor: "pointer", transition: "all 0.3s", transform: selectedTier === tier.value ? "scale(1.05)" : "scale(1)" }} onClick={() => setSelectedTier(tier.value)}>
               <h2 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 16px 0" }}>{tier.name}</h2>
               <p style={{ color: "#f5f5f5", fontSize: 20, fontWeight: 900, margin: "0 0 12px 0" }}>{tier.fee}</p>
-              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 8px 0" }}>한도: {tier.month}</p>
+              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 8px 0" }}>
+                한도: {tier.month.split("(")[0]}
+                {tier.month.includes("(") && (<><br/><br/>({tier.month.split("(")[1]}</>)}
+              </p>
               <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: "0 0 16px 0" }}>사용료 {tier.revenue} 할인</p>
               <button onClick={() => handleApply(tier.value)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>가입하기</button>
             </div>
