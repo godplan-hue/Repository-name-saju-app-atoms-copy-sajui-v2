@@ -215,7 +215,11 @@ const FORTUNE_CATEGORIES = [
 function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
   return (
     <div style={{ padding: "0 14px 28px", maxWidth: 480, margin: "0 auto" }}>
-        <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 12px", textAlign: "center" }}>운세 선택</h2>
+        <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center", letterSpacing: "0.3px" }}>
+          <span style={{ color: "#d4af37" }}>✦ </span>
+          <span style={{ background: "linear-gradient(135deg, #be185d, #6d28d9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>운세 선택</span>
+          <span style={{ color: "#d4af37" }}> ✦</span>
+        </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
             <div
@@ -380,14 +384,14 @@ export default function MainV2() {
         <h1 style={{ fontSize: 25, fontWeight: 900, color: "#7c2d92", margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", animation: "waveGlow 2.4s ease-in-out infinite" }}>
           고양이가 읽는 나의 운명
         </h1>
-        <p style={{ fontSize: 13, color: "#b45309", fontWeight: 600, letterSpacing: "0.2px", margin: "0 0 12px" }}>당신의 운명을 AI가 풀어드립니다</p>
+        <p style={{ fontSize: 13, color: "#9d174d", fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
           {[
-            { text: "⚡ AI 정밀분석", color: "#6d28d9", bg: "linear-gradient(135deg, #f3e8ff, #ede9fe)", border: "rgba(109,40,217,0.25)" },
-            { text: "🔒 개인정보 즉시삭제", color: "#15803d", bg: "linear-gradient(135deg, #ecfdf5, #dcfce7)", border: "rgba(21,128,61,0.25)" },
-            { text: "⏱ 3초 완성", color: "#b45309", bg: "linear-gradient(135deg, #fffbeb, #fef3c7)", border: "rgba(180,83,9,0.25)" },
+            { text: "⚡ AI 정밀분석", bg: "linear-gradient(135deg, #6d28d9, #8b5cf6)" },
+            { text: "🔒 개인정보 즉시삭제", bg: "linear-gradient(135deg, #15803d, #16a34a)" },
+            { text: "⏱ 3초 완성", bg: "linear-gradient(135deg, #b45309, #d97706)" },
           ].map(b => (
-            <span key={b.text} style={{ fontSize: 11, fontWeight: 700, color: b.color, background: b.bg, border: `1px solid ${b.border}`, borderRadius: 20, padding: "5px 11px", boxShadow: "0 2px 6px rgba(0,0,0,0.08)" }}>{b.text}</span>
+            <span key={b.text} style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: b.bg, borderRadius: 20, padding: "6px 12px", boxShadow: "0 3px 8px rgba(0,0,0,0.15)" }}>{b.text}</span>
           ))}
         </div>
       </section>
