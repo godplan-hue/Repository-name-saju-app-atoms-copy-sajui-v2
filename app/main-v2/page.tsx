@@ -386,7 +386,7 @@ export default function MainV2() {
         const SELECT_ROUTE_IDS = new Set(["wealth", "love"]);
         if (FREE_ROUTE_IDS.has(id)) router.push(user ? "/main-v2/profile" : "/main-v2/login");
         else if (SELECT_ROUTE_IDS.has(id)) router.push("/main-v2/payment?scrollTo=select");
-        else router.push("/main-v2/payment");
+        else router.push("/main-v2/payment?scrollTo=packages");
       }} />
 
       {/* 히어로 */}

@@ -93,13 +93,14 @@ function PaymentInner() {
     }
   }, [searchParams]);
 
-  // 재물운/연애운 배너로 들어온 경우 — 소개문구 다 안 보고 바로 패키지 비교 카드부터 보이게 스크롤
+  // 재물운/연애운 배너 또는 그리드의 패키지 전용 항목(궁합/이름/전체사주)으로 들어온 경우 —
+  // 소개문구 다 안 보고 바로 패키지 카드부터 보이게 스크롤
   useEffect(() => {
-    if (highlightWealthLove) {
+    if (highlightWealthLove || searchParams.get("scrollTo") === "packages") {
       const el = document.getElementById("packages-section");
       if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     }
-  }, [highlightWealthLove]);
+  }, [highlightWealthLove, searchParams]);
 
   const packages = [
     {
