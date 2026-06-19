@@ -91,7 +91,7 @@ export default function Privacy() {
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20 }}>
               <li>• 고객의 명시적 동의</li>
               <li>• 법령에 의한 요청 (경찰, 검찰, 법원)</li>
-              <li>• 결제 처리를 위한 결제 게이트웨이 (Toss 등)</li>
+              <li>• 결제 처리를 위한 결제대행사(PG사) 연동 시</li>
             </ul>
           </section>
 
