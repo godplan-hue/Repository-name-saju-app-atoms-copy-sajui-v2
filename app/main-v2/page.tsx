@@ -421,13 +421,21 @@ export default function MainV2() {
       </div>
 
       {/* 히어로 */}
-      <section style={{ padding: "24px 16px 20px", textAlign: "center" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(236,72,153,0.1)", borderRadius: 20, marginBottom: 12 }}>
-          <span style={{ fontSize: 12 }}>🌸</span>
-          <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>오늘의 무료사주</span>
+      <section style={{ padding: "24px 16px 20px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.1, marginBottom: 12, background: "linear-gradient(135deg, #be185d, #8b5cf6, #6d28d9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "bigGlow 2.4s ease-in-out infinite" }}>
+            <span style={{ display: "inline-block", transform: "rotate(-8deg) translateX(-4px)" }}>점</span>
+            <br/>
+            <span style={{ display: "inline-block", transform: "rotate(6deg) translateX(8px)" }}>운</span>
+          </div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(236,72,153,0.1)", borderRadius: 20 }}>
+            <span style={{ fontSize: 12 }}>🌸</span>
+            <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>오늘의 무료사주</span>
+          </div>
         </div>
         {/* 마법사 고양이 이미지 */}
-        <div style={{ position: "relative", display: "inline-block", marginBottom: 8 }}>
+        <div style={{ position: "relative", display: "inline-block", flexShrink: 0 }}>
           <img
             src="https://i.pinimg.com/736x/ac/41/34/ac4134d338bc8fab68537a589fecb08b.jpg"
             alt="사주 마법사 고양이"
@@ -445,6 +453,7 @@ export default function MainV2() {
             padding: "4px 10px", borderRadius: 20,
             boxShadow: "0 3px 12px rgba(139,92,246,0.4)",
           }}>✨ AI 사주 점운</div>
+        </div>
         </div>
       </section>
 
@@ -501,6 +510,10 @@ export default function MainV2() {
         @keyframes waveGlow {
           0%, 100% { text-shadow: 0 0 2px rgba(236,72,153,0.2); color: #8b2f8f; }
           50%      { text-shadow: 0 0 10px rgba(236,72,153,0.9), 0 0 4px rgba(255,255,255,0.7); color: #ec4899; }
+        }
+        @keyframes bigGlow {
+          0%, 100% { filter: drop-shadow(0 0 2px rgba(236,72,153,0.3)); }
+          50%      { filter: drop-shadow(0 0 16px rgba(236,72,153,0.85)) drop-shadow(0 0 5px rgba(255,255,255,0.6)); }
         }
         @keyframes starTwinkle {
           0%, 100% { opacity: 0.5; transform: scale(0.85); }
