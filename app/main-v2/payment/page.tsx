@@ -93,6 +93,14 @@ function PaymentInner() {
     }
   }, [searchParams]);
 
+  // 재물운/연애운 배너로 들어온 경우 — 소개문구 다 안 보고 바로 패키지 비교 카드부터 보이게 스크롤
+  useEffect(() => {
+    if (highlightWealthLove) {
+      const el = document.getElementById("packages-section");
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    }
+  }, [highlightWealthLove]);
+
   const packages = [
     {
       id: "basic",
@@ -208,14 +216,14 @@ function PaymentInner() {
           <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&amp;보관함 포함</p>
         </div>
 
-        {/* 파트너 할인코드 */}
+        {/* 할인코드(일반고객용 — 파트너 사용료와는 무관) */}
         <div style={{ maxWidth: 480, margin: "0 auto 30px" }}>
           <div style={{ display: "flex", gap: 8 }}>
             <input
               value={discountInput}
               onChange={e => setDiscountInput(e.target.value)}
               onKeyDown={e => e.key === "Enter" && applyDiscountCode()}
-              placeholder="🎟️ 파트너 할인코드 입력(선택)"
+              placeholder="🎟️ 할인코드 입력(선택)"
               style={{ flex: 1, padding: "10px 14px", borderRadius: 10, border: "1px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 13, fontWeight: 700, outline: "none" }}
             />
             <button onClick={applyDiscountCode} style={{ padding: "10px 18px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a0f2e", fontWeight: 900, fontSize: 13, cursor: "pointer" }}>적용</button>
@@ -228,7 +236,7 @@ function PaymentInner() {
           )}
         </div>
 
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
+        <div id="packages-section" style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => {
             const wlBadge = !highlightWealthLove ? null
               : pkg.id === "standard" ? "💰 재물운·연애운 포함 · 가장 저렴"
