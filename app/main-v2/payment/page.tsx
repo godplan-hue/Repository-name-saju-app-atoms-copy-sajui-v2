@@ -243,7 +243,7 @@ function PaymentInner() {
               : pkg.id === "vip" ? { prefix: "👑 전부 다 포함 · ", highlight: "최고급" }
               : null;
             const cardBg = pkg.id === "vip" && wlBadge
-              ? "linear-gradient(135deg, rgba(91,33,182,0.68), rgba(124,58,237,0.58))"
+              ? "linear-gradient(135deg, rgba(84,20,105,0.55), rgba(122,38,145,0.45))"
               : wlBadge
               ? "linear-gradient(135deg, rgba(139,92,246,0.55), rgba(168,85,247,0.42))"
               : selectedPackage === pkg.name
