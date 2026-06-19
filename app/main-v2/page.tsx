@@ -389,9 +389,10 @@ export default function MainV2() {
 
       {/* 가격 신뢰 후킹 문구 */}
       <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
-        <div style={{ background: "linear-gradient(135deg, #ffffff, #fdf4ff)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 14, padding: "16px 18px", textAlign: "center", boxShadow: "0 4px 18px rgba(236,72,153,0.12)" }}>
-          <p style={{ fontSize: 13, fontWeight: 800, color: "#ec4899", margin: "0 0 5px" }}>혹시 소문 듣고 오셨나요?</p>
-          <p style={{ fontSize: 12, fontWeight: 700, color: "#4b5563", margin: 0, lineHeight: 1.5 }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
+        <div style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #ffffff, #fdf4ff)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 14, padding: "16px 18px", textAlign: "center", boxShadow: "0 4px 18px rgba(236,72,153,0.12)" }}>
+          <div style={{ position: "absolute", top: 0, left: 0, width: "40%", height: "200%", background: "linear-gradient(100deg, transparent, rgba(255,255,255,0.85), transparent)", animation: "shimmerSweep 3.2s ease-in-out infinite", pointerEvents: "none" }} />
+          <p style={{ position: "relative", fontSize: 13, fontWeight: 800, color: "#ec4899", margin: "0 0 5px" }}>혹시 소문 듣고 오셨나요?</p>
+          <p style={{ position: "relative", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.5, background: "linear-gradient(90deg, #4b5563, #fbbf24, #4b5563)", backgroundSize: "200% auto", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "textShine 3.2s linear infinite" }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
         </div>
       </div>
 
@@ -468,6 +469,15 @@ export default function MainV2() {
         @keyframes catFloat {
           0%,100% { transform: translateY(0px) rotate(-1deg); }
           50%      { transform: translateY(-10px) rotate(1deg); }
+        }
+        @keyframes shimmerSweep {
+          0%   { transform: translateX(-150%) skewX(-15deg); }
+          50%  { transform: translateX(350%) skewX(-15deg); }
+          100% { transform: translateX(350%) skewX(-15deg); }
+        }
+        @keyframes textShine {
+          0%   { background-position: 200% center; }
+          100% { background-position: -200% center; }
         }
         ::-webkit-scrollbar { display: none; }
       `}</style>
