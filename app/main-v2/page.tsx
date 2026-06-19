@@ -424,7 +424,7 @@ export default function MainV2() {
       <section style={{ padding: "24px 16px 20px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, maxWidth: 480, margin: "0 auto" }}>
         <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.1, marginBottom: 12, background: "linear-gradient(135deg, #be185d, #8b5cf6, #6d28d9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "bigGlow 2.4s ease-in-out infinite" }}>
+          <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.1, marginBottom: 12, color: "#8b2f8f", animation: "bigGlow 2.4s ease-in-out infinite" }}>
             <span style={{ display: "inline-block", transform: "rotate(-8deg) translateX(-4px)" }}>점</span>
             <br/>
             <span style={{ display: "inline-block", transform: "rotate(6deg) translateX(8px)" }}>운</span>
