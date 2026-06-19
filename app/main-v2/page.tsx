@@ -381,7 +381,7 @@ export default function MainV2() {
           고양이가 읽는{" "}
           <span style={{ background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>나의 운명</span>
         </h1>
-        <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 10px" }}>AI로 운세를 분석해 드립니다</p>
+        <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 10px" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
           {["⚡ AI 정밀분석", "🔒 개인정보 즉시삭제", "⏱ 3초 완성"].map(b => (
             <span key={b} style={{ fontSize: 11, fontWeight: 700, color: "#ec4899", background: "#fdf2f8", border: "1px solid rgba(236,72,153,0.2)", borderRadius: 20, padding: "5px 10px" }}>{b}</span>
