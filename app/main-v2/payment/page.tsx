@@ -242,10 +242,12 @@ function PaymentInner() {
               : pkg.id === "standard" ? { prefix: "💰 재물운·연애운 포함 · ", highlight: "가장 저렴" }
               : pkg.id === "vip" ? { prefix: "👑 전부 다 포함 · ", highlight: "최고급" }
               : null;
-            const cardBg = selectedPackage === pkg.name
-              ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))"
+            const cardBg = pkg.id === "vip" && wlBadge
+              ? "linear-gradient(135deg, rgba(91,33,182,0.68), rgba(124,58,237,0.58))"
               : wlBadge
-              ? "linear-gradient(135deg, rgba(139,92,246,0.4), rgba(168,85,247,0.3))"
+              ? "linear-gradient(135deg, rgba(139,92,246,0.55), rgba(168,85,247,0.42))"
+              : selectedPackage === pkg.name
+              ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))"
               : "rgba(139,92,246,0.16)";
             return (
             <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: cardBg, backdropFilter: "blur(10px)", border: selectedPackage === pkg.name ? "2px solid #fbbf24" : wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 14, padding: 20, cursor: "pointer", transition: "all 0.3s", boxShadow: selectedPackage === pkg.name ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
