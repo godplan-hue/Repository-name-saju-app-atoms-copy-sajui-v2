@@ -382,8 +382,12 @@ export default function MainV2() {
         </h1>
         <p style={{ fontSize: 13, color: "#7c5cab", fontWeight: 600, letterSpacing: "0.2px", margin: "0 0 12px" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
-          {["⚡ AI 정밀분석", "🔒 개인정보 즉시삭제", "⏱ 3초 완성"].map(b => (
-            <span key={b} style={{ fontSize: 11, fontWeight: 700, color: "#92278f", background: "linear-gradient(135deg, #fdf2f8, #f3e8ff)", border: "1px solid rgba(139,92,246,0.25)", borderRadius: 20, padding: "5px 11px", boxShadow: "0 2px 6px rgba(139,92,246,0.12)" }}>{b}</span>
+          {[
+            { text: "⚡ AI 정밀분석", color: "#6d28d9", bg: "linear-gradient(135deg, #f3e8ff, #ede9fe)", border: "rgba(109,40,217,0.25)" },
+            { text: "🔒 개인정보 즉시삭제", color: "#15803d", bg: "linear-gradient(135deg, #ecfdf5, #dcfce7)", border: "rgba(21,128,61,0.25)" },
+            { text: "⏱ 3초 완성", color: "#b45309", bg: "linear-gradient(135deg, #fffbeb, #fef3c7)", border: "rgba(180,83,9,0.25)" },
+          ].map(b => (
+            <span key={b.text} style={{ fontSize: 11, fontWeight: 700, color: b.color, background: b.bg, border: `1px solid ${b.border}`, borderRadius: 20, padding: "5px 11px", boxShadow: "0 2px 6px rgba(0,0,0,0.08)" }}>{b.text}</span>
           ))}
         </div>
       </section>
