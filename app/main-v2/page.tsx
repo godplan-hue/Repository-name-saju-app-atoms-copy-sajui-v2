@@ -373,7 +373,7 @@ export default function MainV2() {
       </header>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider onStart={route => router.push(route === "package" ? "/main-v2/payment" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
+      <BannerSlider onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
 
       {/* 운세 선택 — 8개 박스 그리드
           가벼운 입문용(올해운세/월별운세/건강운)은 무료 체험으로,

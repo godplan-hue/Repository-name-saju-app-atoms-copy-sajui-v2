@@ -20,8 +20,11 @@ export default function Payment() {
 function PaymentInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [selectedPackage, setSelectedPackage] = useState("기본 분석");
-  const [selectedFeatures, setSelectedFeatures] = useState(["yearlyLuck", "monthlyLuck"]);
+  // 재물운/연애운 배너로 들어온 경우 — "기본분석"(재물운/연애운 미포함)이 아니라
+  // 그 둘이 실제로 들어있는 가장 싼 패키지(베이직)를 기본 선택값으로 보여줌
+  const highlightWealthLove = searchParams.get("highlight") === "wealthlove";
+  const [selectedPackage, setSelectedPackage] = useState(highlightWealthLove ? "베이직" : "기본 분석");
+  const [selectedFeatures, setSelectedFeatures] = useState(highlightWealthLove ? ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"] : ["yearlyLuck", "monthlyLuck"]);
   // 할인코드 — 관리자가 원하는 손님에게만 골라서 주는 프로모션 코드(파트너와는 무관)
   const [discountInput, setDiscountInput] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<PromoCode | null>(null);
@@ -226,8 +229,16 @@ function PaymentInner() {
         </div>
 
         <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
-          {packages.map(pkg => (
-            <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: selectedPackage === pkg.name ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))" : "rgba(139,92,246,0.16)", backdropFilter: "blur(10px)", border: selectedPackage === pkg.name ? "2px solid #fbbf24" : "1px solid rgba(196,181,253,0.45)", borderRadius: 14, padding: 20, cursor: "pointer", transition: "all 0.3s", boxShadow: selectedPackage === pkg.name ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
+          {packages.map(pkg => {
+            const wlBadge = !highlightWealthLove ? null
+              : pkg.id === "standard" ? "💰 재물운·연애운 포함 · 가장 저렴"
+              : pkg.id === "vip" ? "👑 전부 다 포함 · 최고급"
+              : null;
+            return (
+            <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: selectedPackage === pkg.name ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))" : "rgba(139,92,246,0.16)", backdropFilter: "blur(10px)", border: selectedPackage === pkg.name ? "2px solid #fbbf24" : wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 14, padding: 20, cursor: "pointer", transition: "all 0.3s", boxShadow: selectedPackage === pkg.name ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
+              {wlBadge && (
+                <p style={{ color: "#ff69b4", fontSize: 11, fontWeight: 900, margin: "0 0 6px 0" }}>{wlBadge}</p>
+              )}
               <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
               <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, margin: "0 0 8px 0", opacity: 0.85 }}>【심층 상세 분석】</p>
               {appliedDiscount ? (
@@ -242,7 +253,8 @@ function PaymentInner() {
               <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: "0 0 6px 0" }}>🎯 {pkg.count}개 운세</p>
               <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 700, margin: 0 }}>📄 {(pkg as any).chars}</p>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <div style={{ maxWidth: 1000, margin: "0 auto 40px", textAlign: "center" }}>
