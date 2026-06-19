@@ -66,8 +66,7 @@ export default function Home() {
 
         <section style={{ padding: "50px 20px 30px", textAlign: "center" }}>
           <div style={{ display: "inline-block", padding: "12px 24px", borderRadius: 999, background: "rgba(139,92,246,0.6)", border: "1px solid rgba(245,158,11,0.8)", color: "#f5f5f5", fontSize: 13, fontWeight: 700, marginBottom: 16 }}>★★★★★ AI가 정밀하게 읽어내는 사주 분석 엔진</div>
-          <div style={{ width: 100, height: 100, margin: "0 auto 20px", borderRadius: "12px", backgroundImage: "url('/b17b07628f3f401ea692dbd75575ba0f.webp')", backgroundSize: "cover", backgroundPosition: "center", border: "2px solid rgba(245,158,11,0.5)", boxShadow: "0 0 50px rgba(245,158,11,0.3)", transform: "rotate(15deg)" }} />
-          <h2 style={{ fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 900, lineHeight: 1.3, margin: "0 auto 12px", color: "#d8c7ff" }}>당신의 운명을<br />AI가 풀어드립니다</h2>
+          <h2 style={{ fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 900, lineHeight: 1.3, margin: "20px auto 12px", color: "#d8c7ff" }}>당신의 운명을<br />AI가 풀어드립니다</h2>
           <p style={{ color: "#f5f5f5", fontSize: "clamp(13px, 2.5vw, 15px)", fontWeight: 700, lineHeight: 1.6, marginBottom: 14 }}>생년월일만 입력하면 AI가 사주팔자를 정밀 분석하여<br />총운, 재물운, 연애운, 건강운, 직업운을 알려드립니다</p>
           <div style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, marginBottom: 14 }}>⏱ 3초면 완료 · 회원가입 불필요 · 100% 무료</div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
