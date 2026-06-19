@@ -306,7 +306,7 @@ function PaymentInner() {
           <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
             📄 {currentPackage?.chars ?? "전문가급 심층 분석"}
           </p>
-          <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1, marginBottom: 12 }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
+          <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, rgba(251,191,36,0.85), rgba(124,58,237,0.8))", backdropFilter: "blur(8px)", color: "white", border: "1px solid rgba(251,191,36,0.5)", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1, marginBottom: 12, boxShadow: "0 8px 24px rgba(251,191,36,0.25)" }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
 
           <a href="/main-v2" style={{ display: "inline-block", padding: 12, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textDecoration: "none" }}>
             ← 돌아가기
