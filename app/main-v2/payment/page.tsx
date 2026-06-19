@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 interface PromoCode {
   code: string;
@@ -10,6 +10,14 @@ interface PromoCode {
 }
 
 export default function Payment() {
+  return (
+    <Suspense fallback={null}>
+      <PaymentInner />
+    </Suspense>
+  );
+}
+
+function PaymentInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedPackage, setSelectedPackage] = useState("기본 분석");

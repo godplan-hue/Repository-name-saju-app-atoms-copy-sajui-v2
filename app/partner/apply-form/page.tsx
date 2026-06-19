@@ -1,9 +1,17 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 
 export default function PartnerApplyForm() {
+  return (
+    <Suspense fallback={null}>
+      <PartnerApplyFormInner />
+    </Suspense>
+  );
+}
+
+function PartnerApplyFormInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tier = searchParams.get("tier") || "silver";

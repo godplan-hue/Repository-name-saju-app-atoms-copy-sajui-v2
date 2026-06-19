@@ -3,7 +3,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
 const CHARS_MAP: Record<number, string> = {
   30: "전문가급 심층 분석 포함",
@@ -15,6 +15,14 @@ const CHARS_MAP: Record<number, string> = {
 const PKG_NAMES = ["기본 분석", "베이직", "프리미엄", "VIP 커플팩"];
 
 export default function PaymentComplete() {
+  return (
+    <Suspense fallback={null}>
+      <PaymentCompleteInner />
+    </Suspense>
+  );
+}
+
+function PaymentCompleteInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [packageName, setPackageName] = useState("");

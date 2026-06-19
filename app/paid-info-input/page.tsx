@@ -1,9 +1,17 @@
 ﻿"use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 
 export default function PaidInfoInput() {
+  return (
+    <Suspense fallback={null}>
+      <PaidInfoInputInner />
+    </Suspense>
+  );
+}
+
+function PaidInfoInputInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [name, setName] = useState("");
