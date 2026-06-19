@@ -375,6 +375,15 @@ export default function MainV2() {
         </div>
       </header>
 
+      {/* 헤드라인 */}
+      <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
+        <h1 style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", lineHeight: 1.3 }}>
+          고양이가 읽는{" "}
+          <span style={{ background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>나의 운명</span>
+        </h1>
+        <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>AI로 운세를 분석해 드립니다</p>
+      </section>
+
       {/* 슬라이드 배너 */}
       <BannerSlider onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
 
@@ -400,7 +409,7 @@ export default function MainV2() {
       </div>
 
       {/* 히어로 */}
-      <section style={{ padding: "24px 16px 0", textAlign: "center" }}>
+      <section style={{ padding: "24px 16px 20px", textAlign: "center" }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(236,72,153,0.1)", borderRadius: 20, marginBottom: 12 }}>
           <span style={{ fontSize: 12 }}>🌸</span>
           <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>오늘의 무료사주</span>
@@ -425,17 +434,6 @@ export default function MainV2() {
             boxShadow: "0 3px 12px rgba(139,92,246,0.4)",
           }}>✨ AI 사주 점운</div>
         </div>
-
-        <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", lineHeight: 1.3 }}>
-          고양이가 읽는{" "}
-          <span style={{ background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>나의 운명</span>
-        </h1>
-        <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 4px" }}>
-          고양이가 읽는 나의 운명
-        </p>
-        <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 16px" }}>
-          AI로 운세를 분석해 드립니다
-        </p>
       </section>
 
       {/* 하단 CTA */}
