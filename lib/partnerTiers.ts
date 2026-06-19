@@ -4,7 +4,7 @@
 // 파트너가 우리 도구로 분석을 생성하는 그 순간, 우리에게 사용료를 즉시 냄.
 // 그래서 한 달 모아서 정산/지급하는 절차가 필요 없음(파트너 -> 우리, 그 자리에서 끝).
 
-export type PartnerTierId = "free" | "silver" | "gold" | "platinum" | "diamond";
+export type PartnerTierId = "free" | "silver" | "gold" | "diamond";
 
 export interface PartnerTier {
   id: PartnerTierId;
@@ -16,10 +16,9 @@ export interface PartnerTier {
 
 export const PARTNER_TIERS: PartnerTier[] = [
   { id: "free", name: "무료", annualFee: 0, monthlyLimit: 50, feeDiscountPercent: 30 },
-  { id: "silver", name: "실버", annualFee: 150000, monthlyLimit: 150, feeDiscountPercent: 40 },
-  { id: "gold", name: "골드", annualFee: 350000, monthlyLimit: 300, feeDiscountPercent: 45 },
-  { id: "platinum", name: "플래티넘", annualFee: 1000000, monthlyLimit: 600, feeDiscountPercent: 55 },
-  { id: "diamond", name: "다이아", annualFee: 2000000, monthlyLimit: null, feeDiscountPercent: 70 },
+  { id: "silver", name: "실버", annualFee: 150000, monthlyLimit: 150, feeDiscountPercent: 45 },
+  { id: "gold", name: "골드", annualFee: 350000, monthlyLimit: 300, feeDiscountPercent: 55 },
+  { id: "diamond", name: "다이아", annualFee: 1000000, monthlyLimit: null, feeDiscountPercent: 70 },
 ];
 
 export function getPartnerTier(id: string): PartnerTier {

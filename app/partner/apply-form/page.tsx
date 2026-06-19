@@ -27,7 +27,6 @@ function PartnerApplyFormInner() {
     free: { name: "무료" },
     silver: { name: "실버" },
     gold: { name: "골드" },
-    platinum: { name: "플래티넘" },
     diamond: { name: "다이아" }
   };
 

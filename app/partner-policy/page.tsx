@@ -31,10 +31,9 @@ export default function PartnerPolicy() {
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>2. 등급별 혜택</h2>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
               <li>• 무료: 연회비 ₩0 / 월 50건(연 최대 600건) 한도 / 사용료 30% 할인</li>
-              <li>• 실버: 연회비 ₩150,000 / 월 150건(연 최대 1,800건) 한도 / 사용료 40% 할인</li>
-              <li>• 골드: 연회비 ₩350,000 / 월 300건(연 최대 3,600건) 한도 / 사용료 45% 할인</li>
-              <li>• 플래티넘: 연회비 ₩1,000,000 / 월 600건(연 최대 7,200건) 한도 / 사용료 55% 할인</li>
-              <li>• 다이아: 연회비 ₩2,000,000 / 무제한 / 사용료 70% 할인</li>
+              <li>• 실버: 연회비 ₩150,000 / 월 150건(연 최대 1,800건) 한도 / 사용료 45% 할인</li>
+              <li>• 골드: 연회비 ₩350,000 / 월 300건(연 최대 3,600건) 한도 / 사용료 55% 할인</li>
+              <li>• 다이아: 연회비 ₩1,000,000 / 무제한 / 사용료 70% 할인</li>
             </ul>
             <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 0 }}>※ "사용료 할인"은 분석 1건당 정가에서 등급별로 할인된 가격만 내면 된다는 뜻입니다(예: 다이아는 정가의 30%만 부가세 포함하여 지불).</p>
           </section>

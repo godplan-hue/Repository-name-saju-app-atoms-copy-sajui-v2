@@ -9,10 +9,9 @@ export default function PartnerApply() {
 
   const tiers = [
     { name: "무료", fee: "₩0", month: "월 50건(연 최대 600건)", revenue: "30%", value: "free" },
-    { name: "실버", fee: "₩150,000", month: "월 150건(연 최대 1,800건)", revenue: "40%", value: "silver" },
-    { name: "골드", fee: "₩350,000", month: "월 300건(연 최대 3,600건)", revenue: "45%", value: "gold" },
-    { name: "플래티넘", fee: "₩1,000,000", month: "월 600건(연 최대 7,200건)", revenue: "55%", value: "platinum" },
-    { name: "다이아", fee: "₩2,000,000", month: "무제한", revenue: "70%", value: "diamond" }
+    { name: "실버", fee: "₩150,000", month: "월 150건(연 최대 1,800건)", revenue: "45%", value: "silver" },
+    { name: "골드", fee: "₩350,000", month: "월 300건(연 최대 3,600건)", revenue: "55%", value: "gold" },
+    { name: "다이아", fee: "₩1,000,000", month: "무제한", revenue: "70%", value: "diamond" }
   ];
 
   const handleApply = (tier: string) => {

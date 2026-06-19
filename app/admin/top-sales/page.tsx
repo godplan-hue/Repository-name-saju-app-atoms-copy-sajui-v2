@@ -11,7 +11,7 @@ interface TopSalesRow {
   tier: string;
 }
 
-const TIER_NAMES: Record<string, string> = { free: "무료", silver: "실버", gold: "골드", platinum: "플래티넘", diamond: "다이아" };
+const TIER_NAMES: Record<string, string> = { free: "무료", silver: "실버", gold: "골드", diamond: "다이아" };
 const MEDALS: Record<number, string> = { 1: "🥇", 2: "🥈", 3: "🥉" };
 
 export default function AdminTopSales() {
