@@ -1,10 +1,31 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+interface TopSalesRow {
+  rank: number;
+  partnerId: string;
+  partnerName: string;
+  analysisCount: number;
+  revenue: number;
+  tier: string;
+}
+
+const TIER_NAMES: Record<string, string> = { free: "무료", silver: "실버", gold: "골드", platinum: "플래티넘", diamond: "다이아" };
+const MEDALS: Record<number, string> = { 1: "🥇", 2: "🥈", 3: "🥉" };
+
 export default function AdminTopSales() {
   const router = useRouter();
+  const [topSales, setTopSales] = useState<TopSalesRow[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    if (!localStorage.getItem("adminId")) router.push("/admin/login");
+    const adminId = localStorage.getItem("adminId");
+    if (!adminId) { router.push("/admin/login"); return; }
+    fetch("/api/admin/top-sales", { headers: { "x-admin-id": adminId } })
+      .then((res) => res.json())
+      .then((data) => setTopSales(data.topSales || []))
+      .finally(() => setLoading(false));
   }, [router]);
   const handleLogout = () => {
     localStorage.removeItem("adminId");
@@ -38,13 +59,21 @@ export default function AdminTopSales() {
               </tr>
             </thead>
             <tbody>
-              <tr style={{ borderBottom: "1px solid #eee" }}>
-                <td style={{ padding: "12px", color: "#666", fontWeight: 700 }}>🥇 1등</td>
-                <td style={{ padding: "12px", color: "#666" }}>테스트파트너</td>
-                <td style={{ padding: "12px", color: "#666" }}>0</td>
-                <td style={{ padding: "12px", color: "#666" }}>₩0</td>
-                <td style={{ padding: "12px", color: "#666" }}>실버</td>
-              </tr>
+              {loading ? (
+                <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+              ) : topSales.length === 0 ? (
+                <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 분석 실적이 없습니다.</td></tr>
+              ) : (
+                topSales.map((p) => (
+                  <tr key={p.partnerId} style={{ borderBottom: "1px solid #eee" }}>
+                    <td style={{ padding: "12px", color: "#666", fontWeight: 700 }}>{MEDALS[p.rank] || ""} {p.rank}등</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{p.partnerName}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{p.analysisCount}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>₩{p.revenue.toLocaleString()}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{TIER_NAMES[p.tier] || p.tier}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

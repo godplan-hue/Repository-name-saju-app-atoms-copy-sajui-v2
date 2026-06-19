@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/firebase";
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,18 +12,30 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({
-      topSales: [
-        {
-          rank: 1,
-          partnerId: "partner1",
-          partnerName: "테스트파트너",
-          analysisCount: 0,
-          revenue: 0,
-          tier: "실버",
-        },
-      ],
-    });
+    const [partnersSnap, archiveSnap] = await Promise.all([
+      db.ref("partners").once("value"),
+      db.ref("partnerArchive").once("value"),
+    ]);
+    const partners = partnersSnap.val() || {};
+    const archive = archiveSnap.val() || {};
+
+    const topSales = Object.entries(partners)
+      .map(([partnerId, value]) => {
+        const p = value as any;
+        const entries = Object.values(archive[partnerId] || {}) as Array<{ charge?: { totalCharge: number } }>;
+        return {
+          partnerId,
+          partnerName: p.name,
+          analysisCount: entries.length,
+          revenue: entries.reduce((sum, e) => sum + (e.charge?.totalCharge || 0), 0),
+          tier: p.tier || "free",
+        };
+      })
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 10)
+      .map((p, i) => ({ rank: i + 1, ...p }));
+
+    return NextResponse.json({ topSales });
   } catch (error) {
     console.error("Top sales error:", error);
     return NextResponse.json(

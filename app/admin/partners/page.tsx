@@ -1,10 +1,30 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+interface PartnerRow {
+  id: string;
+  name: string;
+  email: string;
+  tier: string;
+  analysisCount: number;
+  revenue: number;
+}
+
+const TIER_NAMES: Record<string, string> = { free: "무료", silver: "실버", gold: "골드", platinum: "플래티넘", diamond: "다이아" };
+
 export default function AdminPartners() {
   const router = useRouter();
+  const [partners, setPartners] = useState<PartnerRow[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    if (!localStorage.getItem("adminId")) router.push("/admin/login");
+    const adminId = localStorage.getItem("adminId");
+    if (!adminId) { router.push("/admin/login"); return; }
+    fetch("/api/admin/partners", { headers: { "x-admin-id": adminId } })
+      .then((res) => res.json())
+      .then((data) => setPartners(data.partners || []))
+      .finally(() => setLoading(false));
   }, [router]);
   const handleLogout = () => {
     localStorage.removeItem("adminId");
@@ -38,13 +58,21 @@ export default function AdminPartners() {
               </tr>
             </thead>
             <tbody>
-              <tr style={{ borderBottom: "1px solid #eee" }}>
-                <td style={{ padding: "12px", color: "#666" }}>테스트파트너</td>
-                <td style={{ padding: "12px", color: "#666" }}>test@partner.com</td>
-                <td style={{ padding: "12px", color: "#666" }}>실버</td>
-                <td style={{ padding: "12px", color: "#666" }}>0</td>
-                <td style={{ padding: "12px", color: "#666" }}>₩0</td>
-              </tr>
+              {loading ? (
+                <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+              ) : partners.length === 0 ? (
+                <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#999" }}>가입된 파트너가 없습니다.</td></tr>
+              ) : (
+                partners.map((p) => (
+                  <tr key={p.id} style={{ borderBottom: "1px solid #eee" }}>
+                    <td style={{ padding: "12px", color: "#666" }}>{p.name}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{p.email}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{TIER_NAMES[p.tier] || p.tier}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{p.analysisCount}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>₩{p.revenue.toLocaleString()}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

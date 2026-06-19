@@ -3,16 +3,30 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+interface DashboardStats {
+  totalPartners: number;
+  monthlyRevenue: number;
+  totalAnalysis: number;
+}
+
 export default function AdminDashboard() {
   const router = useRouter();
   const [adminName, setAdminName] = useState("");
+  const [stats, setStats] = useState<DashboardStats>({ totalPartners: 0, monthlyRevenue: 0, totalAnalysis: 0 });
 
   useEffect(() => {
+    const adminId = localStorage.getItem("adminId");
     const name = localStorage.getItem("adminName");
-    if (!name) {
+    if (!adminId) {
       router.push("/admin/login");
+      return;
     }
     setAdminName(name || "");
+    fetch("/api/admin/dashboard", { headers: { "x-admin-id": adminId } })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.totalPartners !== undefined) setStats(data);
+      });
   }, [router]);
 
   const handleLogout = () => {
@@ -41,15 +55,15 @@ export default function AdminDashboard() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
             <div style={{ background: "linear-gradient(135deg, #667eea, #764ba2)", padding: "30px", borderRadius: "12px", color: "white" }}>
               <div style={{ fontSize: "12px", opacity: 0.8, marginBottom: "10px" }}>파트너</div>
-              <div style={{ fontSize: "36px", fontWeight: 900 }}>0</div>
+              <div style={{ fontSize: "36px", fontWeight: 900 }}>{stats.totalPartners}</div>
             </div>
             <div style={{ background: "linear-gradient(135deg, #f093fb, #f5576c)", padding: "30px", borderRadius: "12px", color: "white" }}>
               <div style={{ fontSize: "12px", opacity: 0.8, marginBottom: "10px" }}>이번달 매출</div>
-              <div style={{ fontSize: "36px", fontWeight: 900 }}>₩0</div>
+              <div style={{ fontSize: "36px", fontWeight: 900 }}>₩{stats.monthlyRevenue.toLocaleString()}</div>
             </div>
             <div style={{ background: "linear-gradient(135deg, #4facfe, #00f2fe)", padding: "30px", borderRadius: "12px", color: "white" }}>
               <div style={{ fontSize: "12px", opacity: 0.8, marginBottom: "10px" }}>분석 건수</div>
-              <div style={{ fontSize: "36px", fontWeight: 900 }}>0</div>
+              <div style={{ fontSize: "36px", fontWeight: 900 }}>{stats.totalAnalysis}</div>
             </div>
           </div>
         </div>
