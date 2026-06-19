@@ -38,7 +38,8 @@ export default function PartnerApply() {
               <p style={{ color: "#f5f5f5", fontSize: 20, fontWeight: 900, margin: "0 0 12px 0" }}>{tier.fee}</p>
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 8px 0" }}>
                 한도: {tier.month.split("(")[0]}
-                {tier.month.includes("(") && (<><br/><br/>({tier.month.split("(")[1]}</>)}
+                <br/><br/>
+                {tier.month.includes("(") ? `(${tier.month.split("(")[1]}` : " "}
               </p>
               <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: "0 0 16px 0" }}>사용료 {tier.revenue} 할인</p>
               <button onClick={() => handleApply(tier.value)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>가입하기</button>
