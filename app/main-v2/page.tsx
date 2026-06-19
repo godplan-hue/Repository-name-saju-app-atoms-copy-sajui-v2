@@ -387,6 +387,14 @@ export default function MainV2() {
         else router.push("/main-v2/payment?scrollTo=packages");
       }} />
 
+      {/* 가격 신뢰 후킹 문구 */}
+      <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ background: "linear-gradient(135deg, #ffffff, #fdf4ff)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 14, padding: "16px 18px", textAlign: "center", boxShadow: "0 4px 18px rgba(236,72,153,0.12)" }}>
+          <p style={{ fontSize: 13, fontWeight: 800, color: "#ec4899", margin: "0 0 5px" }}>혹시 소문 듣고 오셨나요?</p>
+          <p style={{ fontSize: 12, fontWeight: 700, color: "#4b5563", margin: 0, lineHeight: 1.5 }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
+        </div>
+      </div>
+
       {/* 히어로 */}
       <section style={{ padding: "24px 16px 0", textAlign: "center" }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(236,72,153,0.1)", borderRadius: 20, marginBottom: 12 }}>
