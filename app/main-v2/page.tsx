@@ -355,7 +355,7 @@ export default function MainV2() {
           {user
             ? (
               <>
-                <span style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 700 }}>{user}님 👋</span>
+                <span style={{ fontSize: 12, color: "#6d28d9", fontWeight: 700 }}>{user}님 👋</span>
                 <button
                   onClick={() => {
                     if (!confirm("로그아웃하시겠어요? 다른 분 정보로 새로 시작할 수 있어요.")) return;
@@ -368,7 +368,7 @@ export default function MainV2() {
                     sessionStorage.removeItem("v2_result");
                     setUser(null);
                   }}
-                  style={{ padding: "6px 10px", background: "#f3f4f6", color: "#9ca3af", border: "none", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+                  style={{ padding: "6px 12px", background: "#f3e8ff", color: "#7c3aed", border: "1px solid rgba(124,58,237,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
                   로그아웃
                 </button>
               </>
