@@ -65,7 +65,12 @@ export default function PartnerLanding() {
         </header>
 
         <section style={{ padding: "50px 20px 30px", textAlign: "center" }}>
-          <div style={{ display: "inline-block", padding: "12px 24px", borderRadius: 999, background: "rgba(139,92,246,0.6)", border: "1px solid rgba(245,158,11,0.8)", color: "#f5f5f5", fontSize: 13, fontWeight: 700, marginBottom: 16 }}>★★★★★ AI가 정밀하게 읽어내는 사주 분석 엔진</div>
+          <div style={{ marginBottom: 10 }}>
+            {[0,1,2,3,4].map(i => (
+              <span key={i} style={{ display: "inline-block", color: "#fbbf24", fontSize: 20, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
+            ))}
+          </div>
+          <div style={{ display: "inline-block", padding: "12px 24px", borderRadius: 999, background: "rgba(139,92,246,0.6)", border: "1px solid rgba(245,158,11,0.8)", color: "#f5f5f5", fontSize: 13, fontWeight: 700, marginBottom: 16 }}>AI가 정밀하게 읽어내는 사주 분석 엔진</div>
           <div style={{ width: 100, height: 100, margin: "0 auto 20px", borderRadius: "12px", backgroundImage: "url('/b17b07628f3f401ea692dbd75575ba0f.webp')", backgroundSize: "cover", backgroundPosition: "center", border: "2px solid rgba(245,158,11,0.5)", boxShadow: "0 0 50px rgba(245,158,11,0.3)", transform: "rotate(15deg)" }} />
           <h2 style={{ fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 900, lineHeight: 1.3, margin: "0 auto 12px", color: "#d8c7ff" }}>당신의 사주 사업,<br />AI로 더 크게</h2>
           <p style={{ color: "#f5f5f5", fontSize: "clamp(13px, 2.5vw, 15px)", fontWeight: 700, lineHeight: 1.6, marginBottom: 14 }}>고객 이름과 생년월일만 입력하면<br />AI가 정밀한 사주 분석 결과지를 만들어드립니다<br />사장님 상호명으로 그대로 전달하세요</p>
@@ -127,6 +132,13 @@ export default function PartnerLanding() {
           </p>
         </footer>
       </div>
+
+      <style jsx>{`
+        @keyframes starTwinkle {
+          0%, 100% { opacity: 0.5; transform: scale(0.85); }
+          50%      { opacity: 1; transform: scale(1.15); }
+        }
+      `}</style>
     </main>
   );
 }
