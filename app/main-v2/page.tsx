@@ -442,12 +442,12 @@ export default function MainV2() {
       </section>
 
       {/* 하단 CTA */}
-      <section style={{ padding: "28px 16px 48px", textAlign: "center", background: "rgba(255,255,255,0.5)", borderTop: "1px solid rgba(236,72,153,0.1)" }}>
+      <section style={{ padding: "32px 16px 48px", textAlign: "center", background: "linear-gradient(135deg, #1a0f2e, #2d1b4e)", borderTop: "1px solid rgba(251,191,36,0.2)" }}>
         <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
-        <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
-        <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 18px" }}>다섯 신령한 동물이 당신의 길을 안내합니다 🐾</p>
+        <h2 style={{ fontSize: 20, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
+        <p style={{ fontSize: 13, color: "#d8c7ff", margin: "0 0 18px" }}>다섯 신령한 동물이 당신의 길을 안내합니다 🐾</p>
         <button onClick={() => router.push(user ? "/main-v2/profile" : "/main-v2/login")}
-          style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 8px 28px rgba(236,72,153,0.35)" }}>
+          style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)", color: "#1a0f2e", border: "1px solid rgba(251,191,36,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 8px 28px rgba(251,191,36,0.3)" }}>
           🔮 무료 학 코스 시작
         </button>
       </section>
