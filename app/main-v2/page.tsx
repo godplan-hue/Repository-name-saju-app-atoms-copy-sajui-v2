@@ -215,10 +215,13 @@ const FORTUNE_CATEGORIES = [
 function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
   return (
     <div style={{ padding: "0 14px 28px", maxWidth: 480, margin: "0 auto" }}>
-        <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center", letterSpacing: "0.3px" }}>
-          <span style={{ display: "inline-block", color: "#d4af37", animation: "starTwinkle 1.6s ease-in-out infinite" }}>✦ </span>
-          <span style={{ background: "linear-gradient(135deg, #be185d, #6d28d9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>운세 선택</span>
-          <span style={{ display: "inline-block", color: "#d4af37", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: "0.5s" }}> ✦</span>
+        <div style={{ textAlign: "center", marginBottom: 6 }}>
+          {[0,1,2,3,4].map(i => (
+            <span key={i} style={{ display: "inline-block", color: "#fbbf24", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
+          ))}
+        </div>
+        <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center", letterSpacing: "0.3px", color: "#92278f" }}>
+          운세 선택
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
@@ -426,7 +429,7 @@ export default function MainV2() {
         <div style={{ textAlign: "center" }}>
           <div style={{ marginBottom: 6 }}>
             {[0,1,2,3,4].map(i => (
-              <span key={i} style={{ display: "inline-block", color: "#fbbf24", fontSize: 12, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>●</span>
+              <span key={i} style={{ display: "inline-block", color: "#fbbf24", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>✨</span>
             ))}
           </div>
           <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.1, marginBottom: 12, color: "#8b2f8f", animation: "bigGlow 2.4s ease-in-out infinite" }}>
