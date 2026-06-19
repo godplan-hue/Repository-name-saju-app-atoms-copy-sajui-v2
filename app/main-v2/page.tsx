@@ -443,12 +443,12 @@ export default function MainV2() {
 
       {/* 하단 CTA */}
       <div style={{ padding: "0 14px 40px", maxWidth: 480, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", padding: "32px 20px", borderRadius: 20, background: "linear-gradient(135deg, #2d1b4e, #1a0f2e)", border: "1px solid rgba(251,191,36,0.3)", boxShadow: "0 8px 24px rgba(45,27,78,0.25)" }}>
+        <div style={{ textAlign: "center", padding: "32px 20px", borderRadius: 20, background: G, boxShadow: "0 8px 24px rgba(139,92,246,0.25)" }}>
           <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
-          <h2 style={{ fontSize: 20, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
-          <p style={{ fontSize: 13, color: "#d8c7ff", margin: "0 0 18px" }}>고양이가 당신의 길을 안내합니다 🐾</p>
+          <h2 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>고양이가 당신의 길을 안내합니다 🐾</p>
           <button onClick={() => router.push(user ? "/main-v2/profile" : "/main-v2/login")}
-            style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)", color: "#1a0f2e", border: "1px solid rgba(251,191,36,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 8px 28px rgba(251,191,36,0.3)" }}>
+            style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "white", color: "#ec4899", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 18px rgba(0,0,0,0.15)" }}>
             🔮 무료 고양이 코스 시작하기
           </button>
         </div>
