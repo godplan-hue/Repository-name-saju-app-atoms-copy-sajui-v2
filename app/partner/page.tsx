@@ -83,12 +83,12 @@ export default function PartnerLanding() {
 
         <section style={{ padding: "30px 8px" }}>
           <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 18 }}>점운 파트너</h3>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 12, maxWidth: isMobile ? "100%" : "900px", margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 10, maxWidth: isMobile ? "100%" : "560px", margin: "0 auto" }}>
             {features.map((feature, i) => (
-              <div key={i} style={{ background: "rgba(139,92,246,0.65)", border: "1px solid rgba(139,92,246,0.85)", borderRadius: 10, padding: "14px", textAlign: "center", display: "flex", flexDirection: "column", minHeight: "220px" }}>
-                <div style={{ fontSize: 24, marginBottom: 8 }}>{feature.icon}</div>
-                <h4 style={{ color: "#fbbf24", fontWeight: 900, fontSize: 13, margin: "0 0 8px 0" }}>{feature.title}</h4>
-                <p style={{ color: "#f5f5f5", fontSize: "clamp(11px, 2.2vw, 13px)", fontWeight: 600, lineHeight: 1.7, margin: 0, flex: 1, whiteSpace: "pre-line" }}>
+              <div key={i} style={{ background: "rgba(139,92,246,0.55)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 12, padding: "14px", textAlign: "center", display: "flex", flexDirection: "column", minHeight: "160px", boxShadow: "0 4px 14px rgba(45,16,62,0.25)" }}>
+                <div style={{ fontSize: 20, marginBottom: 6 }}>{feature.icon}</div>
+                <h4 style={{ color: "#fbbf24", fontWeight: 900, fontSize: 12, margin: "0 0 6px 0" }}>{feature.title}</h4>
+                <p style={{ color: "#f5f5f5", fontSize: "clamp(10px, 2vw, 11px)", fontWeight: 600, lineHeight: 1.55, margin: 0, flex: 1, whiteSpace: "pre-line" }}>
                   {feature.desc}
                 </p>
               </div>
@@ -98,7 +98,7 @@ export default function PartnerLanding() {
 
         <section style={{ padding: "30px 8px" }}>
           <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 18 }}>3단계로 간단하게</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, maxWidth: isMobile ? "100%" : "900px", margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, maxWidth: isMobile ? "100%" : "560px", margin: "0 auto" }}>
             {currentSteps.map((step, i) => (
               <div key={i} style={{ textAlign: "center" }}>
                 <div style={{ width: 45, height: 45, borderRadius: "50%", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 8px" }}>{step.num}</div>
