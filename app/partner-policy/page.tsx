@@ -45,14 +45,27 @@ export default function PartnerPolicy() {
             <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 0 }}>고객 정보를 입력해 분석을 생성하는 즉시, 등급별 할인이 적용된 사용료가 자동으로 청구됩니다.<br/>매월 모아서 정산하는 절차 없이, 분석 생성 시점에 바로 처리됩니다.</p>
           </section>
 
-          {/* 5. 신청 방법 */}
+          {/* 4. 신청 방법 */}
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>4. 신청 방법</h2>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
-              <li>• 점운 사이트에서 파트너 가입 신청</li>
-              <li>• 담당자 검토 후 승인</li>
-              <li>• 파트너 대시보드 접근 가능</li>
+              <li>• 점운 사이트에서 파트너 가입 신청서 작성(이름·상호명·이메일·비밀번호·전화번호)</li>
+              <li>• 가입 즉시 계정이 생성되며, 별도의 승인 절차 없이 바로 로그인하여 이용 가능</li>
+              <li>• 같은 이름으로는 중복 가입이 불가하며, 등급을 변경하려면 로그인 후 "등급 업그레이드"를 이용</li>
             </ul>
+          </section>
+
+          {/* 5. 파트너 회비 환불정책 */}
+          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 파트너 회비 환불정책</h2>
+            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>아래 항목 중 하나라도 하면 환불 불가능:</p>
+            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
+              <li>• 파트너 자료(PDF/가이드) 다운로드</li>
+              <li>• 온라인 미팅 참석</li>
+              <li>• 고객분석 1건 이상 생성</li>
+              <li>• 파트너 카톡방 입장</li>
+            </ul>
+            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8 }}>7일 초과 → 무조건 환불불가</p>
           </section>
         </div>
 

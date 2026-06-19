@@ -446,11 +446,12 @@ export default function MainV2() {
           <span style={{ fontSize: 13, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운</span>
         </div>
         <p style={{ color: "#9ca3af", fontSize: 11, margin: "0 0 5px" }}>© 2026 점운 · AI 동양 사주 분석</p>
-        <div style={{ fontSize: 11 }}>
+        <div style={{ fontSize: 11, marginBottom: 8 }}>
           <a href="/privacy" style={{ color: "#ec4899", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
           <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
           <a href="/refund" style={{ color: "#ec4899", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
         </div>
+        <a href="/partner" style={{ color: "#9ca3af", textDecoration: "none", fontSize: 11, fontWeight: 600 }}>사주 사업을 하고 계신가요? 파트너 모집 안내 →</a>
       </footer>
 
       <style jsx>{`

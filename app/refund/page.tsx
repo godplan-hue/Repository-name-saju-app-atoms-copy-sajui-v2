@@ -80,17 +80,9 @@ export default function Refund() {
             <p style={{ color: "#ff6b6b", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginBottom: 0 }}>환불 불가능합니다.</p>
           </section>
 
-          {/* 6. 파트너 회비 환불정책 */}
-          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>6. 파트너 회비 환불정책</h2>
-            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>아래 항목 중 하나라도 하면 환불 불가능:</p>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
-              <li>• 파트너 자료(PDF/가이드) 다운로드</li>
-              <li>• 온라인 미팅 참석</li>
-              <li>• 고객분석 1건 이상 생성</li>
-              <li>• 파트너 카톡방 입장</li>
-            </ul>
-            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8 }}>7일 초과 → 무조건 환불불가</p>
+          {/* 파트너 회비 환불정책은 파트너정책 페이지로 이동 */}
+          <section style={{ marginBottom: 0, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+            <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, margin: 0 }}>※ 파트너 회비 환불정책은 <a href="/partner-policy" style={{ color: "#fbbf24" }}>파트너 정책</a> 페이지에서 확인하실 수 있습니다.</p>
           </section>
         </div>
 
