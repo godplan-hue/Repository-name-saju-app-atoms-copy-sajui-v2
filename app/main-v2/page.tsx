@@ -216,9 +216,9 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
   return (
     <div style={{ padding: "0 14px 28px", maxWidth: 480, margin: "0 auto" }}>
         <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center", letterSpacing: "0.3px" }}>
-          <span style={{ color: "#d4af37" }}>✦ </span>
+          <span style={{ display: "inline-block", color: "#d4af37", animation: "starTwinkle 1.6s ease-in-out infinite" }}>✦ </span>
           <span style={{ background: "linear-gradient(135deg, #be185d, #6d28d9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>운세 선택</span>
-          <span style={{ color: "#d4af37" }}> ✦</span>
+          <span style={{ display: "inline-block", color: "#d4af37", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: "0.5s" }}> ✦</span>
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
@@ -501,6 +501,10 @@ export default function MainV2() {
         @keyframes waveGlow {
           0%, 100% { text-shadow: 0 0 2px rgba(236,72,153,0.2); color: #8b2f8f; }
           50%      { text-shadow: 0 0 10px rgba(236,72,153,0.9), 0 0 4px rgba(255,255,255,0.7); color: #ec4899; }
+        }
+        @keyframes starTwinkle {
+          0%, 100% { opacity: 0.5; transform: scale(0.85); }
+          50%      { opacity: 1; transform: scale(1.15); }
         }
         ::-webkit-scrollbar { display: none; }
       `}</style>
