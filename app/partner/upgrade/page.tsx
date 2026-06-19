@@ -106,7 +106,7 @@ export default function PartnerUpgrade() {
                 return (
                   <div key={tier.id} style={{ border: isCurrent ? "3px solid #667eea" : "2px solid #ddd", borderRadius: 12, padding: 20, textAlign: "center", opacity: isLower ? 0.4 : 1 }}>
                     <h2 style={{ fontSize: 18, fontWeight: 900, margin: "0 0 10px", color: "#333" }}>{tier.name}</h2>
-                    <p style={{ fontSize: 12, color: "#666", margin: "0 0 6px" }}>월 {tier.monthlyLimit === null ? "무제한" : `${tier.monthlyLimit}건`}</p>
+                    <p style={{ fontSize: 12, color: "#666", margin: "0 0 6px" }}>월 {tier.monthlyLimit === null ? "무제한" : `${tier.monthlyLimit}건(연 최대 ${(tier.monthlyLimit * 12).toLocaleString()}건)`}</p>
                     <p style={{ fontSize: 12, color: "#ff9500", fontWeight: 900, margin: "0 0 14px" }}>사용료 {tier.feeDiscountPercent}% 할인</p>
                     {isCurrent ? (
                       <div style={{ padding: 10, background: "#eef0ff", borderRadius: 8, color: "#667eea", fontWeight: 900, fontSize: 13 }}>현재 등급</div>
