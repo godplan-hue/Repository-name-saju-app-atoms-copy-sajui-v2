@@ -312,7 +312,6 @@ function PaymentInner() {
                     <span style={{ fontSize: 18 }}>{c.icon}</span>
                     <div style={{ textAlign: "left" }}>
                       <span style={{ fontSize: 14, fontWeight: 900, color: on ? "#fbbf24" : "rgba(255,255,255,0.85)" }}>{c.key.replace(/\S+\s/, "")}</span>
-                      <span style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", marginLeft: 7 }}>약 5,500자</span>
                     </div>
                   </div>
                   <span style={{ width: 22, height: 22, borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, background: on ? "linear-gradient(135deg, #fbbf24, #f59e0b)" : "transparent", border: on ? "none" : "1.5px solid rgba(255,255,255,0.3)", color: "#1a1a1a", flexShrink: 0 }}>

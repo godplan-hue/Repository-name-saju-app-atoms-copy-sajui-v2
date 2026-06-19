@@ -1013,7 +1013,6 @@ export default function V2Result() {
                       <span style={{ fontSize: 22 }}>{c.icon}</span>
                       <div style={{ textAlign: "left" }}>
                         <div style={{ fontSize: 14, fontWeight: 900, color: on ? c.color : "#374151" }}>{c.key.replace(/\S+\s/, "")}</div>
-                        <div style={{ fontSize: 11, color: "#9ca3af" }}>약 3,500자 심층 분석</div>
                       </div>
                     </div>
                     <span style={{ fontSize: 18 }}>{on ? "✅" : "⬜"}</span>
