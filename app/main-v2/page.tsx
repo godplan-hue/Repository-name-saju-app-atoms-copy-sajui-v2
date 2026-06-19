@@ -377,14 +377,13 @@ export default function MainV2() {
 
       {/* 헤드라인 */}
       <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
-        <h1 style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", lineHeight: 1.3 }}>
-          고양이가 읽는{" "}
-          <span style={{ background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>나의 운명</span>
+        <h1 style={{ fontSize: 25, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px" }}>
+          <span style={{ background: "linear-gradient(135deg, #be185d, #8b5cf6, #6d28d9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>고양이가 읽는 나의 운명</span>
         </h1>
-        <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 10px" }}>당신의 운명을 AI가 풀어드립니다</p>
+        <p style={{ fontSize: 13, color: "#7c5cab", fontWeight: 600, letterSpacing: "0.2px", margin: "0 0 12px" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
           {["⚡ AI 정밀분석", "🔒 개인정보 즉시삭제", "⏱ 3초 완성"].map(b => (
-            <span key={b} style={{ fontSize: 11, fontWeight: 700, color: "#ec4899", background: "#fdf2f8", border: "1px solid rgba(236,72,153,0.2)", borderRadius: 20, padding: "5px 10px" }}>{b}</span>
+            <span key={b} style={{ fontSize: 11, fontWeight: 700, color: "#92278f", background: "linear-gradient(135deg, #fdf2f8, #f3e8ff)", border: "1px solid rgba(139,92,246,0.25)", borderRadius: 20, padding: "5px 11px", boxShadow: "0 2px 6px rgba(139,92,246,0.12)" }}>{b}</span>
           ))}
         </div>
       </section>
@@ -422,7 +421,7 @@ export default function MainV2() {
         {/* 마법사 고양이 이미지 */}
         <div style={{ position: "relative", display: "inline-block", marginBottom: 8 }}>
           <img
-            src="/saju-cat.png"
+            src="https://i.pinimg.com/736x/ac/41/34/ac4134d338bc8fab68537a589fecb08b.jpg"
             alt="사주 마법사 고양이"
             style={{
               width: 220, height: 220, objectFit: "cover", objectPosition: "center top",
