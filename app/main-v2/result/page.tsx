@@ -249,6 +249,8 @@ export default function V2Result() {
   const [tier, setTier] = useState<"free" | "select" | "package">("free");
   const [pkgName, setPkgName] = useState("");
   const [speaking, setSpeaking] = useState(false);
+  const readChunksRef = useRef<string[]>([]);
+  const readIdxRef = useRef(0);
 
   const INLINE_PLANS = [
     { id: "vip", icon: "🐲", name: "용 코스", badge: "👑 최고", desc: "₩9,990", price: 9990, priceStr: "₩9,990", per: "무제한", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
@@ -560,7 +562,28 @@ export default function V2Result() {
 
   // 결과 읽어주기 — 브라우저 내장 음성합성(Web Speech API)이라 별도 비용/설치 없음.
   // 긴 글을 한 번에 읽히면 일부 브라우저(특히 크롬)에서 중간에 끊기는 경우가
-  // 있어서, 문장 단위로 잘라 차례로 읽게 함(끊겨도 다음 문장부터 이어짐)
+  // 있어서, 문장 단위로 잘라 차례로 읽게 함(끊겨도 다음 문장부터 이어짐).
+  // 멈춘 위치는 readChunksRef/readIdxRef에 저장해두고, 같은 화면에서 다시
+  // 누르면 그 위치부터 이어서 읽음 — 화면을 벗어나면 컴포넌트가 다시 마운트
+  // 되면서 이 값들도 초기화되므로, 재진입 시엔 자연히 처음부터 읽힘
+  const speakFrom = (chunks: string[], startIdx: number) => {
+    chunks.slice(startIdx).forEach((chunk, i) => {
+      const idx = startIdx + i;
+      const utter = new SpeechSynthesisUtterance(chunk);
+      utter.lang = "ko-KR";
+      utter.rate = 1;
+      utter.onstart = () => { readIdxRef.current = idx; };
+      if (idx === chunks.length - 1) {
+        utter.onend = () => {
+          setSpeaking(false);
+          readIdxRef.current = 0;
+          readChunksRef.current = [];
+        };
+      }
+      window.speechSynthesis.speak(utter);
+    });
+  };
+
   const toggleReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
       alert("이 브라우저는 읽어주기 기능을 지원하지 않습니다.");
@@ -571,24 +594,21 @@ export default function V2Result() {
       setSpeaking(false);
       return;
     }
-    // 화면에 실제로 보이는 내용만 정확히 읽게 함 — allAnalyses 안에는 "오늘의
-    // 운세"(미리보기용, 결제 화면엔 안 보임) 항목도 같이 섞여있어서, 그걸 그대로
-    // 다 읽으면 결제한 진짜 내용 대신 "오늘의 운세"만 계속 읽히는 문제가 있었음
-    const visibleTexts =
-      tier === "free" ? [freeAnalysis]
-      : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
-      : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
-    const fullText = visibleTexts.filter(Boolean).join("\n");
-    if (!fullText.trim()) return;
-    const chunks = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+    if (readChunksRef.current.length === 0) {
+      // 화면에 실제로 보이는 내용만 정확히 읽게 함 — allAnalyses 안에는 "오늘의
+      // 운세"(미리보기용, 결제 화면엔 안 보임) 항목도 같이 섞여있어서, 그걸 그대로
+      // 다 읽으면 결제한 진짜 내용 대신 "오늘의 운세"만 계속 읽히는 문제가 있었음
+      const visibleTexts =
+        tier === "free" ? [freeAnalysis]
+        : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
+        : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
+      const fullText = visibleTexts.filter(Boolean).join("\n");
+      if (!fullText.trim()) return;
+      readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+      readIdxRef.current = 0;
+    }
     window.speechSynthesis.cancel();
-    chunks.forEach((chunk, i) => {
-      const utter = new SpeechSynthesisUtterance(chunk);
-      utter.lang = "ko-KR";
-      utter.rate = 1;
-      if (i === chunks.length - 1) utter.onend = () => setSpeaking(false);
-      window.speechSynthesis.speak(utter);
-    });
+    speakFrom(readChunksRef.current, readIdxRef.current);
     setSpeaking(true);
   };
 
