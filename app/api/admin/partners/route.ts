@@ -20,11 +20,14 @@ export async function GET(request: NextRequest) {
       const entries = Object.values(archive[id] || {}) as Array<{ charge?: { totalCharge: number } }>;
       const analysisCount = entries.length;
       const revenue = entries.reduce((sum, e) => sum + (e.charge?.totalCharge || 0), 0);
-      const payments = Object.values(p.payments || {}) as Array<{ amount?: number; paidAt?: string }>;
+      const payments = Object.values(p.payments || {}) as Array<{ amount?: number; paidAt?: string; couponCode?: string | null; discountPercent?: number }>;
       const totalPaid = payments.reduce((sum, pay) => sum + (pay.amount || 0), 0);
       const lastPaidAt = payments.length > 0
         ? payments.reduce((latest, pay) => (!latest || (pay.paidAt && pay.paidAt > latest) ? pay.paidAt! : latest), "")
         : null;
+      const couponPayments = payments.filter(pay => (pay.discountPercent || 0) > 0);
+      const usedCoupon = couponPayments.length > 0;
+      const couponCodes = Array.from(new Set(couponPayments.map(pay => pay.couponCode).filter(Boolean))) as string[];
       return {
         id,
         name: p.name,
@@ -37,6 +40,8 @@ export async function GET(request: NextRequest) {
         guideConfirmedAt: p.guideConfirmedAt || null,
         totalPaid,
         lastPaidAt,
+        usedCoupon,
+        couponCodes,
       };
     });
     list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());

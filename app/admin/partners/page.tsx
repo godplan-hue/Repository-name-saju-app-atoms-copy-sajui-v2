@@ -12,6 +12,8 @@ interface PartnerRow {
   guideConfirmedAt: string | null;
   totalPaid: number;
   lastPaidAt: string | null;
+  usedCoupon: boolean;
+  couponCodes: string[];
 }
 
 const TIER_NAMES: Record<string, string> = { free: "무료", silver: "실버", gold: "골드", diamond: "다이아" };
@@ -76,7 +78,14 @@ export default function AdminPartners() {
                     <td style={{ padding: "12px", color: "#666" }}>{p.analysisCount}</td>
                     <td style={{ padding: "12px", color: "#666" }}>₩{p.revenue.toLocaleString()}</td>
                     <td style={{ padding: "12px", color: p.guideConfirmedAt ? "#16a34a" : "#999" }}>{p.guideConfirmedAt ? new Date(p.guideConfirmedAt).toLocaleString("ko-KR") : "미확인"}</td>
-                    <td style={{ padding: "12px", color: p.totalPaid > 0 ? "#16a34a" : "#999" }}>{p.totalPaid > 0 ? `₩${p.totalPaid.toLocaleString()} (${p.lastPaidAt ? new Date(p.lastPaidAt).toLocaleDateString("ko-KR") : ""})` : "없음"}</td>
+                    <td style={{ padding: "12px", color: p.totalPaid > 0 ? "#16a34a" : "#999" }}>
+                      {p.totalPaid > 0 ? `₩${p.totalPaid.toLocaleString()} (${p.lastPaidAt ? new Date(p.lastPaidAt).toLocaleDateString("ko-KR") : ""})` : "없음"}
+                      {p.usedCoupon && (
+                        <span style={{ marginLeft: 6, fontSize: 11, fontWeight: 800, color: "#d97706", background: "#fef3c7", padding: "2px 6px", borderRadius: 10 }}>
+                          🎟️ 쿠폰 사용{p.couponCodes.length > 0 ? `(${p.couponCodes.join(", ")})` : ""}
+                        </span>
+                      )}
+                    </td>
                   </tr>
                 ))
               )}

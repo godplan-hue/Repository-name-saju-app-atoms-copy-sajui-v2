@@ -7,7 +7,7 @@ import { getTierIndex, calculateUpgradeFee, getPartnerTier } from "@/lib/partner
 // (더 큰) 한도 안에서 남은 횟수만큼 계속 쓸 수 있음.
 export async function POST(request: NextRequest) {
   try {
-    const { partnerId, newTier, paidAmount } = await request.json();
+    const { partnerId, newTier, paidAmount, discountCode, discountPercent } = await request.json();
     if (!partnerId || !newTier) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
@@ -39,6 +39,8 @@ export async function POST(request: NextRequest) {
     // 가입비와 동일하게, 업그레이드 결제내역도 기록(실제 결제 연동 전 시뮬레이션 단계)
     await db.ref(`partners/${partnerId}/payments`).push({
       type: "upgrade", tier: newTier, amount: paidAmount ?? upgradeFee, paidAt: new Date().toISOString(),
+      couponCode: discountPercent > 0 ? discountCode : null,
+      discountPercent: discountPercent || 0,
     });
 
     const newTierInfo = getPartnerTier(newTier);

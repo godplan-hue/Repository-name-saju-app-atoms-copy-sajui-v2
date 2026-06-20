@@ -64,7 +64,7 @@ function PaymentPartnerInner() {
         const res = await fetch("/api/partner/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...formData, tier, paidAmount: finalFee }),
+          body: JSON.stringify({ ...formData, tier, paidAmount: finalFee, discountCode: discountInput, discountPercent }),
         });
         const data = await res.json();
         if (!res.ok) { alert(data.error || "가입에 실패했습니다."); setIsProcessing(false); return; }

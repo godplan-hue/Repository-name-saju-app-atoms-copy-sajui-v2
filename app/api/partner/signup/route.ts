@@ -10,7 +10,7 @@ function hashPassword(password: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, name, phone, tier, businessName, paidAmount } = await request.json();
+    const { email, password, name, phone, tier, businessName, paidAmount, discountCode, discountPercent } = await request.json();
     if (!email || !password || !name || !businessName) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
@@ -39,6 +39,8 @@ export async function POST(request: NextRequest) {
     if (partnerTier !== "free") {
       await db.ref(`partners/${partnerRef.key}/payments`).push({
         type: "signup", tier: partnerTier, amount: paidAmount ?? 0, paidAt: new Date().toISOString(),
+        couponCode: discountPercent > 0 ? discountCode : null,
+        discountPercent: discountPercent || 0,
       });
     }
 
