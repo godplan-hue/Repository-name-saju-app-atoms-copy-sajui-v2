@@ -25,7 +25,10 @@ export default function PartnerApply() {
         
         {/* 헤더 */}
         <div style={{ marginBottom: 40, textAlign: "center" }}>
-          <a href="/partner" style={{ display: "inline-block", background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", padding: "10px 16px", borderRadius: 8, fontWeight: 900, cursor: "pointer", marginBottom: 20, textDecoration: "none" }}>← 돌아가기</a>
+          <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 20 }}>
+            <a href="/partner" style={{ display: "inline-block", background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", padding: "10px 16px", borderRadius: 8, fontWeight: 900, cursor: "pointer", textDecoration: "none" }}>← 돌아가기</a>
+            <a href="/partner/login" style={{ display: "inline-block", background: "rgba(251,191,36,0.15)", color: "#fbbf24", border: "1px solid rgba(251,191,36,0.6)", padding: "10px 16px", borderRadius: 8, fontWeight: 900, cursor: "pointer", textDecoration: "none" }}>파트너 로그인</a>
+          </div>
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 900, marginBottom: 12, marginTop: 0 }}>파트너 등급 선택</h1>
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 0 }}>점운과 함께 수익을 창출하세요</p>
         </div>
