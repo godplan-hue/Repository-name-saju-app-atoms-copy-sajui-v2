@@ -64,9 +64,14 @@ function PaidInfoInputInner() {
         // 유료 다시보기: 본인 정보가 다 있고 VIP 커플팩(상대방 정보 매번 다를 수
         // 있어 제외)이 아니며, 같은 로그인 세션 안에서 이미 한 번 분석을
         // 완료했으면 — 무료 다시보기와 똑같이 화면 자체를 건너뛰고 곧바로 분석함
+        // 로그인을 계속 유지한 채로 다음 날 다시 들어와도(로그아웃 안 해도)
+        // 이 화면을 한 번은 다시 보여줘야 해서, 로그인 세션뿐 아니라 "오늘 날짜"도
+        // 같이 확인함 — 날짜가 바뀌면 세션이 같아도 다시 보여줌
         const loginSessionId = localStorage.getItem("v2_login_session_id") ?? "";
         const shownForSession = localStorage.getItem("v2_paid_info_shown_session") ?? "";
-        const alreadyShownThisSession = loginSessionId !== "" && loginSessionId === shownForSession;
+        const shownOnDate = localStorage.getItem("v2_paid_info_shown_date") ?? "";
+        const todayKey = new Date().toDateString();
+        const alreadyShownThisSession = loginSessionId !== "" && loginSessionId === shownForSession && shownOnDate === todayKey;
         const complete = !!(p.name && p.birthYear && p.birthMonth && p.birthDay);
         if (complete && pkg !== "VIP 커플팩" && alreadyShownThisSession) {
           setAutoSkipping(true);
@@ -176,10 +181,14 @@ function PaidInfoInputInner() {
       sessionStorage.setItem('selectedPackage', p.pkg);
       sessionStorage.setItem('price', price);
 
-      // 유료 다시보기도 무료 다시보기와 같은 패턴으로, 같은 로그인 세션 안에서는
-      // 이번 화면을 다시 보여주지 않도록 기록(로그아웃하면 새 세션이라 다시 보여줌)
+      // 유료 다시보기도 무료 다시보기와 같은 패턴으로, 같은 로그인 세션 + 오늘
+      // 안에서는 이번 화면을 다시 보여주지 않도록 기록(로그아웃하거나 날짜가
+      // 바뀌면 다시 보여줌)
       const loginSessionId = localStorage.getItem('v2_login_session_id');
-      if (loginSessionId) localStorage.setItem('v2_paid_info_shown_session', loginSessionId);
+      if (loginSessionId) {
+        localStorage.setItem('v2_paid_info_shown_session', loginSessionId);
+        localStorage.setItem('v2_paid_info_shown_date', new Date().toDateString());
+      }
 
       router.push('/main-v2/result');
     } catch (error) {
