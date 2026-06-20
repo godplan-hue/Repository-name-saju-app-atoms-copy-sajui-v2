@@ -135,7 +135,7 @@ function PaymentPartnerInner() {
               <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid rgba(255,20,147,0.3)" }}>
                 <p style={{ color: "#f5f5f5", fontSize: 10, fontWeight: 600, lineHeight: 1.6, margin: "0 0 6px 0" }}>아래 항목 중 하나라도 하면 환불 불가능:</p>
                 <ul style={{ color: "#f5f5f5", fontSize: 10, fontWeight: 600, lineHeight: 1.5, margin: "0 0 6px 0", paddingLeft: 16 }}>
-                  <li>파트너 자료 다운로드</li>
+                  <li>파트너 운영 가이드 확인</li>
                   <li>온라인 미팅 참석</li>
                   <li>고객분석 1건 이상 생성</li>
                   <li>파트너 카톡방 입장</li>
