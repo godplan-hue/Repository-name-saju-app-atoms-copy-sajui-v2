@@ -413,8 +413,18 @@ export default function MainV2() {
       <FortuneGrid onPick={id => {
         sessionStorage.setItem("selectedFortune", id);
         const SELECT_ROUTE_IDS = new Set(["wealth", "love"]);
+        // 박스에 표시된 가격 배지(9,900~/프리미엄전용/VIP전용)에 맞는 패키지가
+        // 실제로 미리 선택된 채로 들어가게 — 안 그러면 늘 기본값(기본분석 9,900원)
+        // 이 선택된 걸로 보여서 "프리미엄 전용"이라고 눌렀는데 다른 게 선택된
+        // 것처럼 보이는 문제가 생김
+        const PRESELECT: Record<string, string> = {
+          yearly: "basic", monthly: "basic",
+          health: "premium",
+          compatibility: "vip", naming: "vip", full: "vip",
+        };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
         else if (SELECT_ROUTE_IDS.has(id)) router.push("/main-v2/payment?scrollTo=select");
+        else if (PRESELECT[id]) router.push(`/main-v2/payment?scrollTo=packages&preselect=${PRESELECT[id]}`);
         else router.push("/main-v2/payment?scrollTo=packages");
       }} />
 

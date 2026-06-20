@@ -23,8 +23,22 @@ function PaymentInner() {
   // 재물운/연애운 배너로 들어온 경우 — "기본분석"(재물운/연애운 미포함)이 아니라
   // 그 둘이 실제로 들어있는 가장 싼 패키지(베이직)를 기본 선택값으로 보여줌
   const highlightWealthLove = searchParams.get("highlight") === "wealthlove";
-  const [selectedPackage, setSelectedPackage] = useState(highlightWealthLove ? "베이직" : "기본 분석");
-  const [selectedFeatures, setSelectedFeatures] = useState(highlightWealthLove ? ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"] : ["yearlyLuck", "monthlyLuck"]);
+  // 메인 그리드에서 "프리미엄 전용"/"VIP 전용" 박스를 누르고 들어온 경우 — 그
+  // 등급이 실제로 미리 선택된 채로 보여줌(안 그러면 항상 기본분석이 선택된
+  // 것처럼 보여서 "프리미엄 전용이라고 눌렀는데 다른 게 선택됐다"는 혼란이 생김)
+  const preselectId = searchParams.get("preselect");
+  const PRESELECT_INFO: Record<string, { name: string; features: string[] }> = {
+    basic: { name: "기본 분석", features: ["yearlyLuck", "monthlyLuck"] },
+    premium: { name: "프리미엄", features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"] },
+    vip: { name: "VIP 커플팩", features: ["name", "yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "analysis"] },
+  };
+  const preselectInfo = preselectId ? PRESELECT_INFO[preselectId] : undefined;
+  const [selectedPackage, setSelectedPackage] = useState(
+    highlightWealthLove ? "베이직" : preselectInfo ? preselectInfo.name : "기본 분석"
+  );
+  const [selectedFeatures, setSelectedFeatures] = useState(
+    highlightWealthLove ? ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"] : preselectInfo ? preselectInfo.features : ["yearlyLuck", "monthlyLuck"]
+  );
   // 할인코드 — 관리자가 원하는 손님에게만 골라서 주는 프로모션 코드(파트너와는 무관)
   const [discountInput, setDiscountInput] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<PromoCode | null>(null);
