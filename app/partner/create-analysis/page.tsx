@@ -42,10 +42,10 @@ export default function PartnerCreateAnalysis() {
   ];
 
   const packages = [
-    { name: "기본 분석", price: "₩9,900" },
-    { name: "베이직", price: "₩19,900" },
-    { name: "프리미엄", price: "₩24,900" },
-    { name: "VIP 커플팩", price: "₩29,900" },
+    { name: "기본 분석", price: "₩9,900", desc: "올해 운세 + 월별 운세" },
+    { name: "베이직", price: "₩19,900", desc: "올해 운세 + 월별 운세 + 재물운 + 연애운" },
+    { name: "프리미엄", price: "₩24,900", desc: "올해 운세 + 월별 운세 + 재물운 + 연애운 + 건강운" },
+    { name: "VIP 커플팩", price: "₩29,900", desc: "이름분석 + 올해 운세 + 월별 운세 + 재물운 + 연애운 + 건강운 + 궁합분석 + 전체 사주분석" },
   ];
 
   useEffect(() => {
@@ -479,7 +479,8 @@ export default function PartnerCreateAnalysis() {
                   }}
                 >
                   <div style={{ fontWeight: 900, marginBottom: "5px" }}>{pkg.name}</div>
-                  <div style={{ fontSize: "13px", opacity: 0.8 }}>{pkg.price}</div>
+                  <div style={{ fontSize: "13px", opacity: 0.8, marginBottom: "6px" }}>{pkg.price}</div>
+                  <div style={{ fontSize: "11px", opacity: 0.65, fontWeight: 600, lineHeight: 1.5 }}>{pkg.desc}</div>
                 </button>
               ))}
             </div>
