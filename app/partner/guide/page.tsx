@@ -46,12 +46,56 @@ export default function PartnerGuide() {
           </div>
         ) : (
           <div style={{ background: "rgba(108,64,200,0.15)", padding: 30, borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)" }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>결과지 발송 방식</h2>
-            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
-              <li>• 결과지에는 "점운" 대신 파트너님이 등록하신 상호명이 자동으로 표시됩니다(가입 시 한 번만 등록하면 이후 모든 결과지에 자동 적용)</li>
-              <li>• 실버 등급 이상부터는 결과지를 고객 이메일로 점운 사이트에서 바로 자동 발송할 수 있습니다</li>
-              <li>• 무료 등급은 자동 발송 기능을 이용할 수 없으며, 이미지를 직접 다운로드하여 고객에게 전달해야 합니다</li>
-            </ul>
+            <section style={{ marginBottom: 30 }}>
+              <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>1. 파트너란?</h2>
+              <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 0 }}>점운의 파트너는 고객에게 직접 사주 분석 서비스를 판매하는 사업가입니다.<br/>고객에게 받는 가격은 파트너가 자유롭게 정하며, 점운의 분석 도구를 사용할 때마다 등급별로 할인된 사용료를 점운에 지불합니다.</p>
+            </section>
+
+            <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+              <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>2. 등급별 혜택</h2>
+              <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
+                <li>• 무료: 연회비 ₩0 / 월 50건(연 최대 600건) 한도 / 사용료 30% 할인</li>
+                <li>• 실버: 연회비 ₩150,000 / 월 150건(연 최대 1,800건) 한도 / 사용료 45% 할인</li>
+                <li>• 골드: 연회비 ₩350,000 / 월 300건(연 최대 3,600건) 한도 / 사용료 55% 할인</li>
+                <li>• 다이아: 연회비 ₩1,000,000 / 무제한 / 사용료 70% 할인</li>
+              </ul>
+              <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 0 }}>※ "사용료 할인"은 분석 1건당 정가에서 등급별로 할인된 가격만 내면 된다는 뜻입니다(예: 다이아는 정가의 30%만 부가세 포함하여 지불).</p>
+            </section>
+
+            <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+              <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>3. 사용료 결제 방식</h2>
+              <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 0 }}>고객 정보를 입력해 분석을 생성하는 즉시, 등급별 할인이 적용된 사용료가 자동으로 청구됩니다.<br/>매월 모아서 정산하는 절차 없이, 분석 생성 시점에 바로 처리됩니다.</p>
+            </section>
+
+            <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+              <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>4. 신청 방법</h2>
+              <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
+                <li>• 점운 사이트에서 파트너 가입 신청서 작성(이름·상호명·이메일·비밀번호·전화번호)</li>
+                <li>• 가입 즉시 계정이 생성되며, 별도의 승인 절차 없이 바로 로그인하여 이용 가능</li>
+                <li>• 같은 이름으로는 중복 가입이 불가하며, 등급을 변경하려면 로그인 후 "등급 업그레이드"를 이용</li>
+              </ul>
+            </section>
+
+            <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+              <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 결과지 발송 방식</h2>
+              <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
+                <li>• 결과지에는 "점운" 대신 파트너님이 등록하신 상호명이 자동으로 표시됩니다(가입 시 한 번만 등록하면 이후 모든 결과지에 자동 적용)</li>
+                <li>• 실버 등급 이상부터는 결과지를 고객 이메일로 점운 사이트에서 바로 자동 발송할 수 있습니다</li>
+                <li>• 무료 등급은 자동 발송 기능을 이용할 수 없으며, 이미지를 직접 다운로드하여 고객에게 전달해야 합니다</li>
+              </ul>
+            </section>
+
+            <section style={{ paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+              <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>6. 파트너 회비 환불정책</h2>
+              <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>아래 항목 중 하나라도 하면 환불 불가능:</p>
+              <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
+                <li>• 파트너 운영 가이드 확인</li>
+                <li>• 온라인 미팅 참석</li>
+                <li>• 고객분석 1건 이상 생성</li>
+                <li>• 파트너 카톡방 입장</li>
+              </ul>
+              <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8 }}>7일 초과 → 무조건 환불불가</p>
+            </section>
           </div>
         )}
       </div>
