@@ -23,14 +23,29 @@ export default function AdminPartners() {
   const [partners, setPartners] = useState<PartnerRow[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const loadPartners = () => {
     const adminId = localStorage.getItem("adminId");
     if (!adminId) { router.push("/admin/login"); return; }
     fetch("/api/admin/partners", { headers: { "x-admin-id": adminId } })
       .then((res) => res.json())
       .then((data) => setPartners(data.partners || []))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadPartners();
   }, [router]);
+
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`"${name}" 파트너 계정을 삭제하시겠습니까? 되돌릴 수 없습니다.`)) return;
+    const adminId = localStorage.getItem("adminId");
+    const res = await fetch(`/api/admin/partners/${id}`, {
+      method: "DELETE",
+      headers: { "x-admin-id": adminId || "" },
+    });
+    if (!res.ok) { alert("삭제에 실패했습니다."); return; }
+    loadPartners();
+  };
   const handleLogout = () => {
     localStorage.removeItem("adminId");
     localStorage.removeItem("adminName");
@@ -62,13 +77,14 @@ export default function AdminPartners() {
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>수익</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>가이드 확인</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>가입비 납부</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}></th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
               ) : partners.length === 0 ? (
-                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>가입된 파트너가 없습니다.</td></tr>
+                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>가입된 파트너가 없습니다.</td></tr>
               ) : (
                 partners.map((p) => (
                   <tr key={p.id} style={{ borderBottom: "1px solid #eee" }}>
@@ -85,6 +101,9 @@ export default function AdminPartners() {
                           🎟️ 쿠폰 사용{p.couponCodes.length > 0 ? `(${p.couponCodes.join(", ")})` : ""}
                         </span>
                       )}
+                    </td>
+                    <td style={{ padding: "12px" }}>
+                      <button onClick={() => handleDelete(p.id, p.name)} style={{ padding: "6px 12px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>삭제</button>
                     </td>
                   </tr>
                 ))
