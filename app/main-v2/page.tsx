@@ -519,15 +519,15 @@ export default function MainV2() {
           <span style={{ fontSize: 13, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운</span>
         </div>
         <p style={{ color: "#6d28d9", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 · AI 동양 사주 분석</p>
-        <div style={{ color: "#9ca3af", fontSize: 10.5, fontWeight: 600, lineHeight: 1.7, marginBottom: 10 }}>
-          <p style={{ margin: 0 }}>대표 장문정 | 상호 기획의신</p>
+        <div style={{ color: "#581c87", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
+          <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
           <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
           <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
         </div>
         <div style={{ marginBottom: 10 }}>
-          <p style={{ color: "#6b7280", fontSize: 11, fontWeight: 700, margin: "0 0 2px" }}>📧 junga6783@gmail.com · 📞 010-4714-2689</p>
-          <p style={{ color: "#9ca3af", fontSize: 10.5, fontWeight: 600, margin: "0 0 6px" }}>전화 상담은 제공하지 않습니다. 문의하기를 이용해주세요.</p>
-          <a href="mailto:junga6783@gmail.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1px solid rgba(236,72,153,0.35)", borderRadius: 20, color: "#ec4899", textDecoration: "none", fontWeight: 700, fontSize: 11 }}>문의하기</a>
+          <p style={{ color: "#831843", fontSize: 11, fontWeight: 800, margin: "0 0 3px" }}>📧 junga6783@gmail.com · 📞 010-4714-2689</p>
+          <p style={{ color: "#a78bfa", fontSize: 10.5, fontWeight: 700, margin: "0 0 8px" }}>전화 상담은 제공하지 않습니다. 문의하기를 이용해주세요.</p>
+          <a href="mailto:junga6783@gmail.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #ec4899", borderRadius: 20, color: "#ec4899", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>문의하기</a>
         </div>
         <div style={{ fontSize: 11, marginBottom: 8 }}>
           <a href="/privacy" style={{ color: "#ec4899", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
