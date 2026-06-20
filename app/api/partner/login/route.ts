@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pbkdf2Sync } from "crypto";
 import { db } from "@/lib/firebase";
+import { checkRateLimit, recordFailedAttempt, clearAttempts } from "@/lib/rateLimiter";
 
 function verifyPassword(password: string, stored: string): boolean {
   const [salt, hash] = stored.split(":");
@@ -16,8 +17,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "이메일과 비밀번호를 입력해주세요" }, { status: 400 });
     }
 
+    const rate = checkRateLimit(email);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: `로그인 시도가 너무 많습니다. ${rate.remainingMinutes}분 후 다시 시도해주세요.` },
+        { status: 429 }
+      );
+    }
+
     const snap = await db.ref("partners").orderByChild("email").equalTo(email).once("value");
     if (!snap.exists()) {
+      recordFailedAttempt(email);
       return NextResponse.json({ error: "등록되지 않은 파트너입니다" }, { status: 401 });
     }
 
@@ -26,8 +36,11 @@ export async function POST(request: NextRequest) {
     const partnerData = all[partnerId];
 
     if (!verifyPassword(password, partnerData.password)) {
+      recordFailedAttempt(email);
       return NextResponse.json({ error: "비밀번호가 올바르지 않습니다" }, { status: 401 });
     }
+
+    clearAttempts(email);
 
     return NextResponse.json({
       partnerId, partnerName: partnerData.name, partnerTier: partnerData.tier, email: partnerData.email,
