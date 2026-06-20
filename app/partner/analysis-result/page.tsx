@@ -29,11 +29,15 @@ export default function PartnerAnalysisResult() {
     setAnalysisResults(JSON.parse(result));
     setCustomerName(name || "고객");
     setPackageType(pkg || "기본 분석");
+    setCurrentTab(pkg === "VIP 커플팩" ? "name" : "yearly");
     // 결과지에 점운 대신 표시할 파트너 상호명
     setBusinessName(localStorage.getItem("partnerBusinessName") || "");
   }, [router]);
 
-  const tabs = [
+  // 패키지마다 실제로 만들어지는 항목이 다름(/api/analyze의 PACKAGE_FIELDS와
+  // 동일하게 맞춤) — 안 만들어진 항목의 탭이 보이면 "불러올 수 없습니다"로
+  // 고장난 것처럼 보이는 문제가 있어서, 패키지에 맞는 탭만 보여줌
+  const ALL_TABS = [
     { key: "name", label: "이름 분석", data: analysisResults?.name },
     { key: "wealth", label: "재운", data: analysisResults?.wealthLuck },
     { key: "love", label: "애정운", data: analysisResults?.loveLuck },
@@ -43,6 +47,13 @@ export default function PartnerAnalysisResult() {
     { key: "monthly", label: "월운", data: analysisResults?.monthlyLuck },
     { key: "full", label: "전체 분석", data: analysisResults?.fullAnalysis },
   ];
+  const PACKAGE_TAB_KEYS: Record<string, string[]> = {
+    "기본 분석": ["yearly", "monthly"],
+    "베이직": ["yearly", "monthly", "wealth", "love"],
+    "프리미엄": ["yearly", "monthly", "wealth", "love", "health"],
+    "VIP 커플팩": ["yearly", "monthly", "name", "wealth", "love", "health", "couple", "full"],
+  };
+  const tabs = ALL_TABS.filter(t => (PACKAGE_TAB_KEYS[packageType] ?? PACKAGE_TAB_KEYS["기본 분석"]).includes(t.key));
 
   const handleSaveImage = async () => {
     if (!analysisResults) return;
@@ -52,17 +63,8 @@ export default function PartnerAnalysisResult() {
     try {
       const html2canvas = (await import("html2canvas")).default;
 
-      const sectionTabs = packageType === "기본" || packageType === "베이직"
-        ? [
-            { label: "이름 분석", data: analysisResults.name },
-            { label: "전체 분석", data: analysisResults.fullAnalysis },
-          ]
-        : [
-            { label: "이름 분석", data: analysisResults.name },
-            { label: "재운", data: analysisResults.wealthLuck },
-            { label: "애정운", data: analysisResults.loveLuck },
-            { label: "건강운", data: analysisResults.healthLuck },
-          ];
+      // 화면 탭과 동일한 기준으로, 실제로 만들어진 항목만 이미지에 포함
+      const sectionTabs = tabs.map(t => ({ label: t.label, data: t.data }));
 
       let htmlContent = `
         <div style="width: 800px; background: #FFD700; padding: 50px 40px; text-align: center; box-sizing: border-box;">
