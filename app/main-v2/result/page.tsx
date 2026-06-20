@@ -846,7 +846,8 @@ export default function V2Result() {
             if (alreadyConsumedToday) {
               return (
                 <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden", padding: "18px", textAlign: "center" }}>
-                  <p style={{ fontSize: 13, fontWeight: 800, color: "#9ca3af", margin: 0 }}>🎁 오늘의 "당신의 변화"는 이미 받으셨어요<br />내일 다시 만나요!</p>
+                  <p style={{ fontSize: 13, fontWeight: 800, color: "#9ca3af", margin: "0 0 6px" }}>🎁 오늘의 "당신의 변화"는 이미 받으셨어요<br />내일 다시 만나요!</p>
+                  <p style={{ fontSize: 11, color: "#d4af37", fontWeight: 700, margin: 0 }}>✨ 당신의 변화는 하루에 한 번만 만나볼 수 있는 특별한 메시지예요</p>
                 </div>
               );
             }
