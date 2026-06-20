@@ -21,8 +21,8 @@ export function calcScore(birth: string, salt: number): number {
   return Math.min(95, Math.max(55, ((sum * 7 + salt * 13) % 41) + 55));
 }
 
-const LUCKY_COLORS = ["보라색", "분홍색", "하늘색", "황금색", "초록색", "붉은색", "흰색"];
-const LUCKY_DIRS = ["동쪽", "서쪽", "남쪽", "북쪽", "동남쪽", "서북쪽"];
+export const LUCKY_COLORS = ["보라색", "분홍색", "하늘색", "황금색", "초록색", "붉은색", "흰색"];
+export const LUCKY_DIRS = ["동쪽", "서쪽", "남쪽", "북쪽", "동남쪽", "서북쪽"];
 
 const ALL_CATS = ["🌟 오늘의 운세", "💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운", "💼 사업운", "📅 월별운세", "💍 결혼·궁합운", "📝 이름분석", "☀️ 올해 운세", "💼 전체 사주분석"];
 

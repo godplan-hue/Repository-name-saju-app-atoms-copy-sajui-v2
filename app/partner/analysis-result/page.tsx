@@ -1,22 +1,94 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Head from "next/head";
 
+const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
+const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
+
+function ScoreCircle({ score, size = 130 }: { score: number; size?: number }) {
+  const r = 44;
+  const circ = 2 * Math.PI * r;
+  const [animated, setAnimated] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => setAnimated(score), 300);
+    return () => clearTimeout(t);
+  }, [score]);
+  const dash = (animated / 100) * circ;
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r={r} fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="8" />
+      <circle cx="50" cy="50" r={r} fill="none" stroke="white" strokeWidth="8"
+        strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
+        transform="rotate(-90 50 50)"
+        style={{ transition: "stroke-dasharray 1.2s ease" }} />
+      <text x="50" y="46" textAnchor="middle" fill="white" fontSize="20" fontWeight="900">{animated}</text>
+      <text x="50" y="60" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="9" fontWeight="700">/ 100</text>
+    </svg>
+  );
+}
+
+function ScoreBar({ label, score, color }: { label: string; score: number; color: string }) {
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => setWidth(score), 400);
+    return () => clearTimeout(t);
+  }, [score]);
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#374151" }}>{label}</span>
+        <span style={{ fontSize: 13, fontWeight: 900, color }}>{score}점</span>
+      </div>
+      <div style={{ height: 7, background: "#f3e8ff", borderRadius: 99, overflow: "hidden" }}>
+        <div style={{ height: "100%", width: `${width}%`, background: `linear-gradient(90deg, ${color}, ${color}cc)`, borderRadius: 99, transition: "width 1s ease" }} />
+      </div>
+    </div>
+  );
+}
+
+// 패키지마다 실제로 만들어지는 항목이 다름(/api/analyze의 PACKAGE_FIELDS와 동일하게 맞춤)
+const PACKAGE_CATS: Record<string, { key: string; icon: string; label: string }[]> = {
+  "기본 분석": [
+    { key: "yearlyLuck", icon: "☀️", label: "올해 운세" },
+    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
+  ],
+  "베이직": [
+    { key: "yearlyLuck", icon: "☀️", label: "올해 운세" },
+    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
+    { key: "wealthLuck", icon: "💰", label: "재물운" },
+    { key: "loveLuck", icon: "💕", label: "연애운" },
+  ],
+  "프리미엄": [
+    { key: "yearlyLuck", icon: "☀️", label: "올해 운세" },
+    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
+    { key: "wealthLuck", icon: "💰", label: "재물운" },
+    { key: "loveLuck", icon: "💕", label: "연애운" },
+    { key: "healthLuck", icon: "🌿", label: "건강운" },
+  ],
+  "VIP 커플팩": [
+    { key: "yearlyLuck", icon: "☀️", label: "올해 운세" },
+    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
+    { key: "name", icon: "📝", label: "이름분석" },
+    { key: "wealthLuck", icon: "💰", label: "재물운" },
+    { key: "loveLuck", icon: "💕", label: "연애운" },
+    { key: "healthLuck", icon: "🌿", label: "건강운" },
+    { key: "couple", icon: "💍", label: "궁합분석" },
+    { key: "fullAnalysis", icon: "✨", label: "전체 사주분석" },
+  ],
+};
+
 export default function PartnerAnalysisResult() {
   const router = useRouter();
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [customerName, setCustomerName] = useState("");
   const [packageType, setPackageType] = useState("");
-  const [isMobile, setIsMobile] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [currentTab, setCurrentTab] = useState("name");
+  const [saving, setSaving] = useState(false);
   const [businessName, setBusinessName] = useState("");
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-
     const result = sessionStorage.getItem("analysisResult");
     const name = sessionStorage.getItem("analysisName");
     const pkg = sessionStorage.getItem("selectedPackage");
@@ -29,238 +101,120 @@ export default function PartnerAnalysisResult() {
     setAnalysisResults(JSON.parse(result));
     setCustomerName(name || "고객");
     setPackageType(pkg || "기본 분석");
-    setCurrentTab(pkg === "VIP 커플팩" ? "name" : "yearly");
     // 결과지에 점운 대신 표시할 파트너 상호명
     setBusinessName(localStorage.getItem("partnerBusinessName") || "");
   }, [router]);
 
-  // 패키지마다 실제로 만들어지는 항목이 다름(/api/analyze의 PACKAGE_FIELDS와
-  // 동일하게 맞춤) — 안 만들어진 항목의 탭이 보이면 "불러올 수 없습니다"로
-  // 고장난 것처럼 보이는 문제가 있어서, 패키지에 맞는 탭만 보여줌
-  const ALL_TABS = [
-    { key: "name", label: "이름 분석", data: analysisResults?.name },
-    { key: "wealth", label: "재운", data: analysisResults?.wealthLuck },
-    { key: "love", label: "애정운", data: analysisResults?.loveLuck },
-    { key: "health", label: "건강운", data: analysisResults?.healthLuck },
-    { key: "couple", label: "궁합", data: analysisResults?.couple },
-    { key: "yearly", label: "연운", data: analysisResults?.yearlyLuck },
-    { key: "monthly", label: "월운", data: analysisResults?.monthlyLuck },
-    { key: "full", label: "전체 분석", data: analysisResults?.fullAnalysis },
-  ];
-  const PACKAGE_TAB_KEYS: Record<string, string[]> = {
-    "기본 분석": ["yearly", "monthly"],
-    "베이직": ["yearly", "monthly", "wealth", "love"],
-    "프리미엄": ["yearly", "monthly", "wealth", "love", "health"],
-    "VIP 커플팩": ["yearly", "monthly", "name", "wealth", "love", "health", "couple", "full"],
-  };
-  const tabs = ALL_TABS.filter(t => (PACKAGE_TAB_KEYS[packageType] ?? PACKAGE_TAB_KEYS["기본 분석"]).includes(t.key));
-
   const handleSaveImage = async () => {
     if (!analysisResults) return;
-
-    setIsGenerating(true);
-
+    setSaving(true);
     try {
       const html2canvas = (await import("html2canvas")).default;
-
-      // 화면 탭과 동일한 기준으로, 실제로 만들어진 항목만 이미지에 포함
-      const sectionTabs = tabs.map(t => ({ label: t.label, data: t.data }));
-
-      let htmlContent = `
-        <div style="width: 800px; background: #FFD700; padding: 50px 40px; text-align: center; box-sizing: border-box;">
-          <div style="font-size: 60px; margin-bottom: 20px;">🔮</div>
-          <h1 style="font-size: 36px; font-weight: 900; margin: 0 0 10px; color: #1a1a1a;">${businessName || "사주 분석"}</h1>
-          <p style="font-size: 16px; font-weight: 700; margin: 0; color: #666;">${customerName}님 · ${packageType} 결과지</p>
-        </div>
-      `;
-
-      sectionTabs.forEach((tab) => {
-        htmlContent += `
-          <div style="width: 800px; background: #FFD700; padding: 30px 40px; box-sizing: border-box;">
-            <h2 style="font-size: 22px; font-weight: 900; color: #1a1a1a; margin: 0 0 16px;">${tab.label}</h2>
-            <div style="background: #FFFACD; padding: 24px; border-radius: 8px; box-sizing: border-box;">
-              <p style="font-size: 14px; font-weight: 600; line-height: 1.8; color: #333; white-space: pre-wrap; margin: 0; word-break: break-word;">${tab.data || "분석 결과를 불러올 수 없습니다"}</p>
-            </div>
-          </div>
-        `;
-      });
-
-      htmlContent += `
-        <div style="width: 800px; background: #FFD700; padding: 40px; text-align: center; box-sizing: border-box;">
-          <div style="background: #FFFACD; padding: 40px; border-radius: 8px; box-sizing: border-box;">
-            <p style="font-size: 24px; font-weight: 900; color: #1a1a1a; margin: 0 0 16px;">감사합니다</p>
-            <p style="font-size: 15px; font-weight: 700; color: #333; margin: 0 0 20px; line-height: 1.8;">
-              ${customerName}님의 사주 분석을 위해<br/>${businessName || "저희 사주 서비스"}를 이용해주셔서 진심으로 감사합니다.
-            </p>
-            <p style="font-size: 12px; color: #666; margin: 0;">사주 궁금하면 다시 방문해주세요</p>
-          </div>
-        </div>
-      `;
-
-      const element = document.createElement("div");
-      element.innerHTML = htmlContent;
-      element.style.position = "fixed";
-      element.style.top = "-99999px";
-      element.style.left = "0";
-      document.body.appendChild(element);
-
-      try {
-        const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false, backgroundColor: "#FFD700" });
-        const link = document.createElement("a");
-        link.download = `사주_${customerName}_${packageType}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-        alert("이미지가 다운로드되었습니다");
-      } finally {
-        document.body.removeChild(element);
+      const elements = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+      if (elements.length === 0) return;
+      const canvases: HTMLCanvasElement[] = [];
+      for (const el of elements) {
+        canvases.push(await html2canvas(el, { scale: 2, useCORS: true, logging: false, backgroundColor: "#ffffff" }));
       }
+      const totalHeight = canvases.reduce((sum, c) => sum + c.height, 0);
+      const width = Math.max(...canvases.map(c => c.width));
+      const merged = document.createElement("canvas");
+      merged.width = width;
+      merged.height = totalHeight;
+      const ctx = merged.getContext("2d")!;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, width, totalHeight);
+      let y = 0;
+      for (const c of canvases) {
+        ctx.drawImage(c, 0, y);
+        y += c.height;
+      }
+      const link = document.createElement("a");
+      link.download = `사주_${customerName}_${packageType}.png`;
+      link.href = merged.toDataURL("image/png");
+      link.click();
     } catch (error) {
       console.error("이미지 생성 오류:", error);
       alert("이미지 생성 중 오류가 발생했습니다");
     } finally {
-      setIsGenerating(false);
+      setSaving(false);
     }
   };
 
+  if (!analysisResults) return null;
+
+  const { scores, luckyColor, luckyNumber, luckyDirection } = analysisResults;
+  const cats = (PACKAGE_CATS[packageType] ?? PACKAGE_CATS["기본 분석"]).filter(c => analysisResults[c.key]);
+
   return (
     <>
-      <Head>
-        <title>분석 결과 - 사주 궁금하면</title>
-      </Head>
+      <Head><title>분석 결과 - {businessName || "점운"}</title></Head>
+      <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+        <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
+          <button onClick={() => router.push("/partner/create-analysis")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
+            <span style={{ fontSize: 18 }}>←</span>
+            <span style={{ fontSize: 14, fontWeight: 900, color: "#9333ea" }}>🔮 {businessName || "점운"}</span>
+          </button>
+          <button onClick={handleSaveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer" }}>
+            {saving ? "⏳..." : "🖼️ 이미지 저장"}
+          </button>
+        </header>
 
-      <main
-        style={{
-          minHeight: "100vh",
-          background: "linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)",
-          color: "#333",
-          fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
-          padding: "20px",
-        }}
-      >
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <h1 style={{ textAlign: "center", color: "#d4af37", marginBottom: 30, fontSize: "36px", fontWeight: 900, marginTop: 0 }}>
-            🔮 {businessName || "분석 결과"}
-          </h1>
-
-          <div
-            style={{
-              background: "rgba(255, 255, 255, 0.95)",
-              padding: isMobile ? "25px" : "50px",
-              borderRadius: "12px",
-            }}
-          >
-            <div style={{ marginBottom: "30px" }}>
-              <h2 style={{ color: "#d4af37", fontSize: "24px", fontWeight: 900, marginBottom: "10px", marginTop: 0 }}>
-                🎯 {customerName}님의
-              </h2>
-              <p style={{ fontSize: "14px", color: "#666", margin: "0" }}>
-                상품: {packageType}
-              </p>
+        <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
+          {/* 점수 요약 카드 */}
+          <div ref={el => { cardRefs.current[0] = el; }} style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
+            <div style={{ background: "#eab308", color: "#3a2a00", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
+              <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>🔮 {businessName || "점운"} · AI 사주 분석</p>
+              <div style={{ padding: "14px 20px 24px" }}>
+                <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
+                <h1 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 12px", opacity: 0.9 }}>{customerName}님의 운세 분석</h1>
+                <ScoreCircle score={scores?.total ?? 0} size={130} />
+                <p style={{ fontSize: 12, opacity: 0.75, margin: "8px 0 0", fontWeight: 600 }}>총운 점수</p>
+              </div>
             </div>
-
-            <div
-              style={{
-                display: "flex",
-                gap: "8px",
-                marginBottom: "20px",
-                overflowX: "auto",
-                paddingBottom: "10px",
-              }}
-            >
-              {tabs.map((tab) => (
-                <button
-                  key={tab.key}
-                  onClick={() => setCurrentTab(tab.key)}
-                  style={{
-                    padding: "8px 16px",
-                    background: currentTab === tab.key ? "#d4af37" : "#e8e8e8",
-                    color: currentTab === tab.key ? "white" : "#333",
-                    border: "none",
-                    borderRadius: "6px",
-                    fontWeight: 700,
-                    fontSize: "13px",
-                    cursor: "pointer",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {tab.label}
-                </button>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "0 18px 12px" }}>
+              {[{ label: "행운 색", value: luckyColor, icon: "🎨" }, { label: "행운 숫자", value: luckyNumber, icon: "🔢" }, { label: "행운 방향", value: luckyDirection, icon: "🧭" }].map(item => (
+                <div key={item.label} style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>{item.icon}</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>{item.label}</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{item.value}</div>
+                </div>
               ))}
             </div>
-
-            <div
-              style={{
-                background: "linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%)",
-                padding: "25px",
-                borderRadius: "12px",
-                marginBottom: "30px",
-                border: "2px solid rgba(255,215,0,0.6)",
-                minHeight: "200px",
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: "18px",
-                  fontWeight: 900,
-                  color: "#FF6B6B",
-                  margin: "0 0 12px 0",
-                  borderBottom: "2px solid #FF6B6B",
-                  paddingBottom: "8px",
-                }}
-              >
-                {tabs.find((t) => t.key === currentTab)?.label}
-              </h2>
-              <p
-                style={{
-                  fontSize: "14px",
-                  fontWeight: 700,
-                  color: "#333",
-                  margin: 0,
-                  lineHeight: 1.8,
-                  whiteSpace: "pre-wrap",
-                  wordBreak: "keep-all",
-                }}
-              >
-                {tabs.find((t) => t.key === currentTab)?.data || "분석 결과를 불러올 수 없습니다..."}
-              </p>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-              <button
-                onClick={handleSaveImage}
-                disabled={isGenerating}
-                style={{
-                  padding: "16px",
-                  background: isGenerating ? "#ccc" : "linear-gradient(135deg, #ff1493, #ff69b4)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "10px",
-                  fontWeight: 900,
-                  fontSize: "15px",
-                  cursor: isGenerating ? "not-allowed" : "pointer",
-                  opacity: isGenerating ? 0.6 : 1,
-                }}
-              >
-                🖼️ {isGenerating ? "생성 중..." : "이미지 저장"}
-              </button>
-
-              <button
-                onClick={() => router.push("/partner/create-analysis")}
-                style={{
-                  padding: "16px",
-                  background: "linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%)",
-                  color: "#333",
-                  border: "2px solid rgba(139,92,246,0.6)",
-                  borderRadius: "10px",
-                  fontWeight: 900,
-                  fontSize: "15px",
-                  cursor: "pointer",
-                }}
-              >
-                🔄 새로 분석
-              </button>
+            <div style={{ padding: "4px 18px 18px" }}>
+              <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 14 }}>📊 분야별 운세 점수</div>
+              {[
+                { label: "🌟 오늘의 운세", key: "total", color: "#f59e0b" },
+                { label: "💰 재물운", key: "wealth", color: "#f59e0b" },
+                { label: "💕 연애운", key: "love", color: "#ec4899" },
+                { label: "💪 건강운", key: "health", color: "#10b981" },
+                { label: "🎯 성공운", key: "success", color: "#8b5cf6" },
+              ].map(b => (
+                <ScoreBar key={b.label} label={b.label} score={scores?.[b.key] ?? 0} color={b.color} />
+              ))}
             </div>
           </div>
+
+          {/* 패키지별 운세 카드 */}
+          {cats.map((c, i) => (
+            <div key={c.key} ref={el => { cardRefs.current[1 + i] = el; }}
+              style={{ background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
+              <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(217,180,80,0.18)", background: "linear-gradient(90deg, rgba(217,180,80,0.10), transparent)" }}>
+                <span style={{ fontSize: 22 }}>{c.icon}</span>
+                <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{c.label}</span>
+                <span style={{ fontSize: 10, background: G_PREMIUM, color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>📦 패키지</span>
+              </div>
+              <div style={{ padding: "14px 18px 20px" }}>
+                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>
+                  {analysisResults[c.key]}
+                </p>
+              </div>
+            </div>
+          ))}
+
+          <button onClick={() => router.push("/partner/create-analysis")} style={{ width: "100%", padding: "13px 0", background: "white", color: "#9333ea", border: "1.5px solid rgba(147,51,234,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(147,51,234,0.1)" }}>
+            🔄 새로 분석
+          </button>
         </div>
       </main>
     </>

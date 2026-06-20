@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { calcScore, getPackageTemplate } from "../v2/analyze/route";
+import { calcScore, getPackageTemplate, LUCKY_COLORS, LUCKY_DIRS } from "../v2/analyze/route";
 
 // 패키지별로 어떤 항목(필드)이 들어가는지 + 각 항목이 어떤 카테고리/점수를
 // 쓰는지 매핑 — 메인 사이트(v2/analyze)와 똑같은 템플릿을 재사용하므로
@@ -57,11 +57,18 @@ export async function POST(request: NextRequest) {
     };
 
     const fields = PACKAGE_FIELDS[packageType] ?? PACKAGE_FIELDS["기본 분석"];
-    const result: Record<string, string> = {};
+    const result: Record<string, any> = {};
     for (const field of fields) {
       const { label, score } = FIELD_TO_CATEGORY[field];
       result[field] = getPackageTemplate(name, birth, gender, label, score, partnerName, partnerBirth, partnerGender);
     }
+
+    // 메인 사이트와 동일한 점수요약 카드를 파트너 결과지에도 그대로 보여주기 위한 값
+    const [y, m, d] = birth.split("-").map(Number);
+    result.scores = scores;
+    result.luckyColor = LUCKY_COLORS[(y + m + d) % LUCKY_COLORS.length];
+    result.luckyNumber = ((y + m * 13 + d * 7) % 9) + 1;
+    result.luckyDirection = LUCKY_DIRS[(y + m) % LUCKY_DIRS.length];
 
     console.log("템플릿 분석 완료");
 
