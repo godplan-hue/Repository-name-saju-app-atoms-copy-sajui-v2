@@ -126,7 +126,9 @@ export default function Privacy() {
             <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 12 }}>개인정보 관련 문의:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
               <li>• 이메일: junga6783@gmail.com</li>
+              <li>• 전화: 010-4714-2689</li>
               <li>• 응답 기간: 7일 이내</li>
+              <li>• 사업장 주소: 서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</li>
             </ul>
           </section>
 
