@@ -262,6 +262,16 @@ export default function V2Result() {
     { key: "✨ 총운",   icon: "✨", color: "#6366f1" },
   ];
 
+  // 이 화면을 벗어나면(로그아웃, 뒤로가기 등) 읽어주기가 계속 돌아가지 않도록
+  // 화면이 사라질 때 음성을 강제로 멈춤
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const raw = sessionStorage.getItem("v2_result");
     if (!raw) { router.replace("/main-v2/analysis"); return; }
