@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
         analysisCount,
         revenue,
         createdAt: p.createdAt,
+        guideConfirmedAt: p.guideConfirmedAt || null,
       };
     });
     list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());

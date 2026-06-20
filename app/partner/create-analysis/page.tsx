@@ -225,6 +225,20 @@ export default function PartnerCreateAnalysis() {
               📁 보관함
             </button>
             <button
+              onClick={() => router.push("/partner/guide")}
+              style={{
+                padding: "10px 20px",
+                background: "#f0fdf4",
+                color: "#16a34a",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              📘 운영 가이드
+            </button>
+            <button
               onClick={() => {
                 localStorage.removeItem("partnerId");
                 localStorage.removeItem("partnerName");

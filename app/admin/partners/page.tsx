@@ -9,6 +9,7 @@ interface PartnerRow {
   tier: string;
   analysisCount: number;
   revenue: number;
+  guideConfirmedAt: string | null;
 }
 
 const TIER_NAMES: Record<string, string> = { free: "무료", silver: "실버", gold: "골드", diamond: "다이아" };
@@ -55,13 +56,14 @@ export default function AdminPartners() {
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>등급</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>분석 건수</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>수익</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>가이드 확인</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
               ) : partners.length === 0 ? (
-                <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#999" }}>가입된 파트너가 없습니다.</td></tr>
+                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#999" }}>가입된 파트너가 없습니다.</td></tr>
               ) : (
                 partners.map((p) => (
                   <tr key={p.id} style={{ borderBottom: "1px solid #eee" }}>
@@ -70,6 +72,7 @@ export default function AdminPartners() {
                     <td style={{ padding: "12px", color: "#666" }}>{TIER_NAMES[p.tier] || p.tier}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{p.analysisCount}</td>
                     <td style={{ padding: "12px", color: "#666" }}>₩{p.revenue.toLocaleString()}</td>
+                    <td style={{ padding: "12px", color: p.guideConfirmedAt ? "#16a34a" : "#999" }}>{p.guideConfirmedAt ? new Date(p.guideConfirmedAt).toLocaleString("ko-KR") : "미확인"}</td>
                   </tr>
                 ))
               )}
