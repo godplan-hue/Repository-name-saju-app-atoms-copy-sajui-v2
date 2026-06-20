@@ -340,6 +340,21 @@ export default function V2Result() {
     }
   }, [tier, result]);
 
+  // 무료의 "당신의 변화"가 "오늘 이미 받으셨어요" 상태인지를 렌더링 중에 매번
+  // localStorage에서 새로 읽으면, 화면을 보여준 뒤 다른 동작(읽기 등)으로 다시
+  // 렌더링될 때 카드 내용이 안내문구로 갑자기 바뀌어 보이는 문제가 있었음 —
+  // 화면이 열릴 때 한 번만 확인해서 그 값을 그대로 유지하도록 고침
+  const [freeConsumedSnapshot, setFreeConsumedSnapshot] = useState<boolean | null>(null);
+  useEffect(() => {
+    const p = result?.profile;
+    if (!p?.name || !p?.birthYear) return;
+    if (tier !== "free") return;
+    const todayKey = new Date().toDateString();
+    const interestKey = `v2_change_interest_${p.name}_${p.birthYear}_${Number(p.birthMonth)}_${Number(p.birthDay)}_${todayKey}`;
+    const consumedKey = `${interestKey}_consumed`;
+    setFreeConsumedSnapshot(localStorage.getItem(consumedKey) === "1");
+  }, [tier, result]);
+
   const goToPay = () => {
     if (selectedCats.length === 0) return;
     sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
@@ -827,7 +842,7 @@ export default function V2Result() {
           if (locked) {
             // 오늘 이미 결제로 전체공개를 받은 적이 있으면, 무료 쪽에서 또 칩을 고르고
             // 결제해도 더 안 보여줄 거라서 — 헷갈리지 않게 칩/결제유도 대신 안내만 보여줌
-            const alreadyConsumedToday = typeof window !== "undefined" && localStorage.getItem(consumedKey) === "1";
+            const alreadyConsumedToday = freeConsumedSnapshot === true;
             if (alreadyConsumedToday) {
               return (
                 <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden", padding: "18px", textAlign: "center" }}>
