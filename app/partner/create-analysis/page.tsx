@@ -42,10 +42,10 @@ export default function PartnerCreateAnalysis() {
   ];
 
   const packages = [
-    { name: "기본 분석", price: "₩9,900", pages: "30페이지" },
-    { name: "베이직", price: "₩19,900", pages: "75페이지" },
-    { name: "프리미엄", price: "₩24,900", pages: "100페이지" },
-    { name: "VIP 커플팩", price: "₩29,900", pages: "150페이지" },
+    { name: "기본 분석", price: "₩9,900" },
+    { name: "베이직", price: "₩19,900" },
+    { name: "프리미엄", price: "₩24,900" },
+    { name: "VIP 커플팩", price: "₩29,900" },
   ];
 
   useEffect(() => {
@@ -97,6 +97,7 @@ export default function PartnerCreateAnalysis() {
           birth: `${formData.birthYear}-${formData.birthMonth}-${formData.birthDay}`,
           birthHour: formData.birthHour === "unknown" ? "unknown" : String(formData.birthHour).padStart(2, "0"),
           gender: formData.gender,
+          packageType: formData.packageType,
         }),
       });
 
@@ -479,7 +480,6 @@ export default function PartnerCreateAnalysis() {
                 >
                   <div style={{ fontWeight: 900, marginBottom: "5px" }}>{pkg.name}</div>
                   <div style={{ fontSize: "13px", opacity: 0.8 }}>{pkg.price}</div>
-                  <div style={{ fontSize: "12px", opacity: 0.6, marginTop: "5px" }}>{pkg.pages}</div>
                 </button>
               ))}
             </div>
