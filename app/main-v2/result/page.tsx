@@ -248,6 +248,7 @@ export default function V2Result() {
   const [planType, setPlanType] = useState("");
   const [tier, setTier] = useState<"free" | "select" | "package">("free");
   const [pkgName, setPkgName] = useState("");
+  const [speaking, setSpeaking] = useState(false);
 
   const INLINE_PLANS = [
     { id: "vip", icon: "🐲", name: "용 코스", badge: "👑 최고", desc: "₩9,990", price: 9990, priceStr: "₩9,990", per: "무제한", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
@@ -547,8 +548,41 @@ export default function V2Result() {
   const { scores, luckyColor, luckyNumber, luckyDirection, profile } = result;
   const freeAnalysis: string = result.analysis ?? "";
 
+  // 결과 읽어주기 — 브라우저 내장 음성합성(Web Speech API)이라 별도 비용/설치 없음.
+  // 긴 글을 한 번에 읽히면 일부 브라우저(특히 크롬)에서 중간에 끊기는 경우가
+  // 있어서, 문장 단위로 잘라 차례로 읽게 함(끊겨도 다음 문장부터 이어짐)
+  const toggleReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      alert("이 브라우저는 읽어주기 기능을 지원하지 않습니다.");
+      return;
+    }
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      return;
+    }
+    const fullText = [freeAnalysis, ...Object.values(allAnalyses)].filter(Boolean).join("\n");
+    if (!fullText.trim()) return;
+    const chunks = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+    window.speechSynthesis.cancel();
+    chunks.forEach((chunk, i) => {
+      const utter = new SpeechSynthesisUtterance(chunk);
+      utter.lang = "ko-KR";
+      utter.rate = 1;
+      if (i === chunks.length - 1) utter.onend = () => setSpeaking(false);
+      window.speechSynthesis.speak(utter);
+    });
+    setSpeaking(true);
+  };
+
   return (
     <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/1200x/18/97/18/189718a8189930b86d2088d7f1250c2c.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+
+      {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
+      <button onClick={toggleReadAloud}
+        style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
+        {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
+      </button>
 
       {/* 헤더 */}
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
