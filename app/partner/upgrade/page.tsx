@@ -55,7 +55,7 @@ export default function PartnerUpgrade() {
       const res = await fetch("/api/partner/upgrade", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ partnerId, newTier }),
+        body: JSON.stringify({ partnerId, newTier, paidAmount: finalFee }),
       });
       const data = await res.json();
       if (!res.ok) { alert(data.error || "업그레이드에 실패했습니다."); return; }
