@@ -48,7 +48,8 @@ export async function PATCH(request: NextRequest) {
     if (!found || !found.active) {
       return NextResponse.json({ error: "유효하지 않은 코드입니다." }, { status: 404 });
     }
-    await ref.update({ usageCount: (found.usageCount || 0) + 1 });
+    // 한 번 쓰이면 자동으로 비활성화 — 같은 코드를 여러 사람이 나눠 쓰는 것을 방지
+    await ref.update({ usageCount: (found.usageCount || 0) + 1, active: false });
     return NextResponse.json({ success: true, discountPercent: found.discountPercent });
   } catch (error) {
     console.error("Promo code use error:", error);
