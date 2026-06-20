@@ -602,7 +602,13 @@ export default function V2Result() {
         tier === "free" ? [freeAnalysis]
         : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
         : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
-      const fullText = visibleTexts.filter(Boolean).join("\n");
+      // 이모지는 음성합성기가 "반짝이는 별" 같은 설명으로 읽어버려서 제거하고,
+      // "9~12월" 같은 표현은 물결표(~)를 "물결"이라고 그대로 읽어버려서
+      // "9월에서 12월"처럼 자연스럽게 읽히도록 미리 바꿔둠(화면 표시는 그대로,
+      // 음성으로만 들어가는 텍스트만 변환)
+      const fullText = visibleTexts.filter(Boolean).join("\n")
+        .replace(/(\d+)\s*~\s*(\d+)\s*월/g, "$1월에서 $2월")
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}]/gu, "");
       if (!fullText.trim()) return;
       readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
       readIdxRef.current = 0;
