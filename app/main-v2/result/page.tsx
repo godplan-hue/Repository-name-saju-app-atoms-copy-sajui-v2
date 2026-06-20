@@ -561,7 +561,14 @@ export default function V2Result() {
       setSpeaking(false);
       return;
     }
-    const fullText = [freeAnalysis, ...Object.values(allAnalyses)].filter(Boolean).join("\n");
+    // 화면에 실제로 보이는 내용만 정확히 읽게 함 — allAnalyses 안에는 "오늘의
+    // 운세"(미리보기용, 결제 화면엔 안 보임) 항목도 같이 섞여있어서, 그걸 그대로
+    // 다 읽으면 결제한 진짜 내용 대신 "오늘의 운세"만 계속 읽히는 문제가 있었음
+    const visibleTexts =
+      tier === "free" ? [freeAnalysis]
+      : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
+      : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
+    const fullText = visibleTexts.filter(Boolean).join("\n");
     if (!fullText.trim()) return;
     const chunks = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
     window.speechSynthesis.cancel();
