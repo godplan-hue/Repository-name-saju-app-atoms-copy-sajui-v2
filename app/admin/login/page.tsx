@@ -186,18 +186,6 @@ export default function AdminLogin() {
               {loading ? "로그인 중..." : "👑 로그인"}
             </button>
           </form>
-
-          <p
-            style={{
-              fontSize: "13px",
-              textAlign: "center",
-              color: "#999",
-              marginTop: "20px",
-              marginBottom: 0,
-            }}
-          >
-            테스트 계정: admin@test.com / 1234
-          </p>
         </div>
       </main>
     </>

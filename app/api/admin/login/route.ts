@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const ADMIN_ACCOUNTS = [
-  { id: "admin1", email: "admin@test.com", password: "1234", name: "관리자" },
+  { id: "admin1", email: "junga6783@gmail.com", password: "$$jang2966", name: "관리자" },
 ];
 
 export async function POST(request: NextRequest) {
