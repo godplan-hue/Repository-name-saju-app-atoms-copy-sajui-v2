@@ -14,14 +14,14 @@ export default function PartnerLogin() {
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
+    const savedEmail = localStorage.getItem("partnerLoginEmail");
+    if (savedEmail) setEmail(savedEmail);
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
-    console.log("🔍 로그인 시도:", { email, password });
 
     try {
       const response = await fetch("/api/partner/login", {
@@ -46,7 +46,8 @@ export default function PartnerLogin() {
       localStorage.setItem("partnerName", data.partnerName);
       localStorage.setItem("partnerTier", data.partnerTier);
       localStorage.setItem("partnerBusinessName", data.businessName);
-      
+      localStorage.setItem("partnerLoginEmail", email);
+
       router.push("/partner/create-analysis");
     } catch (err) {
       console.error("❌ 로그인 오류:", err);
