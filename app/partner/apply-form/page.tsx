@@ -78,7 +78,7 @@ function PartnerApplyFormInner() {
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0, 0, 0, 0.55)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px", maxWidth: 500, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
         
-        <div style={{ background: "rgba(108,64,200,0.15)", padding: 40, borderRadius: 16, border: "1px solid rgba(139,92,246,0.3)", width: "100%" }}>
+        <div style={{ background: "linear-gradient(135deg, rgba(45,16,62,0.93), rgba(74,26,84,0.9))", padding: 40, borderRadius: 16, border: "1.5px solid rgba(251,191,36,0.4)", boxShadow: "0 12px 40px rgba(0,0,0,0.4)", width: "100%" }}>
           
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900, marginBottom: 12, marginTop: 0, textAlign: "center" }}>파트너 가입</h1>
           <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, textAlign: "center", marginBottom: 24 }}>{info.name} 등급</p>
@@ -86,20 +86,20 @@ function PartnerApplyFormInner() {
           {/* 입력 폼 */}
           <div style={{ marginBottom: 24 }}>
             <label style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, display: "block", marginBottom: 6 }}>이름 *</label>
-            <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="이름을 입력하세요" style={{ width: "100%", padding: 12, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
+            <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="이름을 입력하세요" style={{ width: "100%", padding: 12, background: "rgba(20,10,35,0.55)", border: "1.5px solid rgba(251,191,36,0.4)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
 
             <label style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, display: "block", marginBottom: 6 }}>상호명(고객에게 보여질 이름) *</label>
-            <input type="text" name="businessName" value={formData.businessName} onChange={handleChange} placeholder="예: OO사주, OO철학관" style={{ width: "100%", padding: 12, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
+            <input type="text" name="businessName" value={formData.businessName} onChange={handleChange} placeholder="예: OO사주, OO철학관" style={{ width: "100%", padding: 12, background: "rgba(20,10,35,0.55)", border: "1.5px solid rgba(251,191,36,0.4)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
             <p style={{ color: "#cbb6ff", fontSize: 11, fontWeight: 600, marginTop: -10, marginBottom: 16 }}>이 이름이 고객에게 전달되는 분석 결과지에 표시됩니다.</p>
 
             <label style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, display: "block", marginBottom: 6 }}>이메일 *</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="이메일을 입력하세요" style={{ width: "100%", padding: 12, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
+            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="이메일을 입력하세요" style={{ width: "100%", padding: 12, background: "rgba(20,10,35,0.55)", border: "1.5px solid rgba(251,191,36,0.4)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
 
             <label style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, display: "block", marginBottom: 6 }}>비밀번호 (4자 이상) *</label>
-            <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="비밀번호를 입력하세요" style={{ width: "100%", padding: 12, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
+            <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="비밀번호를 입력하세요" style={{ width: "100%", padding: 12, background: "rgba(20,10,35,0.55)", border: "1.5px solid rgba(251,191,36,0.4)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
 
             <label style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, display: "block", marginBottom: 6 }}>전화번호 *</label>
-            <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="010-0000-0000" style={{ width: "100%", padding: 12, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box" }} />
+            <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="010-0000-0000" style={{ width: "100%", padding: 12, background: "rgba(20,10,35,0.55)", border: "1.5px solid rgba(251,191,36,0.4)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box" }} />
           </div>
 
           {/* 버튼 */}
