@@ -69,7 +69,7 @@ export default function PartnerPolicy() {
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>6. 파트너 회비 환불정책</h2>
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>아래 항목 중 하나라도 하면 환불 불가능:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
-              <li>• 파트너 자료(PDF/가이드) 다운로드</li>
+              <li>• 파트너 운영 가이드 확인</li>
               <li>• 온라인 미팅 참석</li>
               <li>• 고객분석 1건 이상 생성</li>
               <li>• 파트너 카톡방 입장</li>
