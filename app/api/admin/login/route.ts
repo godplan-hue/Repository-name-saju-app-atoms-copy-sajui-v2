@@ -3,7 +3,7 @@ import { pbkdf2Sync } from "crypto";
 import { checkRateLimit, recordFailedAttempt, clearAttempts } from "@/lib/rateLimiter";
 
 // 비밀번호는 평문이 아니라 미리 암호화(salt:hash)된 값으로만 저장 — 코드를
-// 보더라도 실제 비밀번호("$$jang2966")는 알아낼 수 없음
+// 보더라도 실제 비밀번호는 알아낼 수 없음
 function verifyPassword(password: string, stored: string): boolean {
   const [salt, hash] = stored.split(":");
   if (!salt || !hash) return false;
@@ -15,7 +15,7 @@ const ADMIN_ACCOUNTS = [
   {
     id: "admin1",
     email: "junga6783@gmail.com",
-    password: "310402b05bc58472891f2c850cc7adcf:ab5d880267550a41a06c69c0bd48d5f463a6fb214d7dd70fb5a66d3ccd3b9232a0d72e8ec0b305c7f2c6d967d4146de43b913ce4f484078ac6a09579dd130bb2",
+    password: "ab9bc5d0acc1eededdcd5afb76a978a1:cecf2ac1f1cf12b810698f81e8793086c431f77349465191e91bbe38094ff02276de03fd08a69e178078018497fa8513f1d1b1391c39dc4fb06959aaef66c6e5",
     name: "관리자",
   },
 ];
