@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
-import { calculatePartnerCharge, getPartnerTier } from "@/lib/partnerTiers";
+import { calculatePartnerCharge, getPartnerTier, isAnnualFeeExpired } from "@/lib/partnerTiers";
 import { PACKAGES } from "@/lib/constants";
 
 function getListPrice(packageType: string): number {
@@ -27,6 +27,10 @@ export async function POST(request: NextRequest) {
     const partnerRecord = partnerSnap.val();
     const tierId = partnerRecord?.tier || "free";
     const tier = getPartnerTier(tierId);
+
+    if (isAnnualFeeExpired(tierId, partnerRecord?.feeRenewedAt)) {
+      return NextResponse.json({ error: "연회비 갱신이 필요합니다. 갱신 후 다시 시도해주세요." }, { status: 403 });
+    }
 
     if (tier.monthlyLimit !== null) {
       const existingSnap = await db.ref(`partnerArchive/${partnerId}`).once("value");

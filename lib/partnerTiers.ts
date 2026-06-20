@@ -52,3 +52,13 @@ export function calculatePartnerCharge(listPrice: number, tierId: string): Usage
   const totalCharge = baseFee + vat;
   return { listPrice, baseFee, vat, totalCharge };
 }
+
+const YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+
+// 무료 등급은 연회비가 없어서 갱신 개념 자체가 없음. 유료 등급만 마지막으로
+// 연회비를 낸 시점(feeRenewedAt — 가입 또는 업그레이드/갱신 시점)으로부터
+// 1년이 지났는지 확인
+export function isAnnualFeeExpired(tierId: string, feeRenewedAt: string | undefined): boolean {
+  if (tierId === "free" || !feeRenewedAt) return false;
+  return Date.now() - new Date(feeRenewedAt).getTime() > YEAR_MS;
+}

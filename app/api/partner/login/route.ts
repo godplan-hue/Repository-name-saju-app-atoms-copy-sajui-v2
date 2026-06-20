@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { pbkdf2Sync } from "crypto";
 import { db } from "@/lib/firebase";
 import { checkRateLimit, recordFailedAttempt, clearAttempts } from "@/lib/rateLimiter";
+import { isAnnualFeeExpired } from "@/lib/partnerTiers";
 
 function verifyPassword(password: string, stored: string): boolean {
   const [salt, hash] = stored.split(":");
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       partnerId, partnerName: partnerData.name, partnerTier: partnerData.tier, email: partnerData.email,
       businessName: partnerData.businessName || partnerData.name,
+      feeExpired: isAnnualFeeExpired(partnerData.tier, partnerData.feeRenewedAt),
     });
   } catch (error) {
     console.error("Partner login error:", error);

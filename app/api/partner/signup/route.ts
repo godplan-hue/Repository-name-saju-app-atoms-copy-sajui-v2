@@ -28,9 +28,10 @@ export async function POST(request: NextRequest) {
     }
 
     const partnerTier = tier || "free";
+    const now = new Date().toISOString();
     const partnerRef = await db.ref("partners").push({
       email, password: hashPassword(password), name, phone: phone || "", businessName,
-      tier: partnerTier, createdAt: new Date().toISOString(),
+      tier: partnerTier, createdAt: now, feeRenewedAt: now,
     });
 
     // 가입비 결제내역 기록 — 지금은 실제 결제(토스 등) 연동 전이라 결제 자체는

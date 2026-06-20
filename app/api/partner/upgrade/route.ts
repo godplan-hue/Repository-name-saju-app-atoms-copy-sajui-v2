@@ -34,7 +34,8 @@ export async function POST(request: NextRequest) {
       return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
     }).length;
 
-    await db.ref(`partners/${partnerId}`).update({ tier: newTier });
+    // 업그레이드 = 다시 결제하는 것이므로, 연회비 1년 카운트도 지금부터 다시 시작
+    await db.ref(`partners/${partnerId}`).update({ tier: newTier, feeRenewedAt: new Date().toISOString() });
 
     // 가입비와 동일하게, 업그레이드 결제내역도 기록(실제 결제 연동 전 시뮬레이션 단계)
     await db.ref(`partners/${partnerId}/payments`).push({

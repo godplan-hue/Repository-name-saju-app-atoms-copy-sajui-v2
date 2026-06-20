@@ -48,7 +48,7 @@ export default function PartnerLogin() {
       localStorage.setItem("partnerBusinessName", data.businessName);
       localStorage.setItem("partnerLoginEmail", email);
 
-      router.push("/partner/create-analysis");
+      router.push(data.feeExpired ? "/partner/renew" : "/partner/create-analysis");
     } catch (err) {
       console.error("❌ 로그인 오류:", err);
       setError("로그인 중 오류가 발생했습니다");
