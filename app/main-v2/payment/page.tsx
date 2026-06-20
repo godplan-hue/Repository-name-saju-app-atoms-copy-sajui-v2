@@ -253,8 +253,9 @@ function PaymentInner() {
 
         <div id="packages-section" style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => {
-            const wlBadge = !highlightWealthLove ? null
-              : pkg.id === "standard" ? { prefix: "💰 재물운·연애운 포함 · ", highlight: "가장 저렴" }
+            // 베이직/VIP는 항상 재물운+연애운이 포함된 패키지라서, 배너로
+            // 들어왔는지 여부와 무관하게 항상 이 배지를 보여줌
+            const wlBadge = pkg.id === "standard" ? { prefix: "💰 재물운·연애운 포함 · ", highlight: "가장 저렴" }
               : pkg.id === "vip" ? { prefix: "👑 전부 다 포함 · ", highlight: "최고급" }
               : null;
             const isSelected = selectedPackage === pkg.name;
