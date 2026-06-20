@@ -326,6 +326,11 @@ export default function V2Result() {
 
   // "당신의 변화" 전체공개를 오늘 처음 보여주는 거라면, 그 사실을 localStorage에
   // 기록 — 렌더링 함수 안에서 직접 쓰지 않고 여기(useEffect)에서만 써야 함
+  // 유료 "당신의 변화 — 전체공개" 카드도 무료 쪽과 똑같은 문제가 있었음 —
+  // "이미 다 봤는지"를 렌더링마다 새로 읽으면, 이 효과가 방금 consumedKey를
+  // "1"로 써버린 직후 다시 렌더링(읽기 등)될 때 카드가 사라져 보였음.
+  // 그래서 이 페이지에 처음 들어왔을 때의 값(쓰기 전 값)을 스냅샷으로 고정해둠
+  const [paidConsumedSnapshot, setPaidConsumedSnapshot] = useState<boolean | null>(null);
   useEffect(() => {
     const p = result?.profile;
     if (!p?.name || !p?.birthYear) return;
@@ -335,7 +340,9 @@ export default function V2Result() {
     const interestKey = `v2_change_interest_${p.name}_${p.birthYear}_${Number(p.birthMonth)}_${Number(p.birthDay)}_${todayKey}`;
     const consumedKey = `${interestKey}_consumed`;
     const savedInterest = localStorage.getItem(interestKey);
-    if (savedInterest && interestOptions.includes(savedInterest) && localStorage.getItem(consumedKey) !== "1") {
+    const wasAlreadyConsumed = localStorage.getItem(consumedKey) === "1";
+    setPaidConsumedSnapshot(wasAlreadyConsumed);
+    if (savedInterest && interestOptions.includes(savedInterest) && !wasAlreadyConsumed) {
       localStorage.setItem(consumedKey, "1");
     }
   }, [tier, result]);
@@ -914,7 +921,7 @@ export default function V2Result() {
           // 렌더를 두 번 호출할 때 두 번째 호출에서 "이미 다 봤음"으로 읽혀서 바로
           // 사라져 보이는 버그가 있었음
           const savedInterest = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
-          const alreadyConsumed = typeof window !== "undefined" && localStorage.getItem(consumedKey) === "1";
+          const alreadyConsumed = paidConsumedSnapshot === true;
           if (!savedInterest || !interestOptions.includes(savedInterest) || alreadyConsumed) return null;
           const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, savedInterest);
           return (
