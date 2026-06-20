@@ -15,7 +15,7 @@ function josa(word: string, type: "이" | "을" | "은" | "과" | "으로"): str
   return word + (has ? "으로" : "로");
 }
 
-function calcScore(birth: string, salt: number): number {
+export function calcScore(birth: string, salt: number): number {
   const nums = birth.replace(/-/g, "").split("").map(Number);
   const sum = nums.reduce((a, b) => a + b, 0);
   return Math.min(95, Math.max(55, ((sum * 7 + salt * 13) % 41) + 55));
@@ -2007,7 +2007,7 @@ ${st.desc}.
 }
 
 // ── 패키지 전용 고품질 템플릿 (예언형) ──
-function getPackageTemplate(name: string, birth: string, gender: string, category: string, score: number, partnerName?: string, partnerBirth?: string, partnerGender?: string): string {
+export function getPackageTemplate(name: string, birth: string, gender: string, category: string, score: number, partnerName?: string, partnerBirth?: string, partnerGender?: string): string {
   const [y, m] = birth.split("-").map(Number);
   const hi = score >= 75;
   const mid = score >= 60;

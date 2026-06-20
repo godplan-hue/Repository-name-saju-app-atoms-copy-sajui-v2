@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
+import { calcScore, getPackageTemplate } from "../v2/analyze/route";
 
+// 패키지별로 어떤 항목(필드)이 들어가는지 + 각 항목이 어떤 카테고리/점수를
+// 쓰는지 매핑 — 메인 사이트(v2/analyze)와 똑같은 템플릿을 재사용하므로
+// API 호출 없이 비용 0원으로 생성됨
+const PACKAGE_FIELDS: Record<string, string[]> = {
+  "기본 분석": ["yearlyLuck", "monthlyLuck"],
+  "베이직": ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"],
+  "프리미엄": ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"],
+  "VIP 커플팩": ["yearlyLuck", "monthlyLuck", "name", "wealthLuck", "loveLuck", "healthLuck", "couple", "fullAnalysis"],
+};
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, birth, birthHour, gender, planType, partnerName, partnerBirth, packageType } = await request.json();
+    const { name, email, birth, birthHour, gender, planType, partnerName, partnerBirth, partnerGender, packageType } = await request.json();
 
 
     console.log("분석 요청:", { name, email, birth, birthHour, planType, packageType });
@@ -26,119 +36,42 @@ export async function POST(request: NextRequest) {
     }
 
 
-    // 유료 분석: API 호출
-    let maxTokens = 10000;
-if (packageType === "기본 분석") maxTokens = 10000;
-else if (packageType === "베이직") maxTokens = 20000;
-else if (packageType === "프리미엄") maxTokens = 30000;
-else if (packageType === "VIP 커플팩") maxTokens = 40000;
+    // 유료 분석: 메인 사이트와 동일한 템플릿 생성(API 호출 없음, 비용 0원)
+    const scores = {
+      total: calcScore(birth, 1),
+      wealth: calcScore(birth, 2),
+      love: calcScore(birth, 3),
+      health: calcScore(birth, 4),
+      success: calcScore(birth, 5),
+    };
 
+    const FIELD_TO_CATEGORY: Record<string, { label: string; score: number }> = {
+      yearlyLuck: { label: "올해 운세", score: scores.total },
+      monthlyLuck: { label: "월별운세", score: scores.total },
+      wealthLuck: { label: "재물운", score: scores.wealth },
+      loveLuck: { label: "연애운", score: scores.love },
+      healthLuck: { label: "건강운", score: scores.health },
+      name: { label: "이름분석", score: scores.total },
+      couple: { label: "결혼·궁합운", score: scores.love },
+      fullAnalysis: { label: "전체 사주분석", score: scores.success },
+    };
 
-    console.log(`Sonnet API 호출 시작 (${packageType}, max_tokens: ${maxTokens})...`);
-   
-    const apiResult = await callSonnetAPI({
-      name,
-      birth,
-      birthHour,
-      partnerName,
-      partnerBirth,
-      packageType,
-      maxTokens
-    });
+    const fields = PACKAGE_FIELDS[packageType] ?? PACKAGE_FIELDS["기본 분석"];
+    const result: Record<string, string> = {};
+    for (const field of fields) {
+      const { label, score } = FIELD_TO_CATEGORY[field];
+      result[field] = getPackageTemplate(name, birth, gender, label, score, partnerName, partnerBirth, partnerGender);
+    }
 
+    console.log("템플릿 분석 완료");
 
-    console.log("API 분석 완료");
-
-
-    return NextResponse.json({ result: apiResult });
+    return NextResponse.json({ result });
   } catch (error) {
     console.error("분석 오류:", error);
     return NextResponse.json(
       { error: "분석 중 오류가 발생했습니다" },
       { status: 500 }
     );
-  }
-}
-
-
-async function callSonnetAPI(userData: any): Promise<any> {
-  const { name, birth, birthHour, partnerName, partnerBirth, packageType, maxTokens } = userData;
-
-
-  let prompt = "";
-
-
-  if (packageType === "기본 분석") {
-    prompt = `당신은 전문 사주분석가입니다. 다음 정보로 사주분석을 해주세요.
-【본인정보】이름: ${name}, 생년월일: ${birth}, 태어난 시간: ${birthHour === "unknown" ? "모름" : birthHour + "시"}
-【분석 항목】1. 올해 운세 2. 월별 운세
-각 항목당 5000~7000자로 상세하게 작성해주세요.
-JSON 형식: {"yearlyLuck": "내용", "monthlyLuck": "내용"}`;
-  } else if (packageType === "베이직") {
-    prompt = `당신은 전문 사주분석가입니다. 다음 정보로 사주분석을 해주세요.
-【본인정보】이름: ${name}, 생년월일: ${birth}, 태어난 시간: ${birthHour === "unknown" ? "모름" : birthHour + "시"}
-【분석 항목】1. 올해 운세 2. 월별 운세 3. 재물운 4. 연애운
-각 항목당 5000~7000자로 상세하게 작성해주세요.
-JSON 형식: {"yearlyLuck": "내용", "monthlyLuck": "내용", "wealthLuck": "내용", "loveLuck": "내용"}`;
-  } else if (packageType === "프리미엄") {
-    prompt = `당신은 전문 사주분석가입니다. 다음 정보로 사주분석을 해주세요.
-【본인정보】이름: ${name}, 생년월일: ${birth}, 태어난 시간: ${birthHour === "unknown" ? "모름" : birthHour + "시"}
-【분석 항목】1. 올해 운세 2. 월별 운세 3. 재물운 4. 연애운 5. 건강운
-각 항목당 5000~7000자로 상세하게 작성해주세요.
-JSON 형식: {"yearlyLuck": "내용", "monthlyLuck": "내용", "wealthLuck": "내용", "loveLuck": "내용", "healthLuck": "내용"}`;
-  } else if (packageType === "VIP 커플팩") {
-    prompt = `당신은 전문 사주분석가입니다. 다음 정보로 사주분석을 해주세요.
-【본인정보】이름: ${name}, 생년월일: ${birth}, 태어난 시간: ${birthHour === "unknown" ? "모름" : birthHour + "시"}
-${partnerName ? `【상대방정보】이름: ${partnerName}, 생년월일: ${partnerBirth}` : ""}
-【분석 항목】1. 올해 운세 2. 월별 운세 3. 이름분석 4. 재물운 5. 연애운 6. 건강운 7. 궁합분석 8. 전체사주
-각 항목당 5000~7000자로 상세하게 작성해주세요.
-JSON 형식: {"yearlyLuck": "내용", "monthlyLuck": "내용", "name": "내용", "wealthLuck": "내용", "loveLuck": "내용", "healthLuck": "내용", "couple": "내용", "fullAnalysis": "내용"}`;
-  }
-
-
-  try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "x-api-key": process.env.ANTHROPIC_API_KEY || "",
-        "anthropic-version": "2023-06-01",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: maxTokens,
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-      }),
-    });
-
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("API 응답 오류:", errorData);
-      throw new Error(`API 오류: ${response.statusText}`);
-    }
-
-
-    const data = await response.json();
-    const content = data.content[0].text;
-
-
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error("JSON 파싱 실패");
-    }
-
-
-    const result = JSON.parse(jsonMatch[0]);
-    return result;
-  } catch (error) {
-    console.error("Sonnet API 호출 실패:", error);
-    throw error;
   }
 }
 
