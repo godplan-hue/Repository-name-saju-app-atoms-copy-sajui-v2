@@ -327,6 +327,22 @@ export default function MainV2() {
   const router = useRouter();
   const [user, setUser] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  // 배경음악 — 브라우저가 사용자 터치 전 자동재생을 막아서, "완전 자동"은 안 되고
+  // 이 버튼을 한 번 눌러야 재생이 시작됨(그 한 번의 클릭이 "사용자 동작"이 되어줌).
+  // /public/bgm.mp3 파일이 있어야 실제로 소리가 남(파일은 직접 넣어야 함)
+  const [musicOn, setMusicOn] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (musicOn) {
+      audio.pause();
+      setMusicOn(false);
+    } else {
+      audio.volume = 0.35;
+      audio.play().then(() => setMusicOn(true)).catch(() => alert("음악 파일을 찾을 수 없습니다(public/bgm.mp3을 추가해주세요)."));
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -347,10 +363,14 @@ export default function MainV2() {
 
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
+      <audio ref={audioRef} src="/bgm.mp3" loop preload="none" />
 
       {/* 헤더 */}
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.12)", position: "sticky", top: 0, zIndex: 200 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, padding: 0, marginRight: 2 }}>
+            {musicOn ? "🔊" : "🔇"}
+          </button>
           <span style={{ fontSize: 20 }}>🐱</span>
           <span style={{ fontWeight: 900, fontSize: 16, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운</span>
         </div>
