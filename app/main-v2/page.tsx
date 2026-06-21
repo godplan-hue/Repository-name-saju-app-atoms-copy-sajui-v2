@@ -297,7 +297,9 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
       >
         {(b as any).graphic ? (
           /* 사진 없이 직접 그리는 990원 강조 배너 */
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(160deg, #f5f3ff, #ddd6fe)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <img src="https://i.pinimg.com/736x/16/49/cd/1649cd2a99fea739efb85a979e3f4c32.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(160deg, rgba(245,243,255,0.55), rgba(221,214,254,0.7))" }} />
             <span style={{ position: "absolute", top: 26, left: 22, fontSize: 22, transform: "rotate(-15deg)" }}>✨</span>
             <span style={{ position: "absolute", top: 30, right: 26, fontSize: 22 }}>✨</span>
             <span style={{ position: "absolute", bottom: 70, left: 30, fontSize: 26 }}>🎉</span>
