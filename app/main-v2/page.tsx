@@ -198,6 +198,12 @@ const BANNERS = [
     fit: "contain" as const,
     route: "package" as const,
   },
+  {
+    // 사진이 아니라 글자+도형으로 직접 그리는 배너 — 990원 가격을 큰 숫자
+    // 뱃지로 강조해서 한 번 더 눈에 띄게 보여줌
+    graphic: true,
+    route: "free" as const,
+  },
 ];
 
 const FORTUNE_CATEGORIES = [
@@ -289,9 +295,35 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
           startXRef.current = null;
         }}
       >
-        <img src={b.img} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "opacity 0.4s" }} />
-        {/* 하단 텍스트 그라데이션 */}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "38%", background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)", pointerEvents: "none" }} />
+        {(b as any).graphic ? (
+          /* 사진 없이 직접 그리는 990원 강조 배너 */
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(160deg, #fef9e7, #fde68a)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ position: "absolute", top: 26, left: 22, fontSize: 22, transform: "rotate(-15deg)" }}>✨</span>
+            <span style={{ position: "absolute", top: 30, right: 26, fontSize: 22 }}>✨</span>
+            <span style={{ position: "absolute", bottom: 70, left: 30, fontSize: 26 }}>🎉</span>
+            <div style={{ width: 190, height: 120, borderRadius: "50%", border: "6px solid #15803d", background: "#fffbeb", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18, boxShadow: "0 4px 14px rgba(21,128,61,0.25)" }}>
+              <span style={{ fontSize: 52, fontWeight: 900, color: "#15803d" }}>990</span>
+            </div>
+            <p style={{ fontSize: 17, fontWeight: 900, color: "#78350f", margin: "0 0 6px" }}>점운에 오신 걸 환영합니다</p>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#92400e", margin: 0, animation: "bannerKeyGlow 1.8s ease-in-out infinite" }}>오늘의 운세, 매일 무료</p>
+          </div>
+        ) : (
+          <>
+            <img src={b.img} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "opacity 0.4s" }} />
+            {/* 하단 텍스트 그라데이션 */}
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "38%", background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)", pointerEvents: "none" }} />
+            {/* 배지 */}
+            <span style={{ position: "absolute", top: 14, left: 16, display: "inline-block", background: b.badgeBg, color: "white", fontSize: 11, fontWeight: 900, padding: "4px 12px", borderRadius: 20, zIndex: 2 }}>{b.badge}</span>
+            <div style={{ position: "absolute", bottom: 14, left: 16, right: 16, zIndex: 2 }}>
+              {b.lines!.map((line, i) => {
+                const isKeyLine = i === b.lines!.length - 1;
+                return (
+                  <p key={i} style={{ fontSize: (b as any).lineSizes?.[i] ?? (i === 0 ? 17 : 12), fontWeight: i === 0 ? 900 : 700, color: (b as any).lineColors?.[i] ?? lineColors[i] ?? "white", margin: "0 0 2px", lineHeight: 1.35, textShadow: "0 1px 8px rgba(0,0,0,0.7)", animation: isKeyLine ? "bannerKeyGlow 1.8s ease-in-out infinite" : undefined }}>{line}</p>
+                );
+              })}
+            </div>
+          </>
+        )}
         {/* 수동 다음 화살표 — 자동 회전은 그대로 유지, 클릭하면 즉시 다음으로 + 타이머 리셋 */}
         <button
           onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % BANNERS.length); }}
@@ -300,20 +332,12 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
         >
           ›
         </button>
-        {/* 배지 */}
-        <span style={{ position: "absolute", top: 14, left: 16, display: "inline-block", background: b.badgeBg, color: "white", fontSize: 11, fontWeight: 900, padding: "4px 12px", borderRadius: 20, zIndex: 2 }}>{b.badge}</span>
-        {/* 텍스트 + 인디케이터 — 이미지 하단 안쪽 */}
-        <div style={{ position: "absolute", bottom: 14, left: 16, right: 16, zIndex: 2 }}>
-          {b.lines.map((line, i) => {
-            const isKeyLine = i === b.lines.length - 1;
-            return (
-              <p key={i} style={{ fontSize: (b as any).lineSizes?.[i] ?? (i === 0 ? 17 : 12), fontWeight: i === 0 ? 900 : 700, color: (b as any).lineColors?.[i] ?? lineColors[i] ?? "white", margin: "0 0 2px", lineHeight: 1.35, textShadow: "0 1px 8px rgba(0,0,0,0.7)", animation: isKeyLine ? "bannerKeyGlow 1.8s ease-in-out infinite" : undefined }}>{line}</p>
-            );
-          })}
-          <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+        {/* 인디케이터 */}
+        <div style={{ position: "absolute", bottom: 14, left: 16, zIndex: 3 }}>
+          <div style={{ display: "flex", gap: 6 }}>
             {BANNERS.map((_, i) => (
               <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i); }}
-                style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? "white" : "rgba(255,255,255,0.45)", transition: "all 0.3s ease", cursor: "pointer" }} />
+                style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? ((b as any).graphic ? "#78350f" : "white") : ((b as any).graphic ? "rgba(120,53,15,0.35)" : "rgba(255,255,255,0.45)"), transition: "all 0.3s ease", cursor: "pointer" }} />
             ))}
           </div>
         </div>
