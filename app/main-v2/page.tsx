@@ -344,6 +344,26 @@ export default function MainV2() {
     }
   };
 
+  // 입장 환영 음성 — 배경음악과 같은 이유로 페이지가 열리자마자 저절로
+  // 말하게는 못 하고, 화면에 처음 손을 댄 그 순간(클릭/터치)에 한 번만 들려줌
+  useEffect(() => {
+    const speakGreeting = () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        const utter = new SpeechSynthesisUtterance("안녕하세요, 점운입니다. 990원부터 시작하는 정확한 사주 분석, 지금 만나보세요.");
+        utter.lang = "ko-KR";
+        window.speechSynthesis.speak(utter);
+      }
+      window.removeEventListener("click", speakGreeting);
+      window.removeEventListener("touchstart", speakGreeting);
+    };
+    window.addEventListener("click", speakGreeting);
+    window.addEventListener("touchstart", speakGreeting);
+    return () => {
+      window.removeEventListener("click", speakGreeting);
+      window.removeEventListener("touchstart", speakGreeting);
+    };
+  }, []);
+
   useEffect(() => {
     setMounted(true);
     const saved = localStorage.getItem("v2_user_name");
