@@ -302,8 +302,7 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
             <div style={{ position: "relative", width: 190, height: 120, borderRadius: "50%", border: "6px solid #6d28d9", background: "#faf5ff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18, boxShadow: "0 4px 14px rgba(0,0,0,0.3)" }}>
               <span style={{ fontSize: 52, fontWeight: 900, color: "#6d28d9" }}>990</span>
             </div>
-            <p style={{ position: "relative", fontSize: 17, fontWeight: 900, color: "#fff", textShadow: "0 2px 10px rgba(0,0,0,0.6)", margin: "0 0 6px" }}>점운에 오신 걸 환영합니다</p>
-            <p style={{ position: "relative", fontSize: 13, fontWeight: 800, color: "#fff", textShadow: "0 2px 8px rgba(0,0,0,0.6)", margin: 0, animation: "bannerKeyGlow 1.8s ease-in-out infinite" }}>오늘의 운세, 매일 무료</p>
+            <p style={{ position: "relative", fontSize: 17, fontWeight: 900, color: "#fff", textShadow: "0 2px 10px rgba(0,0,0,0.6)", margin: 0, animation: "bannerKeyGlow 1.8s ease-in-out infinite" }}>오늘의 운세 매일 무료</p>
           </div>
         ) : (
           <>
