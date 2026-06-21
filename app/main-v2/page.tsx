@@ -403,12 +403,12 @@ export default function MainV2() {
                   onClick={() => {
                     if (!confirm("로그아웃하시겠어요? 다른 분 정보로 새로 시작할 수 있어요.")) return;
                     localStorage.removeItem("v2_user_name");
-                    // v2_saved_profile은 일부러 안 지움 — 같은 사람이 로그아웃 후
-                    // 다시 로그인했을 때 생년월일 등을 또 입력하지 않아도 되게 함.
+                    // v2_saved_profile, v2_privacy_agreed는 일부러 안 지움 — 같은
+                    // 사람이 로그아웃 후 다시 로그인했을 때 생년월일 등을 또
+                    // 입력하거나 개인정보 동의를 다시 체크하지 않아도 되게 함.
                     // (main-v2/profile에서 로그인한 이름과 저장된 이름이 다르면 그
                     // 저장된 정보를 안 쓰도록 이미 따로 체크하고 있어서, "다른 분
                     // 정보로 새로 시작"도 그쪼에서 정상적으로 처리됨)
-                    localStorage.removeItem("v2_privacy_agreed");
                     localStorage.removeItem("v2_login_session_id");
                     localStorage.removeItem("v2_profile_shown_session");
                     sessionStorage.removeItem("v2_profile");
