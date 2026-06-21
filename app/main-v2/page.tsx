@@ -413,7 +413,7 @@ export default function MainV2() {
   if (!mounted) return null;
 
   return (
-    <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
+    <main style={{ minHeight: "100vh", background: BG, backgroundImage: `url('https://i.pinimg.com/736x/76/b4/8c/76b48c004b1917181a0f3dc9505088c9.jpg')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
       <audio ref={audioRef} src="/bgm.mp3" loop preload="none" />
 
       {/* 헤더 */}
