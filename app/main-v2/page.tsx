@@ -297,15 +297,15 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
       >
         {(b as any).graphic ? (
           /* 사진 없이 직접 그리는 990원 강조 배너 */
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(160deg, #fef9e7, #fde68a)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(160deg, #f5f3ff, #ddd6fe)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <span style={{ position: "absolute", top: 26, left: 22, fontSize: 22, transform: "rotate(-15deg)" }}>✨</span>
             <span style={{ position: "absolute", top: 30, right: 26, fontSize: 22 }}>✨</span>
             <span style={{ position: "absolute", bottom: 70, left: 30, fontSize: 26 }}>🎉</span>
-            <div style={{ width: 190, height: 120, borderRadius: "50%", border: "6px solid #15803d", background: "#fffbeb", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18, boxShadow: "0 4px 14px rgba(21,128,61,0.25)" }}>
-              <span style={{ fontSize: 52, fontWeight: 900, color: "#15803d" }}>990</span>
+            <div style={{ width: 190, height: 120, borderRadius: "50%", border: "6px solid #6d28d9", background: "#faf5ff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18, boxShadow: "0 4px 14px rgba(109,40,217,0.25)" }}>
+              <span style={{ fontSize: 52, fontWeight: 900, color: "#6d28d9" }}>990</span>
             </div>
-            <p style={{ fontSize: 17, fontWeight: 900, color: "#78350f", margin: "0 0 6px" }}>점운에 오신 걸 환영합니다</p>
-            <p style={{ fontSize: 13, fontWeight: 800, color: "#92400e", margin: 0, animation: "bannerKeyGlow 1.8s ease-in-out infinite" }}>오늘의 운세, 매일 무료</p>
+            <p style={{ fontSize: 17, fontWeight: 900, color: "#581c87", margin: "0 0 6px" }}>점운에 오신 걸 환영합니다</p>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#7c3aed", margin: 0, animation: "bannerKeyGlow 1.8s ease-in-out infinite" }}>오늘의 운세, 매일 무료</p>
           </div>
         ) : (
           <>
