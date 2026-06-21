@@ -105,6 +105,11 @@ export default function PartnerAnalysisResult() {
     setBusinessName(localStorage.getItem("partnerBusinessName") || "");
   }, [router]);
 
+  // 메인 사이트와 동일한 이유로 카테고리별로 따로 저장함 — 전부 하나의
+  // 거대한 캔버스로 합치면 내용이 길 때 브라우저 캔버스 크기 한계를 넘어
+  // 조용히 실패(이미지가 비거나 다운로드가 안 됨)할 수 있음
+  const MAX_CANVAS_HEIGHT = 14000;
+
   const handleSaveImage = async () => {
     if (!analysisResults) return;
     setSaving(true);
@@ -116,23 +121,31 @@ export default function PartnerAnalysisResult() {
       for (const el of elements) {
         canvases.push(await html2canvas(el, { scale: 2, useCORS: true, logging: false, backgroundColor: "#ffffff" }));
       }
-      const totalHeight = canvases.reduce((sum, c) => sum + c.height, 0);
-      const width = Math.max(...canvases.map(c => c.width));
-      const merged = document.createElement("canvas");
-      merged.width = width;
-      merged.height = totalHeight;
-      const ctx = merged.getContext("2d")!;
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, width, totalHeight);
-      let y = 0;
-      for (const c of canvases) {
-        ctx.drawImage(c, 0, y);
-        y += c.height;
-      }
-      const link = document.createElement("a");
-      link.download = `사주_${customerName}_${packageType}.png`;
-      link.href = merged.toDataURL("image/png");
-      link.click();
+      const summary = canvases[0];
+      const failedLabels: string[] = [];
+      canvases.slice(1).forEach((c, i) => {
+        const label = cats[i]?.label ?? `사주${i + 1}`;
+        try {
+          const rawHeight = summary.height + 16 + c.height;
+          const scale = rawHeight > MAX_CANVAS_HEIGHT ? MAX_CANVAS_HEIGHT / rawHeight : 1;
+          const merged = document.createElement("canvas");
+          merged.width = Math.round(Math.max(summary.width, c.width) * scale);
+          merged.height = Math.round(rawHeight * scale);
+          const ctx = merged.getContext("2d")!;
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, merged.width, merged.height);
+          ctx.drawImage(summary, 0, 0, summary.width * scale, summary.height * scale);
+          ctx.drawImage(c, 0, (summary.height + 16) * scale, c.width * scale, c.height * scale);
+          const link = document.createElement("a");
+          link.download = `사주_${customerName}_${packageType}_${label}.png`;
+          link.href = merged.toDataURL("image/png");
+          link.click();
+        } catch (e) {
+          console.error(`이미지 저장 실패(${label}):`, e);
+          failedLabels.push(label);
+        }
+      });
+      if (failedLabels.length > 0) alert(`다음 항목은 이미지 저장에 실패했습니다: ${failedLabels.join(", ")}`);
     } catch (error) {
       console.error("이미지 생성 오류:", error);
       alert("이미지 생성 중 오류가 발생했습니다");
