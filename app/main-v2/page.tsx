@@ -299,10 +299,10 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
           /* 사진 없이 직접 그리는 990원 강조 배너 */
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", paddingBottom: 20 }}>
             <img src="https://i.pinimg.com/736x/b2/90/0f/b2900f52b17624d4286a216eed2ddc0a.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-            <div style={{ position: "relative", width: 240, height: 160, marginLeft: 40, borderRadius: "50%", border: "5px solid #fbbf24", background: "linear-gradient(160deg, #ffffff, #f3e8ff)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", boxShadow: "0 6px 20px rgba(109,40,217,0.35), inset 0 0 0 2px rgba(255,255,255,0.6)" }}>
-              <span style={{ fontSize: 56, fontWeight: 900, color: "#6d28d9", lineHeight: 1, animation: "textGlow 1.8s ease-in-out infinite" }}>₩990</span>
-              <span style={{ fontSize: 13, fontWeight: 800, marginTop: 6 }}>
-                <span style={{ color: "#6d28d9" }}>오늘의 운세</span>{" "}
+            <div style={{ position: "relative", width: 200, height: 135, marginLeft: 70, borderRadius: "50%", border: "5px solid #fbbf24", background: "linear-gradient(160deg, #ffffff, #f3e8ff)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", boxShadow: "0 6px 20px rgba(109,40,217,0.35), inset 0 0 0 2px rgba(255,255,255,0.6)" }}>
+              <span style={{ fontSize: 46, fontWeight: 900, color: "#6d28d9", lineHeight: 1, animation: "textGlow 1.8s ease-in-out infinite" }}>₩990</span>
+              <span style={{ fontSize: 12, fontWeight: 800, marginTop: 5 }}>
+                <span style={{ color: "#16a34a" }}>오늘의 운세</span>{" "}
                 <span style={{ color: "#db2777" }}>매일 무료</span>
               </span>
             </div>
