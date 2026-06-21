@@ -557,11 +557,11 @@ export default function MainV2() {
           <a href="mailto:junga6783@gmail.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #ec4899", borderRadius: 20, color: "#ec4899", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>문의하기</a>
         </div>
         <div style={{ fontSize: 11, marginBottom: 8 }}>
-          <a href="/privacy" style={{ color: "#ec4899", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
+          <a href="/privacy" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
           <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
-          <a href="/refund" style={{ color: "#ec4899", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
+          <a href="/refund" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
         </div>
-        <a href="/partner" style={{ color: "#6d28d9", textDecoration: "none", fontSize: 11, fontWeight: 700 }}>사주 사업을 하고 계신가요? 파트너 모집 안내 →</a>
+        <a href="/partner" style={{ color: "#dc2626", textDecoration: "none", fontSize: 11, fontWeight: 700 }}>사주 사업을 하고 계신가요? 파트너 모집 안내 →</a>
       </footer>
 
       <style jsx>{`
