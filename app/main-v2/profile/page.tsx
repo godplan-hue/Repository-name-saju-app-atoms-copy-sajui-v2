@@ -184,11 +184,14 @@ export default function V2Profile() {
     <main style={{ minHeight: "100vh", backgroundImage: `url('${STEP_BACKGROUNDS[step]}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-        <button onClick={() => step > 1 ? setStep(s => s - 1) : router.push("/main-v2")}
-          style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
-          <span style={{ fontSize: 18 }}>←</span>
-          <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {step > 1 && (
+            <button onClick={() => setStep(s => s - 1)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, padding: 0 }}>←</button>
+          )}
+          <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+            <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
+          </button>
+        </div>
         <span style={{ fontSize: 12, fontWeight: 700, color: "#8b5cf6" }}>{step} / {TOTAL}</span>
       </header>
 
