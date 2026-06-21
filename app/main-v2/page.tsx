@@ -190,7 +190,7 @@ const BANNERS = [
   },
   {
     img: "https://i.pinimg.com/736x/8b/bc/25/8bbc258261ea953d149de68672016367.jpg",
-    badge: "💕 연애운",
+    badge: "❤️ 연애운",
     badgeBg: "#ec4899",
     lines: ["사랑이 찾아오는 시기", "연애운 심층 분석", "내 인연의 흐름을 확인해보세요"],
     lineSizes: [20, 16, 15],
@@ -314,7 +314,7 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
             {/* 하단 텍스트 그라데이션 */}
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "38%", background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)", pointerEvents: "none" }} />
             {/* 배지 */}
-            <span style={{ position: "absolute", top: 14, left: 16, display: "inline-block", background: b.badgeBg, color: "white", fontSize: 11, fontWeight: 900, padding: "4px 12px", borderRadius: 20, zIndex: 2 }}>{b.badge}</span>
+            <span style={{ position: "absolute", top: 14, left: 16, display: "inline-block", background: b.badgeBg, color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2, textShadow: "0 1px 3px rgba(0,0,0,0.25)" }}>{b.badge}</span>
             <div style={{ position: "absolute", bottom: 14, left: 16, right: 16, zIndex: 2 }}>
               {b.lines!.map((line, i) => {
                 const isKeyLine = i === b.lines!.length - 1;
