@@ -299,10 +299,10 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
           /* 사진 없이 직접 그리는 990원 강조 배너 */
           <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <img src="https://i.pinimg.com/736x/b2/90/0f/b2900f52b17624d4286a216eed2ddc0a.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-            <div style={{ position: "relative", width: 190, height: 120, borderRadius: "50%", border: "6px solid #6d28d9", background: "#faf5ff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18, boxShadow: "0 4px 14px rgba(0,0,0,0.3)" }}>
-              <span style={{ fontSize: 52, fontWeight: 900, color: "#6d28d9" }}>990</span>
+            <div style={{ position: "relative", width: 240, height: 160, borderRadius: "50%", border: "6px solid #6d28d9", background: "#faf5ff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 14px rgba(0,0,0,0.3)" }}>
+              <span style={{ fontSize: 56, fontWeight: 900, color: "#6d28d9", lineHeight: 1 }}>990원</span>
+              <span style={{ fontSize: 13, fontWeight: 800, color: "#6d28d9", marginTop: 6 }}>오늘의 운세 매일 무료</span>
             </div>
-            <p style={{ position: "relative", fontSize: 17, fontWeight: 900, color: "#fff", textShadow: "0 2px 10px rgba(0,0,0,0.6)", margin: 0, animation: "bannerKeyGlow 1.8s ease-in-out infinite" }}>오늘의 운세 매일 무료</p>
           </div>
         ) : (
           <>
