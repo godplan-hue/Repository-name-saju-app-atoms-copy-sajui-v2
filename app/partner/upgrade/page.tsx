@@ -70,8 +70,9 @@ export default function PartnerUpgrade() {
   return (
     <>
       <Head><title>등급 업그레이드 - 점운 파트너</title></Head>
-      <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", padding: "20px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+      <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", backgroundImage: "url('https://i.pinimg.com/736x/5a/ac/03/5aac03a5583b75939362ca57c2bfbbc7.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", padding: "20px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0, 0, 0, 0.65)", zIndex: 1, pointerEvents: "none" }} />
+        <div style={{ position: "relative", zIndex: 10, maxWidth: "900px", margin: "0 auto" }}>
           <div style={{ background: "white", padding: "20px", borderRadius: "12px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <h1 style={{ fontSize: "24px", fontWeight: 900, margin: 0, color: "#333" }}>⭐ {partnerName}님 등급 업그레이드</h1>
