@@ -420,7 +420,7 @@ export default function V2Result() {
       if (window.innerWidth < 768) {
         const downloadCount = tier === "package" && elements.length > 1 ? elements.length - 1 : 1;
         alert(downloadCount > 1
-          ? `📥 운세 ${downloadCount}개를 각각 따로 다운로드해야 해요!\n\n확인창이 뜨면 [다운로드]를 누르고, "다운로드 완료"가 뜬 후 다음 확인창이 또 뜨면 다시 [다운로드]를 눌러주세요.\n\n한 번에 여러 번 누르지 말고 하나씩 순서대로 눌러주세요. 총 ${downloadCount}번 누르시면 끝나요.`
+          ? `📥 운세 ${downloadCount}개를 각각 따로 다운로드해야 해요!\n\n확인창이 뜨면 [다운로드]를 누르고, "다운로드 완료"가 뜬 후 다시 [다운로드]를 눌러주세요.\n\n한 번에 여러 번 누르지 말고 하나씩 순서대로 눌러주세요. 총 ${downloadCount}번 누르시면 끝나요.\n\n화면에 다운로드 알림이 고정되어 떠 있어요. 다운로드 안 하려면 [취소] 버튼을 누르면 돼요.`
           : "📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요!");
       }
       // 카드마다 글자 길이가 달라 배율(scale)이 다르게 적용되면, 캡처된 캔버스 폭이
