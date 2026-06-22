@@ -54,7 +54,7 @@ export default function PartnerArchive() {
       <Head>
         <title>보관함 - 점운 파트너</title>
       </Head>
-      <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", backgroundImage: "url('https://i.pinimg.com/736x/5b/78/39/5b7839194638fbe343227ab7269b09ad.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", padding: "20px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
+      <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", backgroundImage: "url('https://i.pinimg.com/736x/8b/1e/61/8b1e61fecad9a7ef1f44ca48081e25d1.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", padding: "20px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0, 0, 0, 0.65)", zIndex: 1, pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 10, maxWidth: "1000px", margin: "0 auto" }}>
           <div style={{ background: "white", padding: "20px", borderRadius: "12px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
