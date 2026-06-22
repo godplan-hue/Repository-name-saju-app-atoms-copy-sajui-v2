@@ -659,7 +659,7 @@ export default function V2Result() {
         </button>
         <div style={{ display: "flex", gap: 7 }}>
           <button onClick={() => router.push("/main-v2/history")} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
-            📂
+            📂 보관함
           </button>
           {(!paid || planType !== "select") && (
             <button onClick={share} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
