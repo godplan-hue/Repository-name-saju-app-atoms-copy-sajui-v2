@@ -574,9 +574,9 @@ export default function V2Result() {
       const gan = ganList[((y - 4) % 10 + 10) % 10];
       extra = `\n${gan} 천간을 타고난 사주 심층 분석 결과예요 🪬`;
     }
-    const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로!\n${url}`;
+    const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로!`;
     if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
-    else navigator.clipboard.writeText(text).then(() => alert("✅ 링크 복사됨!"));
+    else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));
   };
 
   if (!result) return null;

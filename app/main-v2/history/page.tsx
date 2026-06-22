@@ -120,9 +120,9 @@ export default function V2History() {
   const shareItem = (item: Item, e: React.MouseEvent) => {
     e.stopPropagation();
     const url = window.location.origin + "/main-v2";
-    const text = `${item.name}님의 ${item.category?.replace(/\S+\s/, "")} 분석 🔮\n총운 ${item.scores?.total}점\n\n📱 나도 무료로!\n${url}`;
+    const text = `${item.name}님의 ${item.category?.replace(/\S+\s/, "")} 분석 🔮\n총운 ${item.scores?.total}점\n\n📱 나도 무료로!`;
     if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
-    else navigator.clipboard.writeText(text).then(() => alert("✅ 링크 복사됨!"));
+    else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));
   };
 
   useEffect(() => {

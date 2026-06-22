@@ -252,8 +252,9 @@ export default function FreeAnalysis() {
   const handleShare = () => {
     const birthHourLabel = birthHours.find(h => h.value === formData.birthHour)?.label || '모름';
     const shareUrl = typeof window !== 'undefined' ? window.location.origin + "/free-analysis" : "/free-analysis";
-    const shareText = `${formData.name}님의 무료 사주 분석 결과 🔮\n\n이름: ${formData.name}\n생년월일: ${formData.birthYear}-${formData.birthMonth}-${formData.birthDay}\n생시: ${birthHourLabel}\n\n📱 나도 무료 사주 분석 받아보기!\n점운 - 무료 사주 분석\n\n${shareUrl}`;
-    
+    const shareText = `${formData.name}님의 무료 사주 분석 결과 🔮\n\n이름: ${formData.name}\n생년월일: ${formData.birthYear}-${formData.birthMonth}-${formData.birthDay}\n생시: ${birthHourLabel}\n\n📱 나도 무료 사주 분석 받아보기!\n점운 - 무료 사주 분석`;
+    const shareTextWithUrl = `${shareText}\n\n${shareUrl}`;
+
     if (navigator.share) {
       navigator.share({
         title: "무료 사주 분석",
@@ -261,10 +262,10 @@ export default function FreeAnalysis() {
         url: shareUrl,
       }).catch(err => console.log('Share error:', err));
     } else {
-      navigator.clipboard.writeText(shareText).then(() => {
-        alert("✅ 공유 내용이 복사되었습니다!\n\n" + shareText);
+      navigator.clipboard.writeText(shareTextWithUrl).then(() => {
+        alert("✅ 공유 내용이 복사되었습니다!\n\n" + shareTextWithUrl);
       }).catch(() => {
-        alert(shareText);
+        alert(shareTextWithUrl);
       });
     }
   };
