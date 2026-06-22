@@ -59,37 +59,37 @@ export default function PartnerArchive() {
         <div style={{ position: "relative", zIndex: 10, maxWidth: "1000px", margin: "0 auto" }}>
           <div style={{ background: "white", padding: "20px", borderRadius: "12px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h1 style={{ fontSize: "24px", fontWeight: 900, margin: 0, color: "#333" }}>📁 {partnerName}님의<br/>보관함</h1>
-              <p style={{ fontSize: "14px", color: "#666", margin: "5px 0 0 0" }}>고객이 결과를 못 받았다고 하면<br/>여기서 다시 열어 재발송하세요</p>
+              <h1 style={{ fontSize: "18px", fontWeight: 900, margin: 0, color: "#333" }}>📁 {partnerName}님의<br/>보관함</h1>
+              <p style={{ fontSize: "11px", color: "#666", margin: "5px 0 0 0" }}>고객이 결과를 못 받았다고 하면<br/>여기서 다시 열어 재발송하세요</p>
             </div>
-            <button onClick={() => router.push("/partner/create-analysis")} style={{ padding: "10px 20px", background: "#eef0ff", color: "#667eea", border: "none", borderRadius: "8px", fontWeight: 700, cursor: "pointer" }}>
+            <button onClick={() => router.push("/partner/create-analysis")} style={{ padding: "8px 14px", background: "#eef0ff", color: "#667eea", border: "none", borderRadius: "8px", fontWeight: 700, fontSize: "12px", cursor: "pointer" }}>
               분석 생성
             </button>
           </div>
 
           <div style={{ background: "white", padding: "20px", borderRadius: "12px" }}>
             {loading ? (
-              <p style={{ textAlign: "center", color: "#999", padding: "30px 0" }}>불러오는 중...</p>
+              <p style={{ textAlign: "center", color: "#999", padding: "30px 0", fontSize: "12px" }}>불러오는 중...</p>
             ) : entries.length === 0 ? (
-              <p style={{ textAlign: "center", color: "#999", padding: "30px 0" }}>아직 생성한 분석이 없습니다.</p>
+              <p style={{ textAlign: "center", color: "#999", padding: "30px 0", fontSize: "12px" }}>아직 생성한 분석이 없습니다.</p>
             ) : (
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px" }}>
                 <thead>
                   <tr style={{ borderBottom: "2px solid #ddd" }}>
-                    <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>고객명</th>
-                    <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>상품</th>
-                    <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>생성일시</th>
-                    <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}></th>
+                    <th style={{ padding: "10px", textAlign: "left", fontWeight: 700, color: "#333" }}>고객명</th>
+                    <th style={{ padding: "10px", textAlign: "left", fontWeight: 700, color: "#333" }}>상품</th>
+                    <th style={{ padding: "10px", textAlign: "left", fontWeight: 700, color: "#333" }}>생성일시</th>
+                    <th style={{ padding: "10px", textAlign: "left", fontWeight: 700, color: "#333" }}></th>
                   </tr>
                 </thead>
                 <tbody>
                   {entries.map(e => (
                     <tr key={e.id} style={{ borderBottom: "1px solid #eee" }}>
-                      <td style={{ padding: "12px", color: "#333", fontWeight: 700 }}>{e.customerName}</td>
-                      <td style={{ padding: "12px", color: "#666" }}>{e.packageType}</td>
-                      <td style={{ padding: "12px", color: "#666" }}>{new Date(e.createdAt).toLocaleString("ko-KR")}</td>
-                      <td style={{ padding: "12px" }}>
-                        <button onClick={() => handleOpen(e.id)} disabled={openingId === e.id} style={{ padding: "8px 16px", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", border: "none", borderRadius: "8px", fontWeight: 700, fontSize: "13px", cursor: "pointer" }}>
+                      <td style={{ padding: "10px", color: "#333", fontWeight: 700 }}>{e.customerName}</td>
+                      <td style={{ padding: "10px", color: "#666" }}>{e.packageType}</td>
+                      <td style={{ padding: "10px", color: "#666" }}>{new Date(e.createdAt).toLocaleString("ko-KR")}</td>
+                      <td style={{ padding: "10px" }}>
+                        <button onClick={() => handleOpen(e.id)} disabled={openingId === e.id} style={{ padding: "6px 12px", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", border: "none", borderRadius: "8px", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
                           {openingId === e.id ? "여는중..." : "다시 보기 / 재발송"}
                         </button>
                       </td>
