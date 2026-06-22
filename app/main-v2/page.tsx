@@ -459,8 +459,8 @@ export default function MainV2() {
 
       {/* 헤드라인 */}
       <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
-        <h1 style={{ fontSize: 25, fontWeight: 900, color: "#dc2626", margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", textShadow: "0 0 2px #fff, 0 0 6px #fff, 0 0 10px #fff, 0 0 16px #fff, 0 0 22px #fff, 0 2px 8px #fff", animation: "waveGlow 2.4s ease-in-out infinite" }}>
-          고양이가 읽는 나의 운명
+        <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px" }}>
+          <span style={{ display: "inline-block", padding: "1px 4px", background: "rgba(255,255,255,0.95)", borderRadius: 6, color: "#dc2626", animation: "waveGlow 2.4s ease-in-out infinite" }}>고양이가 읽는 나의 운명</span>
         </h1>
         <p style={{ fontSize: 13, color: "#dc2626", fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px", textShadow: "0 0 2px #fff, 0 0 4px #fff, 0 0 8px #fff, 0 0 12px #fff, 0 0 16px #fff, 0 1px 5px #fff" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
