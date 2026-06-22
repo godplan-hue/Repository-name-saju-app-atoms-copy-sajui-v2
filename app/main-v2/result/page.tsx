@@ -413,6 +413,7 @@ export default function V2Result() {
     if (savingRef.current) return;
     savingRef.current = true;
     setSaving(true);
+    if (window.innerWidth < 768) alert("📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요! (운세 항목이 여러 개면 여러 번 뜰 수 있어요)");
     try {
       const html2canvas = (await import("html2canvas")).default;
       const elements = cardRefs.current.filter(Boolean) as HTMLDivElement[];

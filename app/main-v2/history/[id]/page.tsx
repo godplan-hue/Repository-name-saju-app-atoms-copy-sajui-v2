@@ -123,6 +123,7 @@ export default function HistoryDetail() {
   const saveImage = async () => {
     if (!cardRef.current || saving) return;
     setSaving(true);
+    if (window.innerWidth < 768) alert("📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요!");
     try {
       const html2canvas = (await import("html2canvas")).default;
       const canvas = await html2canvas(cardRef.current, {
