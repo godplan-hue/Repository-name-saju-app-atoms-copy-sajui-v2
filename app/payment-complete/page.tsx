@@ -61,8 +61,8 @@ function PaymentCompleteInner() {
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>결제 완료!</h1>
 
           <p style={{ color: "#f5f5f5", fontSize: 16, fontWeight: 700, marginBottom: 24, lineHeight: 1.8 }}>
-            <span style={{ color: "#fbbf24", fontWeight: 900 }}>{packageName}</span> 패키지 결제가<br/>
-            완료되었습니다!
+            <span style={{ color: "#fbbf24", fontWeight: 900 }}>{packageName}</span><br/>
+            패키지 결제가 완료되었습니다!
           </p>
 
           <div style={{ background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 24, borderRadius: 18, marginBottom: 24, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
