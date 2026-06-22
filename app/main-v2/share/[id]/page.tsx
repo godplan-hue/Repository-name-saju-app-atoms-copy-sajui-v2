@@ -11,9 +11,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     const snap = await db.ref(`sharedResults/${id}`).once("value");
     const entry = snap.val();
     if (!entry) return { title: "점운 - 사주 결과" };
+    const brand = entry.businessName || "점운";
     const catLabels = (entry.categories ?? []).map((c: any) => c.label).join(", ");
-    const title = `🔮 ${entry.name}님의 사주 분석 결과 - 점운`;
-    const description = `총운 ${entry.scores?.total ?? "?"}점! ${catLabels} 분석까지 한눈에 확인하세요.\nAI가 정밀하게 읽어내는 사주 분석, 점운에서 나도 무료로 받아보기 👉`;
+    const title = `🔮 ${entry.name}님의 사주 분석 결과 - ${brand}`;
+    const description = `총운 ${entry.scores?.total ?? "?"}점! ${catLabels} 분석까지 한눈에 확인하세요.\nAI가 정밀하게 읽어내는 사주 분석, ${brand}에서 받아보세요 👉`;
     const image = "https://jeomun.com/saju-cat.png";
     return {
       title,

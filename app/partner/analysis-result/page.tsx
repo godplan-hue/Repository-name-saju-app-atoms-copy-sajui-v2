@@ -176,7 +176,7 @@ export default function PartnerAnalysisResult() {
       const res = await fetch("/api/v2/share", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: customerName, scores: analysisResults.scores, luckyColor: analysisResults.luckyColor, luckyNumber: analysisResults.luckyNumber, luckyDirection: analysisResults.luckyDirection, categories }),
+        body: JSON.stringify({ name: customerName, scores: analysisResults.scores, luckyColor: analysisResults.luckyColor, luckyNumber: analysisResults.luckyNumber, luckyDirection: analysisResults.luckyDirection, categories, businessName: businessName || "" }),
       });
       if (!res.ok) throw new Error("공유 저장 실패");
       const data = await res.json();

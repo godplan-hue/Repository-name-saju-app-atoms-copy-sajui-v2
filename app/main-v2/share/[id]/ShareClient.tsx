@@ -20,6 +20,7 @@ interface SharedEntry {
   luckyNumber?: number;
   luckyDirection?: string;
   categories: SharedCategory[];
+  businessName?: string;
 }
 
 export default function ShareClient({ id }: { id: string }) {
@@ -103,7 +104,7 @@ export default function ShareClient({ id }: { id: string }) {
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
-        <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
+        <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{entry.businessName ? `🔮 ${entry.businessName}` : "🐱 점운"}</span>
         <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
           {speaking ? "⏸ 멈추기" : "🔊 읽기"}
         </button>
@@ -113,7 +114,7 @@ export default function ShareClient({ id }: { id: string }) {
         {/* 점수 요약 카드 */}
         <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
           <div style={{ background: "#eab308", color: "#3a2a00", textAlign: "center", padding: "18px 20px" }}>
-            <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 6px", opacity: 0.9 }}>🔮 점운 · AI 사주 분석</p>
+            <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 6px", opacity: 0.9 }}>🔮 {entry.businessName || "점운"} · AI 사주 분석</p>
             <h1 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 10px" }}>{entry.name}님의 운세 분석</h1>
             {typeof entry.scores?.total === "number" && (
               <p style={{ fontSize: 30, fontWeight: 900, margin: 0 }}>{entry.scores.total}<span style={{ fontSize: 13, opacity: 0.8 }}>점</span></p>
