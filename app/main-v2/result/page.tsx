@@ -1058,9 +1058,15 @@ export default function V2Result() {
           </>
         )}
 
-        {/* ── 990원: 유료 결제하기 + 다시 분석 + 보관함 저장 ── */}
+        {/* ── 990원: 공유하기 + 유료 결제하기 + 다시 분석 + 보관함 저장 ── */}
         {tier === "select" && (
           <>
+            <div style={{ marginBottom: 10 }}>
+              <button onClick={share}
+                style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
+                📤 공유하기
+              </button>
+            </div>
             <div style={{ marginBottom: 10 }}>
               <button onClick={() => router.push("/main-v2/payment")}
                 style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
