@@ -88,6 +88,7 @@ export default function PartnerAnalysisResult() {
   const [saving, setSaving] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [businessName, setBusinessName] = useState("");
+  const [partnerTier, setPartnerTier] = useState("");
 
   useEffect(() => {
     const result = sessionStorage.getItem("analysisResult");
@@ -104,6 +105,9 @@ export default function PartnerAnalysisResult() {
     setPackageType(pkg || "기본 분석");
     // 결과지에 점운 대신 표시할 파트너 상호명
     setBusinessName(localStorage.getItem("partnerBusinessName") || "");
+    // 무료 등급은 이미지를 직접 다운로드해서 전달하고, 실버 등급 이상부터
+    // 공유 링크(자동 발송 대체 편의 기능)를 쓸 수 있게 등급 차이를 유지함
+    setPartnerTier(localStorage.getItem("partnerTier") || "free");
   }, [router]);
 
   // 메인 사이트와 동일한 이유로 카테고리별로 따로 저장함 — 전부 하나의
@@ -202,9 +206,11 @@ export default function PartnerAnalysisResult() {
             <span style={{ fontSize: 14, fontWeight: 900, color: "#9333ea" }}>🔮 {businessName || "점운"}</span>
           </button>
           <div style={{ display: "flex", gap: 7 }}>
-            <button onClick={handleShare} disabled={sharing} style={{ padding: "5px 12px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: sharing ? "not-allowed" : "pointer" }}>
-              {sharing ? "⏳..." : "📤 공유하기"}
-            </button>
+            {partnerTier !== "free" && (
+              <button onClick={handleShare} disabled={sharing} style={{ padding: "5px 12px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: sharing ? "not-allowed" : "pointer" }}>
+                {sharing ? "⏳..." : "📤 공유하기"}
+              </button>
+            )}
             <button onClick={handleSaveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer" }}>
               {saving ? "⏳..." : "🖼️ 이미지 저장"}
             </button>
