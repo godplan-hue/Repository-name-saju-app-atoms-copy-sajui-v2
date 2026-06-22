@@ -413,7 +413,7 @@ export default function MainV2() {
   if (!mounted) return null;
 
   return (
-    <main style={{ minHeight: "100vh", background: BG, backgroundImage: `url('https://i.pinimg.com/736x/76/b4/8c/76b48c004b1917181a0f3dc9505088c9.jpg')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
+    <main style={{ minHeight: "100vh", background: BG, backgroundImage: `url('https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
       <audio ref={audioRef} src="/bgm.mp3" loop preload="none" />
 
       {/* 헤더 */}
@@ -459,10 +459,10 @@ export default function MainV2() {
 
       {/* 헤드라인 */}
       <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
-        <h1 style={{ fontSize: 25, fontWeight: 900, color: "#7c2d92", margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", animation: "waveGlow 2.4s ease-in-out infinite" }}>
+        <h1 style={{ fontSize: 25, fontWeight: 900, color: "#dc2626", margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", textShadow: "0 0 6px #fff, 0 0 6px #fff, 0 2px 4px #fff", animation: "waveGlow 2.4s ease-in-out infinite" }}>
           고양이가 읽는 나의 운명
         </h1>
-        <p style={{ fontSize: 13, color: "#9d174d", fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px" }}>당신의 운명을 AI가 풀어드립니다</p>
+        <p style={{ fontSize: 13, color: "#dc2626", fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px", textShadow: "0 0 5px #fff, 0 0 5px #fff, 0 1px 3px #fff" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
           {[
             { text: "⚡ AI 정밀분석", bg: "linear-gradient(135deg, #6d28d9, #8b5cf6)" },
@@ -565,7 +565,8 @@ export default function MainV2() {
       </div>
 
       {/* 푸터 */}
-      <footer style={{ padding: "18px 16px", textAlign: "center", borderTop: "1px solid rgba(236,72,153,0.1)", background: "white" }}>
+      <footer style={{ padding: "0 30px 24px", textAlign: "center" }}>
+        <div style={{ maxWidth: 320, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#fff5f8" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, marginBottom: 5 }}>
           <span>🐱</span>
           <span style={{ fontSize: 13, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운</span>
@@ -587,6 +588,7 @@ export default function MainV2() {
           <a href="/refund" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
         </div>
         <a href="/partner" style={{ color: "#dc2626", textDecoration: "none", fontSize: 11, fontWeight: 700 }}>사주 사업을 하고 계신가요? 파트너 모집 안내 →</a>
+        </div>
       </footer>
 
       <style jsx>{`
