@@ -223,7 +223,7 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
     <div style={{ padding: "0 14px 28px", maxWidth: 480, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 6 }}>
           {[0,1,2,3,4].map(i => (
-            <span key={i} style={{ display: "inline-block", color: "#b45309", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
+            <span key={i} style={{ display: "inline-block", color: "#dc2626", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
           ))}
         </div>
         <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center" }}>
@@ -515,7 +515,7 @@ export default function MainV2() {
         <div style={{ textAlign: "center" }}>
           <div style={{ marginBottom: 6 }}>
             {[0,1,2,3,4].map(i => (
-              <span key={i} style={{ display: "inline-block", color: "#b45309", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>✨</span>
+              <span key={i} style={{ display: "inline-block", color: "#dc2626", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>✨</span>
             ))}
           </div>
           <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.1, marginBottom: 12, color: "#8b2f8f", textShadow: "0 0 8px #fff, 0 0 8px #fff, 0 2px 5px #fff", animation: "bigGlow 2.4s ease-in-out infinite" }}>
