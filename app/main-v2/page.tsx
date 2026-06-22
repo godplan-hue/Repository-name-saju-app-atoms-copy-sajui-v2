@@ -555,7 +555,7 @@ export default function MainV2() {
 
       {/* 하단 CTA */}
       <div style={{ padding: "0 14px 40px", maxWidth: 480, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", padding: "32px 20px", borderRadius: 20, background: G, boxShadow: "0 8px 24px rgba(139,92,246,0.25)" }}>
+        <div style={{ textAlign: "center", padding: "32px 20px", borderRadius: 20, background: `linear-gradient(135deg, rgba(236,72,153,0.88), rgba(139,92,246,0.88)), url(https://i.pinimg.com/736x/4d/19/ba/4d19bac9e87e2f3d28505b6e59992c02.jpg)`, backgroundSize: "cover", backgroundPosition: "center", boxShadow: "0 8px 24px rgba(139,92,246,0.25)" }}>
           <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
           <h2 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>고양이가 당신의 길을 안내합니다 🐾</p>

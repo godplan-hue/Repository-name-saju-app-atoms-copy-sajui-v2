@@ -140,6 +140,7 @@ export default function PartnerCreateAnalysis() {
         sessionStorage.setItem("analysisResult", JSON.stringify(data.result));
         sessionStorage.setItem("analysisName", formData.customerName);
         sessionStorage.setItem("selectedPackage", formData.packageType);
+        sessionStorage.setItem("analysisBirthYear", formData.birthYear);
 
         const charge = archiveData.charge;
         if (charge) {

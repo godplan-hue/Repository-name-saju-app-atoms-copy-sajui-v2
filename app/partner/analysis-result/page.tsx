@@ -98,6 +98,7 @@ function PartnerAnalysisResultInner() {
   const [sharing, setSharing] = useState(false);
   const [businessName, setBusinessName] = useState("");
   const [partnerTier, setPartnerTier] = useState("");
+  const [birthYear, setBirthYear] = useState("");
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
@@ -121,6 +122,7 @@ function PartnerAnalysisResultInner() {
     setAnalysisResults(parsed);
     setCustomerName(name || "고객");
     setPackageType(pkg || "기본 분석");
+    setBirthYear(sessionStorage.getItem("analysisBirthYear") || "");
     // 결과지에 점운 대신 표시할 파트너 상호명
     const biz = localStorage.getItem("partnerBusinessName") || "";
     setBusinessName(biz);
@@ -295,7 +297,7 @@ function PartnerAnalysisResultInner() {
             <span style={{ fontSize: 14, fontWeight: 900, color: "#9333ea" }}>🔮 {businessName || "점운"}</span>
           </button>
           <div style={{ display: "flex", gap: 7 }}>
-            <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+            <button onClick={toggleReadAloud} style={{ padding: "7px 14px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
               {speaking ? "⏸ 멈추기" : "🔊 읽기"}
             </button>
             {partnerTier !== "free" && (
@@ -344,6 +346,69 @@ function PartnerAnalysisResultInner() {
             </div>
           </div>
 
+          {/* 사주팔자 한눈에 보기 + 오늘/내일의 한마디 — 일반 결과 페이지와 동일 */}
+          {birthYear && (() => {
+            const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
+            const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
+            const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
+            const ohEmoji: Record<string, string> = { "목": "🌳", "화": "🔥", "토": "⛰️", "금": "⚪", "수": "💧" };
+            const y = Number(birthYear);
+            const z = zodiacList[((y - 4) % 12 + 12) % 12];
+            const oh = ohArr[((y - 4) % 10 + 10) % 10];
+            const gan = ganList[((y - 4) % 10 + 10) % 10];
+            const dayMsgs = [
+              "오늘은 그동안 미뤄온 결정을 내리기 좋은 날입니다.",
+              "오늘은 사람과의 인연이 평소보다 강하게 작동하는 날입니다.",
+              "오늘은 돈과 관련된 작은 선택이 길게 영향을 미치는 날입니다.",
+              "오늘은 몸의 신호에 조금 더 귀 기울여야 하는 날입니다.",
+              "오늘은 새로운 시도를 해볼 만한 기운이 흐르는 날입니다.",
+              "오늘은 차분히 정리하고 돌아보기 좋은 날입니다.",
+              "오늘은 평소보다 직관을 믿어도 좋은 날입니다.",
+            ];
+            const dIdx = new Date().getDay();
+            const tomorrowMsgs = [
+              "내일은 가까운 사람과의 대화에서 좋은 기운이 들어옵니다.",
+              "내일은 작은 기회가 평소보다 눈에 잘 들어오는 흐름입니다.",
+              "내일은 재물과 관련된 신호를 눈여겨봐야 하는 흐름입니다.",
+              "내일은 몸과 마음을 챙기는 것이 우선인 흐름입니다.",
+              "내일은 새로운 인연이나 제안이 들어올 수 있는 흐름입니다.",
+              "내일은 오늘 한 결정의 결과가 서서히 드러나는 흐름입니다.",
+              "내일은 한 주를 준비하는 마음가짐이 중요한 흐름입니다.",
+            ];
+            return (
+              <div style={{ background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, overflow: "hidden", boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
+                <div style={{ background: G_PREMIUM, color: "white", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🪬 {customerName}님의 사주팔자 한눈에 보기</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "16px 18px" }}>
+                  <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                    <div style={{ fontSize: 20, marginBottom: 4 }}>🐉</div>
+                    <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div>
+                  </div>
+                  <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                    <div style={{ fontSize: 20, marginBottom: 4 }}>{ohEmoji[oh]}</div>
+                    <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
+                  </div>
+                  <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                    <div style={{ fontSize: 20, marginBottom: 4 }}>🌳</div>
+                    <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>천간</div>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{gan}({gan === "갑" ? "甲" : gan === "을" ? "乙" : gan === "병" ? "丙" : gan === "정" ? "丁" : gan === "무" ? "戊" : gan === "기" ? "己" : gan === "경" ? "庚" : gan === "신" ? "辛" : gan === "임" ? "壬" : "癸"})</div>
+                  </div>
+                </div>
+                <div style={{ padding: "0 18px 16px" }}>
+                  <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px", marginBottom: 8 }}>
+                    <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🔮 오늘의 한마디</div>
+                    <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{dayMsgs[dIdx]}</div>
+                  </div>
+                  <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px" }}>
+                    <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🌙 내일의 예고</div>
+                    <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{tomorrowMsgs[(dIdx + 1) % 7]}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* 패키지별 운세 카드 */}
           {cats.map((c, i) => (
             <div key={c.key} ref={el => { cardRefs.current[1 + i] = el; }}
@@ -360,6 +425,10 @@ function PartnerAnalysisResultInner() {
               </div>
             </div>
           ))}
+
+          <button onClick={toggleReadAloud} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", marginBottom: 10 }}>
+            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+          </button>
 
           <button onClick={() => router.push("/partner/create-analysis")} style={{ width: "100%", padding: "13px 0", background: "white", color: "#9333ea", border: "1.5px solid rgba(147,51,234,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(147,51,234,0.1)" }}>
             🔄 새로 분석
