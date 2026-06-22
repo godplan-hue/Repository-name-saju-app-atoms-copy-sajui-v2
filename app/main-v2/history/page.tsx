@@ -117,9 +117,19 @@ export default function V2History() {
   const [paying, setPaying] = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
-  const shareItem = (item: Item, e: React.MouseEvent) => {
+  const shareItem = async (item: Item, e: React.MouseEvent) => {
     e.stopPropagation();
-    const url = window.location.origin + "/main-v2";
+    let url = window.location.origin + "/main-v2";
+    try {
+      const res = await fetch("/api/v2/share", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: item.name, category: item.category?.replace(/\S+\s/, ""), scores: item.scores, analysis: item.analysis,
+        }),
+      });
+      if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
+    } catch {}
     const text = `${item.name}님의 ${item.category?.replace(/\S+\s/, "")} 분석 🔮\n총운 ${item.scores?.total}점\n\n📱 나도 무료로!`;
     if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
     else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));

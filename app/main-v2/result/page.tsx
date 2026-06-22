@@ -570,9 +570,9 @@ export default function V2Result() {
     }
   };
 
-  const share = () => {
+  const share = async () => {
     if (!result) return;
-    const url = window.location.origin + "/main-v2";
+    let url = window.location.origin + "/main-v2";
     let extra = "";
     if (tier === "package" && result.profile?.birthYear) {
       const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
@@ -580,6 +580,28 @@ export default function V2Result() {
       const gan = ganList[((y - 4) % 10 + 10) % 10];
       extra = `\n${gan} 천간을 타고난 사주 심층 분석 결과예요 🪬`;
     }
+    // 공유받은 사람도(다른 휴대폰/브라우저) 실제 결과를 볼 수 있게, 공유하는
+    // 순간 보이는 내용을 서버에 저장하고 그 고유 주소를 공유함 — 저장이
+    // 실패해도 공유 자체는 막지 않고 그냥 메인 주소로 대체함
+    try {
+      const visibleTexts =
+        tier === "free" ? [freeAnalysis]
+        : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
+        : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
+      const analysisText = visibleTexts.filter(Boolean).join("\n\n");
+      if (analysisText.trim()) {
+        const res = await fetch("/api/v2/share", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: result.profile?.name, category: result.category ?? "",
+            scores: result.scores, luckyColor: result.luckyColor, luckyNumber: result.luckyNumber, luckyDirection: result.luckyDirection,
+            analysis: analysisText,
+          }),
+        });
+        if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
+      }
+    } catch {}
     const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로!`;
     if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
     else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));
