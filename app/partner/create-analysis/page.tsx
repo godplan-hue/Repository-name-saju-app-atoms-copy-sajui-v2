@@ -199,7 +199,7 @@ export default function PartnerCreateAnalysis() {
                 🔮 {partnerName}님
               </h1>
               <p style={{ fontSize: "14px", color: "#666", margin: "5px 0 0 0" }}>
-                {partnerTier} | 파트너 분석 생성
+                {partnerTier} | 파트너<br/>분석<br/>생성
               </p>
             </div>
             <div style={{ display: "flex", gap: "10px" }}>
@@ -514,8 +514,12 @@ export default function PartnerCreateAnalysis() {
                 style={{ marginTop: "3px", width: "16px", height: "16px", flexShrink: 0 }}
               />
               <span style={{ fontSize: "13px", color: "#333", fontWeight: 600, lineHeight: 1.6 }}>
-                이 고객으로부터 <b>개인정보(이름, 생년월일, 연락처 등) 수집·이용에 대한 동의</b>를 직접 받았으며,
-                이 정보가 분석 결과 생성을 위해 점운(회사)에도 전달·저장됨을 고객에게 안내했음을 확인합니다.
+                이 고객으로부터 <b>개인정보</b><br/>
+                <b>(이름, 생년월일, 연락처 등) 수집·이용에 대한</b><br/>
+                <b>동의</b>를 직접 받았으며,<br/>
+                이 정보가 분석 결과 생성을 위해<br/>
+                점운(회사)에도 전달·저장됨을<br/>
+                고객에게 안내했음을 확인합니다.
               </span>
             </label>
 
