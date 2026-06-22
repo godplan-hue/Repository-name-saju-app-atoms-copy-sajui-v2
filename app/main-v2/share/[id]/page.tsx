@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
@@ -27,6 +27,9 @@ export default function SharedResult() {
   const params = useParams();
   const [entry, setEntry] = useState<SharedEntry | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const readChunksRef = useRef<string[]>([]);
+  const readIdxRef = useRef(0);
 
   useEffect(() => {
     fetch(`/api/v2/share?id=${encodeURIComponent(String(params.id))}`)
@@ -34,6 +37,54 @@ export default function SharedResult() {
       .then(data => setEntry(data.entry))
       .catch(() => setNotFound(true));
   }, [params.id]);
+
+  // 이 화면을 벗어나면 읽어주기가 계속 돌아가지 않도록 강제로 멈춤
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    };
+  }, []);
+
+  const speakFrom = (chunks: string[], startIdx: number) => {
+    chunks.slice(startIdx).forEach((chunk, i) => {
+      const idx = startIdx + i;
+      const utter = new SpeechSynthesisUtterance(chunk);
+      utter.lang = "ko-KR";
+      utter.rate = 1;
+      utter.onstart = () => { readIdxRef.current = idx; };
+      if (idx === chunks.length - 1) {
+        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
+      }
+      window.speechSynthesis.speak(utter);
+    });
+  };
+
+  const toggleReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      alert("이 브라우저는 읽어주기 기능을 지원하지 않습니다.\n\n카카오톡 등 앱 안에서 들어오셨다면, 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 다시 시도해보세요.\n\n또는 사파리/크롬 앱을 직접 열어서 주소를 입력해 들어가셔도 됩니다.");
+      return;
+    }
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      return;
+    }
+    if (readChunksRef.current.length === 0) {
+      const fullText = (entry?.categories ?? []).map(c => c.text).filter(Boolean).join("\n")
+        .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+        .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}]/gu, "")
+        .replace(/[（(][一-鿿]+[）)]/g, "")
+        .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+        .replace(/×/g, " 와 ");
+      if (!fullText.trim()) return;
+      readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+      readIdxRef.current = 0;
+    }
+    window.speechSynthesis.cancel();
+    speakFrom(readChunksRef.current, readIdxRef.current);
+    setSpeaking(true);
+  };
 
   if (notFound) {
     return (
@@ -52,8 +103,11 @@ export default function SharedResult() {
 
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
+      <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
         <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
+        <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+          {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+        </button>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
