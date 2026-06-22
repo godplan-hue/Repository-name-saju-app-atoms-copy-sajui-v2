@@ -59,11 +59,11 @@ export default function PartnerArchive() {
         <div style={{ position: "relative", zIndex: 10, maxWidth: "1000px", margin: "0 auto" }}>
           <div style={{ background: "white", padding: "20px", borderRadius: "12px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h1 style={{ fontSize: "24px", fontWeight: 900, margin: 0, color: "#333" }}>📁 {partnerName}님의 보관함</h1>
+              <h1 style={{ fontSize: "24px", fontWeight: 900, margin: 0, color: "#333" }}>📁 {partnerName}님의<br/>보관함</h1>
               <p style={{ fontSize: "14px", color: "#666", margin: "5px 0 0 0" }}>고객이 결과를 못 받았다고 하면 여기서 다시 열어 재발송하세요</p>
             </div>
             <button onClick={() => router.push("/partner/create-analysis")} style={{ padding: "10px 20px", background: "#eef0ff", color: "#667eea", border: "none", borderRadius: "8px", fontWeight: 700, cursor: "pointer" }}>
-              ← 분석 생성으로
+              분석 생성
             </button>
           </div>
 
