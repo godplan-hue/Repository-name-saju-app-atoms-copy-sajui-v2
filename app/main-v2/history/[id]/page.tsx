@@ -19,6 +19,7 @@ function SelectModal({ onClose, onPay, paying }: {
   onPay: (cats: string[]) => void;
   paying: boolean;
 }) {
+  const router = useRouter();
   const [selected, setSelected] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const price = selected.length * 990;
   return (
@@ -67,6 +68,12 @@ function SelectModal({ onClose, onPay, paying }: {
         >
           {paying ? "⏳ 분석 중..." : selected.length > 0 ? `💎 ${selected.length}개 운세 보기 · ₩${price.toLocaleString()}` : "운세를 선택하세요"}
         </button>
+        <div style={{ marginTop: 10 }}>
+          <button onClick={() => router.push("/main-v2/payment")}
+            style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+            💳 유료 운세 결제하기
+          </button>
+        </div>
         <button onClick={onClose}
           style={{ width: "100%", marginTop: 10, padding: "12px 0", background: "transparent", color: "#9ca3af", border: "none", fontSize: 13, cursor: "pointer" }}>
           취소
