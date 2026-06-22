@@ -67,15 +67,23 @@ export default function PartnerLogin() {
         style={{
           minHeight: "100vh",
           background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          backgroundImage: "url('https://i.pinimg.com/736x/76/b4/8c/76b48c004b1917181a0f3dc9505088c9.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           padding: "20px",
           fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
+          position: "relative",
         }}
       >
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0, 0, 0, 0.65)", zIndex: 1, pointerEvents: "none" }} />
         <div
           style={{
+            position: "relative",
+            zIndex: 10,
             background: "white",
             padding: isMobile ? "30px 20px" : "50px",
             borderRadius: "12px",

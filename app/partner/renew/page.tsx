@@ -69,8 +69,9 @@ export default function PartnerRenew() {
   return (
     <>
       <Head><title>연회비 갱신 - 점운 파트너</title></Head>
-      <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-        <div style={{ background: "white", padding: "40px", borderRadius: "12px", maxWidth: "440px", width: "100%" }}>
+      <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", backgroundImage: "url('https://i.pinimg.com/736x/2f/f2/65/2ff265918ae94857584e3a645a5dd619.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0, 0, 0, 0.65)", zIndex: 1, pointerEvents: "none" }} />
+        <div style={{ position: "relative", zIndex: 10, background: "white", padding: "40px", borderRadius: "12px", maxWidth: "440px", width: "100%" }}>
           <h1 style={{ fontSize: "24px", fontWeight: 900, margin: "0 0 8px", color: "#333", textAlign: "center" }}>🔔 연회비 갱신이 필요합니다</h1>
           <p style={{ fontSize: "14px", color: "#666", textAlign: "center", margin: "0 0 24px" }}>{partnerName}님, 가입(또는 마지막 결제)로부터 1년이 지났어요.<br/>갱신할 때까지 새 분석 생성이 제한됩니다.</p>
 

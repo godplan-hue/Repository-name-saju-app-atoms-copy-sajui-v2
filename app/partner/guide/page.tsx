@@ -31,8 +31,9 @@ export default function PartnerGuide() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      <div style={{ maxWidth: 700, margin: "0 auto", padding: "40px 16px" }}>
+    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)", backgroundImage: "url('https://i.pinimg.com/736x/67/84/94/6784947e21b13a57868d12aaa34ed188.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0, 0, 0, 0.65)", zIndex: 1, pointerEvents: "none" }} />
+      <div style={{ position: "relative", zIndex: 10, maxWidth: 700, margin: "0 auto", padding: "40px 16px" }}>
         <button onClick={() => router.push("/partner/login")} style={{ background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", padding: "10px 16px", borderRadius: 8, fontWeight: 900, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
         <h1 style={{ color: "#fbbf24", fontSize: "clamp(22px, 5vw, 30px)", fontWeight: 900, marginBottom: 24 }}>📘 파트너 운영 가이드</h1>
 

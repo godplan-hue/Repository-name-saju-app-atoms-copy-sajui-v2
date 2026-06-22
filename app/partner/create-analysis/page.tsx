@@ -171,11 +171,17 @@ export default function PartnerCreateAnalysis() {
         style={{
           minHeight: "100vh",
           background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          backgroundImage: "url('https://i.pinimg.com/736x/72/39/ee/7239eea54bdf83f4cd67072fd375f87a.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
           padding: "20px",
           fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
+          position: "relative",
         }}
       >
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0, 0, 0, 0.65)", zIndex: 1, pointerEvents: "none" }} />
+        <div style={{ position: "relative", zIndex: 10, maxWidth: "1000px", margin: "0 auto" }}>
           {/* 헤더 */}
           <div
             style={{
