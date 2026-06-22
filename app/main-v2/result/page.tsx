@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -229,7 +229,16 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
 }
 
 export default function V2Result() {
+  return (
+    <Suspense fallback={null}>
+      <V2ResultInner />
+    </Suspense>
+  );
+}
+
+function V2ResultInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   // saving 상태(state)는 갱신이 비동기라 버튼을 빠르게 두 번 누르면 재진입 체크를
   // 통과해버려 저장이 중복 실행될 수 있음 — ref는 즉시 갱신되므로 이걸로 막음
@@ -276,7 +285,15 @@ export default function V2Result() {
 
   useEffect(() => {
     const raw = sessionStorage.getItem("v2_result");
-    if (!raw) { router.replace("/main-v2/analysis"); return; }
+    if (!raw) {
+      // 다른 브라우저로 열어서 임시 저장소(세션)가 비어있는 경우 — 주소에
+      // 공유 id(sid)가 같이 붙어왔다면, 처음부터 다시 분석하지 않고도
+      // 그 결과를 그대로 볼 수 있는 공유 페이지로 대신 보내줌
+      const sid = searchParams.get("sid");
+      if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
+      router.replace("/main-v2/analysis");
+      return;
+    }
     const r = JSON.parse(raw);
     if (!r.histId) {
       r.histId = Date.now();
@@ -322,6 +339,34 @@ export default function V2Result() {
         saveToHistory(r, isPaid, analyses, cats, plan);
       }
     }
+
+    // 결과를 서버에도 자동 저장해서, 브라우저를 바꿔도(예: 카카오톡 인앱
+    // 브라우저 한계로 "다른 브라우저로 열기") 다시 분석하지 않고 그대로
+    // 이어서 보고 읽을 수 있게 함 — 실패해도 화면 자체는 그대로 보이도록 조용히 무시
+    (async () => {
+      try {
+        const shareCategories =
+          !isPaid ? [{ icon: "🌟", label: "오늘의 운세", color: "#f59e0b", text: r.analysis ?? "" }]
+          : isPackage
+            ? (PKG_CAT_MAP[sessionStorage.getItem("selectedPackage") ?? ""] ?? PKG_CAT_MAP["기본 분석"])
+                .filter(c => analyses[c.apiKey]).map(c => ({ icon: c.icon, label: c.label, color: c.color, text: analyses[c.apiKey] }))
+            : ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && cats.includes(c.key))
+                .map(c => ({ icon: c.icon, label: c.key.replace(/\S+\s/, ""), color: c.color, text: analyses[c.key] }));
+        const validCats = shareCategories.filter(c => c.text && c.text.trim());
+        if (validCats.length === 0) return;
+        const res = await fetch("/api/v2/share", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: r.profile?.name, scores: r.scores, luckyColor: r.luckyColor, luckyNumber: r.luckyNumber, luckyDirection: r.luckyDirection, categories: validCats }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const sp = new URLSearchParams(window.location.search);
+          sp.set("sid", data.id);
+          router.replace(`${window.location.pathname}?${sp.toString()}`, { scroll: false });
+        }
+      } catch {}
+    })();
   }, []);
 
   // "당신의 변화" 전체공개를 오늘 처음 보여주는 거라면, 그 사실을 localStorage에
