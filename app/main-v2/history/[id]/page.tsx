@@ -145,43 +145,11 @@ export default function HistoryDetail() {
   const handlePay = async (cats: string[]) => {
     setPaying(true);
     try {
-      const profile = sessionStorage.getItem("v2_profile");
-      if (!profile) {
-        sessionStorage.setItem("v2_paid", "1");
-        router.push("/main-v2/profile");
-        return;
-      }
-      const p = JSON.parse(profile);
-      const category = cats[0] ?? "💰 재물운";
-      const res = await fetch("/api/v2/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: p.name,
-          birth: `${p.birthYear}-${p.birthMonth}-${p.birthDay}`,
-          birthHour: p.birthHour,
-          gender: p.gender,
-          relationship: p.relationship,
-          category,
-          planType: "paid",
-        }),
-      });
-      if (!res.ok) throw new Error("API error");
-      const data = await res.json();
-      const result = {
-        ...data,
-        category,
-        profile: p,
-        histId: Date.now(),
-        savedAt: new Date().toISOString(),
-      };
-      sessionStorage.setItem("v2_result", JSON.stringify(result));
-      sessionStorage.setItem("v2_paid", "1");
-      sessionStorage.setItem("v2_plan", "select");
+      // 일반 결제 흐름(메인 990원 선택)과 똑같이 결제완료 확인 화면을 거치게 함
       sessionStorage.setItem("v2_paid_cats", JSON.stringify(cats));
-      router.push("/main-v2/result");
-    } catch {
-      alert("분석 중 오류가 발생했습니다.");
+      const pkgName = cats.map(c => c.replace(/\S+\s/, "")).join("+");
+      const price = cats.length * 990;
+      router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${cats.length * 30}&paid=${price}`);
     } finally {
       setPaying(false);
       setShowSelect(false);
