@@ -616,7 +616,7 @@ export default function V2Result() {
 
   const toggleReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      alert("이 브라우저는 읽어주기 기능을 지원하지 않습니다.");
+      alert("이 브라우저는 읽어주기 기능을 지원하지 않습니다.\n\n카카오톡 등 앱 안에서 들어오셨다면, 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 다시 시도해보세요.\n\n또는 사파리/크롬 앱을 직접 열어서 주소를 입력해 들어가셔도 됩니다.");
       return;
     }
     if (speaking) {
@@ -640,7 +640,12 @@ export default function V2Result() {
       const fullText = visibleTexts.filter(Boolean).join("\n")
         .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
         .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
-        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}]/gu, "");
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}]/gu, "")
+        // 한글 단어 뒤 한자 괄호(예: "양기(陽氣)")는 음성합성기가 한글과 한자를
+        // 둘 다 읽어서 "양기 양기"처럼 중복으로 들리므로, 괄호 속 한자는 통째로 제거
+        .replace(/\([一-鿿]+\)/g, "")
+        // 글 중간의 ×는 "곱하기"로 읽혀서 어색하므로, 나열 의미인 "와"로 바꿔서 읽음
+        .replace(/×/g, " 와 ");
       if (!fullText.trim()) return;
       readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
       readIdxRef.current = 0;
