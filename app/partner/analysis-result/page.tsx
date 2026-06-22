@@ -86,6 +86,7 @@ export default function PartnerAnalysisResult() {
   const [customerName, setCustomerName] = useState("");
   const [packageType, setPackageType] = useState("");
   const [saving, setSaving] = useState(false);
+  const [sharing, setSharing] = useState(false);
   const [businessName, setBusinessName] = useState("");
 
   useEffect(() => {
@@ -160,6 +161,32 @@ export default function PartnerAnalysisResult() {
     }
   };
 
+  // 파트너가 카테고리마다 일일이 이미지 저장+전달하지 않아도, 링크 하나로
+  // 고객이 8개(또는 패키지 개수만큼)를 한 번에 볼 수 있게 공유 기능 추가
+  const handleShare = async () => {
+    if (!analysisResults) return;
+    setSharing(true);
+    try {
+      const shareCats = (PACKAGE_CATS[packageType] ?? PACKAGE_CATS["기본 분석"]).filter(c => analysisResults[c.key]);
+      const categories = shareCats.map(c => ({ icon: c.icon, label: c.label, color: "#9333ea", text: analysisResults[c.key] }));
+      const res = await fetch("/api/v2/share", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: customerName, scores: analysisResults.scores, luckyColor: analysisResults.luckyColor, luckyNumber: analysisResults.luckyNumber, luckyDirection: analysisResults.luckyDirection, categories }),
+      });
+      if (!res.ok) throw new Error("공유 저장 실패");
+      const data = await res.json();
+      const url = `${window.location.origin}/main-v2/share/${data.id}`;
+      const text = `${customerName}님의 운세 분석 🔮\n총운 ${analysisResults.scores?.total}점\n\n${businessName || "점운"}에서 보내드려요`;
+      if (navigator.share) await navigator.share({ title: "사주 분석 결과", text, url }).catch(() => {});
+      else { await navigator.clipboard.writeText(`${text}\n${url}`); alert("✅ 링크 복사됨! 고객님께 보내주세요."); }
+    } catch {
+      alert("공유 링크 생성에 실패했습니다.");
+    } finally {
+      setSharing(false);
+    }
+  };
+
   if (!analysisResults) return null;
 
   const { scores, luckyColor, luckyNumber, luckyDirection } = analysisResults;
@@ -174,9 +201,14 @@ export default function PartnerAnalysisResult() {
             <span style={{ fontSize: 18 }}>←</span>
             <span style={{ fontSize: 14, fontWeight: 900, color: "#9333ea" }}>🔮 {businessName || "점운"}</span>
           </button>
-          <button onClick={handleSaveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer" }}>
-            {saving ? "⏳..." : "🖼️ 이미지 저장"}
-          </button>
+          <div style={{ display: "flex", gap: 7 }}>
+            <button onClick={handleShare} disabled={sharing} style={{ padding: "5px 12px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: sharing ? "not-allowed" : "pointer" }}>
+              {sharing ? "⏳..." : "📤 공유하기"}
+            </button>
+            <button onClick={handleSaveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer" }}>
+              {saving ? "⏳..." : "🖼️ 이미지 저장"}
+            </button>
+          </div>
         </header>
 
         <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
