@@ -146,6 +146,7 @@ export default function PartnerAnalysisResult() {
         }
       });
       if (failedLabels.length > 0) alert(`다음 항목은 이미지 저장에 실패했습니다: ${failedLabels.join(", ")}`);
+      else alert("✅ 사진 앱(갤러리)에 저장됐어요!");
     } catch (error) {
       console.error("이미지 생성 오류:", error);
       alert("이미지 생성 중 오류가 발생했습니다");
