@@ -7,6 +7,7 @@ const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const SELECT_CATS = [
+  { key: "💰 재물운", scoreKey: "wealth",  color: "#f59e0b", icon: "💰" },
   { key: "💕 연애운", scoreKey: "love",    color: "#ec4899", icon: "💕" },
   { key: "💪 건강운", scoreKey: "health",  color: "#10b981", icon: "💪" },
   { key: "🎯 성공운", scoreKey: "success", color: "#8b5cf6", icon: "🎯" },
