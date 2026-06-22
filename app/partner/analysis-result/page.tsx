@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Head from "next/head";
 
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -80,7 +80,16 @@ const PACKAGE_CATS: Record<string, { key: string; icon: string; label: string }[
 };
 
 export default function PartnerAnalysisResult() {
+  return (
+    <Suspense fallback={null}>
+      <PartnerAnalysisResultInner />
+    </Suspense>
+  );
+}
+
+function PartnerAnalysisResultInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [customerName, setCustomerName] = useState("");
@@ -89,6 +98,9 @@ export default function PartnerAnalysisResult() {
   const [sharing, setSharing] = useState(false);
   const [businessName, setBusinessName] = useState("");
   const [partnerTier, setPartnerTier] = useState("");
+  const [speaking, setSpeaking] = useState(false);
+  const readChunksRef = useRef<string[]>([]);
+  const readIdxRef = useRef(0);
 
   useEffect(() => {
     const result = sessionStorage.getItem("analysisResult");
@@ -96,19 +108,55 @@ export default function PartnerAnalysisResult() {
     const pkg = sessionStorage.getItem("selectedPackage");
 
     if (!result) {
+      // 다른 휴대폰/브라우저라서 임시 저장소가 비어있는 경우 — 파트너 전용
+      // 화면(로그인 필요)으로 돌려보내면 고객이 그 화면을 보게 될 수 있어서,
+      // 공유 id(sid)가 같이 와있다면 누구나 볼 수 있는 공개 결과 페이지로 대신 보냄
+      const sid = searchParams.get("sid");
+      if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
       router.push("/partner/create-analysis");
       return;
     }
 
-    setAnalysisResults(JSON.parse(result));
+    const parsed = JSON.parse(result);
+    setAnalysisResults(parsed);
     setCustomerName(name || "고객");
     setPackageType(pkg || "기본 분석");
     // 결과지에 점운 대신 표시할 파트너 상호명
-    setBusinessName(localStorage.getItem("partnerBusinessName") || "");
+    const biz = localStorage.getItem("partnerBusinessName") || "";
+    setBusinessName(biz);
     // 무료 등급은 이미지를 직접 다운로드해서 전달하고, 실버 등급 이상부터
     // 공유 링크(자동 발송 대체 편의 기능)를 쓸 수 있게 등급 차이를 유지함
     setPartnerTier(localStorage.getItem("partnerTier") || "free");
+
+    // 결과를 보는 즉시 서버에도 자동 저장 — 파트너가 다른 휴대폰/브라우저로
+    // 열어도(예: 카카오톡 다른 브라우저로 열기) 다시 분석하지 않고 그대로
+    // 이어서 보고 읽을 수 있게 함. 실패해도 화면은 그대로 보이므로 조용히 무시
+    (async () => {
+      try {
+        const shareCats = (PACKAGE_CATS[pkg || "기본 분석"] ?? PACKAGE_CATS["기본 분석"]).filter(c => parsed[c.key]);
+        const categories = shareCats.map(c => ({ icon: c.icon, label: c.label, color: "#9333ea", text: parsed[c.key] }));
+        if (categories.length === 0) return;
+        const res = await fetch("/api/v2/share", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: name || "고객", scores: parsed.scores, luckyColor: parsed.luckyColor, luckyNumber: parsed.luckyNumber, luckyDirection: parsed.luckyDirection, categories, businessName: biz }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const sp = new URLSearchParams(window.location.search);
+          sp.set("sid", data.id);
+          router.replace(`${window.location.pathname}?${sp.toString()}`, { scroll: false });
+        }
+      } catch {}
+    })();
   }, [router]);
+
+  // 이 화면을 벗어나면 읽어주기가 계속 돌아가지 않도록 강제로 멈춤
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    };
+  }, []);
 
   // 메인 사이트와 동일한 이유로 카테고리별로 따로 저장함 — 전부 하나의
   // 거대한 캔버스로 합치면 내용이 길 때 브라우저 캔버스 크기 한계를 넘어
@@ -196,6 +244,47 @@ export default function PartnerAnalysisResult() {
   const { scores, luckyColor, luckyNumber, luckyDirection } = analysisResults;
   const cats = (PACKAGE_CATS[packageType] ?? PACKAGE_CATS["기본 분석"]).filter(c => analysisResults[c.key]);
 
+  const speakFrom = (chunks: string[], startIdx: number) => {
+    chunks.slice(startIdx).forEach((chunk, i) => {
+      const idx = startIdx + i;
+      const utter = new SpeechSynthesisUtterance(chunk);
+      utter.lang = "ko-KR";
+      utter.rate = 1;
+      utter.onstart = () => { readIdxRef.current = idx; };
+      if (idx === chunks.length - 1) {
+        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
+      }
+      window.speechSynthesis.speak(utter);
+    });
+  };
+
+  const toggleReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      alert("이 브라우저는 읽어주기 기능을 지원하지 않습니다.\n\n카카오톡 등 앱 안에서 들어오셨다면, 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 다시 시도해보세요.\n\n또는 사파리/크롬 앱을 직접 열어서 주소를 입력해 들어가셔도 됩니다.");
+      return;
+    }
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      return;
+    }
+    if (readChunksRef.current.length === 0) {
+      const fullText = cats.map(c => analysisResults[c.key]).filter(Boolean).join("\n")
+        .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+        .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+        .replace(/[（(][一-鿿]+[）)]/g, "")
+        .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+        .replace(/×/g, " 와 ");
+      if (!fullText.trim()) return;
+      readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+      readIdxRef.current = 0;
+    }
+    window.speechSynthesis.cancel();
+    speakFrom(readChunksRef.current, readIdxRef.current);
+    setSpeaking(true);
+  };
+
   return (
     <>
       <Head><title>분석 결과 - {businessName || "점운"}</title></Head>
@@ -206,6 +295,9 @@ export default function PartnerAnalysisResult() {
             <span style={{ fontSize: 14, fontWeight: 900, color: "#9333ea" }}>🔮 {businessName || "점운"}</span>
           </button>
           <div style={{ display: "flex", gap: 7 }}>
+            <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+              {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+            </button>
             {partnerTier !== "free" && (
               <button onClick={handleShare} disabled={sharing} style={{ padding: "5px 12px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: sharing ? "not-allowed" : "pointer" }}>
                 {sharing ? "⏳..." : "📤 공유하기"}
