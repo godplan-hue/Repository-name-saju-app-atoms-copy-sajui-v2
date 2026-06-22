@@ -223,7 +223,7 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
     <div style={{ padding: "0 14px 28px", maxWidth: 480, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 6 }}>
           {[0,1,2,3,4].map(i => (
-            <span key={i} style={{ display: "inline-block", color: "#dc2626", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
+            <span key={i} style={{ display: "inline-block", color: "#facc15", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
           ))}
         </div>
         <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center" }}>
@@ -299,7 +299,7 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
           /* 사진 없이 직접 그리는 990원 강조 배너 */
           <div style={{ position: "absolute", inset: 0 }}>
             <img src="https://i.pinimg.com/736x/b2/90/0f/b2900f52b17624d4286a216eed2ddc0a.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-            <span style={{ position: "absolute", top: 14, left: 16, display: "inline-block", background: "#16a34a", color: "white", fontSize: 11, fontWeight: 900, padding: "4px 12px", borderRadius: 20, zIndex: 2 }}>무료 사주</span>
+            <span style={{ position: "absolute", top: 14, left: 16, display: "inline-block", background: "#facc15", color: "#c2410c", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2, textShadow: "0 1px 3px rgba(0,0,0,0.25)" }}>무료 사주</span>
             <div style={{ position: "absolute", top: 18, right: 18, width: 200, height: 135, borderRadius: "50%", border: "5px solid #fbbf24", background: "linear-gradient(160deg, #ffffff, #f3e8ff)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", boxShadow: "0 6px 20px rgba(109,40,217,0.35), inset 0 0 0 2px rgba(255,255,255,0.6)" }}>
               <span style={{ fontSize: 46, fontWeight: 900, color: "#6d28d9", lineHeight: 1, animation: "textGlow 1.8s ease-in-out infinite" }}>₩990</span>
               <span style={{ fontSize: 12, fontWeight: 900, marginTop: 5 }}>
@@ -462,7 +462,7 @@ export default function MainV2() {
         <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", color: "#dc2626", textShadow: "1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff, 1.5px 1.5px 0 #fff, -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 0 0 2px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>
           고양이가 읽는 나의 운명
         </h1>
-        <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px", color: "#dc2626", textShadow: "1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 0 1.5px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
+        <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px", color: "#dc2626", textShadow: "1px 0 0 #facc15, -1px 0 0 #facc15, 0 1px 0 #facc15, 0 -1px 0 #facc15, 1px 1px 0 #facc15, -1px -1px 0 #facc15, 1px -1px 0 #facc15, -1px 1px 0 #facc15, 0 0 1.5px #facc15", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
           {[
             { text: "⚡ AI 정밀분석", bg: "linear-gradient(135deg, #6d28d9, #8b5cf6)" },
