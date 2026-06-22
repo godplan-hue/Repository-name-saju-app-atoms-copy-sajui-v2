@@ -459,10 +459,10 @@ export default function MainV2() {
 
       {/* 헤드라인 */}
       <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
-        <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", color: "#dc2626", textShadow: "1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff, 1.5px 1.5px 0 #fff, -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 0 0 2px #fff", animation: "bigGlow 2.4s ease-in-out infinite" }}>
+        <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", color: "#dc2626", textShadow: "1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff, 1.5px 1.5px 0 #fff, -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 0 0 2px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>
           고양이가 읽는 나의 운명
         </h1>
-        <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px", color: "#dc2626", textShadow: "1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 0 1.5px #fff" }}>당신의 운명을 AI가 풀어드립니다</p>
+        <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px", color: "#dc2626", textShadow: "1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 0 1.5px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
           {[
             { text: "⚡ AI 정밀분석", bg: "linear-gradient(135deg, #6d28d9, #8b5cf6)" },
@@ -616,6 +616,10 @@ export default function MainV2() {
         @keyframes waveGlow {
           0%, 100% { text-shadow: 0 0 2px rgba(236,72,153,0.2); color: #8b2f8f; }
           50%      { text-shadow: 0 0 10px rgba(236,72,153,0.9), 0 0 4px rgba(255,255,255,0.7); color: #ec4899; }
+        }
+        @keyframes sparklePulse {
+          0%, 100% { filter: brightness(1) drop-shadow(0 0 0 rgba(255,255,255,0)); }
+          50%      { filter: brightness(1.4) drop-shadow(0 0 6px rgba(255,255,255,0.9)); }
         }
         @keyframes bigGlow {
           0%, 100% { filter: drop-shadow(0 0 2px rgba(236,72,153,0.3)); }
