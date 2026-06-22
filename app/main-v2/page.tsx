@@ -215,7 +215,7 @@ const FORTUNE_CATEGORIES = [
   { id: "health", title: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/d3/20/62/d32062b1c5d6aa5d14b0a827347d897e.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
   { id: "compatibility", title: "궁합분석", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
   { id: "naming", title: "이름분석", emoji: "✍️", img: "https://i.pinimg.com/736x/ad/4f/81/ad4f818060ce83163cf71e9574538c68.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "full", title: "전체 사주분석", emoji: "🔮", img: "https://i.pinimg.com/1200x/dd/27/12/dd2712fa56bcedba430c28caf79bb32c.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
+  { id: "full", title: "전체 사주분석", emoji: "🔮", img: "https://i.pinimg.com/1200x/cc/82/27/cc82279b6fc9f07bc51ba888d662b675.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
 ];
 
 function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
