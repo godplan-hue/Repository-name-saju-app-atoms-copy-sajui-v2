@@ -113,7 +113,11 @@ export default function PartnerAnalysisResult() {
   const handleSaveImage = async () => {
     if (!analysisResults) return;
     setSaving(true);
-    if (window.innerWidth < 768) alert("📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요! (운세 항목이 여러 개면 여러 번 뜰 수 있어요)");
+    if (window.innerWidth < 768) {
+      alert(cats.length > 1
+        ? `📥 운세 ${cats.length}개를 각각 따로 다운로드해야 해요!\n\n확인창이 뜨면 [다운로드]를 누르고, "다운로드 완료"가 뜬 후 다음 확인창이 또 뜨면 다시 [다운로드]를 눌러주세요.\n\n한 번에 여러 번 누르지 말고 하나씩 순서대로 눌러주세요. 총 ${cats.length}번 누르시면 끝나요.`
+        : "📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요!");
+    }
     try {
       const html2canvas = (await import("html2canvas")).default;
       const elements = cardRefs.current.filter(Boolean) as HTMLDivElement[];

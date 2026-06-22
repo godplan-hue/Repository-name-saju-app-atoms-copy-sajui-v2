@@ -413,11 +413,16 @@ export default function V2Result() {
     if (savingRef.current) return;
     savingRef.current = true;
     setSaving(true);
-    if (window.innerWidth < 768) alert("📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요! (운세 항목이 여러 개면 여러 번 뜰 수 있어요)");
     try {
       const html2canvas = (await import("html2canvas")).default;
       const elements = cardRefs.current.filter(Boolean) as HTMLDivElement[];
       if (elements.length === 0) { alert("저장할 내용이 없습니다."); return; }
+      if (window.innerWidth < 768) {
+        const downloadCount = tier === "package" && elements.length > 1 ? elements.length - 1 : 1;
+        alert(downloadCount > 1
+          ? `📥 운세 ${downloadCount}개를 각각 따로 다운로드해야 해요!\n\n확인창이 뜨면 [다운로드]를 누르고, "다운로드 완료"가 뜬 후 다음 확인창이 또 뜨면 다시 [다운로드]를 눌러주세요.\n\n한 번에 여러 번 누르지 말고 하나씩 순서대로 눌러주세요. 총 ${downloadCount}번 누르시면 끝나요.`
+          : "📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요!");
+      }
       // 카드마다 글자 길이가 달라 배율(scale)이 다르게 적용되면, 캡처된 캔버스 폭이
       // 서로 달라져서 합칠 때 한쪽에 빈 공간(세로 선처럼 보이는 경계)이 생김 —
       // 그래서 모든 카드에 동일한 배율을 적용하도록, 가장 긴 카드 기준으로 미리 계산해둠
