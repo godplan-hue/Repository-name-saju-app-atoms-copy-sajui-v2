@@ -227,7 +227,7 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
           ))}
         </div>
         <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center" }}>
-          <span style={{ display: "inline-block", padding: "2px 10px", background: "rgba(255,255,255,0.9)", borderRadius: 12, letterSpacing: "0.3px", color: "#92278f" }}>운세 선택</span>
+          <span style={{ display: "inline-block", padding: "2px 10px", background: "#f3e8ff", borderRadius: 12, letterSpacing: "0.3px", color: "#92278f" }}>운세 선택</span>
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
