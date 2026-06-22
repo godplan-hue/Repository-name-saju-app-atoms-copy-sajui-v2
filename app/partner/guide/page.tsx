@@ -39,7 +39,7 @@ export default function PartnerGuide() {
 
         {!confirmed ? (
           <div style={{ background: "rgba(108,64,200,0.15)", padding: 30, borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)", textAlign: "center" }}>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 14 }}>상호명 변경, 결과지 발송 방법 등 파트너 운영에 필요한 안내를 확인하실 수 있어요.</p>
+            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 14 }}>상호명 변경, 결과지 발송 방법 등<br/>파트너 운영에 필요한 안내를<br/>확인하실 수 있어요.</p>
             <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginBottom: 20 }}>가이드 확인 시 환불 규정이 적용돼요</p>
             <button onClick={handleConfirm} disabled={confirming} style={{ padding: "12px 32px", background: confirming ? "#999" : "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: confirming ? "not-allowed" : "pointer" }}>
               {confirming ? "처리중..." : "확인하고 보기"}

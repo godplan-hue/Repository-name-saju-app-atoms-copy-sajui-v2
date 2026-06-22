@@ -75,14 +75,14 @@ export default function PartnerUpgrade() {
         <div style={{ position: "relative", zIndex: 10, maxWidth: "900px", margin: "0 auto" }}>
           <div style={{ background: "white", padding: "20px", borderRadius: "12px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h1 style={{ fontSize: "24px", fontWeight: 900, margin: 0, color: "#333" }}>⭐ {partnerName}님 등급 업그레이드</h1>
+              <h1 style={{ fontSize: "24px", fontWeight: 900, margin: 0, color: "#333" }}>⭐ {partnerName}님<br/>등급 업그레이드</h1>
               <p style={{ fontSize: "14px", color: "#666", margin: "5px 0 0 0" }}>현재 등급: {currentTierInfo?.name}</p>
             </div>
             <button onClick={() => router.push("/partner/create-analysis")} style={{ padding: "10px 20px", background: "#eef0ff", color: "#667eea", border: "none", borderRadius: "8px", fontWeight: 700, cursor: "pointer" }}>← 분석 생성으로</button>
           </div>
 
           <div style={{ background: "white", padding: "30px", borderRadius: "12px" }}>
-            <p style={{ fontSize: "13px", color: "#999", marginTop: 0, marginBottom: 20 }}>업그레이드 시 새 등급 연회비에서 기존에 낸 연회비를 뺀 차액만 결제하면 바로 적용됩니다. 이번 달 이미 사용한 건수는 그대로 유지되고, 새 등급의 한도 안에서 계속 쓸 수 있습니다.</p>
+            <p style={{ fontSize: "13px", color: "#999", marginTop: 0, marginBottom: 20 }}>업그레이드 시 새 등급 연회비에서<br/>기존에 낸 연회비를 뺀 차액만 결제하면<br/>바로 적용됩니다.<br/>이번 달 이미 사용한 건수는 그대로 유지되고,<br/>새 등급의 한도 안에서 계속 쓸 수 있습니다.</p>
 
             {/* 할인코드 */}
             <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
