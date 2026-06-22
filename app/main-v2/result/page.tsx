@@ -584,19 +584,23 @@ export default function V2Result() {
     // 순간 보이는 내용을 서버에 저장하고 그 고유 주소를 공유함 — 저장이
     // 실패해도 공유 자체는 막지 않고 그냥 메인 주소로 대체함
     try {
-      const visibleTexts =
-        tier === "free" ? [freeAnalysis]
-        : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
-        : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
-      const analysisText = visibleTexts.filter(Boolean).join("\n\n");
-      if (analysisText.trim()) {
+      // 화면에 보이는 카테고리별 색/아이콘까지 그대로 살려서 공유본도 똑같이 구분되어 보이게 함
+      const categories =
+        tier === "free" ? [{ icon: "🌟", label: "오늘의 운세", color: "#f59e0b", text: freeAnalysis }]
+        : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key))
+            .map(c => ({ icon: c.icon, label: c.key.replace(/\S+\s/, ""), color: c.color, text: allAnalyses[c.key] }))
+        : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"])
+            .filter(c => allAnalyses[c.apiKey])
+            .map(c => ({ icon: c.icon, label: c.label, color: c.color, text: allAnalyses[c.apiKey] }));
+      const validCategories = categories.filter(c => c.text && c.text.trim());
+      if (validCategories.length > 0) {
         const res = await fetch("/api/v2/share", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: result.profile?.name, category: result.category ?? "",
+            name: result.profile?.name,
             scores: result.scores, luckyColor: result.luckyColor, luckyNumber: result.luckyNumber, luckyDirection: result.luckyDirection,
-            analysis: analysisText,
+            categories: validCategories,
           }),
         });
         if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }

@@ -6,14 +6,20 @@ import { useRouter, useParams } from "next/navigation";
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
+interface SharedCategory {
+  icon: string;
+  label: string;
+  color: string;
+  text: string;
+}
+
 interface SharedEntry {
   name: string;
-  category: string;
   scores?: { total?: number; wealth?: number; love?: number; health?: number; success?: number };
   luckyColor?: string;
   luckyNumber?: number;
   luckyDirection?: string;
-  analysis: string;
+  categories: SharedCategory[];
 }
 
 export default function SharedResult() {
@@ -51,12 +57,13 @@ export default function SharedResult() {
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
-        <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 16, overflow: "hidden" }}>
-          <div style={{ background: G, color: "white", textAlign: "center", padding: "24px 20px" }}>
-            <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 4px", opacity: 0.9 }}>🔮 점운 · AI 사주 분석</p>
-            <h1 style={{ fontSize: 18, fontWeight: 900, margin: "0 0 12px" }}>{entry.name}님의 {entry.category || "운세"} 분석</h1>
+        {/* 점수 요약 카드 */}
+        <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
+          <div style={{ background: "#eab308", color: "#3a2a00", textAlign: "center", padding: "18px 20px" }}>
+            <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 6px", opacity: 0.9 }}>🔮 점운 · AI 사주 분석</p>
+            <h1 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 10px" }}>{entry.name}님의 운세 분석</h1>
             {typeof entry.scores?.total === "number" && (
-              <p style={{ fontSize: 32, fontWeight: 900, margin: 0 }}>{entry.scores.total}<span style={{ fontSize: 14, opacity: 0.8 }}>점</span></p>
+              <p style={{ fontSize: 30, fontWeight: 900, margin: 0 }}>{entry.scores.total}<span style={{ fontSize: 13, opacity: 0.8 }}>점</span></p>
             )}
           </div>
           {(entry.luckyColor || entry.luckyNumber || entry.luckyDirection) && (
@@ -75,12 +82,24 @@ export default function SharedResult() {
               </div>
             </div>
           )}
-          <div style={{ padding: "4px 20px 22px", fontSize: 13.5, fontWeight: 600, color: "#374151", lineHeight: 1.8, whiteSpace: "pre-line" }}>
-            {entry.analysis}
-          </div>
         </div>
 
-        <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+        {/* 카테고리별 카드 — 결과 페이지와 똑같이 아이콘/색으로 구분 */}
+        {entry.categories.map((cat, i) => (
+          <div key={i} style={{ background: "white", borderRadius: 24, border: `1.5px solid ${cat.color}44`, marginBottom: 12 }}>
+            <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>
+              <span style={{ fontSize: 22 }}>{cat.icon}</span>
+              <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{cat.label}</span>
+            </div>
+            <div style={{ padding: "14px 18px 20px" }}>
+              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>
+                {cat.text}
+              </p>
+            </div>
+          </div>
+        ))}
+
+        <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)", marginTop: 8 }}>
           📱 나도 무료로 사주 보기
         </button>
       </div>

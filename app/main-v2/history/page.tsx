@@ -121,11 +121,18 @@ export default function V2History() {
     e.stopPropagation();
     let url = window.location.origin + "/main-v2";
     try {
+      const matchedCat = SELECT_CATS.find(c => c.key === item.category);
       const res = await fetch("/api/v2/share", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: item.name, category: item.category?.replace(/\S+\s/, ""), scores: item.scores, analysis: item.analysis,
+          name: item.name, scores: item.scores,
+          categories: [{
+            icon: matchedCat?.icon ?? "🔮",
+            label: item.category?.replace(/\S+\s/, "") ?? "운세",
+            color: matchedCat?.color ?? "#8b5cf6",
+            text: item.analysis,
+          }],
         }),
       });
       if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
