@@ -23,6 +23,25 @@ interface SharedEntry {
   businessName?: string;
 }
 
+function ScoreBar({ label, score, color }: { label: string; score: number; color: string }) {
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => setWidth(score), 400);
+    return () => clearTimeout(t);
+  }, [score]);
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#374151" }}>{label}</span>
+        <span style={{ fontSize: 13, fontWeight: 900, color }}>{score}점</span>
+      </div>
+      <div style={{ height: 7, background: "#f3e8ff", borderRadius: 99, overflow: "hidden" }}>
+        <div style={{ height: "100%", width: `${width}%`, background: `linear-gradient(90deg, ${color}, ${color}cc)`, borderRadius: 99, transition: "width 1s ease" }} />
+      </div>
+    </div>
+  );
+}
+
 export default function ShareClient({ id }: { id: string }) {
   const router = useRouter();
   const [entry, setEntry] = useState<SharedEntry | null>(null);
@@ -134,6 +153,21 @@ export default function ShareClient({ id }: { id: string }) {
                 <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>행운 방향</div>
                 <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{entry.luckyDirection}</div>
               </div>
+            </div>
+          )}
+          {entry.scores && (
+            <div style={{ padding: "4px 18px 18px" }}>
+              <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 14 }}>📊 분야별 운세 점수</div>
+              {[
+                { label: "🌟 오늘의 운세", key: "total",   color: "#f59e0b" },
+                { label: "💰 재물운",      key: "wealth",  color: "#f59e0b" },
+                { label: "💕 연애운",      key: "love",    color: "#ec4899" },
+                { label: "💪 건강운",      key: "health",  color: "#10b981" },
+                { label: "🎯 성공운",      key: "success", color: "#8b5cf6" },
+                { label: "✨ 총운",        key: "total",   color: "#6366f1" },
+              ].map((b, i) => (
+                <ScoreBar key={i} label={b.label} score={entry.scores?.[b.key as keyof typeof entry.scores] ?? 0} color={b.color} />
+              ))}
             </div>
           )}
         </div>
