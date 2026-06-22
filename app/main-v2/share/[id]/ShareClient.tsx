@@ -73,7 +73,7 @@ export default function ShareClient({ id }: { id: string }) {
       const fullText = (entry?.categories ?? []).map(c => c.text).filter(Boolean).join("\n")
         .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
         .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
-        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}]/gu, "")
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
         .replace(/[（(][一-鿿]+[）)]/g, "")
         .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
         .replace(/×/g, " 와 ");

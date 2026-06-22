@@ -711,7 +711,7 @@ function V2ResultInner() {
       const fullText = visibleTexts.filter(Boolean).join("\n")
         .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
         .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
-        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}]/gu, "")
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
         // 한글 단어 뒤 한자 괄호(예: "양기(陽氣)")는 음성합성기가 한글과 한자를
         // 둘 다 읽어서 "양기 양기"처럼 중복으로 들리므로, 괄호 속 한자는 통째로 제거
         // (전각 괄호 （） 도 같이 처리)
