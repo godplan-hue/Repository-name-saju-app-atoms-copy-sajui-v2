@@ -1043,7 +1043,7 @@ export default function V2Result() {
           <>
             <div style={{ marginBottom: 10 }}>
               <button onClick={share}
-                style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
+                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, rgba(236,72,153,0.1), rgba(236,72,153,0.03))", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.12)" }}>
                 📤 공유하기
               </button>
             </div>
@@ -1061,7 +1061,7 @@ export default function V2Result() {
           <>
             <div style={{ marginBottom: 10 }}>
               <button onClick={share}
-                style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
+                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, rgba(236,72,153,0.1), rgba(236,72,153,0.03))", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.12)" }}>
                 📤 공유하기
               </button>
             </div>
@@ -1073,13 +1073,13 @@ export default function V2Result() {
             </div>
             <div style={{ marginBottom: 10 }}>
               <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
-                style={{ width: "100%", padding: "12px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, rgba(139,92,246,0.1), rgba(139,92,246,0.03))", color: "#8b5cf6", border: "1.5px solid rgba(139,92,246,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
                 🔮 다시 분석
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
               <button onClick={() => router.push("/main-v2/history")}
-                style={{ width: "100%", padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid rgba(139,92,246,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.1)" }}>
+                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(99,102,241,0.03))", color: "#6366f1", border: "1.5px solid rgba(99,102,241,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.12)" }}>
                 📥 보관함 저장
               </button>
             </div>
@@ -1091,7 +1091,7 @@ export default function V2Result() {
           <>
             <div style={{ marginBottom: 10 }}>
               <button onClick={share}
-                style={{ width: "100%", padding: "13px 0", background: "white", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.1)" }}>
+                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, rgba(236,72,153,0.1), rgba(236,72,153,0.03))", color: "#ec4899", border: "1.5px solid rgba(236,72,153,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.12)" }}>
                 📤 공유하기
               </button>
             </div>
@@ -1103,19 +1103,19 @@ export default function V2Result() {
             </div>
             <div style={{ marginBottom: 10 }}>
               <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
-                style={{ width: "100%", padding: "12px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, rgba(139,92,246,0.1), rgba(139,92,246,0.03))", color: "#8b5cf6", border: "1.5px solid rgba(139,92,246,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
                 🔮 다시 분석
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
               <button onClick={() => router.push("/main-v2/history")}
-                style={{ width: "100%", padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid rgba(139,92,246,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.1)" }}>
+                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(99,102,241,0.03))", color: "#6366f1", border: "1.5px solid rgba(99,102,241,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.12)" }}>
                 📥 보관함 저장
               </button>
             </div>
             <div style={{ marginBottom: 12 }}>
               <button onClick={saveImage} disabled={saving}
-                style={{ width: "100%", padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.3)", opacity: saving ? 0.7 : 1 }}>
+                style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(245,158,11,0.3)", opacity: saving ? 0.7 : 1 }}>
                 {saving ? "⏳ 저장 중..." : "🖼️ 이미지 저장"}
               </button>
             </div>
