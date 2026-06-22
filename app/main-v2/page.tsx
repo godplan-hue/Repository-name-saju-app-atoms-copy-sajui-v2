@@ -207,7 +207,7 @@ const BANNERS = [
 ];
 
 const FORTUNE_CATEGORIES = [
-  { id: "free", title: "오늘의 무료운세", emoji: "🌟", img: "/saju-cat.png", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료", priceBg: "#15803d" },
+  { id: "free", title: "오늘의 무료운세", emoji: "🌟", img: "https://i.pinimg.com/736x/70/2f/09/702f09da97be486fc2b66c35847ab971.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료", priceBg: "#15803d" },
   { id: "dateselect", title: "택일", emoji: "📅", img: "https://i.pinimg.com/736x/26/b0/8e/26b08e17fba8ae7d44a34a2633dc05b4.jpg", bg: "linear-gradient(145deg, #f0f9ff, #bae6fd)", accent: "#0284c7", price: "출시예정", priceBg: "#0ea5e9", badgeSide: "right" },
   { id: "yearly", title: "올해+월별 운세", emoji: "🎍", img: "https://i.pinimg.com/736x/48/bf/19/48bf198b7a648cf4032cde8a501d8606.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900~", priceBg: "#2563eb" },
   { id: "wealth", title: "재물운", emoji: "💰", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309", price: "₩990", priceBg: "#ff0000" },
