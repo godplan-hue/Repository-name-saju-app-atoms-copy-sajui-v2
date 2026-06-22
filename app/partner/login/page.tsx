@@ -67,7 +67,7 @@ export default function PartnerLogin() {
         style={{
           minHeight: "100vh",
           background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          backgroundImage: "url('https://i.pinimg.com/736x/76/b4/8c/76b48c004b1917181a0f3dc9505088c9.jpg')",
+          backgroundImage: "url('https://i.pinimg.com/736x/d0/01/5d/d0015dc58ebc315ed8f3173ed1799b6f.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
