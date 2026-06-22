@@ -42,10 +42,10 @@ export default function PartnerCreateAnalysis() {
   ];
 
   const packages = [
-    { name: "기본 분석", price: "₩9,900", desc: "올해 운세 + 월별 운세" },
-    { name: "베이직", price: "₩19,900", desc: "올해 운세 + 월별 운세 + 재물운 + 연애운" },
-    { name: "프리미엄", price: "₩24,900", desc: "올해 운세 + 월별 운세 + 재물운 + 연애운 + 건강운" },
-    { name: "VIP 커플팩", price: "₩29,900", desc: "이름분석 + 올해 운세 + 월별 운세 + 재물운 + 연애운 + 건강운 + 궁합분석 + 전체 사주분석" },
+    { name: "기본 분석", price: "₩9,900", desc: ["올해 운세", "+ 월별 운세"] },
+    { name: "베이직", price: "₩19,900", desc: ["올해 운세", "+ 월별 운세", "+ 재물운", "+ 연애운"] },
+    { name: "프리미엄", price: "₩24,900", desc: ["올해 운세", "+ 월별 운세", "+ 재물운", "+ 연애운", "+ 건강운"] },
+    { name: "VIP 커플팩", price: "₩29,900", desc: ["이름분석", "+ 올해 운세", "+ 월별 운세", "+ 재물운", "+ 연애운", "+ 건강운", "+ 궁합분석", "+ 전체 사주분석"] },
   ];
 
   useEffect(() => {
@@ -500,7 +500,11 @@ export default function PartnerCreateAnalysis() {
                 >
                   <div style={{ fontWeight: 900, marginBottom: "5px" }}>{pkg.name}</div>
                   <div style={{ fontSize: "13px", opacity: 0.8, marginBottom: "6px" }}>{pkg.price}</div>
-                  <div style={{ fontSize: "11px", opacity: 0.65, fontWeight: 600, lineHeight: 1.5 }}>{pkg.desc}</div>
+                  <div style={{ fontSize: "11px", opacity: 0.65, fontWeight: 600, lineHeight: 1.5 }}>
+                    {pkg.desc.map((line, i) => (
+                      <span key={i}>{line}{i < pkg.desc.length - 1 && <br/>}</span>
+                    ))}
+                  </div>
                 </button>
               ))}
             </div>
@@ -515,7 +519,8 @@ export default function PartnerCreateAnalysis() {
               />
               <span style={{ fontSize: "13px", color: "#333", fontWeight: 600, lineHeight: 1.6 }}>
                 이 고객으로부터 <b>개인정보</b><br/>
-                <b>(이름, 생년월일, 연락처 등) 수집·이용에 대한</b><br/>
+                <b>(이름, 생년월일, 연락처 등)</b><br/>
+                <b>수집·이용에 대한</b><br/>
                 <b>동의</b>를 직접 받았으며,<br/>
                 이 정보가 분석 결과 생성을 위해<br/>
                 점운(회사)에도 전달·저장됨을<br/>
