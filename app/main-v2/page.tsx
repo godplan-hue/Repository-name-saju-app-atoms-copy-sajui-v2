@@ -226,8 +226,8 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
             <span key={i} style={{ display: "inline-block", color: "#fbbf24", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
           ))}
         </div>
-        <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center", letterSpacing: "0.3px", color: "#92278f" }}>
-          운세 선택
+        <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center" }}>
+          <span style={{ display: "inline-block", padding: "6px 18px", background: "rgba(255,255,255,0.9)", borderRadius: 20, letterSpacing: "0.3px", color: "#92278f" }}>운세 선택</span>
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
@@ -505,7 +505,7 @@ export default function MainV2() {
         <div style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg, rgba(45,16,62,0.95), rgba(74,26,84,0.92))", border: "2px solid rgba(251,191,36,0.75)", borderRadius: 14, padding: "16px 18px", textAlign: "center", boxShadow: "0 4px 18px rgba(74,26,84,0.35)" }}>
           <div style={{ position: "absolute", top: 0, left: 0, width: "40%", height: "200%", background: "linear-gradient(100deg, transparent, rgba(255,255,255,0.55), transparent)", animation: "shimmerSweep 3.2s ease-in-out infinite", pointerEvents: "none" }} />
           <p style={{ position: "relative", fontSize: 13, fontWeight: 800, color: "#f9a8d4", margin: "0 0 5px" }}>혹시 소문 듣고 오셨나요?</p>
-          <p style={{ position: "relative", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.5, color: "#fbbf24", animation: "textGlow 1.8s ease-in-out infinite" }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
+          <p style={{ position: "relative", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.5, color: "#ffffff", animation: "textGlow 1.8s ease-in-out infinite" }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
         </div>
       </div>
 
@@ -518,12 +518,12 @@ export default function MainV2() {
               <span key={i} style={{ display: "inline-block", color: "#fbbf24", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>✨</span>
             ))}
           </div>
-          <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.1, marginBottom: 12, color: "#8b2f8f", animation: "bigGlow 2.4s ease-in-out infinite" }}>
+          <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.1, marginBottom: 12, color: "#8b2f8f", textShadow: "0 0 8px #fff, 0 0 8px #fff, 0 2px 5px #fff", animation: "bigGlow 2.4s ease-in-out infinite" }}>
             <span style={{ display: "inline-block", transform: "rotate(-8deg) translateX(-4px)" }}>점</span>
             <br/>
             <span style={{ display: "inline-block", transform: "rotate(6deg) translateX(8px)" }}>운</span>
           </div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(236,72,153,0.1)", borderRadius: 20 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(255,255,255,0.9)", borderRadius: 20 }}>
             <span style={{ fontSize: 12 }}>🌸</span>
             <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>오늘의 무료사주</span>
           </div>
