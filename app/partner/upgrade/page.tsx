@@ -75,10 +75,10 @@ export default function PartnerUpgrade() {
         <div style={{ position: "relative", zIndex: 10, maxWidth: "900px", margin: "0 auto" }}>
           <div style={{ background: "white", padding: "20px", borderRadius: "12px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <h1 style={{ fontSize: "24px", fontWeight: 900, margin: 0, color: "#333" }}>⭐ {partnerName}님<br/>등급 업그레이드</h1>
+              <h1 style={{ fontSize: "24px", fontWeight: 900, margin: 0, color: "#333" }}>⭐ {partnerName}님<br/>등급<br/>업그레이드</h1>
               <p style={{ fontSize: "14px", color: "#666", margin: "5px 0 0 0" }}>현재 등급: {currentTierInfo?.name}</p>
             </div>
-            <button onClick={() => router.push("/partner/create-analysis")} style={{ padding: "10px 20px", background: "#eef0ff", color: "#667eea", border: "none", borderRadius: "8px", fontWeight: 700, cursor: "pointer" }}>← 분석 생성으로</button>
+            <button onClick={() => router.push("/partner/create-analysis")} style={{ padding: "10px 20px", background: "#eef0ff", color: "#667eea", border: "none", borderRadius: "8px", fontWeight: 700, cursor: "pointer" }}>분석 생성</button>
           </div>
 
           <div style={{ background: "white", padding: "30px", borderRadius: "12px" }}>
