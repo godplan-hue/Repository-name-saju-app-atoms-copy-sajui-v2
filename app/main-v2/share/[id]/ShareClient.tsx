@@ -116,9 +116,14 @@ export default function ShareClient({ id }: { id: string }) {
       utter.onstart = () => { readIdxRef.current = idx; };
       utter.onerror = (e) => {
         setSpeaking(false);
+        readChunksRef.current = [];
+        readIdxRef.current = 0;
         // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
         // 실패가 아니라 정상적인 중단이라 안내문을 띄우면 안 됨
         if (e.error === "canceled" || e.error === "interrupted") return;
+        // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
+        // 멈춰야 함 — 안 그러면 "멈추기"를 눌러도 계속 읽히는 것처럼 보임
+        window.speechSynthesis.cancel();
         alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
       };
       if (idx === chunks.length - 1) {
@@ -172,6 +177,12 @@ export default function ShareClient({ id }: { id: string }) {
 
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+      {/* 어디로 스크롤하든 항상 누를 수 있게 고정된 읽기 버튼 */}
+      <button onClick={toggleReadAloud}
+        style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
+        {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
+      </button>
+
       <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
         <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>{entry.businessName ? `🔮 ${entry.businessName}` : "🐱 점운"}</span>
         <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>

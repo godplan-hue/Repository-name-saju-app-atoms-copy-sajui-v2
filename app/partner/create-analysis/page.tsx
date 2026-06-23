@@ -23,6 +23,10 @@ export default function PartnerCreateAnalysis() {
     birthHour: "unknown",
     gender: "",
     packageType: "기본 분석",
+    partnerName2: "",
+    partnerBirthYear: "",
+    partnerBirthMonth: "",
+    partnerBirthDay: "",
   });
 
   const birthHours = [
@@ -80,6 +84,17 @@ export default function PartnerCreateAnalysis() {
       return;
     }
 
+    if (formData.packageType === "VIP 커플팩") {
+      if (!formData.partnerName2.trim()) {
+        alert("궁합분석을 위해 상대방 이름을 입력해주세요");
+        return;
+      }
+      if (!formData.partnerBirthYear || !formData.partnerBirthMonth || !formData.partnerBirthDay) {
+        alert("궁합분석을 위해 상대방 생년월일을 입력해주세요");
+        return;
+      }
+    }
+
     if (!consentGiven) {
       alert("고객 개인정보 수집·이용 동의를 받았는지 확인 체크박스를 선택해주세요");
       return;
@@ -98,6 +113,10 @@ export default function PartnerCreateAnalysis() {
           birthHour: formData.birthHour === "unknown" ? "unknown" : String(formData.birthHour).padStart(2, "0"),
           gender: formData.gender,
           packageType: formData.packageType,
+          ...(formData.packageType === "VIP 커플팩" ? {
+            partnerName: formData.partnerName2,
+            partnerBirth: `${formData.partnerBirthYear}-${formData.partnerBirthMonth}-${formData.partnerBirthDay}`,
+          } : {}),
         }),
       });
 
@@ -509,6 +528,57 @@ export default function PartnerCreateAnalysis() {
                 </button>
               ))}
             </div>
+
+            {/* VIP 커플팩: 궁합분석을 위한 상대방 정보 */}
+            {formData.packageType === "VIP 커플팩" && (
+              <div style={{ marginBottom: "30px", padding: "16px", background: "#fdf2f8", border: "2px solid #f472b6", borderRadius: "8px" }}>
+                <h3 style={{ fontSize: "16px", fontWeight: 900, marginBottom: "15px", color: "#be185d" }}>
+                  💑 상대방 정보 (궁합분석용) *
+                </h3>
+                <input
+                  type="text"
+                  name="partnerName2"
+                  value={formData.partnerName2}
+                  onChange={handleInputChange}
+                  placeholder="상대방 이름"
+                  style={{ width: "100%", padding: "12px", border: "2px solid #ddd", borderRadius: "8px", fontSize: "14px", boxSizing: "border-box", marginBottom: "10px" }}
+                />
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px" }}>
+                  <input
+                    type="number"
+                    name="partnerBirthYear"
+                    value={formData.partnerBirthYear}
+                    onChange={handleInputChange}
+                    placeholder="년(1990)"
+                    min="1900"
+                    max="2024"
+                    style={{ width: "100%", padding: "12px", border: "2px solid #ddd", borderRadius: "8px", fontSize: "14px", boxSizing: "border-box" }}
+                  />
+                  <select
+                    name="partnerBirthMonth"
+                    value={formData.partnerBirthMonth}
+                    onChange={handleInputChange}
+                    style={{ width: "100%", padding: "12px", border: "2px solid #ddd", borderRadius: "8px", fontSize: "14px", boxSizing: "border-box" }}
+                  >
+                    <option value="">월</option>
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}월</option>
+                    ))}
+                  </select>
+                  <select
+                    name="partnerBirthDay"
+                    value={formData.partnerBirthDay}
+                    onChange={handleInputChange}
+                    style={{ width: "100%", padding: "12px", border: "2px solid #ddd", borderRadius: "8px", fontSize: "14px", boxSizing: "border-box" }}
+                  >
+                    <option value="">일</option>
+                    {Array.from({ length: 31 }, (_, i) => (
+                      <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}일</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
 
             {/* 고객 동의 확인 */}
             <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "20px", padding: "14px", background: "#f8f8ff", border: "2px solid #ddd", borderRadius: "8px", cursor: "pointer" }}>
