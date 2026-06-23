@@ -23,6 +23,7 @@ interface SharedEntry {
   categories: SharedCategory[];
   businessName?: string;
   tier?: string;
+  birthYear?: string;
 }
 
 function ScoreCircle({ score, size = 130 }: { score: number; size?: number }) {
@@ -222,6 +223,104 @@ export default function ShareClient({ id }: { id: string }) {
             </div>
           )}
         </div>
+
+        {/* 무료/990원: 사주팔자 맛보기 (띠+오행만) — 원래 결과지와 동일 */}
+        {(entry.tier === "free" || entry.tier === "select") && entry.birthYear && (() => {
+          const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
+          const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
+          const ohEmoji: Record<string, string> = { "목": "🌳", "화": "🔥", "토": "⛰️", "금": "⚪", "수": "💧" };
+          const y = Number(entry.birthYear);
+          const z = zodiacList[((y - 4) % 12 + 12) % 12];
+          const oh = ohArr[((y - 4) % 10 + 10) % 10];
+          return (
+            <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
+              <div style={{ background: G, color: "white", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🔮 {entry.name}님의 사주팔자 맛보기</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: "16px 18px" }}>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>🐉</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div>
+                </div>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>{ohEmoji[oh]}</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
+                </div>
+              </div>
+              <div style={{ padding: "0 18px 16px" }}>
+                <div style={{ background: "#fdf2f8", borderRadius: 14, padding: "12px 14px", textAlign: "center", marginBottom: 10 }}>
+                  <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, lineHeight: 1.6 }}>🪬 내 성격과 재물 흐름, 더 자세히 알고 싶다면?</div>
+                </div>
+                <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
+                  💎 9,900원 패키지로 전체 확인하기
+                </button>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* 패키지: 사주팔자 한눈에 보기 + 오늘/내일의 한마디 — 원래 결과지와 동일 */}
+        {entry.tier === "package" && entry.birthYear && (() => {
+          const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
+          const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
+          const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
+          const ohEmoji: Record<string, string> = { "목": "🌳", "화": "🔥", "토": "⛰️", "금": "⚪", "수": "💧" };
+          const y = Number(entry.birthYear);
+          const z = zodiacList[((y - 4) % 12 + 12) % 12];
+          const oh = ohArr[((y - 4) % 10 + 10) % 10];
+          const gan = ganList[((y - 4) % 10 + 10) % 10];
+          const dayMsgs = [
+            "오늘은 그동안 미뤄온 결정을 내리기 좋은 날입니다.",
+            "오늘은 사람과의 인연이 평소보다 강하게 작동하는 날입니다.",
+            "오늘은 돈과 관련된 작은 선택이 길게 영향을 미치는 날입니다.",
+            "오늘은 몸의 신호에 조금 더 귀 기울여야 하는 날입니다.",
+            "오늘은 새로운 시도를 해볼 만한 기운이 흐르는 날입니다.",
+            "오늘은 차분히 정리하고 돌아보기 좋은 날입니다.",
+            "오늘은 평소보다 직관을 믿어도 좋은 날입니다.",
+          ];
+          const dIdx = new Date().getDay();
+          const tomorrowMsgs = [
+            "내일은 가까운 사람과의 대화에서 좋은 기운이 들어옵니다.",
+            "내일은 작은 기회가 평소보다 눈에 잘 들어오는 흐름입니다.",
+            "내일은 재물과 관련된 신호를 눈여겨봐야 하는 흐름입니다.",
+            "내일은 몸과 마음을 챙기는 것이 우선인 흐름입니다.",
+            "내일은 새로운 인연이나 제안이 들어올 수 있는 흐름입니다.",
+            "내일은 오늘 한 결정의 결과가 서서히 드러나는 흐름입니다.",
+            "내일은 한 주를 준비하는 마음가짐이 중요한 흐름입니다.",
+          ];
+          return (
+            <div style={{ background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, overflow: "hidden", boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
+              <div style={{ background: "linear-gradient(135deg, #c026d3, #9333ea)", color: "white", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🪬 {entry.name}님의 사주팔자 한눈에 보기</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "16px 18px" }}>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>🐉</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div>
+                </div>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>{ohEmoji[oh]}</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
+                </div>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>🌳</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>천간</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{gan}({gan === "갑" ? "甲" : gan === "을" ? "乙" : gan === "병" ? "丙" : gan === "정" ? "丁" : gan === "무" ? "戊" : gan === "기" ? "己" : gan === "경" ? "庚" : gan === "신" ? "辛" : gan === "임" ? "壬" : "癸"})</div>
+                </div>
+              </div>
+              <div style={{ padding: "0 18px 16px" }}>
+                <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px", marginBottom: 8 }}>
+                  <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🔮 오늘의 한마디</div>
+                  <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{dayMsgs[dIdx]}</div>
+                </div>
+                <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px" }}>
+                  <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🌙 내일의 예고</div>
+                  <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{tomorrowMsgs[(dIdx + 1) % 7]}</div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* 카테고리별 카드 — 결과 페이지와 똑같이 아이콘/색으로 구분 */}
         {entry.categories.map((cat, i) => (

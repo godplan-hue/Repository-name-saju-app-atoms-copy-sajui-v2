@@ -357,7 +357,7 @@ function V2ResultInner() {
         const res = await fetch("/api/v2/share", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: r.profile?.name, scores: r.scores, luckyColor: r.luckyColor, luckyNumber: r.luckyNumber, luckyDirection: r.luckyDirection, categories: validCats, tier: isPackage ? "package" : isPaid ? "select" : "free" }),
+          body: JSON.stringify({ name: r.profile?.name, scores: r.scores, luckyColor: r.luckyColor, luckyNumber: r.luckyNumber, luckyDirection: r.luckyDirection, categories: validCats, tier: isPackage ? "package" : isPaid ? "select" : "free", birthYear: r.profile?.birthYear }),
         });
         if (res.ok) {
           const data = await res.json();
@@ -645,7 +645,7 @@ function V2ResultInner() {
           body: JSON.stringify({
             name: result.profile?.name,
             scores: result.scores, luckyColor: result.luckyColor, luckyNumber: result.luckyNumber, luckyDirection: result.luckyDirection,
-            categories: validCategories, tier,
+            categories: validCategories, tier, birthYear: result.profile?.birthYear,
           }),
         });
         if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
