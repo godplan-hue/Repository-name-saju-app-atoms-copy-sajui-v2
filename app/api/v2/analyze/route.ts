@@ -57,6 +57,39 @@ function getDayPillar(year: number, month: number, day: number): Pillar {
   return { gan, ganHanja: CHEONGAN_HANJA[gan], ji, jiHanja: JIJI_HANJA[ji] };
 }
 
+// 월주 — 절기(節氣) 기준 평균 절입일로 어느 달(인월~축월)에 속하는지 구하고,
+// "오호건원(五虎遁元)" 공식(연간에 따라 인월의 천간이 정해지고, 그 뒤로
+// 한 달에 하나씩 순서대로 진행)으로 월간을 구함. 절입일은 해마다 ±1일 정도
+// 흔들리는데, 여기서는 평균값을 써서 근사함(완벽한 천문 계산은 아님)
+const SOLAR_TERM_BOUNDS: [number, number, number][] = [
+  [1, 6, 11],  // 소한 — 축월(丑) 시작
+  [2, 4, 0],   // 입춘 — 인월(寅) 시작
+  [3, 6, 1],   // 경칩 — 묘월(卯) 시작
+  [4, 5, 2],   // 청명 — 진월(辰) 시작
+  [5, 6, 3],   // 입하 — 사월(巳) 시작
+  [6, 6, 4],   // 망종 — 오월(午) 시작
+  [7, 7, 5],   // 소서 — 미월(未) 시작
+  [8, 8, 6],   // 입추 — 신월(申) 시작
+  [9, 8, 7],   // 백로 — 유월(酉) 시작
+  [10, 8, 8],  // 한로 — 술월(戌) 시작
+  [11, 8, 9],  // 입동 — 해월(亥) 시작
+  [12, 7, 10], // 대설 — 자월(子) 시작
+];
+function getMonthPillar(year: number, month: number, day: number): Pillar {
+  // 연간은 연주와 같은 기준(입춘 보정)을 써야 함 — 소한~입춘 사이는 아직 전년도 연주
+  const adjYear = (month === 1 || (month === 2 && day < 4)) ? year - 1 : year;
+  const yearGanIdx = ((adjYear - 4) % 10 + 10) % 10;
+
+  let monthOffset = 10; // 못 찾으면 1월 초(소한 이전) → 전년도 대설~소한 사이, 자월
+  for (const [bm, bd, off] of SOLAR_TERM_BOUNDS) {
+    if (month > bm || (month === bm && day >= bd)) monthOffset = off;
+  }
+  const ji = JIJI12[(2 + monthOffset) % 12]; // 인(2)부터 시작
+  const startGanIdx = (yearGanIdx * 2 + 2) % 10; // 오호건원 공식 — 인월의 천간
+  const gan = CHEONGAN10[(startGanIdx + monthOffset) % 10];
+  return { gan, ganHanja: CHEONGAN_HANJA[gan], ji, jiHanja: JIJI_HANJA[ji] };
+}
+
 const ALL_CATS = ["🌟 오늘의 운세", "💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운", "💼 사업운", "📅 월별운세", "💍 결혼·궁합운", "📝 이름분석", "☀️ 올해 운세", "💼 전체 사주분석"];
 
 async function callHaiku(prompt: string, maxTokens: number): Promise<string> {
@@ -2098,11 +2131,15 @@ function getPersonalProfile(y: number, m: number, gender: string, seed: number =
       "임": "큰 바다 같은 임수(壬水) — 포용력이 넓고 어떤 상황도 받아들이는 그릇을 가졌습니다",
       "계": "이슬처럼 맑은 계수(癸水) — 섬세한 통찰력으로 작은 것까지 알아차리는 감각이 있습니다",
     };
+    const mp = getMonthPillar(y, m, d);
     dayPillarBlock = `
 
 ▶ 일주(日柱) — 태어난 날이 정하는 진짜 본모습
 ${dp.gan}${dp.ji}일(${dp.ganHanja}${dp.jiHanja}日) 출생 — ${dayGanDesc[dp.gan]}
-명리학에서는 연주(태어난 해)보다 이 일주가 그 사람의 본질에 더 가깝다고 봅니다. 같은 ${zodiac}띠라도 일주가 다르면 살아가는 결이 달라집니다.`;
+명리학에서는 연주(태어난 해)보다 이 일주가 그 사람의 본질에 더 가깝다고 봅니다. 같은 ${zodiac}띠라도 일주가 다르면 살아가는 결이 달라집니다.
+
+▶ 월주(月柱) — 태어난 달의 기운
+${mp.gan}${mp.ji}월(${mp.ganHanja}${mp.jiHanja}月) 출생 — 절기(節氣)를 기준으로 정한 달의 기둥으로, 한 해 중에서도 어떤 계절의 기운을 더 깊이 타고났는지를 보여줍니다.`;
   }
 
   return `━━━━━━━━━━━━━━━━━━━━
