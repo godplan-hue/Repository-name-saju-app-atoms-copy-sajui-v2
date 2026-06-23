@@ -38,6 +38,7 @@ export default function PartnerApply() {
           {tiers.map((tier) => (
             <div key={tier.value} style={{ background: "rgba(139,92,246,0.65)", border: "2px solid rgba(245,158,11,0.4)", borderRadius: 12, padding: 20, textAlign: "center", cursor: "pointer", transition: "all 0.3s", transform: selectedTier === tier.value ? "scale(1.05)" : "scale(1)" }} onClick={() => setSelectedTier(tier.value)}>
               <h2 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 16px 0" }}>{tier.name}</h2>
+              <p style={{ color: "#cbb6ff", fontSize: 11, fontWeight: 700, margin: "0 0 2px" }}>연회비</p>
               <p style={{ color: "#f5f5f5", fontSize: 20, fontWeight: 900, margin: "0 0 12px 0" }}>{tier.fee}</p>
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 8px 0" }}>
                 한도: {tier.month.split("(")[0]}

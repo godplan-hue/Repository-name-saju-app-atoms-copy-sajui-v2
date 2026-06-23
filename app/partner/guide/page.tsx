@@ -81,8 +81,8 @@ export default function PartnerGuide() {
               <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 결과지 발송 방식</h2>
               <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
                 <li>• 결과지에는 "점운" 대신 파트너님이 등록하신 상호명이 자동으로 표시됩니다(가입 시 한 번만 등록하면 이후 모든 결과지에 자동 적용)</li>
-                <li>• 실버 등급 이상부터는 결과지를 고객 이메일로 점운 사이트에서 바로 자동 발송할 수 있습니다</li>
-                <li>• 무료 등급은 자동 발송 기능을 이용할 수 없으며, 이미지를 직접 다운로드하여 고객에게 전달해야 합니다</li>
+                <li>• 실버 등급 이상부터는 결과지를 공유 링크로 만들어 카카오톡 등으로 보낼 수 있습니다(고객이 링크를 누르면 결과를 바로 확인할 수 있어요)</li>
+                <li>• 무료 등급은 공유 링크 기능을 사용할 수 없습니다. "🖼️ 이미지 저장" 버튼으로 결과지를 직접 다운로드한 뒤, 본인이 직접 고객 이메일이나 카카오톡 등으로 전달해야 합니다(이 사이트에서 자동으로 발송해드리지는 않습니다)</li>
               </ul>
             </section>
 
@@ -98,12 +98,22 @@ export default function PartnerGuide() {
               <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8 }}>7일 초과 → 무조건 환불불가</p>
             </section>
 
-            <section style={{ paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+            <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
               <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>7. 내 이용내역 확인</h2>
               <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 14 }}>지금까지 생성한 분석과 그때마다 점운에 지불한 이용료를 확인할 수 있어요.</p>
               <button onClick={() => router.push("/partner/sales")} style={{ padding: "10px 22px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
                 💰 내 이용내역 보기
               </button>
+            </section>
+
+            <section style={{ paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+              <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>8. 새로 추가된 기능 안내</h2>
+              <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
+                <li>• 결과지 화면에 "🔊 읽기" 버튼이 추가되어, 글을 음성으로 읽어주는 기능을 쓸 수 있습니다</li>
+                <li>• 공유 링크로 받은 결과는 다른 휴대폰이나 다른 브라우저로 열어도 다시 분석할 필요 없이 그대로 이어서 볼 수 있습니다</li>
+                <li>• 결과지에 "사주팔자 한눈에 보기"(띠·오행·천간)와 "분야별 운세 점수" 항목이 자동으로 함께 표시됩니다</li>
+                <li>• "🖼️ 이미지 저장"으로 패키지처럼 여러 장을 한 번에 받을 때, 모바일에서는 보안 정책상 한 장씩 다운로드 확인을 눌러야 합니다(PC는 한 번에 받아짐)</li>
+              </ul>
             </section>
           </div>
         )}
