@@ -687,7 +687,7 @@ function V2ResultInner() {
 
   const toggleReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      alert("이 브라우저는 읽어주기 기능을 지원하지 않습니다.\n\n카카오톡 등 앱 안에서 들어오셨다면, 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 다시 시도해보세요.\n\n또는 사파리/크롬 앱을 직접 열어서 주소를 입력해 들어가셔도 됩니다.");
+      alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.");
       return;
     }
     if (speaking) {
