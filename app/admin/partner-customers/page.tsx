@@ -15,14 +15,22 @@ interface PartnerCustomer {
   createdAt: string;
 }
 
+interface MonthlySummary { partnerName: string; count: number; revenue: number; }
+
 export default function AdminPartnerCustomers() {
   const router = useRouter();
   const [customers, setCustomers] = useState<PartnerCustomer[]>([]);
+  const [monthlySummary, setMonthlySummary] = useState<MonthlySummary[]>([]);
+  const [recentPerPartner, setRecentPerPartner] = useState(50);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem("adminId")) { router.push("/admin/login"); return; }
-    fetch("/api/admin/partner-customers").then(res => res.json()).then(data => setCustomers(data.customers || [])).finally(() => setLoading(false));
+    fetch("/api/admin/partner-customers").then(res => res.json()).then(data => {
+      setCustomers(data.customers || []);
+      setMonthlySummary(data.monthlySummary || []);
+      setRecentPerPartner(data.recentPerPartner || 50);
+    }).finally(() => setLoading(false));
   }, [router]);
 
   const handleLogout = () => {
@@ -30,20 +38,6 @@ export default function AdminPartnerCustomers() {
     localStorage.removeItem("adminName");
     router.push("/admin/login");
   };
-
-  const now = new Date();
-  const thisMonth = customers.filter(c => {
-    const d = new Date(c.createdAt);
-    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-  });
-  const byPartner = new Map<string, { count: number; total: number }>();
-  thisMonth.forEach(c => {
-    const cur = byPartner.get(c.partnerName) || { count: 0, total: 0 };
-    cur.count += 1;
-    cur.total += c.charge?.totalCharge || 0;
-    byPartner.set(c.partnerName, cur);
-  });
-  const summaryRows = Array.from(byPartner.entries());
 
   // 같은 고객이 여러 번 분석을 받으면 "전체 생성 내역"에는 매번 한 줄씩
   // 생기는 게 정상(거래 내역이라서)이지만, "이 사람이 누구다"를 보려면 그걸
@@ -90,14 +84,14 @@ export default function AdminPartnerCustomers() {
               </tr>
             </thead>
             <tbody>
-              {summaryRows.length === 0 ? (
+              {monthlySummary.length === 0 ? (
                 <tr><td colSpan={3} style={{ padding: "16px", textAlign: "center", color: "#999" }}>이번 달 생성 내역이 없습니다.</td></tr>
               ) : (
-                summaryRows.map(([name, v]) => (
-                  <tr key={name} style={{ borderBottom: "1px solid #eee" }}>
-                    <td style={{ padding: "12px", color: "#666", fontWeight: 700 }}>{name}</td>
+                monthlySummary.map((v) => (
+                  <tr key={v.partnerName} style={{ borderBottom: "1px solid #eee" }}>
+                    <td style={{ padding: "12px", color: "#666", fontWeight: 700 }}>{v.partnerName}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{v.count}건</td>
-                    <td style={{ padding: "12px", color: "#333", fontWeight: 900 }}>₩{v.total.toLocaleString()}</td>
+                    <td style={{ padding: "12px", color: "#333", fontWeight: 900 }}>₩{v.revenue.toLocaleString()}</td>
                   </tr>
                 ))
               )}
@@ -105,7 +99,7 @@ export default function AdminPartnerCustomers() {
           </table>
 
           <h2 style={{ fontSize: "16px", fontWeight: 900, margin: "0 0 10px", color: "#333" }}>👥 고유 고객 목록 (중복 제거, 총 {uniqueCustomers.length}명)</h2>
-          <p style={{ fontSize: "12px", color: "#999", margin: "0 0 10px" }}>같은 사람이 여러 번 분석을 받아도 한 줄로만 보여요(전화번호·이메일 기준).</p>
+          <p style={{ fontSize: "12px", color: "#999", margin: "0 0 10px" }}>같은 사람이 여러 번 분석을 받아도 한 줄로만 보여요(전화번호·이메일 기준). 파트너별 최근 {recentPerPartner}건 안에서만 집계돼요.</p>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px", marginBottom: 30 }}>
             <thead>
               <tr style={{ borderBottom: "2px solid #ddd" }}>

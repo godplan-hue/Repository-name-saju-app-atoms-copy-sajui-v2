@@ -32,14 +32,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "연회비 갱신이 필요합니다. 갱신 후 다시 시도해주세요." }, { status: 403 });
     }
 
+    // 한도 확인은 파트너 보관함 전체를 읽지 않고, 미리 집계해 둔 이번 달
+    // 건수(partnerStats)만 가볍게 읽어서 확인함 — 보관함이 몇만 건이 쌓여도
+    // 분석 생성 속도가 느려지지 않게 하기 위함
+    const yyyymm = new Date().toISOString().slice(0, 7);
     if (tier.monthlyLimit !== null) {
-      const existingSnap = await db.ref(`partnerArchive/${partnerId}`).once("value");
-      const existing = Object.values(existingSnap.val() || {}) as Array<{ createdAt: string }>;
-      const now = new Date();
-      const usedThisMonth = existing.filter(e => {
-        const d = new Date(e.createdAt);
-        return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-      }).length;
+      const monthSnap = await db.ref(`partnerStats/${partnerId}/${yyyymm}/count`).once("value");
+      const usedThisMonth = monthSnap.val() || 0;
       if (usedThisMonth >= tier.monthlyLimit) {
         return NextResponse.json({ error: "이번 달 분석 생성 한도를 모두 사용했습니다. 다음 달에 다시 시도하거나 등급을 업그레이드해주세요." }, { status: 403 });
       }
@@ -56,6 +55,18 @@ export async function POST(request: NextRequest) {
       charge, createdAt: new Date().toISOString(),
     };
     const ref = await db.ref(`partnerArchive/${partnerId}`).push(entry);
+
+    // 관리자 화면에서 전체 보관함을 매번 다 읽지 않고도 매출/건수를 바로 볼 수
+    // 있게, 총합/이번달 집계를 같이 갱신해둠(트랜잭션이라 동시 요청에도 안전)
+    const inc = (cur: { count: number; revenue: number } | null) => ({
+      count: (cur?.count || 0) + 1,
+      revenue: (cur?.revenue || 0) + charge.totalCharge,
+    });
+    await Promise.all([
+      db.ref(`partnerStats/${partnerId}/total`).transaction(inc),
+      db.ref(`partnerStats/${partnerId}/${yyyymm}`).transaction(inc),
+    ]);
+
     return NextResponse.json({ success: true, id: ref.key, charge });
   } catch (error) {
     console.error("Partner archive save error:", error);

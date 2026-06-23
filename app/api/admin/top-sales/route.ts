@@ -12,22 +12,24 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const [partnersSnap, archiveSnap] = await Promise.all([
+    // partnerArchive 전체를 읽지 않고, 분석 생성 시점에 같이 갱신해두는
+    // 가벼운 집계(partnerStats)만 읽음 — 파트너 수에만 비례해서 항상 빠름
+    const [partnersSnap, statsSnap] = await Promise.all([
       db.ref("partners").once("value"),
-      db.ref("partnerArchive").once("value"),
+      db.ref("partnerStats").once("value"),
     ]);
     const partners = partnersSnap.val() || {};
-    const archive = archiveSnap.val() || {};
+    const stats = statsSnap.val() || {};
 
     const topSales = Object.entries(partners)
       .map(([partnerId, value]) => {
         const p = value as any;
-        const entries = Object.values(archive[partnerId] || {}) as Array<{ charge?: { totalCharge: number } }>;
+        const total = stats[partnerId]?.total || { count: 0, revenue: 0 };
         return {
           partnerId,
           partnerName: p.name,
-          analysisCount: entries.length,
-          revenue: entries.reduce((sum, e) => sum + (e.charge?.totalCharge || 0), 0),
+          analysisCount: total.count,
+          revenue: total.revenue,
           tier: p.tier || "free",
         };
       })
