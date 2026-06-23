@@ -692,8 +692,11 @@ function V2ResultInner() {
       if (voice) utter.voice = voice;
       utter.rate = 1;
       utter.onstart = () => { readIdxRef.current = idx; };
-      utter.onerror = () => {
+      utter.onerror = (e) => {
         setSpeaking(false);
+        // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
+        // 실패가 아니라 정상적인 중단이라 안내문을 띄우면 안 됨
+        if (e.error === "canceled" || e.error === "interrupted") return;
         alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
       };
       if (idx === chunks.length - 1) {
@@ -824,8 +827,8 @@ function V2ResultInner() {
           </div>
         </div>
 
-        {/* ── 무료 전용: 사주팔자 맛보기 (띠+오행만, 천간은 패키지에서만 공개) ── */}
-        {tier === "free" && profile?.birthYear && (() => {
+        {/* ── 무료/990원: 사주팔자 맛보기 (띠+오행만, 천간은 패키지에서만 공개) ── */}
+        {(tier === "free" || tier === "select") && profile?.birthYear && (() => {
           const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
           const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
           const ohEmoji: Record<string,string> = { "목":"🌳","화":"🔥","토":"⛰️","금":"⚪","수":"💧" };

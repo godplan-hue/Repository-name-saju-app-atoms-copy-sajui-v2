@@ -113,8 +113,11 @@ export default function ShareClient({ id }: { id: string }) {
       if (voice) utter.voice = voice;
       utter.rate = 1;
       utter.onstart = () => { readIdxRef.current = idx; };
-      utter.onerror = () => {
+      utter.onerror = (e) => {
         setSpeaking(false);
+        // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
+        // 실패가 아니라 정상적인 중단이라 안내문을 띄우면 안 됨
+        if (e.error === "canceled" || e.error === "interrupted") return;
         alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
       };
       if (idx === chunks.length - 1) {
