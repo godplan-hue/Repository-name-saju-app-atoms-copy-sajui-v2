@@ -97,6 +97,14 @@ export default function PartnerGuide() {
               </ul>
               <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8 }}>7일 초과 → 무조건 환불불가</p>
             </section>
+
+            <section style={{ paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+              <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>7. 내 이용내역 확인</h2>
+              <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 14 }}>지금까지 생성한 분석과 그때마다 점운에 지불한 이용료를 확인할 수 있어요.</p>
+              <button onClick={() => router.push("/partner/sales")} style={{ padding: "10px 22px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
+                💰 내 이용내역 보기
+              </button>
+            </section>
           </div>
         )}
       </div>
