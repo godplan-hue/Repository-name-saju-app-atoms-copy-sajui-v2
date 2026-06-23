@@ -313,22 +313,22 @@ function PartnerAnalysisResultInner() {
     <>
       <Head><title>분석 결과 - {businessName || "점운"}</title></Head>
       <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-        <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-          <button onClick={() => router.push("/partner/create-analysis")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
+        <header style={{ minHeight: 52, padding: "8px 12px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
+          <button onClick={() => router.push("/partner/create-analysis")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", flexShrink: 0 }}>
             <span style={{ fontSize: 18 }}>←</span>
-            <span style={{ fontSize: 14, fontWeight: 900, color: "#9333ea" }}>🔮 {businessName || "점운"}</span>
+            <span style={{ fontSize: 13, fontWeight: 900, color: "#9333ea", whiteSpace: "nowrap" }}>🔮 {businessName || "점운"}</span>
           </button>
-          <div style={{ display: "flex", gap: 7 }}>
-            <button onClick={toggleReadAloud} style={{ padding: "7px 14px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
+          <div style={{ display: "flex", gap: 5, flexShrink: 0 }}>
+            <button onClick={toggleReadAloud} style={{ padding: "7px 11px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 800, fontSize: 12, cursor: "pointer", whiteSpace: "nowrap" }}>
               {speaking ? "⏸ 멈추기" : "🔊 읽기"}
             </button>
             {partnerTier !== "free" && (
-              <button onClick={handleShare} disabled={sharing} style={{ padding: "5px 12px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: sharing ? "not-allowed" : "pointer" }}>
-                {sharing ? "⏳..." : "📤 공유하기"}
+              <button onClick={handleShare} disabled={sharing} style={{ padding: "7px 11px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: sharing ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
+                {sharing ? "⏳..." : "📤 공유"}
               </button>
             )}
-            <button onClick={handleSaveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer" }}>
-              {saving ? "⏳..." : "🖼️ 이미지 저장"}
+            <button onClick={handleSaveImage} disabled={saving} style={{ padding: "7px 11px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: saving ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
+              {saving ? "⏳..." : "🖼️ 이미지저장"}
             </button>
           </div>
         </header>
