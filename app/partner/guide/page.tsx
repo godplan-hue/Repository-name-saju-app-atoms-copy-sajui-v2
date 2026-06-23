@@ -60,7 +60,8 @@ export default function PartnerGuide() {
                 <li>• 골드: 연회비 ₩350,000 / 월 300건(연 최대 3,600건) 한도 / 사용료 55% 할인</li>
                 <li>• 다이아: 연회비 ₩980,000 / 무제한 / 사용료 70% 할인</li>
               </ul>
-              <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 0 }}>※ "사용료 할인"은 분석 1건당 정가에서 등급별로 할인된 가격만 내면 된다는 뜻입니다(예: 다이아는 정가의 30%만 부가세 포함하여 지불).</p>
+              <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 4 }}>※ "사용료 할인"은 분석 1건당 정가에서 등급별로 할인된 가격만 내면 된다는 뜻입니다(예: 다이아는 정가의 30%만 부가세 포함하여 지불).</p>
+              <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 0, marginBottom: 0 }}>※ 유료 등급은 이 사용료 할인·한도뿐 아니라 카카오톡 공유 기능까지 함께 제공됩니다(자세한 내용은 5번 참고).</p>
             </section>
 
             <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
