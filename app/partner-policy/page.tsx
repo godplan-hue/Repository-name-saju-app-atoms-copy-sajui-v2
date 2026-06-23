@@ -57,7 +57,7 @@ export default function PartnerPolicy() {
           {/* 5. 결과지 발송 방식 */}
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 결과지 발송 방식</h2>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 0 }}>결과지 상호명 표시, 이메일 발송 등 운영에 필요한 자세한 안내는 파트너 로그인 후 "운영 가이드"에서 확인하실 수 있습니다.</p>
+            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 0 }}>결과지 상호명 표시, 카카오톡 공유 등 운영에 필요한 자세한 안내는 파트너 로그인 후 "운영 가이드"에서 확인하실 수 있습니다.</p>
           </section>
 
           {/* 6. 파트너 회비 환불정책 */}
