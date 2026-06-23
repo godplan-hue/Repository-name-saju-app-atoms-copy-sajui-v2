@@ -160,6 +160,12 @@ export default function V2Profile() {
       name: form.name, birthYear: form.birthYear, birthMonth: form.birthMonth, birthDay: form.birthDay,
       gender: form.gender, birthHour: form.birthHour, phone: form.phone, email: form.email,
     }));
+    // 동의를 받은 연락처를 서버에도 저장 — 실패해도 분석 진행을 막지 않음
+    fetch("/api/v2/customer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    }).catch(() => {});
     // 이번 로그인 세션에서는 이미 화면을 봤다고 기록 — 같은 세션 안에서 또
     // 들어오면 건너뛰고, 로그아웃 후 다시 로그인하면(새 세션) 다시 보여줌
     const loginSessionId = localStorage.getItem("v2_login_session_id");
