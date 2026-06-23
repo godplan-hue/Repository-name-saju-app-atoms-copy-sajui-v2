@@ -349,7 +349,7 @@ function V2ResultInner() {
           !isPaid ? [{ icon: "🌟", label: "오늘의 운세", color: "#f59e0b", text: r.analysis ?? "" }]
           : isPackage
             ? (PKG_CAT_MAP[sessionStorage.getItem("selectedPackage") ?? ""] ?? PKG_CAT_MAP["기본 분석"])
-                .filter(c => analyses[c.apiKey]).map(c => ({ icon: c.icon, label: c.label, color: c.color, text: analyses[c.apiKey] }))
+                .filter(c => analyses[c.apiKey]).map(c => ({ icon: c.icon, label: c.label, color: c.color, text: analyses[c.apiKey], badge: "📦 패키지" }))
             : ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && cats.includes(c.key))
                 .map(c => ({ icon: c.icon, label: c.key.replace(/\S+\s/, ""), color: c.color, text: analyses[c.key] }));
         const validCats = shareCategories.filter(c => c.text && c.text.trim());
@@ -357,7 +357,7 @@ function V2ResultInner() {
         const res = await fetch("/api/v2/share", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: r.profile?.name, scores: r.scores, luckyColor: r.luckyColor, luckyNumber: r.luckyNumber, luckyDirection: r.luckyDirection, categories: validCats }),
+          body: JSON.stringify({ name: r.profile?.name, scores: r.scores, luckyColor: r.luckyColor, luckyNumber: r.luckyNumber, luckyDirection: r.luckyDirection, categories: validCats, tier: isPackage ? "package" : isPaid ? "select" : "free" }),
         });
         if (res.ok) {
           const data = await res.json();
@@ -645,7 +645,7 @@ function V2ResultInner() {
           body: JSON.stringify({
             name: result.profile?.name,
             scores: result.scores, luckyColor: result.luckyColor, luckyNumber: result.luckyNumber, luckyDirection: result.luckyDirection,
-            categories: validCategories,
+            categories: validCategories, tier,
           }),
         });
         if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }

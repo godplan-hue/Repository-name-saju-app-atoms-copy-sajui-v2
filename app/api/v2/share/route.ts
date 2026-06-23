@@ -5,14 +5,14 @@ import { db } from "@/lib/firebase";
 // 공유하는 순간 결과를 서버(Firebase)에 저장해두고 그 고유 id로 공개 조회함
 export async function POST(request: NextRequest) {
   try {
-    const { name, scores, luckyColor, luckyNumber, luckyDirection, categories, businessName } = await request.json();
+    const { name, scores, luckyColor, luckyNumber, luckyDirection, categories, businessName, tier } = await request.json();
     if (!name || !categories || !Array.isArray(categories) || categories.length === 0) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
     const entry = {
       name, scores: scores || {},
       luckyColor: luckyColor || "", luckyNumber: luckyNumber || "", luckyDirection: luckyDirection || "",
-      categories, businessName: businessName || "", createdAt: new Date().toISOString(),
+      categories, businessName: businessName || "", tier: tier || "package", createdAt: new Date().toISOString(),
     };
     const ref = await db.ref("sharedResults").push(entry);
     return NextResponse.json({ id: ref.key });
