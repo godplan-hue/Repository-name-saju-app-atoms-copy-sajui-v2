@@ -45,6 +45,21 @@ export default function AdminPartnerCustomers() {
   });
   const summaryRows = Array.from(byPartner.entries());
 
+  // 같은 고객이 여러 번 분석을 받으면 "전체 생성 내역"에는 매번 한 줄씩
+  // 생기는 게 정상(거래 내역이라서)이지만, "이 사람이 누구다"를 보려면 그걸
+  // 전화번호/이메일 기준으로 한 명당 한 줄로 묶어서 따로 보여줄 필요가 있음
+  const byCustomer = new Map<string, { name: string; email: string; phone: string; partnerNames: Set<string>; count: number; total: number; lastAt: string }>();
+  customers.forEach(c => {
+    const key = c.customerPhone || c.customerEmail || c.customerName;
+    const cur = byCustomer.get(key) || { name: c.customerName, email: c.customerEmail, phone: c.customerPhone, partnerNames: new Set<string>(), count: 0, total: 0, lastAt: c.createdAt };
+    cur.count += 1;
+    cur.total += c.charge?.totalCharge || 0;
+    cur.partnerNames.add(c.partnerName);
+    if (new Date(c.createdAt) > new Date(cur.lastAt)) cur.lastAt = c.createdAt;
+    byCustomer.set(key, cur);
+  });
+  const uniqueCustomers = Array.from(byCustomer.values()).sort((a, b) => new Date(b.lastAt).getTime() - new Date(a.lastAt).getTime());
+
   return (
     <main style={{ minHeight: "100vh", background: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo'", display: "flex" }}>
       <div style={{ width: "250px", background: "linear-gradient(135deg, #667eea, #764ba2)", padding: "30px 20px", color: "white", display: "flex", flexDirection: "column" }}>
@@ -89,7 +104,42 @@ export default function AdminPartnerCustomers() {
             </tbody>
           </table>
 
-          <h2 style={{ fontSize: "16px", fontWeight: 900, margin: "0 0 10px", color: "#333" }}>📋 전체 생성 내역 (총 {customers.length}건)</h2>
+          <h2 style={{ fontSize: "16px", fontWeight: 900, margin: "0 0 10px", color: "#333" }}>👥 고유 고객 목록 (중복 제거, 총 {uniqueCustomers.length}명)</h2>
+          <p style={{ fontSize: "12px", color: "#999", margin: "0 0 10px" }}>같은 사람이 여러 번 분석을 받아도 한 줄로만 보여요(전화번호·이메일 기준).</p>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px", marginBottom: 30 }}>
+            <thead>
+              <tr style={{ borderBottom: "2px solid #ddd" }}>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>고객명</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>이메일</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>전화</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>이용한 파트너</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>구매 건수</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>총 결제액</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>최근 이용일</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+              ) : uniqueCustomers.length === 0 ? (
+                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 고객 기록이 없습니다.</td></tr>
+              ) : (
+                uniqueCustomers.map((c, i) => (
+                  <tr key={i} style={{ borderBottom: "1px solid #eee" }}>
+                    <td style={{ padding: "12px", color: "#333", fontWeight: 700 }}>{c.name}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{c.email || "-"}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{c.phone || "-"}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{Array.from(c.partnerNames).join(", ")}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{c.count}건</td>
+                    <td style={{ padding: "12px", color: "#333", fontWeight: 900 }}>₩{c.total.toLocaleString()}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{new Date(c.lastAt).toLocaleString("ko-KR")}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+
+          <h2 style={{ fontSize: "16px", fontWeight: 900, margin: "0 0 10px", color: "#333" }}>📋 전체 생성 내역(거래 단위, 총 {customers.length}건)</h2>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
             <thead>
               <tr style={{ borderBottom: "2px solid #ddd" }}>
