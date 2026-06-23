@@ -578,6 +578,7 @@ export default function MainV2() {
           <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
           <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
           <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
+          <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
         </div>
         <div style={{ marginBottom: 10 }}>
           <p style={{ color: "#831843", fontSize: 11, fontWeight: 800, margin: "0 0 3px" }}>📧 junga6783@gmail.com · 📞 010-4714-2689</p>
@@ -585,6 +586,8 @@ export default function MainV2() {
           <a href="mailto:junga6783@gmail.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #ec4899", borderRadius: 20, color: "#ec4899", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>문의하기</a>
         </div>
         <div style={{ fontSize: 11, marginBottom: 8 }}>
+          <a href="/terms" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>이용약관</a>
+          <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
           <a href="/privacy" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
           <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
           <a href="/refund" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>환불정책</a>

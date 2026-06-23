@@ -64,7 +64,7 @@ export default function V2Login() {
 
           <p style={{ textAlign: "center", fontSize: 11, color: "#ffffff", marginTop: 18, lineHeight: 1.7, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>
             🔒 개인정보는 분석 즉시 암호화 보호됩니다<br />
-            시작 시 <span style={{ color: "#ec4899", fontWeight: 700 }}>이용약관 및 개인정보처리방침</span>에 동의합니다
+            시작 시 <a href="/terms" style={{ color: "#ec4899", fontWeight: 700 }}>이용약관</a> 및 <a href="/privacy" style={{ color: "#ec4899", fontWeight: 700 }}>개인정보처리방침</a>에 동의합니다
           </p>
         </div>
       </div>
