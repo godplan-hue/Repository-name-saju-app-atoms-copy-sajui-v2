@@ -25,14 +25,11 @@ export async function POST(request: NextRequest) {
 
     const upgradeFee = calculateUpgradeFee(currentTier, newTier);
 
-    // 이번 달 이미 사용한 건수(업그레이드 후에도 그대로 누적 유지)
-    const archiveSnap = await db.ref(`partnerArchive/${partnerId}`).once("value");
-    const entries = Object.values(archiveSnap.val() || {}) as Array<{ createdAt: string }>;
-    const now = new Date();
-    const usedThisMonth = entries.filter(e => {
-      const d = new Date(e.createdAt);
-      return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-    }).length;
+    // 이번 달 이미 사용한 건수(업그레이드 후에도 그대로 누적 유지) — 보관함
+    // 전체를 읽지 않고 미리 집계해둔 값(partnerStats)만 가볍게 읽음
+    const yyyymm = new Date().toISOString().slice(0, 7);
+    const monthSnap = await db.ref(`partnerStats/${partnerId}/${yyyymm}/count`).once("value");
+    const usedThisMonth = monthSnap.val() || 0;
 
     // 업그레이드 = 다시 결제하는 것이므로, 연회비 1년 카운트도 지금부터 다시 시작
     await db.ref(`partners/${partnerId}`).update({ tier: newTier, feeRenewedAt: new Date().toISOString() });

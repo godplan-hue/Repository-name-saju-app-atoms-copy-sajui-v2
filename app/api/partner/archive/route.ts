@@ -74,9 +74,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
+const PAGE_SIZE = 50;
+
 export async function GET(request: NextRequest) {
   const partnerId = request.nextUrl.searchParams.get("partnerId");
   const id = request.nextUrl.searchParams.get("id");
+  const cursor = request.nextUrl.searchParams.get("cursor");
   if (!partnerId) {
     return NextResponse.json({ error: "partnerId가 필요합니다." }, { status: 400 });
   }
@@ -88,7 +91,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ entry: { id, ...entry } });
   }
 
-  const snap = await db.ref(`partnerArchive/${partnerId}`).once("value");
+  // 보관함이 많이 쌓여도 느려지지 않게, 한 번에 다 읽지 않고 최신 50건씩만
+  // 페이지 단위로 읽음. 전체/이번달 합계는 미리 집계해둔 partnerStats로 따로
+  // 정확하게 계산해서 같이 내려줌(목록이 일부만 보여도 합계는 정확함)
+  let query = db.ref(`partnerArchive/${partnerId}`).orderByKey();
+  query = cursor ? query.endBefore(cursor).limitToLast(PAGE_SIZE) : query.limitToLast(PAGE_SIZE);
+
+  const [snap, statsSnap] = await Promise.all([
+    query.once("value"),
+    db.ref(`partnerStats/${partnerId}`).once("value"),
+  ]);
   const all = snap.val() || {};
   const list = Object.entries(all)
     .map(([entryId, value]) => {
@@ -96,5 +108,8 @@ export async function GET(request: NextRequest) {
       return { id: entryId, customerName: v.customerName, packageType: v.packageType, charge: v.charge, createdAt: v.createdAt };
     })
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  return NextResponse.json({ entries: list });
+
+  const nextCursor = list.length === PAGE_SIZE ? Object.keys(all).sort()[0] : null;
+  const stats = statsSnap.val() || {};
+  return NextResponse.json({ entries: list, nextCursor, stats });
 }

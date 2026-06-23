@@ -15,31 +15,50 @@ interface SalesEntry {
 
 export default function PartnerSales() {
   const router = useRouter();
+  const [partnerId, setPartnerId] = useState("");
   const [partnerName, setPartnerName] = useState("");
   const [tierId, setTierId] = useState("free");
   const [entries, setEntries] = useState<SalesEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
+  const [monthlyTotal, setMonthlyTotal] = useState(0);
+  const [monthlyCount, setMonthlyCount] = useState(0);
+  const [allTotal, setAllTotal] = useState(0);
+  const [allCount, setAllCount] = useState(0);
+
+  const load = async (id: string, cur?: string | null) => {
+    const res = await fetch(`/api/partner/archive?partnerId=${encodeURIComponent(id)}${cur ? `&cursor=${encodeURIComponent(cur)}` : ""}`);
+    const data = await res.json();
+    setEntries(prev => cur ? [...prev, ...data.entries] : (data.entries || []));
+    setCursor(data.nextCursor);
+    if (!data.nextCursor) setDone(true);
+    // 목록은 최근 50건씩만 불러오니, 정확한 합계는 미리 집계해둔
+    // partnerStats(stats)로 따로 계산함 — 목록이 일부만 불러와져도 합계는 정확함
+    const yyyymm = new Date().toISOString().slice(0, 7);
+    setMonthlyTotal(data.stats?.[yyyymm]?.revenue || 0);
+    setMonthlyCount(data.stats?.[yyyymm]?.count || 0);
+    setAllTotal(data.stats?.total?.revenue || 0);
+    setAllCount(data.stats?.total?.count || 0);
+  };
 
   useEffect(() => {
     const id = localStorage.getItem("partnerId");
     const name = localStorage.getItem("partnerName");
     if (!id) { router.push("/partner/login"); return; }
+    setPartnerId(id);
     setPartnerName(name || "");
     setTierId(localStorage.getItem("partnerTier") || "free");
-    fetch(`/api/partner/archive?partnerId=${encodeURIComponent(id)}`)
-      .then(res => res.json())
-      .then(data => setEntries(data.entries || []))
-      .finally(() => setLoading(false));
+    load(id).finally(() => setLoading(false));
   }, [router]);
 
+  const handleLoadMore = async () => {
+    setLoadingMore(true);
+    try { await load(partnerId, cursor); } finally { setLoadingMore(false); }
+  };
+
   const tier = getPartnerTier(tierId);
-  const now = new Date();
-  const monthly = entries.filter(e => {
-    const d = new Date(e.createdAt);
-    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-  });
-  const monthlyTotal = monthly.reduce((sum, e) => sum + (e.charge?.totalCharge || 0), 0);
-  const allTotal = entries.reduce((sum, e) => sum + (e.charge?.totalCharge || 0), 0);
 
   return (
     <>
@@ -66,12 +85,12 @@ export default function PartnerSales() {
             <div style={{ background: "white", borderRadius: 14, padding: "16px", textAlign: "center" }}>
               <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 700, marginBottom: 6 }}>이번 달 이용료</div>
               <div style={{ fontSize: 18, fontWeight: 900, color: "#9333ea" }}>{monthlyTotal.toLocaleString()}원</div>
-              <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>{monthly.length}건</div>
+              <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>{monthlyCount}건</div>
             </div>
             <div style={{ background: "white", borderRadius: 14, padding: "16px", textAlign: "center" }}>
               <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 700, marginBottom: 6 }}>전체 이용료</div>
               <div style={{ fontSize: 18, fontWeight: 900, color: "#9333ea" }}>{allTotal.toLocaleString()}원</div>
-              <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>{entries.length}건</div>
+              <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>{allCount}건</div>
             </div>
           </div>
 
@@ -81,6 +100,7 @@ export default function PartnerSales() {
             ) : entries.length === 0 ? (
               <p style={{ textAlign: "center", color: "#999", padding: "30px 0", fontSize: 12 }}>아직 생성한 분석이 없습니다.</p>
             ) : (
+              <>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
                 <thead>
                   <tr style={{ borderBottom: "2px solid #ddd" }}>
@@ -101,6 +121,14 @@ export default function PartnerSales() {
                   ))}
                 </tbody>
               </table>
+              {!done && (
+                <div style={{ textAlign: "center", marginTop: 16 }}>
+                  <button onClick={handleLoadMore} disabled={loadingMore} style={{ padding: "10px 24px", background: "#f3e8ff", color: "#9333ea", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: loadingMore ? "not-allowed" : "pointer" }}>
+                    {loadingMore ? "불러오는 중..." : "더 보기"}
+                  </button>
+                </div>
+              )}
+              </>
             )}
           </div>
         </div>

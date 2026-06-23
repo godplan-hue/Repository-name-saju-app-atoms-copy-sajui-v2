@@ -17,7 +17,18 @@ export default function PartnerArchive() {
   const [partnerName, setPartnerName] = useState("");
   const [entries, setEntries] = useState<ArchiveEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
   const [openingId, setOpeningId] = useState("");
+
+  const load = async (id: string, cur?: string | null) => {
+    const res = await fetch(`/api/partner/archive?partnerId=${encodeURIComponent(id)}${cur ? `&cursor=${encodeURIComponent(cur)}` : ""}`);
+    const data = await res.json();
+    setEntries(prev => cur ? [...prev, ...data.entries] : (data.entries || []));
+    setCursor(data.nextCursor);
+    if (!data.nextCursor) setDone(true);
+  };
 
   useEffect(() => {
     const id = localStorage.getItem("partnerId");
@@ -28,11 +39,13 @@ export default function PartnerArchive() {
     }
     setPartnerId(id);
     setPartnerName(name || "");
-    fetch(`/api/partner/archive?partnerId=${encodeURIComponent(id)}`)
-      .then(res => res.json())
-      .then(data => setEntries(data.entries || []))
-      .finally(() => setLoading(false));
+    load(id).finally(() => setLoading(false));
   }, [router]);
+
+  const handleLoadMore = async () => {
+    setLoadingMore(true);
+    try { await load(partnerId, cursor); } finally { setLoadingMore(false); }
+  };
 
   const handleOpen = async (entryId: string) => {
     setOpeningId(entryId);
@@ -97,6 +110,13 @@ export default function PartnerArchive() {
                   ))}
                 </tbody>
               </table>
+            )}
+            {!loading && !done && entries.length > 0 && (
+              <div style={{ textAlign: "center", marginTop: 16 }}>
+                <button onClick={handleLoadMore} disabled={loadingMore} style={{ padding: "10px 24px", background: "#eef0ff", color: "#667eea", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: loadingMore ? "not-allowed" : "pointer" }}>
+                  {loadingMore ? "불러오는 중..." : "더 보기"}
+                </button>
+              </div>
             )}
           </div>
         </div>
