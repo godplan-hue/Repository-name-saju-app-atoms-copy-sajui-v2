@@ -351,7 +351,7 @@ function V2ResultInner() {
             ? (PKG_CAT_MAP[sessionStorage.getItem("selectedPackage") ?? ""] ?? PKG_CAT_MAP["기본 분석"])
                 .filter(c => analyses[c.apiKey]).map(c => ({ icon: c.icon, label: c.label, color: c.color, text: analyses[c.apiKey], badge: "📦 패키지" }))
             : ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && cats.includes(c.key))
-                .map(c => ({ icon: c.icon, label: c.key.replace(/\S+\s/, ""), color: c.color, text: analyses[c.key] }));
+                .map(c => ({ icon: c.icon, label: c.key.replace(/\S+\s/, ""), color: c.color, text: analyses[c.key], badge: "💎 심층" }));
         const validCats = shareCategories.filter(c => c.text && c.text.trim());
         if (validCats.length === 0) return;
         const res = await fetch("/api/v2/share", {
@@ -633,7 +633,7 @@ function V2ResultInner() {
       const categories =
         tier === "free" ? [{ icon: "🌟", label: "오늘의 운세", color: "#f59e0b", text: freeAnalysis }]
         : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key))
-            .map(c => ({ icon: c.icon, label: c.key.replace(/\S+\s/, ""), color: c.color, text: allAnalyses[c.key] }))
+            .map(c => ({ icon: c.icon, label: c.key.replace(/\S+\s/, ""), color: c.color, text: allAnalyses[c.key], badge: "💎 심층" }))
         : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"])
             .filter(c => allAnalyses[c.apiKey])
             .map(c => ({ icon: c.icon, label: c.label, color: c.color, text: allAnalyses[c.apiKey], badge: "📦 패키지" }));

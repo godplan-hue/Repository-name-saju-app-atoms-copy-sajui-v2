@@ -323,15 +323,17 @@ export default function ShareClient({ id }: { id: string }) {
         })()}
 
         {/* 카테고리별 카드 — 결과 페이지와 똑같이 아이콘/색으로 구분 */}
-        {entry.categories.map((cat, i) => (
-          <div key={i} style={cat.badge
+        {entry.categories.map((cat, i) => {
+          const isPackageBadge = cat.badge === "📦 패키지";
+          return (
+          <div key={i} style={isPackageBadge
             ? { background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }
             : { background: "white", borderRadius: 24, border: `1.5px solid ${cat.color}44`, marginBottom: 12 }}>
-            <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: cat.badge ? "1px solid rgba(217,180,80,0.18)" : "1px solid rgba(236,72,153,0.07)", background: cat.badge ? "linear-gradient(90deg, rgba(217,180,80,0.10), transparent)" : "transparent" }}>
+            <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: isPackageBadge ? "1px solid rgba(217,180,80,0.18)" : "1px solid rgba(236,72,153,0.07)", background: isPackageBadge ? "linear-gradient(90deg, rgba(217,180,80,0.10), transparent)" : "transparent" }}>
               <span style={{ fontSize: 22 }}>{cat.icon}</span>
               <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{cat.label}</span>
               {cat.badge && (
-                <span style={{ fontSize: 10, background: "linear-gradient(135deg, #c026d3, #9333ea)", color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>{cat.badge}</span>
+                <span style={{ fontSize: 10, background: isPackageBadge ? "linear-gradient(135deg, #c026d3, #9333ea)" : G, color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>{cat.badge}</span>
               )}
             </div>
             <div style={{ padding: "14px 18px 20px" }}>
@@ -340,7 +342,8 @@ export default function ShareClient({ id }: { id: string }) {
               </p>
             </div>
           </div>
-        ))}
+          );
+        })}
 
         <button onClick={toggleReadAloud} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", marginBottom: 10 }}>
           {speaking ? "⏸ 멈추기" : "🔊 읽기"}
