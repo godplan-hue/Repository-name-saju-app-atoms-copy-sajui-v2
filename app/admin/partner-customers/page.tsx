@@ -42,13 +42,16 @@ export default function AdminPartnerCustomers() {
   // 같은 고객이 여러 번 분석을 받으면 "전체 생성 내역"에는 매번 한 줄씩
   // 생기는 게 정상(거래 내역이라서)이지만, "이 사람이 누구다"를 보려면 그걸
   // 전화번호/이메일 기준으로 한 명당 한 줄로 묶어서 따로 보여줄 필요가 있음
-  const byCustomer = new Map<string, { name: string; email: string; phone: string; partnerNames: Set<string>; count: number; total: number; lastAt: string }>();
+  const byCustomer = new Map<string, { name: string; email: string; phone: string; byPartner: Map<string, { count: number; total: number }>; count: number; total: number; lastAt: string }>();
   customers.forEach(c => {
     const key = c.customerPhone || c.customerEmail || c.customerName;
-    const cur = byCustomer.get(key) || { name: c.customerName, email: c.customerEmail, phone: c.customerPhone, partnerNames: new Set<string>(), count: 0, total: 0, lastAt: c.createdAt };
+    const cur = byCustomer.get(key) || { name: c.customerName, email: c.customerEmail, phone: c.customerPhone, byPartner: new Map<string, { count: number; total: number }>(), count: 0, total: 0, lastAt: c.createdAt };
     cur.count += 1;
     cur.total += c.charge?.totalCharge || 0;
-    cur.partnerNames.add(c.partnerName);
+    const p = cur.byPartner.get(c.partnerName) || { count: 0, total: 0 };
+    p.count += 1;
+    p.total += c.charge?.totalCharge || 0;
+    cur.byPartner.set(c.partnerName, p);
     if (new Date(c.createdAt) > new Date(cur.lastAt)) cur.lastAt = c.createdAt;
     byCustomer.set(key, cur);
   });
@@ -123,7 +126,11 @@ export default function AdminPartnerCustomers() {
                     <td style={{ padding: "12px", color: "#333", fontWeight: 700 }}>{c.name}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{c.email || "-"}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{c.phone || "-"}</td>
-                    <td style={{ padding: "12px", color: "#666" }}>{Array.from(c.partnerNames).join(", ")}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>
+                      {Array.from(c.byPartner.entries()).map(([name, v], j) => (
+                        <div key={j}>{name}: {v.count}건/₩{v.total.toLocaleString()}</div>
+                      ))}
+                    </td>
                     <td style={{ padding: "12px", color: "#666" }}>{c.count}건</td>
                     <td style={{ padding: "12px", color: "#333", fontWeight: 900 }}>₩{c.total.toLocaleString()}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{new Date(c.lastAt).toLocaleString("ko-KR")}</td>
