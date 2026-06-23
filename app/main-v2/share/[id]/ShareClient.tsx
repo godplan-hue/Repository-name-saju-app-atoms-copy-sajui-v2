@@ -11,6 +11,7 @@ interface SharedCategory {
   label: string;
   color: string;
   text: string;
+  badge?: string;
 }
 
 interface SharedEntry {
@@ -21,6 +22,28 @@ interface SharedEntry {
   luckyDirection?: string;
   categories: SharedCategory[];
   businessName?: string;
+}
+
+function ScoreCircle({ score, size = 130 }: { score: number; size?: number }) {
+  const r = 44;
+  const circ = 2 * Math.PI * r;
+  const [animated, setAnimated] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => setAnimated(score), 300);
+    return () => clearTimeout(t);
+  }, [score]);
+  const dash = (animated / 100) * circ;
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r={r} fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="8" />
+      <circle cx="50" cy="50" r={r} fill="none" stroke="white" strokeWidth="8"
+        strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
+        transform="rotate(-90 50 50)"
+        style={{ transition: "stroke-dasharray 1.2s ease" }} />
+      <text x="50" y="46" textAnchor="middle" fill="white" fontSize="20" fontWeight="900">{animated}</text>
+      <text x="50" y="60" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="9" fontWeight="700">/ 100</text>
+    </svg>
+  );
 }
 
 function ScoreBar({ label, score, color }: { label: string; score: number; color: string }) {
@@ -64,13 +87,35 @@ export default function ShareClient({ id }: { id: string }) {
     };
   }, []);
 
-  const speakFrom = (chunks: string[], startIdx: number) => {
+  // 일부 기기(특히 안드로이드)는 음성 목록이 비동기로 늦게 로드되어, 그 전에
+  // speak()를 호출하면 에러도 없이 그냥 소리가 안 나는 경우가 있음 — 목록이
+  // 채워지길 잠깐 기다렸다가(최대 1초) 한국어 음성을 찾아서 명시적으로 지정함
+  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> => {
+    return new Promise(resolve => {
+      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
+      const existing = window.speechSynthesis.getVoices();
+      if (existing.length > 0) { resolve(pick(existing)); return; }
+      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
+      window.speechSynthesis.onvoiceschanged = () => {
+        clearTimeout(timer);
+        resolve(pick(window.speechSynthesis.getVoices()));
+      };
+    });
+  };
+
+  const speakFrom = async (chunks: string[], startIdx: number) => {
+    const voice = await getKoreanVoice();
     chunks.slice(startIdx).forEach((chunk, i) => {
       const idx = startIdx + i;
       const utter = new SpeechSynthesisUtterance(chunk);
       utter.lang = "ko-KR";
+      if (voice) utter.voice = voice;
       utter.rate = 1;
       utter.onstart = () => { readIdxRef.current = idx; };
+      utter.onerror = () => {
+        setSpeaking(false);
+        alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
+      };
       if (idx === chunks.length - 1) {
         utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
       }
@@ -132,12 +177,14 @@ export default function ShareClient({ id }: { id: string }) {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
         {/* 점수 요약 카드 */}
         <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
-          <div style={{ background: "#eab308", color: "#3a2a00", textAlign: "center", padding: "18px 20px" }}>
-            <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 6px", opacity: 0.9 }}>🔮 {entry.businessName || "점운"} · AI 사주 분석</p>
-            <h1 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 10px" }}>{entry.name}님의 운세 분석</h1>
-            {typeof entry.scores?.total === "number" && (
-              <p style={{ fontSize: 30, fontWeight: 900, margin: 0 }}>{entry.scores.total}<span style={{ fontSize: 13, opacity: 0.8 }}>점</span></p>
-            )}
+          <div style={{ background: "#eab308", color: "#3a2a00", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
+            <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "14px 20px 0", letterSpacing: "-0.3px" }}>🔮 {entry.businessName || "점운"} · AI 사주 분석</p>
+            <div style={{ padding: "14px 20px 24px" }}>
+              <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
+              <h1 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 12px", opacity: 0.9 }}>{entry.name}님의 운세 분석</h1>
+              <ScoreCircle score={entry.scores?.total ?? 0} size={130} />
+              <p style={{ fontSize: 12, opacity: 0.75, margin: "8px 0 0", fontWeight: 600 }}>총운 점수</p>
+            </div>
           </div>
           {(entry.luckyColor || entry.luckyNumber || entry.luckyDirection) && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "16px 18px" }}>
@@ -174,10 +221,15 @@ export default function ShareClient({ id }: { id: string }) {
 
         {/* 카테고리별 카드 — 결과 페이지와 똑같이 아이콘/색으로 구분 */}
         {entry.categories.map((cat, i) => (
-          <div key={i} style={{ background: "white", borderRadius: 24, border: `1.5px solid ${cat.color}44`, marginBottom: 12 }}>
-            <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>
+          <div key={i} style={cat.badge
+            ? { background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }
+            : { background: "white", borderRadius: 24, border: `1.5px solid ${cat.color}44`, marginBottom: 12 }}>
+            <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: cat.badge ? "1px solid rgba(217,180,80,0.18)" : "1px solid rgba(236,72,153,0.07)", background: cat.badge ? "linear-gradient(90deg, rgba(217,180,80,0.10), transparent)" : "transparent" }}>
               <span style={{ fontSize: 22 }}>{cat.icon}</span>
               <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{cat.label}</span>
+              {cat.badge && (
+                <span style={{ fontSize: 10, background: "linear-gradient(135deg, #c026d3, #9333ea)", color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>{cat.badge}</span>
+              )}
             </div>
             <div style={{ padding: "14px 18px 20px" }}>
               <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>

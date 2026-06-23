@@ -636,7 +636,7 @@ function V2ResultInner() {
             .map(c => ({ icon: c.icon, label: c.key.replace(/\S+\s/, ""), color: c.color, text: allAnalyses[c.key] }))
         : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"])
             .filter(c => allAnalyses[c.apiKey])
-            .map(c => ({ icon: c.icon, label: c.label, color: c.color, text: allAnalyses[c.apiKey] }));
+            .map(c => ({ icon: c.icon, label: c.label, color: c.color, text: allAnalyses[c.apiKey], badge: "📦 패키지" }));
       const validCategories = categories.filter(c => c.text && c.text.trim());
       if (validCategories.length > 0) {
         const res = await fetch("/api/v2/share", {
@@ -667,13 +667,35 @@ function V2ResultInner() {
   // 멈춘 위치는 readChunksRef/readIdxRef에 저장해두고, 같은 화면에서 다시
   // 누르면 그 위치부터 이어서 읽음 — 화면을 벗어나면 컴포넌트가 다시 마운트
   // 되면서 이 값들도 초기화되므로, 재진입 시엔 자연히 처음부터 읽힘
-  const speakFrom = (chunks: string[], startIdx: number) => {
+  // 일부 기기(특히 안드로이드)는 음성 목록이 비동기로 늦게 로드되어, 그 전에
+  // speak()를 호출하면 에러도 없이 그냥 소리가 안 나는 경우가 있음 — 목록이
+  // 채워지길 잠깐 기다렸다가(최대 1초) 한국어 음성을 찾아서 명시적으로 지정함
+  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> => {
+    return new Promise(resolve => {
+      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
+      const existing = window.speechSynthesis.getVoices();
+      if (existing.length > 0) { resolve(pick(existing)); return; }
+      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
+      window.speechSynthesis.onvoiceschanged = () => {
+        clearTimeout(timer);
+        resolve(pick(window.speechSynthesis.getVoices()));
+      };
+    });
+  };
+
+  const speakFrom = async (chunks: string[], startIdx: number) => {
+    const voice = await getKoreanVoice();
     chunks.slice(startIdx).forEach((chunk, i) => {
       const idx = startIdx + i;
       const utter = new SpeechSynthesisUtterance(chunk);
       utter.lang = "ko-KR";
+      if (voice) utter.voice = voice;
       utter.rate = 1;
       utter.onstart = () => { readIdxRef.current = idx; };
+      utter.onerror = () => {
+        setSpeaking(false);
+        alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
+      };
       if (idx === chunks.length - 1) {
         utter.onend = () => {
           setSpeaking(false);

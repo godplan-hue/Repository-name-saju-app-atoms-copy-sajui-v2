@@ -136,7 +136,7 @@ function PartnerAnalysisResultInner() {
     (async () => {
       try {
         const shareCats = (PACKAGE_CATS[pkg || "기본 분석"] ?? PACKAGE_CATS["기본 분석"]).filter(c => parsed[c.key]);
-        const categories = shareCats.map(c => ({ icon: c.icon, label: c.label, color: "#9333ea", text: parsed[c.key] }));
+        const categories = shareCats.map(c => ({ icon: c.icon, label: c.label, color: "#9333ea", text: parsed[c.key], badge: "📦 패키지" }));
         if (categories.length === 0) return;
         const res = await fetch("/api/v2/share", {
           method: "POST",
@@ -222,7 +222,7 @@ function PartnerAnalysisResultInner() {
     setSharing(true);
     try {
       const shareCats = (PACKAGE_CATS[packageType] ?? PACKAGE_CATS["기본 분석"]).filter(c => analysisResults[c.key]);
-      const categories = shareCats.map(c => ({ icon: c.icon, label: c.label, color: "#9333ea", text: analysisResults[c.key] }));
+      const categories = shareCats.map(c => ({ icon: c.icon, label: c.label, color: "#9333ea", text: analysisResults[c.key], badge: "📦 패키지" }));
       const res = await fetch("/api/v2/share", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -246,13 +246,35 @@ function PartnerAnalysisResultInner() {
   const { scores, luckyColor, luckyNumber, luckyDirection } = analysisResults;
   const cats = (PACKAGE_CATS[packageType] ?? PACKAGE_CATS["기본 분석"]).filter(c => analysisResults[c.key]);
 
-  const speakFrom = (chunks: string[], startIdx: number) => {
+  // 일부 기기(특히 안드로이드)는 음성 목록이 비동기로 늦게 로드되어, 그 전에
+  // speak()를 호출하면 에러도 없이 그냥 소리가 안 나는 경우가 있음 — 목록이
+  // 채워지길 잠깐 기다렸다가(최대 1초) 한국어 음성을 찾아서 명시적으로 지정함
+  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> => {
+    return new Promise(resolve => {
+      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
+      const existing = window.speechSynthesis.getVoices();
+      if (existing.length > 0) { resolve(pick(existing)); return; }
+      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
+      window.speechSynthesis.onvoiceschanged = () => {
+        clearTimeout(timer);
+        resolve(pick(window.speechSynthesis.getVoices()));
+      };
+    });
+  };
+
+  const speakFrom = async (chunks: string[], startIdx: number) => {
+    const voice = await getKoreanVoice();
     chunks.slice(startIdx).forEach((chunk, i) => {
       const idx = startIdx + i;
       const utter = new SpeechSynthesisUtterance(chunk);
       utter.lang = "ko-KR";
+      if (voice) utter.voice = voice;
       utter.rate = 1;
       utter.onstart = () => { readIdxRef.current = idx; };
+      utter.onerror = () => {
+        setSpeaking(false);
+        alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
+      };
       if (idx === chunks.length - 1) {
         utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
       }
