@@ -132,7 +132,11 @@ function PartnerAnalysisResultInner() {
 
     // 결과를 보는 즉시 서버에도 자동 저장 — 파트너가 다른 휴대폰/브라우저로
     // 열어도(예: 카카오톡 다른 브라우저로 열기) 다시 분석하지 않고 그대로
-    // 이어서 보고 읽을 수 있게 함. 실패해도 화면은 그대로 보이므로 조용히 무시
+    // 이어서 보고 읽을 수 있게 함. 실패해도 화면은 그대로 보이므로 조용히 무시.
+    // 무료 등급은 건너뜀 — 이 링크가 주소창(sid 파라미터)에 그대로 남아서,
+    // 공유 버튼이 막혀있어도 주소창을 복사해 보내면 똑같이 공유가 되는
+    // 빠져나갈 구멍이 있었음(공유 버튼을 막아둔 의도와 어긋남)
+    if ((localStorage.getItem("partnerTier") || "free") === "free") return;
     (async () => {
       try {
         const shareCats = (PACKAGE_CATS[pkg || "기본 분석"] ?? PACKAGE_CATS["기본 분석"]).filter(c => parsed[c.key]);
