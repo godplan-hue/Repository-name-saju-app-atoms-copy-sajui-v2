@@ -55,7 +55,7 @@ export default function PartnerGuide() {
             <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
               <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>2. 등급별 혜택</h2>
               <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
-                <li>• 무료: 연회비 ₩0 / 월 50건(연 최대 600건) 한도 / 사용료 30% 할인</li>
+                <li>• 무료: 연회비 ₩0 / 월 30건(연 최대 360건) 한도 / 사용료 30% 할인</li>
                 <li>• 실버: 연회비 ₩280,000 / 월 150건(연 최대 1,800건) 한도 / 사용료 45% 할인</li>
                 <li>• 골드: 연회비 ₩480,000 / 월 300건(연 최대 3,600건) 한도 / 사용료 55% 할인</li>
                 <li>• 다이아: 연회비 ₩1,980,000 / 무제한 / 사용료 70% 할인 / 내 브랜드 서브도메인 제공</li>

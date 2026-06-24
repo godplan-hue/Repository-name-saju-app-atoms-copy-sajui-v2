@@ -15,7 +15,7 @@ export interface PartnerTier {
 }
 
 export const PARTNER_TIERS: PartnerTier[] = [
-  { id: "free", name: "무료", annualFee: 0, monthlyLimit: 50, feeDiscountPercent: 30 },
+  { id: "free", name: "무료", annualFee: 0, monthlyLimit: 30, feeDiscountPercent: 30 },
   { id: "silver", name: "실버", annualFee: 280000, monthlyLimit: 150, feeDiscountPercent: 45 },
   { id: "gold", name: "골드", annualFee: 480000, monthlyLimit: 300, feeDiscountPercent: 55 },
   { id: "diamond", name: "다이아", annualFee: 1980000, monthlyLimit: null, feeDiscountPercent: 70 },
