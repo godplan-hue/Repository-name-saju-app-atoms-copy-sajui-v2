@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { isPartnerHost } from "@/lib/isPartnerHost";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -353,17 +354,6 @@ function BannerSlider({ onStart, isPartner }: { onStart: (route: "free" | "packa
       <div style={{ marginBottom: 32 }} />
     </div>
   );
-}
-
-// 점운 메인 도메인이 아니면(파트너 서브도메인) 990원 단품 결제 관련 글·버튼을
-// 다 숨기고 9,900원 이상 패키지 쪽으로만 안내함 — 파트너는 990원 단품을 팔 수
-// 없게 정책으로 정했기 때문. 로컬 개발(localhost)과 미리보기 배포(vercel.app)는
-// 메인으로 취급해서 평소 작업/테스트에 영향 없게 함
-function isPartnerHost(hostname: string): boolean {
-  const mainHosts = ["jeomun.com", "www.jeomun.com", "localhost"];
-  if (mainHosts.includes(hostname)) return false;
-  if (hostname.endsWith(".vercel.app")) return false;
-  return hostname.endsWith(".jeomun.com");
 }
 
 export default function MainV2() {

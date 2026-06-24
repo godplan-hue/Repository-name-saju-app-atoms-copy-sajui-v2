@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { isPartnerHost } from "@/lib/isPartnerHost";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -251,6 +252,11 @@ function V2ResultInner() {
   const [changeInterest, setChangeInterest] = useState<string | null>(null);
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
+  // 파트너 서브도메인에서는 "당신의 변화"(990원 결제 유도용 보너스 카드) 자체를 숨김
+  const [isPartner, setIsPartner] = useState(false);
+  useEffect(() => {
+    setIsPartner(isPartnerHost(window.location.hostname));
+  }, []);
   const [paidCats, setPaidCats] = useState<string[]>([]);
   const [selPlan, setSelPlan] = useState("vip");
   const [payBusy, setPayBusy] = useState(false);
@@ -765,8 +771,9 @@ function V2ResultInner() {
 
       // "당신의 변화" 카드도 화면에 실제로 보이는 만큼만 읽음 — 무료에서 아직
       // 결제 안 한 상태면 블러 처리된 hidden2(990원 결제 시 공개)는 절대 읽지
-      // 않음(화면 렌더링과 똑같은 조건을 그대로 다시 확인해서 가져옴)
-      if (profile?.name && profile?.birthYear) {
+      // 않음(화면 렌더링과 똑같은 조건을 그대로 다시 확인해서 가져옴). 파트너
+      // 서브도메인에서는 이 섹션 자체를 화면에 안 보여주므로 읽기에서도 제외
+      if (!isPartner && profile?.name && profile?.birthYear) {
         const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
         const todayKey = new Date().toDateString();
         const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${todayKey}`;
@@ -1005,7 +1012,7 @@ function V2ResultInner() {
              - 유료(select/package): 무료에서 실제로 골랐던 적이 있는 사람한테만, 결제 후
                딱 한 번 전체 공개로 보여주고(보너스 성격), 그 다음부터는(같은 사람 재구매 포함)
                다시 보여주지 않음. 결제 직행(고른 적 없음)은 섹션 자체를 표시하지 않음 */}
-        {(tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
+        {!isPartner && (tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
           const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
           // main-v2/profile(무료)은 월/일을 "05"처럼 0패딩해서 저장하고 paid-info-input(결제
