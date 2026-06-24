@@ -255,7 +255,7 @@ export default function SajuInfo() {
           {/* CTA */}
           <div style={{ textAlign: "center", marginTop: 20 }}>
             <Link
-              href="/free-analysis"
+              href="/main-v2"
               style={{
                 display: "inline-block",
                 background: "linear-gradient(135deg, #fbbf24, #f59e0b)",
@@ -433,7 +433,7 @@ export default function SajuInfo() {
         {/* CTA */}
         <div style={{ textAlign: "center", marginTop: 25 }}>
           <Link
-            href="/free-analysis"
+            href="/main-v2"
             style={{
               display: "inline-block",
               background: "linear-gradient(135deg, #fbbf24, #f59e0b)",
