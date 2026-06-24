@@ -240,13 +240,26 @@ export default function V2Profile() {
           {step === 2 && (
             <div>
               <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 8 }}>
-                <input type="number" value={form.birthYear} onChange={e => setForm(p => ({ ...p, birthYear: e.target.value }))}
+                <input type="number" value={form.birthYear} onChange={e => setForm(p => {
+                  // 생년월일을 실제로 바꾸면(이전에 저장된 본인 정보와 다른 사람을
+                  // 입력하는 상황일 수 있음) 성별·태어난시를 비워서 다시 명확히
+                  // 선택하게 함 — "관계"를 안 바꿔도(예: "나"로 둔 채로 배우자 정보를
+                  // 입력해도) 성별이 엉뚱하게 그대로 남는 일을 막기 위함
+                  if (e.target.value === p.birthYear) return p;
+                  return { ...p, birthYear: e.target.value, gender: "", birthHour: "" };
+                })}
                   placeholder="1990" min="1900" max="2024" style={{ ...inp, textAlign: "center" }} />
-                <select value={form.birthMonth} onChange={e => setForm(p => ({ ...p, birthMonth: e.target.value }))} style={{ ...inp, textAlign: "center" }}>
+                <select value={form.birthMonth} onChange={e => setForm(p => {
+                  if (e.target.value === p.birthMonth) return p;
+                  return { ...p, birthMonth: e.target.value, gender: "", birthHour: "" };
+                })} style={{ ...inp, textAlign: "center" }}>
                   <option value="">월</option>
                   {Array.from({ length: 12 }, (_, i) => <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}월</option>)}
                 </select>
-                <select value={form.birthDay} onChange={e => setForm(p => ({ ...p, birthDay: e.target.value }))} style={{ ...inp, textAlign: "center" }}>
+                <select value={form.birthDay} onChange={e => setForm(p => {
+                  if (e.target.value === p.birthDay) return p;
+                  return { ...p, birthDay: e.target.value, gender: "", birthHour: "" };
+                })} style={{ ...inp, textAlign: "center" }}>
                   <option value="">일</option>
                   {Array.from({ length: 31 }, (_, i) => <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}일</option>)}
                 </select>
