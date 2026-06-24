@@ -317,7 +317,20 @@ export default function V2Profile() {
                 </label>
               </div>
               <button
-                onClick={() => { if (!agreed) { alert("개인정보 수집·이용에 동의해주세요."); return; } finish(); }}
+                onClick={() => {
+                  if (!agreed) { alert("개인정보 수집·이용에 동의해주세요."); return; }
+                  // 전화/이메일은 선택 입력이라 비워둬도 되지만, 입력했다면 최소한
+                  // 형식이라도 맞는지 확인함(완전한 본인인증은 아니지만 무료로 가능한 선)
+                  if (form.phone && !/^01[0-9]-?\d{3,4}-?\d{4}$/.test(form.phone.replace(/\s/g, ""))) {
+                    alert("전화번호 형식을 다시 확인해주세요 (예: 010-1234-5678)");
+                    return;
+                  }
+                  if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+                    alert("이메일 형식을 다시 확인해주세요 (예: example@email.com)");
+                    return;
+                  }
+                  finish();
+                }}
                 disabled={!agreed}
                 style={{ padding: "15px 0", background: agreed ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(0,0,0,0.1)", color: agreed ? "#1a0f2e" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: agreed ? "pointer" : "not-allowed", boxShadow: agreed ? "0 6px 22px rgba(251,191,36,0.4)" : "none", marginTop: 4 }}>
                 🔮 분석 시작

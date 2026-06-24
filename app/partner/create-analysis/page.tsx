@@ -95,6 +95,16 @@ export default function PartnerCreateAnalysis() {
       }
     }
 
+    // 전화/이메일은 입력했을 때만 형식이 맞는지 확인(완전한 본인인증은 아니지만 무료로 가능한 선)
+    if (formData.customerPhone && !/^01[0-9]-?\d{3,4}-?\d{4}$/.test(formData.customerPhone.replace(/\s/g, ""))) {
+      alert("고객 전화번호 형식을 다시 확인해주세요 (예: 010-1234-5678)");
+      return;
+    }
+    if (formData.customerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.customerEmail.trim())) {
+      alert("고객 이메일 형식을 다시 확인해주세요 (예: example@email.com)");
+      return;
+    }
+
     if (!consentGiven) {
       alert("고객 개인정보 수집·이용 동의를 받았는지 확인 체크박스를 선택해주세요");
       return;
