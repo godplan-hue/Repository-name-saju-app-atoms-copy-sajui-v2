@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { isPartnerHost } from "@/lib/isPartnerHost";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -9,6 +10,17 @@ const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 export default function V2Login() {
   const router = useRouter();
   const [name, setName] = useState("");
+  // 다이아 등급 파트너의 서브도메인이면 "점운" 대신 그 파트너 브랜드로 표시
+  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    if (!isPartnerHost(hostname)) return;
+    const slug = hostname.split(".")[0];
+    fetch(`/api/partner/brand?subdomain=${encodeURIComponent(slug)}`)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => { if (data) setBrand(data); })
+      .catch(() => {});
+  }, []);
 
   const loginWithName = () => {
     if (!name.trim()) { alert("이름을 입력해주세요"); return; }
@@ -27,7 +39,7 @@ export default function V2Login() {
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
         <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
           <span style={{ fontSize: 18 }}>←</span>
-          <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
+          <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
         </button>
       </header>
 

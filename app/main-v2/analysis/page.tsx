@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { isPartnerHost } from "@/lib/isPartnerHost";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -40,6 +41,17 @@ export default function V2Analysis() {
   const [selOpt, setSelOpt] = useState("");
   const [loadMsg, setLoadMsg] = useState(LOAD_MSGS[0]);
   const [profile, setProfile] = useState<any>(null);
+  // 다이아 등급 파트너의 서브도메인이면 "점운" 대신 그 파트너 브랜드로 표시
+  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    if (!isPartnerHost(hostname)) return;
+    const slug = hostname.split(".")[0];
+    fetch(`/api/partner/brand?subdomain=${encodeURIComponent(slug)}`)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => { if (data) setBrand(data); })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const p = sessionStorage.getItem("v2_profile");
@@ -101,7 +113,7 @@ export default function V2Analysis() {
         <button onClick={() => phase === "fu" ? setPhase("cat") : router.push("/main-v2")}
           style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
           <span style={{ fontSize: 18 }}>←</span>
-          <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
+          <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
         </button>
         <span style={{ fontSize: 13, fontWeight: 700, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{profile.name}님의 운세</span>
         <div style={{ width: 48 }} />

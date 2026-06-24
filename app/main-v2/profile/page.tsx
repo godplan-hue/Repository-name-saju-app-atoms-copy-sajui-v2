@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { isPartnerHost } from "@/lib/isPartnerHost";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -70,6 +71,17 @@ export default function V2Profile() {
   const router = useRouter();
   // 페이지를 새로 열 때 한 번만 랜덤으로 골라 5단계 내내 같은 배경 유지
   const [step, setStep] = useState(1);
+  // 다이아 등급 파트너의 서브도메인이면 "점운" 대신 그 파트너 브랜드로 표시
+  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    if (!isPartnerHost(hostname)) return;
+    const slug = hostname.split(".")[0];
+    fetch(`/api/partner/brand?subdomain=${encodeURIComponent(slug)}`)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => { if (data) setBrand(data); })
+      .catch(() => {});
+  }, []);
   const [form, setForm] = useState({
     name: "", relationship: "나",
     birthYear: "", birthMonth: "", birthDay: "",
@@ -195,7 +207,7 @@ export default function V2Profile() {
             <button onClick={() => setStep(s => s - 1)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, padding: 0 }}>←</button>
           )}
           <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-            <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
+            <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
           </button>
         </div>
         <span style={{ fontSize: 12, fontWeight: 700, color: "#8b5cf6" }}>{step} / {TOTAL}</span>

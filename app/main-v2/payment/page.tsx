@@ -44,8 +44,19 @@ function PaymentInner() {
   // 화면의 버튼·링크만 막아도, 이 페이지에 직접 들어오거나 스크롤하면 그대로
   // 990원 결제가 가능했던 구멍이 있어서 이 페이지 자체에도 같은 차단을 둠
   const [isPartner, setIsPartner] = useState(false);
+  // 다이아 등급 파트너의 서브도메인이면 "점운" 대신 그 파트너 브랜드로 표시
+  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
   useEffect(() => {
-    setIsPartner(isPartnerHost(window.location.hostname));
+    const hostname = window.location.hostname;
+    const partner = isPartnerHost(hostname);
+    setIsPartner(partner);
+    if (partner) {
+      const slug = hostname.split(".")[0];
+      fetch(`/api/partner/brand?subdomain=${encodeURIComponent(slug)}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => { if (data) setBrand(data); })
+        .catch(() => {});
+    }
   }, []);
 
   // 할인코드 — 관리자가 원하는 손님에게만 골라서 주는 프로모션 코드(파트너와는 무관)
@@ -401,7 +412,7 @@ function PaymentInner() {
         )}
 
         <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
-          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>【왜 점운인가?】</h2>
+          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>【왜 {brand?.businessName || "점운"}인가?】</h2>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24 }}>
             <div style={{ textAlign: "center" }}>

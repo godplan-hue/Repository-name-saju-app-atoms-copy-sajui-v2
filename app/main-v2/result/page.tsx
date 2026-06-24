@@ -252,10 +252,21 @@ function V2ResultInner() {
   const [changeInterest, setChangeInterest] = useState<string | null>(null);
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
-  // 파트너 서브도메인에서는 "당신의 변화"(990원 결제 유도용 보너스 카드) 자체를 숨김
+  // 파트너 서브도메인에서는 "당신의 변화"(990원 결제 유도용 보너스 카드) 자체를 숨김.
+  // 다이아 등급 파트너의 서브도메인이면 "점운" 대신 그 파트너 브랜드(상호명·로고)로 표시
   const [isPartner, setIsPartner] = useState(false);
+  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
   useEffect(() => {
-    setIsPartner(isPartnerHost(window.location.hostname));
+    const hostname = window.location.hostname;
+    const partner = isPartnerHost(hostname);
+    setIsPartner(partner);
+    if (partner) {
+      const slug = hostname.split(".")[0];
+      fetch(`/api/partner/brand?subdomain=${encodeURIComponent(slug)}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => { if (data) setBrand(data); })
+        .catch(() => {});
+    }
   }, []);
   const [paidCats, setPaidCats] = useState<string[]>([]);
   const [selPlan, setSelPlan] = useState("vip");
@@ -601,7 +612,7 @@ function V2ResultInner() {
             ctx.font = `900 ${22 * dpr}px 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillText(`🐱 점운 · AI 사주 분석 (${gi + 1}/${groups.length})`, merged.width / 2, headerH / 2);
+            ctx.fillText(`🐱 ${brand?.businessName || "점운"} · AI 사주 분석 (${gi + 1}/${groups.length})`, merged.width / 2, headerH / 2);
             y = headerH;
           }
           for (const c of group) {
@@ -829,7 +840,7 @@ function V2ResultInner() {
       <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
         <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", flexShrink: 0 }}>
           <span style={{ fontSize: 18 }}>←</span>
-          <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>🐱 점운</span>
+          <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
         </button>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
           <button onClick={() => router.push("/main-v2/history")} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
@@ -854,7 +865,7 @@ function V2ResultInner() {
           style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}
         >
           <div style={{ background: tier === "package" ? "#eab308" : G, color: tier === "package" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
-            <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>🐱 점운 · AI 사주 분석</p>
+            <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>{brand?.businessName ? `🐱 ${brand.businessName} · AI 사주 분석` : "🐱 점운 · AI 사주 분석"}</p>
             <div style={{ padding: "14px 20px 24px" }}>
               <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
               <h1 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 12px", opacity: 0.9 }}>{profile?.name}님의 운세 분석</h1>
