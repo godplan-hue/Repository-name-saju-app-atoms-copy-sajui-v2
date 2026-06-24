@@ -21,7 +21,7 @@ function PaymentPartnerInner() {
   const tierInfo: { [key: string]: { name: string; fee: number; month: string; revenue: string } } = {
     silver: { name: "실버", fee: 280000, month: "월 150건(연 최대 1,800건)", revenue: "45%" },
     gold: { name: "골드", fee: 480000, month: "월 300건(연 최대 3,600건)", revenue: "55%" },
-    diamond: { name: "다이아", fee: 980000, month: "무제한", revenue: "70%" }
+    diamond: { name: "다이아", fee: 1980000, month: "무제한", revenue: "70%" }
   };
 
   const info = tierInfo[tier] || tierInfo.silver;
