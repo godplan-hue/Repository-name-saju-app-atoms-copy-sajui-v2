@@ -108,13 +108,16 @@ export default function SajuInfo() {
     return (
       <main style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #3d2670 0%, #4a3280 50%, #3d2670 100%)",
+        backgroundImage: "url('https://i.pinimg.com/736x/5f/80/4b/5f804b1e2f8687f0ab4733a07c844766.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
         color: "white",
         fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
         padding: "12px 12px 30px 12px",
         position: "relative"
       }}>
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0, 0, 0, 0.1)", zIndex: 1, pointerEvents: "none" }} />
+        <div style={{ position: "fixed", inset: 0, background: "linear-gradient(135deg, rgba(61,38,112,0.78) 0%, rgba(74,50,128,0.78) 50%, rgba(61,38,112,0.78) 100%)", zIndex: 1, pointerEvents: "none" }} />
 
         <div style={{ position: "relative", zIndex: 10 }}>
           {/* 헤더 */}
@@ -281,13 +284,16 @@ export default function SajuInfo() {
   return (
     <main style={{
       minHeight: "100vh",
-      background: "linear-gradient(135deg, #3d2670 0%, #4a3280 50%, #3d2670 100%)",
+      backgroundImage: "url('https://i.pinimg.com/736x/5f/80/4b/5f804b1e2f8687f0ab4733a07c844766.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundAttachment: "fixed",
       color: "white",
       fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
       padding: "18px 20px 45px 20px",
       position: "relative"
     }}>
-      <div style={{ position: "fixed", inset: 0, background: "rgba(0, 0, 0, 0.1)", zIndex: 1, pointerEvents: "none" }} />
+      <div style={{ position: "fixed", inset: 0, background: "linear-gradient(135deg, rgba(61,38,112,0.78) 0%, rgba(74,50,128,0.78) 50%, rgba(61,38,112,0.78) 100%)", zIndex: 1, pointerEvents: "none" }} />
 
       <div style={{ position: "relative", zIndex: 10, maxWidth: 820, margin: "0 auto" }}>
         {/* 헤더 */}
