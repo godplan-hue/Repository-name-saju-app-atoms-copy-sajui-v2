@@ -220,7 +220,15 @@ export default function V2Profile() {
           {step === 1 && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 9 }}>
               {RELS.map(r => (
-                <button key={r.value} onClick={() => setForm(p => ({ ...p, relationship: r.value }))}
+                <button key={r.value} onClick={() => setForm(p => {
+                  // 관계를 바꾸면(예: 나 → 배우자) 이전에 저장된 내 정보(성별·생년월일 등)가
+                  // 그대로 남아있어서, 새 사람 정보를 깜빡 잘못 입력할 위험이 있었음
+                  // (예: 본인 성별이 그대로 남아 배우자 분석에 잘못 쓰이는 문제) —
+                  // 관계가 실제로 바뀔 때는 성별·생년월일·태어난 시를 비워서 다시
+                  // 명확하게 입력하도록 함
+                  if (r.value === p.relationship) return { ...p, relationship: r.value };
+                  return { ...p, relationship: r.value, gender: "", birthYear: "", birthMonth: "", birthDay: "", birthHour: "" };
+                })}
                   style={{ padding: "15px 8px", borderRadius: 14, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
                   <div style={{ fontSize: 24, marginBottom: 4 }}>{r.icon}</div>
                   <div style={{ fontSize: 11, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>

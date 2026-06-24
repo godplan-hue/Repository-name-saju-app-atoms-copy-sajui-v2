@@ -683,6 +683,17 @@ function V2ResultInner() {
     });
   };
 
+  // 화면이 꺼지거나 연결 에러로 페이지가 다시 마운트되면 readChunksRef/readIdxRef는
+  // 메모리에 있던 값이라 사라짐 — sessionStorage에 같이 저장해두면, 다시 들어왔을 때
+  // 처음부터가 아니라 멈췄던 위치부터 이어서 읽을 수 있음(같은 탭/세션 안에서만 유지됨)
+  const ttsProgressKey = `v2_tts_progress_${profile?.name ?? ""}_${profile?.birthYear ?? ""}_${tier}`;
+  const saveTtsProgress = (chunks: string[], idx: number) => {
+    try { sessionStorage.setItem(ttsProgressKey, JSON.stringify({ chunks, idx })); } catch {}
+  };
+  const clearTtsProgress = () => {
+    try { sessionStorage.removeItem(ttsProgressKey); } catch {}
+  };
+
   const speakFrom = async (chunks: string[], startIdx: number) => {
     const voice = await getKoreanVoice();
     chunks.slice(startIdx).forEach((chunk, i) => {
@@ -691,7 +702,7 @@ function V2ResultInner() {
       utter.lang = "ko-KR";
       if (voice) utter.voice = voice;
       utter.rate = 1;
-      utter.onstart = () => { readIdxRef.current = idx; };
+      utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
       utter.onerror = (e) => {
         setSpeaking(false);
         // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
@@ -703,6 +714,8 @@ function V2ResultInner() {
         // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
         // 멈춰야 함 — 안 그러면 "멈추기"를 눌러도 계속 읽히는 것처럼 보임
         window.speechSynthesis.cancel();
+        // 진짜 에러여도 멈춘 위치(sessionStorage)는 지우지 않음 — 기기 문제로
+        // 한 번 끊겼다가 다시 들어와도 그 위치부터 이어서 읽을 수 있게 함
         alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
       };
       if (idx === chunks.length - 1) {
@@ -710,6 +723,7 @@ function V2ResultInner() {
           setSpeaking(false);
           readIdxRef.current = 0;
           readChunksRef.current = [];
+          clearTtsProgress();
         };
       }
       window.speechSynthesis.speak(utter);
@@ -725,6 +739,20 @@ function V2ResultInner() {
       window.speechSynthesis.cancel();
       setSpeaking(false);
       return;
+    }
+    if (readChunksRef.current.length === 0) {
+      // 화면이 꺼지거나 에러로 다시 들어온 경우, 이전에 멈췄던 위치가
+      // sessionStorage에 남아있으면 처음부터 다시 만들지 말고 그 위치부터 이어read
+      try {
+        const saved = sessionStorage.getItem(ttsProgressKey);
+        if (saved) {
+          const { chunks, idx } = JSON.parse(saved);
+          if (Array.isArray(chunks) && chunks.length > 0 && typeof idx === "number") {
+            readChunksRef.current = chunks;
+            readIdxRef.current = idx;
+          }
+        }
+      } catch {}
     }
     if (readChunksRef.current.length === 0) {
       // 화면에 실제로 보이는 내용만 정확히 읽게 함 — allAnalyses 안에는 "오늘의

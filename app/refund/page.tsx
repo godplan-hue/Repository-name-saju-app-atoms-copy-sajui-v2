@@ -70,7 +70,7 @@ export default function Refund() {
             <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>처리 과정:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
               <li>• 담당자 검토: 3~5일</li>
-              <li>• 처리: 7일 이내 (환불) 또는 즉시 (재분석)</li>
+              <li>• 처리: 3~7일 이내 (환불) 또는 즉시 (재분석)</li>
             </ul>
           </section>
 
