@@ -107,6 +107,30 @@ function getHourPillar(dayGan: string, birthHour: string): Pillar | null {
 
 const ALL_CATS = ["🌟 오늘의 운세", "💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운", "💼 사업운", "📅 월별운세", "💍 결혼·궁합운", "📝 이름분석", "☀️ 올해 운세", "💼 전체 사주분석"];
 
+// ── 십성(十星) — 일간(나)을 기준으로 다른 천간이 나에게 어떤 관계인지 보는 것.
+// "내가 생하는 오행/나를 생하는 오행/내가 극하는 오행/나를 극하는 오행"인지 먼저
+// 정하고, 음양이 같으면 편(偏), 다르면 정(正) 계열로 나뉨(검증된 표준 명리학 공식)
+const GAN_ELEMENT: Record<string, string> = { "갑": "목", "을": "목", "병": "화", "정": "화", "무": "토", "기": "토", "경": "금", "신": "금", "임": "수", "계": "수" };
+const GAN_YANG: Record<string, boolean> = { "갑": true, "을": false, "병": true, "정": false, "무": true, "기": false, "경": true, "신": false, "임": true, "계": false };
+const SHENG_NEXT: Record<string, string> = { "목": "화", "화": "토", "토": "금", "금": "수", "수": "목" }; // 내가 생하는 오행
+const SHENG_PREV: Record<string, string> = { "목": "수", "화": "목", "토": "화", "금": "토", "수": "금" }; // 나를 생하는 오행
+const KEUK_NEXT: Record<string, string> = { "목": "토", "토": "수", "수": "화", "화": "금", "금": "목" }; // 내가 극하는 오행
+const KEUK_PREV: Record<string, string> = { "목": "금", "화": "수", "토": "목", "금": "화", "수": "토" }; // 나를 극하는 오행
+
+function getTenGod(dayGan: string, otherGan: string): string {
+  const me = GAN_ELEMENT[dayGan];
+  const meYang = GAN_YANG[dayGan];
+  const oth = GAN_ELEMENT[otherGan];
+  const othYang = GAN_YANG[otherGan];
+  const sameYinYang = meYang === othYang;
+  if (oth === me) return sameYinYang ? "비견(比肩)" : "겁재(劫財)";
+  if (oth === SHENG_NEXT[me]) return sameYinYang ? "식신(食神)" : "상관(傷官)";
+  if (oth === SHENG_PREV[me]) return sameYinYang ? "편인(偏印)" : "정인(正印)";
+  if (oth === KEUK_NEXT[me]) return sameYinYang ? "편재(偏財)" : "정재(正財)";
+  if (oth === KEUK_PREV[me]) return sameYinYang ? "편관(偏官)" : "정관(正官)";
+  return "비견(比肩)"; // 이론상 도달 불가(5개 분류로 모든 오행이 다 커버됨) — 안전망
+}
+
 async function callHaiku(prompt: string, maxTokens: number): Promise<string> {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -2148,6 +2172,27 @@ function getPersonalProfile(y: number, m: number, gender: string, seed: number =
     };
     const mp = getMonthPillar(y, m, d);
     const hp = birthHour ? getHourPillar(dp.gan, birthHour) : null;
+    const yp = getYearPillar(y, m, d);
+
+    // 십성(十星) — 일간(일주의 천간, 나)을 기준으로 연간·월간·시간이 어떤
+    // 관계인지. 비겁(나와 같은 무리)·식상(내가 베푸는 힘)·재성(내가 다루는
+    // 재물)·관성(나를 통제하는 규율)·인성(나를 채워주는 배경) 다섯 갈래로 나뉨
+    const tenGodDesc: Record<string, string> = {
+      "비견(比肩)": "독립심과 자존심이 강하고, 동료·형제 같은 수평적 관계의 기운",
+      "겁재(劫財)": "승부욕과 추진력이 강하지만, 경쟁·손실의 기운도 함께 따라옴",
+      "식신(食神)": "베푸는 마음과 표현력이 좋고, 먹고사는 복(食福)을 상징하는 기운",
+      "상관(傷官)": "재능과 끼가 넘치지만, 규율을 답답해하는 자유로운 기운",
+      "편재(偏財)": "사업가형 재물운 — 큰돈을 굴리고 베푸는 데 능한 기운",
+      "정재(正財)": "안정적이고 성실한 재물운 — 차곡차곡 모으는 데 강한 기운",
+      "편관(偏官)": "강한 추진력과 카리스마, 위기를 정면으로 돌파하는 기운",
+      "정관(正官)": "책임감과 명예를 중시하는 기운 — 조직·관리 분야에 강함",
+      "편인(偏印)": "독특한 발상과 직관력, 남들과 다른 길을 가는 기운",
+      "정인(正印)": "학문과 배움을 사랑하고, 주변의 신뢰와 도움을 받는 기운",
+    };
+    const yearGod = getTenGod(dp.gan, yp.gan);
+    const monthGod = getTenGod(dp.gan, mp.gan);
+    const hourGod = hp ? getTenGod(dp.gan, hp.gan) : null;
+
     dayPillarBlock = `
 
 ▶ 일주(日柱) — 태어난 날이 정하는 진짜 본모습
@@ -2155,10 +2200,17 @@ ${dp.gan}${dp.ji}일(${dp.ganHanja}${dp.jiHanja}日) 출생 — ${dayGanDesc[dp.
 명리학에서는 연주(태어난 해)보다 이 일주가 그 사람의 본질에 더 가깝다고 봅니다. 같은 ${zodiac}띠라도 일주가 다르면 살아가는 결이 달라집니다.
 
 ▶ 월주(月柱) — 태어난 달의 기운
-${mp.gan}${mp.ji}월(${mp.ganHanja}${mp.jiHanja}月) 출생 — 절기(節氣)를 기준으로 정한 달의 기둥으로, 한 해 중에서도 어떤 계절의 기운을 더 깊이 타고났는지를 보여줍니다.${hp ? `
+${mp.gan}${mp.ji}월(${mp.ganHanja}${mp.jiHanja}月) 출생 — ${dayGanDesc[mp.gan]}
+절기(節氣)를 기준으로 정한 달의 기둥으로, 한 해 중에서도 어떤 계절의 기운을 더 깊이 타고났는지를 보여줍니다.${hp ? `
 
 ▶ 시주(時柱) — 태어난 시간이 더해주는 마지막 한 조각
-${hp.gan}${hp.ji}시(${hp.ganHanja}${hp.jiHanja}時) 출생 — 사주팔자 네 기둥(연주·월주·일주·시주) 중 마지막 기둥으로, 주로 노년의 운과 자녀·아랫사람과의 관계를 보여줍니다.` : ""}`;
+${hp.gan}${hp.ji}시(${hp.ganHanja}${hp.jiHanja}時) 출생 — ${dayGanDesc[hp.gan]}
+사주팔자 네 기둥(연주·월주·일주·시주) 중 마지막 기둥으로, 주로 노년의 운과 자녀·아랫사람과의 관계를 보여줍니다.` : ""}
+
+▶ 십성(十星) — 일간(나)을 기준으로 본 기운의 배치
+• 연간(年干)에서 본 나: ${yearGod} — ${tenGodDesc[yearGod]}
+• 월간(月干)에서 본 나: ${monthGod} — ${tenGodDesc[monthGod]}${hourGod ? `
+• 시간(時干)에서 본 나: ${hourGod} — ${tenGodDesc[hourGod]}` : ""}`;
   }
 
   return `━━━━━━━━━━━━━━━━━━━━
