@@ -18,6 +18,16 @@ const HOUR_PERIOD_TO_24H: Record<string, string> = {
   "06": "11", "07": "13", "08": "15", "09": "17", "10": "19", "11": "21",
 };
 
+// 위 변환의 반대 방향 — 이 화면은 0~23시 그대로 고르게 해두고, 서버로 보낼 때는
+// 전통 12간지 체계("00"=자시 등)로 다시 바꿔야 함. 안 바꾸고 그대로 보내면
+// (예: 23시를 그냥 "23"으로 보내면) 서버에서 0~11 범위를 벗어나 시주 계산이
+// 통째로 빠지는 문제가 있었음(자정을 넘기는 자시만 23~01시로 특별 처리)
+function hourTo12Branch(hour24: string): string {
+  const h = parseInt(hour24, 10);
+  if (isNaN(h)) return "unknown";
+  return String(Math.floor(((h + 1) % 24) / 2)).padStart(2, "0");
+}
+
 function PaidInfoInputInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -113,7 +123,7 @@ function PaidInfoInputInner() {
   const runAnalysis = async (p: {
     name: string; birthYear: string; birthMonth: string; birthDay: string;
     birthHour: string; birthMinute: string; pkg: string;
-    partnerName?: string; partnerBirthYear?: string; partnerBirthMonth?: string; partnerBirthDay?: string;
+    partnerName?: string; partnerBirthYear?: string; partnerBirthMonth?: string; partnerBirthDay?: string; partnerBirthHour?: string;
   }) => {
     setIsLoading(true);
 
@@ -140,12 +150,13 @@ function PaidInfoInputInner() {
         body: JSON.stringify({
           name: p.name,
           birth: birthDate,
-          birthHour: p.birthHour === 'unknown' ? 'unknown' : String(p.birthHour).padStart(2, '0'),
+          birthHour: hourTo12Branch(p.birthHour),
           gender: 'N',
           relationship: 'solo',
           category: '🌟 오늘의 운세',
           planType: prePlan,
           partnerName: p.partnerName || undefined,
+          partnerBirthHour: hourTo12Branch(p.partnerBirthHour ?? 'unknown'),
           partnerBirth: (p.partnerBirthYear && p.partnerBirthMonth && p.partnerBirthDay)
             ? `${p.partnerBirthYear}-${String(p.partnerBirthMonth).padStart(2,'0')}-${String(p.partnerBirthDay).padStart(2,'0')}`
             : undefined,
@@ -229,7 +240,7 @@ function PaidInfoInputInner() {
     runAnalysis({
       name, birthYear, birthMonth, birthDay, birthHour, birthMinute,
       pkg: selectedPackage,
-      partnerName, partnerBirthYear, partnerBirthMonth, partnerBirthDay,
+      partnerName, partnerBirthYear, partnerBirthMonth, partnerBirthDay, partnerBirthHour,
     });
   };
 

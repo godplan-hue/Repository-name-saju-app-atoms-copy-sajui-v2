@@ -27,6 +27,7 @@ export default function PartnerCreateAnalysis() {
     partnerBirthYear: "",
     partnerBirthMonth: "",
     partnerBirthDay: "",
+    partnerBirthHour: "unknown",
   });
 
   const birthHours = [
@@ -126,6 +127,7 @@ export default function PartnerCreateAnalysis() {
           ...(formData.packageType === "VIP 커플팩" ? {
             partnerName: formData.partnerName2,
             partnerBirth: `${formData.partnerBirthYear}-${formData.partnerBirthMonth}-${formData.partnerBirthDay}`,
+            partnerBirthHour: formData.partnerBirthHour === "unknown" ? "unknown" : String(formData.partnerBirthHour).padStart(2, "0"),
           } : {}),
         }),
       });
@@ -586,6 +588,32 @@ export default function PartnerCreateAnalysis() {
                       <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}일</option>
                     ))}
                   </select>
+                </div>
+
+                {/* 상대방 생시 — 일주만으로도 궁합을 보지만, 시간까지 있으면 시주(時柱)
+                    궁합까지 더 깊게 볼 수 있어서 선택 입력으로 둠(모름 가능) */}
+                <h3 style={{ fontSize: "16px", fontWeight: 900, marginBottom: "15px", marginTop: "20px", color: "#333" }}>
+                  🕐 상대방 생시 선택
+                </h3>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: "10px", marginBottom: "10px" }}>
+                  {birthHours.map((hour) => (
+                    <button
+                      key={hour.value}
+                      onClick={() => setFormData((prev) => ({ ...prev, partnerBirthHour: hour.value }))}
+                      style={{
+                        padding: "12px",
+                        border: formData.partnerBirthHour === hour.value ? "3px solid #667eea" : "2px solid #ddd",
+                        background: formData.partnerBirthHour === hour.value ? "#eef0ff" : "white",
+                        borderRadius: "8px",
+                        fontWeight: 700,
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        color: formData.partnerBirthHour === hour.value ? "#667eea" : "#333",
+                      }}
+                    >
+                      {hour.label}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}

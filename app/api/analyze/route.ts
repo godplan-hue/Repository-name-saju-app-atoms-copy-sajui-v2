@@ -13,7 +13,7 @@ const PACKAGE_FIELDS: Record<string, string[]> = {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, birth, birthHour, gender, planType, partnerName, partnerBirth, partnerGender, packageType } = await request.json();
+    const { name, email, birth, birthHour, gender, planType, partnerName, partnerBirth, partnerGender, partnerBirthHour, packageType } = await request.json();
 
 
     console.log("분석 요청:", { name, email, birth, birthHour, planType, packageType });
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     const result: Record<string, any> = {};
     for (const field of fields) {
       const { label, score } = FIELD_TO_CATEGORY[field];
-      result[field] = getPackageTemplate(name, birth, gender, label, score, partnerName, partnerBirth, partnerGender);
+      result[field] = getPackageTemplate(name, birth, gender, label, score, partnerName, partnerBirth, partnerGender, birthHour, partnerBirthHour);
     }
 
     // 메인 사이트와 동일한 점수요약 카드를 파트너 결과지에도 그대로 보여주기 위한 값
