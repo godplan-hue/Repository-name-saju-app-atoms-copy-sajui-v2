@@ -694,11 +694,12 @@ function V2ResultInner() {
       utter.onstart = () => { readIdxRef.current = idx; };
       utter.onerror = (e) => {
         setSpeaking(false);
+        // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
+        // 실패가 아니라 정상적인 중단이라 — 안내문도 띄우면 안 되고, 어디까지
+        // 읽었는지(readIdxRef)도 지우면 안 됨(지우면 다시 누를 때 처음부터 읽힘)
+        if (e.error === "canceled" || e.error === "interrupted") return;
         readChunksRef.current = [];
         readIdxRef.current = 0;
-        // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
-        // 실패가 아니라 정상적인 중단이라 안내문을 띄우면 안 됨
-        if (e.error === "canceled" || e.error === "interrupted") return;
         // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
         // 멈춰야 함 — 안 그러면 "멈추기"를 눌러도 계속 읽히는 것처럼 보임
         window.speechSynthesis.cancel();
@@ -733,6 +734,26 @@ function V2ResultInner() {
         tier === "free" ? [freeAnalysis]
         : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
         : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
+
+      // "당신의 변화" 카드도 화면에 실제로 보이는 만큼만 읽음 — 무료에서 아직
+      // 결제 안 한 상태면 블러 처리된 hidden2(990원 결제 시 공개)는 절대 읽지
+      // 않음(화면 렌더링과 똑같은 조건을 그대로 다시 확인해서 가져옴)
+      if (profile?.name && profile?.birthYear) {
+        const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
+        const todayKey = new Date().toDateString();
+        const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${todayKey}`;
+        const savedInterestToday = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
+        if (tier === "free") {
+          const directInterest = changeInterest ?? (savedInterestToday && interestOptions.includes(savedInterestToday) ? savedInterestToday : null);
+          if (freeConsumedSnapshot !== true && directInterest) {
+            const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest);
+            visibleTexts.push(`${yc.title}. ${yc.insight} ${yc.hidden1}`); // hidden2는 990원 결제 전이라 안 읽음
+          }
+        } else if (paidConsumedSnapshot !== true && savedInterestToday && interestOptions.includes(savedInterestToday)) {
+          const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, savedInterestToday);
+          visibleTexts.push(`${yc.title}. ${yc.insight} ${yc.hidden1} ${yc.hidden2}`); // 결제 후 전체공개라 다 읽음
+        }
+      }
       // 이모지는 음성합성기가 "반짝이는 별" 같은 설명으로 읽어버려서 제거하고,
       // "9~12월"이나 "06시~12시"처럼 숫자 사이에 물결표(~)가 있으면 그걸 "물결"
       // 이라고 그대로 읽어버려서 "9월에서 12월"/"06시에서 12시"처럼 자연스럽게
