@@ -23,15 +23,35 @@ export default function AdminPartnerCustomers() {
   const [monthlySummary, setMonthlySummary] = useState<MonthlySummary[]>([]);
   const [recentPerPartner, setRecentPerPartner] = useState(50);
   const [loading, setLoading] = useState(true);
+  const [backfilling, setBackfilling] = useState(false);
 
-  useEffect(() => {
-    if (!localStorage.getItem("adminId")) { router.push("/admin/login"); return; }
+  const load = () => {
     fetch("/api/admin/partner-customers").then(res => res.json()).then(data => {
       setCustomers(data.customers || []);
       setMonthlySummary(data.monthlySummary || []);
       setRecentPerPartner(data.recentPerPartner || 50);
     }).finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    if (!localStorage.getItem("adminId")) { router.push("/admin/login"); return; }
+    load();
   }, [router]);
+
+  const handleBackfill = async () => {
+    if (!confirm("이번 달 매출 집계를 보관함 전체 기록으로 다시 정확하게 채워 넣습니다. 계속할까요?")) return;
+    setBackfilling(true);
+    try {
+      const res = await fetch("/api/admin/backfill-stats", { method: "POST" });
+      const data = await res.json();
+      alert(data.success ? `완료! ${data.partnersUpdated}명의 파트너 집계가 다시 채워졌어요.` : "실패했습니다.");
+      load();
+    } catch {
+      alert("실패했습니다.");
+    } finally {
+      setBackfilling(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("adminId");
@@ -75,7 +95,12 @@ export default function AdminPartnerCustomers() {
       </div>
       <div style={{ flex: 1, padding: "30px" }}>
         <div style={{ background: "white", padding: "30px", borderRadius: "12px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
-          <h1 style={{ fontSize: "32px", fontWeight: 900, margin: 0, marginBottom: "20px", color: "#333" }}>📁 전체 파트너 고객 DB</h1>
+          <h1 style={{ fontSize: "32px", fontWeight: 900, margin: 0, marginBottom: "10px", color: "#333" }}>📁 전체 파트너 고객 DB</h1>
+          <div style={{ marginBottom: 20 }}>
+            <button onClick={handleBackfill} disabled={backfilling} style={{ padding: "8px 16px", background: "#fff3e0", color: "#ff9500", border: "1px solid #ffcc80", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: backfilling ? "not-allowed" : "pointer" }}>
+              {backfilling ? "다시 채우는 중..." : "🔄 매출 집계 다시 채우기(누락된 옛 기록 반영)"}
+            </button>
+          </div>
 
           <h2 style={{ fontSize: "16px", fontWeight: 900, margin: "0 0 10px", color: "#333" }}>📌 이번 달 파트너별 사용료 매출</h2>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px", marginBottom: 30 }}>
