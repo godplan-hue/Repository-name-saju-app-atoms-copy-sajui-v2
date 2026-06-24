@@ -218,7 +218,7 @@ const FORTUNE_CATEGORIES = [
   { id: "full", title: "전체 사주분석", emoji: "🔮", img: "https://i.pinimg.com/1200x/cc/82/27/cc82279b6fc9f07bc51ba888d662b675.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
 ];
 
-function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
+function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPartner: boolean }) {
   return (
     <div style={{ padding: "0 14px 28px", maxWidth: 480, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 6 }}>
@@ -247,7 +247,9 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
                   <img src={(cat as any).img} alt={cat.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 55%)" }} />
                   {(cat as any).price && (
-                    <span style={{ position: "absolute", top: 6, ...((cat as any).badgeSide === "right" ? { right: 6 } : { left: 6 }), background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "3px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)" }}>{(cat as any).price}</span>
+                    <span style={{ position: "absolute", top: 6, ...((cat as any).badgeSide === "right" ? { right: 6 } : { left: 6 }), background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "3px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)" }}>
+                      {isPartner && (cat.id === "wealth" || cat.id === "love") ? "9,900원~" : (cat as any).price}
+                    </span>
                   )}
                   <div style={{ position: "relative", fontSize: 10, fontWeight: 900, color: "#fff", textAlign: "center", lineHeight: 1.2, padding: "0 2px", marginTop: "auto", marginBottom: 6, textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>{cat.title}</div>
                 </>
@@ -264,7 +266,7 @@ function FortuneGrid({ onPick }: { onPick: (id: string) => void }) {
   );
 }
 
-function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => void }) {
+function BannerSlider({ onStart, isPartner }: { onStart: (route: "free" | "package") => void; isPartner: boolean }) {
   const [cur, setCur] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
@@ -303,8 +305,8 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
             <img src="https://i.pinimg.com/736x/b2/90/0f/b2900f52b17624d4286a216eed2ddc0a.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
             <span style={{ position: "absolute", top: 14, left: 16, display: "inline-block", background: "#facc15", color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2, textShadow: "0 1px 3px rgba(0,0,0,0.25)" }}>무료 사주</span>
             <div style={{ position: "absolute", top: 18, right: 18, width: 200, height: 135, borderRadius: "50%", border: "5px solid #fbbf24", background: "linear-gradient(160deg, #ffffff, #f3e8ff)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", boxShadow: "0 6px 20px rgba(109,40,217,0.35), inset 0 0 0 2px rgba(255,255,255,0.6)" }}>
-              <span style={{ fontSize: 46, fontWeight: 900, color: "#6d28d9", lineHeight: 1, animation: "textGlow 1.8s ease-in-out infinite" }}>₩990</span>
-              <span style={{ fontSize: 12, fontWeight: 900, marginTop: 5 }}>
+              {!isPartner && <span style={{ fontSize: 46, fontWeight: 900, color: "#6d28d9", lineHeight: 1, animation: "textGlow 1.8s ease-in-out infinite" }}>₩990</span>}
+              <span style={{ fontSize: isPartner ? 20 : 12, fontWeight: 900, marginTop: 5 }}>
                 <span style={{ color: "#15803d" }}>오늘의 운세</span>{" "}
                 <span style={{ color: "#be185d" }}>매일 무료</span>
               </span>
@@ -320,8 +322,11 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
             <div style={{ position: "absolute", bottom: 14, left: 16, right: 16, zIndex: 2 }}>
               {b.lines!.map((line, i) => {
                 const isKeyLine = i === b.lines!.length - 1;
+                // 첫 배너의 "사주 990원" 줄 — 파트너 화면에서는 990원 단품을 안 팔기로
+                // 했으므로 숫자 없이 일반적인 환영 문구로 바꿔서 보여줌
+                const displayLine = isPartner && line === "사주 990원" ? "지금 바로 시작하기" : line;
                 return (
-                  <p key={i} style={{ fontSize: (b as any).lineSizes?.[i] ?? (i === 0 ? 17 : 12), fontWeight: i === 0 ? 900 : 700, color: (b as any).lineColors?.[i] ?? lineColors[i] ?? "white", margin: "0 0 2px", lineHeight: 1.35, textShadow: "0 1px 8px rgba(0,0,0,0.7)", animation: isKeyLine ? "bannerKeyGlow 1.8s ease-in-out infinite" : undefined }}>{line}</p>
+                  <p key={i} style={{ fontSize: (b as any).lineSizes?.[i] ?? (i === 0 ? 17 : 12), fontWeight: i === 0 ? 900 : 700, color: (b as any).lineColors?.[i] ?? lineColors[i] ?? "white", margin: "0 0 2px", lineHeight: 1.35, textShadow: "0 1px 8px rgba(0,0,0,0.7)", animation: isKeyLine ? "bannerKeyGlow 1.8s ease-in-out infinite" : undefined }}>{displayLine}</p>
                 );
               })}
             </div>
@@ -350,10 +355,25 @@ function BannerSlider({ onStart }: { onStart: (route: "free" | "package") => voi
   );
 }
 
+// 점운 메인 도메인이 아니면(파트너 서브도메인) 990원 단품 결제 관련 글·버튼을
+// 다 숨기고 9,900원 이상 패키지 쪽으로만 안내함 — 파트너는 990원 단품을 팔 수
+// 없게 정책으로 정했기 때문. 로컬 개발(localhost)과 미리보기 배포(vercel.app)는
+// 메인으로 취급해서 평소 작업/테스트에 영향 없게 함
+function isPartnerHost(hostname: string): boolean {
+  const mainHosts = ["jeomun.com", "www.jeomun.com", "localhost"];
+  if (mainHosts.includes(hostname)) return false;
+  if (hostname.endsWith(".vercel.app")) return false;
+  return hostname.endsWith(".jeomun.com");
+}
+
 export default function MainV2() {
   const router = useRouter();
   const [user, setUser] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [isPartner, setIsPartner] = useState(false);
+  useEffect(() => {
+    setIsPartner(isPartnerHost(window.location.hostname));
+  }, []);
   // 배경음악 — 브라우저가 사용자 터치 전 자동재생을 막아서, "완전 자동"은 안 되고
   // 이 버튼을 한 번 눌러야 재생이 시작됨(그 한 번의 클릭이 "사용자 동작"이 되어줌).
   // /public/bgm.mp3 파일이 있어야 실제로 소리가 남(파일은 직접 넣어야 함)
@@ -478,15 +498,17 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
+      <BannerSlider isPartner={isPartner} onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
 
       {/* 운세 선택 — 9개 박스 그리드(맨 앞 1개는 무료체험, 나머지 8개는 VIP 패키지의
           8개 항목을 그대로 미리보기 — 그래서 이름/내용을 다른 걸로 바꾸지 않음).
           재물운/연애운은 990원 단품 결제로, 나머지는 패키지(9,900원~) 결제로 보냄.
           무료체험은 별도의 진짜 무료 분석 플로우로 보냄(여기서 결제 없음). */}
-      <FortuneGrid onPick={id => {
+      <FortuneGrid isPartner={isPartner} onPick={id => {
         sessionStorage.setItem("selectedFortune", id);
-        const SELECT_ROUTE_IDS = new Set(["wealth", "love"]);
+        // 파트너 서브도메인에서는 990원 단품 결제를 팔지 않기로 했으므로, 재물운/연애운도
+        // 다른 항목들처럼 패키지(9,900원~) 화면으로 보냄
+        const SELECT_ROUTE_IDS = isPartner ? new Set<string>() : new Set(["wealth", "love"]);
         // 박스에 표시된 가격 배지(9,900~/프리미엄전용/VIP전용)에 맞는 패키지가
         // 실제로 미리 선택된 채로 들어가게 — 안 그러면 늘 기본값(기본분석 9,900원)
         // 이 선택된 걸로 보여서 "프리미엄 전용"이라고 눌렀는데 다른 게 선택된
