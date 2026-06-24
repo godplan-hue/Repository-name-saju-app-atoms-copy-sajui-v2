@@ -31,19 +31,19 @@ export default function PartnerCreateAnalysis() {
   });
 
   const birthHours = [
-    { label: "자시(子時)", value: "00" },
-    { label: "축시(丑時)", value: "01" },
-    { label: "인시(寅時)", value: "02" },
-    { label: "묘시(卯時)", value: "03" },
-    { label: "진시(辰時)", value: "04" },
-    { label: "사시(巳時)", value: "05" },
-    { label: "오시(午時)", value: "06" },
-    { label: "미시(未時)", value: "07" },
-    { label: "신시(申時)", value: "08" },
-    { label: "유시(酉時)", value: "09" },
-    { label: "술시(戌時)", value: "10" },
-    { label: "해시(亥時)", value: "11" },
-    { label: "모름", value: "unknown" },
+    { label: "자시(子時)", time: "23~01시", value: "00" },
+    { label: "축시(丑時)", time: "01~03시", value: "01" },
+    { label: "인시(寅時)", time: "03~05시", value: "02" },
+    { label: "묘시(卯時)", time: "05~07시", value: "03" },
+    { label: "진시(辰時)", time: "07~09시", value: "04" },
+    { label: "사시(巳時)", time: "09~11시", value: "05" },
+    { label: "오시(午時)", time: "11~13시", value: "06" },
+    { label: "미시(未時)", time: "13~15시", value: "07" },
+    { label: "신시(申時)", time: "15~17시", value: "08" },
+    { label: "유시(酉時)", time: "17~19시", value: "09" },
+    { label: "술시(戌時)", time: "19~21시", value: "10" },
+    { label: "해시(亥時)", time: "21~23시", value: "11" },
+    { label: "모름", time: "", value: "unknown" },
   ];
 
   const packages = [
@@ -504,7 +504,7 @@ export default function PartnerCreateAnalysis() {
                     color: formData.birthHour === hour.value ? "#667eea" : "#333",
                   }}
                 >
-                  {hour.label}
+                  {hour.label}{hour.time ? <><br /><span style={{ fontSize: "11px", fontWeight: 500, opacity: 0.7 }}>{hour.time}</span></> : null}
                 </button>
               ))}
             </div>
@@ -611,7 +611,7 @@ export default function PartnerCreateAnalysis() {
                         color: formData.partnerBirthHour === hour.value ? "#667eea" : "#333",
                       }}
                     >
-                      {hour.label}
+                      {hour.label}{hour.time ? <><br /><span style={{ fontSize: "11px", fontWeight: 500, opacity: 0.7 }}>{hour.time}</span></> : null}
                     </button>
                   ))}
                 </div>
