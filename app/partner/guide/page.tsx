@@ -8,11 +8,16 @@ export default function PartnerGuide() {
   const [partnerId, setPartnerId] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  // 무료 등급에게는 카카오톡 공유 기능의 구체적인 작동 방식을 알려주지 않음 —
+  // 무료로 가입해서 운영가이드만 읽어보고 그 방식을 그대로 베끼는 경쟁자를
+  // 막기 위함(이 기능 자체도 무료 등급 화면에서는 보이지 않게 따로 막아둠)
+  const [isFreeTier, setIsFreeTier] = useState(false);
 
   useEffect(() => {
     const id = localStorage.getItem("partnerId");
     if (!id) { router.push("/partner/login"); return; }
     setPartnerId(id);
+    setIsFreeTier((localStorage.getItem("partnerTier") ?? "free") === "free");
   }, [router]);
 
   const handleConfirm = async () => {
@@ -61,7 +66,9 @@ export default function PartnerGuide() {
                 <li>• 다이아: 연회비 ₩1,980,000 / 무제한 / 사용료 70% 할인 / 내 브랜드 서브도메인 제공</li>
               </ul>
               <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 4 }}>※ "사용료 할인"은 분석 1건당 정가에서 등급별로 할인된 가격만 내면 된다는 뜻입니다(예: 다이아는 정가의 30%만 부가세 포함하여 지불).</p>
-              <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 0, marginBottom: 0 }}>※ 유료 등급은 이 사용료 할인·한도뿐 아니라 카카오톡 공유 기능까지 함께 제공됩니다(자세한 내용은 5번 참고).</p>
+              {!isFreeTier && (
+                <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 0, marginBottom: 0 }}>※ 유료 등급은 이 사용료 할인·한도뿐 아니라 카카오톡 공유 기능까지 함께 제공됩니다(자세한 내용은 5번 참고).</p>
+              )}
             </section>
 
             <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
@@ -82,8 +89,13 @@ export default function PartnerGuide() {
               <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 결과지 발송 방식</h2>
               <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
                 <li>• 결과지에는 "점운" 대신 파트너님이 등록하신 상호명이 자동으로 표시됩니다(가입 시 한 번만 등록하면 이후 모든 결과지에 자동 적용)</li>
-                <li>• 실버 등급 이상부터는 결과지를 공유 링크로 만들어 카카오톡 등으로 보낼 수 있습니다(고객이 링크를 누르면 결과를 바로 확인할 수 있어요)</li>
-                <li>• 무료 등급이거나, 고객이 카카오톡을 사용하지 않는 경우에는 "🖼️ 이미지 저장" 버튼으로 결과지를 직접 다운로드한 뒤 본인이 원하는 방법으로 직접 전달해야 합니다(이 사이트에서 자동으로 발송해드리지는 않습니다)</li>
+                {!isFreeTier && (
+                  <li>• 실버 등급 이상부터는 결과지를 공유 링크로 만들어 카카오톡 등으로 보낼 수 있습니다(고객이 링크를 누르면 결과를 바로 확인할 수 있어요)</li>
+                )}
+                <li>• {isFreeTier ? "" : "무료 등급이거나, "}고객이 카카오톡을 사용하지 않는 경우에는 "🖼️ 이미지 저장" 버튼으로 결과지를 직접 다운로드한 뒤 본인이 원하는 방법으로 직접 전달해야 합니다(이 사이트에서 자동으로 발송해드리지는 않습니다)</li>
+                {isFreeTier && (
+                  <li>• 더 편리한 공유 방법은 등급을 올리면 추가로 제공됩니다(자세한 내용은 등급 업그레이드 화면 참고)</li>
+                )}
               </ul>
             </section>
 
@@ -111,7 +123,9 @@ export default function PartnerGuide() {
               <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>8. 새로 추가된 기능 안내</h2>
               <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
                 <li>• 결과지 화면에 "🔊 읽기" 버튼이 추가되어, 글을 음성으로 읽어주는 기능을 쓸 수 있습니다</li>
-                <li>• 공유 링크로 받은 결과는 다른 휴대폰이나 다른 브라우저로 열어도 다시 분석할 필요 없이 그대로 이어서 볼 수 있습니다</li>
+                {!isFreeTier && (
+                  <li>• 공유 링크로 받은 결과는 다른 휴대폰이나 다른 브라우저로 열어도 다시 분석할 필요 없이 그대로 이어서 볼 수 있습니다</li>
+                )}
                 <li>• 결과지에 "사주팔자 한눈에 보기"(띠·오행·천간)와 "분야별 운세 점수" 항목이 자동으로 함께 표시됩니다</li>
                 <li>• "🖼️ 이미지 저장"으로 패키지처럼 여러 장을 한 번에 받을 때, 모바일에서는 보안 정책상 한 장씩 다운로드 확인을 눌러야 합니다(PC는 한 번에 받아짐)</li>
               </ul>
