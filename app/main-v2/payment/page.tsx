@@ -411,6 +411,12 @@ function PaymentInner() {
             </div>
           </div>
         </section>
+
+        {/* 사업자 고지 — 파트너 브랜드(서브도메인)로 들어와도 실제 결제·운영 주체가
+            누구인지 분명히 밝혀서, 결제사 문의나 고객 혼란을 미리 막기 위함 */}
+        <p style={{ textAlign: "center", color: "rgba(255,255,255,0.45)", fontSize: 11, fontWeight: 600, padding: "0 16px 24px" }}>
+          본 서비스는 기획의신(대표 장문정, 사업자등록번호 773-60-00359)이 운영합니다.
+        </p>
       </div>
     </main>
   );

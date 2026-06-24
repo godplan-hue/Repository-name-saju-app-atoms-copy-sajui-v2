@@ -153,6 +153,10 @@ function PaymentPartnerInner() {
           <a href={`/partner/apply-form?tier=${tier}`} style={{ display: "block", width: "100%", padding: 14, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textAlign: "center", textDecoration: "none" }}>
             ← 돌아가기
           </a>
+
+          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 600, marginTop: 16 }}>
+            본 서비스는 기획의신(대표 장문정, 사업자등록번호 773-60-00359)이 운영합니다.
+          </p>
         </div>
       </div>
     </main>
