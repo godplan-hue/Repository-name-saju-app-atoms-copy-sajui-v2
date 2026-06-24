@@ -361,8 +361,20 @@ export default function MainV2() {
   const [user, setUser] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isPartner, setIsPartner] = useState(false);
+  // 다이아 등급 파트너의 서브도메인(예: kim.jeomun.com)으로 들어온 경우,
+  // "점운" 대신 그 파트너가 등록한 상호명·로고로 헤더를 바꿔서 보여줌
+  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
   useEffect(() => {
-    setIsPartner(isPartnerHost(window.location.hostname));
+    const hostname = window.location.hostname;
+    const partner = isPartnerHost(hostname);
+    setIsPartner(partner);
+    if (partner) {
+      const slug = hostname.split(".")[0];
+      fetch(`/api/partner/brand?subdomain=${encodeURIComponent(slug)}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => { if (data) setBrand(data); })
+        .catch(() => {});
+    }
   }, []);
   // 배경음악 — 브라우저가 사용자 터치 전 자동재생을 막아서, "완전 자동"은 안 되고
   // 이 버튼을 한 번 눌러야 재생이 시작됨(그 한 번의 클릭이 "사용자 동작"이 되어줌).
@@ -434,8 +446,12 @@ export default function MainV2() {
           <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, padding: 0, marginRight: 2 }}>
             {musicOn ? "🔊" : "🔇"}
           </button>
-          <span style={{ fontSize: 20 }}>🐱</span>
-          <span style={{ fontWeight: 900, fontSize: 16, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운</span>
+          {brand?.logoUrl ? (
+            <img src={brand.logoUrl} alt={brand.businessName} style={{ width: 20, height: 20, borderRadius: "50%", objectFit: "cover" }} />
+          ) : (
+            <span style={{ fontSize: 20 }}>🐱</span>
+          )}
+          <span style={{ fontWeight: 900, fontSize: 16, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{brand?.businessName || "점운"}</span>
         </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
           {user

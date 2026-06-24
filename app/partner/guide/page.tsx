@@ -69,6 +69,9 @@ export default function PartnerGuide() {
               {!isFreeTier && (
                 <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 0, marginBottom: 0 }}>※ 유료 등급은 이 사용료 할인·한도뿐 아니라 카카오톡 공유 기능까지 함께 제공됩니다(자세한 내용은 5번 참고).</p>
               )}
+              <button onClick={() => router.push("/partner/brand-settings")} style={{ marginTop: 14, padding: "9px 18px", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                💎 나만의 독립 사주앱 브랜드 설정하기
+              </button>
             </section>
 
             <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
