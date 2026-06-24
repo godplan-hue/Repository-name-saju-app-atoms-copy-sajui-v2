@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { isPartnerHost } from "@/lib/isPartnerHost";
 interface PromoCode {
   code: string;
   discountPercent: number;
@@ -39,6 +40,14 @@ function PaymentInner() {
   const [selectedFeatures, setSelectedFeatures] = useState(
     highlightWealthLove ? ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"] : preselectInfo ? preselectInfo.features : ["yearlyLuck", "monthlyLuck"]
   );
+  // 파트너 서브도메인에서는 990원 단품 결제(운세 선택 섹션)를 막음 — 메인
+  // 화면의 버튼·링크만 막아도, 이 페이지에 직접 들어오거나 스크롤하면 그대로
+  // 990원 결제가 가능했던 구멍이 있어서 이 페이지 자체에도 같은 차단을 둠
+  const [isPartner, setIsPartner] = useState(false);
+  useEffect(() => {
+    setIsPartner(isPartnerHost(window.location.hostname));
+  }, []);
+
   // 할인코드 — 관리자가 원하는 손님에게만 골라서 주는 프로모션 코드(파트너와는 무관)
   const [discountInput, setDiscountInput] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<PromoCode | null>(null);
@@ -330,7 +339,9 @@ function PaymentInner() {
           </a>
         </div>
 
-        {/* 운세 선택 섹션 */}
+        {/* 운세 선택 섹션 — 990원 단품 결제는 파트너 서브도메인에서는 안 보이게 막음
+            (메인 화면 버튼만 막아도 이 페이지에 직접 들어오면 그대로 보였던 구멍) */}
+        {!isPartner && (
         <div id="select-section" style={{ maxWidth: 1000, margin: "0 auto 40px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: "24px 22px", borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
           <h2 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 6, letterSpacing: "-0.3px" }}>✨ 어떤 운세를 확인할까요?</h2>
           <p style={{ fontSize: 13, fontWeight: 700, marginBottom: 16 }}>
@@ -387,6 +398,7 @@ function PaymentInner() {
             {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 결제하기 · ₩${(appliedDiscount ? Math.round(selectedCats.length * 990 * (1 - appliedDiscount.discountPercent / 100)) : selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
           </button>
         </div>
+        )}
 
         <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
           <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>【왜 점운인가?】</h2>
