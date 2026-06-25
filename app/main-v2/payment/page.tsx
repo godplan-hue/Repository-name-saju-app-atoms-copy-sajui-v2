@@ -271,6 +271,24 @@ function PaymentInner() {
           )}
         </div>
 
+        {/* 패키지 카드 선택부터 결제 버튼까지 — 서브도메인(파트너 브랜드)에서는 손님이
+            직접 카드로 결제하지 않고, 파트너가 직접 분석을 만들어 전달하는 방식으로
+            바꾸기로 했으므로 이 전체 구간을 숨기고 안내 문구로 대체함 */}
+        {isPartner && (
+          <div style={{ maxWidth: 600, margin: "0 auto 40px", textAlign: "center", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: "32px 24px", borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
+            <div style={{ fontSize: 32, marginBottom: 12 }}>📞</div>
+            <h3 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 10 }}>{brand?.businessName || "담당자"}에게 직접 문의해주세요</h3>
+            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, margin: 0 }}>
+              이 사이트는 온라인 카드결제 대신, {brand?.businessName || "담당자"}가 직접 분석을 만들어 전달해드리는 방식으로 운영돼요.<br/>
+              결제·상담은 {brand?.businessName || "담당자"}에게 직접 문의해주세요.
+            </p>
+            <a href="/main-v2" style={{ display: "inline-block", marginTop: 18, padding: 12, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textDecoration: "none" }}>
+              ← 돌아가기
+            </a>
+          </div>
+        )}
+        {!isPartner && (
+        <>
         <div id="packages-section" style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => {
             // 베이직/VIP는 항상 재물운+연애운이 포함된 패키지라서, 배너로
@@ -349,6 +367,8 @@ function PaymentInner() {
             ← 돌아가기
           </a>
         </div>
+        </>
+        )}
 
         {/* 운세 선택 섹션 — 990원 단품 결제는 파트너 서브도메인에서는 안 보이게 막음
             (메인 화면 버튼만 막아도 이 페이지에 직접 들어오면 그대로 보였던 구멍) */}
