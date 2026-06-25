@@ -398,6 +398,9 @@ export default function MainV2() {
   // 하루에 한 번만 들리게 하고, 이 useEffect는 main-v2 화면에 있을 때만
   // 살아있어서(다른 페이지로 넘어가면 정리됨) 다른 페이지에서는 절대 안 들림
   useEffect(() => {
+    // 파트너 서브도메인에서는 990원 단품을 안 팔기로 했으므로, 이 인사말도
+    // "점운"·"990원" 언급 없이 들려야 함(아예 다른 멘트로 분기)
+    if (isPartner) return;
     const todayKey = new Date().toDateString();
     if (localStorage.getItem("v2_greeting_shown_date") === todayKey) return;
 
@@ -417,7 +420,7 @@ export default function MainV2() {
       window.removeEventListener("click", speakGreeting);
       window.removeEventListener("touchstart", speakGreeting);
     };
-  }, []);
+  }, [isPartner]);
 
   useEffect(() => {
     setMounted(true);

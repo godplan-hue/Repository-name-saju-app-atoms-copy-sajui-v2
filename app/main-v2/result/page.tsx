@@ -773,9 +773,13 @@ function V2ResultInner() {
   };
 
   // 화면이 꺼졌다 켜졌을 때 "speaking 상태는 true인데 실제 음성은 멈춰있는" 경우를
-  // 감지해서 멈췄던 위치(readIdxRef)부터 자동으로 다시 읽기 시작함
+  // 감지해서 멈췄던 위치(readIdxRef)부터 자동으로 다시 읽기 시작함.
+  // window.speechSynthesis.speaking은 모바일 브라우저에서 화면이 꺼졌다 켜진 뒤
+  // 실제로는 멈췄는데도 true로 고정되어버리는 알려진 버그가 있어서, 이 값은
+  // 신뢰하지 않고 우리가 직접 관리하는 speaking 상태만 기준으로 강제로 다시 시작함
   resumeAfterHideRef.current = () => {
-    if (speaking && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window && !window.speechSynthesis.speaking) {
+    if (speaking && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
       speakFrom(readChunksRef.current, readIdxRef.current);
     }
   };
@@ -785,7 +789,10 @@ function V2ResultInner() {
       alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.");
       return;
     }
-    if (speaking) {
+    // speaking 상태가 true인데도 실제로는 음성이 멈춰있는 경우(화면 꺼짐 등으로
+    // 끊긴 경우) 이 버튼을 누르면 "정지"가 아니라 "이어 읽기"로 동작해야 함 —
+    // 그래서 실제로 재생 중인지(window.speechSynthesis.speaking)도 같이 확인함
+    if (speaking && window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
       return;
