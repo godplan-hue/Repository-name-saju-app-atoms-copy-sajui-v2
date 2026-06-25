@@ -145,9 +145,18 @@ function PaymentPartnerInner() {
             )}
           </div>
 
-          {/* 결제 버튼 */}
+          {/* 계좌이체 안내 — 카드결제 대신 계좌이체로 받기로 했으므로, 결제수단을
+              카드처럼 보이지 않게 입금 계좌를 명확히 보여줌 */}
+          <div style={{ background: "rgba(251,191,36,0.12)", border: "1.5px solid rgba(251,191,36,0.5)", borderRadius: 12, padding: 18, marginBottom: 20 }}>
+            <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 10px 0" }}>🏦 아래 계좌로 입금해주세요</p>
+            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, margin: "0 0 4px 0" }}>NH농협은행 355-0061-0651-13</p>
+            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 4px 0" }}>예금주: 장문정</p>
+            <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 10px 0" }}>입금액: ₩{finalFee.toLocaleString()}</p>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: 600, margin: 0, lineHeight: 1.6 }}>입금하신 뒤 아래 버튼을 눌러 신청을 완료해주세요. 입금 확인 후 이용 가능합니다.</p>
+          </div>
+
           <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 14, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: isProcessing ? "not-allowed" : "pointer", marginBottom: 12, opacity: isProcessing ? 0.6 : 1 }}>
-            {isProcessing ? "결제 처리 중..." : "💳 결제하기"}
+            {isProcessing ? "처리 중..." : "🏦 입금 완료, 신청하기"}
           </button>
 
           <a href={`/partner/apply-form?tier=${tier}`} style={{ display: "block", width: "100%", padding: 14, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textAlign: "center", textDecoration: "none" }}>
