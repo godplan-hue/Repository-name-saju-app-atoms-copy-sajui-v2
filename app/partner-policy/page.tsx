@@ -50,7 +50,8 @@ export default function PartnerPolicy() {
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>4. 신청 방법</h2>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
               <li>• 점운 사이트에서 파트너 가입 신청서 작성(이름·상호명·이메일·비밀번호·전화번호)</li>
-              <li>• 가입 즉시 계정이 생성되며, 별도의 승인 절차 없이 바로 로그인하여 이용 가능</li>
+              <li>• 가입 즉시 계정이 생성되어 바로 로그인할 수 있음</li>
+              <li>• 단, 실버 이상 유료 등급은 계좌이체로 가입비를 입금하신 뒤, 점운에서 입금을 확인하고 승인해야 분석 생성이 가능함(승인 전에는 로그인은 되지만 분석 생성은 막혀있음)</li>
               <li>• 같은 이름으로는 중복 가입이 불가하며, 등급을 변경하려면 로그인 후 "등급 업그레이드"를 이용</li>
             </ul>
           </section>
