@@ -43,7 +43,7 @@ export default function PartnerBrandSettings() {
     setError("");
     setMessage("");
     if (!subdomain.trim() || !businessName.trim()) {
-      setError("서브도메인과 상호명을 입력해주세요.");
+      setError("나만의 도메인과 상호명을 입력해주세요.");
       return;
     }
     setSaving(true);
@@ -75,7 +75,7 @@ export default function PartnerBrandSettings() {
             <div style={{ fontSize: 40, marginBottom: 12 }}>💎</div>
             <h1 style={{ fontSize: 18, fontWeight: 900, marginBottom: 10, color: "#333" }}>다이아 등급 전용 기능입니다</h1>
             <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, marginBottom: 20 }}>
-              나만의 독립 사주앱 브랜드(서브도메인+로고)는 다이아 등급부터 이용할 수 있어요.
+              나만의 독립 사주앱 브랜드(도메인+로고)는 다이아 등급부터 이용할 수 있어요.
             </p>
             <button onClick={() => router.push("/partner/upgrade")} style={{ padding: "12px 24px", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
               등급 업그레이드 하기
@@ -93,10 +93,10 @@ export default function PartnerBrandSettings() {
         <div style={{ maxWidth: 480, margin: "0 auto", background: "white", borderRadius: 14, padding: 24, boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
           <h1 style={{ fontSize: 20, fontWeight: 900, marginBottom: 6, color: "#333" }}>💎 나만의 독립 사주앱 브랜드</h1>
           <p style={{ fontSize: 13, color: "#888", marginBottom: 22, lineHeight: 1.6 }}>
-            서브도메인 주소로 들어온 손님에게는 "점운" 대신 등록하신 브랜드가 보여요. 실제 분석·결제·데이터는 그대로 점운 시스템을 씁니다.
+            나만의 도메인 주소로 들어온 손님에게는 "점운" 대신 등록하신 브랜드가 보여요. 실제 분석·결제·데이터는 그대로 점운 시스템을 씁니다.
           </p>
 
-          <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 6, color: "#333" }}>서브도메인 주소 *</label>
+          <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 6, color: "#333" }}>나만의 도메인 주소 *</label>
           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
             <input
               type="text"

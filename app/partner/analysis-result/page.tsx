@@ -102,6 +102,8 @@ function PartnerAnalysisResultInner() {
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
+  // 화면이 꺼졌다 켜질 때 음성 재생만 조용히 끊기는 경우를 위한 자동 이어읽기용
+  const resumeAfterHideRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     const result = sessionStorage.getItem("analysisResult");
@@ -162,6 +164,15 @@ function PartnerAnalysisResultInner() {
     return () => {
       if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
     };
+  }, []);
+
+  // 화면이 꺼졌다가 다시 켜지면 자동으로 이어 읽기를 시도함
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") resumeAfterHideRef.current();
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
   }, []);
 
   // 메인 사이트와 동일한 이유로 카테고리별로 따로 저장함 — 전부 하나의
@@ -250,6 +261,16 @@ function PartnerAnalysisResultInner() {
   const { scores, luckyColor, luckyNumber, luckyDirection } = analysisResults;
   const cats = (PACKAGE_CATS[packageType] ?? PACKAGE_CATS["기본 분석"]).filter(c => analysisResults[c.key]);
 
+  // 화면이 꺼지거나 연결 에러로 다시 들어와도 처음부터가 아니라 멈췄던 위치부터
+  // 이어서 읽을 수 있도록 멈춘 위치를 localStorage에 저장해둠
+  const ttsProgressKey = `partner_tts_progress_${customerName}_${birthYear}_${packageType}`;
+  const saveTtsProgress = (chunks: string[], idx: number) => {
+    try { localStorage.setItem(ttsProgressKey, JSON.stringify({ chunks, idx })); } catch {}
+  };
+  const clearTtsProgress = () => {
+    try { localStorage.removeItem(ttsProgressKey); } catch {}
+  };
+
   // 일부 기기(특히 안드로이드)는 음성 목록이 비동기로 늦게 로드되어, 그 전에
   // speak()를 호출하면 에러도 없이 그냥 소리가 안 나는 경우가 있음 — 목록이
   // 채워지길 잠깐 기다렸다가(최대 1초) 한국어 음성을 찾아서 명시적으로 지정함
@@ -274,7 +295,7 @@ function PartnerAnalysisResultInner() {
       utter.lang = "ko-KR";
       if (voice) utter.voice = voice;
       utter.rate = 1;
-      utter.onstart = () => { readIdxRef.current = idx; };
+      utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
       utter.onerror = (e) => {
         setSpeaking(false);
         // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
@@ -289,10 +310,19 @@ function PartnerAnalysisResultInner() {
         alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
       };
       if (idx === chunks.length - 1) {
-        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
+        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); };
       }
       window.speechSynthesis.speak(utter);
     });
+  };
+
+  // 화면이 꺼졌다 켜질 때 speaking 상태는 true인데 실제 음성은 멈춰있는 경우를 위한
+  // 자동 이어읽기 — window.speechSynthesis.speaking은 이런 경우 신뢰할 수 없어서 보지 않음
+  resumeAfterHideRef.current = () => {
+    if (speaking && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      speakFrom(readChunksRef.current, readIdxRef.current);
+    }
   };
 
   const toggleReadAloud = () => {
@@ -300,10 +330,24 @@ function PartnerAnalysisResultInner() {
       alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.");
       return;
     }
-    if (speaking) {
+    // speaking 상태가 true인데도 실제로는 음성이 멈춰있는 경우(화면 꺼짐 등)
+    // 이 버튼을 누르면 "정지"가 아니라 "이어 읽기"로 동작해야 함
+    if (speaking && window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
       return;
+    }
+    if (readChunksRef.current.length === 0) {
+      try {
+        const saved = localStorage.getItem(ttsProgressKey);
+        if (saved) {
+          const { chunks, idx } = JSON.parse(saved);
+          if (Array.isArray(chunks) && chunks.length > 0 && typeof idx === "number") {
+            readChunksRef.current = chunks;
+            readIdxRef.current = idx;
+          }
+        }
+      } catch {}
     }
     if (readChunksRef.current.length === 0) {
       const fullText = cats.map(c => analysisResults[c.key]).filter(Boolean).join("\n")

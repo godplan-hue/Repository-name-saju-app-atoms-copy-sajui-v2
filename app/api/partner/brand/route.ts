@@ -32,14 +32,14 @@ export async function POST(request: NextRequest) {
 
     const slug = String(subdomain).trim().toLowerCase();
     if (!isValidSubdomain(slug)) {
-      return NextResponse.json({ error: "서브도메인은 영문 소문자·숫자·하이픈만 가능하며 3~20자여야 합니다(예약된 이름은 사용할 수 없습니다)." }, { status: 400 });
+      return NextResponse.json({ error: "나만의 도메인은 영문 소문자·숫자·하이픈만 가능하며 3~20자여야 합니다(예약된 이름은 사용할 수 없습니다)." }, { status: 400 });
     }
 
     // 이미 다른 파트너가 쓰고 있는 서브도메인인지 확인(본인이 이전에 등록한
     // 것을 그대로 다시 저장하는 경우는 허용)
     const existing = await db.ref(`partnerBrands/${slug}`).once("value");
     if (existing.exists() && existing.val()?.partnerId !== partnerId) {
-      return NextResponse.json({ error: "이미 사용 중인 서브도메인입니다. 다른 이름을 선택해주세요." }, { status: 409 });
+      return NextResponse.json({ error: "이미 사용 중인 도메인입니다. 다른 이름을 선택해주세요." }, { status: 409 });
     }
 
     // 같은 파트너가 이전에 다른 서브도메인을 등록했었다면 그 옛 기록은 정리
