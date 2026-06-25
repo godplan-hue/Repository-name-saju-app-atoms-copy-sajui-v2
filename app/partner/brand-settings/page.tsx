@@ -12,6 +12,13 @@ export default function PartnerBrandSettings() {
   const [subdomain, setSubdomain] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
+  // 다이아 파트너는 우리 도메인 안에서 직접 손님을 모으니, 보여주는 가격을
+  // 자기 마음대로 바꿀 수 있게 함(실제 결제는 어차피 파트너가 직접 받으므로
+  // 가격표는 화면 표시용일 뿐, 점운 시스템 결제·정산과는 무관함)
+  const [customPriceBasic, setCustomPriceBasic] = useState("");
+  const [customPriceStandard, setCustomPriceStandard] = useState("");
+  const [customPricePremium, setCustomPricePremium] = useState("");
+  const [customPriceVip, setCustomPriceVip] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -32,6 +39,10 @@ export default function PartnerBrandSettings() {
             setSubdomain(data.subdomain || "");
             setBusinessName(data.businessName || "");
             setLogoUrl(data.logoUrl || "");
+            setCustomPriceBasic(data.customPriceBasic || "");
+            setCustomPriceStandard(data.customPriceStandard || "");
+            setCustomPricePremium(data.customPricePremium || "");
+            setCustomPriceVip(data.customPriceVip || "");
           }
         })
         .catch(() => {});
@@ -51,7 +62,11 @@ export default function PartnerBrandSettings() {
       const res = await fetch("/api/partner/brand", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ partnerId, subdomain: subdomain.trim(), businessName: businessName.trim(), logoUrl: logoUrl.trim() }),
+        body: JSON.stringify({
+          partnerId, subdomain: subdomain.trim(), businessName: businessName.trim(), logoUrl: logoUrl.trim(),
+          customPriceBasic: customPriceBasic.trim(), customPriceStandard: customPriceStandard.trim(),
+          customPricePremium: customPricePremium.trim(), customPriceVip: customPriceVip.trim(),
+        }),
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error || "저장에 실패했습니다."); return; }
@@ -127,6 +142,27 @@ export default function PartnerBrandSettings() {
             style={{ width: "100%", padding: 12, marginBottom: 6, border: "2px solid #ddd", borderRadius: 8, fontSize: 14, boxSizing: "border-box" }}
           />
           <p style={{ fontSize: 11, color: "#aaa", marginBottom: 18 }}>비워두면 기본 점운 로고 모양을 그대로 씁니다</p>
+
+          <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 6, color: "#333" }}>화면에 표시할 가격 (선택)</label>
+          <p style={{ fontSize: 11, color: "#aaa", marginBottom: 10 }}>비워두면 기본 가격이 그대로 보여요. 실제 결제는 어차피 직접 받으시니, 화면에 보일 가격만 원하시는 대로 적어주세요.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 18 }}>
+            <div>
+              <p style={{ fontSize: 11, color: "#666", margin: "0 0 4px" }}>기본 분석 (기본 ₩9,900)</p>
+              <input type="text" value={customPriceBasic} onChange={e => setCustomPriceBasic(e.target.value)} placeholder="₩9,900" style={{ width: "100%", padding: 10, border: "2px solid #ddd", borderRadius: 8, fontSize: 13, boxSizing: "border-box" }} />
+            </div>
+            <div>
+              <p style={{ fontSize: 11, color: "#666", margin: "0 0 4px" }}>베이직 (기본 ₩19,900)</p>
+              <input type="text" value={customPriceStandard} onChange={e => setCustomPriceStandard(e.target.value)} placeholder="₩19,900" style={{ width: "100%", padding: 10, border: "2px solid #ddd", borderRadius: 8, fontSize: 13, boxSizing: "border-box" }} />
+            </div>
+            <div>
+              <p style={{ fontSize: 11, color: "#666", margin: "0 0 4px" }}>프리미엄 (기본 ₩24,900)</p>
+              <input type="text" value={customPricePremium} onChange={e => setCustomPricePremium(e.target.value)} placeholder="₩24,900" style={{ width: "100%", padding: 10, border: "2px solid #ddd", borderRadius: 8, fontSize: 13, boxSizing: "border-box" }} />
+            </div>
+            <div>
+              <p style={{ fontSize: 11, color: "#666", margin: "0 0 4px" }}>VIP 커플팩 (기본 ₩29,900)</p>
+              <input type="text" value={customPriceVip} onChange={e => setCustomPriceVip(e.target.value)} placeholder="₩29,900" style={{ width: "100%", padding: 10, border: "2px solid #ddd", borderRadius: 8, fontSize: 13, boxSizing: "border-box" }} />
+            </div>
+          </div>
 
           {error && <p style={{ color: "#dc2626", fontSize: 13, fontWeight: 700, marginBottom: 14 }}>{error}</p>}
           {message && <p style={{ color: "#16a34a", fontSize: 13, fontWeight: 700, marginBottom: 14 }}>{message}</p>}

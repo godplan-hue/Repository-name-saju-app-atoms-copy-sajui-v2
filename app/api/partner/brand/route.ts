@@ -16,7 +16,7 @@ function isValidSubdomain(s: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
-    const { partnerId, subdomain, businessName, logoUrl } = await request.json();
+    const { partnerId, subdomain, businessName, logoUrl, customPriceBasic, customPriceStandard, customPricePremium, customPriceVip } = await request.json();
     if (!partnerId || !subdomain || !businessName) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
@@ -50,6 +50,10 @@ export async function POST(request: NextRequest) {
 
     await db.ref(`partnerBrands/${slug}`).set({
       partnerId, businessName, logoUrl: logoUrl || "", updatedAt: new Date().toISOString(),
+      // 화면에 보여줄 가격만 다이아 파트너가 자유롭게 바꿀 수 있게 함(실제 결제는
+      // 어차피 직접 받으므로 점운 시스템 결제·정산에는 전혀 영향 없는 표시용 값)
+      customPriceBasic: customPriceBasic || "", customPriceStandard: customPriceStandard || "",
+      customPricePremium: customPricePremium || "", customPriceVip: customPriceVip || "",
     });
     await db.ref(`partners/${partnerId}/subdomain`).set(slug);
 
@@ -74,8 +78,12 @@ export async function GET(request: NextRequest) {
       if (!slug) return NextResponse.json({ error: "등록된 브랜드가 없습니다." }, { status: 404 });
       const brandSnap = await db.ref(`partnerBrands/${slug}`).once("value");
       if (!brandSnap.exists()) return NextResponse.json({ error: "등록된 브랜드가 없습니다." }, { status: 404 });
-      const { businessName, logoUrl } = brandSnap.val();
-      return NextResponse.json({ subdomain: slug, businessName, logoUrl: logoUrl || "" });
+      const { businessName, logoUrl, customPriceBasic, customPriceStandard, customPricePremium, customPriceVip } = brandSnap.val();
+      return NextResponse.json({
+        subdomain: slug, businessName, logoUrl: logoUrl || "",
+        customPriceBasic: customPriceBasic || "", customPriceStandard: customPriceStandard || "",
+        customPricePremium: customPricePremium || "", customPriceVip: customPriceVip || "",
+      });
     }
 
     // 메인 사이트가 호스트명(서브도메인)을 보고 브랜드를 찾을 때 씀 — 누구나
@@ -84,8 +92,12 @@ export async function GET(request: NextRequest) {
     const snap = await db.ref(`partnerBrands/${subdomainParam.toLowerCase()}`).once("value");
     if (!snap.exists()) return NextResponse.json({ error: "등록된 브랜드가 없습니다." }, { status: 404 });
 
-    const { businessName, logoUrl } = snap.val();
-    return NextResponse.json({ businessName, logoUrl: logoUrl || "" });
+    const { businessName, logoUrl, customPriceBasic, customPriceStandard, customPricePremium, customPriceVip } = snap.val();
+    return NextResponse.json({
+      businessName, logoUrl: logoUrl || "",
+      customPriceBasic: customPriceBasic || "", customPriceStandard: customPriceStandard || "",
+      customPricePremium: customPricePremium || "", customPriceVip: customPriceVip || "",
+    });
   } catch (error) {
     console.error("Brand lookup error:", error);
     return NextResponse.json({ error: "조회에 실패했습니다." }, { status: 500 });

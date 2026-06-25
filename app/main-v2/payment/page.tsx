@@ -45,7 +45,7 @@ function PaymentInner() {
   // 990원 결제가 가능했던 구멍이 있어서 이 페이지 자체에도 같은 차단을 둠
   const [isPartner, setIsPartner] = useState(false);
   // 다이아 등급 파트너의 서브도메인이면 "점운" 대신 그 파트너 브랜드로 표시
-  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
+  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string; customPriceBasic?: string; customPriceStandard?: string; customPricePremium?: string; customPriceVip?: string } | null>(null);
   useEffect(() => {
     const hostname = window.location.hostname;
     const partner = isPartnerHost(hostname);
@@ -288,6 +288,14 @@ function PaymentInner() {
               : wlBadge
               ? "linear-gradient(135deg, rgba(139,92,246,0.55), rgba(168,85,247,0.42))"
               : "rgba(139,92,246,0.16)";
+            // 다이아 파트너는 화면에 보여줄 가격을 직접 입력할 수 있게 했음(실제
+            // 결제는 어차피 파트너가 직접 받으므로 표시용 값만 바꿔치기함). 할인코드는
+            // 일반 손님용 기능이라 파트너 화면에서는 원래 가격 그대로 둠
+            const customPriceMap: Record<string, string | undefined> = {
+              basic: brand?.customPriceBasic, standard: brand?.customPriceStandard,
+              premium: brand?.customPricePremium, vip: brand?.customPriceVip,
+            };
+            const displayPrice = (isPartner && customPriceMap[pkg.id]) ? customPriceMap[pkg.id]! : pkg.price;
             return (
             <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: cardBg, backdropFilter: "blur(10px)", border: isSelected ? "2px solid #fbbf24" : wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 14, padding: 20, cursor: "pointer", transition: "all 0.3s", boxShadow: isSelected ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
               {wlBadge && (
@@ -298,13 +306,13 @@ function PaymentInner() {
               )}
               <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
               <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, margin: "0 0 8px 0", opacity: 0.85 }}>【심층 상세 분석】</p>
-              {appliedDiscount ? (
+              {appliedDiscount && !isPartner ? (
                 <p style={{ margin: "0 0 10px 0" }}>
                   <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: 700, textDecoration: "line-through", marginRight: 8 }}>{pkg.price}</span>
                   <span style={{ color: "#90EE90", fontSize: 24, fontWeight: 900 }}>₩{Math.round(Number(pkg.price.replace(/[^0-9]/g, "")) * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}</span>
                 </p>
               ) : (
-                <p style={{ color: "#ffffff", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{pkg.price}</p>
+                <p style={{ color: "#ffffff", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{displayPrice}</p>
               )}
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 10px 0", lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: pkg.desc }} />
               <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: "0 0 6px 0" }}>🎯 {pkg.count}개 운세</p>
