@@ -40,16 +40,15 @@ export default function PartnerApply() {
               <h2 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 16px 0" }}>{tier.name}</h2>
               <p style={{ color: "#cbb6ff", fontSize: 11, fontWeight: 700, margin: "0 0 2px" }}>연회비</p>
               <p style={{ color: "#f5f5f5", fontSize: 20, fontWeight: 900, margin: "0 0 12px 0" }}>{tier.fee}</p>
-              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 8px 0" }}>
+              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 4px 0" }}>
                 한도: {tier.month.split("(")[0]}
-                <br/><br/>
-                {tier.month.includes("(") ? `(${tier.month.split("(")[1]}` : " "}
+                {tier.month.includes("(") && (<><br/>{`(${tier.month.split("(")[1]}`}</>)}
               </p>
-              <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: "0 0 6px 0" }}>사용료 {tier.revenue} 할인</p>
               {tier.extra && (
-                <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: 0 }}>💎 {tier.extra}</p>
+                <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: "0 0 4px 0" }}>💎 {tier.extra}</p>
               )}
-              <button onClick={() => handleApply(tier.value)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", marginTop: 16 }}>가입하기</button>
+              <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: "0 0 8px 0" }}>사용료 {tier.revenue} 할인</p>
+              <button onClick={() => handleApply(tier.value)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", marginTop: "auto" }}>가입하기</button>
             </div>
           ))}
         </div>

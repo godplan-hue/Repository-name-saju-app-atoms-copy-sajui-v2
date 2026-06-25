@@ -281,6 +281,12 @@ function V2ResultInner() {
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
+  // 화면이 꺼졌다 켜질 때 모바일 OS가 음성 재생을 조용히 멈춰버리는 경우가 있음(JS
+  // 에러 없이 그냥 소리만 끊김) — 이때 speaking 상태는 true로 남아있는데 실제
+  // 재생은 멈춘 상태가 되어, 버튼을 눌러도 "멈추기"만 동작하고 다시 눌러야 이어
+  // 읽기가 시작되는 불편이 있었음. resumeAfterHideRef에 최신 재개 로직을 담아두고
+  // visibilitychange로 화면이 다시 보일 때 자동으로 이어 읽도록 함(아래에서 채움)
+  const resumeAfterHideRef = useRef<() => void>(() => {});
 
   const INLINE_PLANS = [
     { id: "vip", icon: "🐲", name: "용 코스", badge: "👑 최고", desc: "₩9,990", price: 9990, priceStr: "₩9,990", per: "무제한", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
@@ -302,6 +308,16 @@ function V2ResultInner() {
         window.speechSynthesis.cancel();
       }
     };
+  }, []);
+
+  // 화면이 꺼졌다가 다시 켜지면(탭 자체는 안 죽었지만 음성 재생만 끊긴 경우) 자동으로
+  // 이어 읽기를 시도함 — resumeAfterHideRef.current는 아래에서 매 렌더마다 최신 상태로 갱신됨
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") resumeAfterHideRef.current();
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
   }, []);
 
   useEffect(() => {
@@ -754,6 +770,14 @@ function V2ResultInner() {
       }
       window.speechSynthesis.speak(utter);
     });
+  };
+
+  // 화면이 꺼졌다 켜졌을 때 "speaking 상태는 true인데 실제 음성은 멈춰있는" 경우를
+  // 감지해서 멈췄던 위치(readIdxRef)부터 자동으로 다시 읽기 시작함
+  resumeAfterHideRef.current = () => {
+    if (speaking && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window && !window.speechSynthesis.speaking) {
+      speakFrom(readChunksRef.current, readIdxRef.current);
+    }
   };
 
   const toggleReadAloud = () => {
