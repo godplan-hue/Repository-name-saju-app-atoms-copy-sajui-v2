@@ -105,6 +105,88 @@ function getHourPillar(dayGan: string, birthHour: string): Pillar | null {
   return { gan, ganHanja: CHEONGAN_HANJA[gan], ji, jiHanja: JIJI_HANJA[ji] };
 }
 
+// ── 대운(大運) — 10년 단위로 바뀌는 큰 운의 흐름 ──
+// 1) 순행/역행: 연주 천간의 음양 + 성별로 결정. 양남음녀(양간+남자 또는 음간+여자)는
+//    순행(60갑자를 정방향으로 진행), 음남양녀(음간+남자 또는 양간+여자)는 역행.
+// 2) 대운수(시작 나이): 태어난 날부터 가장 가까운 절기(節氣) 경계까지의 날짜 차이를
+//    3으로 나눈 값(나머지 1은 버리고, 나머지 2는 올림) — 검증된 표준 명리학 공식.
+//    절기 경계는 월주 계산에 이미 쓰는 SOLAR_TERM_BOUNDS(평균 절입일)를 그대로 재사용.
+// 3) 60갑자 진행: 월주를 출발점으로, 순행이면 다음 갑자부터, 역행이면 이전 갑자부터
+//    10년에 하나씩 진행. 60갑자 순번은 갑자(0)부터 천간 나머지·지지 나머지가 동시에
+//    맞아떨어지는 조합으로, 일주 계산(DAY_PILLAR_EPOCH 방식)과 같은 원리임.
+function pillarTo60Index(gan: string, ji: string): number {
+  const g = CHEONGAN10.indexOf(gan);
+  const j = JIJI12.indexOf(ji);
+  for (let i = 0; i < 60; i++) {
+    if (i % 10 === g && i % 12 === j) return i;
+  }
+  return 0;
+}
+function pillarFrom60Index(idx: number): Pillar {
+  const i = ((idx % 60) + 60) % 60;
+  const gan = CHEONGAN10[i % 10];
+  const ji = JIJI12[i % 12];
+  return { gan, ganHanja: CHEONGAN_HANJA[gan], ji, jiHanja: JIJI_HANJA[ji] };
+}
+
+// 십이운성(十二運星) — 천간마다 정해진 장생지(시작 지지)에서, 양간은 지지를
+// 정방향으로, 음간은 역방향으로 돌면서 12단계를 거침(검증된 표준 명리학 공식)
+const SIBIUNSEONG_JANGSAENG: Record<string, string> = { "갑": "해", "을": "오", "병": "인", "정": "유", "무": "인", "기": "유", "경": "사", "신": "자", "임": "신", "계": "묘" };
+const SIBIUNSEONG_STAGES = ["장생", "목욕", "관대", "건록", "제왕", "쇠", "병", "사", "묘", "절", "태", "양"];
+function getSibiUnseong(gan: string, ji: string): string {
+  const startIdx = JIJI12.indexOf(SIBIUNSEONG_JANGSAENG[gan]);
+  const jiIdx = JIJI12.indexOf(ji);
+  const isYang = GAN_YANG[gan];
+  const diff = isYang ? (jiIdx - startIdx + 12) % 12 : (startIdx - jiIdx + 12) % 12;
+  return SIBIUNSEONG_STAGES[diff];
+}
+
+// 대운수(시작 나이) — 생일부터 순행이면 다음 절기까지, 역행이면 지난 절기로부터의
+// 날짜 차이를 구해 3으로 나눔. 평년/윤년 경계를 안전하게 다루려고 전후 1년치
+// 절기 경계를 모두 만들어두고, 그중 생일과 가장 가까운 경계를 찾음
+function getDaeunSu(year: number, month: number, day: number, isForward: boolean): number {
+  const boundaries: number[] = [];
+  for (let yy = year - 1; yy <= year + 1; yy++) {
+    for (const [bm, bd] of SOLAR_TERM_BOUNDS) {
+      boundaries.push(Date.UTC(yy, bm - 1, bd));
+    }
+  }
+  boundaries.sort((a, b) => a - b);
+  const birthTime = Date.UTC(year, month - 1, day);
+  let days: number;
+  if (isForward) {
+    const next = boundaries.find(b => b > birthTime) ?? boundaries[boundaries.length - 1];
+    days = Math.round((next - birthTime) / 86400000);
+  } else {
+    const prevList = boundaries.filter(b => b <= birthTime);
+    const prev = prevList.length > 0 ? prevList[prevList.length - 1] : boundaries[0];
+    days = Math.round((birthTime - prev) / 86400000);
+  }
+  const intPart = Math.floor(days / 3);
+  const remainder = days % 3;
+  const daeunSu = remainder === 2 ? intPart + 1 : intPart; // 나머지 1은 버림, 2는 올림
+  return Math.max(1, daeunSu);
+}
+
+interface DaeunBlock extends Pillar { startAge: number; endAge: number; unseong: string; }
+function getDaeunList(year: number, month: number, day: number, gender: string, count = 8): { isForward: boolean; daeunSu: number; list: DaeunBlock[] } {
+  const yp = getYearPillar(year, month, day);
+  const mp = getMonthPillar(year, month, day);
+  const isMale = gender === "남" || gender === "남성" || gender === "M";
+  // 양남음녀(양간+남자 또는 음간+여자) = 순행, 음남양녀(음간+남자 또는 양간+여자) = 역행
+  const isForward = GAN_YANG[yp.gan] === isMale;
+  const daeunSu = getDaeunSu(year, month, day, isForward);
+  const startIdx = pillarTo60Index(mp.gan, mp.ji);
+  const list: DaeunBlock[] = [];
+  for (let i = 0; i < count; i++) {
+    const stepIdx = isForward ? startIdx + 1 + i : startIdx - 1 - i;
+    const pillar = pillarFrom60Index(stepIdx);
+    const startAge = daeunSu + i * 10;
+    list.push({ ...pillar, startAge, endAge: startAge + 9, unseong: getSibiUnseong(pillar.gan, pillar.ji) });
+  }
+  return { isForward, daeunSu, list };
+}
+
 const ALL_CATS = ["🌟 오늘의 운세", "💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운", "💼 사업운", "📅 월별운세", "💍 결혼·궁합운", "📝 이름분석", "☀️ 올해 운세", "💼 전체 사주분석"];
 
 // ── 십성(十星) — 일간(나)을 기준으로 다른 천간이 나에게 어떤 관계인지 보는 것.
