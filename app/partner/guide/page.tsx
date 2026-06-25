@@ -115,7 +115,7 @@ export default function PartnerGuide() {
                 <li>• 파트너 카톡방 입장</li>
               </ul>
               <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginBottom: 16 }}>7일 초과 → 무조건 환불불가</p>
-              <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 800, lineHeight: 1.8, margin: 0 }}>⚠️ 가입비를 입금하지 않고 분석(결과지)을 생성한 경우, 가입비 환불 없이 즉시 탈퇴 처리됩니다.</p>
+              <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 800, lineHeight: 1.8, margin: 0 }}>⚠️ 분석 1건당 청구되는 사용료를 입금하지 않은 경우, 가입비 환불 없이 즉시 탈퇴 처리됩니다.</p>
             </section>
 
             <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
