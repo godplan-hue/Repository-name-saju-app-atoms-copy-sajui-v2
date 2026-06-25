@@ -28,6 +28,12 @@ export async function POST(request: NextRequest) {
     const tierId = partnerRecord?.tier || "free";
     const tier = getPartnerTier(tierId);
 
+    // 가입비/연회비를 계좌이체로 받기로 했고, 점운님이 입금을 직접 확인하기
+    // 전까지는 분석 생성 자체를 막음(확인 전에 마음대로 쓰는 걸 방지)
+    if (partnerRecord?.paymentConfirmed === false) {
+      return NextResponse.json({ error: "가입비 입금 확인 후 이용 가능합니다. 입금 확인되면 안내드릴게요." }, { status: 403 });
+    }
+
     if (isAnnualFeeExpired(tierId, partnerRecord?.feeRenewedAt)) {
       return NextResponse.json({ error: "연회비 갱신이 필요합니다. 갱신 후 다시 시도해주세요." }, { status: 403 });
     }

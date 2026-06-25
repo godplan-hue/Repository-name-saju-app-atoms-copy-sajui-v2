@@ -35,6 +35,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "나만의 도메인은 영문 소문자·숫자·하이픈만 가능하며 3~20자여야 합니다(예약된 이름은 사용할 수 없습니다)." }, { status: 400 });
     }
 
+    // 클라이언트 검증과 동일하게, 가격을 9,900원보다 낮게는 못 적게 서버에서도 한 번 더 확인
+    for (const p of [customPriceBasic, customPriceStandard, customPricePremium, customPriceVip]) {
+      if (!p) continue;
+      const num = Number(String(p).replace(/[^0-9]/g, ""));
+      if (num > 0 && num < 9900) {
+        return NextResponse.json({ error: "표시 가격은 9,900원 이상으로 입력해주세요." }, { status: 400 });
+      }
+    }
+
     // 이미 다른 파트너가 쓰고 있는 서브도메인인지 확인(본인이 이전에 등록한
     // 것을 그대로 다시 저장하는 경우는 허용)
     const existing = await db.ref(`partnerBrands/${slug}`).once("value");

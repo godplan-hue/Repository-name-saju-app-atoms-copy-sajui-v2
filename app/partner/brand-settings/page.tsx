@@ -57,6 +57,17 @@ export default function PartnerBrandSettings() {
       setError("나만의 도메인과 상호명을 입력해주세요.");
       return;
     }
+    // 가격을 너무 낮게 적어서 점운 브랜드 이미지를 깎아먹는 걸 막기 위해, 적어도
+    // 가장 싼 기본 패키지 정가(9,900원)보다는 낮게 못 적게 함
+    const prices = [customPriceBasic, customPriceStandard, customPricePremium, customPriceVip];
+    for (const p of prices) {
+      if (!p.trim()) continue;
+      const num = Number(p.replace(/[^0-9]/g, ""));
+      if (num > 0 && num < 9900) {
+        setError("표시 가격은 9,900원 이상으로 입력해주세요.");
+        return;
+      }
+    }
     setSaving(true);
     try {
       const res = await fetch("/api/partner/brand", {
