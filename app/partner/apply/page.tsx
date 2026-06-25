@@ -36,7 +36,7 @@ export default function PartnerApply() {
         {/* 등급 선택 */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 16, marginBottom: 40 }}>
           {tiers.map((tier) => (
-            <div key={tier.value} style={{ background: "rgba(139,92,246,0.65)", border: "2px solid rgba(245,158,11,0.4)", borderRadius: 12, padding: 20, textAlign: "center", cursor: "pointer", transition: "all 0.3s", transform: selectedTier === tier.value ? "scale(1.05)" : "scale(1)" }} onClick={() => setSelectedTier(tier.value)}>
+            <div key={tier.value} style={{ background: "rgba(139,92,246,0.65)", border: "2px solid rgba(245,158,11,0.4)", borderRadius: 12, padding: 20, textAlign: "center", cursor: "pointer", transition: "all 0.3s", transform: selectedTier === tier.value ? "scale(1.05)" : "scale(1)", display: "flex", flexDirection: "column" }} onClick={() => setSelectedTier(tier.value)}>
               <h2 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 16px 0" }}>{tier.name}</h2>
               <p style={{ color: "#cbb6ff", fontSize: 11, fontWeight: 700, margin: "0 0 2px" }}>연회비</p>
               <p style={{ color: "#f5f5f5", fontSize: 20, fontWeight: 900, margin: "0 0 12px 0" }}>{tier.fee}</p>
@@ -45,11 +45,11 @@ export default function PartnerApply() {
                 <br/><br/>
                 {tier.month.includes("(") ? `(${tier.month.split("(")[1]}` : " "}
               </p>
-              <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: tier.extra ? "0 0 6px 0" : "0 0 16px 0" }}>사용료 {tier.revenue} 할인</p>
+              <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: "0 0 6px 0" }}>사용료 {tier.revenue} 할인</p>
               {tier.extra && (
-                <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: "0 0 16px 0" }}>💎 {tier.extra}</p>
+                <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: 0 }}>💎 {tier.extra}</p>
               )}
-              <button onClick={() => handleApply(tier.value)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>가입하기</button>
+              <button onClick={() => handleApply(tier.value)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", marginTop: 16 }}>가입하기</button>
             </div>
           ))}
         </div>
