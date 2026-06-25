@@ -11,7 +11,7 @@ export default function PartnerApply() {
     { name: "무료", fee: "₩0", month: "월 30건(연 최대 360건)", revenue: "30%", value: "free" },
     { name: "실버", fee: "₩280,000", month: "월 150건(연 최대 1,800건)", revenue: "45%", value: "silver" },
     { name: "골드", fee: "₩480,000", month: "월 300건(연 최대 3,600건)", revenue: "55%", value: "gold" },
-    { name: "다이아", fee: "₩1,980,000", month: "무제한", revenue: "70%", value: "diamond" }
+    { name: "다이아", fee: "₩1,980,000", month: "무제한", revenue: "70%", value: "diamond", extra: "나만의 독립 사주앱 브랜드 운영" }
   ];
 
   const handleApply = (tier: string) => {
@@ -45,7 +45,10 @@ export default function PartnerApply() {
                 <br/><br/>
                 {tier.month.includes("(") ? `(${tier.month.split("(")[1]}` : " "}
               </p>
-              <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: "0 0 16px 0" }}>사용료 {tier.revenue} 할인</p>
+              <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: tier.extra ? "0 0 6px 0" : "0 0 16px 0" }}>사용료 {tier.revenue} 할인</p>
+              {tier.extra && (
+                <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: "0 0 16px 0" }}>💎 {tier.extra}</p>
+              )}
               <button onClick={() => handleApply(tier.value)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>가입하기</button>
             </div>
           ))}
