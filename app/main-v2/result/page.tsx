@@ -287,6 +287,19 @@ function V2ResultInner() {
   // 읽기가 시작되는 불편이 있었음. resumeAfterHideRef에 최신 재개 로직을 담아두고
   // visibilitychange로 화면이 다시 보일 때 자동으로 이어 읽도록 함(아래에서 채움)
   const resumeAfterHideRef = useRef<() => void>(() => {});
+  // 가만히 듣기만 하면 안드로이드/아이폰이 화면보호기처럼 자동으로 화면을 꺼버려서
+  // 읽기가 끊기는 경우가 많았음 — 읽는 동안에는 화면이 저절로 꺼지지 않게 잠가둠
+  // (지원 안 하는 구형 브라우저에서는 그냥 조용히 무시됨)
+  const wakeLockRef = useRef<any>(null);
+  const requestWakeLock = async () => {
+    try {
+      if ("wakeLock" in navigator) wakeLockRef.current = await (navigator as any).wakeLock.request("screen");
+    } catch {}
+  };
+  const releaseWakeLock = () => {
+    try { wakeLockRef.current?.release(); } catch {}
+    wakeLockRef.current = null;
+  };
 
   const INLINE_PLANS = [
     { id: "vip", icon: "🐲", name: "용 코스", badge: "👑 최고", desc: "₩9,990", price: 9990, priceStr: "₩9,990", per: "무제한", features: ["AI 심층 분석", "전 분야 사주 분석 + 사업운+총운", "월별+오늘 운세", "결혼운+궁합 분석 포함"] },
@@ -307,6 +320,7 @@ function V2ResultInner() {
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
+      releaseWakeLock();
     };
   }, []);
 
@@ -756,6 +770,7 @@ function V2ResultInner() {
         // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
         // 멈춰야 함 — 안 그러면 "멈추기"를 눌러도 계속 읽히는 것처럼 보임
         window.speechSynthesis.cancel();
+        releaseWakeLock();
         // 진짜 에러여도 멈춘 위치(sessionStorage)는 지우지 않음 — 기기 문제로
         // 한 번 끊겼다가 다시 들어와도 그 위치부터 이어서 읽을 수 있게 함
         alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
@@ -766,6 +781,7 @@ function V2ResultInner() {
           readIdxRef.current = 0;
           readChunksRef.current = [];
           clearTtsProgress();
+          releaseWakeLock();
         };
       }
       window.speechSynthesis.speak(utter);
@@ -780,6 +796,7 @@ function V2ResultInner() {
   resumeAfterHideRef.current = () => {
     if (speaking && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
+      requestWakeLock();
       speakFrom(readChunksRef.current, readIdxRef.current);
     }
   };
@@ -795,6 +812,7 @@ function V2ResultInner() {
     if (speaking && window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
+      releaseWakeLock();
       return;
     }
     if (readChunksRef.current.length === 0) {
@@ -863,6 +881,7 @@ function V2ResultInner() {
       readIdxRef.current = 0;
     }
     window.speechSynthesis.cancel();
+    requestWakeLock();
     speakFrom(readChunksRef.current, readIdxRef.current);
     setSpeaking(true);
   };

@@ -104,6 +104,18 @@ function PartnerAnalysisResultInner() {
   const readIdxRef = useRef(0);
   // 화면이 꺼졌다 켜질 때 음성 재생만 조용히 끊기는 경우를 위한 자동 이어읽기용
   const resumeAfterHideRef = useRef<() => void>(() => {});
+  // 가만히 듣기만 하면 화면이 자동으로 꺼지면서 읽기가 끊기는 경우가 많았음 —
+  // 읽는 동안에는 화면이 저절로 꺼지지 않게 잠가둠(지원 안 하면 조용히 무시됨)
+  const wakeLockRef = useRef<any>(null);
+  const requestWakeLock = async () => {
+    try {
+      if ("wakeLock" in navigator) wakeLockRef.current = await (navigator as any).wakeLock.request("screen");
+    } catch {}
+  };
+  const releaseWakeLock = () => {
+    try { wakeLockRef.current?.release(); } catch {}
+    wakeLockRef.current = null;
+  };
 
   useEffect(() => {
     const result = sessionStorage.getItem("analysisResult");
@@ -163,6 +175,7 @@ function PartnerAnalysisResultInner() {
   useEffect(() => {
     return () => {
       if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+      releaseWakeLock();
     };
   }, []);
 
@@ -307,10 +320,11 @@ function PartnerAnalysisResultInner() {
         // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
         // 멈춰야 함 — 안 그러면 "멈추기"를 눌러도 계속 읽히는 것처럼 보임
         window.speechSynthesis.cancel();
+        releaseWakeLock();
         alert("이 기기에서는 읽어주기가 원활하지 않아요.\n휴대폰 설정에서 음성 합성(텍스트 읽어주기) 기능과 한국어 음성이 설치되어 있는지 확인해주세요.");
       };
       if (idx === chunks.length - 1) {
-        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); };
+        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); releaseWakeLock(); };
       }
       window.speechSynthesis.speak(utter);
     });
@@ -321,6 +335,7 @@ function PartnerAnalysisResultInner() {
   resumeAfterHideRef.current = () => {
     if (speaking && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
+      requestWakeLock();
       speakFrom(readChunksRef.current, readIdxRef.current);
     }
   };
@@ -335,6 +350,7 @@ function PartnerAnalysisResultInner() {
     if (speaking && window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
+      releaseWakeLock();
       return;
     }
     if (readChunksRef.current.length === 0) {
@@ -362,6 +378,7 @@ function PartnerAnalysisResultInner() {
       readIdxRef.current = 0;
     }
     window.speechSynthesis.cancel();
+    requestWakeLock();
     speakFrom(readChunksRef.current, readIdxRef.current);
     setSpeaking(true);
   };
@@ -376,9 +393,11 @@ function PartnerAnalysisResultInner() {
             <span style={{ fontSize: 13, fontWeight: 900, color: "#9333ea", whiteSpace: "nowrap" }}>🔮 {businessName || "점운"}</span>
           </button>
           <div style={{ display: "flex", gap: 5, flexShrink: 0 }}>
-            <button onClick={toggleReadAloud} style={{ padding: "7px 11px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 800, fontSize: 12, cursor: "pointer", whiteSpace: "nowrap" }}>
-              {speaking ? "⏸ 멈추기" : "🔊 읽기"}
-            </button>
+            {partnerTier !== "free" && (
+              <button onClick={toggleReadAloud} style={{ padding: "7px 11px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 800, fontSize: 12, cursor: "pointer", whiteSpace: "nowrap" }}>
+                {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+              </button>
+            )}
             {partnerTier !== "free" && (
               <button onClick={handleShare} disabled={sharing} style={{ padding: "7px 11px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: sharing ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
                 {sharing ? "⏳..." : "📤 공유"}
@@ -505,9 +524,11 @@ function PartnerAnalysisResultInner() {
             </div>
           ))}
 
-          <button onClick={toggleReadAloud} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", marginBottom: 10 }}>
-            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
-          </button>
+          {partnerTier !== "free" && (
+            <button onClick={toggleReadAloud} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", marginBottom: 10 }}>
+              {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+            </button>
+          )}
 
           <button onClick={() => router.push("/partner/create-analysis")} style={{ width: "100%", padding: "13px 0", background: "white", color: "#9333ea", border: "1.5px solid rgba(147,51,234,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(147,51,234,0.1)" }}>
             🔄 새로 분석
