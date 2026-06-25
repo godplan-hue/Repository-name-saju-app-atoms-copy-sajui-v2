@@ -742,7 +742,10 @@ function V2ResultInner() {
   // 처음부터가 아니라 멈췄던 위치부터 이어서 읽을 수 있음. sessionStorage는 모바일에서
   // 화면이 꺼져 브라우저가 탭을 통째로 새로 만들면(세션이 끝남) 같이 사라지는 경우가
   // 있어서, 세션 경계와 무관하게 남아있는 localStorage로 저장함
-  const ttsProgressKey = `v2_tts_progress_${profile?.name ?? ""}_${profile?.birthYear ?? ""}_${tier}`;
+  // 이름·생년월일 등을 조합해서 키를 만들면 그 값들이 로딩 시점에 따라 살짝
+  // 달라질 수 있어서 저장한 키와 찾는 키가 어긋나는 문제가 있었음 — 이 화면은
+  // 한 번에 결과 하나만 보여주므로, 굳이 조합하지 않고 고정된 키 하나만 씀
+  const ttsProgressKey = "v2_tts_progress";
   const saveTtsProgress = (chunks: string[], idx: number) => {
     try { localStorage.setItem(ttsProgressKey, JSON.stringify({ chunks, idx })); } catch {}
   };

@@ -276,7 +276,10 @@ function PartnerAnalysisResultInner() {
 
   // 화면이 꺼지거나 연결 에러로 다시 들어와도 처음부터가 아니라 멈췄던 위치부터
   // 이어서 읽을 수 있도록 멈춘 위치를 localStorage에 저장해둠
-  const ttsProgressKey = `partner_tts_progress_${customerName}_${birthYear}_${packageType}`;
+  // 고객명·생년월일 등을 조합해서 키를 만들면 그 값들이 로딩 시점에 따라 살짝
+  // 달라질 수 있어서 저장한 키와 찾는 키가 어긋나는 문제가 있었음 — 이 화면은
+  // 한 번에 결과 하나만 보여주므로, 굳이 조합하지 않고 고정된 키 하나만 씀
+  const ttsProgressKey = "partner_tts_progress";
   const saveTtsProgress = (chunks: string[], idx: number) => {
     try { localStorage.setItem(ttsProgressKey, JSON.stringify({ chunks, idx })); } catch {}
   };
