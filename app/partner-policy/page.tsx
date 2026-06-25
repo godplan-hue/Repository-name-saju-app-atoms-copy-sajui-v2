@@ -35,7 +35,8 @@ export default function PartnerPolicy() {
               <li>• 골드: 연회비 ₩480,000 / 월 300건(연 최대 3,600건) 한도 / 사용료 55% 할인</li>
               <li>• 다이아: 연회비 ₩1,980,000 / 무제한 / 사용료 70% 할인 / 나만의 독립 사주앱 브랜드 운영</li>
             </ul>
-            <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 0 }}>※ "사용료 할인"은 분석 1건당 정가에서 등급별로 할인된 가격만 내면 된다는 뜻입니다(예: 다이아는 정가의 30%만 부가세 포함하여 지불).</p>
+            <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 4 }}>※ "사용료 할인"은 분석 1건당 정가에서 등급별로 할인된 가격만 내면 된다는 뜻입니다(예: 다이아는 정가의 30%만 부가세 포함하여 지불).</p>
+            <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, margin: 0 }}>※ 다이아 등급은 나만의 도메인 화면에 보일 패키지 가격도 직접 입력해 원하는 대로 바꿀 수 있어요.</p>
           </section>
 
           {/* 3. 사용료 결제 */}

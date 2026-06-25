@@ -72,6 +72,7 @@ export default function PartnerGuide() {
               <button onClick={() => router.push("/partner/brand-settings")} style={{ marginTop: 14, padding: "9px 18px", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
                 💎 나만의 독립 사주앱 브랜드 설정하기
               </button>
+              <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 10, marginBottom: 0 }}>※ 나만의 도메인 화면에 보일 패키지 가격도 직접 입력해 원하는 대로 바꿀 수 있어요(실제 결제는 어차피 직접 받으시는 것이라 점운 결제·정산과는 무관해요).</p>
             </section>
 
             <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
