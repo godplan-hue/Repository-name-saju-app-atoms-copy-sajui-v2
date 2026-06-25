@@ -252,6 +252,10 @@ function V2ResultInner() {
   const [changeInterest, setChangeInterest] = useState<string | null>(null);
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
+  // 공유하기 전에 "생년월일 정보(띠·오행 미리보기)를 같이 보여줄지" 고를 수 있게 함 —
+  // 기본은 켜짐(기존과 동일 동작), 끄면 이름+분석글만 공유되고 생년월일 기반 정보는 빠짐
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareIncludeBirth, setShareIncludeBirth] = useState(true);
   // 파트너 서브도메인에서는 "당신의 변화"(990원 결제 유도용 보너스 카드) 자체를 숨김.
   // 다이아 등급 파트너의 서브도메인이면 "점운" 대신 그 파트너 브랜드(상호명·로고)로 표시
   const [isPartner, setIsPartner] = useState(false);
@@ -662,7 +666,10 @@ function V2ResultInner() {
           body: JSON.stringify({
             name: result.profile?.name,
             scores: result.scores, luckyColor: result.luckyColor, luckyNumber: result.luckyNumber, luckyDirection: result.luckyDirection,
-            categories: validCategories, tier, birthYear: result.profile?.birthYear,
+            categories: validCategories, tier,
+            // "생년월일 정보 공개"를 꺼두면 birthYear를 안 보내서, 공유받은 사람한테
+            // 띠·오행 미리보기(생년월일 기반 정보)가 안 보이고 이름+분석글만 보임
+            birthYear: shareIncludeBirth ? result.profile?.birthYear : undefined,
           }),
         });
         if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
@@ -846,7 +853,7 @@ function V2ResultInner() {
           <button onClick={() => router.push("/main-v2/history")} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             📂 보관함
           </button>
-          <button onClick={share} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+          <button onClick={() => setShowShareModal(true)} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             📱 공유
           </button>
           {paid && planType !== "select" && (
@@ -1184,7 +1191,7 @@ function V2ResultInner() {
         {tier === "free" && (
           <>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={share}
+              <button onClick={() => setShowShareModal(true)}
                 style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
                 📤 공유하기
               </button>
@@ -1202,7 +1209,7 @@ function V2ResultInner() {
         {tier === "select" && (
           <>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={share}
+              <button onClick={() => setShowShareModal(true)}
                 style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
                 📤 공유하기
               </button>
@@ -1232,7 +1239,7 @@ function V2ResultInner() {
         {tier === "package" && (
           <>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={share}
+              <button onClick={() => setShowShareModal(true)}
                 style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
                 📤 공유하기
               </button>
@@ -1327,6 +1334,26 @@ function V2ResultInner() {
             </button>
             <button onClick={() => setShowSelect(false)}
               style={{ width: "100%", marginTop: 10, padding: "12px 0", background: "transparent", color: "#9ca3af", border: "none", fontSize: 13, cursor: "pointer" }}>
+              취소
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 공유 전 프라이버시 설정 — "생년월일 정보 공개"를 끄면 띠·오행 미리보기
+          없이 이름+분석글만 공유됨(친구가 내 정확한 생년월일을 안 보게 할 수 있음) */}
+      {showShareModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowShareModal(false)}>
+          <div style={{ background: "white", borderRadius: 20, padding: 22, maxWidth: 340, width: "100%" }} onClick={e => e.stopPropagation()}>
+            <h3 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 14px", color: "#1a1a2e" }}>📤 공유 설정</h3>
+            <label style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", background: "#fdf2f8", borderRadius: 12, cursor: "pointer", marginBottom: 16 }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>생년월일 정보 공개<br /><span style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600 }}>띠·오행 미리보기를 같이 보여줘요</span></span>
+              <input type="checkbox" checked={shareIncludeBirth} onChange={e => setShareIncludeBirth(e.target.checked)} style={{ width: 20, height: 20, flexShrink: 0, marginLeft: 10 }} />
+            </label>
+            <button onClick={() => { setShowShareModal(false); share(); }} style={{ width: "100%", padding: 13, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", marginBottom: 8 }}>
+              공유하기
+            </button>
+            <button onClick={() => setShowShareModal(false)} style={{ width: "100%", padding: 10, background: "transparent", color: "#9ca3af", border: "none", fontSize: 13, cursor: "pointer" }}>
               취소
             </button>
           </div>
