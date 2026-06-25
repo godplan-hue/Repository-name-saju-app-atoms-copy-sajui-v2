@@ -708,14 +708,16 @@ function V2ResultInner() {
   };
 
   // 화면이 꺼지거나 연결 에러로 페이지가 다시 마운트되면 readChunksRef/readIdxRef는
-  // 메모리에 있던 값이라 사라짐 — sessionStorage에 같이 저장해두면, 다시 들어왔을 때
-  // 처음부터가 아니라 멈췄던 위치부터 이어서 읽을 수 있음(같은 탭/세션 안에서만 유지됨)
+  // 메모리에 있던 값이라 사라짐 — localStorage에 같이 저장해두면, 다시 들어왔을 때
+  // 처음부터가 아니라 멈췄던 위치부터 이어서 읽을 수 있음. sessionStorage는 모바일에서
+  // 화면이 꺼져 브라우저가 탭을 통째로 새로 만들면(세션이 끝남) 같이 사라지는 경우가
+  // 있어서, 세션 경계와 무관하게 남아있는 localStorage로 저장함
   const ttsProgressKey = `v2_tts_progress_${profile?.name ?? ""}_${profile?.birthYear ?? ""}_${tier}`;
   const saveTtsProgress = (chunks: string[], idx: number) => {
-    try { sessionStorage.setItem(ttsProgressKey, JSON.stringify({ chunks, idx })); } catch {}
+    try { localStorage.setItem(ttsProgressKey, JSON.stringify({ chunks, idx })); } catch {}
   };
   const clearTtsProgress = () => {
-    try { sessionStorage.removeItem(ttsProgressKey); } catch {}
+    try { localStorage.removeItem(ttsProgressKey); } catch {}
   };
 
   const speakFrom = async (chunks: string[], startIdx: number) => {
@@ -768,7 +770,7 @@ function V2ResultInner() {
       // 화면이 꺼지거나 에러로 다시 들어온 경우, 이전에 멈췄던 위치가
       // sessionStorage에 남아있으면 처음부터 다시 만들지 말고 그 위치부터 이어read
       try {
-        const saved = sessionStorage.getItem(ttsProgressKey);
+        const saved = localStorage.getItem(ttsProgressKey);
         if (saved) {
           const { chunks, idx } = JSON.parse(saved);
           if (Array.isArray(chunks) && chunks.length > 0 && typeof idx === "number") {

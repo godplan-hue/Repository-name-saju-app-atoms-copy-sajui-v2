@@ -67,7 +67,7 @@ export default function PartnerGuide() {
               </ul>
               <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 4 }}>※ "사용료 할인"은 분석 1건당 정가에서 등급별로 할인된 가격만 내면 된다는 뜻입니다(예: 다이아는 정가의 30%만 부가세 포함하여 지불).</p>
               {!isFreeTier && (
-                <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 0, marginBottom: 0 }}>※ 유료 등급은 이 사용료 할인·한도뿐 아니라 카카오톡 공유 기능까지 함께 제공됩니다(자세한 내용은 5번 참고).</p>
+                <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 0, marginBottom: 0 }}>※ 유료 등급은 이 사용료 할인·한도뿐 아니라 공유 기능까지 함께 제공됩니다(자세한 내용은 5번 참고).</p>
               )}
               <button onClick={() => router.push("/partner/brand-settings")} style={{ marginTop: 14, padding: "9px 18px", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
                 💎 나만의 독립 사주앱 브랜드 설정하기
@@ -93,9 +93,9 @@ export default function PartnerGuide() {
               <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
                 <li>• 결과지에는 "점운" 대신 파트너님이 등록하신 상호명이 자동으로 표시됩니다(가입 시 한 번만 등록하면 이후 모든 결과지에 자동 적용)</li>
                 {!isFreeTier && (
-                  <li>• 실버 등급 이상부터는 결과지를 공유 링크로 만들어 카카오톡 등으로 보낼 수 있습니다(고객이 링크를 누르면 결과를 바로 확인할 수 있어요)</li>
+                  <li>• 실버 등급 이상부터는 결과지를 공유 링크로 만들어 보낼 수 있습니다(고객이 링크를 누르면 결과를 바로 확인할 수 있어요)</li>
                 )}
-                <li>• {isFreeTier ? "" : "무료 등급이거나, "}고객이 카카오톡을 사용하지 않는 경우에는 "🖼️ 이미지 저장" 버튼으로 결과지를 직접 다운로드한 뒤 본인이 원하는 방법으로 직접 전달해야 합니다(이 사이트에서 자동으로 발송해드리지는 않습니다)</li>
+                <li>• {isFreeTier ? "" : "무료 등급이거나, "}공유 링크를 전달하기 어려운 경우에는 "🖼️ 이미지 저장" 버튼으로 결과지를 직접 다운로드한 뒤 본인이 원하는 방법으로 직접 전달해야 합니다(이 사이트에서 자동으로 발송해드리지는 않습니다)</li>
                 {isFreeTier && (
                   <li>• 더 편리한 공유 방법은 등급을 올리면 추가로 제공됩니다(자세한 내용은 등급 업그레이드 화면 참고)</li>
                 )}
