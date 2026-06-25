@@ -37,6 +37,28 @@ export async function GET(
   }
 }
 
+// 계좌이체 입금을 점운님이 직접 확인한 뒤, 해당 파트너를 "확인됨" 상태로 바꿔둠
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const adminId = request.headers.get("x-admin-id");
+    if (!adminId) {
+      return NextResponse.json({ error: "인증되지 않았습니다" }, { status: 401 });
+    }
+    const { id } = await params;
+    await db.ref(`partners/${id}`).update({ paymentConfirmed: true });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Partner payment-confirm error:", error);
+    return NextResponse.json(
+      { error: "입금 확인 처리 중 오류가 발생했습니다" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

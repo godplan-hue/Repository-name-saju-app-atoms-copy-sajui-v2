@@ -24,7 +24,8 @@ export async function POST(request: NextRequest) {
 
     const tier = getPartnerTier(tierId);
     const now = new Date().toISOString();
-    await db.ref(`partners/${partnerId}`).update({ feeRenewedAt: now });
+    // 갱신도 계좌이체로 받기로 했으므로, 입금 확인 전까지는 "미확인" 상태로 표시
+    await db.ref(`partners/${partnerId}`).update({ feeRenewedAt: now, paymentConfirmed: false });
 
     await db.ref(`partners/${partnerId}/payments`).push({
       type: "renewal", tier: tierId, amount: paidAmount ?? tier.annualFee, paidAt: now,

@@ -32,6 +32,10 @@ export async function POST(request: NextRequest) {
     const partnerRef = await db.ref("partners").push({
       email, password: hashPassword(password), name, phone: phone || "", businessName,
       tier: partnerTier, createdAt: now, feeRenewedAt: now,
+      // 유료 등급은 카드결제가 아니라 계좌이체로 가입비를 받기로 했고, 입금 확인은
+      // 자동이 아니라 점운님이 나중에 직접 통장과 대조해서 확인함 — 그 전까지는
+      // "미확인" 상태로 표시해서 관리자 화면에서 한눈에 걸러볼 수 있게 함
+      ...(partnerTier !== "free" ? { paymentConfirmed: false } : {}),
     });
 
     // 가입비 결제내역 기록 — 지금은 실제 결제(토스 등) 연동 전이라 결제 자체는

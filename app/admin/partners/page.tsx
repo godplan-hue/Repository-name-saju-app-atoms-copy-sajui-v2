@@ -14,6 +14,7 @@ interface PartnerRow {
   lastPaidAt: string | null;
   usedCoupon: boolean;
   couponCodes: string[];
+  paymentConfirmed: boolean | null;
 }
 
 const TIER_NAMES: Record<string, string> = { free: "무료", silver: "실버", gold: "골드", diamond: "다이아" };
@@ -44,6 +45,18 @@ export default function AdminPartners() {
       headers: { "x-admin-id": adminId || "" },
     });
     if (!res.ok) { alert("삭제에 실패했습니다."); return; }
+    loadPartners();
+  };
+
+  // 계좌이체 입금을 통장에서 직접 확인한 뒤 누르는 버튼 — "미확인" 표시를 지움
+  const handleConfirmPayment = async (id: string, name: string) => {
+    if (!confirm(`"${name}" 파트너의 입금을 확인하셨나요?`)) return;
+    const adminId = localStorage.getItem("adminId");
+    const res = await fetch(`/api/admin/partners/${id}`, {
+      method: "PATCH",
+      headers: { "x-admin-id": adminId || "" },
+    });
+    if (!res.ok) { alert("처리에 실패했습니다."); return; }
     loadPartners();
   };
   const handleLogout = () => {
@@ -80,14 +93,15 @@ export default function AdminPartners() {
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>수익</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>가이드 확인</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>가입비 납부</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>입금 확인</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}></th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+                <tr><td colSpan={9} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
               ) : partners.length === 0 ? (
-                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>가입된 파트너가 없습니다.</td></tr>
+                <tr><td colSpan={9} style={{ padding: "20px", textAlign: "center", color: "#999" }}>가입된 파트너가 없습니다.</td></tr>
               ) : (
                 partners.map((p) => (
                   <tr key={p.id} style={{ borderBottom: "1px solid #eee" }}>
@@ -103,6 +117,15 @@ export default function AdminPartners() {
                         <span style={{ marginLeft: 6, fontSize: 11, fontWeight: 800, color: "#d97706", background: "#fef3c7", padding: "2px 6px", borderRadius: 10 }}>
                           🎟️ 쿠폰 사용{p.couponCodes.length > 0 ? `(${p.couponCodes.join(", ")})` : ""}
                         </span>
+                      )}
+                    </td>
+                    <td style={{ padding: "12px" }}>
+                      {p.paymentConfirmed === null ? (
+                        <span style={{ color: "#999" }}>해당없음</span>
+                      ) : p.paymentConfirmed ? (
+                        <span style={{ color: "#16a34a", fontWeight: 700 }}>✅ 확인됨</span>
+                      ) : (
+                        <button onClick={() => handleConfirmPayment(p.id, p.name)} style={{ padding: "6px 12px", background: "#fef3c7", color: "#d97706", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>⚠️ 미확인 — 확인하기</button>
                       )}
                     </td>
                     <td style={{ padding: "12px" }}>

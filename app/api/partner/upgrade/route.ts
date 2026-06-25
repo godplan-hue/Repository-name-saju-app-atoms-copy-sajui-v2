@@ -31,8 +31,10 @@ export async function POST(request: NextRequest) {
     const monthSnap = await db.ref(`partnerStats/${partnerId}/${yyyymm}/count`).once("value");
     const usedThisMonth = monthSnap.val() || 0;
 
-    // 업그레이드 = 다시 결제하는 것이므로, 연회비 1년 카운트도 지금부터 다시 시작
-    await db.ref(`partners/${partnerId}`).update({ tier: newTier, feeRenewedAt: new Date().toISOString() });
+    // 업그레이드 = 다시 결제하는 것이므로, 연회비 1년 카운트도 지금부터 다시 시작.
+    // 카드결제가 아니라 계좌이체로 받기로 했으므로, 입금 확인 전까지는
+    // "미확인" 상태로 표시해서 관리자 화면에서 걸러볼 수 있게 함
+    await db.ref(`partners/${partnerId}`).update({ tier: newTier, feeRenewedAt: new Date().toISOString(), paymentConfirmed: false });
 
     // 가입비와 동일하게, 업그레이드 결제내역도 기록(실제 결제 연동 전 시뮬레이션 단계)
     await db.ref(`partners/${partnerId}/payments`).push({

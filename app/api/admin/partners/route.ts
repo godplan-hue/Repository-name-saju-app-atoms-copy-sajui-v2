@@ -42,6 +42,9 @@ export async function GET(request: NextRequest) {
         lastPaidAt,
         usedCoupon,
         couponCodes,
+        // 무료 등급은 입금 자체가 없으므로 해당 없음(null), 유료 등급은 가입비를
+        // 계좌이체로 받기로 해서 점운님이 직접 입금을 확인하기 전까지 false로 둠
+        paymentConfirmed: (p.tier || "free") === "free" ? null : (p.paymentConfirmed !== false),
       };
     });
     list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
