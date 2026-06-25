@@ -5,10 +5,10 @@ import { calcScore, getPackageTemplate, LUCKY_COLORS, LUCKY_DIRS } from "../v2/a
 // 쓰는지 매핑 — 메인 사이트(v2/analyze)와 똑같은 템플릿을 재사용하므로
 // API 호출 없이 비용 0원으로 생성됨
 const PACKAGE_FIELDS: Record<string, string[]> = {
-  "기본 분석": ["yearlyLuck", "monthlyLuck"],
-  "베이직": ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"],
-  "프리미엄": ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"],
-  "VIP 커플팩": ["yearlyLuck", "monthlyLuck", "name", "wealthLuck", "loveLuck", "healthLuck", "couple", "fullAnalysis"],
+  "기본 분석": ["wealthLuck", "loveLuck"],
+  "베이직": ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"],
+  "프리미엄": ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"],
+  "VIP 커플팩": ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "fullAnalysis"],
 };
 
 export async function POST(request: NextRequest) {

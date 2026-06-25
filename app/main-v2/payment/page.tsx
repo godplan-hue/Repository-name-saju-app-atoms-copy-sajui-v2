@@ -21,24 +21,24 @@ export default function Payment() {
 function PaymentInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // 재물운/연애운 배너로 들어온 경우 — "기본분석"(재물운/연애운 미포함)이 아니라
-  // 그 둘이 실제로 들어있는 가장 싼 패키지(베이직)를 기본 선택값으로 보여줌
+  // 재물운/연애운 배너로 들어온 경우 — 그 둘이 들어있는 가장 싼 패키지(기본 분석,
+  // 9,900원)를 기본 선택값으로 보여줌
   const highlightWealthLove = searchParams.get("highlight") === "wealthlove";
   // 메인 그리드에서 "프리미엄 전용"/"VIP 전용" 박스를 누르고 들어온 경우 — 그
   // 등급이 실제로 미리 선택된 채로 보여줌(안 그러면 항상 기본분석이 선택된
   // 것처럼 보여서 "프리미엄 전용이라고 눌렀는데 다른 게 선택됐다"는 혼란이 생김)
   const preselectId = searchParams.get("preselect");
   const PRESELECT_INFO: Record<string, { name: string; features: string[] }> = {
-    basic: { name: "기본 분석", features: ["yearlyLuck", "monthlyLuck"] },
-    premium: { name: "프리미엄", features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"] },
-    vip: { name: "VIP 커플팩", features: ["name", "yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "analysis"] },
+    basic: { name: "기본 분석", features: ["wealthLuck", "loveLuck"] },
+    premium: { name: "프리미엄", features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"] },
+    vip: { name: "VIP 커플팩", features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"] },
   };
   const preselectInfo = preselectId ? PRESELECT_INFO[preselectId] : undefined;
   const [selectedPackage, setSelectedPackage] = useState(
-    highlightWealthLove ? "베이직" : preselectInfo ? preselectInfo.name : "기본 분석"
+    highlightWealthLove ? "기본 분석" : preselectInfo ? preselectInfo.name : "기본 분석"
   );
   const [selectedFeatures, setSelectedFeatures] = useState(
-    highlightWealthLove ? ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"] : preselectInfo ? preselectInfo.features : ["yearlyLuck", "monthlyLuck"]
+    highlightWealthLove ? ["wealthLuck", "loveLuck"] : preselectInfo ? preselectInfo.features : ["wealthLuck", "loveLuck"]
   );
   // 파트너 서브도메인에서는 990원 단품 결제(운세 선택 섹션)를 막음 — 메인
   // 화면의 버튼·링크만 막아도, 이 페이지에 직접 들어오거나 스크롤하면 그대로
@@ -142,37 +142,37 @@ function PaymentInner() {
       name: "기본 분석",
       price: "₩9,900",
       pages: 30,
-      features: ["yearlyLuck", "monthlyLuck"],
+      features: ["wealthLuck", "loveLuck"],
       count: 2,
       chars: "전문가급 심층 분석",
-      desc: "올해 운세 + 월별 운세"
+      desc: "재물운 + 연애운"
     },
     {
       id: "standard",
       name: "베이직",
       price: "₩19,900",
       pages: 75,
-      features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"],
+      features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"],
       count: 4,
       chars: "전문가급 심층 분석",
-      desc: "올해 운세 + 월별 운세 + 재물운 + 연애운"
+      desc: "올해 운세 + 재물운 + 연애운 + 월별 운세"
     },
     {
       id: "premium",
       name: "프리미엄",
       price: "₩24,900",
       pages: 100,
-      features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"],
+      features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"],
       count: 5,
       chars: "전문가급 심층 분석",
-      desc: "올해 운세 + 월별 운세 + 재물운 + 연애운 + 건강운"
+      desc: "올해 운세 + 재물운 + 연애운 + 월별 운세 + 건강운"
     },
     {
       id: "vip",
       name: "VIP 커플팩",
       price: "₩29,900",
       pages: 150,
-      features: ["name", "yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "analysis"],
+      features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"],
       count: 8,
       chars: "전문가급 심층 분석",
       desc: "본인 분석(8개) + 상대방 정보 입력<br/>궁합분석 포함"
@@ -275,9 +275,9 @@ function PaymentInner() {
             그대로 보여줌 — 다만 마지막 "결제하기" 버튼만 카드결제 대신 문의 안내로 바꿈 */}
         <div id="packages-section" style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
           {packages.map(pkg => {
-            // 베이직/VIP는 항상 재물운+연애운이 포함된 패키지라서, 배너로
+            // 기본분석/VIP는 항상 재물운+연애운이 포함된 패키지라서, 배너로
             // 들어왔는지 여부와 무관하게 항상 이 배지를 보여줌
-            const wlBadge = pkg.id === "standard" ? { prefix: "💰 재물운·연애운 포함 · ", highlight: "가장 저렴" }
+            const wlBadge = pkg.id === "basic" ? { prefix: "💰 재물운·연애운 포함 · ", highlight: "가장 저렴" }
               : pkg.id === "vip" ? { prefix: "👑 전부 다 포함 · ", highlight: "최고급" }
               : null;
             const isSelected = selectedPackage === pkg.name;

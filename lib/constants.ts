@@ -5,34 +5,36 @@ export const PACKAGES = {
     name: "기본 분석",
     price: 9900,
     pages: 30,
-    features: ["yearlyLuck", "monthlyLuck"],
+    features: ["wealthLuck", "loveLuck"],
     count: 2,
-    desc: "올해 운세 + 월별 운세"
+    desc: "재물운 + 연애운"
   },
   standard: {
     id: "standard",
     name: "베이직",
     price: 19900,
     pages: 75,
-    features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck"],
+    // 올해운세·월별운세가 나란히 붙으면 같은 얘기를 두 번 하는 것처럼 느껴져서,
+    // 재물운·연애운을 사이에 끼워 떨어뜨려 둠(실제 생성 순서도 이 배열 순서를 따름)
+    features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"],
     count: 4,
-    desc: "올해 운세 + 월별 운세<br/>+ 재물운 + 연애운"
+    desc: "올해 운세 + 재물운<br/>+ 연애운 + 월별 운세"
   },
   premium: {
     id: "premium",
     name: "프리미엄",
     price: 24900,
     pages: 100,
-    features: ["yearlyLuck", "monthlyLuck", "wealthLuck", "loveLuck", "healthLuck"],
+    features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"],
     count: 5,
-    desc: "올해 운세 + 월별 운세<br/>+ 재물운 + 연애운 + 건강운"
+    desc: "올해 운세 + 재물운<br/>+ 연애운 + 월별 운세 + 건강운"
   },
   vip: {
     id: "vip",
     name: "VIP 커플팩",
     price: 29900,
     pages: 150,
-    features: ["name", "wealthLuck", "loveLuck", "healthLuck", "couple", "yearlyLuck", "monthlyLuck", "analysis"],
+    features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"],
     count: 8,
     desc: "본인 분석(8개) + 상대방 정보 입력<br/>궁합분석 포함"
   }

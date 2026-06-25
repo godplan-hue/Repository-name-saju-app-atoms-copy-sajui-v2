@@ -51,30 +51,30 @@ function ScoreBar({ label, score, color }: { label: string; score: number; color
 // 패키지마다 실제로 만들어지는 항목이 다름(/api/analyze의 PACKAGE_FIELDS와 동일하게 맞춤)
 const PACKAGE_CATS: Record<string, { key: string; icon: string; label: string }[]> = {
   "기본 분석": [
-    { key: "yearlyLuck", icon: "☀️", label: "올해 운세" },
-    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
+    { key: "wealthLuck", icon: "💰", label: "재물운" },
+    { key: "loveLuck", icon: "💕", label: "연애운" },
   ],
   "베이직": [
     { key: "yearlyLuck", icon: "☀️", label: "올해 운세" },
-    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
     { key: "wealthLuck", icon: "💰", label: "재물운" },
     { key: "loveLuck", icon: "💕", label: "연애운" },
+    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
   ],
   "프리미엄": [
     { key: "yearlyLuck", icon: "☀️", label: "올해 운세" },
-    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
     { key: "wealthLuck", icon: "💰", label: "재물운" },
     { key: "loveLuck", icon: "💕", label: "연애운" },
+    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
     { key: "healthLuck", icon: "🌿", label: "건강운" },
   ],
   "VIP 커플팩": [
-    { key: "yearlyLuck", icon: "☀️", label: "올해 운세" },
-    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
     { key: "name", icon: "📝", label: "이름분석" },
+    { key: "yearlyLuck", icon: "☀️", label: "올해 운세" },
     { key: "wealthLuck", icon: "💰", label: "재물운" },
     { key: "loveLuck", icon: "💕", label: "연애운" },
     { key: "healthLuck", icon: "🌿", label: "건강운" },
     { key: "couple", icon: "💍", label: "궁합분석" },
+    { key: "monthlyLuck", icon: "🌙", label: "월별 운세" },
     { key: "fullAnalysis", icon: "✨", label: "전체 사주분석" },
   ],
 };
