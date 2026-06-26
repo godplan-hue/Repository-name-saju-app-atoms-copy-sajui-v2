@@ -204,50 +204,30 @@ function ScoreBar({ label, score, color }: { label: string; score: number; color
   );
 }
 
-function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>, paidCats: string[], planType: string, colorMap?: Record<string, string>) {
+function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>, paidCats: string[], planType: string) {
   if (!r?.histId || !isPaid) return;
   try {
     const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
     const date = r.savedAt ?? new Date().toISOString();
     const cats = paidCats.length > 0 ? paidCats : Object.keys(analyses);
-
-    if (planType === "package") {
-      // 패키지는 결과지·공유 화면처럼 운세 여러 개를 색깔별 네모로 한 화면에 묶어서
-      // 보관함에도 통째로 1건으로 저장함(예전엔 운세 개수만큼 따로따로, 색깔도 전부
-      // 똑같은 핑크로 쪼개져 들어가던 문제가 있었음)
-      const id = `${r.histId}-0`;
+    cats.forEach((cat, i) => {
+      // 카테고리명(이모지+공백 포함)을 ID에 넣으면 상세페이지 이동 시 URL 인코딩 문제로
+      // 매칭이 깨지는 버그가 있었음 — 영문/숫자만 쓰는 안전한 ID로 변경 (충돌 방지는 유지)
+      const id = `${r.histId}-${i}`;
       const entry = {
-        id, date, name: r.profile?.name ?? "",
-        category: cats[0] ?? "",
-        categories: cats.map(cat => ({ key: cat, label: cat.replace(/\S+\s/, ""), icon: cat.split(" ")[0] ?? "✨", color: colorMap?.[cat] ?? "#8b5cf6", text: analyses[cat] ?? "" })),
+        id,
+        date,
+        name: r.profile?.name ?? "",
+        category: cat,
         scores: r.scores ?? {},
-        analysis: analyses[cats[0]] ?? "",
+        analysis: analyses[cat] ?? "",
         isPaid: true,
         planType,
       };
       const idx = hist.findIndex((h: any) => h.id === id);
       if (idx >= 0) hist[idx] = entry;
       else hist.unshift(entry);
-    } else {
-      cats.forEach((cat, i) => {
-        // 카테고리명(이모지+공백 포함)을 ID에 넣으면 상세페이지 이동 시 URL 인코딩 문제로
-        // 매칭이 깨지는 버그가 있었음 — 영문/숫자만 쓰는 안전한 ID로 변경 (충돌 방지는 유지)
-        const id = `${r.histId}-${i}`;
-        const entry = {
-          id,
-          date,
-          name: r.profile?.name ?? "",
-          category: cat,
-          scores: r.scores ?? {},
-          analysis: analyses[cat] ?? "",
-          isPaid: true,
-          planType,
-        };
-        const idx = hist.findIndex((h: any) => h.id === id);
-        if (idx >= 0) hist[idx] = entry;
-        else hist.unshift(entry);
-      });
-    }
+    });
     localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
   } catch {}
 }
@@ -407,13 +387,8 @@ function V2ResultInner() {
         const pkg = sessionStorage.getItem("selectedPackage") ?? "";
         const pkgCats = PKG_CAT_MAP[pkg] ?? PKG_CAT_MAP["기본 분석"];
         const labelAnalyses: Record<string, string> = {};
-        const labelColors: Record<string, string> = {};
-        pkgCats.forEach(c => {
-          const labelKey = `${c.icon} ${c.label}`;
-          labelAnalyses[labelKey] = analyses[c.apiKey] ?? "";
-          labelColors[labelKey] = c.color;
-        });
-        saveToHistory(r, isPaid, labelAnalyses, pkgCats.map(c => `${c.icon} ${c.label}`), plan, labelColors);
+        pkgCats.forEach(c => { labelAnalyses[`${c.icon} ${c.label}`] = analyses[c.apiKey] ?? ""; });
+        saveToHistory(r, isPaid, labelAnalyses, pkgCats.map(c => `${c.icon} ${c.label}`), plan);
       } else {
         saveToHistory(r, isPaid, analyses, cats, plan);
       }

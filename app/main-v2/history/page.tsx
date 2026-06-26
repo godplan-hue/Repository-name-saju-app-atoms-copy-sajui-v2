@@ -14,10 +14,20 @@ const SELECT_CATS = [
   { key: "✨ 총운",   scoreKey: "total",   color: "#6366f1", icon: "✨" },
 ];
 
-interface CatEntry { key: string; label: string; icon: string; color: string; text: string; }
+// 보관함 카드의 아이콘 박스를 전부 똑같은 핑크색 대신, 그 사주가 어떤 운세인지에
+// 맞는 색으로 보여주기 위한 색상표(패키지 카테고리까지 포함해서 더 넓게 둠)
+const CAT_COLOR: Record<string, string> = {
+  "💰 재물운": "#f59e0b", "💕 연애운": "#ec4899", "💪 건강운": "#10b981",
+  "🎯 성공운": "#8b5cf6", "✨ 총운": "#6366f1", "☀️ 올해 운세": "#f59e0b",
+  "📅 월별운세": "#0ea5e9", "💍 결혼·궁합운": "#f43f5e", "📝 이름분석": "#6366f1",
+  "💼 전체 사주분석": "#8b5cf6", "🌟 오늘의 운세": "#f59e0b",
+};
+function catColor(category?: string): string {
+  return (category && CAT_COLOR[category]) || BG;
+}
+
 interface Item {
   id: string; date: string; name: string; category: string;
-  categories?: CatEntry[]; // 패키지는 운세 여러 개를 색깔별로 묶어서 여기 들어있음
   scores: { total: number; wealth: number; love: number; health: number; success: number };
   analysis: string;
   isPaid?: boolean;
@@ -124,18 +134,18 @@ export default function V2History() {
     let url = window.location.origin + "/main-v2";
     try {
       const matchedCat = SELECT_CATS.find(c => c.key === item.category);
-      const categories = item.categories
-        ? item.categories.map(c => ({ icon: c.icon, label: c.label, color: c.color, text: c.text }))
-        : [{
+      const res = await fetch("/api/v2/share", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: item.name, scores: item.scores,
+          categories: [{
             icon: matchedCat?.icon ?? "🔮",
             label: item.category?.replace(/\S+\s/, "") ?? "운세",
             color: matchedCat?.color ?? "#8b5cf6",
             text: item.analysis,
-          }];
-      const res = await fetch("/api/v2/share", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: item.name, scores: item.scores, categories }),
+          }],
+        }),
       });
       if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
     } catch {}
@@ -205,13 +215,11 @@ export default function V2History() {
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{ width: 40, height: 40, background: item.categories?.[0]?.color ?? BG, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>
-                      {item.categories ? "📦" : item.category?.split(" ")[0] ?? "✨"}
+                    <div style={{ width: 40, height: 40, background: catColor(item.category), borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>
+                      {item.category?.split(" ")[0] ?? "✨"}
                     </div>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>
-                        {item.name}님 · {item.categories ? `${item.categories.length}개 운세` : item.category?.replace(/\S+\s/, "")}
-                      </div>
+                      <div style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{item.name}님 · {item.category?.replace(/\S+\s/, "")}</div>
                       <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{fmtDate(item.date)}</div>
                       {item.planType === "select"
                         ? <span style={{ fontSize: 9, background: "#f3e8ff", color: "#8b5cf6", border: "1px solid #e9d5ff", padding: "1px 7px", borderRadius: 20, fontWeight: 700 }}>💎 990원</span>
@@ -234,16 +242,6 @@ export default function V2History() {
                     )}
                   </div>
                 </div>
-
-                {item.categories && (
-                  <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
-                    {item.categories.map(c => (
-                      <div key={c.key} style={{ background: `${c.color}18`, border: `1px solid ${c.color}40`, borderRadius: 8, padding: "3px 9px", fontSize: 11, fontWeight: 800, color: c.color }}>
-                        {c.icon} {c.label}
-                      </div>
-                    ))}
-                  </div>
-                )}
 
                 <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
                   {[{ k: "wealth", l: "재물" }, { k: "love", l: "연애" }, { k: "health", l: "건강" }, { k: "success", l: "성공" }].map(s => (

@@ -14,6 +14,19 @@ const SELECT_CATS = [
   { key: "✨ 총운",   scoreKey: "total",   color: "#6366f1", icon: "✨" },
 ];
 
+// 헤더를 전부 똑같은 핑크색 대신, 그 사주가 어떤 운세인지에 맞는 색으로 보여주기
+// 위한 색상표(패키지 카테고리까지 포함해서 더 넓게 둠)
+const CAT_COLOR: Record<string, string> = {
+  "💰 재물운": "#f59e0b", "💕 연애운": "#ec4899", "💪 건강운": "#10b981",
+  "🎯 성공운": "#8b5cf6", "✨ 총운": "#6366f1", "☀️ 올해 운세": "#f59e0b",
+  "📅 월별운세": "#0ea5e9", "💍 결혼·궁합운": "#f43f5e", "📝 이름분석": "#6366f1",
+  "💼 전체 사주분석": "#8b5cf6", "🌟 오늘의 운세": "#f59e0b",
+};
+function catGradient(category?: string): string {
+  const c = category && CAT_COLOR[category];
+  return c ? `linear-gradient(135deg, ${c}, ${c}cc)` : G;
+}
+
 function SelectModal({ onClose, onPay, paying }: {
   onClose: () => void;
   onPay: (cats: string[]) => void;
@@ -217,15 +230,15 @@ export default function HistoryDetail() {
         {/* 이미지 저장 대상 카드 */}
         <div ref={cardRef} style={{ background: "white", borderRadius: 24, overflow: "hidden", border: "1.5px solid rgba(236,72,153,0.1)" }}>
 
-          {/* 헤더 그래디언트 */}
-          <div style={{ background: G, color: "white", textAlign: "center" }}>
+          {/* 헤더 그래디언트 — 운세 카테고리에 맞는 색으로 표시 */}
+          <div style={{ background: catGradient(item.category), color: "white", textAlign: "center" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, padding: "10px 20px 0" }}>
               <span style={{ fontSize: 13 }}>🐱</span>
               <span style={{ fontSize: 13, fontWeight: 900 }}>점운 · AI 사주 분석</span>
             </div>
             <div style={{ padding: "14px 20px 24px" }}>
-              <div style={{ fontSize: 32, marginBottom: 6 }}>{item.categories ? "📦" : item.category?.split(" ")[0] ?? "✨"}</div>
-              <h1 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 4px" }}>{item.name}님의 {item.categories ? `${item.categories.length}개 운세` : item.category?.replace(/\S+\s/, "")}</h1>
+              <div style={{ fontSize: 32, marginBottom: 6 }}>{item.category?.split(" ")[0] ?? "✨"}</div>
+              <h1 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 4px" }}>{item.name}님의 {item.category?.replace(/\S+\s/, "")}</h1>
               <div style={{ fontSize: 12, opacity: 0.75 }}>{fmtDate(item.date)}</div>
               <div style={{ fontSize: 36, fontWeight: 900, margin: "12px 0 2px" }}>{item.scores?.total ?? "—"}</div>
               <div style={{ fontSize: 11, opacity: 0.8 }}>총운 점수</div>
@@ -258,27 +271,13 @@ export default function HistoryDetail() {
             </div>
           )}
 
-          {/* 분석 전체 텍스트 — 패키지는 운세마다 색깔별로 따로 카드를 나눠서 보여줌
-              (결과지·공유 화면과 똑같은 방식) */}
-          {item.categories ? (
-            item.categories.map((c: { key: string; label: string; icon: string; color: string; text: string }) => (
-              <div key={c.key} style={{ padding: "0 18px 20px" }}>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 900, color: c.color, background: `${c.color}18`, border: `1px solid ${c.color}40`, borderRadius: 20, padding: "4px 12px", marginBottom: 10 }}>
-                  {c.icon} {c.label}
-                </div>
-                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.85, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
-                  {c.text}
-                </p>
-              </div>
-            ))
-          ) : (
-            <div style={{ padding: "0 18px 20px" }}>
-              <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 10 }}>🔮 {item.category} 상세 분석</div>
-              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.85, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
-                {item.fullAnalysis ?? item.analysis}
-              </p>
-            </div>
-          )}
+          {/* 분석 전체 텍스트 — 잘림 없음 */}
+          <div style={{ padding: "0 18px 20px" }}>
+            <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 10 }}>🔮 {item.category} 상세 분석</div>
+            <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.85, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
+              {item.fullAnalysis ?? item.analysis}
+            </p>
+          </div>
 
         </div>
 
