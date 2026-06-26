@@ -126,12 +126,137 @@ export default function HistoryDetail() {
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
 
+  // 읽기(텍스트 음성 읽어주기) — 결과지 화면과 동일한 방식
+  const [speaking, setSpeaking] = useState(false);
+  const readChunksRef = useRef<string[]>([]);
+  const readIdxRef = useRef(0);
+  const resumeAfterHideRef = useRef<() => void>(() => {});
+  const wakeLockRef = useRef<any>(null);
+  const requestWakeLock = async () => {
+    try { if ("wakeLock" in navigator) wakeLockRef.current = await (navigator as any).wakeLock.request("screen"); } catch {}
+  };
+  const releaseWakeLock = () => {
+    try { wakeLockRef.current?.release(); } catch {}
+    wakeLockRef.current = null;
+  };
+
   useEffect(() => {
     const hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
     const found = hist.find(h => String(h.id) === String(params.id));
     if (!found) { router.replace("/main-v2/history"); return; }
     setItem(found);
   }, [params.id]);
+
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+      releaseWakeLock();
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") resumeAfterHideRef.current();
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, []);
+
+  // 저장된 항목(item.id)마다 다른 키를 써야, 다른 글을 보고 읽기를 눌렀을 때
+  // 이전 글이 이어 읽히는 문제가 안 생김
+  const ttsProgressKey = `v2_hist_tts_progress_${item?.id ?? ""}`;
+  const saveTtsProgress = (chunks: string[], idx: number) => {
+    try { localStorage.setItem(ttsProgressKey, JSON.stringify({ chunks, idx })); } catch {}
+  };
+  const clearTtsProgress = () => {
+    try { localStorage.removeItem(ttsProgressKey); } catch {}
+  };
+  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> => {
+    return new Promise(resolve => {
+      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
+      const existing = window.speechSynthesis.getVoices();
+      if (existing.length > 0) { resolve(pick(existing)); return; }
+      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
+      window.speechSynthesis.onvoiceschanged = () => { clearTimeout(timer); resolve(pick(window.speechSynthesis.getVoices())); };
+    });
+  };
+  const speakFrom = async (chunks: string[], startIdx: number) => {
+    const voice = await getKoreanVoice();
+    chunks.slice(startIdx).forEach((chunk, i) => {
+      const idx = startIdx + i;
+      const utter = new SpeechSynthesisUtterance(chunk);
+      utter.lang = "ko-KR";
+      if (voice) utter.voice = voice;
+      utter.rate = 1;
+      utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
+      utter.onerror = (e) => {
+        setSpeaking(false);
+        if (e.error === "canceled" || e.error === "interrupted") return;
+        readChunksRef.current = [];
+        readIdxRef.current = 0;
+        window.speechSynthesis.cancel();
+        releaseWakeLock();
+        alert("읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      };
+      if (idx === chunks.length - 1) {
+        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); releaseWakeLock(); };
+      }
+      window.speechSynthesis.speak(utter);
+    });
+  };
+  resumeAfterHideRef.current = () => {
+    if (speaking && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      requestWakeLock();
+      speakFrom(readChunksRef.current, readIdxRef.current);
+    }
+  };
+  const toggleReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      return;
+    }
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      releaseWakeLock();
+      return;
+    }
+    const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const tipKey = "v2_hist_tts_tip_shown_date";
+    if (isMobileDevice && localStorage.getItem(tipKey) !== new Date().toDateString()) {
+      alert("💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      localStorage.setItem(tipKey, new Date().toDateString());
+    }
+    if (readChunksRef.current.length === 0) {
+      try {
+        const saved = localStorage.getItem(ttsProgressKey);
+        if (saved) {
+          const { chunks, idx } = JSON.parse(saved);
+          if (Array.isArray(chunks) && chunks.length > 0 && typeof idx === "number") {
+            readChunksRef.current = chunks;
+            readIdxRef.current = idx;
+          }
+        }
+      } catch {}
+    }
+    if (readChunksRef.current.length === 0) {
+      const fullText = (item?.analysis ?? "")
+        .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+        .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+        .replace(/[（(][一-鿿]+[）)]/g, "")
+        .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+        .replace(/×/g, " 와 ");
+      if (!fullText.trim()) return;
+      readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map((s: string) => s.trim()).filter(Boolean);
+      readIdxRef.current = 0;
+    }
+    window.speechSynthesis.cancel();
+    requestWakeLock();
+    speakFrom(readChunksRef.current, readIdxRef.current);
+    setSpeaking(true);
+  };
 
   const saveImage = async () => {
     if (!cardRef.current || saving) return;
@@ -216,6 +341,7 @@ export default function HistoryDetail() {
           <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>보관함</span>
         </button>
         <div style={{ display: "flex", gap: 7 }}>
+          <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>{speaking ? "⏹ 멈추기" : "🔊 읽기"}</button>
           <button onClick={share} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>📱 공유</button>
           {item.isPaid && (
             <button onClick={saveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer" }}>
@@ -289,6 +415,10 @@ export default function HistoryDetail() {
               {saving ? "저장 중..." : "🖼️ 이미지 저장"}
             </button>
           )}
+          <button onClick={toggleReadAloud}
+            style={{ padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
+            {speaking ? "⏹ 멈추기" : "🔊 읽기"}
+          </button>
         </div>
       </div>
 
