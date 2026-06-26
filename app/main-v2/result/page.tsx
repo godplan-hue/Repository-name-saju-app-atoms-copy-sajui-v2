@@ -745,10 +745,11 @@ function V2ResultInner() {
   // 처음부터가 아니라 멈췄던 위치부터 이어서 읽을 수 있음. sessionStorage는 모바일에서
   // 화면이 꺼져 브라우저가 탭을 통째로 새로 만들면(세션이 끝남) 같이 사라지는 경우가
   // 있어서, 세션 경계와 무관하게 남아있는 localStorage로 저장함
-  // 이름·생년월일 등을 조합해서 키를 만들면 그 값들이 로딩 시점에 따라 살짝
-  // 달라질 수 있어서 저장한 키와 찾는 키가 어긋나는 문제가 있었음 — 이 화면은
-  // 한 번에 결과 하나만 보여주므로, 굳이 조합하지 않고 고정된 키 하나만 씀
-  const ttsProgressKey = "v2_tts_progress";
+  // 고정된 키 하나만 쓰면, 새로운 사주를 보고 읽기를 눌렀을 때 이전 사람의 멈춘
+  // 위치가 남아있어서 그 내용이 그대로 이어 읽히는 심각한 문제가 있었음(완전히
+  // 다른 사람인데 옛 글이 읽힘) — result.histId(분석마다 생기는 고유 번호)를
+  // 키에 포함시켜서, 다른 분석이면 절대 같은 키를 쓰지 않게 함
+  const ttsProgressKey = `v2_tts_progress_${result?.histId ?? ""}`;
   const saveTtsProgress = (chunks: string[], idx: number) => {
     try { localStorage.setItem(ttsProgressKey, JSON.stringify({ chunks, idx })); } catch {}
   };
@@ -812,10 +813,11 @@ function V2ResultInner() {
       alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
       return;
     }
-    // speaking 상태가 true인데도 실제로는 음성이 멈춰있는 경우(화면 꺼짐 등으로
-    // 끊긴 경우) 이 버튼을 누르면 "정지"가 아니라 "이어 읽기"로 동작해야 함 —
-    // 그래서 실제로 재생 중인지(window.speechSynthesis.speaking)도 같이 확인함
-    if (speaking && window.speechSynthesis.speaking) {
+    // window.speechSynthesis.speaking은 기기에 따라 실제 상태와 다르게(멈췄는데도
+    // true로) 나오는 경우가 있어서, 이 값으로 "정지 vs 이어읽기"를 판단하면 멈추기
+    // 버튼이 먹통이 되는 문제가 있었음 — 우리가 직접 관리하는 speaking 상태만 보고
+    // 무조건 멈춤(화면꺼짐으로 끊긴 경우의 자동 이어읽기는 resumeAfterHideRef가 따로 처리)
+    if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
       releaseWakeLock();
@@ -823,8 +825,10 @@ function V2ResultInner() {
     }
     // 읽기를 시작하기 전에, 화면이 자동으로 꺼지면 끊길 수 있다는 걸 미리 한 번
     // 안내함(끊긴 뒤에 알려주는 것보다 미리 설정해두게 하는 게 나음). 하루 한 번만
+    // 화면 자동꺼짐 안내는 모바일에서만 의미가 있으므로 PC에서는 띄우지 않음
+    const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const ttsTipKey = "v2_tts_tip_shown_date";
-    if (localStorage.getItem(ttsTipKey) !== new Date().toDateString()) {
+    if (isMobileDevice && localStorage.getItem(ttsTipKey) !== new Date().toDateString()) {
       alert("💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
       localStorage.setItem(ttsTipKey, new Date().toDateString());
     }

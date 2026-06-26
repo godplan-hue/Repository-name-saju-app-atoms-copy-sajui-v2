@@ -146,8 +146,10 @@ export default function ShareClient({ id }: { id: string }) {
     }
     // 읽기를 시작하기 전에, 화면이 자동으로 꺼지면 끊길 수 있다는 걸 미리 한 번
     // 안내함(끊긴 뒤에 알려주는 것보다 미리 설정해두게 하는 게 나음). 하루 한 번만
+    // 화면 자동꺼짐 안내는 모바일에서만 의미가 있으므로 PC에서는 띄우지 않음
+    const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const ttsTipKey = "share_tts_tip_shown_date";
-    if (localStorage.getItem(ttsTipKey) !== new Date().toDateString()) {
+    if (isMobileDevice && localStorage.getItem(ttsTipKey) !== new Date().toDateString()) {
       alert("💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
       localStorage.setItem(ttsTipKey, new Date().toDateString());
     }
