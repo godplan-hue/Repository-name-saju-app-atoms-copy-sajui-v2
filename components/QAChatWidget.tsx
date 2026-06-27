@@ -157,8 +157,8 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
           setTimeout(() => {
             (document.activeElement as HTMLElement)?.blur();
             setTimeout(() => setShowBuyModal(true), 500);
-          }, 1200);
-        }, 2500);
+          }, 1500);
+        }, 5500);
       }
     }
     setTyping(true);
