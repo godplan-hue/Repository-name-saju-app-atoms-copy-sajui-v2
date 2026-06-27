@@ -72,27 +72,3 @@ a {
   animation: bounce 1s infinite;
 }
 
-@keyframes qa-line-shine {
-  0%   { transform: translateX(-150%); }
-  100% { transform: translateX(300%); }
-}
-
-.qa-yellow-line {
-  height: 10px;
-  background: linear-gradient(90deg, #facc15, #f97316, #facc15);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
-}
-
-.qa-yellow-line::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-  animation: qa-line-shine 1.4s linear infinite;
-  will-change: transform;
-}
