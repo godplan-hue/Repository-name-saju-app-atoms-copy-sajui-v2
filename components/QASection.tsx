@@ -9,10 +9,11 @@ const FREE_COUNT = 5;
 interface Props {
   name: string;
   birthYear: number;
+  unlocked?: boolean;
   onBuyClick?: () => void;
 }
 
-export default function QASection({ name, birthYear, onBuyClick }: Props) {
+export default function QASection({ name, birthYear, unlocked = false, onBuyClick }: Props) {
   const ohaeng: Ohaeng = getOhaeng(birthYear);
   const [activeCatId, setActiveCatId] = useState(QA_CATEGORIES[0].id);
   const [openIdx, setOpenIdx] = useState<number | null>(null);
@@ -26,7 +27,9 @@ export default function QASection({ name, birthYear, onBuyClick }: Props) {
           🔮 사주 Q&amp;A
         </h2>
         <p style={{ fontSize: 12, color: "#9ca3af", fontWeight: 600, margin: 0 }}>
-          궁금한 걸 눌러봐 — {name}님 오행({ohaeng}) 기준으로 답해줘
+          {unlocked
+            ? `${name}님 오행(${ohaeng}) 기준 — 전체 질문 열람 가능해`
+            : `궁금한 걸 눌러봐 — ${name}님 오행(${ohaeng}) 기준으로 답해줘`}
         </p>
       </div>
 
@@ -59,7 +62,7 @@ export default function QASection({ name, birthYear, onBuyClick }: Props) {
       {/* Q&A 목록 */}
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {cat.items.map((item, idx) => {
-          const isFree = idx < FREE_COUNT;
+          const isFree = unlocked || idx < FREE_COUNT;
           const isOpen = openIdx === idx;
           const answer = fillTemplate(item.answers[ohaeng], name);
 
@@ -168,8 +171,8 @@ export default function QASection({ name, birthYear, onBuyClick }: Props) {
         })}
       </div>
 
-      {/* 잠금 해제 배너 */}
-      <div style={{
+      {/* 잠금 해제 배너 — 무료일 때만 */}
+      {!unlocked && <div style={{
         marginTop: 20,
         padding: "16px",
         background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
@@ -198,7 +201,7 @@ export default function QASection({ name, birthYear, onBuyClick }: Props) {
         >
           💎 운세 구매하고 전체 보기
         </button>
-      </div>
+      </div>}
     </div>
   );
 }

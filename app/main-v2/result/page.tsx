@@ -1393,6 +1393,7 @@ function V2ResultInner() {
           <QASection
             name={profile.name}
             birthYear={Number(profile.birthYear)}
+            unlocked={tier === "select" || tier === "package"}
             onBuyClick={() => router.push("/main-v2/payment")}
           />
         )}
