@@ -56,11 +56,11 @@ function findAnswer(question: string, ohaeng: Ohaeng, name: string): string {
 }
 
 const SINGLES = [
-  { id: "wealth",  label: "재물운", price: "₩990" },
-  { id: "love",    label: "연애운", price: "₩990" },
-  { id: "health",  label: "건강운", price: "₩990" },
-  { id: "success", label: "성공운", price: "₩990" },
-  { id: "yearly",  label: "총운",   price: "₩990", hot: true },
+  { id: "재물운",  label: "재물운", price: "₩990" },
+  { id: "연애운",  label: "연애운", price: "₩990" },
+  { id: "건강운",  label: "건강운", price: "₩990" },
+  { id: "성공운",  label: "성공운", price: "₩990" },
+  { id: "총운",    label: "총운",   price: "₩990", hot: true },
 ];
 
 const PKGS = [
@@ -306,7 +306,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, marginBottom: 12 }}>
               {SINGLES.map(s => (
                 <button key={s.id}
-                  onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?preselect=${s.id}`); }}
+                  onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?single=${s.id}`); }}
                   style={{ position: "relative", padding: "10px 6px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 12, cursor: "pointer", textAlign: "center" }}
                 >
                   {s.hot && <span style={{ position: "absolute", top: -6, right: -4, background: "#ef4444", color: "white", fontSize: 9, fontWeight: 900, padding: "2px 6px", borderRadius: 20 }}>추천</span>}
