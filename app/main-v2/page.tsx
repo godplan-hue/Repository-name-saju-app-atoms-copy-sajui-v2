@@ -280,7 +280,6 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
   const resetTimer = (next: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setCur(c => {
-      if ((BANNERS[c] as any).chatPromo || (BANNERS[c] as any).chatBanner) return c;
       return (c + 1) % BANNERS.length;
     }), 2500);
     setCur(next);
@@ -288,7 +287,6 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
 
   useEffect(() => {
     timerRef.current = setInterval(() => setCur(c => {
-      if ((BANNERS[c] as any).chatPromo || (BANNERS[c] as any).chatBanner) return c;
       return (c + 1) % BANNERS.length;
     }), 2500);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
