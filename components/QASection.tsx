@@ -46,38 +46,29 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
     const answer = fillTemplate(item.answers[ohaeng], name);
 
     if (!isFreeItem) {
-      // 잠긴 항목 — 흰 배경, 내용은 회색 바로 가림
       return (
         <div key={key}
           style={{
-            background: "white",
+            background: "rgba(243,232,255,0.45)",
             borderRadius: 14,
-            border: "1.5px solid #f0e6ff",
-            padding: "14px 16px",
+            border: "1px dashed rgba(139,92,246,0.25)",
+            padding: "13px 16px",
             display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
             gap: 12,
           }}
         >
-          <span style={{ fontSize: 15, flexShrink: 0, opacity: 0.4 }}>🔒</span>
-          <div style={{ flex: 1 }}>
-            <div style={{
-              height: 11,
-              borderRadius: 6,
-              background: "#e5e7eb",
-              marginBottom: 7,
-              width: "65%",
-            }} />
-            <div style={{
-              height: 9,
-              borderRadius: 6,
-              background: "#f3f4f6",
-              width: "40%",
-            }} />
-          </div>
+          <span style={{ fontSize: 13, opacity: 0.5 }}>🔒</span>
+          <div style={{
+            height: 10,
+            borderRadius: 6,
+            background: "linear-gradient(90deg, rgba(139,92,246,0.18), rgba(236,72,153,0.1))",
+            flex: 1,
+          }} />
           <span style={{
             fontSize: 10,
-            color: "#d1d5db",
+            color: "rgba(139,92,246,0.5)",
             fontWeight: 700,
             flexShrink: 0,
             whiteSpace: "nowrap",
@@ -170,10 +161,10 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
   return (
     <div style={{ marginTop: 32, padding: "0 4px" }}>
       <div style={{ textAlign: "center", marginBottom: 18 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px" }}>
+        <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", textShadow: "0 1px 8px rgba(255,255,255,0.9)" }}>
           🔮 사주 Q&amp;A
         </h2>
-        <p style={{ fontSize: 12, color: "#9ca3af", fontWeight: 600, margin: 0 }}>
+        <p style={{ fontSize: 12, color: "#4b3fa0", fontWeight: 800, margin: 0, textShadow: "0 1px 6px rgba(255,255,255,0.95)" }}>
           {unlocked
             ? `${name}님 오행(${ohaeng}) 기준 — 전체 질문 열람 가능`
             : `궁금한 걸 눌러봐 — ${name}님 오행(${ohaeng}) 기준으로 답해줄게`}
