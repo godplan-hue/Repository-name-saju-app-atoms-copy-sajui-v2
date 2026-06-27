@@ -292,27 +292,44 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
             )}
           </div>
 
-          {/* 잠긴 항목 — 3열 미니 카드 */}
+          {/* 잠긴 항목 — Q번호 칩 + 잠금 배너 */}
           {!unlocked && (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
-              {cat.items.slice(FREE_COUNT).map((_, idx) => (
-                <div key={`locked-${idx}`}
-                  style={{
-                    background: "#f0e8ff",
-                    borderRadius: 10,
-                    border: "1px dashed #c4b5fd",
-                    padding: "10px 8px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 5,
-                  }}
-                >
-                  <span style={{ fontSize: 13 }}>🔒</span>
-                  <div style={{ height: 7, borderRadius: 4, background: "#c4b5fd", width: "80%" }} />
-                  <div style={{ height: 6, borderRadius: 4, background: "#ddd6fe", width: "55%" }} />
-                </div>
-              ))}
+            <div style={{
+              background: "#fff",
+              borderRadius: 16,
+              border: "1.5px solid #e9d5ff",
+              padding: "16px",
+              textAlign: "center",
+            }}>
+              {/* Q번호 칩들 */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center", marginBottom: 14 }}>
+                {cat.items.slice(FREE_COUNT).map((_, idx) => (
+                  <span key={idx} style={{
+                    fontSize: 11,
+                    fontWeight: 800,
+                    color: "#c4b5fd",
+                    background: "#f5f3ff",
+                    padding: "4px 10px",
+                    borderRadius: 20,
+                  }}>Q{FREE_COUNT + idx + 1}</span>
+                ))}
+              </div>
+              <p style={{ fontSize: 12, color: "#9ca3af", fontWeight: 700, margin: "0 0 12px" }}>
+                🔒 {cat.items.length - FREE_COUNT}개 질문이 더 있어
+              </p>
+              <button
+                onClick={() => onBuyClick ? onBuyClick() : window.scrollTo({ top: 0, behavior: "smooth" })}
+                style={{
+                  padding: "9px 22px",
+                  background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: 50,
+                  fontWeight: 900,
+                  fontSize: 12,
+                  cursor: "pointer",
+                }}
+              >💎 구매하고 전체 보기</button>
             </div>
           )}
         </>

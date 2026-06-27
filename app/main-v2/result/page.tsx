@@ -1388,14 +1388,29 @@ function V2ResultInner() {
             </div>
           </>
         )}
-        {/* ── 사주 Q&A 섹션 ── */}
+        {/* ── 사주 Q&A 버튼 ── */}
         {!isPartner && profile?.name && profile?.birthYear && (
-          <QASection
-            name={profile.name}
-            birthYear={Number(profile.birthYear)}
-            unlocked={tier === "select" || tier === "package"}
-            onBuyClick={() => router.push("/main-v2/payment")}
-          />
+          <button
+            onClick={() => router.push("/main-v2/qa")}
+            style={{
+              width: "100%",
+              marginTop: 16,
+              padding: "16px",
+              background: "linear-gradient(135deg, #f5f3ff, #fce7f3)",
+              border: "2px solid #e9d5ff",
+              borderRadius: 16,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ textAlign: "left" }}>
+              <p style={{ margin: "0 0 2px", fontSize: 15, fontWeight: 900, color: "#1a1a2e" }}>🔮 사주 Q&amp;A</p>
+              <p style={{ margin: 0, fontSize: 12, color: "#8b5cf6", fontWeight: 700 }}>9개 카테고리 · 궁금한 거 다 물어봐</p>
+            </div>
+            <span style={{ fontSize: 20, color: "#ec4899" }}>→</span>
+          </button>
         )}
 
         <button onClick={() => router.push("/main-v2")}
