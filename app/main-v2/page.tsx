@@ -302,7 +302,13 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
     <div style={{ padding: "16px 14px 0", maxWidth: 480, margin: "0 auto" }}>
       <div
         style={{ height: 320, borderRadius: 20, position: "relative", overflow: "hidden", cursor: "pointer", boxShadow: "0 6px 28px rgba(139,92,246,0.18)", background: "#f9f0ff" }}
-        onClick={() => onStart(b.route)}
+        onClick={() => {
+          if ((b as any).chatBanner) {
+            document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" });
+            return;
+          }
+          onStart(b.route);
+        }}
         onTouchStart={e => { startXRef.current = e.touches[0].clientX; }}
         onTouchEnd={e => {
           if (startXRef.current === null) return;
@@ -396,6 +402,10 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
         >
           ›
         </button>
+        {/* 노란 진행선 — 슬라이드 타이밍 표시 */}
+        {!(b as any).chatBanner && (
+          <div key={`prog-${cur}`} style={{ position: "absolute", bottom: 0, left: 0, height: 4, background: "linear-gradient(90deg,#facc15,#f97316)", animation: "bannerProgress 2500ms linear forwards", zIndex: 4, boxShadow: "0 0 8px rgba(250,204,21,0.7)" }} />
+        )}
         {/* 인디케이터 — 노란색 */}
         <div style={{ position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)", zIndex: 3 }}>
           <div style={{ display: "flex", gap: 6 }}>
@@ -663,7 +673,7 @@ export default function MainV2() {
 
       {/* 복냥이 상담창 — 내정보(푸터) 바로 위 */}
       {!isPartner && savedProfile && (
-        <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
+        <div id="chat-widget" style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
           <QAChatWidget name={savedProfile.name} birthYear={savedProfile.birthYear} />
         </div>
       )}
@@ -715,6 +725,10 @@ export default function MainV2() {
         @keyframes textGlow {
           0%, 100% { text-shadow: 0 0 3px rgba(251,191,36,0.3); }
           50%      { text-shadow: 0 0 12px rgba(251,191,36,0.95), 0 0 4px rgba(255,255,255,0.7); }
+        }
+        @keyframes bannerProgress {
+          from { width: 0%; }
+          to   { width: 100%; }
         }
         @keyframes bannerKeyGlow {
           0%, 100% { text-shadow: 0 1px 8px rgba(0,0,0,0.7); }
