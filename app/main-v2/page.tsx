@@ -281,14 +281,14 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setCur(c => {
       return (c + 1) % BANNERS.length;
-    }), 2500);
+    }), 4500);
     setCur(next);
   };
 
   useEffect(() => {
     timerRef.current = setInterval(() => setCur(c => {
       return (c + 1) % BANNERS.length;
-    }), 2500);
+    }), 4500);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, []);
 
@@ -327,7 +327,7 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
                 <div style={{ display: "inline-flex", alignItems: "center", padding: "8px 16px", background: "#ec4899", borderRadius: 50, boxShadow: "0 3px 12px rgba(236,72,153,0.5)" }}>
                   <span style={{ fontSize: 12, fontWeight: 900, color: "white" }}>인생 역전 →</span>
                 </div>
-                <span style={{ background: "white", color: "#ef4444", fontSize: 11, fontWeight: 900, padding: "5px 12px", borderRadius: 50 }}>무료 3회</span>
+                <span style={{ background: "white", color: "#ef4444", fontSize: 11, fontWeight: 900, padding: "5px 12px", borderRadius: 50, animation: "freeBadgePulse 1.2s ease-in-out infinite" }}>무료 3회</span>
               </div>
             </div>
           </div>
@@ -401,7 +401,7 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
         </button>
         {/* 노란 진행선 — 슬라이드 타이밍 표시 */}
         {!(b as any).chatBanner && (
-          <div key={`prog-${cur}`} style={{ position: "absolute", bottom: 0, left: 0, height: 4, background: "linear-gradient(90deg,#facc15,#f97316)", animation: "bannerProgress 2500ms linear forwards", zIndex: 4, boxShadow: "0 0 8px rgba(250,204,21,0.7)" }} />
+          <div key={`prog-${cur}`} style={{ position: "absolute", bottom: 0, left: 0, height: 4, background: "linear-gradient(90deg,#facc15,#f97316)", animation: "bannerProgress 4500ms linear forwards", zIndex: 4, boxShadow: "0 0 8px rgba(250,204,21,0.7)" }} />
         )}
         {/* 인디케이터 — 노란색 */}
         <div style={{ position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)", zIndex: 3 }}>
@@ -726,6 +726,10 @@ export default function MainV2() {
         @keyframes bannerProgress {
           from { width: 0%; }
           to   { width: 100%; }
+        }
+        @keyframes freeBadgePulse {
+          0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(239,68,68,0); }
+          50%      { transform: scale(1.12); box-shadow: 0 0 10px rgba(239,68,68,0.6); }
         }
         @keyframes bannerKeyGlow {
           0%, 100% { text-shadow: 0 1px 8px rgba(0,0,0,0.7); }
