@@ -103,6 +103,7 @@ export default function QAPage() {
   const [qListCat, setQListCat] = useState("wealth");
   const [chipKey, setChipKey] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const qaModalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -144,6 +145,15 @@ export default function QAPage() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
+  useEffect(() => {
+    if (!showModal) return;
+    const prevent = (e: TouchEvent) => {
+      if (!qaModalRef.current?.contains(e.target as Node)) e.preventDefault();
+    };
+    document.addEventListener("touchmove", prevent, { passive: false });
+    return () => document.removeEventListener("touchmove", prevent);
+  }, [showModal]);
+
   const sendMsg = (overrideQ?: string) => {
     const q = (overrideQ ?? input).trim();
     if (!q || typing) return;
@@ -162,7 +172,13 @@ export default function QAPage() {
     }
 
     const detectedCat = detectCategory(q);
-    if (remaining <= 0) { setPendingQ(q); setPendingCatId(detectedCat); setPendingPkg(null); setShowModal(true); return; }
+    if (remaining <= 0) {
+      setMessages(prev => [...prev, { from: "user", text: q }, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
+      setInput("");
+      setPendingQ(q); setPendingCatId(detectedCat); setPendingPkg(null);
+      setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setTimeout(() => setShowModal(true), 500); }, 6500);
+      return;
+    }
     setMessages(prev => [...prev, { from: "user", text: q }]);
     if (!overrideQ) setInput("");
     const newRemaining = unlocked ? 999 : remaining - 1;
@@ -185,7 +201,7 @@ export default function QAPage() {
       if (newRemaining === 0) {
         setTimeout(() => {
           setMessages(prev => [...prev, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
-          setTimeout(() => { setPendingQ(""); setPendingCatId(catId); setPendingPkg(null); setShowModal(true); }, 800);
+          setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setPendingQ(""); setPendingCatId(catId); setPendingPkg(null); setTimeout(() => setShowModal(true), 500); }, 5500);
         }, 800);
       }
     }, 900);
@@ -375,9 +391,9 @@ export default function QAPage() {
         const isHighlightPkg = (p: typeof PKGS[0]) => pendingPkg === p.id;
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 100 }}>
-            <div style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, maxHeight: "80vh", display: "flex", flexDirection: "column" }}>
+            <div ref={qaModalRef} style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, height: 360, display: "flex", flexDirection: "column" }}>
               {/* 스크롤 영역 */}
-              <div style={{ overflowY: "auto", padding: "18px 16px 8px", flex: 1 }}>
+              <div style={{ overflowY: "auto", overscrollBehavior: "contain", padding: "18px 16px 8px", flex: 1 }}>
                 <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
                 <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
                 <p style={{ fontSize: 11, color: "#374151", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>구매하면 관련 Q&amp;A 전체 열람 가능해</p>
