@@ -250,20 +250,35 @@ export default function QAPage() {
       </div>
 
       {/* 추천 질문 칩 */}
-      {suggestions.length > 0 && !typing && (
-        <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "8px 12px", display: "flex", gap: 7, overflowX: "auto", flexShrink: 0 }}>
-          {suggestions.map((s, i) => (
-            <button key={i} onClick={() => sendMsg(s.q)} style={{
-              flexShrink: 0, padding: "6px 13px",
-              background: "linear-gradient(135deg, #fdf4ff, #f3e8ff)",
-              border: "1.5px solid #e9d5ff", borderRadius: 50,
-              fontSize: 11, fontWeight: 800, color: "#7c3aed", cursor: "pointer", whiteSpace: "nowrap",
-            }}>
-              {s.q.length > 20 ? s.q.slice(0, 19) + "…" : s.q}
-            </button>
-          ))}
-        </div>
-      )}
+      {suggestions.length > 0 && !typing && (() => {
+        const CHIP_COLORS = [
+          "linear-gradient(135deg, #ec4899, #f97316)",
+          "linear-gradient(135deg, #8b5cf6, #ec4899)",
+          "linear-gradient(135deg, #06b6d4, #3b82f6)",
+          "linear-gradient(135deg, #10b981, #06b6d4)",
+          "linear-gradient(135deg, #f59e0b, #ef4444)",
+          "linear-gradient(135deg, #6366f1, #8b5cf6)",
+          "linear-gradient(135deg, #14b8a6, #10b981)",
+          "linear-gradient(135deg, #f97316, #eab308)",
+          "linear-gradient(135deg, #e11d48, #8b5cf6)",
+        ];
+        return (
+          <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "8px 12px", display: "flex", gap: 7, overflowX: "auto", flexShrink: 0 }}>
+            {suggestions.map((s, i) => (
+              <button key={i} onClick={() => sendMsg(s.q)} style={{
+                flexShrink: 0, padding: "7px 14px",
+                background: CHIP_COLORS[i % CHIP_COLORS.length],
+                border: "none", borderRadius: 50,
+                fontSize: 11, fontWeight: 800, color: "white",
+                cursor: "pointer", whiteSpace: "nowrap",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+              }}>
+                {s.q.length > 20 ? s.q.slice(0, 19) + "…" : s.q}
+              </button>
+            ))}
+          </div>
+        );
+      })()}
 
       {/* 질문 목록 버튼 — 입력창 바로 위 */}
       <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "10px 14px 0", flexShrink: 0 }}>
