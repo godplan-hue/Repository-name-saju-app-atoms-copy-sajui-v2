@@ -6,6 +6,7 @@ import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng } from "@/lib/qa/index";
 
 function QAYellowLine() {
+  const lineRef = useRef<HTMLDivElement>(null);
   const shineRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let rafId: number;
@@ -14,15 +15,17 @@ function QAYellowLine() {
     const animate = (now: number) => {
       const progress = ((now - start) % DURATION) / DURATION;
       const pos = -80 + progress * 200;
+      const glow = 0.5 + 0.5 * Math.sin(progress * Math.PI * 2);
       if (shineRef.current) shineRef.current.style.transform = `translateX(${pos}%)`;
+      if (lineRef.current) lineRef.current.style.boxShadow = `0 0 ${4 + glow * 14}px rgba(250,204,21,${0.5 + glow * 0.5})`;
       rafId = requestAnimationFrame(animate);
     };
     rafId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafId);
   }, []);
   return (
-    <div style={{ height: 5, background: "linear-gradient(90deg,#facc15,#f97316,#facc15)", position: "relative", overflow: "hidden", boxShadow: "0 0 10px rgba(250,204,21,0.8)" }}>
-      <div ref={shineRef} style={{ position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.75),transparent)", transform: "translateX(-80%)" }} />
+    <div ref={lineRef} style={{ height: 10, background: "linear-gradient(90deg,#facc15,#f97316,#facc15)", position: "relative", overflow: "hidden", boxShadow: "0 0 10px rgba(250,204,21,0.8)" }}>
+      <div ref={shineRef} style={{ position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)", transform: "translateX(-80%)" }} />
     </div>
   );
 }
