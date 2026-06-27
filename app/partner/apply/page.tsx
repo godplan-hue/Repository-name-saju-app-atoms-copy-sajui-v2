@@ -8,7 +8,7 @@ export default function PartnerApply() {
   const [selectedTier, setSelectedTier] = useState("");
 
   const tiers = [
-    { name: "무료", fee: "₩0", month: "월 30건(연 최대 360건)", revenue: "30%", value: "free" },
+    { name: "무료", fee: "₩0", month: "월 30건(연 최대 360건)", revenue: "30%", value: "free", extra: "3개월 무료 이용" },
     { name: "실버", fee: "₩280,000", month: "월 150건(연 최대 1,800건)", revenue: "45%", value: "silver" },
     { name: "골드", fee: "₩480,000", month: "월 300건(연 최대 3,600건)", revenue: "55%", value: "gold" },
     { name: "다이아", fee: "₩1,980,000", month: "무제한", revenue: "70%", value: "diamond", extra: "나만의 독립 사주앱 브랜드 운영" }
@@ -45,7 +45,7 @@ export default function PartnerApply() {
                 {tier.month.includes("(") && (<><br/>{`(${tier.month.split("(")[1]}`}</>)}
               </p>
               {tier.extra && (
-                <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: "0 0 4px 0" }}>💎 {tier.extra}</p>
+                <p style={{ color: tier.value === "free" ? "#4ade80" : "#fbbf24", fontSize: 11, fontWeight: 800, margin: "0 0 4px 0" }}>{tier.value === "free" ? "🎁" : "💎"} {tier.extra}</p>
               )}
               <p style={{ color: "#ff9500", fontSize: 12, fontWeight: 900, margin: "0 0 8px 0" }}>사용료 {tier.revenue} 할인</p>
               <button onClick={() => handleApply(tier.value)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", marginTop: "auto" }}>가입하기</button>
@@ -58,7 +58,7 @@ export default function PartnerApply() {
           <h3 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12, marginTop: 0 }}>📋 파트너 정보</h3>
           <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 2, marginLeft: 20, marginBottom: 0 }}>
             <li>• 분석 1건 생성할 때마다<br/>등급별 할인이 적용된 사용료가<br/>즉시 청구됩니다</li>
-            <li>• 무료 등급은<br/>추가 비용이 없습니다<br/>(분석 생성 시 사용료만 발생)</li>
+            <li>• 무료 등급은 3개월 무료 이용 후<br/>유료 등급으로 전환 가능합니다<br/>(분석 생성 시 사용료만 발생)</li>
             <li>• 등급 업그레이드는 언제든 가능합니다</li>
             <li>• 자세한 정책은 파트너 정책<br/>페이지에서 확인하세요</li>
           </ul>
