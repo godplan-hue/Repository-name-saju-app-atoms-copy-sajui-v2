@@ -333,7 +333,7 @@ export default function QAPage() {
             </div>
             {/* 질문 목록 스크롤 — 3단 그리드 */}
             <div style={{ overflowY: "auto", padding: "4px 16px 32px", flex: 1 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
                 {(QA_CATEGORIES.find(c => c.id === qListCat)?.items ?? []).map((item, idx) => (
                   <button key={idx} onClick={() => { setShowQList(false); sendMsg(item.question); }} style={{
                     padding: "10px 10px", background: "#fdf4ff",
