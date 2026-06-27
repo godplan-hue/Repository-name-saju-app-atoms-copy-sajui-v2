@@ -72,10 +72,10 @@ const SINGLES = [
   { icon: "✨", label: "총운",   catIds: ["general","children"] },
 ];
 const PKGS = [
-  { id: "basic",    label: "기본 분석", price: "₩9,900",  desc: "재물운+연애운 (30p)" },
-  { id: "standard", label: "베이직",   price: "₩19,900", desc: "올해+재물+연애+월별 (75p)" },
-  { id: "premium",  label: "프리미엄", price: "₩24,900", desc: "올해+재물+연애+월별+건강 (100p)" },
-  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "8개 전부+궁합분석 (150p)" },
+  { id: "basic",    label: "기본 분석",  price: "₩9,900",  desc: "재물운 + 연애운" },
+  { id: "standard", label: "베이직",    price: "₩19,900", desc: "올해 + 재물 + 연애 + 월별" },
+  { id: "premium",  label: "프리미엄",  price: "₩24,900", desc: "올해 + 재물 + 연애 + 월별 + 건강" },
+  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "8개 전부 + 궁합분석" },
 ];
 
 interface Msg { from: "cat" | "user"; text: string; buyCatId?: string; }
@@ -345,7 +345,7 @@ export default function QAPage() {
                 {SINGLES.map(s => {
                   const hi = isHighlightSingle(s);
                   return (
-                    <button key={s.label} onClick={() => router.push("/main-v2/payment")}
+                    <button key={s.label} onClick={() => { window.location.href = "/main-v2/payment#select-section"; }}
                       style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px", background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff", border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff", borderRadius: 12, cursor: "pointer" }}
                     >
                       <span style={{ fontSize: 18 }}>{s.icon}</span>
