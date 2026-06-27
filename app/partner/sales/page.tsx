@@ -77,7 +77,7 @@ export default function PartnerSales() {
 
           <div style={{ background: "#fef3c7", border: "1px solid #fde68a", padding: "12px 16px", borderRadius: 12, marginBottom: 16 }}>
             <p style={{ fontSize: 12, color: "#92400e", fontWeight: 700, lineHeight: 1.6, margin: 0 }}>
-              ※ 아래 금액은 고객님께 받으시는 가격이 아니라, 분석을 1건 생성할 때마다 등급별 할인이 적용되어 점운에 지불하시는 이용료입니다.
+              ※ 아래 금액은 고객님께 받으시는 가격이 아니라,<br/>분석을 1건 생성할 때마다 등급별 할인이 적용되어<br/>점운에 지불하시는 이용료입니다.
             </p>
           </div>
 

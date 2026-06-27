@@ -101,7 +101,7 @@ export default function PartnerBrandSettings() {
             <div style={{ fontSize: 40, marginBottom: 12 }}>💎</div>
             <h1 style={{ fontSize: 18, fontWeight: 900, marginBottom: 10, color: "#333" }}>다이아 등급 전용 기능입니다</h1>
             <p style={{ fontSize: 13, color: "#666", lineHeight: 1.7, marginBottom: 20 }}>
-              나만의 독립 사주앱 브랜드(도메인+로고)는 다이아 등급부터 이용할 수 있어요.
+              나만의 독립 사주앱 브랜드(도메인+로고)는<br/>다이아 등급부터 이용할 수 있어요.
             </p>
             <button onClick={() => router.push("/partner/upgrade")} style={{ padding: "12px 24px", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
               등급 업그레이드 하기
