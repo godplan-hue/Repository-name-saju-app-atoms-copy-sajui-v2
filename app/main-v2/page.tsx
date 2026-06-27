@@ -312,27 +312,19 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
         }}
       >
         {(b as any).chatBanner ? (
-          /* 무엇이든 물어보세요 — 상담 프로모 배너 */
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #2d1b69 0%, #4c1d95 60%, #6d28d9 100%)" }}>
-            <img
-              src="https://i.pinimg.com/736x/ac/41/34/ac4134d338bc8fab68537a589fecb08b.jpg"
-              alt=""
-              style={{ position: "absolute", right: 0, bottom: 0, height: "88%", width: "42%", objectFit: "cover", objectPosition: "top", opacity: 0.9 }}
-            />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(45,27,105,0.98) 52%, transparent 100%)" }} />
-            <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", padding: "20px 18px", zIndex: 2 }}>
-              <h1 style={{ fontSize: 24, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, color: "white", textShadow: "0 0 12px rgba(255,255,255,0.9), 0 2px 8px rgba(0,0,0,0.4)", animation: "sparklePulse 1.8s ease-in-out infinite" }}>
-                고양이가 읽는 나의 운명
-              </h1>
-              <p style={{ fontSize: 13, fontWeight: 700, margin: "0 0 14px", color: "rgba(255,255,255,0.9)", textShadow: "0 1px 4px rgba(0,0,0,0.3)", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
-              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                {[
-                  { text: "⚡ AI 정밀분석", bg: "linear-gradient(135deg,#6d28d9,#8b5cf6)" },
-                  { text: "🔒 개인정보 즉시삭제", bg: "linear-gradient(135deg,#15803d,#16a34a)" },
-                  { text: "⏱ 3초 완성", bg: "linear-gradient(135deg,#b45309,#d97706)" },
-                ].map(chip => (
-                  <span key={chip.text} style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: chip.bg, borderRadius: 20, padding: "6px 12px", boxShadow: "0 3px 8px rgba(0,0,0,0.25)" }}>{chip.text}</span>
-                ))}
+          /* 반짝이는 배경 + 무엇이든 물어보세요 텍스트 */
+          <div style={{ position: "absolute", inset: 0 }}>
+            <img src="https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+            <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.22)" }} />
+            <span style={{ position: "absolute", top: 16, left: 16, background: "#ec4899", color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2 }}>AI 사주 상담</span>
+            <div style={{ position: "absolute", bottom: 20, left: 18, zIndex: 2 }}>
+              <p style={{ margin: "0 0 6px", fontSize: 26, fontWeight: 900, color: "white", lineHeight: 1.2, letterSpacing: "-0.5px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>무엇이든<br/>물어보세요</p>
+              <p style={{ margin: "0 0 14px", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.9)", textShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>복냥이에게 직접 물어봐요!</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ display: "inline-flex", alignItems: "center", padding: "8px 16px", background: "#ec4899", borderRadius: 50, boxShadow: "0 3px 12px rgba(236,72,153,0.5)" }}>
+                  <span style={{ fontSize: 12, fontWeight: 900, color: "white" }}>사주 상담 →</span>
+                </div>
+                <span style={{ background: "rgba(255,255,255,0.2)", color: "white", fontSize: 11, fontWeight: 800, padding: "5px 12px", borderRadius: 50, border: "1px solid rgba(255,255,255,0.4)" }}>무료 3회</span>
               </div>
             </div>
           </div>
