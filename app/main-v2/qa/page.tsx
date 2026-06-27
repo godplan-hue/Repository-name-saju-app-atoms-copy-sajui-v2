@@ -163,9 +163,10 @@ export default function QAPage() {
       const showBuy = !unlocked && catId !== "general";
       setMessages(prev => [...prev, { from: "cat", text: answer, buyCatId: showBuy ? catId : undefined }]);
       setTyping(false);
-      // 이 카테고리 관련 추천 질문으로 업데이트 (최대 4개)
-      const relCat = QA_CATEGORIES.find(c => c.id === catId);
-      if (relCat) setSuggestions(relCat.items.slice(1, 5).map(item => ({ q: item.question, catId })));
+      // 방금 답한 카테고리 제외하고 다른 카테고리에서 1개씩 추천
+      const otherCats = QA_CATEGORIES.filter(c => c.id !== catId);
+      const nextSugg = otherCats.slice(0, 4).map(c => ({ q: c.items[0].question, catId: c.id }));
+      setSuggestions(nextSugg);
       if (newRemaining === 0) {
         setTimeout(() => {
           setMessages(prev => [...prev, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
