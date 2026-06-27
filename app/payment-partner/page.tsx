@@ -160,7 +160,7 @@ function PaymentPartnerInner() {
           </button>
 
           <div style={{ border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: 16, marginBottom: 12, textAlign: "center" }}>
-            <p style={{ color: "#ffffff", fontSize: 12, fontWeight: 800, margin: "0 0 10px 0" }}>카드 결제를 원하시면 카카오톡으로 연락주세요 😊<br/>결제 링크를 바로 보내드립니다.</p>
+            <p style={{ color: "#ffffff", fontSize: 12, fontWeight: 800, margin: "0 0 10px 0", lineHeight: 2 }}>카드 결제를 원하시면<br/>카카오톡으로 연락주세요 😊<br/>결제 링크를 바로 보내드립니다.</p>
             <a
               href="https://open.kakao.com/o/sEwhSEWg"
               target="_blank"
