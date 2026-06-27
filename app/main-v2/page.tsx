@@ -402,10 +402,8 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
         >
           ›
         </button>
-        {/* 노란 진행선 — 슬라이드 타이밍 표시 */}
-        {!(b as any).chatBanner && (
-          <div key={`prog-${cur}`} style={{ position: "absolute", bottom: 0, left: 0, height: 4, background: "linear-gradient(90deg,#facc15,#f97316)", animation: "bannerProgress 4500ms linear forwards", zIndex: 4, boxShadow: "0 0 8px rgba(250,204,21,0.7)" }} />
-        )}
+        {/* 노란 진행선 — 모든 슬라이드 동일하게 */}
+        <div key={`prog-${cur}`} style={{ position: "absolute", bottom: 0, left: 0, height: 4, background: "linear-gradient(90deg,#facc15,#f97316)", animation: "bannerProgress 4500ms linear forwards", zIndex: 4, boxShadow: "0 0 8px rgba(250,204,21,0.7)" }} />
         {/* 인디케이터 — 노란색 */}
         <div style={{ position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)", zIndex: 3 }}>
           <div style={{ display: "flex", gap: 6 }}>
