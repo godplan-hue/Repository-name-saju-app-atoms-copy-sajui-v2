@@ -96,6 +96,7 @@ export default function QAPage() {
   const [pendingPkg, setPendingPkg] = useState<string | null>(null);
   const [typing, setTyping] = useState(false);
   const [suggestions, setSuggestions] = useState<Array<{q: string; catId: string}>>([]);
+  const suggIndexRef = useRef(0); // 9개 카테고리 공통 순번 (0~39 순환)
   const [showQList, setShowQList] = useState(false);
   const [qListCat, setQListCat] = useState("wealth");
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -117,15 +118,13 @@ export default function QAPage() {
     const used = Number(localStorage.getItem(`v2_qa_${n}_${y}_${todayKey()}`) ?? 0);
     setRemaining(paid ? 999 : Math.max(0, FREE_QUESTIONS - used));
     setMessages([{ from: "cat", text: `안녕하세요, ${n}님! 🐱\n복냥이가 ${n}님의 사주를 보고 있어요.\n아래 질문을 눌러봐도 되고, 직접 물어봐도 돼!` }]);
-    // 초기 추천 질문: 카테고리별 랜덤 1개씩 (매번 다른 질문)
-    const initSugg = ["wealth", "love", "health", "career", "marriage", "business", "success", "health", "children", "general"]
-      .slice(0, 4)
-      .map(catId => {
-        const cat = QA_CATEGORIES.find(c => c.id === catId);
-        if (!cat) return null;
-        const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
-        return { q: pick.question, catId };
-      }).filter(Boolean) as { q: string; catId: string }[];
+    // 9개 카테고리 전부 — 순서대로 1개씩 (첫 진입은 랜덤 시작점)
+    const startIdx = Math.floor(Math.random() * 40);
+    suggIndexRef.current = startIdx;
+    const initSugg = QA_CATEGORIES.map(cat => {
+      const idx = startIdx % cat.items.length;
+      return { q: cat.items[idx].question, catId: cat.id };
+    });
     setSuggestions(initSugg);
     setReady(true);
   }, [router]);
@@ -167,11 +166,12 @@ export default function QAPage() {
       const showBuy = !unlocked && catId !== "general";
       setMessages(prev => [...prev, { from: "cat", text: answer, buyCatId: showBuy ? catId : undefined }]);
       setTyping(false);
-      // 방금 답한 카테고리 제외하고 나머지에서 랜덤 1개씩 (우리가 만든 질문지 그대로)
-      const otherCats = QA_CATEGORIES.filter(c => c.id !== catId);
-      const nextSugg = otherCats.slice(0, 4).map(c => {
-        const pick = c.items[Math.floor(Math.random() * c.items.length)];
-        return { q: pick.question, catId: c.id };
+      // 9개 카테고리 전부 — 다음 순번 질문으로 갱신
+      const nextIdx = (suggIndexRef.current + 1) % 40;
+      suggIndexRef.current = nextIdx;
+      const nextSugg = QA_CATEGORIES.map(c => {
+        const idx = nextIdx % c.items.length;
+        return { q: c.items[idx].question, catId: c.id };
       });
       setSuggestions(nextSugg);
       if (newRemaining === 0) {
