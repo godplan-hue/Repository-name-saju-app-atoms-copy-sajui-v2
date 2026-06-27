@@ -108,19 +108,13 @@ export default function Payment() {
        
         <section style={{ maxWidth: 800, margin: "0 auto 60px", textAlign: "center" }}>
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>정확한 사주 원국 분석</h1>
-          <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 12, lineHeight: 1.8 }}>음양오행·천간지지 십성 완벽 분석</p>
-          <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24 }}>최고 수준의 사주 분석</p>
+          <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 12, lineHeight: 1.8 }}>만세력 기반 · 음양오행 · 천간지지 · 십성 완벽 분석</p>
+          <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 12 }}>연주 · 월주 · 일주 · 시주 사주팔자 완전 해석</p>
           <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 32, lineHeight: 1.8 }}>당신의 인생을 완벽하게 읽어드립니다</p>
-         
-          {isMobile ? (
-            <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
-              30페이지 기본분석부터<br/>150페이지 완벽분석까지<br/>올해 운세, 월별 운세,<br/>재물운, 연애운, 건강운,<br/>궁합분석까지
-            </p>
-          ) : (
-            <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
-              30페이지 기본분석부터 150페이지 완벽분석까지<br/>올해 운세, 월별 운세, 재물운, 연애운, 건강운, 궁합분석까지
-            </p>
-          )}
+
+          <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
+            올해 운세, 월별 운세,<br/>재물운, 연애운, 건강운,<br/>궁합분석까지
+          </p>
         </section>
 
         <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 40, fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900 }}>💳 패키지 선택</h2>
