@@ -6,7 +6,10 @@ import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng } from "@/lib/qa/index";
 
 const FREE_QUESTIONS = 3;
-const todayKey = () => new Date().toISOString().slice(0, 10);
+const todayKey = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+};
 
 // 패키지 이름 직접 타이핑 → 구매 모달
 const PRODUCT_NAME_TRIGGERS: Array<{ keywords: string[]; pkg: string }> = [
@@ -18,7 +21,7 @@ const PRODUCT_NAME_TRIGGERS: Array<{ keywords: string[]; pkg: string }> = [
 
 const CATEGORY_KEYWORDS: Record<string, string[]> = {
   wealth:   ["돈", "재물", "금전", "수입", "월급", "투자", "부업", "대출", "저축", "재테크", "빚", "수익", "벌", "사업비", "집", "마련", "부동산", "아파트", "전세", "월세", "절약", "재정"],
-  love:     ["연애", "사랑", "남자", "여자", "남친", "여친", "썸", "고백", "헤어", "좋아하는", "만남", "소개팅", "짝사랑", "이별", "데이트"],
+  love:     ["연애", "사랑", "남자", "여자", "남친", "여친", "썸", "고백", "헤어", "좋아하는", "만남", "소개팅", "짝사랑", "이별", "데이트", "궁합", "연인", "사귀", "상대방", "좋아해", "고백"],
   marriage: ["결혼", "배우자", "남편", "아내", "혼인", "혼수", "시댁", "처가", "신혼", "프러포즈", "동거", "생활비", "이혼", "시월드"],
   business: ["사업", "창업", "장사", "비즈니스", "가게", "직원", "매출", "거래", "법인", "마케팅", "홍보", "단골", "확장"],
   career:   ["취업", "직장", "회사", "이직", "면접", "커리어", "승진", "직업", "일자리", "자격증", "시험", "공부", "재취업", "계약직", "정규직", "야근"],
@@ -377,7 +380,7 @@ export default function QAPage() {
                   {SINGLES.map(s => {
                     const hi = isHighlightSingle(s);
                     return (
-                      <button key={s.label} onClick={() => router.push(`/main-v2/payment?single=${encodeURIComponent(s.label)}`)}
+                      <button key={s.label} onClick={() => router.push(`/main-v2/payment?single=${encodeURIComponent(s.label)}&scrollTo=packages`)}
                         style={{ display: "flex", alignItems: "center", gap: 7, padding: "9px 11px", background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff", border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff", borderRadius: 11, cursor: "pointer" }}
                       >
                         <span style={{ fontSize: 16 }}>{s.icon}</span>
@@ -398,7 +401,7 @@ export default function QAPage() {
                   {PKGS.map(p => {
                     const hi = isHighlightPkg(p);
                     return (
-                      <button key={p.id} onClick={() => router.push(`/main-v2/payment?preselect=${p.id}`)}
+                      <button key={p.id} onClick={() => router.push(`/main-v2/payment?preselect=${p.id}&scrollTo=packages`)}
                         style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 13px", background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff", border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff", borderRadius: 11, cursor: "pointer" }}
                       >
                         <div>

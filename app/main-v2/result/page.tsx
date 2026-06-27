@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
-import QASection from "@/components/QASection";
+import QAChatWidget from "@/components/QAChatWidget";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -279,7 +279,7 @@ function V2ResultInner() {
   }, []);
   const BANNER_MSGS = ["오늘 재물운이 어떨까?", "취업 될 것 같아?", "연애운 알려줘!", "이직 타이밍 맞아?", "올해 대박 나는 달 언제야?", "내 강점이 뭐야?"];
   useEffect(() => {
-    const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 1000);
+    const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 700);
     return () => clearInterval(t);
   }, []);
 
@@ -1449,6 +1449,15 @@ function V2ResultInner() {
             </div>
             <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
           </div>
+        )}
+
+        {/* ── 복냥이 상담창 배너 ── */}
+        {!isPartner && profile?.name && profile?.birthYear && (
+          <QAChatWidget
+            name={profile.name}
+            birthYear={Number(profile.birthYear)}
+            unlocked={paid}
+          />
         )}
 
         <button onClick={() => router.push("/main-v2")}
