@@ -194,8 +194,11 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
           </div>
         )}
 
+        {/* 노란 구분선 */}
+        <div style={{ height: 3, background: "linear-gradient(90deg, #facc15, #f97316, #facc15)", boxShadow: "0 0 6px rgba(250,204,21,0.6)" }} />
+
         {/* 360개 질문 목록 버튼 */}
-        <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "8px 10px 0" }}>
+        <div style={{ background: "white", padding: "8px 10px 0" }}>
           <button onClick={() => setShowQList(true)} style={{
             width: "100%", padding: "10px 0",
             background: "linear-gradient(135deg, #8b5cf6, #ec4899)",
