@@ -96,7 +96,6 @@ export default function QAPage() {
   const [pendingPkg, setPendingPkg] = useState<string | null>(null);
   const [typing, setTyping] = useState(false);
   const [suggestions, setSuggestions] = useState<Array<{q: string; catId: string}>>([]);
-  const suggIndexRef = useRef(0); // 9개 카테고리 공통 순번 (0~39 순환)
   const [showQList, setShowQList] = useState(false);
   const [qListCat, setQListCat] = useState("wealth");
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -118,14 +117,11 @@ export default function QAPage() {
     const used = Number(localStorage.getItem(`v2_qa_${n}_${y}_${todayKey()}`) ?? 0);
     setRemaining(paid ? 999 : Math.max(0, FREE_QUESTIONS - used));
     setMessages([{ from: "cat", text: `안녕하세요, ${n}님! 🐱\n복냥이가 ${n}님의 사주를 보고 있어요.\n아래 질문을 눌러봐도 되고, 직접 물어봐도 돼!` }]);
-    // 9개 카테고리 전부 — 순서대로 1개씩 (첫 진입은 랜덤 시작점)
-    const startIdx = Math.floor(Math.random() * 40);
-    suggIndexRef.current = startIdx;
-    const initSugg = QA_CATEGORIES.map(cat => {
-      const idx = startIdx % cat.items.length;
-      return { q: cat.items[idx].question, catId: cat.id };
-    });
-    setSuggestions(initSugg);
+    // 9개 카테고리 각각 랜덤 1개
+    setSuggestions(QA_CATEGORIES.map(cat => {
+      const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
+      return { q: pick.question, catId: cat.id };
+    }));
     setReady(true);
   }, [router]);
 
@@ -166,14 +162,11 @@ export default function QAPage() {
       const showBuy = !unlocked && catId !== "general";
       setMessages(prev => [...prev, { from: "cat", text: answer, buyCatId: showBuy ? catId : undefined }]);
       setTyping(false);
-      // 9개 카테고리 전부 — 다음 순번 질문으로 갱신
-      const nextIdx = (suggIndexRef.current + 1) % 40;
-      suggIndexRef.current = nextIdx;
-      const nextSugg = QA_CATEGORIES.map(c => {
-        const idx = nextIdx % c.items.length;
-        return { q: c.items[idx].question, catId: c.id };
-      });
-      setSuggestions(nextSugg);
+      // 9개 카테고리 각각 새 랜덤 질문으로 갱신
+      setSuggestions(QA_CATEGORIES.map(c => {
+        const pick = c.items[Math.floor(Math.random() * c.items.length)];
+        return { q: pick.question, catId: c.id };
+      }));
       if (newRemaining === 0) {
         setTimeout(() => {
           setMessages(prev => [...prev, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
