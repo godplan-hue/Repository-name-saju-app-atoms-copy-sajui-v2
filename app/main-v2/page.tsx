@@ -324,8 +324,7 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
             <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.22)" }} />
             <span style={{ position: "absolute", top: 16, left: 16, background: "#ec4899", color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2 }}>AI 사주 상담</span>
             <div style={{ position: "absolute", bottom: 20, left: 18, zIndex: 2 }}>
-              <p style={{ margin: "0 0 6px", fontSize: 26, fontWeight: 900, color: "white", lineHeight: 1.2, letterSpacing: "-0.5px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>무엇이든<br/>물어보세요</p>
-              <p style={{ margin: "0 0 14px", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.9)", textShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>복냥이에게 직접 물어봐요!</p>
+              <p style={{ margin: "0 0 14px", fontSize: 22, fontWeight: 900, color: "white", lineHeight: 1.35, letterSpacing: "-0.3px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>복냥이에게 당신의 운명을<br/>무엇이든 직접 물어봐요!</p>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ display: "inline-flex", alignItems: "center", padding: "8px 16px", background: "#ec4899", borderRadius: 50, boxShadow: "0 3px 12px rgba(236,72,153,0.5)" }}>
                   <span style={{ fontSize: 12, fontWeight: 900, color: "white" }}>사주 상담 →</span>
