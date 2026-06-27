@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
+import QASection from "@/components/QASection";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -1387,6 +1388,15 @@ function V2ResultInner() {
             </div>
           </>
         )}
+        {/* ── 사주 Q&A 섹션 ── */}
+        {!isPartner && profile?.name && profile?.birthYear && (
+          <QASection
+            name={profile.name}
+            birthYear={Number(profile.birthYear)}
+            onBuyClick={() => router.push("/main-v2/payment")}
+          />
+        )}
+
         <button onClick={() => router.push("/main-v2")}
           style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
