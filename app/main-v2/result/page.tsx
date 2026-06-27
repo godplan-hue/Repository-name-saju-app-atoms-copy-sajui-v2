@@ -1388,29 +1388,54 @@ function V2ResultInner() {
             </div>
           </>
         )}
-        {/* ── 사주 Q&A 버튼 ── */}
+        {/* ── 사주 Q&A 배너 ── */}
         {!isPartner && profile?.name && profile?.birthYear && (
-          <button
+          <div
             onClick={() => router.push("/main-v2/qa")}
             style={{
-              width: "100%",
-              marginTop: 16,
-              padding: "16px",
-              background: "linear-gradient(135deg, #f5f3ff, #fce7f3)",
-              border: "2px solid #e9d5ff",
-              borderRadius: 16,
+              marginTop: 20,
+              borderRadius: 20,
+              overflow: "hidden",
               cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)",
+              boxShadow: "0 10px 36px rgba(139,92,246,0.45)",
+              position: "relative",
+              minHeight: 140,
             }}
           >
-            <div style={{ textAlign: "left" }}>
-              <p style={{ margin: "0 0 2px", fontSize: 15, fontWeight: 900, color: "#1a1a2e" }}>🔮 사주 Q&amp;A</p>
-              <p style={{ margin: 0, fontSize: 12, color: "#8b5cf6", fontWeight: 700 }}>9개 카테고리 · 궁금한 거 다 물어봐</p>
+            {/* 배경 글로우 */}
+            <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(236,72,153,0.18)", filter: "blur(30px)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(139,92,246,0.2)", filter: "blur(25px)", pointerEvents: "none" }} />
+
+            <div style={{ padding: "22px 20px 20px", position: "relative", zIndex: 2 }}>
+              {/* 뱃지 */}
+              <span style={{ fontSize: 10, fontWeight: 900, color: "#fbbf24", background: "rgba(251,191,36,0.18)", border: "1px solid rgba(251,191,36,0.4)", padding: "3px 10px", borderRadius: 20, letterSpacing: 0.5 }}>AI 사주 상담</span>
+
+              {/* 메인 카피 */}
+              <p style={{ fontSize: 30, fontWeight: 900, color: "#ffffff", margin: "8px 0 2px", lineHeight: 1.15, letterSpacing: -1 }}>
+                무엇이든<br/>물어보세요
+              </p>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontWeight: 700, margin: "0 0 16px" }}>
+                복냥이에게 직접 물어봐요!
+              </p>
+
+              {/* CTA 버튼 */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "9px 20px",
+                  background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
+                  color: "white", borderRadius: 50,
+                  fontWeight: 900, fontSize: 13,
+                  boxShadow: "0 4px 14px rgba(236,72,153,0.5)",
+                }}>사주 상담 →</span>
+                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>무료 3회</span>
+              </div>
             </div>
-            <span style={{ fontSize: 20, color: "#ec4899" }}>→</span>
-          </button>
+
+            {/* 고양이 */}
+            <div style={{ position: "absolute", right: 14, bottom: 0, fontSize: 72, lineHeight: 1, zIndex: 2, userSelect: "none" }}>🐱</div>
+          </div>
         )}
 
         <button onClick={() => router.push("/main-v2")}
