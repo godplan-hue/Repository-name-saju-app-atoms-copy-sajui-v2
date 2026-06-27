@@ -100,6 +100,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   const [qListCat, setQListCat] = useState("wealth");
   const [chipKey, setChipKey] = useState(0);
   const msgAreaRef = useRef<HTMLDivElement>(null);
+  const buyModalRef = useRef<HTMLDivElement>(null);
 
   const refreshChips = () => {
     setSuggestions(QA_CATEGORIES.map(cat => {
@@ -130,18 +131,24 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   }, [messages, typing]);
 
   useEffect(() => {
-    if (showBuyModal) {
-      document.body.style.overflow = "hidden";
-      return () => { document.body.style.overflow = ""; };
-    }
+    if (!showBuyModal) return;
+    const prevent = (e: TouchEvent) => {
+      if (!buyModalRef.current?.contains(e.target as Node)) e.preventDefault();
+    };
+    document.addEventListener("touchmove", prevent, { passive: false });
+    return () => document.removeEventListener("touchmove", prevent);
   }, [showBuyModal]);
 
   const sendMsg = (overrideQ?: string) => {
     const q = (overrideQ ?? input).trim();
     if (!q || typing) return;
     if (remaining <= 0 && !unlocked) {
-      (document.activeElement as HTMLElement)?.blur();
-      setTimeout(() => setShowBuyModal(true), 500);
+      setMessages(prev => [...prev, { from: "user", text: q }, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
+      setInput("");
+      setTimeout(() => {
+        (document.activeElement as HTMLElement)?.blur();
+        setTimeout(() => setShowBuyModal(true), 500);
+      }, 6500);
       return;
     }
     setMessages(prev => [...prev, { from: "user", text: q }]);
@@ -310,7 +317,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
       {/* 구매 유도 바텀시트 */}
       {showBuyModal && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 300 }} onClick={() => setShowBuyModal(false)}>
-          <div onClick={e => e.stopPropagation()} style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, height: 400, overflowY: "auto", overscrollBehavior: "contain", padding: "16px 14px 24px" }}>
+          <div ref={buyModalRef} onClick={e => e.stopPropagation()} style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, height: 340, overflowY: "auto", overscrollBehavior: "contain", padding: "14px 14px 20px" }}>
             <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
             <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
             <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>구매하면 Q&A 전체 열람 + 무제한 질문 가능</p>
