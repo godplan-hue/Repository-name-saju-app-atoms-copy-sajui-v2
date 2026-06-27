@@ -142,7 +142,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
         <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, flexShrink: 0 }}>🐱</div>
           <div style={{ flex: 1 }}>
-            <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>복냥이 사주 상담</p>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 900, background: "linear-gradient(135deg, #ec4899, #8b5cf6, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "qaSparkle 1.8s ease-in-out infinite" }}>복냥이 사주 상담</p>
             <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: remaining > 0 || unlocked ? "#8b5cf6" : "#ef4444" }}>
               {unlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회`}
             </p>
@@ -293,7 +293,10 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
         </div>
       )}
 
-      <style>{`@keyframes qaWidgetBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }`}</style>
+      <style>{`
+        @keyframes qaWidgetBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+        @keyframes qaSparkle { 0%,100%{filter:brightness(1) drop-shadow(0 0 0 transparent)} 50%{filter:brightness(1.5) drop-shadow(0 0 8px rgba(236,72,153,0.9))} }
+      `}</style>
     </>
   );
 }
