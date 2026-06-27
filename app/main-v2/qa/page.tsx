@@ -226,7 +226,7 @@ export default function QAPage() {
   );
 
   return (
-    <main style={{ height: "100svh", display: "flex", flexDirection: "column", background: "#f9f5ff", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
+    <main style={{ height: "100svh", display: "flex", flexDirection: "column", background: "#f9f5ff", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", overflowX: "hidden" }}>
 
       {/* 헤더 */}
       <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
@@ -447,7 +447,7 @@ export default function QAPage() {
         );
       })()}
 
-      <style>{`@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} } @keyframes qaChipSlide { from{transform:translateX(60px);opacity:0} to{transform:translateX(0);opacity:1} } .qa-chips-row-p::-webkit-scrollbar{display:none} .qa-chips-row-p{scrollbar-width:none;-ms-overflow-style:none}`}</style>
+      <style>{`@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} } @keyframes qaChipSlide { from{opacity:0} to{opacity:1} } .qa-chips-row-p::-webkit-scrollbar{display:none} .qa-chips-row-p{scrollbar-width:none;-ms-overflow-style:none}`}</style>
     </main>
   );
 }
