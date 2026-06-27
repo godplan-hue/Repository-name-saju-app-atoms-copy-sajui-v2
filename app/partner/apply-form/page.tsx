@@ -90,7 +90,7 @@ function PartnerApplyFormInner() {
 
             <label style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, display: "block", marginBottom: 6 }}>상호명(고객에게 보여질 이름) *</label>
             <input type="text" name="businessName" value={formData.businessName} onChange={handleChange} placeholder="예: OO사주, OO철학관" style={{ width: "100%", padding: 12, background: "rgba(20,10,35,0.55)", border: "1.5px solid rgba(251,191,36,0.4)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
-            <p style={{ color: "#cbb6ff", fontSize: 11, fontWeight: 600, marginTop: -10, marginBottom: 16 }}>이 이름이 고객에게 전달되는 분석 결과지에 표시됩니다.</p>
+            <p style={{ color: "#cbb6ff", fontSize: 11, fontWeight: 600, marginTop: -10, marginBottom: 16 }}>이 이름이 고객에게 전달되는<br/>분석 결과지에 표시됩니다.</p>
 
             <label style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, display: "block", marginBottom: 6 }}>이메일 *</label>
             <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="이메일을 입력하세요" style={{ width: "100%", padding: 12, background: "rgba(20,10,35,0.55)", border: "1.5px solid rgba(251,191,36,0.4)", borderRadius: 8, color: "#f5f5f5", fontWeight: 700, fontSize: 13, boxSizing: "border-box", marginBottom: 16 }} />
