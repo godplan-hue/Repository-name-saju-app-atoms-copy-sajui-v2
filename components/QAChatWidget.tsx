@@ -8,13 +8,17 @@ import type { Ohaeng } from "@/lib/qa/index";
 function QAYellowLine() {
   const shineRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    let pos = -80;
-    const id = setInterval(() => {
-      pos += 1.5;
-      if (pos > 120) pos = -80;
+    let rafId: number;
+    const DURATION = 1400;
+    const start = performance.now();
+    const animate = (now: number) => {
+      const progress = ((now - start) % DURATION) / DURATION;
+      const pos = -80 + progress * 200;
       if (shineRef.current) shineRef.current.style.transform = `translateX(${pos}%)`;
-    }, 12);
-    return () => clearInterval(id);
+      rafId = requestAnimationFrame(animate);
+    };
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
   }, []);
   return (
     <div style={{ height: 5, background: "linear-gradient(90deg,#facc15,#f97316,#facc15)", position: "relative", overflow: "hidden", boxShadow: "0 0 10px rgba(250,204,21,0.8)" }}>
