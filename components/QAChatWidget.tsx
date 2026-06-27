@@ -55,6 +55,14 @@ function findAnswer(question: string, ohaeng: Ohaeng, name: string): string {
   return fillTemplate((bestScore>0 ? bestItem : cat.items[0]).answers[ohaeng], name);
 }
 
+const SINGLES = [
+  { id: "wealth",  label: "재물운", price: "₩990" },
+  { id: "love",    label: "연애운", price: "₩990" },
+  { id: "health",  label: "건강운", price: "₩990" },
+  { id: "success", label: "성공운", price: "₩990" },
+  { id: "yearly",  label: "총운",   price: "₩990", hot: true },
+];
+
 const PKGS = [
   { id: "basic",    label: "기본 분석",  price: "₩9,900",  desc: "재물운 + 연애운" },
   { id: "standard", label: "베이직",    price: "₩19,900", desc: "올해 + 재물 + 연애 + 월별" },
@@ -75,9 +83,9 @@ const CHIP_COLORS = [
 ];
 
 interface Msg { from: "cat"|"user"; text: string; }
-interface Props { name: string; birthYear: number; unlocked?: boolean; }
+interface Props { name: string; birthYear: number; unlocked?: boolean; storagePrefix?: string; }
 
-export default function QAChatWidget({ name, birthYear, unlocked=false }: Props) {
+export default function QAChatWidget({ name, birthYear, unlocked=false, storagePrefix="v2_qa" }: Props) {
   const router = useRouter();
   const ohaeng: Ohaeng = getOhaeng(birthYear);
   const [messages, setMessages] = useState<Msg[]>([
@@ -93,7 +101,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
   const msgAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const used = Number(localStorage.getItem(`v2_qa_${name}_${birthYear}_${todayKey()}`) ?? 0);
+    const used = Number(localStorage.getItem(`${storagePrefix}_${name}_${birthYear}_${todayKey()}`) ?? 0);
     setRemaining(unlocked ? 999 : Math.max(0, FREE_QUESTIONS - used));
     setSuggestions(QA_CATEGORIES.map(cat => {
       const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
@@ -116,7 +124,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
     if (!unlocked) {
       const newR = remaining - 1;
       setRemaining(newR);
-      const lsKey = `v2_qa_${name}_${birthYear}_${todayKey()}`;
+      const lsKey = `${storagePrefix}_${name}_${birthYear}_${todayKey()}`;
       localStorage.setItem(lsKey, String((Number(localStorage.getItem(lsKey) ?? 0)) + 1));
       if (newR === 0) {
         setTimeout(() => {
@@ -277,7 +285,25 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
           <div onClick={e => e.stopPropagation()} style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, padding: "20px 16px 32px" }}>
             <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
             <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
-            <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 14px", textAlign: "center" }}>구매하면 Q&A 전체 열람 + 무제한 질문 가능</p>
+            <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>구매하면 Q&A 전체 열람 + 무제한 질문 가능</p>
+
+            {/* 단품 990원 */}
+            <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>⚡ 단품 구매 · 1개 ₩990</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, marginBottom: 12 }}>
+              {SINGLES.map(s => (
+                <button key={s.id}
+                  onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?preselect=${s.id}`); }}
+                  style={{ position: "relative", padding: "10px 6px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 12, cursor: "pointer", textAlign: "center" }}
+                >
+                  {s.hot && <span style={{ position: "absolute", top: -6, right: -4, background: "#ef4444", color: "white", fontSize: 9, fontWeight: 900, padding: "2px 6px", borderRadius: 20 }}>추천</span>}
+                  <p style={{ margin: "0 0 2px", fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
+                  <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#ec4899" }}>{s.price}</p>
+                </button>
+              ))}
+            </div>
+
+            {/* 패키지 */}
+            <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>📦 패키지 (더 저렴해!)</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 12 }}>
               {PKGS.map(p => (
                 <button key={p.id}
@@ -285,7 +311,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
                   style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "11px 14px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 12, cursor: "pointer" }}
                 >
                   <div style={{ textAlign: "left" }}>
-                    <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>📦 {p.label}</p>
+                    <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{p.label}</p>
                     <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>{p.desc}</p>
                   </div>
                   <span style={{ fontSize: 13, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>{p.price}</span>

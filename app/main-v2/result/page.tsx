@@ -1457,6 +1457,7 @@ function V2ResultInner() {
             name={profile.name}
             birthYear={Number(profile.birthYear)}
             unlocked={paid}
+            storagePrefix="v2_result_qa"
           />
         )}
 
