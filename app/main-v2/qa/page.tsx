@@ -321,9 +321,11 @@ export default function QAPage() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5 }}>
                 {QA_CATEGORIES.map(c => (
                   <button key={c.id} onClick={() => setQListCat(c.id)} style={{
-                    padding: "7px 4px", background: qListCat === c.id ? "linear-gradient(135deg, #ec4899, #8b5cf6)" : "white",
-                    color: qListCat === c.id ? "white" : "#6b7280", border: qListCat === c.id ? "none" : "1.5px solid #e5e7eb",
-                    borderRadius: 9, fontWeight: 800, fontSize: 11, cursor: "pointer",
+                    padding: "8px 4px",
+                    background: qListCat === c.id ? "linear-gradient(135deg, #ec4899, #8b5cf6)" : "#f5f3ff",
+                    color: qListCat === c.id ? "white" : "#1a1a2e",
+                    border: qListCat === c.id ? "none" : "2px solid #c4b5fd",
+                    borderRadius: 9, fontWeight: 900, fontSize: 12, cursor: "pointer",
                     boxShadow: qListCat === c.id ? "0 3px 10px rgba(236,72,153,0.3)" : "none",
                   }}>{c.emoji} {c.label}</button>
                 ))}
@@ -369,7 +371,7 @@ export default function QAPage() {
                   {SINGLES.map(s => {
                     const hi = isHighlightSingle(s);
                     return (
-                      <button key={s.label} onClick={() => { window.location.href = "/main-v2/payment#select-section"; }}
+                      <button key={s.label} onClick={() => router.push(`/main-v2/payment?single=${encodeURIComponent(s.label)}`)}
                         style={{ display: "flex", alignItems: "center", gap: 7, padding: "9px 11px", background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff", border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff", borderRadius: 11, cursor: "pointer" }}
                       >
                         <span style={{ fontSize: 16 }}>{s.icon}</span>
@@ -390,7 +392,7 @@ export default function QAPage() {
                   {PKGS.map(p => {
                     const hi = isHighlightPkg(p);
                     return (
-                      <button key={p.id} onClick={() => router.push("/main-v2/payment")}
+                      <button key={p.id} onClick={() => router.push(`/main-v2/payment?preselect=${p.id}`)}
                         style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 13px", background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff", border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff", borderRadius: 11, cursor: "pointer" }}
                       >
                         <div>

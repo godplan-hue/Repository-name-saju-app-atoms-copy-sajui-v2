@@ -29,9 +29,10 @@ function PaymentInner() {
   // 것처럼 보여서 "프리미엄 전용이라고 눌렀는데 다른 게 선택됐다"는 혼란이 생김)
   const preselectId = searchParams.get("preselect");
   const PRESELECT_INFO: Record<string, { name: string; features: string[] }> = {
-    basic: { name: "기본 분석", features: ["wealthLuck", "loveLuck"] },
-    premium: { name: "프리미엄", features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"] },
-    vip: { name: "VIP 커플팩", features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"] },
+    basic:    { name: "기본 분석", features: ["wealthLuck", "loveLuck"] },
+    standard: { name: "베이직",   features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"] },
+    premium:  { name: "프리미엄", features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"] },
+    vip:      { name: "VIP 커플팩", features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"] },
   };
   const preselectInfo = preselectId ? PRESELECT_INFO[preselectId] : undefined;
   const [selectedPackage, setSelectedPackage] = useState(
@@ -100,10 +101,24 @@ function PaymentInner() {
     { key: "🎯 성공운", icon: "🎯" },
     { key: "✨ 총운",   icon: "✨" },
   ];
-  const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
+  // Q&A 채팅에서 단품 눌러 들어온 경우 해당 항목만 미리 선택
+  const singleParam = searchParams.get("single");
+  const preselectSingleKey = singleParam ? SELECT_CATS.find(c => c.key.includes(singleParam))?.key ?? null : null;
+  const [selectedCats, setSelectedCats] = useState<string[]>(
+    preselectSingleKey ? [preselectSingleKey] : SELECT_CATS.map(c => c.key)
+  );
   const [isMobile, setIsMobile] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisName, setAnalysisName] = useState("");
+
+  // Q&A에서 단품 눌러 들어온 경우 단품 선택 영역으로 자동 스크롤
+  useEffect(() => {
+    if (preselectSingleKey) {
+      setTimeout(() => {
+        document.getElementById("select-section")?.scrollIntoView({ behavior: "smooth" });
+      }, 600);
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
