@@ -139,6 +139,26 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
     return () => document.removeEventListener("touchmove", prevent);
   }, [showBuyModal]);
 
+  // iOS Safari URL바 변동 시 패널 위치 고정
+  useEffect(() => {
+    if (!showBuyModal) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      const panel = buyModalRef.current;
+      if (!panel) return;
+      const offset = window.innerHeight - vv.height - vv.offsetTop;
+      panel.style.bottom = `${Math.max(0, offset)}px`;
+    };
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
+  }, [showBuyModal]);
+
   const sendMsg = (overrideQ?: string, overrideCatId?: string) => {
     const q = (overrideQ ?? input).trim();
     if (!q || typing) return;
@@ -314,7 +334,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
       {showBuyModal && (
         <>
           <div onClick={() => setShowBuyModal(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 300 }} />
-          <div ref={buyModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", height: 280, overflowY: "auto", overscrollBehavior: "contain", padding: "12px 12px 16px", zIndex: 301 }}>
+          <div ref={buyModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", height: 280, overflowY: "auto", overscrollBehavior: "contain", padding: "12px 12px 16px", zIndex: 301, willChange: "transform", transform: "translateZ(0)" }}>
             <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
             <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
             <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>구매하면 Q&A 전체 열람 + 무제한 질문 가능</p>

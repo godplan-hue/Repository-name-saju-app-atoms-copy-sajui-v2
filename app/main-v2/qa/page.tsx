@@ -154,6 +154,26 @@ export default function QAPage() {
     return () => document.removeEventListener("touchmove", prevent);
   }, [showModal]);
 
+  // iOS Safari URL바 변동 시 패널 위치 고정
+  useEffect(() => {
+    if (!showModal) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      const panel = qaModalRef.current;
+      if (!panel) return;
+      const offset = window.innerHeight - vv.height - vv.offsetTop;
+      panel.style.bottom = `${Math.max(0, offset)}px`;
+    };
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
+  }, [showModal]);
+
   const sendMsg = (overrideQ?: string, overrideCatId?: string) => {
     const q = (overrideQ ?? input).trim();
     if (!q || typing) return;
@@ -394,7 +414,7 @@ export default function QAPage() {
             {/* backdrop — 독립 fixed, 사이즈 변동 있어도 패널에 영향 없음 */}
             <div onClick={() => { setShowModal(false); setPendingPkg(null); }} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 100 }} />
             {/* 패널 — bottom:0 고정, viewport 크기 변해도 위치 안 바뀜 */}
-            <div ref={qaModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", height: 280, display: "flex", flexDirection: "column", zIndex: 101 }}>
+            <div ref={qaModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", height: 280, display: "flex", flexDirection: "column", zIndex: 101, willChange: "transform", transform: "translateZ(0)" }}>
               {/* 스크롤 영역 */}
               <div style={{ overflowY: "auto", overscrollBehavior: "contain", padding: "12px 14px 6px", flex: 1 }}>
                 <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 10px" }} />
