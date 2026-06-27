@@ -20,16 +20,19 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   general:  ["평안", "마음", "기분", "요즘", "어떻게", "전반적", "올해", "내년"],
 };
 
-function findAnswer(question: string, ohaeng: Ohaeng, name: string): string {
-  // 카테고리 점수 계산
+function detectCategory(question: string): string {
   const scores: Record<string, number> = {};
   for (const [catId, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
     scores[catId] = keywords.filter(kw => question.includes(kw)).length;
   }
-  const bestCatId = Object.entries(scores).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "general";
-  const cat = QA_CATEGORIES.find(c => c.id === bestCatId) ?? QA_CATEGORIES[QA_CATEGORIES.length - 1];
+  const best = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
+  return (best && best[1] > 0) ? best[0] : "general";
+}
 
-  // 카테고리 내 질문 점수 계산
+function findAnswer(question: string, ohaeng: Ohaeng, name: string): { answer: string; catId: string } {
+  const catId = detectCategory(question);
+  const cat = QA_CATEGORIES.find(c => c.id === catId) ?? QA_CATEGORIES[QA_CATEGORIES.length - 1];
+
   let bestItem = cat.items[0];
   let bestScore = 0;
   for (const item of cat.items) {
@@ -38,12 +41,11 @@ function findAnswer(question: string, ohaeng: Ohaeng, name: string): string {
     if (score > bestScore) { bestScore = score; bestItem = item; }
   }
 
-  // 매칭 안 되면 랜덤
   const item = bestScore > 0 ? bestItem : cat.items[Math.floor(Math.random() * Math.min(10, cat.items.length))];
-  return fillTemplate(item.answers[ohaeng], name);
+  return { answer: fillTemplate(item.answers[ohaeng], name), catId };
 }
 
-interface Msg { from: "cat" | "user"; text: string; }
+interface Msg { from: "cat" | "user"; text: string; buyCatId?: string; }
 
 export default function QAPage() {
   const router = useRouter();
@@ -57,6 +59,7 @@ export default function QAPage() {
   const [remaining, setRemaining] = useState(FREE_QUESTIONS);
   const [showModal, setShowModal] = useState(false);
   const [pendingQ, setPendingQ] = useState("");
+  const [pendingCatId, setPendingCatId] = useState("general");
   const [typing, setTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -87,7 +90,8 @@ export default function QAPage() {
   const send = () => {
     const q = input.trim();
     if (!q || typing) return;
-    if (remaining <= 0) { setPendingQ(q); setShowModal(true); return; }
+    const detectedCat = detectCategory(q);
+    if (remaining <= 0) { setPendingQ(q); setPendingCatId(detectedCat); setShowModal(true); return; }
     setMessages(prev => [...prev, { from: "user", text: q }]);
     setInput("");
     const newRemaining = unlocked ? 999 : remaining - 1;
@@ -98,12 +102,14 @@ export default function QAPage() {
     }
     setTyping(true);
     setTimeout(() => {
-      const answer = findAnswer(q, ohaeng, name);
-      setMessages(prev => [...prev, { from: "cat", text: answer }]);
+      const { answer, catId } = findAnswer(q, ohaeng, name);
+      // 유료 카테고리 질문이고 미구매 시 → 답변 후 구매 버튼 표시
+      const showBuy = !unlocked && catId !== "general";
+      setMessages(prev => [...prev, { from: "cat", text: answer, buyCatId: showBuy ? catId : undefined }]);
       setTyping(false);
       if (newRemaining === 0) {
         setTimeout(() => {
-          setMessages(prev => [...prev, { from: "cat", text: `${name}님, 남은 질문이 없어요 😿\n더 궁금한 게 있으면 질문을 충전해줘!` }]);
+          setMessages(prev => [...prev, { from: "cat", text: `${name}님, 무료 질문을 다 썼어요 😿\n운세를 구매하면 더 자세히 알 수 있어!` }]);
         }, 800);
       }
     }, 900);
@@ -132,22 +138,50 @@ export default function QAPage() {
 
       {/* 메시지 목록 */}
       <div style={{ flex: 1, overflowY: "auto", padding: "16px 16px 8px", display: "flex", flexDirection: "column", gap: 12 }}>
-        {messages.map((msg, i) => (
-          <div key={i} style={{ display: "flex", justifyContent: msg.from === "user" ? "flex-end" : "flex-start", gap: 8, alignItems: "flex-end" }}>
-            {msg.from === "cat" && (
-              <div style={{ width: 30, height: 30, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, flexShrink: 0, marginBottom: 2 }}>🐱</div>
-            )}
-            <div style={{
-              maxWidth: "75%", padding: "12px 15px",
-              borderRadius: msg.from === "user" ? "18px 18px 4px 18px" : "4px 18px 18px 18px",
-              background: msg.from === "user" ? "linear-gradient(135deg, #ec4899, #8b5cf6)" : "white",
-              color: msg.from === "user" ? "white" : "#1a1a2e",
-              fontSize: 13, fontWeight: 600, lineHeight: 1.7,
-              boxShadow: "0 2px 10px rgba(0,0,0,0.07)",
-              whiteSpace: "pre-line",
-            }}>{msg.text}</div>
-          </div>
-        ))}
+        {messages.map((msg, i) => {
+          const BUY_INFO: Record<string, { icon: string; label: string; cat: string }> = {
+            wealth:   { icon: "💰", label: "재물운", cat: "wealthLuck" },
+            love:     { icon: "💕", label: "연애운", cat: "loveLuck" },
+            marriage: { icon: "💍", label: "결혼운", cat: "loveLuck" },
+            business: { icon: "🚀", label: "사업운", cat: "wealthLuck" },
+            career:   { icon: "💼", label: "직업운", cat: "wealthLuck" },
+            success:  { icon: "🏆", label: "성공운", cat: "wealthLuck" },
+            health:   { icon: "🍀", label: "건강운", cat: "healthLuck" },
+            children: { icon: "👶", label: "자녀운", cat: "basic" },
+          };
+          const buyInfo = msg.buyCatId ? BUY_INFO[msg.buyCatId] : null;
+          return (
+            <div key={i}>
+              <div style={{ display: "flex", justifyContent: msg.from === "user" ? "flex-end" : "flex-start", gap: 8, alignItems: "flex-end" }}>
+                {msg.from === "cat" && (
+                  <div style={{ width: 30, height: 30, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, flexShrink: 0, marginBottom: 2 }}>🐱</div>
+                )}
+                <div style={{
+                  maxWidth: "75%", padding: "12px 15px",
+                  borderRadius: msg.from === "user" ? "18px 18px 4px 18px" : "4px 18px 18px 18px",
+                  background: msg.from === "user" ? "linear-gradient(135deg, #ec4899, #8b5cf6)" : "white",
+                  color: msg.from === "user" ? "white" : "#1a1a2e",
+                  fontSize: 13, fontWeight: 600, lineHeight: 1.7,
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.07)",
+                  whiteSpace: "pre-line",
+                }}>{msg.text}</div>
+              </div>
+              {/* 답변 후 구매 유도 버튼 */}
+              {buyInfo && (
+                <div style={{ marginLeft: 38, marginTop: 6 }}>
+                  <button
+                    onClick={() => { sessionStorage.setItem("preselect_cat", buyInfo.cat); router.push("/main-v2/payment"); }}
+                    style={{
+                      padding: "8px 14px", background: "linear-gradient(135deg, #fdf4ff, #fce7f3)",
+                      border: "1.5px solid #e9d5ff", borderRadius: 50,
+                      fontSize: 12, fontWeight: 800, color: "#ec4899", cursor: "pointer",
+                    }}
+                  >{buyInfo.icon} {buyInfo.label} 구매하면 더 자세히 알 수 있어 →</button>
+                </div>
+              )}
+            </div>
+          );
+        })}
         {typing && (
           <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
             <div style={{ width: 30, height: 30, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, flexShrink: 0 }}>🐱</div>
@@ -186,13 +220,16 @@ export default function QAPage() {
             <div style={{ background: "#f9f5ff", borderRadius: 12, padding: "11px 14px", marginBottom: 18, fontSize: 12, fontWeight: 700, color: "#6b7280", lineHeight: 1.6, borderLeft: "3px solid #c4b5fd" }}>
               미처 못 한 질문: {pendingQ}
             </div>
-            {/* 단품 선택 */}
+            {/* 단품 선택 — 감지된 카테고리 우선 표시 */}
             <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
               {[
-                { icon: "💰", label: "재물운", price: "₩9,900", cat: "wealthLuck", desc: "돈·투자·수입 관련 Q&A 전체 열람" },
-                { icon: "💕", label: "연애운", price: "₩9,900", cat: "loveLuck",   desc: "연애·결혼 관련 Q&A 전체 열람" },
-                { icon: "📦", label: "기본 패키지", price: "₩9,900", cat: "basic", desc: "재물운+연애운 패키지 · Q&A 전체" },
-              ].map(item => (
+                { icon: "💰", label: "재물운", price: "₩9,900", cat: "wealthLuck", desc: "돈·투자·수입 관련 Q&A 전체 열람", catIds: ["wealth","business","career","success"] },
+                { icon: "💕", label: "연애운", price: "₩9,900", cat: "loveLuck",   desc: "연애·결혼 관련 Q&A 전체 열람",  catIds: ["love","marriage"] },
+                { icon: "📦", label: "기본 패키지", price: "₩9,900", cat: "basic", desc: "재물운+연애운 패키지 · Q&A 전체", catIds: [] },
+              ].sort((a, b) => (b.catIds.includes(pendingCatId) ? 1 : 0) - (a.catIds.includes(pendingCatId) ? 1 : 0))
+              .map(item => {
+                const isHighlight = item.catIds.includes(pendingCatId);
+                return (
                 <button key={item.cat}
                   onClick={() => {
                     sessionStorage.setItem("preselect_cat", item.cat);
@@ -200,21 +237,25 @@ export default function QAPage() {
                   }}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "13px 16px", background: "#fdf4ff",
-                    border: "1.5px solid #e9d5ff", borderRadius: 14,
-                    cursor: "pointer", textAlign: "left",
+                    padding: "13px 16px",
+                    background: isHighlight ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff",
+                    border: isHighlight ? "2px solid #ec4899" : "1.5px solid #e9d5ff",
+                    borderRadius: 14, cursor: "pointer", textAlign: "left",
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <span style={{ fontSize: 22 }}>{item.icon}</span>
                     <div>
-                      <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{item.label}</p>
+                      <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>
+                        {item.label} {isHighlight && <span style={{ fontSize: 10, background: "#ec4899", color: "white", padding: "2px 6px", borderRadius: 10, fontWeight: 800 }}>추천</span>}
+                      </p>
                       <p style={{ margin: 0, fontSize: 11, color: "#8b5cf6", fontWeight: 600 }}>{item.desc}</p>
                     </div>
                   </div>
                   <span style={{ fontSize: 14, fontWeight: 900, color: "#ec4899" }}>{item.price}</span>
                 </button>
-              ))}
+              );
+              })}
             </div>
             <button onClick={() => setShowModal(false)} style={{ width: "100%", padding: 13, background: "none", border: "none", fontWeight: 700, fontSize: 14, color: "#9ca3af", cursor: "pointer" }}>
               나중에 할게
