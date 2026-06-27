@@ -98,7 +98,21 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [showQList, setShowQList] = useState(false);
   const [qListCat, setQListCat] = useState("wealth");
+  const [chipKey, setChipKey] = useState(0);
   const msgAreaRef = useRef<HTMLDivElement>(null);
+
+  const refreshChips = () => {
+    setSuggestions(QA_CATEGORIES.map(cat => {
+      const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
+      return pick.question;
+    }));
+    setChipKey(k => k + 1);
+  };
+
+  useEffect(() => {
+    const id = setInterval(refreshChips, 4000);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const used = Number(localStorage.getItem(`${storagePrefix}_${name}_${birthYear}_${todayKey()}`) ?? 0);
@@ -204,8 +218,10 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
           </div>
         )}
 
-        {/* 노란 구분선 */}
-        <div style={{ height: 10, background: "linear-gradient(90deg,#facc15,#f97316,#facc15)", animation: "qaLinePulse 1s ease-in-out infinite" }} />
+        {/* 노란 프로그레스 바 — 4초마다 채워지고 칩 교체 */}
+        <div style={{ height: 6, background: "#fef3c7", position: "relative", overflow: "hidden" }}>
+          <div key={chipKey} style={{ position: "absolute", top: 0, left: 0, height: "100%", background: "linear-gradient(90deg,#facc15,#f97316)", animation: "qaLineProgress 4s linear forwards", boxShadow: "0 0 8px rgba(250,204,21,0.7)" }} />
+        </div>
 
         {/* 360개 질문 목록 버튼 */}
         <div style={{ background: "white", padding: "8px 10px 0" }}>
@@ -324,7 +340,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
       <style>{`
         @keyframes qaWidgetBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
         @keyframes qaSparkle { 0%,100%{filter:brightness(1) drop-shadow(0 0 0 transparent)} 50%{filter:brightness(1.5) drop-shadow(0 0 8px rgba(236,72,153,0.9))} }
-        @keyframes qaLinePulse { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:0.55;transform:scaleY(1.6)} }
+        @keyframes qaLineProgress { from{width:0%} to{width:100%} }
       `}</style>
     </>
   );
