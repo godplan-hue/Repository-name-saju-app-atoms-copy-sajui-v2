@@ -45,38 +45,6 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
     const isOpen = openIdx === key;
     const answer = fillTemplate(item.answers[ohaeng], name);
 
-    if (!isFreeItem) {
-      return (
-        <div key={key}
-          style={{
-            background: "rgba(243,232,255,0.45)",
-            borderRadius: 14,
-            border: "1px dashed rgba(139,92,246,0.25)",
-            padding: "13px 16px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 12,
-          }}
-        >
-          <span style={{ fontSize: 13, opacity: 0.5 }}>🔒</span>
-          <div style={{
-            height: 10,
-            borderRadius: 6,
-            background: "linear-gradient(90deg, rgba(139,92,246,0.18), rgba(236,72,153,0.1))",
-            flex: 1,
-          }} />
-          <span style={{
-            fontSize: 10,
-            color: "rgba(139,92,246,0.5)",
-            fontWeight: 700,
-            flexShrink: 0,
-            whiteSpace: "nowrap",
-          }}>구매 후 열람</span>
-        </div>
-      );
-    }
-
     return (
       <div key={key}
         style={{
@@ -317,13 +285,36 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
             ))}
           </div>
 
-          {/* Q&A 목록 */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {cat.items.map((item, idx) => {
-              const isFreeItem = unlocked || idx < FREE_COUNT;
-              return renderQAItem(item, idx, cat.id, isFreeItem);
-            })}
+          {/* Q&A 목록 — 열람 가능(Q1~Q5) */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 10 }}>
+            {cat.items.slice(0, unlocked ? cat.items.length : FREE_COUNT).map((item, idx) =>
+              renderQAItem(item, idx, cat.id, true)
+            )}
           </div>
+
+          {/* 잠긴 항목 — 3열 미니 카드 */}
+          {!unlocked && (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
+              {cat.items.slice(FREE_COUNT).map((_, idx) => (
+                <div key={`locked-${idx}`}
+                  style={{
+                    background: "#f0e8ff",
+                    borderRadius: 10,
+                    border: "1px dashed #c4b5fd",
+                    padding: "10px 8px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 5,
+                  }}
+                >
+                  <span style={{ fontSize: 13 }}>🔒</span>
+                  <div style={{ height: 7, borderRadius: 4, background: "#c4b5fd", width: "80%" }} />
+                  <div style={{ height: 6, borderRadius: 4, background: "#ddd6fe", width: "55%" }} />
+                </div>
+              ))}
+            </div>
+          )}
         </>
       )}
 
