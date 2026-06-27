@@ -106,6 +106,7 @@ export default function QAPage() {
   const qaModalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (showModal) return; // 모달 떠있을 때 칩 교체 중단 (re-render로 인한 흔들림 방지)
     const id = setInterval(() => {
       setSuggestions(QA_CATEGORIES.map(cat => {
         const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
@@ -114,7 +115,7 @@ export default function QAPage() {
       setChipKey(k => k + 1);
     }, 4000);
     return () => clearInterval(id);
-  }, []);
+  }, [showModal]);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("v2_result");
@@ -142,8 +143,9 @@ export default function QAPage() {
   }, [router]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, typing]);
+    if (showModal) return; // 모달 떠있을 때 스크롤 중단
+    bottomRef.current?.scrollIntoView({ behavior: "auto" }); // smooth 제거 — iOS URL바 트리거 방지
+  }, [messages, typing, showModal]);
 
   useEffect(() => {
     if (!showModal) return;
@@ -224,7 +226,7 @@ export default function QAPage() {
   );
 
   return (
-    <main style={{ height: "100dvh", display: "flex", flexDirection: "column", background: "#f9f5ff", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
+    <main style={{ height: "100svh", display: "flex", flexDirection: "column", background: "#f9f5ff", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
 
       {/* 헤더 */}
       <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
