@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomBytes, pbkdf2Sync } from "crypto";
 import { db } from "@/lib/firebase";
+import { sendAdminEmail } from "@/lib/sendAdminEmail";
 
 function hashPassword(password: string): string {
   const salt = randomBytes(16).toString("hex");
@@ -47,6 +48,13 @@ export async function POST(request: NextRequest) {
         couponCode: discountPercent > 0 ? discountCode : null,
         discountPercent: discountPercent || 0,
       });
+    }
+
+    if (partnerTier !== "free") {
+      await sendAdminEmail(
+        `[점운] 신규 파트너 가입 입금 대기 — ${name}`,
+        `신규 파트너 ${name} (${email})이(가) ${partnerTier} 등급으로 가입했습니다.\n입금 예정액: ₩${(paidAmount ?? 0).toLocaleString()}\n연락처: ${phone || "미입력"}\n\n관리자 패널에서 입금 확인 후 승인해주세요.\nhttps://jeomun.com/admin/partners`
+      );
     }
 
     return NextResponse.json({ message: "회원가입 성공", partnerId: partnerRef.key, email });

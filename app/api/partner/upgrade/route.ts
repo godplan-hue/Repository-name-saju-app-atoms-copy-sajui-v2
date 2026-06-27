@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 import { getTierIndex, calculateUpgradeFee, getPartnerTier } from "@/lib/partnerTiers";
+import { sendAdminEmail } from "@/lib/sendAdminEmail";
 
 // 등급 업그레이드 — 새 등급 연회비에서 기존 연회비를 뺀 차액만 결제(시뮬레이션)하면
 // 바로 적용. 이번 달 이미 쓴 분석 생성 건수는 그대로 유지되고, 새 등급의
@@ -42,6 +43,12 @@ export async function POST(request: NextRequest) {
       couponCode: discountPercent > 0 ? discountCode : null,
       discountPercent: discountPercent || 0,
     });
+
+    const newTierLabel = getPartnerTier(newTier)?.name || newTier;
+    await sendAdminEmail(
+      `[점운] 파트너 등급 업그레이드 입금 대기 — ${partner.name}`,
+      `파트너 ${partner.name} (${partner.email})이(가) ${newTierLabel} 등급으로 업그레이드를 신청했습니다.\n입금 예정액: ₩${(paidAmount ?? upgradeFee).toLocaleString()}\n\n관리자 패널에서 입금 확인 후 승인해주세요.\nhttps://jeomun.com/admin/partners`
+    );
 
     const newTierInfo = getPartnerTier(newTier);
     const remaining = newTierInfo.monthlyLimit === null ? null : Math.max(0, newTierInfo.monthlyLimit - usedThisMonth);
