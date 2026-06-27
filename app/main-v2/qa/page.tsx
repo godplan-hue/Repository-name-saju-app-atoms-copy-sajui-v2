@@ -20,6 +20,13 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   general:  ["평안", "마음", "기분", "요즘", "어떻게", "전반적", "올해", "내년"],
 };
 
+// 매칭에서 제외할 일반 어미/조사 (너무 흔해서 오히려 방해됨)
+const STOPWORDS = new Set(["있을까", "있어", "될까", "돼", "해도", "해야", "할까", "하는", "하면", "이야", "거야", "게", "나한테", "있는지", "있는데", "있는", "있어야", "있을", "있을까요"]);
+
+// 시간 관련 단어가 있으면 시기 관련 템플릿 우선
+const TIME_TRIGGERS = ["언제", "쯤", "몇월", "몇살", "올해", "이번", "시기", "때"];
+const TIME_SIGNALS  = ["언제", "시기", "때", "올해", "올"];
+
 function detectCategory(question: string): string {
   const scores: Record<string, number> = {};
   for (const [catId, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
@@ -33,11 +40,30 @@ function findAnswer(question: string, ohaeng: Ohaeng, name: string): { answer: s
   const catId = detectCategory(question);
   const cat = QA_CATEGORIES.find(c => c.id === catId) ?? QA_CATEGORIES[QA_CATEGORIES.length - 1];
 
+  const userHasTime = TIME_TRIGGERS.some(t => question.includes(t));
+
   let bestItem = cat.items[0];
-  let bestScore = 0;
+  let bestScore = -1;
   for (const item of cat.items) {
-    const qWords = item.question.replace(/[?!？！]/g, "").split(/\s+/);
-    const score = qWords.filter(w => w.length > 1 && question.includes(w)).length;
+    let score = 0;
+
+    // 템플릿 단어 → 유저 질문에 있으면 가점 (길이 가중치, 불용어 제외)
+    const tmplWords = item.question.replace(/[?!？！]/g, "").split(/\s+/)
+      .filter(w => w.length > 1 && !STOPWORDS.has(w));
+    for (const w of tmplWords) {
+      if (question.includes(w)) score += w.length;
+    }
+
+    // 유저 단어 → 템플릿에 있으면 가점 (쌍방향 매칭)
+    const userWords = question.replace(/[?!？！]/g, "").split(/\s+/)
+      .filter(w => w.length > 1 && !STOPWORDS.has(w));
+    for (const w of userWords) {
+      if (item.question.includes(w)) score += w.length;
+    }
+
+    // 시간 질문인데 템플릿에 시기 단어 있으면 큰 가점
+    if (userHasTime && TIME_SIGNALS.some(s => item.question.includes(s))) score += 6;
+
     if (score > bestScore) { bestScore = score; bestItem = item; }
   }
 
