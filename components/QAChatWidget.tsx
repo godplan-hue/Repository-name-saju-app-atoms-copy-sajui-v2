@@ -5,6 +5,24 @@ import { useRouter } from "next/navigation";
 import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng } from "@/lib/qa/index";
 
+function QAYellowLine() {
+  const shineRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    let pos = -80;
+    const id = setInterval(() => {
+      pos += 1.5;
+      if (pos > 120) pos = -80;
+      if (shineRef.current) shineRef.current.style.transform = `translateX(${pos}%)`;
+    }, 12);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div style={{ height: 5, background: "linear-gradient(90deg,#facc15,#f97316,#facc15)", position: "relative", overflow: "hidden", boxShadow: "0 0 10px rgba(250,204,21,0.8)" }}>
+      <div ref={shineRef} style={{ position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.75),transparent)", transform: "translateX(-80%)" }} />
+    </div>
+  );
+}
+
 const FREE_QUESTIONS = 3;
 const todayKey = () => {
   const d = new Date();
@@ -195,10 +213,8 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
           </div>
         )}
 
-        {/* 노란 구분선 — 빛 흐르는 애니메이션 */}
-        <div style={{ height: 5, background: "linear-gradient(90deg, #facc15, #f97316, #facc15)", position: "relative", overflow: "hidden", boxShadow: "0 0 10px rgba(250,204,21,0.8)" }}>
-          <div style={{ position: "absolute", top: 0, left: 0, width: "60%", height: "100%", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent)", animation: "qaLineShine 1.2s linear infinite" }} />
-        </div>
+        {/* 노란 구분선 — 혜성이 달리는 애니메이션 */}
+        <QAYellowLine />
 
         {/* 360개 질문 목록 버튼 */}
         <div style={{ background: "white", padding: "8px 10px 0" }}>
@@ -299,7 +315,6 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
       <style>{`
         @keyframes qaWidgetBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
         @keyframes qaSparkle { 0%,100%{filter:brightness(1) drop-shadow(0 0 0 transparent)} 50%{filter:brightness(1.5) drop-shadow(0 0 8px rgba(236,72,153,0.9))} }
-        @keyframes qaLineShine { 0%{transform:translateX(-150%)} 100%{transform:translateX(250%)} }
       `}</style>
     </>
   );
