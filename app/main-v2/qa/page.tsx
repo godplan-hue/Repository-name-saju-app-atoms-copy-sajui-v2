@@ -7,6 +7,21 @@ import type { Ohaeng } from "@/lib/qa/index";
 
 const FREE_QUESTIONS = 3;
 
+// 오늘 날짜 키 (매일 리셋)
+const todayKey = () => new Date().toISOString().slice(0, 10);
+
+// 상품 이름 직접 타이핑 → 즉시 해당 상품 연결
+const PRODUCT_NAME_TRIGGERS: Array<{ keywords: string[]; pkg: string }> = [
+  { keywords: ["vip", "VIP", "커플팩", "8개"],              pkg: "vip" },
+  { keywords: ["프리미엄", "5개"],                            pkg: "premium" },
+  { keywords: ["베이직", "4개", "베이식"],                    pkg: "standard" },
+  { keywords: ["기본분석", "기본 분석", "기본팩", "990"],      pkg: "basic" },
+  { keywords: ["궁합", "궁합분석"],                           pkg: "vip" },
+  { keywords: ["올해운세", "올해 운세", "연간운세"],           pkg: "standard" },
+  { keywords: ["이름분석", "이름 분석"],                       pkg: "basic" },
+  { keywords: ["월별운세", "월별 운세"],                       pkg: "standard" },
+];
+
 // 키워드로 카테고리 추측
 const CATEGORY_KEYWORDS: Record<string, string[]> = {
   wealth:   ["돈", "재물", "금전", "수입", "월급", "투자", "부업", "대출", "저축", "재테크", "빚", "수익", "벌", "사업비", "하반기 금전", "흐름"],
@@ -86,6 +101,7 @@ export default function QAPage() {
   const [showModal, setShowModal] = useState(false);
   const [pendingQ, setPendingQ] = useState("");
   const [pendingCatId, setPendingCatId] = useState("general");
+  const [pendingPkg, setPendingPkg] = useState<string | null>(null);
   const [typing, setTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -103,7 +119,7 @@ export default function QAPage() {
     const plan = sessionStorage.getItem("v2_plan") ?? "";
     const paid = plan === "select" || plan === "package";
     setUnlocked(paid);
-    const used = Number(localStorage.getItem(`v2_qa_${n}_${y}`) ?? 0);
+    const used = Number(localStorage.getItem(`v2_qa_${n}_${y}_${todayKey()}`) ?? 0);
     setRemaining(paid ? 999 : Math.max(0, FREE_QUESTIONS - used));
     setMessages([{ from: "cat", text: `안녕하세요, ${n}님! 🐱\n복냥이가 ${n}님의 사주를 보고 있어요.\n궁금한 게 있으면 뭐든 물어봐!` }]);
     setReady(true);
@@ -116,15 +132,33 @@ export default function QAPage() {
   const send = () => {
     const q = input.trim();
     if (!q || typing) return;
+
+    // 상품 이름 직접 타이핑 감지 → 즉시 모달 (오행 답변 안 함)
+    for (const trigger of PRODUCT_NAME_TRIGGERS) {
+      if (trigger.keywords.some(kw => q.toLowerCase().includes(kw.toLowerCase()))) {
+        setMessages(prev => [...prev, { from: "user", text: q }]);
+        setInput("");
+        setTimeout(() => {
+          setMessages(prev => [...prev, { from: "cat", text: "👇 아래에서 바로 구매할 수 있어!" }]);
+          setPendingQ(q);
+          setPendingCatId("general");
+          setPendingPkg(trigger.pkg);
+          setShowModal(true);
+        }, 400);
+        return;
+      }
+    }
+
     const detectedCat = detectCategory(q);
-    if (remaining <= 0) { setPendingQ(q); setPendingCatId(detectedCat); setShowModal(true); return; }
+    if (remaining <= 0) { setPendingQ(q); setPendingCatId(detectedCat); setPendingPkg(null); setShowModal(true); return; }
     setMessages(prev => [...prev, { from: "user", text: q }]);
     setInput("");
     const newRemaining = unlocked ? 999 : remaining - 1;
     setRemaining(newRemaining);
     if (!unlocked) {
-      const used = Number(localStorage.getItem(`v2_qa_${name}_${birthYear}`) ?? 0);
-      localStorage.setItem(`v2_qa_${name}_${birthYear}`, String(used + 1));
+      const lsKey = `v2_qa_${name}_${birthYear}_${todayKey()}`;
+      const used = Number(localStorage.getItem(lsKey) ?? 0);
+      localStorage.setItem(lsKey, String(used + 1));
     }
     setTyping(true);
     setTimeout(() => {
@@ -234,62 +268,115 @@ export default function QAPage() {
       </div>
 
       {/* 운세 구매 유도 모달 */}
-      {showModal && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 100 }}>
-          <div style={{ background: "white", borderRadius: "20px 20px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 480 }}>
-            <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 20px" }} />
-            <h3 style={{ fontSize: 17, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", textAlign: "center" }}>더 궁금하면 운세를 구매해봐! 🔮</h3>
-            <p style={{ fontSize: 12, color: "#374151", fontWeight: 700, margin: "0 0 18px", textAlign: "center" }}>
-              운세 구매하면 관련 Q&amp;A 전체 열람 가능해
-            </p>
-            {/* 물어봤던 질문 */}
-            <div style={{ background: "#f9f5ff", borderRadius: 12, padding: "11px 14px", marginBottom: 18, fontSize: 12, fontWeight: 800, color: "#374151", lineHeight: 1.6, borderLeft: "3px solid #c4b5fd" }}>
-              미처 못 한 질문: {pendingQ}
+      {showModal && (() => {
+        // 단품 목록 (각 ₩990)
+        const SINGLES = [
+          { icon: "💎", label: "재물운",     cat: "wealthLuck",  catIds: ["wealth","business","career","success"] },
+          { icon: "💕", label: "연애운",     cat: "loveLuck",    catIds: ["love","marriage"] },
+          { icon: "🌿", label: "건강운",     cat: "healthLuck",  catIds: ["health"] },
+          { icon: "☀️", label: "올해 운세", cat: "yearlyLuck",  catIds: ["general"] },
+          { icon: "🌙", label: "월별 운세", cat: "monthlyLuck", catIds: [] },
+          { icon: "👫", label: "궁합분석",  cat: "couple",      catIds: [] },
+          { icon: "📝", label: "이름분석",  cat: "name",        catIds: [] },
+          { icon: "🎋", label: "전체분석",  cat: "analysis",    catIds: [] },
+        ];
+        // 패키지 목록
+        const PKGS = [
+          { id: "basic",    label: "기본 분석", price: "₩9,900",  desc: "재물운+연애운 (30p)",              pkgName: "기본 분석" },
+          { id: "standard", label: "베이직",   price: "₩19,900", desc: "올해+재물+연애+월별 (75p)",        pkgName: "베이직" },
+          { id: "premium",  label: "프리미엄", price: "₩24,900", desc: "올해+재물+연애+월별+건강 (100p)",  pkgName: "프리미엄" },
+          { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "8개 전부+궁합분석 (150p)",      pkgName: "VIP 커플팩" },
+        ];
+        // 강조 대상: 패키지 직접 언급이면 pkg, 아니면 catId 기반 단품
+        const isHighlightSingle = (s: typeof SINGLES[0]) =>
+          !pendingPkg && s.catIds.includes(pendingCatId);
+        const isHighlightPkg = (p: typeof PKGS[0]) =>
+          pendingPkg === p.id;
+
+        return (
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 100 }}>
+            <div style={{ background: "white", borderRadius: "20px 20px 0 0", padding: "20px 16px 36px", width: "100%", maxWidth: 480, maxHeight: "88vh", overflowY: "auto" }}>
+              <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 16px" }} />
+              <h3 style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
+              <p style={{ fontSize: 11, color: "#374151", fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>
+                구매하면 관련 Q&amp;A 전체 열람 가능해
+              </p>
+              {pendingQ && (
+                <div style={{ background: "#f9f5ff", borderRadius: 10, padding: "9px 12px", marginBottom: 14, fontSize: 11, fontWeight: 800, color: "#374151", borderLeft: "3px solid #c4b5fd" }}>
+                  미처 못 한 질문: {pendingQ}
+                </div>
+              )}
+
+              {/* 단품 — 1개 ₩990 */}
+              <p style={{ fontSize: 11, fontWeight: 900, color: "#8b5cf6", margin: "0 0 8px 2px" }}>✨ 단품 구매 · 1개 ₩990</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 14 }}>
+                {SINGLES.map(s => {
+                  const hi = isHighlightSingle(s);
+                  return (
+                    <button key={s.cat}
+                      onClick={() => {
+                        sessionStorage.setItem("preselect_cat", s.cat);
+                        router.push("/main-v2/payment#select-section");
+                      }}
+                      style={{
+                        display: "flex", alignItems: "center", gap: 8, padding: "10px 12px",
+                        background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff",
+                        border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff",
+                        borderRadius: 12, cursor: "pointer", textAlign: "left",
+                      }}
+                    >
+                      <span style={{ fontSize: 18 }}>{s.icon}</span>
+                      <div style={{ flex: 1 }}>
+                        <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>
+                          {s.label}
+                          {hi && <span style={{ marginLeft: 4, fontSize: 9, background: "#ec4899", color: "white", padding: "1px 5px", borderRadius: 8, fontWeight: 800 }}>추천</span>}
+                        </p>
+                        <p style={{ margin: 0, fontSize: 10, color: "#ec4899", fontWeight: 800 }}>₩990</p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* 패키지 */}
+              <p style={{ fontSize: 11, fontWeight: 900, color: "#8b5cf6", margin: "0 0 8px 2px" }}>📦 패키지 (더 저렴해!)</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 16 }}>
+                {PKGS.map(p => {
+                  const hi = isHighlightPkg(p);
+                  return (
+                    <button key={p.id}
+                      onClick={() => {
+                        sessionStorage.setItem("preselect_cat", p.pkgName);
+                        router.push("/main-v2/payment");
+                      }}
+                      style={{
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                        padding: "11px 14px",
+                        background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff",
+                        border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff",
+                        borderRadius: 12, cursor: "pointer", textAlign: "left",
+                      }}
+                    >
+                      <div>
+                        <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>
+                          📦 {p.label}
+                          {hi && <span style={{ marginLeft: 6, fontSize: 9, background: "#ec4899", color: "white", padding: "1px 5px", borderRadius: 8, fontWeight: 800 }}>추천</span>}
+                        </p>
+                        <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>{p.desc}</p>
+                      </div>
+                      <span style={{ fontSize: 13, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>{p.price}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button onClick={() => { setShowModal(false); setPendingPkg(null); }} style={{ width: "100%", padding: 12, background: "none", border: "none", fontWeight: 800, fontSize: 13, color: "#374151", cursor: "pointer" }}>
+                나중에 할게
+              </button>
             </div>
-            {/* 단품 선택 — 감지된 카테고리 우선 표시 */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
-              {[
-                { icon: "💰", label: "재물운", price: "₩9,900", cat: "wealthLuck", desc: "돈·투자·수입 관련 Q&A 전체 열람", catIds: ["wealth","business","career","success"] },
-                { icon: "💕", label: "연애운", price: "₩9,900", cat: "loveLuck",   desc: "연애·결혼 관련 Q&A 전체 열람",  catIds: ["love","marriage"] },
-                { icon: "🍀", label: "건강운", price: "₩9,900", cat: "healthLuck", desc: "건강·체력·스트레스 관련 Q&A 전체", catIds: ["health"] },
-                { icon: "📦", label: "기본 패키지", price: "₩9,900", cat: "basic", desc: "재물운+연애운 패키지 · Q&A 전체", catIds: [] },
-              ].sort((a, b) => (b.catIds.includes(pendingCatId) ? 1 : 0) - (a.catIds.includes(pendingCatId) ? 1 : 0))
-              .map(item => {
-                const isHighlight = item.catIds.includes(pendingCatId);
-                return (
-                <button key={item.cat}
-                  onClick={() => {
-                    sessionStorage.setItem("preselect_cat", item.cat);
-                    router.push("/main-v2/payment");
-                  }}
-                  style={{
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "13px 16px",
-                    background: isHighlight ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff",
-                    border: isHighlight ? "2px solid #ec4899" : "1.5px solid #e9d5ff",
-                    borderRadius: 14, cursor: "pointer", textAlign: "left",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <span style={{ fontSize: 22 }}>{item.icon}</span>
-                    <div>
-                      <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>
-                        {item.label} {isHighlight && <span style={{ fontSize: 10, background: "#ec4899", color: "white", padding: "2px 6px", borderRadius: 10, fontWeight: 800 }}>추천</span>}
-                      </p>
-                      <p style={{ margin: 0, fontSize: 11, color: "#8b5cf6", fontWeight: 600 }}>{item.desc}</p>
-                    </div>
-                  </div>
-                  <span style={{ fontSize: 14, fontWeight: 900, color: "#ec4899" }}>{item.price}</span>
-                </button>
-              );
-              })}
-            </div>
-            <button onClick={() => setShowModal(false)} style={{ width: "100%", padding: 13, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>
-              나중에 할게
-            </button>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       <style>{`@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }`}</style>
     </main>
