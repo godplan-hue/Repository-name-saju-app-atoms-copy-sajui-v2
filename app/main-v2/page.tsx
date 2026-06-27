@@ -206,6 +206,10 @@ const BANNERS = [
     graphic: true,
     route: "free" as const,
   },
+  {
+    chatPromo: true,
+    route: "free" as const,
+  },
 ];
 
 const FORTUNE_CATEGORIES = [
@@ -268,19 +272,25 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
   );
 }
 
-function BannerSlider({ onStart, isPartner }: { onStart: (route: "free" | "package") => void; isPartner: boolean }) {
+function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
   const [cur, setCur] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
 
   const resetTimer = (next: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => setCur(c => (c + 1) % BANNERS.length), 5000);
+    timerRef.current = setInterval(() => setCur(c => {
+      if ((BANNERS[c] as any).chatPromo) return c;
+      return (c + 1) % BANNERS.length;
+    }), 700);
     setCur(next);
   };
 
   useEffect(() => {
-    timerRef.current = setInterval(() => setCur(c => (c + 1) % BANNERS.length), 5000);
+    timerRef.current = setInterval(() => setCur(c => {
+      if ((BANNERS[c] as any).chatPromo) return c;
+      return (c + 1) % BANNERS.length;
+    }), 700);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, []);
 
@@ -301,7 +311,26 @@ function BannerSlider({ onStart, isPartner }: { onStart: (route: "free" | "packa
           startXRef.current = null;
         }}
       >
-        {(b as any).graphic ? (
+        {(b as any).chatPromo ? (
+          <div style={{ position: "absolute", inset: 0, backgroundImage: `url('https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg')`, backgroundSize: "cover", backgroundPosition: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 16px" }}>
+            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.55)" }} />
+            <div style={{ position: "relative", textAlign: "center", width: "100%" }}>
+              <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", color: "#9f1239", textShadow: "1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff, 1.5px 1.5px 0 #fff, -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 0 0 2px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>
+                고양이가 읽는 나의 운명
+              </h1>
+              <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 14px", color: "#b76e79", textShadow: "1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
+              <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
+                {[
+                  { text: "⚡ AI 정밀분석", bg: "linear-gradient(135deg, #6d28d9, #8b5cf6)" },
+                  { text: "🔒 개인정보 즉시삭제", bg: "linear-gradient(135deg, #15803d, #16a34a)" },
+                  { text: "⏱ 3초 완성", bg: "linear-gradient(135deg, #b45309, #d97706)" },
+                ].map(chip => (
+                  <span key={chip.text} style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: chip.bg, borderRadius: 20, padding: "6px 12px", boxShadow: "0 3px 8px rgba(0,0,0,0.15)" }}>{chip.text}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (b as any).graphic ? (
           /* 사진 없이 직접 그리는 990원 강조 배너 */
           <div style={{ position: "absolute", inset: 0 }}>
             <img src="https://i.pinimg.com/736x/b2/90/0f/b2900f52b17624d4286a216eed2ddc0a.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
@@ -334,7 +363,15 @@ function BannerSlider({ onStart, isPartner }: { onStart: (route: "free" | "packa
             </div>
           </>
         )}
-        {/* 수동 다음 화살표 — 자동 회전은 그대로 유지, 클릭하면 즉시 다음으로 + 타이머 리셋 */}
+        {/* 이전 화살표 */}
+        <button
+          onClick={e => { e.stopPropagation(); resetTimer((cur - 1 + BANNERS.length) % BANNERS.length); }}
+          aria-label="이전 배너"
+          style={{ position: "absolute", top: "50%", left: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+        >
+          ‹
+        </button>
+        {/* 다음 화살표 */}
         <button
           onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % BANNERS.length); }}
           aria-label="다음 배너"
@@ -342,12 +379,12 @@ function BannerSlider({ onStart, isPartner }: { onStart: (route: "free" | "packa
         >
           ›
         </button>
-        {/* 인디케이터 */}
-        <div style={{ position: "absolute", bottom: 14, left: 16, zIndex: 3 }}>
+        {/* 인디케이터 — 노란색 */}
+        <div style={{ position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)", zIndex: 3 }}>
           <div style={{ display: "flex", gap: 6 }}>
             {BANNERS.map((_, i) => (
               <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i); }}
-                style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? ((b as any).graphic ? "#78350f" : "white") : ((b as any).graphic ? "rgba(120,53,15,0.35)" : "rgba(255,255,255,0.45)"), transition: "all 0.3s ease", cursor: "pointer" }} />
+                style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? "#facc15" : "rgba(250,204,21,0.4)", transition: "all 0.3s ease", cursor: "pointer", boxShadow: cur === i ? "0 0 6px rgba(250,204,21,0.8)" : "none" }} />
             ))}
           </div>
         </div>
@@ -516,14 +553,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
-
-      {/* 복냥이 상담창 배너 */}
-      {!isPartner && savedProfile && (
-        <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
-          <QAChatWidget name={savedProfile.name} birthYear={savedProfile.birthYear} />
-        </div>
-      )}
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
 
       {/* 운세 선택 — 9개 박스 그리드(맨 앞 1개는 무료체험, 나머지 8개는 VIP 패키지의
           8개 항목을 그대로 미리보기 — 그래서 이름/내용을 다른 걸로 바꾸지 않음).
@@ -613,6 +643,13 @@ export default function MainV2() {
           </button>
         </div>
       </div>
+
+      {/* 복냥이 상담창 — 내정보(푸터) 바로 위 */}
+      {!isPartner && savedProfile && (
+        <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
+          <QAChatWidget name={savedProfile.name} birthYear={savedProfile.birthYear} />
+        </div>
+      )}
 
       {/* 푸터 */}
       <footer style={{ padding: "0 30px 24px", textAlign: "center" }}>

@@ -150,7 +150,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
         </div>
 
         {/* 메시지 영역 */}
-        <div style={{ height: 280, overflowY: "auto", padding: "12px 14px 8px", display: "flex", flexDirection: "column", gap: 10, background: "#f9f5ff" }}>
+        <div style={{ height: 190, overflowY: "auto", padding: "12px 14px 8px", display: "flex", flexDirection: "column", gap: 10, background: "#f9f5ff" }}>
           {messages.map((msg, i) => (
             <div key={i} style={{ display: "flex", justifyContent: msg.from === "user" ? "flex-end" : "flex-start", gap: 6, alignItems: "flex-end" }}>
               {msg.from === "cat" && (
