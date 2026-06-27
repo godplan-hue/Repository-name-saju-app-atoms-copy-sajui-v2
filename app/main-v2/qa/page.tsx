@@ -331,18 +331,21 @@ export default function QAPage() {
                 ))}
               </div>
             </div>
-            {/* 질문 목록 스크롤 */}
+            {/* 질문 목록 스크롤 — 3단 그리드 */}
             <div style={{ overflowY: "auto", padding: "4px 16px 32px", flex: 1 }}>
-              {(QA_CATEGORIES.find(c => c.id === qListCat)?.items ?? []).map((item, idx) => (
-                <button key={idx} onClick={() => { setShowQList(false); sendMsg(item.question); }} style={{
-                  display: "block", width: "100%", padding: "12px 14px", marginBottom: 6,
-                  background: "#fdf4ff", border: "1.5px solid #f3e8ff", borderRadius: 12,
-                  textAlign: "left", cursor: "pointer",
-                }}>
-                  <span style={{ fontSize: 10, fontWeight: 900, color: "white", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "2px 8px", borderRadius: 20, marginRight: 8 }}>Q{idx + 1}</span>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{item.question}</span>
-                </button>
-              ))}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
+                {(QA_CATEGORIES.find(c => c.id === qListCat)?.items ?? []).map((item, idx) => (
+                  <button key={idx} onClick={() => { setShowQList(false); sendMsg(item.question); }} style={{
+                    padding: "10px 10px", background: "#fdf4ff",
+                    border: "1.5px solid #e9d5ff", borderRadius: 12,
+                    textAlign: "left", cursor: "pointer",
+                    display: "flex", flexDirection: "column", gap: 5,
+                  }}>
+                    <span style={{ fontSize: 10, fontWeight: 900, color: "white", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "2px 8px", borderRadius: 20, alignSelf: "flex-start" }}>Q{idx + 1}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", lineHeight: 1.4 }}>{item.question}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
