@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
+import QAChatWidget from "@/components/QAChatWidget";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -359,6 +360,7 @@ function BannerSlider({ onStart, isPartner }: { onStart: (route: "free" | "packa
 export default function MainV2() {
   const router = useRouter();
   const [user, setUser] = useState<string | null>(null);
+  const [savedProfile, setSavedProfile] = useState<{ name: string; birthYear: number } | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isPartner, setIsPartner] = useState(false);
   // 다이아 등급 파트너의 서브도메인(예: kim.jeomun.com)으로 들어온 경우,
@@ -426,6 +428,13 @@ export default function MainV2() {
     setMounted(true);
     const saved = localStorage.getItem("v2_user_name");
     if (saved) setUser(saved);
+    try {
+      const raw = localStorage.getItem("v2_saved_profile");
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p?.name && p?.birthYear) setSavedProfile({ name: p.name, birthYear: Number(p.birthYear) });
+      }
+    } catch {}
   }, []);
 
   const handleCourse = (c: typeof COURSES[0]) => {
@@ -508,6 +517,13 @@ export default function MainV2() {
 
       {/* 슬라이드 배너 */}
       <BannerSlider isPartner={isPartner} onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
+
+      {/* 복냥이 상담창 배너 */}
+      {!isPartner && savedProfile && (
+        <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
+          <QAChatWidget name={savedProfile.name} birthYear={savedProfile.birthYear} />
+        </div>
+      )}
 
       {/* 운세 선택 — 9개 박스 그리드(맨 앞 1개는 무료체험, 나머지 8개는 VIP 패키지의
           8개 항목을 그대로 미리보기 — 그래서 이름/내용을 다른 걸로 바꾸지 않음).
