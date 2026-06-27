@@ -314,7 +314,10 @@ export default function QAPage() {
             <div style={{ padding: "16px 16px 10px" }}>
               <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 900, color: "#1a1a2e" }}>📋 질문 목록 — 탭하면 바로 답변해줘!</h3>
+                <div>
+                  <h3 style={{ margin: "0 0 2px", fontSize: 15, fontWeight: 900, color: "#1a1a2e" }}>📋 질문 목록</h3>
+                  <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: "#8b5cf6" }}>카테고리마다 40개 질문 · 원하는 질문 탭하면 바로 답변!</p>
+                </div>
                 <button onClick={() => setShowQList(false)} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#9ca3af" }}>✕</button>
               </div>
               {/* 카테고리 탭 3×3 */}
