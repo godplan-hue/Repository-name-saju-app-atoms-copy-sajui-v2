@@ -38,6 +38,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "연회비 갱신이 필요합니다. 갱신 후 다시 시도해주세요." }, { status: 403 });
     }
 
+    if (tierId === "free" && partnerRecord?.createdAt) {
+      const createdAt = new Date(partnerRecord.createdAt);
+      const threeMonthsLater = new Date(createdAt);
+      threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
+      if (new Date() > threeMonthsLater) {
+        return NextResponse.json({ error: "무료 등급 3개월 이용 기간이 만료되었습니다. 유료 등급으로 업그레이드 후 계속 이용하세요." }, { status: 403 });
+      }
+    }
+
     // 한도 확인은 파트너 보관함 전체를 읽지 않고, 미리 집계해 둔 이번 달
     // 건수(partnerStats)만 가볍게 읽어서 확인함 — 보관함이 몇만 건이 쌓여도
     // 분석 생성 속도가 느려지지 않게 하기 위함

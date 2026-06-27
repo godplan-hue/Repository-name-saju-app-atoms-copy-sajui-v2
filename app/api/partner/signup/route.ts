@@ -28,6 +28,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "이미 같은 이름으로 가입된 파트너가 있습니다. 등급을 바꾸려면 로그인 후 등급 업그레이드를 이용해주세요." }, { status: 409 });
     }
 
+    if (phone) {
+      const existingPhoneSnap = await db.ref("partners").orderByChild("phone").equalTo(phone).once("value");
+      if (existingPhoneSnap.exists()) {
+        return NextResponse.json({ error: "이미 가입된 전화번호입니다. 다른 번호로 가입하거나 로그인해주세요." }, { status: 409 });
+      }
+    }
+
     const partnerTier = tier || "free";
     const now = new Date().toISOString();
     const partnerRef = await db.ref("partners").push({
