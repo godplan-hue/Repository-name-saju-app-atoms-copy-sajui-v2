@@ -203,7 +203,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
 
         {/* 추천 질문 칩 */}
         {suggestions.length > 0 && !typing && (
-          <div key={chipKey} style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "6px 10px", display: "flex", gap: 6, overflowX: "auto", animation: "chipSlideIn 0.4s ease" }}>
+          <div key={chipKey} className="qa-chips-row" style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "6px 10px", display: "flex", gap: 6, overflowX: "auto", animation: "chipSlideIn 0.4s ease" }}>
             {suggestions.map((s, i) => (
               <button key={i} onClick={() => sendMsg(s)} style={{
                 flexShrink: 0, padding: "6px 12px",
@@ -342,6 +342,8 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
         @keyframes qaSparkle { 0%,100%{filter:brightness(1) drop-shadow(0 0 0 transparent)} 50%{filter:brightness(1.5) drop-shadow(0 0 8px rgba(236,72,153,0.9))} }
         @keyframes qaLineProgress { from{width:0%} to{width:100%} }
         @keyframes chipSlideIn { from{transform:translateX(60px);opacity:0} to{transform:translateX(0);opacity:1} }
+        .qa-chips-row::-webkit-scrollbar { display: none; }
+        .qa-chips-row { scrollbar-width: none; -ms-overflow-style: none; }
       `}</style>
     </>
   );

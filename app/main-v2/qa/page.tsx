@@ -101,7 +101,19 @@ export default function QAPage() {
   const [suggestions, setSuggestions] = useState<Array<{q: string; catId: string}>>([]);
   const [showQList, setShowQList] = useState(false);
   const [qListCat, setQListCat] = useState("wealth");
+  const [chipKey, setChipKey] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSuggestions(QA_CATEGORIES.map(cat => {
+        const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
+        return { q: pick.question, catId: cat.id };
+      }));
+      setChipKey(k => k + 1);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("v2_result");
@@ -266,7 +278,7 @@ export default function QAPage() {
           "linear-gradient(135deg, #e11d48, #8b5cf6)",
         ];
         return (
-          <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "8px 12px", display: "flex", gap: 7, overflowX: "auto", flexShrink: 0 }}>
+          <div key={chipKey} className="qa-chips-row-p" style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "8px 12px", display: "flex", gap: 7, overflowX: "auto", flexShrink: 0, animation: "qaChipSlide 0.4s ease" }}>
             {suggestions.map((s, i) => (
               <button key={i} onClick={() => sendMsg(s.q)} style={{
                 flexShrink: 0, padding: "7px 14px",
@@ -428,7 +440,7 @@ export default function QAPage() {
         );
       })()}
 
-      <style>{`@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }`}</style>
+      <style>{`@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} } @keyframes qaChipSlide { from{transform:translateX(60px);opacity:0} to{transform:translateX(0);opacity:1} } .qa-chips-row-p::-webkit-scrollbar{display:none} .qa-chips-row-p{scrollbar-width:none;-ms-overflow-style:none}`}</style>
     </main>
   );
 }
