@@ -204,12 +204,6 @@ export default function QAPage() {
             {unlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회`}
           </p>
         </div>
-        {/* 질문 목록 버튼 */}
-        <button onClick={() => setShowQList(true)} style={{
-          padding: "7px 13px", background: "linear-gradient(135deg, #fdf4ff, #f3e8ff)",
-          border: "1.5px solid #e9d5ff", borderRadius: 50, fontSize: 12, fontWeight: 900,
-          color: "#8b5cf6", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
-        }}>📋 질문 목록</button>
       </div>
 
       {/* 메시지 목록 */}
@@ -271,8 +265,20 @@ export default function QAPage() {
         </div>
       )}
 
+      {/* 질문 목록 버튼 — 입력창 바로 위 */}
+      <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "10px 14px 0", flexShrink: 0 }}>
+        <button onClick={() => setShowQList(true)} style={{
+          width: "100%", padding: "11px 0",
+          background: "linear-gradient(135deg, #8b5cf6, #ec4899)",
+          border: "none", borderRadius: 12,
+          fontSize: 14, fontWeight: 900, color: "white",
+          cursor: "pointer", letterSpacing: "-0.3px",
+          boxShadow: "0 4px 14px rgba(139,92,246,0.35)",
+        }}>📋 360개 질문 목록 보기 (탭하면 바로 답변!)</button>
+      </div>
+
       {/* 입력창 */}
-      <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "10px 12px", display: "flex", gap: 8, flexShrink: 0 }}>
+      <div style={{ background: "white", padding: "10px 12px", display: "flex", gap: 8, flexShrink: 0 }}>
         <input
           type="text" value={input}
           onChange={e => setInput(e.target.value)}
