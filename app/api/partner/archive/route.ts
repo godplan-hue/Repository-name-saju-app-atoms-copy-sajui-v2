@@ -41,9 +41,9 @@ export async function POST(request: NextRequest) {
     if (tierId === "free" && partnerRecord?.createdAt) {
       const createdAt = new Date(partnerRecord.createdAt);
       const threeMonthsLater = new Date(createdAt);
-      threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 0); // 테스트용 — 원복 필요
+      threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
       if (new Date() > threeMonthsLater) {
-        return NextResponse.json({ error: "무료 등급 3개월 이용 기간이 만료되었습니다. 유료 등급으로 업그레이드 후 계속 이용하세요." }, { status: 403 });
+        return NextResponse.json({ error: "무료 등급 3개월 이용 기간이\n만료되었습니다.\n유료 등급으로 업그레이드 후\n계속 이용하세요." }, { status: 403 });
       }
     }
 
