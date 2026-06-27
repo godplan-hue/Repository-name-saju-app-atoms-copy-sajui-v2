@@ -239,11 +239,11 @@ export default function QAPage() {
           <div style={{ background: "white", borderRadius: "20px 20px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 480 }}>
             <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 20px" }} />
             <h3 style={{ fontSize: 17, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", textAlign: "center" }}>더 궁금하면 운세를 구매해봐! 🔮</h3>
-            <p style={{ fontSize: 12, color: "#9ca3af", fontWeight: 600, margin: "0 0 18px", textAlign: "center" }}>
+            <p style={{ fontSize: 12, color: "#374151", fontWeight: 700, margin: "0 0 18px", textAlign: "center" }}>
               운세 구매하면 관련 Q&amp;A 전체 열람 가능해
             </p>
             {/* 물어봤던 질문 */}
-            <div style={{ background: "#f9f5ff", borderRadius: 12, padding: "11px 14px", marginBottom: 18, fontSize: 12, fontWeight: 700, color: "#6b7280", lineHeight: 1.6, borderLeft: "3px solid #c4b5fd" }}>
+            <div style={{ background: "#f9f5ff", borderRadius: 12, padding: "11px 14px", marginBottom: 18, fontSize: 12, fontWeight: 800, color: "#374151", lineHeight: 1.6, borderLeft: "3px solid #c4b5fd" }}>
               미처 못 한 질문: {pendingQ}
             </div>
             {/* 단품 선택 — 감지된 카테고리 우선 표시 */}
@@ -251,6 +251,7 @@ export default function QAPage() {
               {[
                 { icon: "💰", label: "재물운", price: "₩9,900", cat: "wealthLuck", desc: "돈·투자·수입 관련 Q&A 전체 열람", catIds: ["wealth","business","career","success"] },
                 { icon: "💕", label: "연애운", price: "₩9,900", cat: "loveLuck",   desc: "연애·결혼 관련 Q&A 전체 열람",  catIds: ["love","marriage"] },
+                { icon: "🍀", label: "건강운", price: "₩9,900", cat: "healthLuck", desc: "건강·체력·스트레스 관련 Q&A 전체", catIds: ["health"] },
                 { icon: "📦", label: "기본 패키지", price: "₩9,900", cat: "basic", desc: "재물운+연애운 패키지 · Q&A 전체", catIds: [] },
               ].sort((a, b) => (b.catIds.includes(pendingCatId) ? 1 : 0) - (a.catIds.includes(pendingCatId) ? 1 : 0))
               .map(item => {
@@ -283,7 +284,7 @@ export default function QAPage() {
               );
               })}
             </div>
-            <button onClick={() => setShowModal(false)} style={{ width: "100%", padding: 13, background: "none", border: "none", fontWeight: 700, fontSize: 14, color: "#9ca3af", cursor: "pointer" }}>
+            <button onClick={() => setShowModal(false)} style={{ width: "100%", padding: 13, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>
               나중에 할게
             </button>
           </div>
