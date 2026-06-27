@@ -205,9 +205,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
         )}
 
         {/* 노란 구분선 */}
-        <div style={{ height: 10, background: "linear-gradient(90deg,#facc15,#f97316,#facc15)", position: "relative", overflow: "hidden", boxShadow: "0 0 10px rgba(250,204,21,0.8)" }}>
-          <div style={{ position: "absolute", top: 0, left: 0, width: "40%", height: "100%", background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.85),transparent)", animation: "qaLineShine 1.4s linear infinite", willChange: "transform" }} />
-        </div>
+        <div style={{ height: 10, background: "linear-gradient(90deg,#facc15,#f97316,#facc15)", animation: "qaLinePulse 1s ease-in-out infinite" }} />
 
         {/* 360개 질문 목록 버튼 */}
         <div style={{ background: "white", padding: "8px 10px 0" }}>
@@ -326,7 +324,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
       <style>{`
         @keyframes qaWidgetBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
         @keyframes qaSparkle { 0%,100%{filter:brightness(1) drop-shadow(0 0 0 transparent)} 50%{filter:brightness(1.5) drop-shadow(0 0 8px rgba(236,72,153,0.9))} }
-        @keyframes qaLineShine { 0%{transform:translateX(-200%)} 100%{transform:translateX(400%)} }
+        @keyframes qaLinePulse { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:0.55;transform:scaleY(1.6)} }
       `}</style>
     </>
   );
