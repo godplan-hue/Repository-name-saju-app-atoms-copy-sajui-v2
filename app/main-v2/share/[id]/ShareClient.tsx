@@ -170,6 +170,23 @@ export default function ShareClient({ id }: { id: string }) {
     setSpeaking(true);
   };
 
+  const restartReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const fullText = (entry?.categories ?? []).map(c => c.text).filter(Boolean).join("\n")
+      .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+      .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+      .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+      .replace(/[（(][一-鿿]+[）)]/g, "")
+      .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+      .replace(/×/g, " 와 ");
+    if (!fullText.trim()) return;
+    readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+    readIdxRef.current = 0;
+    speakFrom(readChunksRef.current, 0);
+    setSpeaking(true);
+  };
+
   if (notFound) {
     return (
       <main style={{ minHeight: "100vh", background: BG, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
@@ -188,16 +205,22 @@ export default function ShareClient({ id }: { id: string }) {
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
       {/* 어디로 스크롤하든 항상 누를 수 있게 고정된 읽기 버튼 */}
-      <button onClick={toggleReadAloud}
-        style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
-        {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
-      </button>
+      <div style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+        <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(139,92,246,0.15)", color: "#8b5cf6", fontWeight: 800, fontSize: 16, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺</button>
+        <button onClick={toggleReadAloud}
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
+          {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
+        </button>
+      </div>
 
       <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
         <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>{entry.businessName ? `🔮 ${entry.businessName}` : "🐱 점운"}</span>
-        <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>
-          {speaking ? "⏸ 멈추기" : "🔊 읽기"}
-        </button>
+        <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
+          <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+          </button>
+          <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺</button>
+        </div>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
@@ -366,9 +389,12 @@ export default function ShareClient({ id }: { id: string }) {
           );
         })}
 
-        <button onClick={toggleReadAloud} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", marginBottom: 10 }}>
-          {speaking ? "⏸ 멈추기" : "🔊 읽기"}
-        </button>
+        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+          <button onClick={toggleReadAloud} style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+          </button>
+          <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "13px 16px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 16, cursor: "pointer" }}>↺</button>
+        </div>
 
         <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
           📱 나도 무료로 사주 보기

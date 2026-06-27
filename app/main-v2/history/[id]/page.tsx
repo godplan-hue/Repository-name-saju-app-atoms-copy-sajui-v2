@@ -258,6 +258,26 @@ export default function HistoryDetail() {
     setSpeaking(true);
   };
 
+  // 이어듣기 대신 처음부터 다시 듣고 싶을 때 — 저장된 위치를 무시하고 강제로 0부터 시작
+  const restartReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    clearTtsProgress();
+    const fullText = (item?.analysis ?? "")
+      .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+      .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+      .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+      .replace(/[（(][一-鿿]+[）)]/g, "")
+      .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+      .replace(/×/g, " 와 ");
+    if (!fullText.trim()) return;
+    readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map((s: string) => s.trim()).filter(Boolean);
+    readIdxRef.current = 0;
+    requestWakeLock();
+    speakFrom(readChunksRef.current, 0);
+    setSpeaking(true);
+  };
+
   const saveImage = async () => {
     if (!cardRef.current || saving) return;
     setSaving(true);
@@ -342,6 +362,7 @@ export default function HistoryDetail() {
         </button>
         <div style={{ display: "flex", gap: 7 }}>
           <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>{speaking ? "⏹ 멈추기" : "🔊 읽기"}</button>
+          <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺</button>
           <button onClick={share} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>📱 공유</button>
           {item.isPaid && (
             <button onClick={saveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer" }}>

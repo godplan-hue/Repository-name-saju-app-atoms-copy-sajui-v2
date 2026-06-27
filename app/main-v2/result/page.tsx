@@ -903,14 +903,56 @@ function V2ResultInner() {
     setSpeaking(true);
   };
 
+  const restartReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    clearTtsProgress();
+    const visibleTexts =
+      tier === "free" ? [freeAnalysis]
+      : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
+      : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
+    if (!isPartner && profile?.name && profile?.birthYear) {
+      const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
+      const todayKey = new Date().toDateString();
+      const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${todayKey}`;
+      const savedInterestToday = localStorage.getItem(interestKey);
+      if (tier === "free") {
+        const directInterest = changeInterest ?? (savedInterestToday && interestOptions.includes(savedInterestToday) ? savedInterestToday : null);
+        if (freeConsumedSnapshot !== true && directInterest) {
+          const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest);
+          visibleTexts.push(`${yc.title}. ${yc.insight} ${yc.hidden1}`);
+        }
+      } else if (paidConsumedSnapshot !== true && savedInterestToday && interestOptions.includes(savedInterestToday)) {
+        const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, savedInterestToday);
+        visibleTexts.push(`${yc.title}. ${yc.insight} ${yc.hidden1} ${yc.hidden2}`);
+      }
+    }
+    const fullText = visibleTexts.filter(Boolean).join("\n")
+      .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+      .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+      .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+      .replace(/[（(][一-鿿]+[）)]/g, "")
+      .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+      .replace(/×/g, " 와 ");
+    if (!fullText.trim()) return;
+    readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+    readIdxRef.current = 0;
+    requestWakeLock();
+    speakFrom(readChunksRef.current, 0);
+    setSpeaking(true);
+  };
+
   return (
     <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/1200x/18/97/18/189718a8189930b86d2088d7f1250c2c.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
-      <button onClick={toggleReadAloud}
-        style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
-        {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
-      </button>
+      <div style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+        <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(139,92,246,0.15)", color: "#8b5cf6", fontWeight: 800, fontSize: 16, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺</button>
+        <button onClick={toggleReadAloud}
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
+          {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
+        </button>
+      </div>
 
       {/* 헤더 */}
       <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>

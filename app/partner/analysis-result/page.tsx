@@ -396,6 +396,25 @@ function PartnerAnalysisResultInner() {
     setSpeaking(true);
   };
 
+  const restartReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    clearTtsProgress();
+    const fullText = cats.map(c => analysisResults[c.key]).filter(Boolean).join("\n")
+      .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+      .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+      .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+      .replace(/[（(][一-鿿]+[）)]/g, "")
+      .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+      .replace(/×/g, " 와 ");
+    if (!fullText.trim()) return;
+    readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+    readIdxRef.current = 0;
+    requestWakeLock();
+    speakFrom(readChunksRef.current, 0);
+    setSpeaking(true);
+  };
+
   return (
     <>
       <Head><title>분석 결과 - {businessName || "점운"}</title></Head>
@@ -410,6 +429,9 @@ function PartnerAnalysisResultInner() {
               <button onClick={toggleReadAloud} style={{ padding: "7px 11px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 800, fontSize: 12, cursor: "pointer", whiteSpace: "nowrap" }}>
                 {speaking ? "⏸ 멈추기" : "🔊 읽기"}
               </button>
+            )}
+            {partnerTier !== "free" && (
+              <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "7px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>↺</button>
             )}
             {partnerTier !== "free" && (
               <button onClick={handleShare} disabled={sharing} style={{ padding: "7px 11px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: sharing ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
@@ -538,9 +560,12 @@ function PartnerAnalysisResultInner() {
           ))}
 
           {partnerTier !== "free" && (
-            <button onClick={toggleReadAloud} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", marginBottom: 10 }}>
-              {speaking ? "⏸ 멈추기" : "🔊 읽기"}
-            </button>
+            <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+              <button onClick={toggleReadAloud} style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+                {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+              </button>
+              <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "13px 16px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 16, cursor: "pointer" }}>↺</button>
+            </div>
           )}
 
           <button onClick={() => router.push("/partner/create-analysis")} style={{ width: "100%", padding: "13px 0", background: "white", color: "#9333ea", border: "1.5px solid rgba(147,51,234,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(147,51,234,0.1)" }}>
