@@ -254,6 +254,7 @@ function V2ResultInner() {
   const [allAnalyses, setAllAnalyses] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [changeInterest, setChangeInterest] = useState<string | null>(null);
+  const [bannerIdx, setBannerIdx] = useState(0);
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   // 공유하기 전에 "생년월일 정보(띠·오행 미리보기)를 같이 보여줄지" 고를 수 있게 함 —
@@ -276,6 +277,12 @@ function V2ResultInner() {
         .catch(() => {});
     }
   }, []);
+  const BANNER_MSGS = ["오늘 재물운이 어떨까?", "취업 될 것 같아?", "연애운 알려줘!", "이직 타이밍 맞아?", "올해 대박 나는 달 언제야?", "내 강점이 뭐야?"];
+  useEffect(() => {
+    const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 1000);
+    return () => clearInterval(t);
+  }, []);
+
   const [paidCats, setPaidCats] = useState<string[]>([]);
   const [selPlan, setSelPlan] = useState("vip");
   const [payBusy, setPayBusy] = useState(false);
@@ -1415,8 +1422,10 @@ function V2ResultInner() {
               <p style={{ fontSize: 30, fontWeight: 900, color: "#ffffff", margin: "8px 0 2px", lineHeight: 1.15, letterSpacing: -1 }}>
                 무엇이든<br/>물어보세요
               </p>
-              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontWeight: 700, margin: "0 0 16px" }}>
-                복냥이에게 직접 물어봐요!
+
+              {/* 회전 질문 */}
+              <p style={{ fontSize: 13, color: "#fbbf24", fontWeight: 800, margin: "0 0 12px", minHeight: 20 }}>
+                💬 &ldquo;{BANNER_MSGS[bannerIdx]}&rdquo;
               </p>
 
               {/* CTA 버튼 */}
@@ -1433,8 +1442,12 @@ function V2ResultInner() {
               </div>
             </div>
 
-            {/* 고양이 */}
-            <div style={{ position: "absolute", right: 14, bottom: 0, fontSize: 72, lineHeight: 1, zIndex: 2, userSelect: "none" }}>🐱</div>
+            {/* 고양이 + 반짝이 */}
+            <div style={{ position: "absolute", right: 10, bottom: 0, zIndex: 2, userSelect: "none", textAlign: "center" }}>
+              <div style={{ fontSize: 13, marginBottom: 2, animation: "sparkle 1.5s infinite alternate", opacity: 0.9 }}>✨ ⭐ ✨</div>
+              <div style={{ fontSize: 72, lineHeight: 1 }}>🐱</div>
+            </div>
+            <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
           </div>
         )}
 
