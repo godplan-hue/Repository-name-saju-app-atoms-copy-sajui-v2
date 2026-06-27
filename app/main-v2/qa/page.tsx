@@ -117,11 +117,15 @@ export default function QAPage() {
     const used = Number(localStorage.getItem(`v2_qa_${n}_${y}_${todayKey()}`) ?? 0);
     setRemaining(paid ? 999 : Math.max(0, FREE_QUESTIONS - used));
     setMessages([{ from: "cat", text: `안녕하세요, ${n}님! 🐱\n복냥이가 ${n}님의 사주를 보고 있어요.\n아래 질문을 눌러봐도 되고, 직접 물어봐도 돼!` }]);
-    // 초기 추천 질문: 카테고리별 첫 번째 질문
-    const initSugg = ["wealth", "love", "health", "career"].map(catId => {
-      const cat = QA_CATEGORIES.find(c => c.id === catId);
-      return cat ? { q: cat.items[0].question, catId } : null;
-    }).filter(Boolean) as { q: string; catId: string }[];
+    // 초기 추천 질문: 카테고리별 랜덤 1개씩 (매번 다른 질문)
+    const initSugg = ["wealth", "love", "health", "career", "marriage", "business", "success", "health", "children", "general"]
+      .slice(0, 4)
+      .map(catId => {
+        const cat = QA_CATEGORIES.find(c => c.id === catId);
+        if (!cat) return null;
+        const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
+        return { q: pick.question, catId };
+      }).filter(Boolean) as { q: string; catId: string }[];
     setSuggestions(initSugg);
     setReady(true);
   }, [router]);
@@ -163,9 +167,12 @@ export default function QAPage() {
       const showBuy = !unlocked && catId !== "general";
       setMessages(prev => [...prev, { from: "cat", text: answer, buyCatId: showBuy ? catId : undefined }]);
       setTyping(false);
-      // 방금 답한 카테고리 제외하고 다른 카테고리에서 1개씩 추천
+      // 방금 답한 카테고리 제외하고 나머지에서 랜덤 1개씩 (우리가 만든 질문지 그대로)
       const otherCats = QA_CATEGORIES.filter(c => c.id !== catId);
-      const nextSugg = otherCats.slice(0, 4).map(c => ({ q: c.items[0].question, catId: c.id }));
+      const nextSugg = otherCats.slice(0, 4).map(c => {
+        const pick = c.items[Math.floor(Math.random() * c.items.length)];
+        return { q: pick.question, catId: c.id };
+      });
       setSuggestions(nextSugg);
       if (newRemaining === 0) {
         setTimeout(() => {
