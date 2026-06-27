@@ -152,7 +152,7 @@ function PaymentPartnerInner() {
             <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, margin: "0 0 4px 0" }}>NH농협은행 355-0061-0651-13</p>
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 4px 0" }}>예금주: 장문정</p>
             <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 10px 0" }}>입금액: ₩{finalFee.toLocaleString()}</p>
-            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: 600, margin: 0, lineHeight: 1.6 }}>입금하신 뒤 아래 버튼을 눌러 신청을 완료해주세요. 입금 확인 후 이용 가능합니다.</p>
+            <p style={{ color: "#ffffff", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 2 }}>입금하신 뒤 아래 버튼을 눌러<br/>신청을 완료해주세요.<br/>입금 확인 후 이용 가능합니다.</p>
           </div>
 
           <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 14, background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: isProcessing ? "not-allowed" : "pointer", marginBottom: 12, opacity: isProcessing ? 0.6 : 1 }}>
@@ -160,7 +160,7 @@ function PaymentPartnerInner() {
           </button>
 
           <div style={{ border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: 16, marginBottom: 12, textAlign: "center" }}>
-            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, margin: "0 0 10px 0" }}>카드 결제를 원하시면 카카오톡으로 연락주세요 😊<br/>결제 링크를 바로 보내드립니다.</p>
+            <p style={{ color: "#ffffff", fontSize: 12, fontWeight: 800, margin: "0 0 10px 0" }}>카드 결제를 원하시면 카카오톡으로 연락주세요 😊<br/>결제 링크를 바로 보내드립니다.</p>
             <a
               href="https://open.kakao.com/o/sEwhSEWg"
               target="_blank"
@@ -175,8 +175,8 @@ function PaymentPartnerInner() {
             ← 돌아가기
           </a>
 
-          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 600, marginTop: 16 }}>
-            본 서비스는 기획의신(대표 장문정, 사업자등록번호 773-60-00359)이 운영합니다.
+          <p style={{ textAlign: "center", color: "#ffffff", fontSize: 11, fontWeight: 800, marginTop: 16, lineHeight: 2 }}>
+            본 서비스는 기획의신(대표 장문정)<br/>사업자등록번호<br/>(773-60-00359)이 운영합니다.
           </p>
         </div>
       </div>
