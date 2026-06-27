@@ -210,6 +210,10 @@ const BANNERS = [
     chatPromo: true,
     route: "free" as const,
   },
+  {
+    chatBanner: true,
+    route: "free" as const,
+  },
 ];
 
 const FORTUNE_CATEGORIES = [
@@ -280,7 +284,7 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
   const resetTimer = (next: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setCur(c => {
-      if ((BANNERS[c] as any).chatPromo) return c;
+      if ((BANNERS[c] as any).chatPromo || (BANNERS[c] as any).chatBanner) return c;
       return (c + 1) % BANNERS.length;
     }), 700);
     setCur(next);
@@ -288,7 +292,7 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
 
   useEffect(() => {
     timerRef.current = setInterval(() => setCur(c => {
-      if ((BANNERS[c] as any).chatPromo) return c;
+      if ((BANNERS[c] as any).chatPromo || (BANNERS[c] as any).chatBanner) return c;
       return (c + 1) % BANNERS.length;
     }), 700);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
@@ -311,7 +315,28 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
           startXRef.current = null;
         }}
       >
-        {(b as any).chatPromo ? (
+        {(b as any).chatBanner ? (
+          /* 무엇이든 물어보세요 — 상담 프로모 배너 */
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #2d1b69 0%, #4c1d95 60%, #6d28d9 100%)" }}>
+            <img
+              src="https://i.pinimg.com/736x/ac/41/34/ac4134d338bc8fab68537a589fecb08b.jpg"
+              alt=""
+              style={{ position: "absolute", right: 0, bottom: 0, height: "88%", width: "42%", objectFit: "cover", objectPosition: "top", opacity: 0.9 }}
+            />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(45,27,105,0.98) 52%, transparent 100%)" }} />
+            <span style={{ position: "absolute", top: 16, left: 16, background: "#ec4899", color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2 }}>AI 사주 상담</span>
+            <div style={{ position: "absolute", bottom: 20, left: 18, zIndex: 2 }}>
+              <p style={{ margin: "0 0 6px", fontSize: 26, fontWeight: 900, color: "white", lineHeight: 1.2, letterSpacing: "-0.5px" }}>무엇이든<br/>물어보세요</p>
+              <p style={{ margin: "0 0 14px", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.8)" }}>복냥이에게 직접 물어봐요!</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "#ec4899", borderRadius: 50, boxShadow: "0 3px 12px rgba(236,72,153,0.5)" }}>
+                  <span style={{ fontSize: 12, fontWeight: 900, color: "white" }}>사주 상담 →</span>
+                </div>
+                <span style={{ background: "rgba(255,255,255,0.15)", color: "white", fontSize: 11, fontWeight: 800, padding: "5px 12px", borderRadius: 50, border: "1px solid rgba(255,255,255,0.3)" }}>무료 3회</span>
+              </div>
+            </div>
+          </div>
+        ) : (b as any).chatPromo ? (
           <div style={{ position: "absolute", inset: 0, backgroundImage: `url('https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg')`, backgroundSize: "cover", backgroundPosition: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 16px" }}>
             <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.55)" }} />
             <div style={{ position: "relative", textAlign: "center", width: "100%" }}>
