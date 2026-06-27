@@ -46,41 +46,38 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
     const answer = fillTemplate(item.answers[ohaeng], name);
 
     if (!isFreeItem) {
-      // 잠긴 항목 — 질문 내용 완전히 숨김, 신비로운 잠금 UI
+      // 잠긴 항목 — 흰 배경, 내용은 회색 바로 가림
       return (
         <div key={key}
           style={{
-            background: "linear-gradient(135deg, #1a0a2e, #2d1650)",
+            background: "white",
             borderRadius: 14,
-            border: "1.5px solid rgba(139,92,246,0.3)",
+            border: "1.5px solid #f0e6ff",
             padding: "14px 16px",
             display: "flex",
             alignItems: "center",
             gap: 12,
           }}
         >
-          <span style={{
-            fontSize: 16,
-            flexShrink: 0,
-          }}>🔒</span>
+          <span style={{ fontSize: 15, flexShrink: 0, opacity: 0.4 }}>🔒</span>
           <div style={{ flex: 1 }}>
             <div style={{
-              height: 10,
+              height: 11,
               borderRadius: 6,
-              background: "linear-gradient(90deg, rgba(139,92,246,0.25), rgba(236,72,153,0.15))",
-              marginBottom: 6,
-              width: "70%",
+              background: "#e5e7eb",
+              marginBottom: 7,
+              width: "65%",
             }} />
             <div style={{
-              height: 8,
+              height: 9,
               borderRadius: 6,
-              background: "linear-gradient(90deg, rgba(139,92,246,0.15), rgba(236,72,153,0.08))",
-              width: "45%",
+              background: "#f3f4f6",
+              width: "40%",
             }} />
           </div>
           <span style={{
             fontSize: 10,
-            color: "rgba(139,92,246,0.6)",
+            color: "#d1d5db",
             fontWeight: 700,
             flexShrink: 0,
             whiteSpace: "nowrap",
@@ -183,6 +180,46 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
         </p>
       </div>
 
+      {/* 구매 유도 배너 — 무료일 때 맨 위에 */}
+      {!unlocked && (
+        <div style={{
+          marginBottom: 14,
+          padding: "12px 16px",
+          background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
+          borderRadius: 14,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 10,
+          color: "white",
+          boxShadow: "0 6px 20px rgba(236,72,153,0.3)",
+        }}>
+          <div>
+            <p style={{ fontSize: 13, margin: "0 0 1px", fontWeight: 900 }}>🔓 전체 Q&amp;A 열어볼래?</p>
+            <p style={{ fontSize: 10, fontWeight: 700, margin: 0, opacity: 0.9 }}>
+              9카테고리 × 40문항 · {name}님 맞춤 답변
+            </p>
+          </div>
+          <button
+            onClick={() => onBuyClick ? onBuyClick() : window.scrollTo({ top: 0, behavior: "smooth" })}
+            style={{
+              padding: "8px 16px",
+              background: "white",
+              color: "#ec4899",
+              border: "none",
+              borderRadius: 50,
+              fontWeight: 900,
+              fontSize: 12,
+              cursor: "pointer",
+              flexShrink: 0,
+              whiteSpace: "nowrap",
+            }}
+          >
+            💎 전체 보기
+          </button>
+        </div>
+      )}
+
       {/* 검색창 */}
       <div style={{ position: "relative", marginBottom: 16 }}>
         <input
@@ -263,25 +300,24 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
         </div>
       ) : (
         <>
-          {/* 카테고리 탭 */}
-          <div style={{ display: "flex", gap: 6, overflowX: "auto", paddingBottom: 4, marginBottom: 16, scrollbarWidth: "none" }}>
+          {/* 카테고리 탭 — 3열 그리드 */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, marginBottom: 16 }}>
             {QA_CATEGORIES.map(c => (
               <button
                 key={c.id}
                 onClick={() => { setActiveCatId(c.id); setOpenIdx(null); }}
                 style={{
-                  flexShrink: 0,
-                  padding: "8px 16px",
+                  padding: "8px 4px",
                   background: activeCatId === c.id
                     ? "linear-gradient(135deg, #ec4899, #8b5cf6)"
                     : "white",
                   color: activeCatId === c.id ? "white" : "#6b7280",
                   border: activeCatId === c.id ? "none" : "1.5px solid #e5e7eb",
-                  borderRadius: 50,
+                  borderRadius: 10,
                   fontWeight: 800,
                   fontSize: 12,
                   cursor: "pointer",
-                  whiteSpace: "nowrap",
+                  textAlign: "center",
                   boxShadow: activeCatId === c.id ? "0 4px 12px rgba(236,72,153,0.3)" : "none",
                 }}
               >
@@ -300,39 +336,6 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
         </>
       )}
 
-      {/* 잠금 해제 배너 — 무료일 때만 */}
-      {!unlocked && !isSearching && (
-        <div style={{
-          marginTop: 20,
-          padding: "20px 16px",
-          background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
-          borderRadius: 16,
-          textAlign: "center",
-          color: "white",
-          boxShadow: "0 8px 24px rgba(236,72,153,0.3)",
-        }}>
-          <p style={{ fontSize: 16, margin: "0 0 4px", fontWeight: 900 }}>🔓 전체 Q&amp;A 열어볼래?</p>
-          <p style={{ fontSize: 12, fontWeight: 700, margin: "0 0 14px", opacity: 0.9 }}>
-            9개 카테고리 × 40개 질문 = 360개 · {name}님 오행 맞춤 답변
-          </p>
-          <button
-            onClick={() => onBuyClick ? onBuyClick() : window.scrollTo({ top: 0, behavior: "smooth" })}
-            style={{
-              padding: "11px 28px",
-              background: "white",
-              color: "#ec4899",
-              border: "none",
-              borderRadius: 50,
-              fontWeight: 900,
-              fontSize: 14,
-              cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-            }}
-          >
-            💎 운세 구매하고 전체 보기
-          </button>
-        </div>
-      )}
     </div>
   );
 }
