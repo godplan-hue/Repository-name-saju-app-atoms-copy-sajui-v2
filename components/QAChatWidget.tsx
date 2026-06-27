@@ -132,7 +132,11 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   const sendMsg = (overrideQ?: string) => {
     const q = (overrideQ ?? input).trim();
     if (!q || typing) return;
-    if (remaining <= 0 && !unlocked) { setShowBuyModal(true); return; }
+    if (remaining <= 0 && !unlocked) {
+      (document.activeElement as HTMLElement)?.blur();
+      setTimeout(() => setShowBuyModal(true), 150);
+      return;
+    }
     setMessages(prev => [...prev, { from: "user", text: q }]);
     if (!overrideQ) setInput("");
     if (!unlocked) {
@@ -143,8 +147,11 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
       if (newR === 0) {
         setTimeout(() => {
           setMessages(prev => [...prev, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
-          setTimeout(() => setShowBuyModal(true), 800);
-        }, 1200);
+          setTimeout(() => {
+            (document.activeElement as HTMLElement)?.blur();
+            setTimeout(() => setShowBuyModal(true), 150);
+          }, 1200);
+        }, 2500);
       }
     }
     setTyping(true);
@@ -295,7 +302,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
 
       {/* 구매 유도 바텀시트 */}
       {showBuyModal && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 300 }} onClick={() => setShowBuyModal(false)}>
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 300, overscrollBehavior: "contain", touchAction: "none" }} onClick={() => setShowBuyModal(false)}>
           <div onClick={e => e.stopPropagation()} style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, padding: "20px 16px 32px" }}>
             <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
             <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
