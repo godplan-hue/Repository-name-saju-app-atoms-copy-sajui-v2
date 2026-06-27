@@ -352,60 +352,66 @@ export default function QAPage() {
         const isHighlightPkg = (p: typeof PKGS[0]) => pendingPkg === p.id;
         return (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 100 }}>
-            <div style={{ background: "white", borderRadius: "20px 20px 0 0", padding: "20px 16px 36px", width: "100%", maxWidth: 480, maxHeight: "88vh", overflowY: "auto" }}>
-              <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 16px" }} />
-              <h3 style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
-              <p style={{ fontSize: 11, color: "#374151", fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>구매하면 관련 Q&amp;A 전체 열람 가능해</p>
-              {pendingQ && (
-                <div style={{ background: "#f9f5ff", borderRadius: 10, padding: "9px 12px", marginBottom: 14, fontSize: 11, fontWeight: 800, color: "#374151", borderLeft: "3px solid #c4b5fd" }}>
-                  미처 못 한 질문: {pendingQ}
+            <div style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, maxHeight: "80vh", display: "flex", flexDirection: "column" }}>
+              {/* 스크롤 영역 */}
+              <div style={{ overflowY: "auto", padding: "18px 16px 8px", flex: 1 }}>
+                <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
+                <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
+                <p style={{ fontSize: 11, color: "#374151", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>구매하면 관련 Q&amp;A 전체 열람 가능해</p>
+                {pendingQ && (
+                  <div style={{ background: "#f9f5ff", borderRadius: 10, padding: "8px 12px", marginBottom: 12, fontSize: 11, fontWeight: 800, color: "#374151", borderLeft: "3px solid #c4b5fd" }}>
+                    미처 못 한 질문: {pendingQ}
+                  </div>
+                )}
+                {/* 단품 5개 ₩990 */}
+                <p style={{ fontSize: 11, fontWeight: 900, color: "#8b5cf6", margin: "0 0 7px 2px" }}>✨ 단품 구매 · 1개 ₩990</p>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 5, marginBottom: 12 }}>
+                  {SINGLES.map(s => {
+                    const hi = isHighlightSingle(s);
+                    return (
+                      <button key={s.label} onClick={() => { window.location.href = "/main-v2/payment#select-section"; }}
+                        style={{ display: "flex", alignItems: "center", gap: 7, padding: "9px 11px", background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff", border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff", borderRadius: 11, cursor: "pointer" }}
+                      >
+                        <span style={{ fontSize: 16 }}>{s.icon}</span>
+                        <div style={{ flex: 1 }}>
+                          <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>
+                            {s.label}
+                            {hi && <span style={{ marginLeft: 3, fontSize: 9, background: "#ec4899", color: "white", padding: "1px 5px", borderRadius: 8, fontWeight: 800 }}>추천</span>}
+                          </p>
+                          <p style={{ margin: 0, fontSize: 10, color: "#ec4899", fontWeight: 800 }}>₩990</p>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
-              )}
-              {/* 단품 5개 ₩990 */}
-              <p style={{ fontSize: 11, fontWeight: 900, color: "#8b5cf6", margin: "0 0 8px 2px" }}>✨ 단품 구매 · 1개 ₩990</p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 14 }}>
-                {SINGLES.map(s => {
-                  const hi = isHighlightSingle(s);
-                  return (
-                    <button key={s.label} onClick={() => { window.location.href = "/main-v2/payment#select-section"; }}
-                      style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px", background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff", border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff", borderRadius: 12, cursor: "pointer" }}
-                    >
-                      <span style={{ fontSize: 18 }}>{s.icon}</span>
-                      <div style={{ flex: 1 }}>
-                        <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>
-                          {s.label}
-                          {hi && <span style={{ marginLeft: 4, fontSize: 9, background: "#ec4899", color: "white", padding: "1px 5px", borderRadius: 8, fontWeight: 800 }}>추천</span>}
-                        </p>
-                        <p style={{ margin: 0, fontSize: 10, color: "#ec4899", fontWeight: 800 }}>₩990</p>
-                      </div>
-                    </button>
-                  );
-                })}
+                {/* 패키지 4개 */}
+                <p style={{ fontSize: 11, fontWeight: 900, color: "#8b5cf6", margin: "0 0 7px 2px" }}>📦 패키지 (더 저렴해!)</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {PKGS.map(p => {
+                    const hi = isHighlightPkg(p);
+                    return (
+                      <button key={p.id} onClick={() => router.push("/main-v2/payment")}
+                        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 13px", background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff", border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff", borderRadius: 11, cursor: "pointer" }}
+                      >
+                        <div>
+                          <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>
+                            📦 {p.label}
+                            {hi && <span style={{ marginLeft: 5, fontSize: 9, background: "#ec4899", color: "white", padding: "1px 5px", borderRadius: 8, fontWeight: 800 }}>추천</span>}
+                          </p>
+                          <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>{p.desc}</p>
+                        </div>
+                        <span style={{ fontSize: 13, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>{p.price}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              {/* 패키지 4개 */}
-              <p style={{ fontSize: 11, fontWeight: 900, color: "#8b5cf6", margin: "0 0 8px 2px" }}>📦 패키지 (더 저렴해!)</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 16 }}>
-                {PKGS.map(p => {
-                  const hi = isHighlightPkg(p);
-                  return (
-                    <button key={p.id} onClick={() => router.push("/main-v2/payment")}
-                      style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "11px 14px", background: hi ? "linear-gradient(135deg, #fdf4ff, #fce7f3)" : "#fdf4ff", border: hi ? "2px solid #ec4899" : "1.5px solid #e9d5ff", borderRadius: 12, cursor: "pointer" }}
-                    >
-                      <div>
-                        <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>
-                          📦 {p.label}
-                          {hi && <span style={{ marginLeft: 6, fontSize: 9, background: "#ec4899", color: "white", padding: "1px 5px", borderRadius: 8, fontWeight: 800 }}>추천</span>}
-                        </p>
-                        <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>{p.desc}</p>
-                      </div>
-                      <span style={{ fontSize: 13, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>{p.price}</span>
-                    </button>
-                  );
-                })}
+              {/* 나중에 할게 — 항상 보이는 고정 영역 */}
+              <div style={{ padding: "10px 16px 28px", borderTop: "1px solid #f3e8ff", background: "white", flexShrink: 0 }}>
+                <button onClick={() => { setShowModal(false); setPendingPkg(null); }} style={{ width: "100%", padding: 12, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>
+                  나중에 할게
+                </button>
               </div>
-              <button onClick={() => { setShowModal(false); setPendingPkg(null); }} style={{ width: "100%", padding: 12, background: "none", border: "none", fontWeight: 800, fontSize: 13, color: "#374151", cursor: "pointer" }}>
-                나중에 할게
-              </button>
             </div>
           </div>
         );
