@@ -1438,7 +1438,7 @@ function V2ResultInner() {
                   fontWeight: 900, fontSize: 13,
                   boxShadow: "0 4px 14px rgba(236,72,153,0.5)",
                 }}>사주 상담 →</span>
-                <span style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>무료 3회</span>
+                <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>무료 3회</span>
               </div>
             </div>
 

@@ -89,7 +89,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [showQList, setShowQList] = useState(false);
   const [qListCat, setQListCat] = useState("wealth");
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const msgAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const used = Number(localStorage.getItem(`v2_qa_${name}_${birthYear}_${todayKey()}`) ?? 0);
@@ -101,7 +101,9 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
   }, [name, birthYear, unlocked]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (msgAreaRef.current) {
+      msgAreaRef.current.scrollTop = msgAreaRef.current.scrollHeight;
+    }
   }, [messages, typing]);
 
   const sendMsg = (overrideQ?: string) => {
@@ -150,7 +152,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
         </div>
 
         {/* 메시지 영역 */}
-        <div style={{ height: 190, overflowY: "auto", padding: "12px 14px 8px", display: "flex", flexDirection: "column", gap: 10, background: "#f9f5ff" }}>
+        <div ref={msgAreaRef} style={{ height: 190, overflowY: "auto", padding: "12px 14px 8px", display: "flex", flexDirection: "column", gap: 10, background: "#f9f5ff" }}>
           {messages.map((msg, i) => (
             <div key={i} style={{ display: "flex", justifyContent: msg.from === "user" ? "flex-end" : "flex-start", gap: 6, alignItems: "flex-end" }}>
               {msg.from === "cat" && (
@@ -174,7 +176,6 @@ export default function QAChatWidget({ name, birthYear, unlocked=false }: Props)
               </div>
             </div>
           )}
-          <div ref={bottomRef} />
         </div>
 
         {/* 추천 질문 칩 */}
