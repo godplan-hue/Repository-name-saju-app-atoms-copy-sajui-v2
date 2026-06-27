@@ -324,7 +324,7 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
             <div style={{ position: "absolute", bottom: 20, left: 18, zIndex: 2 }}>
               <p style={{ margin: "0 0 14px", fontSize: 17, fontWeight: 900, lineHeight: 1.35, letterSpacing: "-0.3px" }}>
                 <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>복냥이에게 당신의 운명을{"\n"}</span><br/>
-                <span style={{ color: "#ec4899", textShadow: "0 2px 10px rgba(236,72,153,0.8)" }}>무엇이든 직접 물어봐요!</span>
+                <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>무엇이든 직접 물어봐요!</span>
               </p>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ display: "inline-flex", alignItems: "center", padding: "8px 16px", background: "#ec4899", borderRadius: 50, boxShadow: "0 3px 12px rgba(236,72,153,0.5)" }}>
