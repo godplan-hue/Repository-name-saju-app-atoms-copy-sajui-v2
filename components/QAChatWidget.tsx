@@ -129,12 +129,28 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
     }
   }, [messages, typing]);
 
+  // 모달 열릴 때 body 스크롤 잠금 — iOS 뷰포트 튐 방지
+  useEffect(() => {
+    if (showBuyModal) {
+      const y = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${y}px`;
+      document.body.style.width = "100%";
+      return () => {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, y);
+      };
+    }
+  }, [showBuyModal]);
+
   const sendMsg = (overrideQ?: string) => {
     const q = (overrideQ ?? input).trim();
     if (!q || typing) return;
     if (remaining <= 0 && !unlocked) {
       (document.activeElement as HTMLElement)?.blur();
-      setTimeout(() => setShowBuyModal(true), 150);
+      setTimeout(() => setShowBuyModal(true), 500);
       return;
     }
     setMessages(prev => [...prev, { from: "user", text: q }]);
@@ -149,7 +165,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
           setMessages(prev => [...prev, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
           setTimeout(() => {
             (document.activeElement as HTMLElement)?.blur();
-            setTimeout(() => setShowBuyModal(true), 150);
+            setTimeout(() => setShowBuyModal(true), 500);
           }, 1200);
         }, 2500);
       }
@@ -302,7 +318,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
 
       {/* 구매 유도 바텀시트 */}
       {showBuyModal && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 300, overscrollBehavior: "contain", touchAction: "none" }} onClick={() => setShowBuyModal(false)}>
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 300 }} onClick={() => setShowBuyModal(false)}>
           <div onClick={e => e.stopPropagation()} style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, maxHeight: "60vh", overflowY: "auto", padding: "16px 14px 24px" }}>
             <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
             <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
