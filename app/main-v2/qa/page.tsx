@@ -44,8 +44,8 @@ function detectCategory(question: string): string {
   return (best && best[1] > 0) ? best[0] : "general";
 }
 
-function findAnswer(question: string, ohaeng: Ohaeng, name: string): { answer: string; catId: string } {
-  const catId = detectCategory(question);
+function findAnswer(question: string, ohaeng: Ohaeng, name: string, forceCatId?: string): { answer: string; catId: string } {
+  const catId = forceCatId ?? detectCategory(question);
   const cat = QA_CATEGORIES.find(c => c.id === catId) ?? QA_CATEGORIES[QA_CATEGORIES.length - 1];
   const userHasTime = TIME_TRIGGERS.some(t => question.includes(t));
 
@@ -154,7 +154,7 @@ export default function QAPage() {
     return () => document.removeEventListener("touchmove", prevent);
   }, [showModal]);
 
-  const sendMsg = (overrideQ?: string) => {
+  const sendMsg = (overrideQ?: string, overrideCatId?: string) => {
     const q = (overrideQ ?? input).trim();
     if (!q || typing) return;
 
@@ -171,12 +171,12 @@ export default function QAPage() {
       }
     }
 
-    const detectedCat = detectCategory(q);
+    const detectedCat = overrideCatId ?? detectCategory(q);
     if (remaining <= 0) {
       setMessages(prev => [...prev, { from: "user", text: q }, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
       setInput("");
       setPendingQ(q); setPendingCatId(detectedCat); setPendingPkg(null);
-      setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setTimeout(() => setShowModal(true), 500); }, 6500);
+      setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setTimeout(() => setShowModal(true), 500); }, 9000);
       return;
     }
     setMessages(prev => [...prev, { from: "user", text: q }]);
@@ -189,7 +189,7 @@ export default function QAPage() {
     }
     setTyping(true);
     setTimeout(() => {
-      const { answer, catId } = findAnswer(q, ohaeng, name);
+      const { answer, catId } = findAnswer(q, ohaeng, name, overrideCatId);
       const showBuy = !unlocked && catId !== "general";
       setMessages(prev => [...prev, { from: "cat", text: answer, buyCatId: showBuy ? catId : undefined }]);
       setTyping(false);
@@ -201,7 +201,7 @@ export default function QAPage() {
       if (newRemaining === 0) {
         setTimeout(() => {
           setMessages(prev => [...prev, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
-          setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setPendingQ(""); setPendingCatId(catId); setPendingPkg(null); setTimeout(() => setShowModal(true), 500); }, 5500);
+          setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setPendingQ(""); setPendingCatId(catId); setPendingPkg(null); setTimeout(() => setShowModal(true), 500); }, 9000);
         }, 800);
       }
     }, 900);
@@ -296,7 +296,7 @@ export default function QAPage() {
         return (
           <div key={chipKey} className="qa-chips-row-p" style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "8px 12px", display: "flex", gap: 7, overflowX: "auto", flexShrink: 0, animation: "qaChipSlide 0.4s ease" }}>
             {suggestions.map((s, i) => (
-              <button key={i} onClick={() => sendMsg(s.q)} style={{
+              <button key={i} onClick={() => sendMsg(s.q, s.catId)} style={{
                 flexShrink: 0, padding: "7px 14px",
                 background: CHIP_COLORS[i % CHIP_COLORS.length],
                 border: "none", borderRadius: 50,
@@ -369,7 +369,7 @@ export default function QAPage() {
             <div style={{ overflowY: "auto", padding: "4px 16px 32px", flex: 1 }}>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
                 {(QA_CATEGORIES.find(c => c.id === qListCat)?.items ?? []).map((item, idx) => (
-                  <button key={idx} onClick={() => { setShowQList(false); sendMsg(item.question); }} style={{
+                  <button key={idx} onClick={() => { setShowQList(false); sendMsg(item.question, qListCat); }} style={{
                     padding: "10px 10px", background: "#fdf4ff",
                     border: "1.5px solid #e9d5ff", borderRadius: 12,
                     textAlign: "left", cursor: "pointer",
@@ -390,13 +390,16 @@ export default function QAPage() {
         const isHighlightSingle = (s: typeof SINGLES[0]) => !pendingPkg && s.catIds.includes(pendingCatId);
         const isHighlightPkg = (p: typeof PKGS[0]) => pendingPkg === p.id;
         return (
-          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 100 }}>
-            <div ref={qaModalRef} style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, height: 360, display: "flex", flexDirection: "column" }}>
+          <>
+            {/* backdrop — 독립 fixed, 사이즈 변동 있어도 패널에 영향 없음 */}
+            <div onClick={() => { setShowModal(false); setPendingPkg(null); }} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 100 }} />
+            {/* 패널 — bottom:0 고정, viewport 크기 변해도 위치 안 바뀜 */}
+            <div ref={qaModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", height: 280, display: "flex", flexDirection: "column", zIndex: 101 }}>
               {/* 스크롤 영역 */}
-              <div style={{ overflowY: "auto", overscrollBehavior: "contain", padding: "18px 16px 8px", flex: 1 }}>
-                <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
-                <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
-                <p style={{ fontSize: 11, color: "#374151", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>구매하면 관련 Q&amp;A 전체 열람 가능해</p>
+              <div style={{ overflowY: "auto", overscrollBehavior: "contain", padding: "12px 14px 6px", flex: 1 }}>
+                <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 10px" }} />
+                <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e", margin: "0 0 2px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
+                <p style={{ fontSize: 11, color: "#374151", fontWeight: 700, margin: "0 0 8px", textAlign: "center" }}>구매하면 관련 Q&amp;A 전체 열람 가능해</p>
                 {pendingQ && (
                   <div style={{ background: "#f9f5ff", borderRadius: 10, padding: "8px 12px", marginBottom: 12, fontSize: 11, fontWeight: 800, color: "#374151", borderLeft: "3px solid #c4b5fd" }}>
                     미처 못 한 질문: {pendingQ}
@@ -446,13 +449,13 @@ export default function QAPage() {
                 </div>
               </div>
               {/* 나중에 할게 — 항상 보이는 고정 영역 */}
-              <div style={{ padding: "10px 16px 28px", borderTop: "1px solid #f3e8ff", background: "white", flexShrink: 0 }}>
-                <button onClick={() => { setShowModal(false); setPendingPkg(null); }} style={{ width: "100%", padding: 12, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>
+              <div style={{ padding: "8px 16px 24px", borderTop: "1px solid #f3e8ff", background: "white", flexShrink: 0 }}>
+                <button onClick={() => { setShowModal(false); setPendingPkg(null); }} style={{ width: "100%", padding: 10, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>
                   나중에 할게
                 </button>
               </div>
             </div>
-          </div>
+          </>
         );
       })()}
 

@@ -37,8 +37,8 @@ function detectCategory(q: string): string {
   return (best && best[1]>0) ? best[0] : "general";
 }
 
-function findAnswer(question: string, ohaeng: Ohaeng, name: string): string {
-  const catId = detectCategory(question);
+function findAnswer(question: string, ohaeng: Ohaeng, name: string, forceCatId?: string): string {
+  const catId = forceCatId ?? detectCategory(question);
   const cat = QA_CATEGORIES.find(c => c.id === catId) ?? QA_CATEGORIES[QA_CATEGORIES.length-1];
   const userHasTime = TIME_TRIGGERS.some(t => question.includes(t));
   let bestItem = cat.items[0];
@@ -94,7 +94,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   const [input, setInput] = useState("");
   const [remaining, setRemaining] = useState(FREE_QUESTIONS);
   const [typing, setTyping] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<Array<{q: string; catId: string}>>([]);
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [showQList, setShowQList] = useState(false);
   const [qListCat, setQListCat] = useState("wealth");
@@ -105,7 +105,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   const refreshChips = () => {
     setSuggestions(QA_CATEGORIES.map(cat => {
       const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
-      return pick.question;
+      return { q: pick.question, catId: cat.id };
     }));
     setChipKey(k => k + 1);
   };
@@ -120,7 +120,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
     setRemaining(unlocked ? 999 : Math.max(0, FREE_QUESTIONS - used));
     setSuggestions(QA_CATEGORIES.map(cat => {
       const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
-      return pick.question;
+      return { q: pick.question, catId: cat.id };
     }));
   }, [name, birthYear, unlocked]);
 
@@ -139,16 +139,12 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
     return () => document.removeEventListener("touchmove", prevent);
   }, [showBuyModal]);
 
-  const sendMsg = (overrideQ?: string) => {
+  const sendMsg = (overrideQ?: string, overrideCatId?: string) => {
     const q = (overrideQ ?? input).trim();
     if (!q || typing) return;
     if (remaining <= 0 && !unlocked) {
-      setMessages(prev => [...prev, { from: "user", text: q }, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
-      setInput("");
-      setTimeout(() => {
-        (document.activeElement as HTMLElement)?.blur();
-        setTimeout(() => setShowBuyModal(true), 500);
-      }, 6500);
+      (document.activeElement as HTMLElement)?.blur();
+      setTimeout(() => setShowBuyModal(true), 300);
       return;
     }
     setMessages(prev => [...prev, { from: "user", text: q }]);
@@ -170,12 +166,12 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
     }
     setTyping(true);
     setTimeout(() => {
-      const answer = findAnswer(q, ohaeng, name);
+      const answer = findAnswer(q, ohaeng, name, overrideCatId);
       setMessages(prev => [...prev, { from: "cat", text: answer }]);
       setTyping(false);
       setSuggestions(QA_CATEGORIES.map(cat => {
         const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
-        return pick.question;
+        return { q: pick.question, catId: cat.id };
       }));
     }, 900);
   };
@@ -226,14 +222,14 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
         {suggestions.length > 0 && !typing && (
           <div key={chipKey} className="qa-chips-row" style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "6px 10px", display: "flex", gap: 6, overflowX: "auto", animation: "chipSlideIn 0.4s ease" }}>
             {suggestions.map((s, i) => (
-              <button key={i} onClick={() => sendMsg(s)} style={{
+              <button key={i} onClick={() => sendMsg(s.q, s.catId)} style={{
                 flexShrink: 0, padding: "6px 12px",
                 background: CHIP_COLORS[i % CHIP_COLORS.length],
                 border: "none", borderRadius: 50,
                 fontSize: 10, fontWeight: 800, color: "white",
                 cursor: "pointer", whiteSpace: "nowrap",
               }}>
-                {s.length > 16 ? s.slice(0,15)+"…" : s}
+                {s.q.length > 16 ? s.q.slice(0,15)+"…" : s.q}
               </button>
             ))}
           </div>
@@ -298,7 +294,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
             <div style={{ overflowY: "auto", padding: "4px 16px 32px", flex: 1 }}>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
                 {(QA_CATEGORIES.find(c => c.id === qListCat)?.items ?? []).map((item, idx) => (
-                  <button key={idx} onClick={() => { setShowQList(false); sendMsg(item.question); }} style={{
+                  <button key={idx} onClick={() => { setShowQList(false); sendMsg(item.question, qListCat); }} style={{
                     padding: "10px 10px", background: "#fdf4ff",
                     border: "1.5px solid #e9d5ff", borderRadius: 12,
                     textAlign: "left", cursor: "pointer",
@@ -316,8 +312,9 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
 
       {/* 구매 유도 바텀시트 */}
       {showBuyModal && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 300 }} onClick={() => setShowBuyModal(false)}>
-          <div ref={buyModalRef} onClick={e => e.stopPropagation()} style={{ background: "white", borderRadius: "20px 20px 0 0", width: "100%", maxWidth: 480, height: 340, overflowY: "auto", overscrollBehavior: "contain", padding: "14px 14px 20px" }}>
+        <>
+          <div onClick={() => setShowBuyModal(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 300 }} />
+          <div ref={buyModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", height: 280, overflowY: "auto", overscrollBehavior: "contain", padding: "12px 12px 16px", zIndex: 301 }}>
             <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
             <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
             <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>구매하면 Q&A 전체 열람 + 무제한 질문 가능</p>
@@ -355,7 +352,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
             </div>
             <button onClick={() => setShowBuyModal(false)} style={{ width: "100%", padding: 12, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>나중에 할게</button>
           </div>
-        </div>
+        </>
       )}
 
       <style>{`
