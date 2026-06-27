@@ -23,12 +23,15 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
 
   const isSearching = searchQuery.trim().length > 0;
 
-  // 검색 시 전체 카테고리에서 매칭되는 질문 추출
+  // 검색 시 열람 가능한 항목(FREE_COUNT 이내 or unlocked)만 추출
   const searchResults = isSearching
     ? QA_CATEGORIES.flatMap(c =>
         c.items
           .map((item, idx) => ({ item, idx, cat: c }))
-          .filter(({ item }) => item.question.includes(searchQuery.trim()))
+          .filter(({ item, idx }) =>
+            item.question.includes(searchQuery.trim()) &&
+            (unlocked || idx < FREE_COUNT)
+          )
       )
     : [];
 
@@ -42,21 +45,63 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
     const isOpen = openIdx === key;
     const answer = fillTemplate(item.answers[ohaeng], name);
 
+    if (!isFreeItem) {
+      // 잠긴 항목 — 질문 내용 완전히 숨김, 신비로운 잠금 UI
+      return (
+        <div key={key}
+          style={{
+            background: "linear-gradient(135deg, #1a0a2e, #2d1650)",
+            borderRadius: 14,
+            border: "1.5px solid rgba(139,92,246,0.3)",
+            padding: "14px 16px",
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+          }}
+        >
+          <span style={{
+            fontSize: 16,
+            flexShrink: 0,
+          }}>🔒</span>
+          <div style={{ flex: 1 }}>
+            <div style={{
+              height: 10,
+              borderRadius: 6,
+              background: "linear-gradient(90deg, rgba(139,92,246,0.25), rgba(236,72,153,0.15))",
+              marginBottom: 6,
+              width: "70%",
+            }} />
+            <div style={{
+              height: 8,
+              borderRadius: 6,
+              background: "linear-gradient(90deg, rgba(139,92,246,0.15), rgba(236,72,153,0.08))",
+              width: "45%",
+            }} />
+          </div>
+          <span style={{
+            fontSize: 10,
+            color: "rgba(139,92,246,0.6)",
+            fontWeight: 700,
+            flexShrink: 0,
+            whiteSpace: "nowrap",
+          }}>구매 후 열람</span>
+        </div>
+      );
+    }
+
     return (
       <div key={key}
         style={{
           background: "white",
           borderRadius: 14,
-          border: `1.5px solid ${isOpen ? "#ec4899" : "#f3e8ff"}`,
+          border: `2px solid ${isOpen ? "#ec4899" : "#f0e6ff"}`,
           overflow: "hidden",
-          boxShadow: isOpen ? "0 4px 16px rgba(236,72,153,0.1)" : "none",
+          boxShadow: isOpen ? "0 4px 20px rgba(236,72,153,0.15)" : "0 2px 8px rgba(139,92,246,0.06)",
+          transition: "all 0.2s",
         }}
       >
         <button
-          onClick={() => {
-            if (!isFreeItem) return;
-            setOpenIdx(isOpen ? null : key);
-          }}
+          onClick={() => setOpenIdx(isOpen ? null : key)}
           style={{
             width: "100%",
             padding: "14px 16px",
@@ -64,65 +109,61 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
             alignItems: "center",
             justifyContent: "space-between",
             gap: 10,
-            background: "transparent",
+            background: isOpen ? "linear-gradient(135deg, #fff0f9, #f5f0ff)" : "transparent",
             border: "none",
-            cursor: isFreeItem ? "pointer" : "default",
+            cursor: "pointer",
             textAlign: "left",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1 }}>
             <span style={{
               fontSize: 11,
-              fontWeight: 800,
-              color: isFreeItem ? "#8b5cf6" : "#d1d5db",
-              background: isFreeItem ? "#f3e8ff" : "#f9fafb",
-              padding: "2px 7px",
+              fontWeight: 900,
+              color: "white",
+              background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
+              padding: "3px 9px",
               borderRadius: 20,
               flexShrink: 0,
+              letterSpacing: -0.3,
             }}>
-              {isFreeItem ? `Q${idx + 1}` : "🔒"}
+              Q{idx + 1}
             </span>
             <span style={{
               fontSize: 14,
               fontWeight: 700,
-              color: isFreeItem ? "#1a1a2e" : "#9ca3af",
+              color: "#1a1a2e",
               lineHeight: 1.4,
             }}>
               {item.question}
             </span>
           </div>
-          {isFreeItem && (
-            <span style={{ fontSize: 16, flexShrink: 0, color: "#ec4899" }}>
-              {isOpen ? "▲" : "▼"}
-            </span>
-          )}
+          <span style={{ fontSize: 14, flexShrink: 0, color: "#ec4899", fontWeight: 900 }}>
+            {isOpen ? "▲" : "▼"}
+          </span>
         </button>
 
-        {isFreeItem && isOpen && (
-          <div style={{ padding: "0 16px 16px", borderTop: "1px solid #fde8f6" }}>
+        {isOpen && (
+          <div style={{ padding: "0 16px 16px", borderTop: "1.5px solid #fce7f3" }}>
             <div style={{
-              background: "linear-gradient(135deg, #fdf2f8, #ede9fe)",
-              borderRadius: 10,
-              padding: "12px 14px",
-              marginTop: 10,
+              background: "linear-gradient(135deg, #fff0f9, #ede9fe)",
+              borderRadius: 12,
+              padding: "14px 16px",
+              marginTop: 12,
+              borderLeft: "3px solid #ec4899",
             }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: "#374151", lineHeight: 1.7, margin: 0 }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: "#374151", lineHeight: 1.8, margin: 0 }}>
                 {answer}
               </p>
-              <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 5 }}>
-                <span style={{ fontSize: 10, color: "#8b5cf6", fontWeight: 700, background: "#f3e8ff", padding: "2px 8px", borderRadius: 20 }}>
-                  {ohaeng}오행 답변
+              <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 5 }}>
+                <span style={{
+                  fontSize: 10, color: "white", fontWeight: 800,
+                  background: "linear-gradient(135deg, #8b5cf6, #ec4899)",
+                  padding: "2px 10px", borderRadius: 20,
+                }}>
+                  {ohaeng}오행 · {name}님 맞춤 답변
                 </span>
               </div>
             </div>
-          </div>
-        )}
-
-        {!isFreeItem && (
-          <div style={{ padding: "0 16px 14px", display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 11, color: "#d1d5db", fontWeight: 600 }}>
-              사주 구매 후 전체 Q&amp;A가 열려요
-            </span>
           </div>
         )}
       </div>
@@ -137,8 +178,8 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
         </h2>
         <p style={{ fontSize: 12, color: "#9ca3af", fontWeight: 600, margin: 0 }}>
           {unlocked
-            ? `${name}님 오행(${ohaeng}) 기준 — 전체 질문 열람 가능해`
-            : `궁금한 걸 눌러봐 — ${name}님 오행(${ohaeng}) 기준으로 답해줘`}
+            ? `${name}님 오행(${ohaeng}) 기준 — 전체 질문 열람 가능`
+            : `궁금한 걸 눌러봐 — ${name}님 오행(${ohaeng}) 기준으로 답해줄게`}
         </p>
       </div>
 
@@ -151,9 +192,9 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           placeholder="🔍 궁금한 거 검색해봐 (예: 돈, 연애, 취업)"
           style={{
             width: "100%",
-            padding: "11px 40px 11px 14px",
+            padding: "12px 42px 12px 16px",
             borderRadius: 50,
-            border: "1.5px solid #e9d5ff",
+            border: "2px solid #e9d5ff",
             fontSize: 13,
             fontWeight: 600,
             color: "#374151",
@@ -167,15 +208,22 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
             onClick={() => setSearchQuery("")}
             style={{
               position: "absolute",
-              right: 12,
+              right: 14,
               top: "50%",
               transform: "translateY(-50%)",
-              background: "none",
+              background: "#e9d5ff",
               border: "none",
               cursor: "pointer",
-              color: "#9ca3af",
-              fontSize: 16,
+              color: "#8b5cf6",
+              fontSize: 14,
               lineHeight: 1,
+              borderRadius: "50%",
+              width: 22,
+              height: 22,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 900,
             }}
           >×</button>
         )}
@@ -186,24 +234,30 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
         <div>
           {searchResults.length === 0 ? (
             <div style={{ textAlign: "center", padding: "30px 0", color: "#9ca3af", fontSize: 13, fontWeight: 600 }}>
-              "{searchQuery}" 관련 질문이 없어요
+              "{searchQuery}" 관련 질문이 없어
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <p style={{ fontSize: 11, color: "#8b5cf6", fontWeight: 700, margin: "0 0 8px 4px" }}>
-                검색 결과 {searchResults.length}개
+              <p style={{ fontSize: 11, fontWeight: 800, margin: "0 0 8px 4px" }}>
+                <span style={{ background: "linear-gradient(135deg, #ec4899, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  검색 결과 {searchResults.length}개
+                </span>
               </p>
-              {searchResults.map(({ item, idx, cat: c }) => {
-                const isFreeItem = unlocked || idx < FREE_COUNT;
-                return (
-                  <div key={`${c.id}-${idx}`}>
-                    <p style={{ fontSize: 10, color: "#6b7280", fontWeight: 700, margin: "0 0 4px 4px" }}>
-                      {c.emoji} {c.label}
-                    </p>
-                    {renderQAItem(item, idx, c.id, isFreeItem)}
-                  </div>
-                );
-              })}
+              {searchResults.map(({ item, idx, cat: c }) => (
+                <div key={`${c.id}-${idx}`}>
+                  <p style={{
+                    fontSize: 10, fontWeight: 800, margin: "0 0 4px 4px",
+                    color: "white",
+                    background: "linear-gradient(135deg, #8b5cf6, #ec4899)",
+                    display: "inline-block",
+                    padding: "2px 10px",
+                    borderRadius: 20,
+                  }}>
+                    {c.emoji} {c.label}
+                  </p>
+                  {renderQAItem(item, idx, c.id, true)}
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -217,17 +271,18 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
                 onClick={() => { setActiveCatId(c.id); setOpenIdx(null); }}
                 style={{
                   flexShrink: 0,
-                  padding: "7px 14px",
+                  padding: "8px 16px",
                   background: activeCatId === c.id
                     ? "linear-gradient(135deg, #ec4899, #8b5cf6)"
-                    : "#f3f4f6",
-                  color: activeCatId === c.id ? "white" : "#374151",
-                  border: "none",
+                    : "white",
+                  color: activeCatId === c.id ? "white" : "#6b7280",
+                  border: activeCatId === c.id ? "none" : "1.5px solid #e5e7eb",
                   borderRadius: 50,
                   fontWeight: 800,
                   fontSize: 12,
                   cursor: "pointer",
                   whiteSpace: "nowrap",
+                  boxShadow: activeCatId === c.id ? "0 4px 12px rgba(236,72,153,0.3)" : "none",
                 }}
               >
                 {c.emoji} {c.label}
@@ -249,29 +304,29 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
       {!unlocked && !isSearching && (
         <div style={{
           marginTop: 20,
-          padding: "16px",
+          padding: "20px 16px",
           background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
           borderRadius: 16,
           textAlign: "center",
           color: "white",
+          boxShadow: "0 8px 24px rgba(236,72,153,0.3)",
         }}>
-          <p style={{ fontSize: 13, fontWeight: 900, margin: "0 0 4px" }}>
-            🔓 {name}님 사주에 맞는 Q&amp;A 전체 열기
-          </p>
-          <p style={{ fontSize: 11, fontWeight: 600, margin: "0 0 12px", opacity: 0.85 }}>
-            9개 카테고리 × 40개 질문 = 360개 전체 공개
+          <p style={{ fontSize: 16, margin: "0 0 4px", fontWeight: 900 }}>🔓 전체 Q&amp;A 열어볼래?</p>
+          <p style={{ fontSize: 12, fontWeight: 700, margin: "0 0 14px", opacity: 0.9 }}>
+            9개 카테고리 × 40개 질문 = 360개 · {name}님 오행 맞춤 답변
           </p>
           <button
             onClick={() => onBuyClick ? onBuyClick() : window.scrollTo({ top: 0, behavior: "smooth" })}
             style={{
-              padding: "10px 24px",
+              padding: "11px 28px",
               background: "white",
               color: "#ec4899",
               border: "none",
               borderRadius: 50,
               fontWeight: 900,
-              fontSize: 13,
+              fontSize: 14,
               cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
             }}
           >
             💎 운세 구매하고 전체 보기
