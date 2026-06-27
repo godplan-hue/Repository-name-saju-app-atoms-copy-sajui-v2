@@ -130,6 +130,7 @@ export default function HistoryDetail() {
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
+  const restartingRef = useRef(false);
   const resumeAfterHideRef = useRef<() => void>(() => {});
   const wakeLockRef = useRef<any>(null);
   const requestWakeLock = async () => {
@@ -190,8 +191,11 @@ export default function HistoryDetail() {
       utter.rate = 1;
       utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
       utter.onerror = (e) => {
+        if (e.error === "canceled" || e.error === "interrupted") {
+          if (!restartingRef.current) setSpeaking(false);
+          return;
+        }
         setSpeaking(false);
-        if (e.error === "canceled" || e.error === "interrupted") return;
         readChunksRef.current = [];
         readIdxRef.current = 0;
         window.speechSynthesis.cancel();
@@ -261,6 +265,7 @@ export default function HistoryDetail() {
   // 이어듣기 대신 처음부터 다시 듣고 싶을 때 — 저장된 위치를 무시하고 강제로 0부터 시작
   const restartReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    restartingRef.current = true;
     window.speechSynthesis.cancel();
     clearTtsProgress();
     const fullText = (item?.analysis ?? "")
@@ -276,6 +281,7 @@ export default function HistoryDetail() {
     requestWakeLock();
     speakFrom(readChunksRef.current, 0);
     setSpeaking(true);
+    setTimeout(() => { restartingRef.current = false; }, 300);
   };
 
   const saveImage = async () => {

@@ -74,6 +74,7 @@ export default function ShareClient({ id }: { id: string }) {
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
+  const restartingRef = useRef(false);
 
   useEffect(() => {
     fetch(`/api/v2/share?id=${encodeURIComponent(id)}`)
@@ -115,11 +116,11 @@ export default function ShareClient({ id }: { id: string }) {
       utter.rate = 1;
       utter.onstart = () => { readIdxRef.current = idx; };
       utter.onerror = (e) => {
+        if (e.error === "canceled" || e.error === "interrupted") {
+          if (!restartingRef.current) setSpeaking(false);
+          return;
+        }
         setSpeaking(false);
-        // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
-        // 실패가 아니라 정상적인 중단이라 — 안내문도 띄우면 안 되고, 어디까지
-        // 읽었는지(readIdxRef)도 지우면 안 됨(지우면 다시 누를 때 처음부터 읽힘)
-        if (e.error === "canceled" || e.error === "interrupted") return;
         readChunksRef.current = [];
         readIdxRef.current = 0;
         // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
@@ -172,6 +173,7 @@ export default function ShareClient({ id }: { id: string }) {
 
   const restartReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    restartingRef.current = true;
     window.speechSynthesis.cancel();
     const fullText = (entry?.categories ?? []).map(c => c.text).filter(Boolean).join("\n")
       .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
@@ -185,6 +187,7 @@ export default function ShareClient({ id }: { id: string }) {
     readIdxRef.current = 0;
     speakFrom(readChunksRef.current, 0);
     setSpeaking(true);
+    setTimeout(() => { restartingRef.current = false; }, 300);
   };
 
   if (notFound) {

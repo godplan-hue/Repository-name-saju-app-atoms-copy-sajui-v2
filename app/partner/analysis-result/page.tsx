@@ -102,6 +102,7 @@ function PartnerAnalysisResultInner() {
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
+  const restartingRef = useRef(false);
   // 화면이 꺼졌다 켜질 때 음성 재생만 조용히 끊기는 경우를 위한 자동 이어읽기용
   const resumeAfterHideRef = useRef<() => void>(() => {});
   // 가만히 듣기만 하면 화면이 자동으로 꺼지면서 읽기가 끊기는 경우가 많았음 —
@@ -313,11 +314,11 @@ function PartnerAnalysisResultInner() {
       utter.rate = 1;
       utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
       utter.onerror = (e) => {
+        if (e.error === "canceled" || e.error === "interrupted") {
+          if (!restartingRef.current) setSpeaking(false);
+          return;
+        }
         setSpeaking(false);
-        // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
-        // 실패가 아니라 정상적인 중단이라 — 안내문도 띄우면 안 되고, 어디까지
-        // 읽었는지(readIdxRef)도 지우면 안 됨(지우면 다시 누를 때 처음부터 읽힘)
-        if (e.error === "canceled" || e.error === "interrupted") return;
         readChunksRef.current = [];
         readIdxRef.current = 0;
         // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
@@ -398,6 +399,7 @@ function PartnerAnalysisResultInner() {
 
   const restartReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    restartingRef.current = true;
     window.speechSynthesis.cancel();
     clearTtsProgress();
     const fullText = cats.map(c => analysisResults[c.key]).filter(Boolean).join("\n")
@@ -413,6 +415,7 @@ function PartnerAnalysisResultInner() {
     requestWakeLock();
     speakFrom(readChunksRef.current, 0);
     setSpeaking(true);
+    setTimeout(() => { restartingRef.current = false; }, 300);
   };
 
   return (

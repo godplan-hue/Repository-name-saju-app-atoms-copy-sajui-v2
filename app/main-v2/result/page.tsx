@@ -284,6 +284,7 @@ function V2ResultInner() {
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
+  const restartingRef = useRef(false);
   // 화면이 꺼졌다 켜질 때 모바일 OS가 음성 재생을 조용히 멈춰버리는 경우가 있음(JS
   // 에러 없이 그냥 소리만 끊김) — 이때 speaking 상태는 true로 남아있는데 실제
   // 재생은 멈춘 상태가 되어, 버튼을 눌러도 "멈추기"만 동작하고 다시 눌러야 이어
@@ -767,11 +768,14 @@ function V2ResultInner() {
       utter.rate = 1;
       utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
       utter.onerror = (e) => {
+        if (e.error === "canceled" || e.error === "interrupted") {
+          // restartReadAloud가 cancel()을 호출한 경우 speaking을 false로 바꾸면 안 됨 —
+          // 그 직후 setSpeaking(true)를 해도 이 콜백이 비동기로 늦게 덮어써버려서
+          // 버튼이 "멈추기"가 아닌 "읽기"로 고정되는 버그가 있었음
+          if (!restartingRef.current) setSpeaking(false);
+          return;
+        }
         setSpeaking(false);
-        // 사용자가 멈추기를 눌러서 취소된 경우에도 onerror가 호출되는데, 이건
-        // 실패가 아니라 정상적인 중단이라 — 안내문도 띄우면 안 되고, 어디까지
-        // 읽었는지(readIdxRef)도 지우면 안 됨(지우면 다시 누를 때 처음부터 읽힘)
-        if (e.error === "canceled" || e.error === "interrupted") return;
         readChunksRef.current = [];
         readIdxRef.current = 0;
         // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
@@ -905,6 +909,7 @@ function V2ResultInner() {
 
   const restartReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    restartingRef.current = true;
     window.speechSynthesis.cancel();
     clearTtsProgress();
     const visibleTexts =
@@ -940,6 +945,7 @@ function V2ResultInner() {
     requestWakeLock();
     speakFrom(readChunksRef.current, 0);
     setSpeaking(true);
+    setTimeout(() => { restartingRef.current = false; }, 300);
   };
 
   return (
