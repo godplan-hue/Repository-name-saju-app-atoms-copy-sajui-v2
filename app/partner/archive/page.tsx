@@ -56,6 +56,8 @@ export default function PartnerArchive() {
       sessionStorage.setItem("analysisResult", JSON.stringify(data.entry.result));
       sessionStorage.setItem("analysisName", data.entry.customerName);
       sessionStorage.setItem("selectedPackage", data.entry.packageType);
+      const birthYear = data.entry.birth ? data.entry.birth.split("-")[0] : "";
+      if (birthYear) sessionStorage.setItem("analysisBirthYear", birthYear);
       router.push("/partner/analysis-result");
     } finally {
       setOpeningId("");
