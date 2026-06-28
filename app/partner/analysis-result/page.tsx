@@ -453,8 +453,9 @@ function PartnerAnalysisResultInner() {
         </header>
 
         <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
-          {/* 점수 요약 카드 */}
-          <div ref={el => { cardRefs.current[0] = el; }} style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
+          {/* 점수 요약 카드 + 사주팔자 카드 — 이미지 저장 시 함께 캡처 */}
+          <div ref={el => { cardRefs.current[0] = el; }}>
+          <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
             <div style={{ background: "#eab308", color: "#3a2a00", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
               <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>🔮 {businessName || "점운"} · AI 사주 분석</p>
               <div style={{ padding: "14px 20px 24px" }}>
@@ -549,6 +550,7 @@ function PartnerAnalysisResultInner() {
               </div>
             );
           })()}
+          </div>
 
           {/* 패키지별 운세 카드 */}
           {cats.map((c, i) => (
