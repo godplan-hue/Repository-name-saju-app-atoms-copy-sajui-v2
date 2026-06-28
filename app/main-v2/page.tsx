@@ -321,18 +321,18 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
             <img src="https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
             <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.22)" }} />
             <span style={{ position: "absolute", top: 16, left: 16, background: "#ec4899", color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2 }}>AI 사주 상담</span>
-            <div style={{ position: "absolute", bottom: 20, left: 18, zIndex: 2 }}>
+            <div style={{ position: "absolute", bottom: 20, left: 18, zIndex: 3 }}>
               <p style={{ margin: "0 0 14px", fontSize: 17, fontWeight: 900, lineHeight: 1.35, letterSpacing: "-0.3px" }}>
                 <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>복냥이에게 당신의 운명을{"\n"}</span><br/>
                 <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>무엇이든 직접 물어봐요!</span>
               </p>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ display: "inline-flex", alignItems: "center", padding: "8px 16px", background: "#ec4899", borderRadius: 50, boxShadow: "0 3px 12px rgba(236,72,153,0.5)" }}>
                   <span style={{ fontSize: 12, fontWeight: 900, color: "white" }}>인생 역전 →</span>
                 </div>
                 <span style={{ background: "white", color: "#ef4444", fontSize: 11, fontWeight: 900, padding: "5px 12px", borderRadius: 50, animation: "freeBadgePulse 1.2s ease-in-out infinite" }}>매일 무료 3회</span>
+                <span style={{ fontSize: 10, color: "white", fontWeight: 700 }}>결제 시 하루 무제한</span>
               </div>
-              <span style={{ fontSize: 10, color: "white", fontWeight: 700 }}>💳 결제 시 하루 무제한</span>
             </div>
           </div>
         ) : (b as any).chatPromo ? (
