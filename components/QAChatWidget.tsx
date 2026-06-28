@@ -210,11 +210,11 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
           <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, flexShrink: 0 }}>🐱</div>
           <div style={{ flex: 1 }}>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 900, background: "linear-gradient(135deg, #ec4899, #8b5cf6, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "qaSparkle 1.8s ease-in-out infinite" }}>복냥이 사주 상담</p>
-            <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: remaining > 0 || effectiveUnlocked ? "#8b5cf6" : "#ef4444" }}>
+            <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: remaining > 0 || effectiveUnlocked ? "#8b5cf6" : "#ef4444", display: "flex", alignItems: "center", gap: 5 }}>
               {effectiveUnlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회 (매일 무료)`}
+              {!effectiveUnlocked && <span style={{ fontSize: 9, fontWeight: 700, color: "#c4b5fd" }}>| 결제 시 하루 무제한</span>}
             </p>
           </div>
-          <p style={{ margin: 0, fontSize: 9.5, fontWeight: 700, color: "#c4b5fd", textAlign: "right", lineHeight: 1.5 }}>결제 시<br/>하루 무제한</p>
         </div>
 
         {/* 메시지 영역 */}
