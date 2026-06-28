@@ -331,7 +331,6 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
                   <span style={{ fontSize: 12, fontWeight: 900, color: "white" }}>인생 역전 →</span>
                 </div>
                 <span style={{ background: "white", color: "#ef4444", fontSize: 11, fontWeight: 900, padding: "5px 12px", borderRadius: 50, animation: "freeBadgePulse 1.2s ease-in-out infinite" }}>매일 무료 3회</span>
-                <span style={{ fontSize: 10, color: "white", fontWeight: 700 }}>결제 시 하루 무제한</span>
               </div>
             </div>
           </div>
