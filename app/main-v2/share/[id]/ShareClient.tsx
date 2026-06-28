@@ -396,7 +396,6 @@ export default function ShareClient({ id }: { id: string }) {
           <button onClick={toggleReadAloud} style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
             {speaking ? "⏸ 멈추기" : "🔊 읽기"}
           </button>
-          <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "13px 16px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 16, cursor: "pointer" }}>↺ 처음부터 듣기</button>
         </div>
 
         {!entry.businessName && (
