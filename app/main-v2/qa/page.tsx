@@ -239,7 +239,7 @@ export default function QAPage() {
           <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>복냥이 사주 상담</p>
           <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: remaining > 0 ? "#8b5cf6" : "#ef4444", display: "flex", alignItems: "center", gap: 5 }}>
             {unlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회 (매일 무료)`}
-            <span style={{ fontSize: 10, fontWeight: 700, color: "#c4b5fd" }}>· 결제 시 하루 무제한</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#ef4444" }}>· 결제 시 하루 무제한</span>
           </p>
         </div>
       </div>
@@ -330,6 +330,10 @@ export default function QAPage() {
         }}>📋 360개 질문 목록 보기 (탭하면 바로 답변!)</button>
       </div>
 
+      {/* 입력창 위 안내 */}
+      <div style={{ background: "white", padding: "4px 14px 0", textAlign: "center" }}>
+        <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>💳 결제 시 하루 동안 무제한 이용 가능</span>
+      </div>
       {/* 입력창 */}
       <div style={{ background: "white", padding: "10px 12px", display: "flex", gap: 8, flexShrink: 0 }}>
         <input
