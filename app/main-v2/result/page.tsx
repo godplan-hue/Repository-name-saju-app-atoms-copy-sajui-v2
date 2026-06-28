@@ -729,7 +729,7 @@ function V2ResultInner() {
         objectType: "feed",
         content: {
           title: `🔮 ${result.profile?.name}님의 사주 분석 결과`,
-          description: `총운 ${result.scores?.total}점! 990원 AI사주 점운 · jeomun.com`,
+          description: `총운 ${result.scores?.total}점! 990원 AI사주 점운 jeomun.com`,
           imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
           link: { mobileWebUrl: url, webUrl: url },
         },
