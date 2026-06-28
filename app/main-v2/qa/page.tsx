@@ -237,8 +237,9 @@ export default function QAPage() {
         <div style={{ width: 38, height: 38, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>🐱</div>
         <div style={{ flex: 1 }}>
           <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>복냥이 사주 상담</p>
-          <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: remaining > 0 ? "#8b5cf6" : "#ef4444" }}>
+          <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: remaining > 0 ? "#8b5cf6" : "#ef4444", display: "flex", alignItems: "center", gap: 5 }}>
             {unlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회 (매일 무료)`}
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#c4b5fd" }}>· 결제 시 하루 무제한</span>
           </p>
         </div>
       </div>
