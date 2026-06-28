@@ -191,6 +191,9 @@ function PaidInfoInputInner() {
       sessionStorage.setItem('v2_plan', plan);
       sessionStorage.setItem('selectedPackage', p.pkg);
       sessionStorage.setItem('price', price);
+      const _d = new Date();
+      const _tk = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,"0")}-${String(_d.getDate()).padStart(2,"0")}`;
+      localStorage.setItem(`v2_qa_unlock_${p.name}_${p.birthYear}`, _tk);
 
       // 유료 다시보기도 무료 다시보기와 같은 패턴으로, 같은 로그인 세션 + 오늘
       // 안에서는 이번 화면을 다시 보여주지 않도록 기록(로그아웃하거나 날짜가

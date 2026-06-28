@@ -509,6 +509,11 @@ function V2ResultInner() {
       sessionStorage.setItem("v2_paid", "1");
       sessionStorage.setItem("v2_plan", selPlan);
       sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
+      if (profile?.name && profile?.birthYear) {
+        const _d = new Date();
+        const _tk = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,"0")}-${String(_d.getDate()).padStart(2,"0")}`;
+        localStorage.setItem(`v2_qa_unlock_${profile.name}_${profile.birthYear}`, _tk);
+      }
       await new Promise(r => setTimeout(r, 1200));
       window.location.reload();
     } catch {
@@ -1438,7 +1443,7 @@ function V2ResultInner() {
                   fontWeight: 900, fontSize: 13,
                   boxShadow: "0 4px 14px rgba(236,72,153,0.5)",
                 }}>사주 상담 →</span>
-                <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>무료 3회</span>
+                <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>매일 무료 3회</span>
               </div>
             </div>
 

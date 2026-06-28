@@ -330,7 +330,7 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
                 <div style={{ display: "inline-flex", alignItems: "center", padding: "8px 16px", background: "#ec4899", borderRadius: 50, boxShadow: "0 3px 12px rgba(236,72,153,0.5)" }}>
                   <span style={{ fontSize: 12, fontWeight: 900, color: "white" }}>인생 역전 →</span>
                 </div>
-                <span style={{ background: "white", color: "#ef4444", fontSize: 11, fontWeight: 900, padding: "5px 12px", borderRadius: 50, animation: "freeBadgePulse 1.2s ease-in-out infinite" }}>무료 3회</span>
+                <span style={{ background: "white", color: "#ef4444", fontSize: 11, fontWeight: 900, padding: "5px 12px", borderRadius: 50, animation: "freeBadgePulse 1.2s ease-in-out infinite" }}>매일 무료 3회</span>
               </div>
             </div>
           </div>

@@ -93,6 +93,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   ]);
   const [input, setInput] = useState("");
   const [remaining, setRemaining] = useState(FREE_QUESTIONS);
+  const [effectiveUnlocked, setEffectiveUnlocked] = useState(false);
   const [typing, setTyping] = useState(false);
   const [suggestions, setSuggestions] = useState<Array<{q: string; catId: string}>>([]);
   const [showBuyModal, setShowBuyModal] = useState(false);
@@ -116,8 +117,12 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   }, []);
 
   useEffect(() => {
+    const lsUnlock = localStorage.getItem(`v2_qa_unlock_${name}_${birthYear}`);
+    const paidToday = lsUnlock === todayKey();
+    const eff = unlocked || paidToday;
+    setEffectiveUnlocked(eff);
     const used = Number(localStorage.getItem(`${storagePrefix}_${name}_${birthYear}_${todayKey()}`) ?? 0);
-    setRemaining(unlocked ? 999 : Math.max(0, FREE_QUESTIONS - used));
+    setRemaining(eff ? 999 : Math.max(0, FREE_QUESTIONS - used));
     setSuggestions(QA_CATEGORIES.map(cat => {
       const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
       return { q: pick.question, catId: cat.id };
@@ -162,14 +167,14 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   const sendMsg = (overrideQ?: string, overrideCatId?: string) => {
     const q = (overrideQ ?? input).trim();
     if (!q || typing) return;
-    if (remaining <= 0 && !unlocked) {
+    if (remaining <= 0 && !effectiveUnlocked) {
       (document.activeElement as HTMLElement)?.blur();
       setTimeout(() => setShowBuyModal(true), 300);
       return;
     }
     setMessages(prev => [...prev, { from: "user", text: q }]);
     if (!overrideQ) setInput("");
-    if (!unlocked) {
+    if (!effectiveUnlocked) {
       const newR = remaining - 1;
       setRemaining(newR);
       const lsKey = `${storagePrefix}_${name}_${birthYear}_${todayKey()}`;
@@ -205,8 +210,8 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
           <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, flexShrink: 0 }}>🐱</div>
           <div style={{ flex: 1 }}>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 900, background: "linear-gradient(135deg, #ec4899, #8b5cf6, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "qaSparkle 1.8s ease-in-out infinite" }}>복냥이 사주 상담</p>
-            <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: remaining > 0 || unlocked ? "#8b5cf6" : "#ef4444" }}>
-              {unlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회`}
+            <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: remaining > 0 || effectiveUnlocked ? "#8b5cf6" : "#ef4444" }}>
+              {effectiveUnlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회 (매일 무료)`}
             </p>
           </div>
         </div>

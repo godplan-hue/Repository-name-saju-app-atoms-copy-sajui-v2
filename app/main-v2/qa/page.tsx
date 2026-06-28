@@ -129,7 +129,10 @@ export default function QAPage() {
     const oh = getOhaeng(y);
     setOhaeng(oh);
     const plan = sessionStorage.getItem("v2_plan") ?? "";
-    const paid = plan === "select" || plan === "package";
+    const paidSession = plan === "select" || plan === "package";
+    const lsUnlock = localStorage.getItem(`v2_qa_unlock_${n}_${y}`);
+    const paidToday = lsUnlock === todayKey();
+    const paid = paidSession || paidToday;
     setUnlocked(paid);
     const used = Number(localStorage.getItem(`v2_qa_${n}_${y}_${todayKey()}`) ?? 0);
     setRemaining(paid ? 999 : Math.max(0, FREE_QUESTIONS - used));
@@ -235,7 +238,7 @@ export default function QAPage() {
         <div style={{ flex: 1 }}>
           <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>복냥이 사주 상담</p>
           <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: remaining > 0 ? "#8b5cf6" : "#ef4444" }}>
-            {unlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회`}
+            {unlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회 (매일 무료)`}
           </p>
         </div>
       </div>
