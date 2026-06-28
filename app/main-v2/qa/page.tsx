@@ -179,7 +179,7 @@ export default function QAPage() {
       setMessages(prev => [...prev, { from: "user", text: q }, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
       setInput("");
       setPendingQ(q); setPendingCatId(detectedCat); setPendingPkg(null);
-      setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setTimeout(() => setShowModal(true), 500); }, 9000);
+      setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setTimeout(() => setShowModal(true), 500); }, 7000);
       return;
     }
     setMessages(prev => [...prev, { from: "user", text: q }]);
@@ -204,7 +204,7 @@ export default function QAPage() {
       if (newRemaining === 0) {
         setTimeout(() => {
           setMessages(prev => [...prev, { from: "cat", text: `${name}님, 오늘 무료 질문을 다 썼어요 😿\n운세를 구매하면 계속 물어볼 수 있어!` }]);
-          setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setPendingQ(""); setPendingCatId(catId); setPendingPkg(null); setTimeout(() => setShowModal(true), 500); }, 9000);
+          setTimeout(() => { (document.activeElement as HTMLElement)?.blur(); setPendingQ(""); setPendingCatId(catId); setPendingPkg(null); setTimeout(() => setShowModal(true), 500); }, 7000);
         }, 800);
       }
     }, 900);
