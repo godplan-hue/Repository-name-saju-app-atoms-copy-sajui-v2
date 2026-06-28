@@ -962,7 +962,7 @@ function V2ResultInner() {
   };
 
   return (
-    <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/1200x/18/97/18/189718a8189930b86d2088d7f1250c2c.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+    <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/736x/8d/88/b4/8d88b4138f59fe9a58935ac1b786254f.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
       <div style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
