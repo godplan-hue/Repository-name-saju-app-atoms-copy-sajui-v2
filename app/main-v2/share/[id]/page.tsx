@@ -14,7 +14,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     const brand = entry.businessName || "점운";
     const catLabels = (entry.categories ?? []).map((c: any) => c.label).join(", ");
     const title = `🔮 ${entry.name}님의 사주 분석 결과 - ${brand}`;
-    const description = `총운 ${entry.scores?.total ?? "?"}점! 나도 무료로 사주 보기 👉 jeomun.com`;
+    const description = entry.businessName
+      ? `총운 ${entry.scores?.total ?? "?"}점! ${catLabels} 분석까지 한눈에 확인하세요.`
+      : `총운 ${entry.scores?.total ?? "?"}점! 나도 무료로 사주 보기 👉 jeomun.com`;
     const image = "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg";
     return {
       title,
