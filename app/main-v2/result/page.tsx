@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
 
@@ -722,9 +723,26 @@ function V2ResultInner() {
         if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
       }
     } catch {}
-    const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로!`;
-    if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
-    else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));
+    const kakao = (window as any).Kakao;
+    if (kakao && kakao.isInitialized() && url) {
+      kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title: `🔮 ${result.profile?.name}님의 사주 분석 결과`,
+          description: `총운 ${result.scores?.total}점! AI가 분석한 내 운세`,
+          imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
+          link: { mobileWebUrl: url, webUrl: url },
+        },
+        buttons: [
+          { title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } },
+          { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
+        ],
+      });
+    } else {
+      const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로! jeomun.com`;
+      if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
+      else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));
+    }
   };
 
   if (!result) return null;
@@ -962,6 +980,15 @@ function V2ResultInner() {
   };
 
   return (
+    <>
+    <Script
+      src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+      strategy="afterInteractive"
+      onLoad={() => {
+        const kakao = (window as any).Kakao;
+        if (kakao && !kakao.isInitialized()) kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+      }}
+    />
     <main style={{ minHeight: "100vh", backgroundImage: `url('https://i.pinimg.com/736x/8d/88/b4/8d88b4138f59fe9a58935ac1b786254f.jpg'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
@@ -1557,5 +1584,6 @@ function V2ResultInner() {
       )}
 
     </main>
+    </>
   );
 }
