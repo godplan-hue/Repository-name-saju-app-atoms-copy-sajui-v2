@@ -339,7 +339,7 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
             <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.55)" }} />
             <div style={{ position: "relative", textAlign: "center", width: "100%" }}>
               <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", color: "#9f1239", textShadow: "1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff, 1.5px 1.5px 0 #fff, -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 0 0 2px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>
-                고양이가 읽는 나의 운명
+                복냥이가 읽는 나의 운명
               </h1>
               <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 14px", color: "#b76e79", textShadow: "1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
               <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
@@ -565,7 +565,7 @@ export default function MainV2() {
       {/* 헤드라인 */}
       <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
         <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", color: "#9f1239", textShadow: "1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff, 1.5px 1.5px 0 #fff, -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 0 0 2px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>
-          고양이가 읽는 나의 운명
+          복냥이가 읽는 나의 운명
         </h1>
         <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px", color: "#b76e79", textShadow: "1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 0 1.5px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
@@ -663,10 +663,10 @@ export default function MainV2() {
         <div style={{ textAlign: "center", padding: "32px 20px", borderRadius: 20, background: `linear-gradient(135deg, rgba(236,72,153,0.76), rgba(139,92,246,0.76)), url(https://i.pinimg.com/736x/4d/19/ba/4d19bac9e87e2f3d28505b6e59992c02.jpg)`, backgroundSize: "cover", backgroundPosition: "center", boxShadow: "0 8px 24px rgba(139,92,246,0.25)" }}>
           <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
           <h2 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>고양이가 당신의 길을 안내합니다 🐾</p>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>복냥이가 당신의 길을 안내합니다 🐾</p>
           <button onClick={() => router.push(user ? "/main-v2/profile" : "/main-v2/login")}
             style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "white", color: "#ec4899", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 18px rgba(0,0,0,0.15)" }}>
-            🔮 무료 고양이 코스 시작하기
+            🔮 무료 복냥이 코스 시작하기
           </button>
         </div>
       </div>
