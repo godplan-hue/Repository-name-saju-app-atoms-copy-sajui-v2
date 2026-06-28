@@ -279,7 +279,10 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
         </div>
 
         {/* 입력창 */}
-        <div style={{ background: "white", padding: "8px 10px", display: "flex", gap: 6 }}>
+        <div style={{ background: "white", padding: "4px 14px 0", textAlign: "center" }}>
+          <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>💳 결제 시 하루 동안 무제한 이용 가능</span>
+        </div>
+        <div style={{ background: "white", padding: "6px 10px 8px", display: "flex", gap: 6 }}>
           <input
             type="text" value={input}
             onChange={e => setInput(e.target.value)}
