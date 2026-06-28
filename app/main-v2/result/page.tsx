@@ -729,7 +729,7 @@ function V2ResultInner() {
         objectType: "feed",
         content: {
           title: `🔮 ${result.profile?.name}님의 사주 분석 결과`,
-          description: `총운 ${result.scores?.total}점! AI가 분석한 내 운세`,
+          description: `총운 ${result.scores?.total}점! AI 사주 990원부터 · jeomun.com`,
           imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
           link: { mobileWebUrl: url, webUrl: url },
         },
@@ -1491,6 +1491,13 @@ function V2ResultInner() {
             unlocked={paid}
             storagePrefix="v2_result_qa"
           />
+        )}
+
+        {!isPartner && (
+          <div style={{ margin: "16px 0 8px", borderRadius: 16, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "16px 20px", textAlign: "center", cursor: "pointer" }} onClick={() => router.push("/main-v2")}>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "white", letterSpacing: "-0.3px" }}>🔮 AI 사주 990원부터 시작</p>
+            <p style={{ margin: "4px 0 0", fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700 }}>지금 바로 내 운세 확인하기 →</p>
+          </div>
         )}
 
         <button onClick={() => router.push("/main-v2")}
