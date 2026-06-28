@@ -1471,6 +1471,7 @@ function V2ResultInner() {
                   boxShadow: "0 4px 14px rgba(236,72,153,0.5)",
                 }}>사주 상담 →</span>
                 <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>매일 무료 3회</span>
+                <span style={{ fontSize: 10, color: "rgba(255,255,255,0.85)", fontWeight: 700 }}>결제 시 하루 무제한</span>
               </div>
             </div>
 

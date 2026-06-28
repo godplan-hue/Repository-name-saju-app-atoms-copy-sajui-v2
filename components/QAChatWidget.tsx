@@ -96,7 +96,6 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   const [effectiveUnlocked, setEffectiveUnlocked] = useState(false);
   const [typing, setTyping] = useState(false);
   const [suggestions, setSuggestions] = useState<Array<{q: string; catId: string}>>([]);
-  const [hidden, setHidden] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [showQList, setShowQList] = useState(false);
   const [qListCat, setQListCat] = useState("wealth");
@@ -118,8 +117,6 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   }, []);
 
   useEffect(() => {
-    const hiddenDate = localStorage.getItem("v2_qa_widget_hidden_date");
-    if (hiddenDate === todayKey()) { setHidden(true); return; }
     const lsUnlock = localStorage.getItem(`v2_qa_unlock_${name}_${birthYear}`);
     const paidToday = lsUnlock === todayKey();
     const eff = unlocked || paidToday;
@@ -204,8 +201,6 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
     }, 900);
   };
 
-  if (hidden) return null;
-
   return (
     <>
       <div style={{ marginTop: 20, borderRadius: 20, overflow: "hidden", boxShadow: "0 10px 36px rgba(139,92,246,0.2)", border: "1.5px solid #e9d5ff", background: "#f9f5ff", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
@@ -219,7 +214,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
               {effectiveUnlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회 (매일 무료)`}
             </p>
           </div>
-          <button onClick={() => { localStorage.setItem("v2_qa_widget_hidden_date", todayKey()); setHidden(true); }} style={{ background: "none", border: "none", color: "#c4b5fd", fontSize: 10, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", padding: "4px 0" }}>하루 동안<br/>보지 않기</button>
+          <p style={{ margin: 0, fontSize: 9.5, fontWeight: 700, color: "#c4b5fd", textAlign: "right", lineHeight: 1.5 }}>결제 시<br/>하루 무제한</p>
         </div>
 
         {/* 메시지 영역 */}
