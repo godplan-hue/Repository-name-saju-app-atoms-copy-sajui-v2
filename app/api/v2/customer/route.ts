@@ -1,16 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 
-// 일반(파트너 아닌) 고객의 연락처를 서버에도 저장 — 지금까지는 동의를 받고도
-// 본인 휴대폰(localStorage)에만 저장되고 서버에는 남지 않았음. 목록이 매우
-// 커질 수 있어 admin 쪽에서는 전체를 한 번에 읽지 않고 최근 것부터 페이지
-// 단위로만 읽도록 만들었음(GET /api/admin/customers 참고)
 export async function POST(request: NextRequest) {
   try {
     const { name, phone, email, birthYear, birthMonth, birthDay, gender, birthHour, relationship } = await request.json();
-    if (!name || !phone && !email) {
+    if (!name || (!phone && !email)) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
+
+    // 전화번호 또는 이메일 기준 중복 확인 — 같은 사람이 여러 번 가입해도 1건만 저장
+    if (phone) {
+      const snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(phone).limitToFirst(1).once("value");
+      if (snap.exists()) return NextResponse.json({ success: true, duplicate: true });
+    }
+    if (email) {
+      const snap = await db.ref("consumerCustomers").orderByChild("email").equalTo(email).limitToFirst(1).once("value");
+      if (snap.exists()) return NextResponse.json({ success: true, duplicate: true });
+    }
+
     const entry = {
       name, phone: phone || "", email: email || "",
       birthYear: birthYear || "", birthMonth: birthMonth || "", birthDay: birthDay || "",
