@@ -399,9 +399,11 @@ export default function ShareClient({ id }: { id: string }) {
           <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "13px 16px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 16, cursor: "pointer" }}>↺ 처음부터 듣기</button>
         </div>
 
-        <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-          📱 나도 무료로 사주 보기
-        </button>
+        {!entry.businessName && (
+          <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+            📱 나도 무료로 사주 보기
+          </button>
+        )}
       </div>
     </main>
   );
