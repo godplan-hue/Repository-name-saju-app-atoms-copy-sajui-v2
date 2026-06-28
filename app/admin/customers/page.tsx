@@ -47,6 +47,20 @@ export default function AdminCustomers() {
     router.push("/admin/login");
   };
 
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`${name} 회원을 삭제하시겠습니까?`)) return;
+    const adminId = localStorage.getItem("adminId") ?? "";
+    const res = await fetch(`/api/admin/customers/${id}`, {
+      method: "DELETE",
+      headers: { "x-admin-id": adminId },
+    });
+    if (res.ok) {
+      setCustomers(prev => prev.filter(c => c.id !== id));
+    } else {
+      alert("삭제 실패");
+    }
+  };
+
   return (
     <main style={{ minHeight: "100vh", background: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo'", display: "flex" }}>
       <div style={{ width: "250px", background: "linear-gradient(135deg, #667eea, #764ba2)", padding: "30px 20px", color: "white", display: "flex", flexDirection: "column" }}>
@@ -76,13 +90,14 @@ export default function AdminCustomers() {
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>성별</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>관계</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>등록일시</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>관리</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
               ) : customers.length === 0 ? (
-                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 등록된 일반회원이 없습니다.</td></tr>
+                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 등록된 일반회원이 없습니다.</td></tr>
               ) : (
                 customers.map(c => (
                   <tr key={c.id} style={{ borderBottom: "1px solid #eee" }}>
@@ -93,6 +108,9 @@ export default function AdminCustomers() {
                     <td style={{ padding: "12px", color: "#666" }}>{c.gender || "-"}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{c.relationship || "-"}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{new Date(c.createdAt).toLocaleString("ko-KR")}</td>
+                    <td style={{ padding: "12px" }}>
+                      <button onClick={() => handleDelete(c.id, c.name)} style={{ padding: "4px 10px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>삭제</button>
+                    </td>
                   </tr>
                 ))
               )}

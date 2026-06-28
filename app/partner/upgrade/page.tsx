@@ -82,7 +82,7 @@ export default function PartnerUpgrade() {
           </div>
 
           <div style={{ background: "white", padding: "30px", borderRadius: "12px" }}>
-            <p style={{ fontSize: "13px", color: "#999", marginTop: 0, marginBottom: 20 }}>업그레이드 시 새 등급 연회비에서<br/>기존에 낸 연회비를 뺀 차액만 결제하면<br/>바로 적용됩니다.<br/>이번 달 이미 사용한 건수는 그대로 유지되고,<br/>새 등급의 한도 안에서 계속 쓸 수 있습니다.</p>
+            <p style={{ fontSize: "13px", color: "#111", fontWeight: 700, marginTop: 0, marginBottom: 20 }}>업그레이드 시 새 등급 연회비에서<br/>기존에 낸 연회비를 뺀 차액만 결제하면<br/>바로 적용됩니다.<br/>이번 달 이미 사용한 건수는 그대로 유지되고,<br/>새 등급의 한도 안에서 계속 쓸 수 있습니다.</p>
 
             {/* 할인코드 */}
             <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>

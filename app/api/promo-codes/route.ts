@@ -36,6 +36,19 @@ export async function POST(request: NextRequest) {
   }
 }
 
+export async function DELETE(request: NextRequest) {
+  try {
+    const code = request.nextUrl.searchParams.get("code");
+    if (!code) return NextResponse.json({ error: "코드가 필요합니다." }, { status: 400 });
+    const key = String(code).trim().toUpperCase();
+    await db.ref(`promoCodes/${key}`).remove();
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Promo code delete error:", error);
+    return NextResponse.json({ error: "삭제 실패" }, { status: 500 });
+  }
+}
+
 // 결제 시점에 호출 — 사용 횟수 증가 + 최종 검증
 export async function PATCH(request: NextRequest) {
   try {

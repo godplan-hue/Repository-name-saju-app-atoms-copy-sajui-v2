@@ -36,6 +36,16 @@ export default function AdminDiscountCodes() {
     router.push("/admin/login");
   };
 
+  const handleDeleteCode = async (code: string) => {
+    if (!confirm(`${code} 코드를 삭제하시겠습니까?`)) return;
+    const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(code)}`, { method: "DELETE" });
+    if (res.ok) {
+      setCodes(prev => prev.filter(c => c.code !== code));
+    } else {
+      alert("삭제 실패");
+    }
+  };
+
   const handleAddCode = async () => {
     if (!form.code.trim()) { alert("코드를 입력해주세요."); return; }
     setSaving(true);
@@ -90,11 +100,12 @@ export default function AdminDiscountCodes() {
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>메모</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>사용 횟수</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>상태</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>관리</th>
               </tr>
             </thead>
             <tbody>
               {codes.length === 0 ? (
-                <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 등록된 할인코드가 없습니다.</td></tr>
+                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 등록된 할인코드가 없습니다.</td></tr>
               ) : (
                 codes.map(c => (
                   <tr key={c.code} style={{ borderBottom: "1px solid #eee" }}>
@@ -103,6 +114,9 @@ export default function AdminDiscountCodes() {
                     <td style={{ padding: "12px", color: "#666" }}>{c.note || "-"}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{c.usageCount || 0}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{c.active ? "활성" : "비활성"}</td>
+                    <td style={{ padding: "12px" }}>
+                      <button onClick={() => handleDeleteCode(c.code)} style={{ padding: "4px 10px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>삭제</button>
+                    </td>
                   </tr>
                 ))
               )}
