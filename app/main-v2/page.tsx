@@ -446,6 +446,7 @@ export default function MainV2() {
   // 이 버튼을 한 번 눌러야 재생이 시작됨(그 한 번의 클릭이 "사용자 동작"이 되어줌).
   // /public/bgm.mp3 파일이 있어야 실제로 소리가 남(파일은 직접 넣어야 함)
   const [musicOn, setMusicOn] = useState(false);
+  const [showWealthModal, setShowWealthModal] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
     const audio = audioRef.current;
@@ -602,7 +603,8 @@ export default function MainV2() {
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
         else if (id === "dateselect") alert("택일 서비스는 곧 만나보실 수 있어요! 조금만 기다려주세요 🙏");
-        else if (SELECT_ROUTE_IDS.has(id)) { const SINGLE_MAP: Record<string,string> = { wealth: "재물운", love: "연애운" }; router.push(`/main-v2/payment?single=${SINGLE_MAP[id] ?? ""}`); }
+        else if (id === "wealth") { setShowWealthModal(true); return; }
+        else if (SELECT_ROUTE_IDS.has(id)) router.push("/main-v2/payment?scrollTo=select");
         else if (PRESELECT[id]) router.push(`/main-v2/payment?scrollTo=packages&preselect=${PRESELECT[id]}`);
         else router.push("/main-v2/payment?scrollTo=packages");
       }} />
@@ -756,6 +758,44 @@ export default function MainV2() {
         }
         ::-webkit-scrollbar { display: none; }
       `}</style>
+
+      {/* ── 재물운 바로결제 모달 ── */}
+      {showWealthModal && (
+        <div
+          onClick={() => setShowWealthModal(false)}
+          style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: "linear-gradient(160deg, #1a0f35 0%, #0f0620 100%)", border: "1px solid rgba(251,191,36,0.45)", borderRadius: "22px 22px 0 0", padding: "32px 24px 44px", width: "100%", maxWidth: 480 }}>
+            {/* 헤더 */}
+            <div style={{ textAlign: "center", marginBottom: 20 }}>
+              <div style={{ fontSize: 52, marginBottom: 8 }}>💰</div>
+              <h2 style={{ color: "#fbbf24", fontSize: 22, fontWeight: 900, margin: "0 0 6px" }}>재물운</h2>
+              <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 13, margin: 0 }}>나의 돈 흐름 · 재물이 들어오는 시기와 방향</p>
+            </div>
+            {/* 가격 */}
+            <div style={{ textAlign: "center", background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 14, padding: "14px 0", marginBottom: 20 }}>
+              <span style={{ color: "#fbbf24", fontSize: 34, fontWeight: 900 }}>₩990</span>
+              <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginLeft: 8 }}>단품 결제</span>
+            </div>
+            {/* 결제 버튼 */}
+            <button
+              onClick={() => {
+                sessionStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운"]));
+                setShowWealthModal(false);
+                router.push("/payment-complete?package=재물운&pages=30&paid=990");
+              }}
+              style={{ width: "100%", padding: "16px 0", background: "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 24px rgba(251,191,36,0.4)", marginBottom: 12 }}>
+              💎 재물운 결제하기
+            </button>
+            <button
+              onClick={() => setShowWealthModal(false)}
+              style={{ width: "100%", padding: "12px 0", background: "transparent", color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 50, fontWeight: 700, fontSize: 14, cursor: "pointer" }}>
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
