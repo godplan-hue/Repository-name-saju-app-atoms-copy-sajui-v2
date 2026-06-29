@@ -13,7 +13,7 @@ const STEP_BACKGROUNDS: Record<number, string> = {
   2: "https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg",
   3: "https://i.pinimg.com/1200x/6d/df/69/6ddf69eba555283a55f2007a0d43699f.jpg",
   4: "https://i.pinimg.com/vwebp/736x/9d/a4/47/9da447bd262e5f09a7d0745ba1fddeb8.webp",
-  5: "https://i.pinimg.com/736x/f7/b3/13/f7b313a24cb0000eaedb04c6e230b821.jpg",
+  5: "https://i.pinimg.com/vwebp/1200x/8b/a5/99/8ba5999c16768b7fcf4e1e945e0e1778.webp",
 };
 
 const RELS = [
