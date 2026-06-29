@@ -220,8 +220,8 @@ const FORTUNE_CATEGORIES = [
   { id: "love",          title: "연애운",           sub: "연애 타이밍과 인연", emoji: "💕", img: "https://i.pinimg.com/1200x/44/75/dc/4475dcead2216ca9c018f8fcaa137879.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
   { id: "health",        title: "건강운",           sub: "올해+재물+연애+건강+월별", emoji: "🍀", img: "https://i.pinimg.com/736x/d3/20/62/d32062b1c5d6aa5d14b0a827347d897e.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
   { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "naming",        title: "이름분석",          sub: "이름+궁합+전체사주", emoji: "✍️", img: "https://i.pinimg.com/736x/75/cc/17/75cc1785e405eb49c4f514cd6000457d.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "full",          title: "연도별 운세",       sub: "",                  emoji: "📆", img: "https://i.pinimg.com/1200x/c0/17/9c/c0179c9fb5870866ed9260971b05fdd4.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
+  { id: "naming",        title: "이름분석",          sub: "990원(5개 운세)",    emoji: "✍️", img: "https://i.pinimg.com/736x/75/cc/17/75cc1785e405eb49c4f514cd6000457d.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "👑 VIP 전용", priceBg: "#6d28d9" },
+  { id: "full",          title: "연도별 운세",       sub: "이름+궁합+전체사주", emoji: "📆", img: "https://i.pinimg.com/1200x/c0/17/9c/c0179c9fb5870866ed9260971b05fdd4.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
 ];
 
 function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPartner: boolean }) {
@@ -253,6 +253,9 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                     <span style={{ position: "absolute", top: 6, ...((cat as any).badgeSide === "right" ? { right: 6 } : { left: 6 }), background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "3px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)" }}>
                       {isPartner && (cat.id === "wealth" || cat.id === "love") ? "9,900원~" : (cat as any).price}
                     </span>
+                  )}
+                  {(cat as any).sub && (
+                    <div style={{ position: "absolute", bottom: 6, left: 0, right: 0, textAlign: "center", fontSize: 8, fontWeight: 700, color: "rgba(255,255,255,0.9)", textShadow: "0 1px 3px rgba(0,0,0,0.9)", padding: "0 4px" }}>{(cat as any).sub}</div>
                   )}
                 </>
               ) : (
@@ -787,7 +790,7 @@ export default function MainV2() {
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
                   <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{cfg.desc}</div>
                 </div>
-                <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 900 }}>{isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
+                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
               </div>
               {cfg.features && (
                 <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
