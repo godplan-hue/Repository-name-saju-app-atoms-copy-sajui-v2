@@ -767,14 +767,14 @@ export default function MainV2() {
 
       {/* ── 운세 바로결제 모달 (통합) ── */}
       {(() => {
-        const MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; catKey?: string; priceNum?: number; preselect?: string }> = {
+        const MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; features?: string[]; catKey?: string; priceNum?: number; preselect?: string }> = {
           wealth:        { emoji: "💰", title: "재물운",              desc: "나의 돈 흐름 · 재물이 들어오는 시기",     price: "₩990",    catKey: "💰 재물운", priceNum: 990 },
           love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩990",    catKey: "💕 연애운", priceNum: 990 },
-          yearly:        { emoji: "🎍", title: "재물운+연애운 심층",   desc: "올해 재물과 연애의 흐름을 한 번에",     price: "₩9,900",  preselect: "basic" },
-          health:        { emoji: "🍀", title: "건강운",              desc: "건강 주의 시기와 핵심 관리 포인트",     price: "₩24,900", preselect: "premium" },
-          compatibility: { emoji: "💑", title: "궁합분석",            desc: "두 사람의 운명적 궁합과 인연",          price: "₩29,900", preselect: "vip" },
-          naming:        { emoji: "✍️", title: "이름분석",            desc: "이름 속에 담긴 운의 흐름",              price: "₩29,900", preselect: "vip" },
-          full:          { emoji: "🔮", title: "전체 사주분석",       desc: "사주팔자 전체 완전 분석",               price: "₩29,900", preselect: "vip" },
+          yearly:        { emoji: "🎍", title: "기본 분석",           desc: "재물운 + 연애운 심층 분석",             price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic" },
+          health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "🍀 건강운", "📄 심층 상세 분석"], preselect: "premium" },
+          compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 전체 분석 + 상대방 입력 + 궁합",   price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "💑 궁합 분석", "🗓 월별 운세", "📄 심층 상세 분석 (8개)"], preselect: "vip" },
+          naming:        { emoji: "✍️", title: "VIP 커플팩",          desc: "이름분석 포함 전체 VIP 구성",           price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "✍️ 이름 분석", "💑 궁합 분석", "📄 심층 상세 분석 (8개)"], preselect: "vip" },
+          full:          { emoji: "🔮", title: "VIP 커플팩",          desc: "사주팔자 전체 8개 분야 완전 분석",      price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "💑 궁합 분석", "✍️ 이름 분석", "🗓 월별 운세", "📄 심층 상세 분석 (8개)"], preselect: "vip" },
         };
         const cfg = showModal ? MCFG[showModal] : null;
         if (!cfg) return null;
@@ -782,7 +782,7 @@ export default function MainV2() {
           <div onClick={() => setShowModal(null)} style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
             <div onClick={e => e.stopPropagation()} style={{ background: "#16103a", border: "1px solid rgba(167,139,250,0.2)", borderRadius: "16px 16px 0 0", padding: "20px 20px 32px", width: "100%", maxWidth: 420 }}>
               <div style={{ width: 36, height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 2, margin: "0 auto 18px" }} />
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: cfg.features ? 12 : 18 }}>
                 <span style={{ fontSize: 34 }}>{cfg.emoji}</span>
                 <div style={{ flex: 1 }}>
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
@@ -790,6 +790,13 @@ export default function MainV2() {
                 </div>
                 <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 900 }}>{isPartner && cfg.catKey ? "가격 확인" : cfg.price}</div>
               </div>
+              {cfg.features && (
+                <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
+                  {cfg.features.map((f, i) => (
+                    <div key={i} style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: 700, lineHeight: 1.9 }}>✓ {f}</div>
+                  ))}
+                </div>
+              )}
               <button
                 onClick={() => {
                   setShowModal(null);
