@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_YELLOW = "#eab308";
@@ -145,14 +146,37 @@ export default function V2History() {
             label: item.category?.replace(/\S+\s/, "") ?? "운세",
             color: matchedCat?.color ?? "#8b5cf6",
             text: item.analysis,
+            badge: item.planType === "package" ? "📦 패키지" : "💎 심층",
           }],
+          tier: item.planType === "package" ? "package" : "select",
+          birthYear: (item as any).birthYear ?? "",
+          luckyColor: (item as any).luckyColor ?? "",
+          luckyNumber: (item as any).luckyNumber ?? "",
+          luckyDirection: (item as any).luckyDirection ?? "",
         }),
       });
       if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
     } catch {}
-    const text = `${item.name}님의 ${item.category?.replace(/\S+\s/, "")} 분석 🔮\n총운 ${item.scores?.total}점\n\n📱 나도 무료로!`;
-    if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
-    else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));
+    const kakao = (window as any).Kakao;
+    if (kakao && kakao.isInitialized()) {
+      kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title: `🔮 ${item.name}님의 ${item.category?.replace(/\S+\s/, "")} 분석 결과`,
+          description: `총운 ${item.scores?.total}점! 💰 990원 AI사주 점운 jeomun.com`,
+          imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
+          link: { mobileWebUrl: url, webUrl: url },
+        },
+        buttons: [
+          { title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } },
+          { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
+        ],
+      });
+    } else {
+      const text = `${item.name}님의 ${item.category?.replace(/\S+\s/, "")} 분석 🔮\n총운 ${item.scores?.total}점\n\n📱 나도 무료로! jeomun.com`;
+      if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
+      else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));
+    }
   };
 
   useEffect(() => {
@@ -179,6 +203,15 @@ export default function V2History() {
   };
 
   return (
+    <>
+    <Script
+      src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+      strategy="afterInteractive"
+      onLoad={() => {
+        const kakao = (window as any).Kakao;
+        if (kakao && !kakao.isInitialized()) kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+      }}
+    />
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
@@ -301,5 +334,6 @@ export default function V2History() {
         />
       )}
     </main>
+    </>
   );
 }
