@@ -820,7 +820,8 @@ export default function MainV2() {
                   if (showModal === "naming") {
                     if (modalSelectedCats.length === 0) return;
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
-                    router.push(`/payment-complete?package=${encodeURIComponent("5개 운세 묶음")}&pages=${modalSelectedCats.length * 30}&paid=${modalSelectedCats.length * 990}`);
+                    const namingLabel = modalSelectedCats.length === 1 ? modalSelectedCats[0].split(" ").slice(1).join(" ") : `${modalSelectedCats.length}개 운세 묶음`;
+                    router.push(`/payment-complete?package=${encodeURIComponent(namingLabel)}&pages=${modalSelectedCats.length * 30}&paid=${modalSelectedCats.length * 990}`);
                   } else if (cfg.catKeys) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
                     router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`);
