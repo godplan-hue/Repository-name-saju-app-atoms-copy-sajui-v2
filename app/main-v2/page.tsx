@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
 
@@ -426,6 +426,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
 
 export default function MainV2() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [user, setUser] = useState<string | null>(null);
   const [savedProfile, setSavedProfile] = useState<{ name: string; birthYear: number } | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -505,6 +506,14 @@ export default function MainV2() {
       }
     } catch {}
   }, []);
+
+  useEffect(() => {
+    const modal = searchParams.get("modal");
+    if (modal === "naming") {
+      setModalSelectedCats(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]);
+      setShowModal("naming");
+    }
+  }, [searchParams]);
 
   const handleCourse = (c: typeof COURSES[0]) => {
     if (c.id === "free") {

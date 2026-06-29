@@ -1353,7 +1353,7 @@ function V2ResultInner() {
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={() => { sessionStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"])); router.push("/payment-complete?package=5개 운세 묶음&pages=150&paid=4950"); }}
+              <button onClick={() => router.push("/main-v2?modal=naming")}
                 style={{ width: "100%", padding: "15px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(245,158,11,0.35)" }}>
                 🔮 990원 사주 전체 보기
               </button>
