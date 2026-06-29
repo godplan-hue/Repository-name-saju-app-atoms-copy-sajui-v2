@@ -446,7 +446,7 @@ export default function MainV2() {
   // /public/bgm.mp3 파일이 있어야 실제로 소리가 남(파일은 직접 넣어야 함)
   const [musicOn, setMusicOn] = useState(false);
   const [showModal, setShowModal] = useState<string | null>(null);
-  const [modalSelectedCats, setModalSelectedCats] = useState<string[]>([]);
+  const [modalSelectedCats, setModalSelectedCats] = useState<string[]>(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
     const audio = audioRef.current;
@@ -615,7 +615,7 @@ export default function MainV2() {
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
         else if (id === "dateselect") alert("곧 만나보실 수 있어요! 조금만 기다려주세요 🙏");
-        else setShowModal(id);
+        else { if (id === "naming") setModalSelectedCats(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]); setShowModal(id); }
       }} />
 
       {/* 가격 신뢰 후킹 문구 */}
