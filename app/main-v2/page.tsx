@@ -443,7 +443,7 @@ export default function MainV2() {
   // 이 버튼을 한 번 눌러야 재생이 시작됨(그 한 번의 클릭이 "사용자 동작"이 되어줌).
   // /public/bgm.mp3 파일이 있어야 실제로 소리가 남(파일은 직접 넣어야 함)
   const [musicOn, setMusicOn] = useState(false);
-  const [showWealthModal, setShowWealthModal] = useState(false);
+  const [showModal, setShowModal] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
     const audio = audioRef.current;
@@ -612,10 +612,8 @@ export default function MainV2() {
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
         else if (id === "dateselect") alert("택일 서비스는 곧 만나보실 수 있어요! 조금만 기다려주세요 🙏");
-        else if (id === "wealth") { setShowWealthModal(true); return; }
-        else if (SELECT_ROUTE_IDS.has(id)) router.push("/main-v2/payment?scrollTo=select");
-        else if (PRESELECT[id]) router.push(`/main-v2/payment?scrollTo=packages&preselect=${PRESELECT[id]}`);
-        else router.push("/main-v2/payment?scrollTo=packages");
+        else if (isPartner) { if (PRESELECT[id]) router.push(`/main-v2/payment?scrollTo=packages&preselect=${PRESELECT[id]}`); else router.push("/main-v2/payment?scrollTo=packages"); }
+        else setShowModal(id);
       }} />
 
       {/* 가격 신뢰 후킹 문구 */}
@@ -768,43 +766,51 @@ export default function MainV2() {
         ::-webkit-scrollbar { display: none; }
       `}</style>
 
-      {/* ── 재물운 바로결제 모달 ── */}
-      {showWealthModal && (
-        <div
-          onClick={() => setShowWealthModal(false)}
-          style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-          <div
-            onClick={e => e.stopPropagation()}
-            style={{ background: "#16103a", border: "1px solid rgba(167,139,250,0.2)", borderRadius: "16px 16px 0 0", padding: "20px 20px 32px", width: "100%", maxWidth: 420 }}>
-            {/* 핸들 */}
-            <div style={{ width: 36, height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 2, margin: "0 auto 18px" }} />
-            {/* 운세 정보 */}
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
-              <span style={{ fontSize: 34 }}>💰</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>재물운</div>
-                <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>나의 돈 흐름 · 재물이 들어오는 시기</div>
+      {/* ── 운세 바로결제 모달 (통합) ── */}
+      {(() => {
+        const MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; catKey?: string; priceNum?: number; preselect?: string }> = {
+          wealth:        { emoji: "💰", title: "재물운",              desc: "나의 돈 흐름 · 재물이 들어오는 시기",     price: "₩990",    catKey: "💰 재물운", priceNum: 990 },
+          love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩990",    catKey: "💕 연애운", priceNum: 990 },
+          yearly:        { emoji: "🎍", title: "재물운+연애운 심층",   desc: "올해 재물과 연애의 흐름을 한 번에",     price: "₩9,900",  preselect: "basic" },
+          health:        { emoji: "🍀", title: "건강운",              desc: "건강 주의 시기와 핵심 관리 포인트",     price: "₩24,900", preselect: "premium" },
+          compatibility: { emoji: "💑", title: "궁합분석",            desc: "두 사람의 운명적 궁합과 인연",          price: "₩29,900", preselect: "vip" },
+          naming:        { emoji: "✍️", title: "이름분석",            desc: "이름 속에 담긴 운의 흐름",              price: "₩29,900", preselect: "vip" },
+          full:          { emoji: "🔮", title: "전체 사주분석",       desc: "사주팔자 전체 완전 분석",               price: "₩29,900", preselect: "vip" },
+        };
+        const cfg = showModal ? MCFG[showModal] : null;
+        if (!cfg) return null;
+        return (
+          <div onClick={() => setShowModal(null)} style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+            <div onClick={e => e.stopPropagation()} style={{ background: "#16103a", border: "1px solid rgba(167,139,250,0.2)", borderRadius: "16px 16px 0 0", padding: "20px 20px 32px", width: "100%", maxWidth: 420 }}>
+              <div style={{ width: 36, height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 2, margin: "0 auto 18px" }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+                <span style={{ fontSize: 34 }}>{cfg.emoji}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
+                  <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{cfg.desc}</div>
+                </div>
+                <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 900 }}>{cfg.price}</div>
               </div>
-              <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 900 }}>₩990</div>
+              <button
+                onClick={() => {
+                  setShowModal(null);
+                  if (cfg.catKey && cfg.priceNum) {
+                    sessionStorage.setItem("v2_paid_cats", JSON.stringify([cfg.catKey]));
+                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=30&paid=${cfg.priceNum}`);
+                  } else if (cfg.preselect) {
+                    router.push(`/main-v2/payment?preselect=${cfg.preselect}`);
+                  }
+                }}
+                style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
+                결제하기
+              </button>
+              <button onClick={() => setShowModal(null)} style={{ width: "100%", padding: "10px 0", background: "transparent", color: "rgba(255,255,255,0.3)", border: "none", fontSize: 13, cursor: "pointer" }}>
+                닫기
+              </button>
             </div>
-            {/* 결제 버튼 */}
-            <button
-              onClick={() => {
-                sessionStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운"]));
-                setShowWealthModal(false);
-                router.push("/payment-complete?package=재물운&pages=30&paid=990");
-              }}
-              style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
-              결제하기
-            </button>
-            <button
-              onClick={() => setShowWealthModal(false)}
-              style={{ width: "100%", padding: "10px 0", background: "transparent", color: "rgba(255,255,255,0.3)", border: "none", fontSize: 13, cursor: "pointer" }}>
-              닫기
-            </button>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </main>
   );
 }
