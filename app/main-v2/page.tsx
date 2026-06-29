@@ -774,7 +774,7 @@ export default function MainV2() {
           love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩990",    catKey: "💕 연애운", priceNum: 990 },
           yearly:        { emoji: "🎍", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
-          compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 전체 분석 + 상대방 입력 + 궁합",   price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
+          compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
           naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "인기 운세 5가지를 한번에",              price: "₩990",    features: ["💰 재물운", "💕 연애운", "🍀 건강운", "📅 올해 운세", "🗓 월별 운세"], catKeys: ["💰 재물운", "💕 연애운", "🍀 건강운", "📅 올해 운세", "🗓 월별 운세"], priceNum: 990 },
           full:          { emoji: "📆", title: "연도별 운세",         desc: "내 사주로 보는 연도별 운의 흐름",       price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "✨ 전체 사주분석"], preselect: "vip" },
         };
