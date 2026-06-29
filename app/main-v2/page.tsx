@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
@@ -424,9 +424,20 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
   );
 }
 
+function ModalParamReader({ setShowModal, setModalSelectedCats }: { setShowModal: (v: string) => void; setModalSelectedCats: (v: string[]) => void }) {
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const modal = searchParams.get("modal");
+    if (modal === "naming") {
+      setModalSelectedCats(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]);
+      setShowModal("naming");
+    }
+  }, [searchParams]);
+  return null;
+}
+
 export default function MainV2() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [user, setUser] = useState<string | null>(null);
   const [savedProfile, setSavedProfile] = useState<{ name: string; birthYear: number } | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -507,14 +518,6 @@ export default function MainV2() {
     } catch {}
   }, []);
 
-  useEffect(() => {
-    const modal = searchParams.get("modal");
-    if (modal === "naming") {
-      setModalSelectedCats(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]);
-      setShowModal("naming");
-    }
-  }, [searchParams]);
-
   const handleCourse = (c: typeof COURSES[0]) => {
     if (c.id === "free") {
       router.push(user ? "/main-v2/profile" : "/main-v2/login");
@@ -528,6 +531,7 @@ export default function MainV2() {
 
   return (
     <main style={{ minHeight: "100vh", background: BG, backgroundImage: `url('https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
+      <Suspense fallback={null}><ModalParamReader setShowModal={(v) => setShowModal(v)} setModalSelectedCats={setModalSelectedCats} /></Suspense>
       <audio ref={audioRef} src="/bgm.mp3" loop preload="none" />
 
       {/* 헤더 */}
