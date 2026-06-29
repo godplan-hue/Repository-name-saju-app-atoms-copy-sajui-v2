@@ -254,7 +254,6 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                       {isPartner && (cat.id === "wealth" || cat.id === "love") ? "9,900원~" : (cat as any).price}
                     </span>
                   )}
-                  <div style={{ position: "relative", fontSize: 10, fontWeight: 900, color: "#fff", textAlign: "center", lineHeight: 1.2, padding: "0 2px", marginTop: "auto", marginBottom: 6, textShadow: "0 1px 4px rgba(0,0,0,0.8)", whiteSpace: "pre-line" }}>{cat.title}</div>
                 </>
               ) : (
                 <>
