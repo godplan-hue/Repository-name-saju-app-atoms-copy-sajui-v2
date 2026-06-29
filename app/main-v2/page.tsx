@@ -220,7 +220,7 @@ const FORTUNE_CATEGORIES = [
   { id: "love",          title: "연애운",           sub: "연애 타이밍과 인연", emoji: "💕", img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
   { id: "health",        title: "건강운",           sub: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
   { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "naming",        title: "이름분석",          sub: "5개 운세 묶음",      emoji: "✍️", img: "https://i.pinimg.com/736x/75/cc/17/75cc1785e405eb49c4f514cd6000457d.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩4,950",     priceBg: "#ff0000" },
+  { id: "naming",        title: "이름분석",          sub: "5개 운세 묶음",      emoji: "✍️", img: "https://i.pinimg.com/736x/75/cc/17/75cc1785e405eb49c4f514cd6000457d.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩990",       priceBg: "#ff0000" },
   { id: "full",          title: "베이직",            sub: "올해+월별 운세", emoji: "🎯", img: "https://i.pinimg.com/1200x/c0/17/9c/c0179c9fb5870866ed9260971b05fdd4.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "베이직",     priceBg: "#2563eb", badgeSide: "right" },
 ];
 
@@ -250,7 +250,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                   <img src={(cat as any).img} alt={cat.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 70%)" }} />
                   {(cat as any).price && (
-                    <span style={{ position: "absolute", top: 6, ...((cat as any).badgeSide === "right" ? { right: 6 } : { left: 6 }), background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "3px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)" }}>
+                    <span style={{ position: "absolute", top: 6, ...((cat as any).badgeSide === "right" ? { right: 6 } : { left: 6 }), background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 10, fontWeight: 900, padding: "3px 9px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", minWidth: 44, textAlign: "center", display: "inline-block" }}>
                       {isPartner && (cat.id === "wealth" || cat.id === "love") ? "9,900원~" : (cat as any).price}
                     </span>
                   )}
@@ -446,6 +446,7 @@ export default function MainV2() {
   // /public/bgm.mp3 파일이 있어야 실제로 소리가 남(파일은 직접 넣어야 함)
   const [musicOn, setMusicOn] = useState(false);
   const [showModal, setShowModal] = useState<string | null>(null);
+  const [modalSelectedCats, setModalSelectedCats] = useState<string[]>(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
     const audio = audioRef.current;
@@ -775,7 +776,7 @@ export default function MainV2() {
           yearly:        { emoji: "🎍", title: "기본 분석",             desc: "재물운 + 연애운 심층 분석",               price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic", priceNum: 9900 },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
-          naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "원하는 운세 골라 담기 · 개당 ₩990",     price: "₩4,950",  features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"] },
+          naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "원하는 운세 골라 담기 · 개당 ₩990",     price: "₩990/개",  features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"] },
           full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "베이직",   features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
         const cfg = showModal ? MCFG[showModal] : null;
@@ -790,12 +791,19 @@ export default function MainV2() {
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
                   <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{cfg.desc}</div>
                 </div>
-                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
+                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{showModal === "naming" ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 990).toLocaleString()}` : "₩990/개") : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
               </div>
               {cfg.features && (
                 <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
                   {cfg.features.map((f, i) => (
-                    <div key={i} style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: 700, lineHeight: 1.9 }}>✓ {f}</div>
+                    showModal === "naming" ? (
+                      <div key={i} onClick={() => setModalSelectedCats(prev => prev.includes(f) ? prev.filter(x => x !== f) : [...prev, f])} style={{ display: "flex", alignItems: "center", gap: 10, color: modalSelectedCats.includes(f) ? "#fff" : "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: 700, lineHeight: 2.2, cursor: "pointer" }}>
+                        <span style={{ width: 20, height: 20, border: `2px solid ${modalSelectedCats.includes(f) ? "#a78bfa" : "rgba(255,255,255,0.25)"}`, borderRadius: 5, display: "inline-flex", alignItems: "center", justifyContent: "center", background: modalSelectedCats.includes(f) ? "#7c3aed" : "transparent", flexShrink: 0, fontSize: 12 }}>{modalSelectedCats.includes(f) ? "✓" : ""}</span>
+                        {f}
+                      </div>
+                    ) : (
+                      <div key={i} style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: 700, lineHeight: 1.9 }}>✓ {f}</div>
+                    )
                   ))}
                 </div>
               )}
@@ -809,7 +817,11 @@ export default function MainV2() {
                     const raw = customMap[cfg.preselect];
                     return parseInt((raw || "").replace(/[^0-9]/g, "")) || defaultPrices[cfg.preselect] || (cfg.priceNum ?? 990);
                   })();
-                  if (cfg.catKeys) {
+                  if (showModal === "naming") {
+                    if (modalSelectedCats.length === 0) return;
+                    sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
+                    router.push(`/payment-complete?package=${encodeURIComponent("5개 운세 묶음")}&pages=${modalSelectedCats.length * 30}&paid=${modalSelectedCats.length * 990}`);
+                  } else if (cfg.catKeys) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
                     router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`);
                   } else if (cfg.catKey) {
