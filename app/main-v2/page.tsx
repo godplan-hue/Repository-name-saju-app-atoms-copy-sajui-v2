@@ -215,7 +215,7 @@ const BANNERS = [
 const FORTUNE_CATEGORIES = [
   { id: "free",          title: "오늘의 무료운세", sub: "무료 체험",          emoji: "🌟", img: "https://i.pinimg.com/1200x/2f/1b/4e/2f1b4e0713ac39d9090ae3a3e5862db9.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료",        priceBg: "#15803d" },
   { id: "dateselect",    title: "택일/대운",        sub: "택일/대운",           emoji: "📅", img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", bg: "linear-gradient(145deg, #f0f9ff, #bae6fd)", accent: "#0284c7", price: "출시예정",   priceBg: "#0ea5e9", badgeSide: "right" },
-  { id: "yearly",        title: "기본 분석",        sub: "재물운+연애운",     emoji: "🎍", img: "https://i.pinimg.com/736x/96/15/17/961517ad12759e2ebe8381ef66cf003a.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900",     priceBg: "#2563eb", badgeSide: "right" },
+  { id: "yearly",        title: "베이직",           sub: "베이직\n올해+월별", emoji: "🎍", img: "https://i.pinimg.com/736x/96/15/17/961517ad12759e2ebe8381ef66cf003a.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩19,900",    priceBg: "#2563eb", badgeSide: "right" },
   { id: "wealth",        title: "재물운",           sub: "돈이 들어오는 시기", emoji: "💰", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309", price: "₩990",      priceBg: "#ff0000" },
   { id: "love",          title: "연애운",           sub: "연애 타이밍과 인연", emoji: "💕", img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
   { id: "health",        title: "건강운",           sub: "건강운", emoji: "🍀", img: "https://i.pinimg.com/1200x/55/63/35/55633536dcf4915221fbbfbd14fba5e2.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
@@ -255,7 +255,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                     </span>
                   )}
                   {(cat as any).sub && (
-                    <div style={{ position: "absolute", bottom: 7, left: 0, right: 0, textAlign: "center", fontSize: 11, fontWeight: 900, color: "#fff", textShadow: "0 1px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9)", padding: "0 4px" }}>{(cat as any).sub}</div>
+                    <div style={{ position: "absolute", bottom: 7, left: 0, right: 0, textAlign: "center", fontSize: 11, fontWeight: 900, color: "#fff", textShadow: "0 1px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9)", padding: "0 4px", whiteSpace: "pre-line", lineHeight: 1.4 }}>{(cat as any).sub}</div>
                   )}
                 </>
               ) : (
@@ -772,9 +772,9 @@ export default function MainV2() {
         const MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; features?: string[]; catKey?: string; catKeys?: string[]; priceNum?: number; preselect?: string }> = {
           wealth:        { emoji: "💰", title: "재물운",              desc: "나의 돈 흐름 · 재물이 들어오는 시기",     price: "₩990",    catKey: "💰 재물운", priceNum: 990 },
           love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩990",    catKey: "💕 연애운", priceNum: 990 },
-          yearly:        { emoji: "🎍", title: "기본 분석",           desc: "재물운 + 연애운 심층 분석",             price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic" },
-          health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium" },
-          compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 전체 분석 + 상대방 입력 + 궁합",   price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip" },
+          yearly:        { emoji: "🎍", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
+          health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
+          compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 전체 분석 + 상대방 입력 + 궁합",   price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
           naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "인기 운세 5가지를 한번에",              price: "₩990",    features: ["💰 재물운", "💕 연애운", "🍀 건강운", "📅 올해 운세", "🗓 월별 운세"], catKeys: ["💰 재물운", "💕 연애운", "🍀 건강운", "📅 올해 운세", "🗓 월별 운세"], priceNum: 990 },
           full:          { emoji: "📆", title: "연도별 운세",         desc: "내 사주로 보는 연도별 운의 흐름",       price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "✨ 전체 사주분석"], preselect: "vip" },
         };
@@ -802,15 +802,22 @@ export default function MainV2() {
               <button
                 onClick={() => {
                   setShowModal(null);
-                  if (cfg.catKeys && cfg.priceNum && !isPartner) {
+                  const defaultPrices: Record<string, number> = { basic: 9900, standard: 19900, premium: 24900, vip: 29900 };
+                  const resolvedPrice = (() => {
+                    if (!isPartner || !cfg.preselect) return cfg.priceNum ?? 990;
+                    const customMap: Record<string, string | undefined> = { basic: brand?.customPriceBasic, standard: brand?.customPriceStandard, premium: brand?.customPricePremium, vip: brand?.customPriceVip };
+                    const raw = customMap[cfg.preselect];
+                    return parseInt((raw || "").replace(/[^0-9]/g, "")) || defaultPrices[cfg.preselect] || (cfg.priceNum ?? 990);
+                  })();
+                  if (cfg.catKeys) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
-                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${cfg.priceNum}`);
-                  } else if (cfg.catKey && cfg.priceNum && !isPartner) {
+                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`);
+                  } else if (cfg.catKey) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify([cfg.catKey]));
-                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=30&paid=${cfg.priceNum}`);
-                  } else {
-                    const preselect = cfg.preselect ?? "basic";
-                    router.push(`/main-v2/payment?preselect=${preselect}`);
+                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=30&paid=${resolvedPrice}`);
+                  } else if (cfg.priceNum) {
+                    sessionStorage.setItem("selectedPackage", cfg.preselect ?? "basic");
+                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${(cfg.features?.length ?? 3) * 30}&paid=${resolvedPrice}`);
                   }
                 }}
                 style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
