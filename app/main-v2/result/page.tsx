@@ -536,11 +536,10 @@ function V2ResultInner() {
           ? `📥 운세 ${downloadCount}개를 각각 따로 다운로드해야 해요!\n\n확인창이 뜨면 [다운로드]를 누르고, "다운로드 완료"가 뜬 후 다시 [다운로드]를 눌러주세요.\n\n한 번에 여러 번 누르지 말고 하나씩 순서대로 눌러주세요. 총 ${downloadCount}번 누르시면 끝나요.\n\n화면에 다운로드 알림이 고정되어 떠 있어요. 다운로드 안 하려면 [취소] 버튼을 누르면 돼요.`
           : "📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요!");
       }
-      // 카드마다 글자 길이가 달라 배율(scale)이 다르게 적용되면, 캡처된 캔버스 폭이
-      // 서로 달라져서 합칠 때 한쪽에 빈 공간(세로 선처럼 보이는 경계)이 생김 —
-      // 그래서 모든 카드에 동일한 배율을 적용하도록, 가장 긴 카드 기준으로 미리 계산해둠
+      await document.fonts.ready;
+      const isMobile = window.innerWidth < 768;
       const maxScrollHeight = Math.max(...elements.map(el => el.scrollHeight));
-      const sharedScale = maxScrollHeight > 6000 ? 1 : maxScrollHeight > 3000 ? 1.5 : 2;
+      const sharedScale = isMobile ? 1.5 : (maxScrollHeight > 6000 ? 1 : maxScrollHeight > 3000 ? 1.5 : 2);
       const canvases: HTMLCanvasElement[] = [];
       for (let elIdx = 0; elIdx < elements.length; elIdx++) {
         const el = elements[elIdx];
@@ -548,18 +547,17 @@ function V2ResultInner() {
         const prevMH = el.style.maxHeight;
         const prevOvX = el.style.overflowX;
         el.style.overflow = "visible";
-        el.style.overflowX = "hidden"; // 가로 스크롤바가 캡처될 때 세로 선처럼 보이는 것을 방지
+        el.style.overflowX = "hidden";
         el.style.maxHeight = "none";
-        // 맨 위 점수 요약 카드(index 0)는 노란 헤더가 둥근 모서리까지 차 있어서
-        // 캡처 배경색도 똑같이 노란색으로 맞춰야 모서리에 흰색이 비치지 않음
         const captureBg = tier !== "package" ? "#ffffff" : (elIdx === 0 ? "#eab308" : "#fdf6e3");
         const c = await html2canvas(el, {
           backgroundColor: captureBg,
           scale: sharedScale,
           useCORS: true,
+          allowTaint: true,
           logging: false,
           height: el.scrollHeight,
-          windowWidth: 480,
+          windowWidth: isMobile ? window.innerWidth : 480,
           windowHeight: el.scrollHeight,
         });
         el.style.overflow = prevOv;
