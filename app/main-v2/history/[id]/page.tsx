@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
+const G_YELLOW = "linear-gradient(135deg, #eab308, #f59e0b)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const SELECT_CATS = [
@@ -109,6 +110,26 @@ function Bar({ label, score, color }: { label: string; score: number; color: str
         <div style={{ height: "100%", width: `${w}%`, background: G, borderRadius: 99, transition: "width 1s ease" }} />
       </div>
     </div>
+  );
+}
+
+function ScoreCircle({ score, size = 120, dark = false }: { score: number; size?: number; dark?: boolean }) {
+  const r = 44;
+  const circ = 2 * Math.PI * r;
+  const [animated, setAnimated] = useState(0);
+  useEffect(() => { const t = setTimeout(() => setAnimated(score), 300); return () => clearTimeout(t); }, [score]);
+  const dash = (animated / 100) * circ;
+  const tc = dark ? "#3a2a00" : "white";
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r={r} fill="none" stroke={dark ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.3)"} strokeWidth="8" />
+      <circle cx="50" cy="50" r={r} fill="none" stroke={tc} strokeWidth="8"
+        strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
+        transform="rotate(-90 50 50)"
+        style={{ transition: "stroke-dasharray 1.2s ease" }} />
+      <text x="50" y="46" textAnchor="middle" fill={tc} fontSize="20" fontWeight="900">{animated}</text>
+      <text x="50" y="60" textAnchor="middle" fill={dark ? "rgba(58,42,0,0.6)" : "rgba(255,255,255,0.7)"} fontSize="9" fontWeight="700">/ 100</text>
+    </svg>
   );
 }
 
@@ -383,17 +404,19 @@ export default function HistoryDetail() {
         {/* 이미지 저장 대상 카드 */}
         <div ref={cardRef} style={{ background: "white", borderRadius: 24, overflow: "hidden", border: "1.5px solid rgba(236,72,153,0.1)" }}>
 
-          {/* 헤더 그래디언트 — 운세 카테고리에 맞는 색으로 표시 */}
-          <div style={{ background: catGradient(item.category), color: "white", textAlign: "center" }}>
+          {/* 헤더 — 패키지=노랑, 990원/무료=핑크 */}
+          <div style={{ background: item.planType === "package" ? G_YELLOW : G, color: item.planType === "package" ? "#3a2a00" : "white", textAlign: "center" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, padding: "10px 20px 0" }}>
               <span style={{ fontSize: 13 }}>🐱</span>
               <span style={{ fontSize: 13, fontWeight: 900 }}>점운 · AI 사주 분석</span>
             </div>
             <div style={{ padding: "14px 20px 24px" }}>
-              <div style={{ fontSize: 32, marginBottom: 6 }}>{item.category?.split(" ")[0] ?? "✨"}</div>
+              <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
               <h1 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 4px" }}>{item.name}님의 {item.category?.replace(/\S+\s/, "")}</h1>
               <div style={{ fontSize: 12, opacity: 0.75 }}>{fmtDate(item.date)}</div>
-              <div style={{ fontSize: 36, fontWeight: 900, margin: "12px 0 2px" }}>{item.scores?.total ?? "—"}</div>
+              <div style={{ display: "flex", justifyContent: "center", margin: "10px 0 2px" }}>
+                <ScoreCircle score={item.scores?.total ?? 0} size={120} dark={item.planType === "package"} />
+              </div>
               <div style={{ fontSize: 11, opacity: 0.8 }}>총운 점수</div>
             </div>
           </div>
@@ -406,6 +429,80 @@ export default function HistoryDetail() {
                 score={item.scores?.[b.key] ?? 0} color={b.color} />
             ))}
           </div>
+
+          {/* 사주팔자 카드 + 오늘의 한마디 */}
+          {item.birthYear && (() => {
+            const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
+            const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
+            const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
+            const ohHan: Record<string,string> = {"목":"木","화":"火","토":"土","금":"金","수":"水"};
+            const ganHan: Record<string,string> = {"갑":"甲","을":"乙","병":"丙","정":"丁","무":"戊","기":"己","경":"庚","신":"辛","임":"壬","계":"癸"};
+            const ohEmoji: Record<string,string> = {"목":"🌳","화":"🔥","토":"⛰️","금":"⚪","수":"💧"};
+            const y = Number(item.birthYear);
+            const z = zodiacList[((y - 4) % 12 + 12) % 12];
+            const oh = ohArr[((y - 4) % 10 + 10) % 10];
+            const gan = ganList[((y - 4) % 10 + 10) % 10];
+            const isPackage = item.planType === "package";
+            const dIdx = new Date().getDay();
+            const dayMsgs = [
+              "오늘은 그동안 미뤄온 결정을 내리기 좋은 날입니다.",
+              "오늘은 사람과의 인연이 평소보다 강하게 작동하는 날입니다.",
+              "오늘은 돈과 관련된 작은 선택이 길게 영향을 미치는 날입니다.",
+              "오늘은 몸의 신호에 조금 더 귀 기울여야 하는 날입니다.",
+              "오늘은 새로운 시도를 해볼 만한 기운이 흐르는 날입니다.",
+              "오늘은 차분히 정리하고 돌아보기 좋은 날입니다.",
+              "오늘은 평소보다 직관을 믿어도 좋은 날입니다.",
+            ];
+            const tomorrowMsgs = [
+              "내일은 가까운 사람과의 대화에서 좋은 기운이 들어옵니다.",
+              "내일은 작은 기회가 평소보다 눈에 잘 들어오는 흐름입니다.",
+              "내일은 재물과 관련된 신호를 눈여겨봐야 하는 흐름입니다.",
+              "내일은 몸과 마음을 챙기는 것이 우선인 흐름입니다.",
+              "내일은 새로운 인연이나 제안이 들어올 수 있는 흐름입니다.",
+              "내일은 오늘 한 결정의 결과가 서서히 드러나는 흐름입니다.",
+              "내일은 한 주를 준비하는 마음가짐이 중요한 흐름입니다.",
+            ];
+            return (
+              <div style={{ padding: "0 18px 8px" }}>
+                <div style={{ background: isPackage ? "#fdf6e3" : "white", borderRadius: 16, overflow: "hidden", border: isPackage ? "1.5px solid rgba(217,180,80,0.45)" : "1.5px solid rgba(236,72,153,0.12)" }}>
+                  <div style={{ background: isPackage ? G_YELLOW : G, color: isPackage ? "#3a2a00" : "white", padding: "10px 16px", fontSize: 13, fontWeight: 900 }}>
+                    🪬 {item.name}님의 사주팔자 {isPackage ? "한눈에 보기" : "맛보기"}
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: isPackage ? "1fr 1fr 1fr" : "1fr 1fr", gap: 8, padding: "14px 16px" }}>
+                    <div style={{ background: BG, borderRadius: 12, padding: "10px 6px", textAlign: "center" }}>
+                      <div style={{ fontSize: 18, marginBottom: 3 }}>🐉</div>
+                      <div style={{ fontSize: 9, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div>
+                      <div style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div>
+                    </div>
+                    <div style={{ background: BG, borderRadius: 12, padding: "10px 6px", textAlign: "center" }}>
+                      <div style={{ fontSize: 18, marginBottom: 3 }}>{ohEmoji[oh]}</div>
+                      <div style={{ fontSize: 9, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div>
+                      <div style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{oh}({ohHan[oh]})</div>
+                    </div>
+                    {isPackage && (
+                      <div style={{ background: BG, borderRadius: 12, padding: "10px 6px", textAlign: "center" }}>
+                        <div style={{ fontSize: 18, marginBottom: 3 }}>🌳</div>
+                        <div style={{ fontSize: 9, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>천간</div>
+                        <div style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{gan}({ganHan[gan]})</div>
+                      </div>
+                    )}
+                  </div>
+                  {isPackage && (
+                    <div style={{ padding: "0 16px 14px" }}>
+                      <div style={{ background: "#f5f3ff", borderRadius: 12, padding: "10px 12px", marginBottom: 8 }}>
+                        <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 3 }}>🔮 오늘의 한마디</div>
+                        <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{dayMsgs[dIdx]}</div>
+                      </div>
+                      <div style={{ background: "#f5f3ff", borderRadius: 12, padding: "10px 12px" }}>
+                        <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 3 }}>🌙 내일의 예고</div>
+                        <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{tomorrowMsgs[(dIdx + 1) % 7]}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
 
           {/* 럭키 정보 (있을 경우) */}
           {(item.luckyColor || item.luckyNumber || item.luckyDirection) && (

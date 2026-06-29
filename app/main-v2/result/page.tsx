@@ -213,22 +213,21 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
     const date = r.savedAt ?? new Date().toISOString();
     const cats = paidCats.length > 0 ? paidCats : Object.keys(analyses);
     cats.forEach((cat, i) => {
-      // 카테고리명(이모지+공백 포함)을 ID에 넣으면 상세페이지 이동 시 URL 인코딩 문제로
-      // 매칭이 깨지는 버그가 있었음 — 영문/숫자만 쓰는 안전한 ID로 변경 (충돌 방지는 유지)
       const id = `${r.histId}-${i}`;
-      const entry = {
-        id,
-        date,
+      if (hist.some((h: any) => h.id === id)) return;
+      hist.unshift({
+        id, date,
         name: r.profile?.name ?? "",
         category: cat,
         scores: r.scores ?? {},
         analysis: analyses[cat] ?? "",
         isPaid: true,
         planType,
-      };
-      const idx = hist.findIndex((h: any) => h.id === id);
-      if (idx >= 0) hist[idx] = entry;
-      else hist.unshift(entry);
+        birthYear: r.profile?.birthYear ?? "",
+        luckyColor: r.luckyColor ?? "",
+        luckyNumber: r.luckyNumber ?? "",
+        luckyDirection: r.luckyDirection ?? "",
+      });
     });
     localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
   } catch {}

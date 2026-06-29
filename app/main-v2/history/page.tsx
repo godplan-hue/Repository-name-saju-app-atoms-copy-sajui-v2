@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
+const G_YELLOW = "linear-gradient(135deg, #eab308, #f59e0b)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const SELECT_CATS = [
@@ -215,7 +216,7 @@ export default function V2History() {
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{ width: 40, height: 40, background: catColor(item.category), borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>
+                    <div style={{ width: 40, height: 40, background: item.planType === "package" ? G_YELLOW : G, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>
                       {item.category?.split(" ")[0] ?? "✨"}
                     </div>
                     <div>
@@ -232,14 +233,22 @@ export default function V2History() {
                       <div style={{ fontSize: 22, fontWeight: 900, color: sc(item.scores?.total ?? 0) }}>{item.scores?.total ?? "—"}</div>
                       <div style={{ fontSize: 10, color: "#9ca3af" }}>총운</div>
                     </div>
-                    {item.planType !== "select" && (
+                    <div style={{ display: "flex", gap: 5 }}>
                       <button
-                        onClick={e => shareItem(item, e)}
-                        style={{ padding: "4px 10px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
+                        onClick={e => { e.stopPropagation(); router.push(`/main-v2/history/${encodeURIComponent(item.id)}`); }}
+                        style={{ padding: "4px 10px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
                       >
-                        📤 공유
+                        🔊 읽기
                       </button>
-                    )}
+                      {item.planType !== "select" && (
+                        <button
+                          onClick={e => shareItem(item, e)}
+                          style={{ padding: "4px 10px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
+                        >
+                          📤 공유
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
 
