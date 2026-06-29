@@ -579,6 +579,13 @@ export default function MainV2() {
             <span key={b.text} style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: b.bg, borderRadius: 20, padding: "6px 12px", boxShadow: "0 3px 8px rgba(0,0,0,0.15)" }}>{b.text}</span>
           ))}
         </div>
+        {!isPartner && (
+          <button
+            onClick={() => router.push("/main-v2/payment")}
+            style={{ marginTop: 16, padding: "13px 36px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)", letterSpacing: "-0.2px" }}>
+            💳 전체 운세 보기
+          </button>
+        )}
       </section>
 
       {/* 슬라이드 배너 */}
