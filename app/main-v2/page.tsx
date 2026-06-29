@@ -220,7 +220,7 @@ const FORTUNE_CATEGORIES = [
   { id: "love",          title: "연애운",           sub: "연애 타이밍과 인연", emoji: "💕", img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
   { id: "health",        title: "건강운",           sub: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
   { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "naming",        title: "이름분석",          sub: "5개 운세 묶음",      emoji: "✍️", img: "https://i.pinimg.com/736x/66/79/cc/6679cc93b3b023618baa87b57c180447.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩990",       priceBg: "#ff0000" },
+  { id: "naming",        title: "이름분석",          sub: "5개 운세 묶음",      emoji: "✍️", img: "https://i.pinimg.com/736x/bb/b0/7e/bbb07e6bf2a39687d0fa55eb1a84cab1.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩990",       priceBg: "#ff0000" },
   { id: "full",          title: "베이직",            sub: "올해+월별 운세", emoji: "🎯", img: "https://i.pinimg.com/1200x/c0/17/9c/c0179c9fb5870866ed9260971b05fdd4.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "베이직",     priceBg: "#2563eb", badgeSide: "right" },
 ];
 
