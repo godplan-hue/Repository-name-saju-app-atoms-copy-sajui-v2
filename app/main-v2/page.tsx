@@ -213,15 +213,15 @@ const BANNERS = [
 ];
 
 const FORTUNE_CATEGORIES = [
-  { id: "free", title: "오늘의 무료운세", emoji: "🌟", img: "https://i.pinimg.com/1200x/2f/1b/4e/2f1b4e0713ac39d9090ae3a3e5862db9.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료", priceBg: "#15803d" },
-  { id: "dateselect", title: "택일", emoji: "📅", img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", bg: "linear-gradient(145deg, #f0f9ff, #bae6fd)", accent: "#0284c7", price: "출시예정", priceBg: "#0ea5e9", badgeSide: "right" },
-  { id: "yearly", title: "재물운+연애운\n심층분석", emoji: "🎍", img: "https://i.pinimg.com/736x/96/15/17/961517ad12759e2ebe8381ef66cf003a.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900", priceBg: "#2563eb", badgeSide: "right" },
-  { id: "wealth", title: "재물운", emoji: "💰", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309", price: "₩990", priceBg: "#ff0000" },
-  { id: "love", title: "연애운", emoji: "💕", img: "https://i.pinimg.com/736x/4f/02/13/4f0213abf6635336a4b3719554766624.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990", priceBg: "#ff0000" },
-  { id: "health", title: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/d3/20/62/d32062b1c5d6aa5d14b0a827347d897e.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
-  { id: "compatibility", title: "궁합분석", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "naming", title: "이름분석", emoji: "✍️", img: "https://i.pinimg.com/736x/75/cc/17/75cc1785e405eb49c4f514cd6000457d.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "full", title: "전체 사주분석", emoji: "🔮", img: "https://i.pinimg.com/1200x/cc/82/27/cc82279b6fc9f07bc51ba888d662b675.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
+  { id: "free",          title: "오늘의 무료운세", sub: "무료 체험",          emoji: "🌟", img: "https://i.pinimg.com/1200x/2f/1b/4e/2f1b4e0713ac39d9090ae3a3e5862db9.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료",        priceBg: "#15803d" },
+  { id: "dateselect",    title: "택일",            sub: "곧 출시",           emoji: "📅", img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", bg: "linear-gradient(145deg, #f0f9ff, #bae6fd)", accent: "#0284c7", price: "출시예정",   priceBg: "#0ea5e9", badgeSide: "right" },
+  { id: "yearly",        title: "기본 분석",        sub: "재물운+연애운",     emoji: "🎍", img: "https://i.pinimg.com/736x/96/15/17/961517ad12759e2ebe8381ef66cf003a.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900",     priceBg: "#2563eb", badgeSide: "right" },
+  { id: "wealth",        title: "재물운",           sub: "돈이 들어오는 시기", emoji: "💰", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309", price: "₩990",      priceBg: "#ff0000" },
+  { id: "love",          title: "연애운",           sub: "연애 타이밍과 인연", emoji: "💕", img: "https://i.pinimg.com/736x/4f/02/13/4f0213abf6635336a4b3719554766624.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
+  { id: "health",        title: "건강운",           sub: "올해+재물+연애+건강+월별", emoji: "🍀", img: "https://i.pinimg.com/736x/d3/20/62/d32062b1c5d6aa5d14b0a827347d897e.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
+  { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
+  { id: "naming",        title: "이름분석",          sub: "이름+궁합+전체사주", emoji: "✍️", img: "https://i.pinimg.com/736x/75/cc/17/75cc1785e405eb49c4f514cd6000457d.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "👑 VIP 전용", priceBg: "#6d28d9" },
+  { id: "full",          title: "전체 사주분석",     sub: "이름+궁합+전체사주", emoji: "🔮", img: "https://i.pinimg.com/1200x/cc/82/27/cc82279b6fc9f07bc51ba888d662b675.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
 ];
 
 function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPartner: boolean }) {
@@ -248,13 +248,16 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
               {(cat as any).img ? (
                 <>
                   <img src={(cat as any).img} alt={cat.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 55%)" }} />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 70%)" }} />
                   {(cat as any).price && (
                     <span style={{ position: "absolute", top: 6, ...((cat as any).badgeSide === "right" ? { right: 6 } : { left: 6 }), background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "3px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)" }}>
                       {isPartner && (cat.id === "wealth" || cat.id === "love") ? "9,900원~" : (cat as any).price}
                     </span>
                   )}
-                  <div style={{ position: "relative", fontSize: 10, fontWeight: 900, color: "#fff", textAlign: "center", lineHeight: 1.2, padding: "0 2px", marginTop: "auto", marginBottom: 6, textShadow: "0 1px 4px rgba(0,0,0,0.6)", whiteSpace: "pre-line" }}>{cat.title}</div>
+                  <div style={{ position: "relative", textAlign: "center", marginTop: "auto", marginBottom: 6, padding: "0 4px" }}>
+                    <div style={{ fontSize: 10, fontWeight: 900, color: "#fff", lineHeight: 1.2, textShadow: "0 1px 4px rgba(0,0,0,0.8)", whiteSpace: "pre-line" }}>{cat.title}</div>
+                    {(cat as any).sub && <div style={{ fontSize: 8, fontWeight: 700, color: "rgba(255,255,255,0.8)", marginTop: 2, textShadow: "0 1px 3px rgba(0,0,0,0.9)", lineHeight: 1.3 }}>{(cat as any).sub}</div>}
+                  </div>
                 </>
               ) : (
                 <>
@@ -772,9 +775,9 @@ export default function MainV2() {
           love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩990",    catKey: "💕 연애운", priceNum: 990 },
           yearly:        { emoji: "🎍", title: "기본 분석",           desc: "재물운 + 연애운 심층 분석",             price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic" },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "🍀 건강운", "📄 심층 상세 분석"], preselect: "premium" },
-          compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 전체 분석 + 상대방 입력 + 궁합",   price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "💑 궁합 분석", "🗓 월별 운세", "📄 심층 상세 분석 (8개)"], preselect: "vip" },
-          naming:        { emoji: "✍️", title: "VIP 커플팩",          desc: "이름분석 포함 전체 VIP 구성",           price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "✍️ 이름 분석", "💑 궁합 분석", "📄 심층 상세 분석 (8개)"], preselect: "vip" },
-          full:          { emoji: "🔮", title: "VIP 커플팩",          desc: "사주팔자 전체 8개 분야 완전 분석",      price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "💑 궁합 분석", "✍️ 이름 분석", "🗓 월별 운세", "📄 심층 상세 분석 (8개)"], preselect: "vip" },
+          compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 전체 분석 + 상대방 입력 + 궁합",   price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip" },
+          naming:        { emoji: "✍️", title: "VIP 커플팩",          desc: "이름분석 포함 전체 VIP 구성",           price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip" },
+          full:          { emoji: "🔮", title: "VIP 커플팩",          desc: "사주팔자 전체 8개 분야 완전 분석",      price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip" },
         };
         const cfg = showModal ? MCFG[showModal] : null;
         if (!cfg) return null;
