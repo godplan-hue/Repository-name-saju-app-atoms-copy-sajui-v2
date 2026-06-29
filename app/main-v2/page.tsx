@@ -255,7 +255,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                     </span>
                   )}
                   {(cat as any).sub && (
-                    <div style={{ position: "absolute", bottom: 7, left: 0, right: 0, textAlign: "center", fontSize: 11, fontWeight: 900, color: "#fff", textShadow: "0 1px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9)", padding: "0 4px", whiteSpace: "pre-line", lineHeight: 1.4 }}>{(cat as any).sub}</div>
+                    <div style={{ position: "absolute", bottom: 7, left: 0, right: 0, textAlign: "center", fontSize: 9.5, fontWeight: 900, color: "#fff", textShadow: "0 1px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9)", padding: "0 4px", whiteSpace: "pre-line", lineHeight: 1.4 }}>{(cat as any).sub}</div>
                   )}
                 </>
               ) : (
