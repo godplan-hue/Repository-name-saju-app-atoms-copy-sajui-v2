@@ -558,7 +558,7 @@ export default function MainV2() {
             )
             : <button onClick={() => router.push("/main-v2/login")} style={{ padding: "6px 14px", background: G, color: "white", border: "none", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>로그인</button>
           }
-          {!isPartner && <button onClick={() => router.push("/main-v2/payment")} style={{ padding: "6px 13px", background: "linear-gradient(135deg, #c4b5fd, #8b5cf6)", color: "white", border: "none", borderRadius: 20, fontWeight: 900, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 8px rgba(139,92,246,0.35)" }}>💳 전체 운세 보기</button>}
+          {!isPartner && <button onClick={() => router.push("/main-v2/payment")} style={{ padding: "6px 13px", background: G, color: "white", border: "none", borderRadius: 20, fontWeight: 900, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 8px rgba(236,72,153,0.3)" }}>💳 전체 운세 보기</button>}
           <button onClick={() => router.push("/main-v2/history")} style={{ padding: "6px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>📂 보관함</button>
           <button onClick={() => router.push("/saju-info")} style={{ padding: "6px 12px", background: "#f3e8ff", color: "#7c3aed", border: "1px solid rgba(124,58,237,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>📖 사주정보</button>
         </div>
@@ -767,17 +767,17 @@ export default function MainV2() {
           style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
           <div
             onClick={e => e.stopPropagation()}
-            style={{ background: "linear-gradient(160deg, #1a0f35 0%, #0f0620 100%)", border: "1px solid rgba(251,191,36,0.45)", borderRadius: "22px 22px 0 0", padding: "32px 24px 44px", width: "100%", maxWidth: 480 }}>
+            style={{ background: "linear-gradient(160deg, #2d1b69 0%, #1a0f40 100%)", border: "1px solid rgba(196,181,253,0.4)", borderRadius: "22px 22px 0 0", padding: "32px 24px 44px", width: "100%", maxWidth: 480 }}>
             {/* 헤더 */}
             <div style={{ textAlign: "center", marginBottom: 20 }}>
               <div style={{ fontSize: 52, marginBottom: 8 }}>💰</div>
-              <h2 style={{ color: "#fbbf24", fontSize: 22, fontWeight: 900, margin: "0 0 6px" }}>재물운</h2>
-              <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 13, margin: 0 }}>나의 돈 흐름 · 재물이 들어오는 시기와 방향</p>
+              <h2 style={{ color: "#c4b5fd", fontSize: 22, fontWeight: 900, margin: "0 0 6px" }}>재물운</h2>
+              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, margin: 0 }}>나의 돈 흐름 · 재물이 들어오는 시기와 방향</p>
             </div>
             {/* 가격 */}
-            <div style={{ textAlign: "center", background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 14, padding: "14px 0", marginBottom: 20 }}>
-              <span style={{ color: "#fbbf24", fontSize: 34, fontWeight: 900 }}>₩990</span>
-              <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginLeft: 8 }}>단품 결제</span>
+            <div style={{ textAlign: "center", background: "rgba(196,181,253,0.12)", border: "1px solid rgba(196,181,253,0.3)", borderRadius: 14, padding: "14px 0", marginBottom: 20 }}>
+              <span style={{ color: "#e9d5ff", fontSize: 34, fontWeight: 900 }}>₩990</span>
+              <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, marginLeft: 8 }}>단품 결제</span>
             </div>
             {/* 결제 버튼 */}
             <button
@@ -786,7 +786,7 @@ export default function MainV2() {
                 setShowWealthModal(false);
                 router.push("/payment-complete?package=재물운&pages=30&paid=990");
               }}
-              style={{ width: "100%", padding: "16px 0", background: "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 24px rgba(251,191,36,0.4)", marginBottom: 12 }}>
+              style={{ width: "100%", padding: "16px 0", background: "linear-gradient(135deg, #c4b5fd, #8b5cf6, #6d28d9)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 24px rgba(139,92,246,0.45)", marginBottom: 12 }}>
               💎 재물운 결제하기
             </button>
             <button
