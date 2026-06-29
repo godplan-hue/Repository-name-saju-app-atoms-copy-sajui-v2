@@ -221,7 +221,7 @@ const FORTUNE_CATEGORIES = [
   { id: "health",        title: "건강운",           sub: "올해+재물+연애+건강+월별", emoji: "🍀", img: "https://i.pinimg.com/736x/d3/20/62/d32062b1c5d6aa5d14b0a827347d897e.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
   { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
   { id: "naming",        title: "이름분석",          sub: "이름+궁합+전체사주", emoji: "✍️", img: "https://i.pinimg.com/736x/75/cc/17/75cc1785e405eb49c4f514cd6000457d.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "full",          title: "전체 사주분석",     sub: "이름+궁합+전체사주", emoji: "🔮", img: "https://i.pinimg.com/1200x/cc/82/27/cc82279b6fc9f07bc51ba888d662b675.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
+  { id: "full",          title: "연도별 운세",       sub: "",                  emoji: "📆", img: "https://i.pinimg.com/1200x/cc/82/27/cc82279b6fc9f07bc51ba888d662b675.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
 ];
 
 function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPartner: boolean }) {
@@ -254,10 +254,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                       {isPartner && (cat.id === "wealth" || cat.id === "love") ? "9,900원~" : (cat as any).price}
                     </span>
                   )}
-                  <div style={{ position: "relative", textAlign: "center", marginTop: "auto", marginBottom: 6, padding: "0 4px" }}>
-                    <div style={{ fontSize: 10, fontWeight: 900, color: "#fff", lineHeight: 1.2, textShadow: "0 1px 4px rgba(0,0,0,0.8)", whiteSpace: "pre-line" }}>{cat.title}</div>
-                    {(cat as any).sub && <div style={{ fontSize: 8, fontWeight: 700, color: "rgba(255,255,255,0.8)", marginTop: 2, textShadow: "0 1px 3px rgba(0,0,0,0.9)", lineHeight: 1.3 }}>{(cat as any).sub}</div>}
-                  </div>
+                  <div style={{ position: "relative", fontSize: 10, fontWeight: 900, color: "#fff", textAlign: "center", lineHeight: 1.2, padding: "0 2px", marginTop: "auto", marginBottom: 6, textShadow: "0 1px 4px rgba(0,0,0,0.8)", whiteSpace: "pre-line" }}>{cat.title}</div>
                 </>
               ) : (
                 <>
@@ -774,10 +771,10 @@ export default function MainV2() {
           wealth:        { emoji: "💰", title: "재물운",              desc: "나의 돈 흐름 · 재물이 들어오는 시기",     price: "₩990",    catKey: "💰 재물운", priceNum: 990 },
           love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩990",    catKey: "💕 연애운", priceNum: 990 },
           yearly:        { emoji: "🎍", title: "기본 분석",           desc: "재물운 + 연애운 심층 분석",             price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic" },
-          health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "🍀 건강운", "📄 심층 상세 분석"], preselect: "premium" },
+          health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium" },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 전체 분석 + 상대방 입력 + 궁합",   price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip" },
           naming:        { emoji: "✍️", title: "VIP 커플팩",          desc: "이름분석 포함 전체 VIP 구성",           price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip" },
-          full:          { emoji: "🔮", title: "VIP 커플팩",          desc: "사주팔자 전체 8개 분야 완전 분석",      price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip" },
+          full:          { emoji: "📆", title: "연도별 운세",         desc: "내 사주로 보는 연도별 운의 흐름",       price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "✨ 전체 사주분석"], preselect: "vip" },
         };
         const cfg = showModal ? MCFG[showModal] : null;
         if (!cfg) return null;
