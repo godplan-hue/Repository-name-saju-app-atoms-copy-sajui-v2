@@ -223,8 +223,8 @@ export default function V2History() {
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "24px 16px 60px" }}>
-        <h1 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>📂 보관함</h1>
-        <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 24px" }}>내 운세 분석 기록</p>
+        <h1 style={{ fontSize: 20, fontWeight: 900, color: "#fff", margin: "0 0 4px", textShadow: "0 1px 6px rgba(0,0,0,0.7)" }}>📂 보관함</h1>
+        <p style={{ fontSize: 13, fontWeight: 700, color: "#fff", margin: "0 0 24px", textShadow: "0 1px 6px rgba(0,0,0,0.7)" }}>내 운세 분석 기록</p>
 
         {hist.length === 0 ? (
           <div style={{ textAlign: "center", padding: "72px 20px" }}>
