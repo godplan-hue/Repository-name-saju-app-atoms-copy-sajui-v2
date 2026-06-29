@@ -214,14 +214,14 @@ const BANNERS = [
 
 const FORTUNE_CATEGORIES = [
   { id: "free",          title: "오늘의 무료운세", sub: "무료 체험",          emoji: "🌟", img: "https://i.pinimg.com/1200x/2f/1b/4e/2f1b4e0713ac39d9090ae3a3e5862db9.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료",        priceBg: "#15803d" },
-  { id: "dateselect",    title: "택일/대운",        sub: "택일/대운",           emoji: "📅", img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", bg: "linear-gradient(145deg, #f0f9ff, #bae6fd)", accent: "#0284c7", price: "출시예정",   priceBg: "#0ea5e9", badgeSide: "right" },
-  { id: "yearly",        title: "베이직",           sub: "베이직\n올해+월별", emoji: "🎍", img: "https://i.pinimg.com/736x/96/15/17/961517ad12759e2ebe8381ef66cf003a.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "베이직",      priceBg: "#2563eb", badgeSide: "right" },
+  { id: "dateselect",    title: "택일/대운/연도별",  sub: "택일/대운/연도별운세", emoji: "📅", img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", bg: "linear-gradient(145deg, #f0f9ff, #bae6fd)", accent: "#0284c7", price: "출시예정",   priceBg: "#0ea5e9", badgeSide: "right" },
+  { id: "yearly",        title: "기본 분석",         sub: "재물운+연애운",       emoji: "🎍", img: "https://i.pinimg.com/736x/96/15/17/961517ad12759e2ebe8381ef66cf003a.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900",     priceBg: "#2563eb", badgeSide: "right" },
   { id: "wealth",        title: "재물운",           sub: "돈이 들어오는 시기", emoji: "💰", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309", price: "₩990",      priceBg: "#ff0000" },
   { id: "love",          title: "연애운",           sub: "연애 타이밍과 인연", emoji: "💕", img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
   { id: "health",        title: "건강운",           sub: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
   { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
   { id: "naming",        title: "이름분석",          sub: "5개 운세 묶음",      emoji: "✍️", img: "https://i.pinimg.com/736x/75/cc/17/75cc1785e405eb49c4f514cd6000457d.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩990",       priceBg: "#ff0000" },
-  { id: "full",          title: "연도별 운세",       sub: "연도별 운세", emoji: "📆", img: "https://i.pinimg.com/1200x/c0/17/9c/c0179c9fb5870866ed9260971b05fdd4.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "출시예정",   priceBg: "#0ea5e9" },
+  { id: "full",          title: "베이직",            sub: "베이직",      emoji: "🎯", img: "https://i.pinimg.com/1200x/c0/17/9c/c0179c9fb5870866ed9260971b05fdd4.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "베이직",     priceBg: "#2563eb" },
 ];
 
 function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPartner: boolean }) {
@@ -613,7 +613,7 @@ export default function MainV2() {
           compatibility: "vip", naming: "vip", full: "vip",
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
-        else if (id === "dateselect" || id === "full") alert("곧 만나보실 수 있어요! 조금만 기다려주세요 🙏");
+        else if (id === "dateselect") alert("곧 만나보실 수 있어요! 조금만 기다려주세요 🙏");
         else setShowModal(id);
       }} />
 
@@ -772,11 +772,11 @@ export default function MainV2() {
         const MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; features?: string[]; catKey?: string; catKeys?: string[]; priceNum?: number; preselect?: string }> = {
           wealth:        { emoji: "💰", title: "재물운",              desc: "나의 돈 흐름 · 재물이 들어오는 시기",     price: "₩990",    catKey: "💰 재물운", priceNum: 990 },
           love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩990",    catKey: "💕 연애운", priceNum: 990 },
-          yearly:        { emoji: "🎍", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
+          yearly:        { emoji: "🎍", title: "기본 분석",             desc: "재물운 + 연애운 심층 분석",               price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic", priceNum: 9900 },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
           naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "인기 운세 5가지를 한번에",              price: "₩990",    features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], catKeys: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 990 },
-          full:          { emoji: "📆", title: "연도별 운세",         desc: "내 사주로 보는 연도별 운의 흐름",       price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "✨ 전체 사주분석"], preselect: "vip" },
+          full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "베이직",   features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
         const cfg = showModal ? MCFG[showModal] : null;
         if (!cfg) return null;
