@@ -477,31 +477,6 @@ function PaidInfoInputInner() {
                   <button onClick={() => setBirthHour("unknown")} style={{ width: "100%", padding: "9px 0", border: birthHour === "unknown" ? "2px solid #fbbf24" : "1.5px solid #ddd", background: birthHour === "unknown" ? "#fffbeb" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", color: birthHour === "unknown" ? "#b45309" : "#333" }}>모름</button>
                 </div>
 
-                <select
-                  value={birthMinute}
-                  onChange={(e) => setBirthMinute(e.target.value)}
-                  style={{
-                    width: "48%",
-                    padding: 9,
-                    marginBottom: 7,
-                    borderRadius: 8,
-                    border: "1px solid #fbbf24",
-                    background: "#fff",
-                    color: "#333",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    boxSizing: "border-box",
-                    fontFamily: "inherit",
-                    cursor: "pointer",
-                  }}
-                >
-                  <option value="unknown">모름</option>
-                  {minutes.map((minute) => (
-                    <option key={minute} value={minute}>
-                      {String(minute).padStart(2, "0")}분
-                    </option>
-                  ))}
-                </select>
               </div>
             </div>
 
@@ -640,31 +615,6 @@ function PaidInfoInputInner() {
                     <button onClick={() => setPartnerBirthHour("unknown")} style={{ width: "100%", padding: "9px 0", border: partnerBirthHour === "unknown" ? "2px solid #fbbf24" : "1.5px solid #ddd", background: partnerBirthHour === "unknown" ? "#fffbeb" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", color: partnerBirthHour === "unknown" ? "#b45309" : "#333" }}>모름</button>
                   </div>
 
-                  <select
-                    value={partnerBirthMinute}
-                    onChange={(e) => setPartnerBirthMinute(e.target.value)}
-                    style={{
-                      width: "48%",
-                      padding: 9,
-                      marginBottom: 7,
-                      borderRadius: 8,
-                      border: "1px solid #fbbf24",
-                      background: "#fff",
-                      color: "#333",
-                      fontSize: 14,
-                      fontWeight: 700,
-                      boxSizing: "border-box",
-                      fontFamily: "inherit",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <option value="unknown">모름</option>
-                    {minutes.map((minute) => (
-                      <option key={minute} value={minute}>
-                        {String(minute).padStart(2, "0")}분
-                      </option>
-                    ))}
-                  </select>
                 </div>
               </div>
             )}

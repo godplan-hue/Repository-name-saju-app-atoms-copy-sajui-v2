@@ -781,7 +781,7 @@ export default function MainV2() {
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
           naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "원하는 운세 골라 담기 · 개당 ₩990",     price: "₩990/개",  features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"] },
-          full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "베이직",   features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
+          full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
         const cfg = showModal ? MCFG[showModal] : null;
         if (!cfg) return null;
