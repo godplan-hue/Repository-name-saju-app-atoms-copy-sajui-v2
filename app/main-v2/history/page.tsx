@@ -253,7 +253,7 @@ export default function V2History() {
                 </div>
 
                 <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
-                  {[{ k: "wealth", l: "재물" }, { k: "love", l: "연애" }, { k: "health", l: "건강" }, { k: "success", l: "성공" }].map(s => (
+                  {[{ k: "wealth", l: "재물" }, { k: "love", l: "연애" }, { k: "health", l: "건강" }, { k: "success", l: "성공" }, { k: "total", l: "총운" }].map(s => (
                     <div key={s.k} style={{ background: BG, borderRadius: 8, padding: "3px 9px", fontSize: 11, fontWeight: 700, color: "#6b7280" }}>
                       {s.l} <span style={{ color: sc(item.scores?.[s.k as keyof typeof item.scores] ?? 0), fontWeight: 900 }}>{item.scores?.[s.k as keyof typeof item.scores] ?? "—"}</span>
                     </div>
