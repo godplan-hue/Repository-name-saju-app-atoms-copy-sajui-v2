@@ -446,7 +446,7 @@ export default function MainV2() {
   // /public/bgm.mp3 파일이 있어야 실제로 소리가 남(파일은 직접 넣어야 함)
   const [musicOn, setMusicOn] = useState(false);
   const [showModal, setShowModal] = useState<string | null>(null);
-  const [modalSelectedCats, setModalSelectedCats] = useState<string[]>(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]);
+  const [modalSelectedCats, setModalSelectedCats] = useState<string[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
     const audio = audioRef.current;
