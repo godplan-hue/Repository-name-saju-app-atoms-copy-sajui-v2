@@ -1353,6 +1353,12 @@ function V2ResultInner() {
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
+              <button onClick={() => router.push("/main-v2/payment?single=재물운")}
+                style={{ width: "100%", padding: "15px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(245,158,11,0.35)" }}>
+                💰 재물운 990원으로 바로 보기
+              </button>
+            </div>
+            <div style={{ marginBottom: 10 }}>
               <button onClick={() => router.push("/main-v2/payment")}
                 style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
                 💳 유료 운세 결제하기
