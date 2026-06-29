@@ -31,8 +31,11 @@ function PaymentCompleteInner() {
   useEffect(() => {
     const pkg = searchParams.get("package") || "베이직";
     const pg = searchParams.get("pages") || "75";
+    const paid = searchParams.get("paid") || "";
 
     sessionStorage.setItem("selectedPackage", pkg);
+    if (paid) sessionStorage.setItem("price", paid);
+    sessionStorage.setItem("v2_plan", "package");
 
     setPackageName(pkg);
     setPages(parseInt(pg));
