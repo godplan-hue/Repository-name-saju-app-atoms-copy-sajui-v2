@@ -123,7 +123,7 @@ export default function Terms() {
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 0 }}>
               <li>• 서비스 이용과 관련하여 분쟁이 발생한 경우, 회사와 이용자는 우선 협의를 통해 해결합니다.</li>
               <li>• 협의가 이루어지지 않는 경우, 민사소송법상의 관할 법원에 제소할 수 있습니다.</li>
-              <li>• 문의: junga6783@gmail.com · 010-4714-2689</li>
+              <li>• 문의: info@jeomun.com · 010-4714-2689</li>
             </ul>
           </section>
         </div>

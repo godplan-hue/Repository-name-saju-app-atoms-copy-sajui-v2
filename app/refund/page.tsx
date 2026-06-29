@@ -64,7 +64,7 @@ export default function Refund() {
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>4. 환불 신청 방법</h2>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• 이메일: junga6783@gmail.com</li>
+              <li>• 이메일: info@jeomun.com</li>
               <li>• 필수 정보: 주문번호, 결제 수단, 오류 내용 상세 설명</li>
             </ul>
             <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>처리 과정:</p>

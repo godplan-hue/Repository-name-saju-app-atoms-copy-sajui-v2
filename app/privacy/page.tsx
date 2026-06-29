@@ -107,7 +107,7 @@ export default function Privacy() {
               <li>• 개인정보 이동 요청</li>
               <li>• 마케팅 수신 거부</li>
             </ul>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8 }}>요청 방법: junga6783@gmail.com (7일 이내 처리)</p>
+            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8 }}>요청 방법: info@jeomun.com (3-7일 이내 처리)</p>
           </section>
 
           {/* 7. 쿠키 및 추적 기술 */}
@@ -125,9 +125,9 @@ export default function Privacy() {
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>8. 문의 및 신고</h2>
             <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 12 }}>개인정보 관련 문의:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
-              <li>• 이메일: junga6783@gmail.com</li>
+              <li>• 이메일: info@jeomun.com</li>
               <li>• 전화: 010-4714-2689</li>
-              <li>• 응답 기간: 7일 이내</li>
+              <li>• 응답 기간: 3-7일 이내</li>
               <li>• 사업장 주소: 서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</li>
             </ul>
           </section>

@@ -127,9 +127,9 @@ export default function PartnerLanding() {
             <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
           </div>
           <div style={{ color: "#e9d5a8", fontSize: 12, fontWeight: 700, lineHeight: 1.8, marginBottom: 14 }}>
-            <p style={{ margin: "0 0 2px 0" }}>📧 junga6783@gmail.com · 📞 010-4714-2689</p>
+            <p style={{ margin: "0 0 2px 0" }}>📧 info@jeomun.com · 📞 010-4714-2689</p>
             <p style={{ margin: "0 0 8px 0", fontSize: 11, color: "#c9b896" }}>전화 상담은 제공하지 않습니다. 문의하기를 이용해주세요.</p>
-            <a href="mailto:junga6783@gmail.com?subject=점운 파트너 문의" style={{ display: "inline-block", padding: "6px 18px", border: "1.5px solid #fbbf24", borderRadius: 20, color: "#fbbf24", textDecoration: "none", fontWeight: 800, fontSize: 12 }}>문의하기</a>
+            <a href="mailto:info@jeomun.com?subject=점운 파트너 문의" style={{ display: "inline-block", padding: "6px 18px", border: "1.5px solid #fbbf24", borderRadius: 20, color: "#fbbf24", textDecoration: "none", fontWeight: 800, fontSize: 12 }}>문의하기</a>
           </div>
           <p style={{ color: "#999999", fontSize: 12, fontWeight: 600, margin: 0, lineHeight: 1.6 }}>
             <a href="/privacy" style={{ color: "#fbbf24", textDecoration: "none" }}>개인정보처리방침</a>
