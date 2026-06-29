@@ -785,7 +785,7 @@ export default function MainV2() {
                 <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>재물운</div>
                 <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>나의 돈 흐름 · 재물이 들어오는 시기</div>
               </div>
-              <div style={{ color: "#a78bfa", fontSize: 18, fontWeight: 900 }}>₩990</div>
+              <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 900 }}>₩990</div>
             </div>
             {/* 결제 버튼 */}
             <button
