@@ -167,6 +167,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(139,92,246,0.55) 100%)",
     fit: "contain" as const,
     route: "free" as const,
+    modalId: "wealth",
   },
   {
     img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg",
@@ -189,6 +190,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(180,83,9,0.4) 0%, rgba(245,158,11,0.35) 100%)",
     fit: "contain" as const,
     route: "package" as const,
+    modalId: "wealth",
   },
   {
     img: "https://i.pinimg.com/736x/8b/bc/25/8bbc258261ea953d149de68672016367.jpg",
@@ -199,6 +201,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(239,68,68,0.45) 100%)",
     fit: "contain" as const,
     route: "package" as const,
+    modalId: "love",
   },
   {
     // 사진이 아니라 글자+도형으로 직접 그리는 배너 — 990원 가격을 큰 숫자
@@ -271,7 +274,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
   );
 }
 
-function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
+function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; onModal?: (id: string) => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
   const [cur, setCur] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
@@ -304,6 +307,7 @@ function BannerSlider({ onStart, isPartner, chatProfile }: { onStart: (route: "f
             document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" });
             return;
           }
+          if ((b as any).modalId && onModal) { onModal((b as any).modalId); return; }
           onStart(b.route);
         }}
         onTouchStart={e => { startXRef.current = e.touches[0].clientX; }}
@@ -582,7 +586,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} onModal={id => setShowModal(id)} />
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
