@@ -426,7 +426,7 @@ export default function MainV2() {
   const [isPartner, setIsPartner] = useState(false);
   // 다이아 등급 파트너의 서브도메인(예: kim.jeomun.com)으로 들어온 경우,
   // "점운" 대신 그 파트너가 등록한 상호명·로고로 헤더를 바꿔서 보여줌
-  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
+  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string; customPriceBasic?: string; customPriceStandard?: string; customPricePremium?: string; customPriceVip?: string } | null>(null);
   useEffect(() => {
     const hostname = window.location.hostname;
     const partner = isPartnerHost(hostname);
