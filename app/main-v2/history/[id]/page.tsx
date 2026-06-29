@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
-const G_YELLOW = "linear-gradient(135deg, #eab308, #f59e0b)";
+const G_YELLOW = "#eab308";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const SELECT_CATS = [
@@ -311,12 +311,23 @@ export default function HistoryDetail() {
     if (window.innerWidth < 768) alert("📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요!");
     try {
       const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: "#fdf2f8",
+      const el = cardRef.current;
+      const prevOv = el.style.overflow;
+      const prevMH = el.style.maxHeight;
+      el.style.overflow = "visible";
+      el.style.maxHeight = "none";
+      const bg = item?.planType === "package" ? "#eab308" : "#fdf2f8";
+      const canvas = await html2canvas(el, {
+        backgroundColor: bg,
         scale: 2,
         useCORS: true,
         logging: false,
+        height: el.scrollHeight,
+        windowWidth: 480,
+        windowHeight: el.scrollHeight,
       });
+      el.style.overflow = prevOv;
+      el.style.maxHeight = prevMH;
       const link = document.createElement("a");
       link.download = `점운_${item?.name ?? "운세"}_${item?.category?.replace(/\S+\s/, "") ?? ""}.png`;
       link.href = canvas.toDataURL("image/png");

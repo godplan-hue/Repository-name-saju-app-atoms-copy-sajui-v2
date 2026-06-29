@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
-const G_YELLOW = "linear-gradient(135deg, #eab308, #f59e0b)";
+const G_YELLOW = "#eab308";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const SELECT_CATS = [
