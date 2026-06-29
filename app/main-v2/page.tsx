@@ -769,13 +769,13 @@ export default function MainV2() {
 
       {/* ── 운세 바로결제 모달 (통합) ── */}
       {(() => {
-        const MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; features?: string[]; catKey?: string; priceNum?: number; preselect?: string }> = {
+        const MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; features?: string[]; catKey?: string; catKeys?: string[]; priceNum?: number; preselect?: string }> = {
           wealth:        { emoji: "💰", title: "재물운",              desc: "나의 돈 흐름 · 재물이 들어오는 시기",     price: "₩990",    catKey: "💰 재물운", priceNum: 990 },
           love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩990",    catKey: "💕 연애운", priceNum: 990 },
           yearly:        { emoji: "🎍", title: "기본 분석",           desc: "재물운 + 연애운 심층 분석",             price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic" },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium" },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 전체 분석 + 상대방 입력 + 궁합",   price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip" },
-          naming:        { emoji: "✍️", title: "VIP 커플팩",          desc: "이름분석 포함 전체 VIP 구성",           price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip" },
+          naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "인기 운세 5가지를 한번에",              price: "₩990",    features: ["💰 재물운", "💕 연애운", "🍀 건강운", "📅 올해 운세", "🗓 월별 운세"], catKeys: ["💰 재물운", "💕 연애운", "🍀 건강운", "📅 올해 운세", "🗓 월별 운세"], priceNum: 990 },
           full:          { emoji: "📆", title: "연도별 운세",         desc: "내 사주로 보는 연도별 운의 흐름",       price: "₩29,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "✨ 전체 사주분석"], preselect: "vip" },
         };
         const cfg = showModal ? MCFG[showModal] : null;
@@ -802,7 +802,10 @@ export default function MainV2() {
               <button
                 onClick={() => {
                   setShowModal(null);
-                  if (cfg.catKey && cfg.priceNum && !isPartner) {
+                  if (cfg.catKeys && cfg.priceNum && !isPartner) {
+                    sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
+                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${cfg.priceNum}`);
+                  } else if (cfg.catKey && cfg.priceNum && !isPartner) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify([cfg.catKey]));
                     router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=30&paid=${cfg.priceNum}`);
                   } else {
