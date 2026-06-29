@@ -115,13 +115,20 @@ function PaidInfoInputInner() {
 
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
-  const hours = Array.from({ length: 24 }, (_, i) => i);
-  const HOUR_GANJI: Record<number, string> = {
-    23: "자시", 0: "자시", 1: "축시", 2: "축시", 3: "인시", 4: "인시",
-    5: "묘시", 6: "묘시", 7: "진시", 8: "진시", 9: "사시", 10: "사시",
-    11: "오시", 12: "오시", 13: "미시", 14: "미시", 15: "신시", 16: "신시",
-    17: "유시", 18: "유시", 19: "술시", 20: "술시", 21: "해시", 22: "해시",
-  };
+  const BIRTH_HOURS = [
+    { label: "자시(子時)", time: "23~01시", value: "23" },
+    { label: "축시(丑時)", time: "01~03시", value: "1" },
+    { label: "인시(寅時)", time: "03~05시", value: "3" },
+    { label: "묘시(卯時)", time: "05~07시", value: "5" },
+    { label: "진시(辰時)", time: "07~09시", value: "7" },
+    { label: "사시(巳時)", time: "09~11시", value: "9" },
+    { label: "오시(午時)", time: "11~13시", value: "11" },
+    { label: "미시(未時)", time: "13~15시", value: "13" },
+    { label: "신시(申時)", time: "15~17시", value: "15" },
+    { label: "유시(酉時)", time: "17~19시", value: "17" },
+    { label: "술시(戌時)", time: "19~21시", value: "19" },
+    { label: "해시(亥時)", time: "21~23시", value: "21" },
+  ];
   const minutes = Array.from({ length: 12 }, (_, i) => i * 5);
 
   // 본인 정보(+선택적 상대방 정보)를 받아 실제 분석을 호출하는 공통 로직.
@@ -459,33 +466,16 @@ function PaidInfoInputInner() {
                   ))}
                 </select>
 
-                <select
-                  value={birthHour}
-                  onChange={(e) => setBirthHour(e.target.value)}
-                  style={{
-                    width: "48%",
-                    padding: 9,
-                    marginRight: "4%",
-                    marginBottom: 7,
-                    borderRadius: 8,
-                    border: "1px solid #fbbf24",
-                    background: "#fff",
-                    color: "#333",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    boxSizing: "border-box",
-                    fontFamily: "inherit",
-                    cursor: "pointer",
-                  }}
-                >
-                  <option value="">시간선택</option>
-                  <option value="unknown">모름</option>
-                  {hours.map((hour) => (
-                    <option key={hour} value={hour}>
-                      {String(hour).padStart(2, "0")}시 {HOUR_GANJI[hour]}
-                    </option>
-                  ))}
-                </select>
+                <div style={{ width: "100%", marginBottom: 10 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 6 }}>
+                    {BIRTH_HOURS.map((h) => (
+                      <button key={h.value} onClick={() => setBirthHour(h.value)} style={{ padding: "9px 2px", border: birthHour === h.value ? "2px solid #fbbf24" : "1.5px solid #ddd", background: birthHour === h.value ? "#fffbeb" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 11, cursor: "pointer", color: birthHour === h.value ? "#b45309" : "#333", textAlign: "center" }}>
+                        {h.label}<br/><span style={{ fontSize: 9, opacity: 0.65 }}>{h.time}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <button onClick={() => setBirthHour("unknown")} style={{ width: "100%", padding: "9px 0", border: birthHour === "unknown" ? "2px solid #fbbf24" : "1.5px solid #ddd", background: birthHour === "unknown" ? "#fffbeb" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", color: birthHour === "unknown" ? "#b45309" : "#333" }}>모름</button>
+                </div>
 
                 <select
                   value={birthMinute}
@@ -639,33 +629,16 @@ function PaidInfoInputInner() {
                     ))}
                   </select>
 
-                  <select
-                    value={partnerBirthHour}
-                    onChange={(e) => setPartnerBirthHour(e.target.value)}
-                    style={{
-                      width: "48%",
-                      padding: 9,
-                      marginRight: "4%",
-                      marginBottom: 7,
-                      borderRadius: 8,
-                      border: "1px solid #fbbf24",
-                      background: "#fff",
-                      color: "#333",
-                      fontSize: 14,
-                      fontWeight: 700,
-                      boxSizing: "border-box",
-                      fontFamily: "inherit",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <option value="">시간선택</option>
-                    <option value="unknown">모름</option>
-                    {hours.map((hour) => (
-                      <option key={hour} value={hour}>
-                        {String(hour).padStart(2, "0")}시 {HOUR_GANJI[hour]}
-                      </option>
-                    ))}
-                  </select>
+                  <div style={{ width: "100%", marginBottom: 10 }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 6 }}>
+                      {BIRTH_HOURS.map((h) => (
+                        <button key={h.value} onClick={() => setPartnerBirthHour(h.value)} style={{ padding: "9px 2px", border: partnerBirthHour === h.value ? "2px solid #fbbf24" : "1.5px solid #ddd", background: partnerBirthHour === h.value ? "#fffbeb" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 11, cursor: "pointer", color: partnerBirthHour === h.value ? "#b45309" : "#333", textAlign: "center" }}>
+                          {h.label}<br/><span style={{ fontSize: 9, opacity: 0.65 }}>{h.time}</span>
+                        </button>
+                      ))}
+                    </div>
+                    <button onClick={() => setPartnerBirthHour("unknown")} style={{ width: "100%", padding: "9px 0", border: partnerBirthHour === "unknown" ? "2px solid #fbbf24" : "1.5px solid #ddd", background: partnerBirthHour === "unknown" ? "#fffbeb" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", color: partnerBirthHour === "unknown" ? "#b45309" : "#333" }}>모름</button>
+                  </div>
 
                   <select
                     value={partnerBirthMinute}
