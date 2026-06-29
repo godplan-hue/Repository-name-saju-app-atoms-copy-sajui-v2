@@ -612,7 +612,6 @@ export default function MainV2() {
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
         else if (id === "dateselect") alert("택일 서비스는 곧 만나보실 수 있어요! 조금만 기다려주세요 🙏");
-        else if (isPartner) { if (PRESELECT[id]) router.push(`/main-v2/payment?scrollTo=packages&preselect=${PRESELECT[id]}`); else router.push("/main-v2/payment?scrollTo=packages"); }
         else setShowModal(id);
       }} />
 
@@ -789,16 +788,17 @@ export default function MainV2() {
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
                   <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{cfg.desc}</div>
                 </div>
-                <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 900 }}>{cfg.price}</div>
+                <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 900 }}>{isPartner && cfg.catKey ? "가격 확인" : cfg.price}</div>
               </div>
               <button
                 onClick={() => {
                   setShowModal(null);
-                  if (cfg.catKey && cfg.priceNum) {
+                  if (cfg.catKey && cfg.priceNum && !isPartner) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify([cfg.catKey]));
                     router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=30&paid=${cfg.priceNum}`);
-                  } else if (cfg.preselect) {
-                    router.push(`/main-v2/payment?preselect=${cfg.preselect}`);
+                  } else {
+                    const preselect = cfg.preselect ?? "basic";
+                    router.push(`/main-v2/payment?preselect=${preselect}`);
                   }
                 }}
                 style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
