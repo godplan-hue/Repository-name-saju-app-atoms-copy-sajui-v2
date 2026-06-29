@@ -602,7 +602,7 @@ export default function MainV2() {
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
         else if (id === "dateselect") alert("택일 서비스는 곧 만나보실 수 있어요! 조금만 기다려주세요 🙏");
-        else if (SELECT_ROUTE_IDS.has(id)) router.push("/main-v2/payment?scrollTo=select");
+        else if (SELECT_ROUTE_IDS.has(id)) { const SINGLE_MAP: Record<string,string> = { wealth: "재물운", love: "연애운" }; router.push(`/main-v2/payment?single=${SINGLE_MAP[id] ?? ""}`); }
         else if (PRESELECT[id]) router.push(`/main-v2/payment?scrollTo=packages&preselect=${PRESELECT[id]}`);
         else router.push("/main-v2/payment?scrollTo=packages");
       }} />
