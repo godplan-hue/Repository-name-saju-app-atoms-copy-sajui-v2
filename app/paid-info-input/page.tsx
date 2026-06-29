@@ -116,6 +116,12 @@ function PaidInfoInputInner() {
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
   const hours = Array.from({ length: 24 }, (_, i) => i);
+  const HOUR_GANJI: Record<number, string> = {
+    23: "자시", 0: "자시", 1: "축시", 2: "축시", 3: "인시", 4: "인시",
+    5: "묘시", 6: "묘시", 7: "진시", 8: "진시", 9: "사시", 10: "사시",
+    11: "오시", 12: "오시", 13: "미시", 14: "미시", 15: "신시", 16: "신시",
+    17: "유시", 18: "유시", 19: "술시", 20: "술시", 21: "해시", 22: "해시",
+  };
   const minutes = Array.from({ length: 12 }, (_, i) => i * 5);
 
   // 본인 정보(+선택적 상대방 정보)를 받아 실제 분석을 호출하는 공통 로직.
@@ -262,7 +268,7 @@ function PaidInfoInputInner() {
         background:
           "linear-gradient(135deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)",
         backgroundImage:
-          "url('https://i.pinimg.com/1200x/d8/c0/45/d8c045bc7a28f3036fbde4172db11cda.jpg')",
+          "url('https://i.pinimg.com/736x/01/06/cf/0106cf95904beef38c601c1f2062a25d.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
@@ -476,7 +482,7 @@ function PaidInfoInputInner() {
                   <option value="unknown">모름</option>
                   {hours.map((hour) => (
                     <option key={hour} value={hour}>
-                      {String(hour).padStart(2, "0")}시
+                      {String(hour).padStart(2, "0")}시 {HOUR_GANJI[hour]}
                     </option>
                   ))}
                 </select>
@@ -656,7 +662,7 @@ function PaidInfoInputInner() {
                     <option value="unknown">모름</option>
                     {hours.map((hour) => (
                       <option key={hour} value={hour}>
-                        {String(hour).padStart(2, "0")}시
+                        {String(hour).padStart(2, "0")}시 {HOUR_GANJI[hour]}
                       </option>
                     ))}
                   </select>
