@@ -221,7 +221,7 @@ const FORTUNE_CATEGORIES = [
   { id: "health",        title: "건강운",           sub: "올해+재물+연애+건강+월별", emoji: "🍀", img: "https://i.pinimg.com/736x/d3/20/62/d32062b1c5d6aa5d14b0a827347d897e.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d", badgeSide: "right" },
   { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
   { id: "naming",        title: "이름분석",          sub: "이름+궁합+전체사주", emoji: "✍️", img: "https://i.pinimg.com/736x/75/cc/17/75cc1785e405eb49c4f514cd6000457d.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "full",          title: "연도별 운세",       sub: "",                  emoji: "📆", img: "https://i.pinimg.com/1200x/cc/82/27/cc82279b6fc9f07bc51ba888d662b675.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
+  { id: "full",          title: "연도별 운세",       sub: "",                  emoji: "📆", img: "https://i.pinimg.com/1200x/c0/17/9c/c0179c9fb5870866ed9260971b05fdd4.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "👑 VIP 전용", priceBg: "#6d28d9" },
 ];
 
 function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPartner: boolean }) {
