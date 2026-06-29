@@ -201,7 +201,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(239,68,68,0.45) 100%)",
     fit: "contain" as const,
     route: "package" as const,
-    modalId: "love",
+    modalId: "yearly",
   },
   {
     // 사진이 아니라 글자+도형으로 직접 그리는 배너 — 990원 가격을 큰 숫자
