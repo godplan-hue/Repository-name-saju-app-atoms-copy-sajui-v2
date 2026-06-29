@@ -613,7 +613,7 @@ export default function MainV2() {
           compatibility: "vip", naming: "vip", full: "vip",
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
-        else if (id === "dateselect") alert("택일 서비스는 곧 만나보실 수 있어요! 조금만 기다려주세요 🙏");
+        else if (id === "dateselect" || id === "full") alert("곧 만나보실 수 있어요! 조금만 기다려주세요 🙏");
         else setShowModal(id);
       }} />
 
