@@ -232,9 +232,6 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
             <span key={i} style={{ display: "inline-block", color: "#facc15", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
           ))}
         </div>
-        <h2 style={{ fontSize: 17, fontWeight: 900, margin: "0 0 14px", textAlign: "center" }}>
-          <span style={{ display: "inline-block", padding: "2px 10px", background: "#f3e8ff", borderRadius: 12, letterSpacing: "0.3px", color: "#92278f" }}>운세 선택</span>
-        </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
             <div
@@ -579,17 +576,21 @@ export default function MainV2() {
             <span key={b.text} style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: b.bg, borderRadius: 20, padding: "6px 12px", boxShadow: "0 3px 8px rgba(0,0,0,0.15)" }}>{b.text}</span>
           ))}
         </div>
-        {!isPartner && (
-          <button
-            onClick={() => router.push("/main-v2/payment")}
-            style={{ marginTop: 16, padding: "13px 36px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)", letterSpacing: "-0.2px" }}>
-            💳 전체 운세 보기
-          </button>
-        )}
       </section>
 
       {/* 슬라이드 배너 */}
       <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} />
+
+      {/* 전체 운세 바로가기 */}
+      {!isPartner && (
+        <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
+          <button
+            onClick={() => router.push("/main-v2/payment")}
+            style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.35)", letterSpacing: "-0.1px" }}>
+            💳 전체 운세 패키지 보기
+          </button>
+        </div>
+      )}
 
       {/* 운세 선택 — 9개 박스 그리드(맨 앞 1개는 무료체험, 나머지 8개는 VIP 패키지의
           8개 항목을 그대로 미리보기 — 그래서 이름/내용을 다른 걸로 바꾸지 않음).
@@ -771,20 +772,20 @@ export default function MainV2() {
       {showWealthModal && (
         <div
           onClick={() => setShowWealthModal(false)}
-          style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+          style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
           <div
             onClick={e => e.stopPropagation()}
-            style={{ background: "linear-gradient(160deg, #2d1b69 0%, #1a0f40 100%)", border: "1px solid rgba(196,181,253,0.4)", borderRadius: "22px 22px 0 0", padding: "32px 24px 44px", width: "100%", maxWidth: 480 }}>
-            {/* 헤더 */}
-            <div style={{ textAlign: "center", marginBottom: 20 }}>
-              <div style={{ fontSize: 52, marginBottom: 8 }}>💰</div>
-              <h2 style={{ color: "#c4b5fd", fontSize: 22, fontWeight: 900, margin: "0 0 6px" }}>재물운</h2>
-              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, margin: 0 }}>나의 돈 흐름 · 재물이 들어오는 시기와 방향</p>
-            </div>
-            {/* 가격 */}
-            <div style={{ textAlign: "center", background: "rgba(196,181,253,0.12)", border: "1px solid rgba(196,181,253,0.3)", borderRadius: 14, padding: "14px 0", marginBottom: 20 }}>
-              <span style={{ color: "#e9d5ff", fontSize: 34, fontWeight: 900 }}>₩990</span>
-              <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, marginLeft: 8 }}>단품 결제</span>
+            style={{ background: "#16103a", border: "1px solid rgba(167,139,250,0.2)", borderRadius: "16px 16px 0 0", padding: "20px 20px 32px", width: "100%", maxWidth: 420 }}>
+            {/* 핸들 */}
+            <div style={{ width: 36, height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 2, margin: "0 auto 18px" }} />
+            {/* 운세 정보 */}
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+              <span style={{ fontSize: 34 }}>💰</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>재물운</div>
+                <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>나의 돈 흐름 · 재물이 들어오는 시기</div>
+              </div>
+              <div style={{ color: "#a78bfa", fontSize: 18, fontWeight: 900 }}>₩990</div>
             </div>
             {/* 결제 버튼 */}
             <button
@@ -793,12 +794,12 @@ export default function MainV2() {
                 setShowWealthModal(false);
                 router.push("/payment-complete?package=재물운&pages=30&paid=990");
               }}
-              style={{ width: "100%", padding: "16px 0", background: "linear-gradient(135deg, #c4b5fd, #8b5cf6, #6d28d9)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 24px rgba(139,92,246,0.45)", marginBottom: 12 }}>
-              💎 재물운 결제하기
+              style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
+              결제하기
             </button>
             <button
               onClick={() => setShowWealthModal(false)}
-              style={{ width: "100%", padding: "12px 0", background: "transparent", color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 50, fontWeight: 700, fontSize: 14, cursor: "pointer" }}>
+              style={{ width: "100%", padding: "10px 0", background: "transparent", color: "rgba(255,255,255,0.3)", border: "none", fontSize: 13, cursor: "pointer" }}>
               닫기
             </button>
           </div>
