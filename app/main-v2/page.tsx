@@ -788,7 +788,7 @@ export default function MainV2() {
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
                   <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{cfg.desc}</div>
                 </div>
-                <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 900 }}>{isPartner && cfg.catKey ? (brand?.customPriceBasic ?? "₩9,900") : cfg.price}</div>
+                <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 900 }}>{isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
               </div>
               {cfg.features && (
                 <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
