@@ -275,7 +275,7 @@ function PaidInfoInputInner() {
         background:
           "linear-gradient(135deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)",
         backgroundImage:
-          "url('https://i.pinimg.com/736x/01/06/cf/0106cf95904beef38c601c1f2062a25d.jpg')",
+          "url('https://i.pinimg.com/736x/bf/7f/e7/bf7fe7000b0f073955cbbe0b0efa6924.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",

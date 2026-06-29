@@ -9,7 +9,7 @@ const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 // 가입 정보 입력 화면 — 5단계(관계/생년월일/성별/시간/연락처)마다 다른 배경 이미지
 const STEP_BACKGROUNDS: Record<number, string> = {
-  1: "https://i.pinimg.com/1200x/8c/f1/ef/8cf1ef883860345144847962ce26fc8f.jpg",
+  1: "https://i.pinimg.com/736x/35/04/d8/3504d87bd6b5aae73941f6d85c3f6686.jpg",
   2: "https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg",
   3: "https://i.pinimg.com/1200x/6d/df/69/6ddf69eba555283a55f2007a0d43699f.jpg",
   4: "https://i.pinimg.com/vwebp/736x/9d/a4/47/9da447bd262e5f09a7d0745ba1fddeb8.webp",
