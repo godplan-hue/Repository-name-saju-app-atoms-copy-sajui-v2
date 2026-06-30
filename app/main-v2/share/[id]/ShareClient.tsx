@@ -443,16 +443,16 @@ export default function ShareClient({ id }: { id: string }) {
 
         </div>{/* /contentRef */}
 
-        {/* Q&A 버튼 */}
+        {/* 복냥이 채팅 버튼 */}
         {!entry.businessName && (
           <button onClick={() => {
             if (entry.name && entry.birthYear) {
               sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
               sessionStorage.setItem("v2_plan", "select");
             }
-            router.push("/main-v2/qa-list");
+            router.push("/main-v2/qa");
           }} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
-            💬 사주 Q&amp;A — 무엇이든 물어보세요
+            💬 복냥이에게 무엇이든 물어보세요
           </button>
         )}
 
