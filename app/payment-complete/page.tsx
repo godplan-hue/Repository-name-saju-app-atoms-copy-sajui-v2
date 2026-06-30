@@ -44,6 +44,17 @@ function PaymentCompleteInner() {
     if (paid) sessionStorage.setItem("price", paid);
     sessionStorage.setItem("v2_plan", "package");
 
+    // 추천인 커미션 기록
+    const refPartnerId = localStorage.getItem("v2_ref");
+    if (refPartnerId && paid) {
+      fetch("/api/partner/commission", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ partnerId: refPartnerId, paidAmount: Number(paid) }),
+      }).catch(() => {});
+      localStorage.removeItem("v2_ref");
+    }
+
     setPackageName(pkg);
     setPages(parseInt(pg));
   }, [searchParams]);

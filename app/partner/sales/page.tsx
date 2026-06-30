@@ -27,6 +27,8 @@ export default function PartnerSales() {
   const [monthlyCount, setMonthlyCount] = useState(0);
   const [allTotal, setAllTotal] = useState(0);
   const [allCount, setAllCount] = useState(0);
+  const [commissionStats, setCommissionStats] = useState<any>(null);
+  const [commissionList, setCommissionList] = useState<any[]>([]);
 
   const load = async (id: string, cur?: string | null) => {
     const res = await fetch(`/api/partner/archive?partnerId=${encodeURIComponent(id)}${cur ? `&cursor=${encodeURIComponent(cur)}` : ""}`);
@@ -51,6 +53,10 @@ export default function PartnerSales() {
     setPartnerName(name || "");
     setTierId(localStorage.getItem("partnerTier") || "free");
     load(id).finally(() => setLoading(false));
+    fetch(`/api/partner/commission?partnerId=${encodeURIComponent(id)}`)
+      .then(r => r.json())
+      .then(d => { setCommissionStats(d.stats || {}); setCommissionList(d.list || []); })
+      .catch(() => {});
   }, [router]);
 
   const handleLoadMore = async () => {
@@ -131,6 +137,71 @@ export default function PartnerSales() {
               </>
             )}
           </div>
+          {/* 추천링크 수수료 섹션 */}
+          <div style={{ background: "white", padding: "20px", borderRadius: 14, marginTop: 16 }}>
+            <h2 style={{ fontSize: 15, fontWeight: 900, color: "#333", margin: "0 0 12px" }}>🔗 추천링크 수수료 (20%)</h2>
+
+            {/* 추천링크 복사 */}
+            <div style={{ background: "#f5f3ff", borderRadius: 10, padding: "12px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 12, color: "#6b7280", flex: 1, wordBreak: "break-all" }}>
+                jeomun.com/main-v2?ref={partnerId}
+              </span>
+              <button
+                onClick={() => {
+                  const url = `https://jeomun.com/main-v2?ref=${partnerId}`;
+                  navigator.clipboard.writeText(url).then(() => alert("추천링크 복사됐어요!")).catch(() => alert(url));
+                }}
+                style={{ padding: "7px 14px", background: "#8b5cf6", color: "white", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer", whiteSpace: "nowrap" }}
+              >복사</button>
+            </div>
+            <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 14px", lineHeight: 1.6 }}>
+              이 링크로 들어온 고객이 결제하면 결제금액의 20%가 수수료로 적립됩니다.
+            </p>
+
+            {/* 수수료 통계 */}
+            {commissionStats && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
+                <div style={{ background: "#fdf4ff", borderRadius: 10, padding: "12px", textAlign: "center" }}>
+                  <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 700, marginBottom: 4 }}>이번 달 수수료</div>
+                  <div style={{ fontSize: 16, fontWeight: 900, color: "#9333ea" }}>
+                    {(commissionStats[new Date().toISOString().slice(0,7)]?.commission || 0).toLocaleString()}원
+                  </div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>
+                    {commissionStats[new Date().toISOString().slice(0,7)]?.count || 0}건
+                  </div>
+                </div>
+                <div style={{ background: "#fdf4ff", borderRadius: 10, padding: "12px", textAlign: "center" }}>
+                  <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 700, marginBottom: 4 }}>전체 수수료</div>
+                  <div style={{ fontSize: 16, fontWeight: 900, color: "#9333ea" }}>
+                    {(commissionStats.total?.commission || 0).toLocaleString()}원
+                  </div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>
+                    {commissionStats.total?.count || 0}건
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 수수료 내역 */}
+            {commissionList.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {commissionList.map(c => (
+                  <div key={c.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 12px", background: "#fafafa", borderRadius: 8, border: "1px solid #f0f0f0" }}>
+                    <div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#374151" }}>결제 {c.paidAmount.toLocaleString()}원</div>
+                      <div style={{ fontSize: 11, color: "#9ca3af" }}>{new Date(c.createdAt).toLocaleDateString("ko-KR")} · {c.status === "pending" ? "정산 대기" : "정산 완료"}</div>
+                    </div>
+                    <div style={{ fontSize: 14, fontWeight: 900, color: "#9333ea" }}>+{c.commission.toLocaleString()}원</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p style={{ fontSize: 12, color: "#9ca3af", textAlign: "center", padding: "20px 0" }}>
+                아직 추천 수수료가 없어요.<br/>추천링크를 공유해보세요!
+              </p>
+            )}
+          </div>
+
         </div>
       </main>
     </>

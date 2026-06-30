@@ -432,6 +432,8 @@ function ModalParamReader({ setShowModal, setModalSelectedCats }: { setShowModal
       setModalSelectedCats(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]);
       setShowModal("naming");
     }
+    const ref = searchParams.get("ref");
+    if (ref) localStorage.setItem("v2_ref", ref);
   }, [searchParams]);
   return null;
 }
