@@ -516,6 +516,7 @@ export default function MainV2() {
   const [musicOn, setMusicOn] = useState(false);
   const [showModal, setShowModal] = useState<string | null>(null);
   const [modalSelectedCats, setModalSelectedCats] = useState<string[]>(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]);
+  const [extraOtherInput, setExtraOtherInput] = useState("");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
     const audio = audioRef.current;
@@ -874,10 +875,29 @@ export default function MainV2() {
                 <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
                   {ec.features.map((f, i) => <div key={i} style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: 700, lineHeight: 1.9 }}>✓ {f}</div>)}
                 </div>
+                {(showModal === "reunion" || showModal === "pet_compat") && (
+                  <div style={{ marginBottom: 14 }}>
+                    <p style={{ color: "#ddd6fe", fontSize: 12, fontWeight: 800, margin: "0 0 8px" }}>
+                      {showModal === "reunion" ? "💔 상대방 이름을 입력해주세요" : "🐾 반려동물 이름을 입력해주세요"}
+                    </p>
+                    <input
+                      type="text"
+                      value={extraOtherInput}
+                      onChange={e => setExtraOtherInput(e.target.value)}
+                      placeholder={showModal === "reunion" ? "예: 홍길동" : "예: 멍멍이, 냥냥이"}
+                      style={{ width: "100%", padding: "12px 14px", fontSize: 14, fontWeight: 700, border: "1.5px solid rgba(167,139,250,0.5)", borderRadius: 10, outline: "none", background: "rgba(255,255,255,0.08)", color: "white", boxSizing: "border-box" }}
+                    />
+                  </div>
+                )}
                 <button onClick={() => {
+                  if ((showModal === "reunion" || showModal === "pet_compat") && !extraOtherInput.trim()) return;
+                  if (showModal === "reunion" || showModal === "pet_compat") {
+                    sessionStorage.setItem("specialOtherName", extraOtherInput.trim());
+                  }
+                  setExtraOtherInput("");
                   setShowModal(null);
                   router.push(`/payment-complete?special=${showModal}&paid=${ec.priceNum}`);
-                }} style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
+                }} style={{ width: "100%", padding: "14px 0", background: (showModal === "reunion" || showModal === "pet_compat") && !extraOtherInput.trim() ? "rgba(124,58,237,0.4)" : "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: (showModal === "reunion" || showModal === "pet_compat") && !extraOtherInput.trim() ? "not-allowed" : "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
                   결제하기
                 </button>
                 <button onClick={() => setShowModal(null)} style={{ width: "100%", padding: "10px 0", background: "transparent", color: "rgba(255,255,255,0.3)", border: "none", fontSize: 13, cursor: "pointer" }}>닫기</button>

@@ -395,6 +395,8 @@ function SpecialPageContent() {
     setMounted(true);
     const type = sessionStorage.getItem("specialType") || "";
     const paid = sessionStorage.getItem("specialPaid") === "1";
+    const preOther = sessionStorage.getItem("specialOtherName") || "";
+    if (preOther) { setOtherName(preOther); sessionStorage.removeItem("specialOtherName"); }
     setProductType(type);
     setIsPaid(paid);
     try {
