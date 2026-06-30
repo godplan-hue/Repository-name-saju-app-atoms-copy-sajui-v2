@@ -31,7 +31,9 @@ function PaymentCompleteInner() {
   useEffect(() => {
     const isDaeun = searchParams.get("daeun") === "1";
     if (isDaeun) {
+      const daeunCount = searchParams.get("daeunCount") || "1";
       sessionStorage.setItem("daeunPaid", "1");
+      sessionStorage.setItem("daeunPaidCount", daeunCount);
       router.replace("/main-v2/daewoon");
       return;
     }

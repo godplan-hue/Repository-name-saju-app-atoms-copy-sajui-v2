@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const BG_IMG = "https://i.pinimg.com/1200x/6d/df/69/6ddf69eba555283a55f2007a0d43699f.jpg";
 
 const UNSEONG_EMOJI: Record<string, string> = {
   "장생": "🌱", "목욕": "💧", "관대": "👑", "건록": "⚡", "제왕": "🔥",
@@ -27,6 +26,8 @@ export default function DaewoonPage() {
   const [isForward, setIsForward] = useState(true);
   const [teaserText, setTeaserText] = useState("");
   const [paid, setPaid] = useState(false);
+  const [paidCount, setPaidCount] = useState(0);
+  const [selectCount, setSelectCount] = useState(1);
   const [loading, setLoading] = useState(true);
   const [currentAge, setCurrentAge] = useState(0);
 
@@ -40,7 +41,9 @@ export default function DaewoonPage() {
     setCurrentAge(age);
 
     const isPaid = sessionStorage.getItem("daeunPaid") === "1";
+    const storedCount = parseInt(sessionStorage.getItem("daeunPaidCount") || "1");
     setPaid(isPaid);
+    setPaidCount(isPaid ? storedCount : 0);
 
     const birth = `${p.birthYear}-${String(p.birthMonth).padStart(2, "0")}-${String(p.birthDay).padStart(2, "0")}`;
     fetchDaeun(p.name, birth, p.gender || "여", p.birthHour || "unknown", isPaid);
@@ -65,20 +68,20 @@ export default function DaewoonPage() {
   };
 
   const handlePay = () => {
-    router.push("/payment-complete?daeun=1&paid=3900");
+    const price = 3900 + (selectCount - 1) * 1000;
+    router.push(`/payment-complete?daeun=1&paid=${price}&daeunCount=${selectCount}`);
   };
 
   const currentBlock = daeunList.find(b => currentAge >= b.startAge && currentAge <= b.endAge);
 
+  const currentIndex = daeunList.findIndex(b => currentAge >= b.startAge && currentAge <= b.endAge);
+
   return (
     <main style={{
       minHeight: "100vh",
-      background: "linear-gradient(135deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)",
-      backgroundImage: `url('${BG_IMG}')`,
-      backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "scroll",
+      background: "linear-gradient(160deg, #0f0620 0%, #1a0535 40%, #0a0420 100%)",
       color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative",
     }}>
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.62)", zIndex: 1, pointerEvents: "none" }} />
 
       <div style={{ position: "relative", zIndex: 10, maxWidth: 520, margin: "0 auto", padding: "24px 16px 60px" }}>
 
@@ -166,7 +169,9 @@ export default function DaewoonPage() {
                 {daeunList.map((b, i) => {
                   const isCurrent = currentAge >= b.startAge && currentAge <= b.endAge;
                   const isPast = currentAge > b.endAge;
-                  const isLocked = !paid && !isCurrent;
+                  const relIdx = i - currentIndex;
+                  // 과거 + 현재: paid면 열림 / 미래: paid & 추가 구매한 개수 내에서만 열림
+                  const isLocked = !paid || (relIdx > 0 && relIdx >= paidCount);
                   return (
                     <div key={i} style={{
                       background: isCurrent
@@ -240,18 +245,32 @@ export default function DaewoonPage() {
                 textAlign: "center",
               }}>
                 <div style={{ fontSize: 28, marginBottom: 10 }}>🔓</div>
-                <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 8px" }}>전체 대운 해설 보기</h3>
-                <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, lineHeight: 1.7, margin: "0 0 16px" }}>
-                  {daeunList.length}개 대운 × 4개 섹션<br />
-                  멘탈 · 인간관계 · 현실 · 대처법 전체 공개
+                <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 6px" }}>대운 해설 보기</h3>
+                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, lineHeight: 1.6, margin: "0 0 20px" }}>
+                  현재 대운 기본 ₩3,900 · 추가 10년마다 +₩1,000
                 </p>
-                <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
-                  {["🧠 멘탈 흐름", "🤝 인간관계", "💼 현실 전망", "🧭 대처법"].map(t => (
-                    <span key={t} style={{ background: "rgba(139,92,246,0.3)", border: "1px solid rgba(139,92,246,0.5)", color: "rgba(255,255,255,0.8)", fontSize: 12, padding: "4px 10px", borderRadius: 20 }}>{t}</span>
-                  ))}
+
+                {/* 개수 선택 */}
+                <div style={{ background: "rgba(0,0,0,0.25)", borderRadius: 14, padding: "16px", marginBottom: 16 }}>
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, margin: "0 0 10px" }}>몇 개 대운을 열람할까요?</p>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20 }}>
+                    <button onClick={() => setSelectCount(c => Math.max(1, c - 1))} style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(139,92,246,0.4)", border: "1px solid rgba(139,92,246,0.7)", color: "white", fontSize: 18, fontWeight: 900, cursor: "pointer", lineHeight: 1 }}>−</button>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ color: "#fbbf24", fontSize: 24, fontWeight: 900 }}>{selectCount}개</div>
+                      <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>
+                        {selectCount === 1 ? "현재 대운만" : `현재 + 미래 ${selectCount - 1}개`}
+                      </div>
+                    </div>
+                    <button onClick={() => setSelectCount(c => Math.min(daeunList.length, c + 1))} style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(139,92,246,0.4)", border: "1px solid rgba(139,92,246,0.7)", color: "white", fontSize: 18, fontWeight: 900, cursor: "pointer", lineHeight: 1 }}>+</button>
+                  </div>
                 </div>
-                <div style={{ color: "#fbbf24", fontSize: 28, fontWeight: 900, marginBottom: 4 }}>₩3,900</div>
-                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, margin: "0 0 16px", textDecoration: "line-through" }}>₩29,900</p>
+
+                <div style={{ color: "#fbbf24", fontSize: 30, fontWeight: 900, marginBottom: 4 }}>
+                  ₩{(3900 + (selectCount - 1) * 1000).toLocaleString()}
+                </div>
+                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, margin: "0 0 16px" }}>
+                  기본 ₩3,900{selectCount > 1 ? ` + 추가 ${selectCount - 1}개 × ₩1,000` : ""}
+                </p>
                 <button
                   onClick={handlePay}
                   style={{
@@ -260,7 +279,7 @@ export default function DaewoonPage() {
                     cursor: "pointer", width: "100%", boxShadow: "0 4px 20px rgba(251,191,36,0.35)",
                   }}
                 >
-                  🌌 전체 대운 해설 보기
+                  🌌 대운 {selectCount}개 해설 보기
                 </button>
               </div>
             )}
