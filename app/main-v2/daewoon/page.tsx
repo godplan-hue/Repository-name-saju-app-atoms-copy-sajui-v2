@@ -302,7 +302,7 @@ export default function DaewoonPage() {
   const shareResult = async () => {
     if (sharing || !selectedBlock) return;
     setSharing(true);
-    let url = window.location.origin + "/main-v2";
+    let shareUrl = "";
     try {
       const categories = buildCategories(selectedBlock);
       if (categories.length > 0) {
@@ -311,9 +311,11 @@ export default function DaewoonPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: profile?.name, categories, tier: "daeun", birthYear: profile?.birthYear }),
         });
-        if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
+        if (res.ok) { const data = await res.json(); shareUrl = `${window.location.origin}/main-v2/share/${data.id}`; }
       }
     } catch { }
+    setSharing(false);
+    if (!shareUrl) { alert("공유 링크를 만들지 못했어요. 잠시 후 다시 시도해주세요."); return; }
     const b = selectedBlock;
     const title = `🌌 ${profile?.name}님의 대운 해설`;
     const desc = `${b.ganHanja}${b.jiHanja} (${b.startAge}~${b.endAge}세) · ${b.chapter}`;
@@ -324,19 +326,22 @@ export default function DaewoonPage() {
         content: {
           title, description: `${desc} | 점운 AI사주`,
           imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
-          link: { mobileWebUrl: url, webUrl: url },
+          link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
         },
         buttons: [
-          { title: "내 대운 결과 보기", link: { mobileWebUrl: url, webUrl: url } },
+          { title: "내 대운 결과 보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
           { title: "나도 대운 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
         ],
       });
+      // Kakao 공유 후 핑크 결과지로 이동
+      setTimeout(() => router.push(shareUrl), 300);
+    } else if (navigator.share) {
+      navigator.share({ title, text: `${desc} | 점운 AI사주`, url: shareUrl }).catch(() => {});
+      router.push(shareUrl);
     } else {
-      const text = `${title}\n${desc}\n\n📱 나도 무료로! jeomun.com`;
-      if (navigator.share) navigator.share({ title: "점운 대운 해설", text, url }).catch(() => {});
-      else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));
+      try { await navigator.clipboard.writeText(shareUrl); } catch {}
+      router.push(shareUrl);
     }
-    setSharing(false);
   };
 
   // ── 보관함 ──
@@ -368,7 +373,7 @@ export default function DaewoonPage() {
 
   return (
     <>
-      <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="lazyOnload"
+      <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"
         onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
 
       <main style={{ minHeight: "100vh", background: "linear-gradient(160deg,#0f0620 0%,#1a0535 40%,#0a0420 100%)", color: "white", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
