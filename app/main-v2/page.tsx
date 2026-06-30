@@ -302,9 +302,9 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
   return (
     <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-        <div style={{ flex: 1, height: 1, background: "rgba(236,72,153,0.2)" }} />
-        <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(236,72,153,0.4)" }}>✨ 더 많은 운세 · 각 ₩3,900</span>
-        <div style={{ flex: 1, height: 1, background: "rgba(236,72,153,0.2)" }} />
+        <div style={{ flex: 1, height: 1, background: "rgba(124,58,237,0.2)" }} />
+        <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#7c3aed,#4c1d95)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(124,58,237,0.4)" }}>✨ 더 많은 운세 · 각 ₩3,900</span>
+        <div style={{ flex: 1, height: 1, background: "rgba(124,58,237,0.2)" }} />
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
         {EXTRA_ITEMS.map(item => (
