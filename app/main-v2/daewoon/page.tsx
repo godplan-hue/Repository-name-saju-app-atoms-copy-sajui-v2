@@ -27,7 +27,8 @@ export default function DaewoonPage() {
   const [teaserText, setTeaserText] = useState("");
   const [paid, setPaid] = useState(false);
   const [paidCount, setPaidCount] = useState(0);
-  const [selectCount, setSelectCount] = useState(1);
+  const [paidIndices, setPaidIndices] = useState<number[]>([]);
+  const [purchaseSet, setPurchaseSet] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(true);
   const [currentAge, setCurrentAge] = useState(0);
   const [selectedIdx, setSelectedIdx] = useState(-1);
@@ -77,6 +78,10 @@ export default function DaewoonPage() {
     const storedCount = parseInt(sessionStorage.getItem("daeunPaidCount") || "1");
     setPaid(isPaid);
     setPaidCount(isPaid ? storedCount : 0);
+    try {
+      const storedIndices = sessionStorage.getItem("daeunPaidIndices");
+      if (storedIndices) setPaidIndices(JSON.parse(storedIndices));
+    } catch {}
     const birth = `${p.birthYear}-${String(p.birthMonth).padStart(2, "0")}-${String(p.birthDay).padStart(2, "0")}`;
     fetchDaeun(p.name, birth, p.gender || "여", p.birthHour || "unknown", isPaid);
   }, []);
@@ -115,8 +120,18 @@ export default function DaewoonPage() {
   };
 
   const handlePay = () => {
-    const price = 3900 + (selectCount - 1) * 1000;
-    router.push(`/payment-complete?daeun=1&paid=${price}&daeunCount=${selectCount}`);
+    const indices = Array.from(purchaseSet);
+    if (indices.length === 0) return;
+    const price = 3900 + (indices.length - 1) * 1000;
+    router.push(`/payment-complete?daeun=1&paid=${price}&daeunCount=${indices.length}&daeunIndices=${indices.join(",")}`);
+  };
+
+  const togglePurchase = (i: number) => {
+    setPurchaseSet(prev => {
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i); else next.add(i);
+      return next;
+    });
   };
 
   const buildCategories = (b: DaeunBlock) => [
@@ -366,7 +381,11 @@ export default function DaewoonPage() {
   };
 
   const currentIndex = daeunList.findIndex(b => currentAge >= b.startAge && currentAge <= b.endAge);
-  const isBlockLocked = (i: number) => { const r = i - currentIndex; return !paid || (r > 0 && r >= paidCount); };
+  const isBlockLocked = (i: number) => {
+    if (paidIndices.length > 0) return !paidIndices.includes(i);
+    const r = i - currentIndex;
+    return !paid || (r > 0 && r >= paidCount);
+  };
   const selectedBlock = selectedIdx >= 0 ? daeunList[selectedIdx] : null;
   const selectedLocked = selectedIdx >= 0 ? isBlockLocked(selectedIdx) : true;
   const isSelectedCurrent = selectedIdx === currentIndex;
@@ -421,24 +440,41 @@ export default function DaewoonPage() {
                     const isPast = currentAge > b.endAge;
                     const locked = isBlockLocked(i);
                     const isSelected = selectedIdx === i;
+                    const inCart = purchaseSet.has(i);
                     return (
-                      <div key={i} onClick={() => { setSelectedIdx(i); setHistorySaved(false); }}
+                      <div key={i} onClick={() => {
+                        setSelectedIdx(i);
+                        setHistorySaved(false);
+                        if (locked) togglePurchase(i);
+                      }}
                         style={{
                           background: isSelected
-                            ? (isCurrent ? "linear-gradient(135deg,rgba(251,191,36,0.28),rgba(245,158,11,0.18))" : "rgba(139,92,246,0.28)")
+                            ? (isCurrent ? "linear-gradient(135deg,rgba(251,191,36,0.28),rgba(245,158,11,0.18))" : inCart ? "rgba(251,191,36,0.15)" : "rgba(139,92,246,0.28)")
                             : (isCurrent ? "linear-gradient(135deg,rgba(251,191,36,0.1),rgba(245,158,11,0.05))" : isPast ? "rgba(255,255,255,0.04)" : "rgba(139,92,246,0.06)"),
                           border: isSelected
-                            ? (isCurrent ? "2px solid rgba(251,191,36,0.95)" : "2px solid rgba(139,92,246,0.85)")
-                            : (isCurrent ? "1.5px solid rgba(251,191,36,0.4)" : "1px solid rgba(255,255,255,0.08)"),
+                            ? (isCurrent ? "2px solid rgba(251,191,36,0.95)" : inCart ? "2px solid rgba(251,191,36,0.7)" : "2px solid rgba(139,92,246,0.85)")
+                            : (isCurrent ? "1.5px solid rgba(251,191,36,0.4)" : inCart ? "1.5px solid rgba(251,191,36,0.4)" : "1px solid rgba(255,255,255,0.08)"),
                           borderRadius: 12, padding: "12px 14px", cursor: "pointer", transition: "all 0.15s ease",
                         }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                          <span style={{ fontSize: 16, minWidth: 20, textAlign: "center" }}>
-                            {isCurrent ? "🌕" : isPast ? "🌑" : locked ? "🔒" : "🌙"}
-                          </span>
+                          {locked ? (
+                            <div style={{
+                              width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
+                              background: inCart ? "#fbbf24" : "transparent",
+                              border: `2px solid ${inCart ? "#fbbf24" : "rgba(255,255,255,0.25)"}`,
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              fontSize: 11, color: "#1a0f2e", fontWeight: 900,
+                            }}>
+                              {inCart ? "✓" : ""}
+                            </div>
+                          ) : (
+                            <span style={{ fontSize: 16, minWidth: 22, textAlign: "center" }}>
+                              {isCurrent ? "🌕" : "🌙"}
+                            </span>
+                          )}
                           <div style={{ flex: 1 }}>
                             <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                              <span style={{ fontSize: 16, fontWeight: 900, color: isCurrent ? "#fbbf24" : locked ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.75)" }}>
+                              <span style={{ fontSize: 16, fontWeight: 900, color: isCurrent ? "#fbbf24" : locked ? (inCart ? "#fbbf24" : "rgba(255,255,255,0.35)") : "rgba(255,255,255,0.75)" }}>
                                 {b.ganHanja}{b.jiHanja}
                               </span>
                               <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{b.startAge}~{b.endAge}세</span>
@@ -462,31 +498,20 @@ export default function DaewoonPage() {
               {selectedBlock && (
                 <div style={{ marginBottom: 24 }}>
                   {selectedLocked ? (
-                    /* 결제 유도 */
-                    <div style={{ background: "linear-gradient(135deg,rgba(139,92,246,0.2),rgba(109,40,217,0.15))", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 18, padding: "24px 20px", textAlign: "center" }}>
-                      <div style={{ fontSize: 28, marginBottom: 10 }}>🔓</div>
-                      <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 6px" }}>대운 해설 보기</h3>
-                      <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 14, margin: "0 0 4px" }}>
+                    /* 잠긴 블록 안내 */
+                    <div style={{ background: "linear-gradient(135deg,rgba(139,92,246,0.2),rgba(109,40,217,0.15))", border: `1.5px solid ${purchaseSet.has(selectedIdx) ? "rgba(251,191,36,0.7)" : "rgba(139,92,246,0.5)"}`, borderRadius: 18, padding: "20px", textAlign: "center" }}>
+                      <div style={{ fontSize: 24, marginBottom: 8 }}>{purchaseSet.has(selectedIdx) ? "✅" : "🔒"}</div>
+                      <p style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, margin: "0 0 4px" }}>
                         {selectedBlock.ganHanja}{selectedBlock.jiHanja} · {selectedBlock.startAge}~{selectedBlock.endAge}세
                       </p>
-                      <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 12, lineHeight: 1.6, margin: "0 0 20px" }}>
-                        {paid ? "이 대운은 구매 범위에 포함되지 않아요" : "현재 대운 기본 ₩3,900 · 추가 10년마다 +₩1,000"}
+                      <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, margin: "0 0 16px", lineHeight: 1.5 }}>
+                        {purchaseSet.has(selectedIdx)
+                          ? "선택됨 · 아래 결제 버튼을 눌러주세요"
+                          : "위 타임라인에서 탭해서 선택, 여러 개 고를 수 있어요"}
                       </p>
-                      <div style={{ background: "rgba(0,0,0,0.25)", borderRadius: 14, padding: "16px", marginBottom: 16 }}>
-                        <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, margin: "0 0 10px" }}>몇 개 대운을 열람할까요?</p>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20 }}>
-                          <button onClick={() => setSelectCount(c => Math.max(1, c - 1))} style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(139,92,246,0.4)", border: "1px solid rgba(139,92,246,0.7)", color: "white", fontSize: 18, fontWeight: 900, cursor: "pointer", lineHeight: 1 }}>−</button>
-                          <div style={{ textAlign: "center" }}>
-                            <div style={{ color: "#fbbf24", fontSize: 24, fontWeight: 900 }}>{selectCount}개</div>
-                            <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>{selectCount === 1 ? "현재 대운만" : `현재 + 미래 ${selectCount - 1}개`}</div>
-                          </div>
-                          <button onClick={() => setSelectCount(c => Math.min(daeunList.length, c + 1))} style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(139,92,246,0.4)", border: "1px solid rgba(139,92,246,0.7)", color: "white", fontSize: 18, fontWeight: 900, cursor: "pointer", lineHeight: 1 }}>+</button>
-                        </div>
-                      </div>
-                      <div style={{ color: "#fbbf24", fontSize: 30, fontWeight: 900, marginBottom: 4 }}>₩{(3900 + (selectCount - 1) * 1000).toLocaleString()}</div>
-                      <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, margin: "0 0 16px" }}>기본 ₩3,900{selectCount > 1 ? ` + 추가 ${selectCount - 1}개 × ₩1,000` : ""}</p>
-                      <button onClick={handlePay} style={{ background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a0f2e", border: "none", borderRadius: 12, padding: "14px 32px", fontSize: 15, fontWeight: 900, cursor: "pointer", width: "100%", boxShadow: "0 4px 20px rgba(251,191,36,0.35)" }}>
-                        🌌 대운 {selectCount}개 해설 보기
+                      <button onClick={() => togglePurchase(selectedIdx)}
+                        style={{ background: purchaseSet.has(selectedIdx) ? "rgba(239,68,68,0.2)" : "rgba(251,191,36,0.2)", border: `1px solid ${purchaseSet.has(selectedIdx) ? "rgba(239,68,68,0.5)" : "rgba(251,191,36,0.5)"}`, color: purchaseSet.has(selectedIdx) ? "#f87171" : "#fbbf24", borderRadius: 20, padding: "8px 20px", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
+                        {purchaseSet.has(selectedIdx) ? "✗ 선택 해제" : "+ 선택에 추가"}
                       </button>
                     </div>
                   ) : (
@@ -573,6 +598,23 @@ export default function DaewoonPage() {
               {paid && (
                 <div style={{ textAlign: "center", padding: "20px 0", color: "rgba(255,255,255,0.5)", fontSize: 13 }}>
                   ✨ 구매한 대운이 해금되었습니다
+                </div>
+              )}
+
+              {/* 선택된 대운 결제 바 */}
+              {purchaseSet.size > 0 && (
+                <div style={{ background: "linear-gradient(135deg,rgba(251,191,36,0.2),rgba(245,158,11,0.12))", border: "2px solid rgba(251,191,36,0.7)", borderRadius: 16, padding: "16px 20px", marginTop: 8 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                    <div>
+                      <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 2px" }}>🌌 선택된 대운 {purchaseSet.size}개</p>
+                      <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, margin: 0 }}>기본 ₩3,900{purchaseSet.size > 1 ? ` + 추가 ${purchaseSet.size - 1}개 × ₩1,000` : ""}</p>
+                    </div>
+                    <p style={{ color: "#fbbf24", fontSize: 22, fontWeight: 900, margin: 0 }}>₩{(3900 + (purchaseSet.size - 1) * 1000).toLocaleString()}</p>
+                  </div>
+                  <button onClick={handlePay}
+                    style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a0f2e", border: "none", borderRadius: 12, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 20px rgba(251,191,36,0.35)" }}>
+                    🌌 선택한 대운 {purchaseSet.size}개 해설 보기
+                  </button>
                 </div>
               )}
             </>

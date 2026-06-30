@@ -32,8 +32,17 @@ function PaymentCompleteInner() {
     const isDaeun = searchParams.get("daeun") === "1";
     if (isDaeun) {
       const daeunCount = searchParams.get("daeunCount") || "1";
+      const daeunIndices = searchParams.get("daeunIndices") || "";
       sessionStorage.setItem("daeunPaid", "1");
       sessionStorage.setItem("daeunPaidCount", daeunCount);
+      if (daeunIndices) {
+        try {
+          const existing = JSON.parse(sessionStorage.getItem("daeunPaidIndices") || "[]");
+          const newIdx = daeunIndices.split(",").map(Number).filter(n => !isNaN(n));
+          const merged = [...new Set([...existing, ...newIdx])];
+          sessionStorage.setItem("daeunPaidIndices", JSON.stringify(merged));
+        } catch {}
+      }
       router.replace("/main-v2/daewoon");
       return;
     }
