@@ -13,6 +13,9 @@ const UNSEONG_EMOJI: Record<string, string> = {
 interface DaeunBlock {
   gan: string; ji: string; ganHanja: string; jiHanja: string;
   startAge: number; endAge: number; unseong: string; chapter: string;
+  cheonganTitle?: string;
+  cheonganEnergy?: string; cheonganWealth?: string; cheonganCareer?: string;
+  cheonganRelationship?: string; cheonganAdvice?: string;
   mental?: string; relationship?: string; reality?: string; action?: string;
 }
 
@@ -128,15 +131,23 @@ export default function DaewoonPage() {
 
                 {paid && currentBlock.mental ? (
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {currentBlock.cheonganEnergy && (
+                      <div style={{ background: "rgba(251,191,36,0.12)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "12px 14px" }}>
+                        <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, margin: "0 0 6px" }}>✨ {currentBlock.cheonganTitle}</p>
+                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>{currentBlock.cheonganEnergy}</p>
+                      </div>
+                    )}
                     {[
                       { label: "🧠 멘탈", text: currentBlock.mental },
-                      { label: "🤝 인간관계", text: currentBlock.relationship },
-                      { label: "💼 현실", text: currentBlock.reality },
-                      { label: "🧭 대처법", text: currentBlock.action },
-                    ].map(s => (
+                      { label: "💰 재물·돈의 흐름", text: currentBlock.cheonganWealth },
+                      { label: "💼 직업·커리어", text: currentBlock.cheonganCareer },
+                      { label: "🤝 인간관계", text: (currentBlock.relationship ?? "") + (currentBlock.cheonganRelationship ? "\n" + currentBlock.cheonganRelationship : "") },
+                      { label: "⚖️ 현실", text: currentBlock.reality },
+                      { label: "🧭 이 10년을 내 편으로", text: (currentBlock.action ?? "") + (currentBlock.cheonganAdvice ? "\n" + currentBlock.cheonganAdvice : "") },
+                    ].filter(s => s.text).map(s => (
                       <div key={s.label} style={{ background: "rgba(0,0,0,0.2)", borderRadius: 10, padding: "10px 12px" }}>
                         <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>{s.label}</p>
-                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>{s.text}</p>
+                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, lineHeight: 1.7, margin: 0, whiteSpace: "pre-line" }}>{s.text}</p>
                       </div>
                     ))}
                   </div>
@@ -194,12 +205,20 @@ export default function DaewoonPage() {
                       {/* 잠긴 대운의 내용 블러 */}
                       {paid && !isCurrent && b.mental && (
                         <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 6 }}>
+                          {b.cheonganEnergy && (
+                            <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 8, padding: "8px 10px" }}>
+                              <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: "0 0 3px" }}>✨ {b.cheonganTitle}</p>
+                              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 12, lineHeight: 1.6, margin: 0 }}>{b.cheonganEnergy}</p>
+                            </div>
+                          )}
                           {[
                             { label: "🧠 멘탈", text: b.mental },
+                            { label: "💰 재물", text: b.cheonganWealth },
+                            { label: "💼 커리어", text: b.cheonganCareer },
                             { label: "🤝 인간관계", text: b.relationship },
-                            { label: "💼 현실", text: b.reality },
+                            { label: "⚖️ 현실", text: b.reality },
                             { label: "🧭 대처법", text: b.action },
-                          ].map(s => (
+                          ].filter(s => s.text).map(s => (
                             <div key={s.label} style={{ background: "rgba(0,0,0,0.2)", borderRadius: 8, padding: "8px 10px" }}>
                               <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 700, margin: "0 0 3px" }}>{s.label}</p>
                               <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 12, lineHeight: 1.6, margin: 0 }}>{s.text}</p>
