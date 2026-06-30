@@ -511,7 +511,7 @@ export default function ShareClient({ id }: { id: string }) {
 
         {!entry.businessName && (
           <button onClick={() => router.push("/main-v2")} style={{ width: "100%", marginBottom: 10, padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-            📱 나도 무료로 사주 보기
+            🔮 AI 사주 990원으로 시작하기
           </button>
         )}
 
