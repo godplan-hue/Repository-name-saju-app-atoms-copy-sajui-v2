@@ -118,11 +118,19 @@ export default function QAPage() {
   }, [showModal]);
 
   useEffect(() => {
+    const listMode = typeof window !== "undefined" && window.location.search.includes("list=1");
     const raw = sessionStorage.getItem("v2_result");
-    if (!raw) { router.replace("/main-v2"); return; }
-    const r = JSON.parse(raw);
-    const n = r?.profile?.name ?? "";
-    const y = Number(r?.profile?.birthYear ?? 0);
+    let n = "", y = 0;
+    if (raw) {
+      const r = JSON.parse(raw);
+      n = r?.profile?.name ?? "";
+      y = Number(r?.profile?.birthYear ?? 0);
+    } else if (listMode) {
+      try {
+        const saved = localStorage.getItem("v2_saved_profile");
+        if (saved) { const p = JSON.parse(saved); n = p?.name ?? ""; y = Number(p?.birthYear ?? 0); }
+      } catch {}
+    }
     if (!n || !y) { router.replace("/main-v2"); return; }
     setName(n);
     setBirthYear(y);
@@ -137,11 +145,11 @@ export default function QAPage() {
     const used = Number(localStorage.getItem(`v2_qa_${n}_${y}_${todayKey()}`) ?? 0);
     setRemaining(paid ? 999 : Math.max(0, FREE_QUESTIONS - used));
     setMessages([{ from: "cat", text: `안녕하세요, ${n}님!\n복냥이가 사주를 보고 있어요.\n아래 질문을 눌러봐도 되고,\n직접 물어봐도 돼요!` }]);
-    // 9개 카테고리 각각 랜덤 1개
     setSuggestions(QA_CATEGORIES.map(cat => {
       const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
       return { q: pick.question, catId: cat.id };
     }));
+    if (listMode) setShowQList(true);
     setReady(true);
   }, [router]);
 

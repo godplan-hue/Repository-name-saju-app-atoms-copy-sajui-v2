@@ -78,6 +78,7 @@ export default function ShareClient({ id }: { id: string }) {
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
   const pageRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const saveToHistory = () => {
     if (!entry || historySaved) return;
@@ -100,11 +101,11 @@ export default function ShareClient({ id }: { id: string }) {
   };
 
   const saveImage = async () => {
-    if (!pageRef.current || saving) return;
+    if (!contentRef.current || saving) return;
     setSaving(true);
     try {
       const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(pageRef.current, { backgroundColor: "#fdf2f8", scale: 2, useCORS: true });
+      const canvas = await html2canvas(contentRef.current, { backgroundColor: "#fdf2f8", scale: 2, useCORS: true });
       const link = document.createElement("a");
       link.download = `${entry?.name ?? "사주"}_분석결과.png`;
       link.href = canvas.toDataURL("image/png");
@@ -278,6 +279,9 @@ export default function ShareClient({ id }: { id: string }) {
           </button>
         )}
 
+        {/* 분석 내용 캡처 영역 — 이미지 저장 시 이 범위만 캡처 */}
+        <div ref={contentRef}>
+
         {/* 점수 요약 카드 */}
         <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
           <div style={{ background: entry.tier === "package" ? "#eab308" : G, color: entry.tier === "package" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
@@ -443,15 +447,20 @@ export default function ShareClient({ id }: { id: string }) {
           );
         })}
 
+        </div>{/* /contentRef */}
+
         <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
           <button onClick={toggleReadAloud} style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
             {speaking ? "⏸ 멈추기" : "🔊 읽기"}
           </button>
         </div>
 
-        <div style={{ marginBottom: 10 }}>
-          <button onClick={saveToHistory} disabled={historySaved} style={{ width: "100%", padding: "13px 0", background: historySaved ? "linear-gradient(135deg, #d1fae5, #a7f3d0)" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#065f46" : "#4338ca", border: `1.5px solid ${historySaved ? "rgba(16,185,129,0.35)" : "rgba(99,102,241,0.35)"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: historySaved ? "default" : "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
-            {historySaved ? "✅ 보관함에 저장됨" : "📥 보관함 저장"}
+        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+          <button onClick={saveToHistory} disabled={historySaved} style={{ flex: 1, padding: "13px 0", background: historySaved ? "linear-gradient(135deg, #d1fae5, #a7f3d0)" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#065f46" : "#4338ca", border: `1.5px solid ${historySaved ? "rgba(16,185,129,0.35)" : "rgba(99,102,241,0.35)"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: historySaved ? "default" : "pointer" }}>
+            {historySaved ? "✅ 저장됨" : "📥 보관함 저장"}
+          </button>
+          <button onClick={() => router.push("/main-v2/history")} style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+            📂 보관함 보기
           </button>
         </div>
 

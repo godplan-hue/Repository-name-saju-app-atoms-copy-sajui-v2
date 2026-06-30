@@ -4,8 +4,6 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
-import QAChatWidget from "@/components/QAChatWidget";
-import QASection from "@/components/QASection";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -255,7 +253,7 @@ function V2ResultInner() {
   const [allAnalyses, setAllAnalyses] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [changeInterest, setChangeInterest] = useState<string | null>(null);
-  const [bannerIdx, setBannerIdx] = useState(0);
+
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   // 공유하기 전에 "생년월일 정보(띠·오행 미리보기)를 같이 보여줄지" 고를 수 있게 함 —
@@ -277,11 +275,6 @@ function V2ResultInner() {
         .then(data => { if (data) setBrand(data); })
         .catch(() => {});
     }
-  }, []);
-  const BANNER_MSGS = ["오늘 재물운이 어떨까?", "취업 될 것 같아?", "연애운 알려줘!", "이직 타이밍 맞아?", "올해 대박 나는 달 언제야?", "내 강점이 뭐야?"];
-  useEffect(() => {
-    const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 700);
-    return () => clearInterval(t);
   }, []);
 
   const [paidCats, setPaidCats] = useState<string[]>([]);
@@ -1024,6 +1017,14 @@ function V2ResultInner() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
+        {/* ── 사주 Q&A 버튼 ── */}
+        {!isPartner && (
+          <button onClick={() => router.push("/main-v2/qa?list=1")}
+            style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
+            💬 사주 Q&A — 무엇이든 물어보세요
+          </button>
+        )}
+
         {/* ── 점수 요약 카드 ── */}
         <div
           ref={el => { cardRefs.current[0] = el; }}
@@ -1486,81 +1487,6 @@ function V2ResultInner() {
               </button>
             </div>
           </>
-        )}
-        {/* ── 사주 Q&A 섹션 ── */}
-        {!isPartner && profile?.name && profile?.birthYear && (
-          <QASection
-            name={profile.name}
-            birthYear={Number(profile.birthYear)}
-            unlocked={paid}
-            onBuyClick={() => router.push("/main-v2/payment")}
-          />
-        )}
-
-        {/* ── 사주 Q&A 배너 ── */}
-        {!isPartner && profile?.name && profile?.birthYear && (
-          <div
-            onClick={() => router.push("/main-v2/qa")}
-            style={{
-              marginTop: 20,
-              borderRadius: 20,
-              overflow: "hidden",
-              cursor: "pointer",
-              background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)",
-              boxShadow: "0 10px 36px rgba(139,92,246,0.45)",
-              position: "relative",
-              minHeight: 140,
-            }}
-          >
-            {/* 배경 글로우 */}
-            <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(236,72,153,0.18)", filter: "blur(30px)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(139,92,246,0.2)", filter: "blur(25px)", pointerEvents: "none" }} />
-
-            <div style={{ padding: "22px 20px 20px", position: "relative", zIndex: 2 }}>
-              {/* 뱃지 */}
-              <span style={{ fontSize: 10, fontWeight: 900, color: "#fbbf24", background: "rgba(251,191,36,0.18)", border: "1px solid rgba(251,191,36,0.4)", padding: "3px 10px", borderRadius: 20, letterSpacing: 0.5 }}>AI 사주 상담</span>
-
-              {/* 메인 카피 */}
-              <p style={{ fontSize: 30, fontWeight: 900, color: "#ffffff", margin: "8px 0 2px", lineHeight: 1.15, letterSpacing: -1 }}>
-                무엇이든<br/>물어보세요
-              </p>
-
-              {/* 회전 질문 */}
-              <p style={{ fontSize: 13, color: "#fbbf24", fontWeight: 800, margin: "0 0 12px", minHeight: 20 }}>
-                💬 &ldquo;{BANNER_MSGS[bannerIdx]}&rdquo;
-              </p>
-
-              {/* CTA 버튼 */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{
-                  display: "inline-flex", alignItems: "center", gap: 6,
-                  padding: "9px 20px",
-                  background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
-                  color: "white", borderRadius: 50,
-                  fontWeight: 900, fontSize: 13,
-                  boxShadow: "0 4px 14px rgba(236,72,153,0.5)",
-                }}>사주 상담 →</span>
-                <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>매일 무료 3회</span>
-              </div>
-            </div>
-
-            {/* 고양이 + 반짝이 */}
-            <div style={{ position: "absolute", right: 10, bottom: 0, zIndex: 2, userSelect: "none", textAlign: "center" }}>
-              <div style={{ fontSize: 13, marginBottom: 2, animation: "sparkle 1.5s infinite alternate", opacity: 0.9 }}>✨ ⭐ ✨</div>
-              <div style={{ fontSize: 72, lineHeight: 1 }}>🐱</div>
-            </div>
-            <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
-          </div>
-        )}
-
-        {/* ── 복냥이 상담창 배너 ── */}
-        {!isPartner && profile?.name && profile?.birthYear && (
-          <QAChatWidget
-            name={profile.name}
-            birthYear={Number(profile.birthYear)}
-            unlocked={paid}
-            storagePrefix="v2_result_qa"
-          />
         )}
 
         {!isPartner && (
