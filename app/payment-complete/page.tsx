@@ -44,6 +44,8 @@ function PaymentCompleteInner() {
   const [redirectTo, setRedirectTo] = useState("");
 
   useEffect(() => {
+    setIsPackage(false);
+
     const isDaeun = searchParams.get("daeun") === "1";
     if (isDaeun) {
       const daeunCount = searchParams.get("daeunCount") || "1";
@@ -61,7 +63,6 @@ function PaymentCompleteInner() {
       setPackageName("대운(大運)");
       setRedirectTo("/main-v2/daewoon");
       setReady(true);
-      setTimeout(() => router.replace("/main-v2/daewoon"), 2000);
       return;
     }
 
@@ -71,7 +72,6 @@ function PaymentCompleteInner() {
       setPackageName("올해 운세");
       setRedirectTo("/main-v2/yearly");
       setReady(true);
-      setTimeout(() => router.replace("/main-v2/yearly"), 2000);
       return;
     }
 
@@ -82,7 +82,6 @@ function PaymentCompleteInner() {
       setPackageName(SPECIAL_NAMES[specialType] || specialType);
       setRedirectTo("/main-v2/special");
       setReady(true);
-      setTimeout(() => router.replace("/main-v2/special"), 2000);
       return;
     }
 
@@ -155,9 +154,6 @@ function PaymentCompleteInner() {
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: 0 }}>상태: <span style={{ color: "#90EE90", fontWeight: 900 }}>완료</span></p>
           </div>
 
-          {!isPackage && redirectTo && (
-            <p style={{ color: "#aaa", fontSize: 13, fontWeight: 700, marginBottom: 16 }}>잠시 후 자동으로 이동합니다...</p>
-          )}
 
           {isPackage ? (
             <button onClick={() => router.push(`/paid-info-input?package=${encodeURIComponent(packageName)}`)} style={{ width: "100%", padding: 15, background: "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12, boxShadow: "0 6px 22px rgba(251,191,36,0.35)" }}>🔮 유료분석 보기</button>
