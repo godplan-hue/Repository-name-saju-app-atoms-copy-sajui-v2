@@ -26,9 +26,10 @@ export default function Refund() {
           </section>
 
           {/* 1. 기본 원칙 */}
-          <section style={{ marginBottom: 30 }}>
+          <section style={{ marginBottom: 30, padding: 16, background: "rgba(239,68,68,0.12)", borderRadius: 8, border: "1px solid rgba(239,68,68,0.4)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>1. 기본 원칙</h2>
             <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>점운의 사주 분석 결과는 디지털 콘텐츠입니다.<br/>고객이 다운로드하면 서비스 이용이 완료됩니다.</p>
+            <p style={{ color: "#ff6b6b", fontSize: 14, fontWeight: 900, lineHeight: 1.8, margin: 0 }}>⚠️ AI 사주 분석 결과가 화면에 표시된 이후에는 디지털 콘텐츠 특성상 <span style={{ textDecoration: "underline" }}>어떠한 사유로도 환불이 불가</span>합니다.</p>
           </section>
 
           {/* 2. 환불 가능 조건 */}
