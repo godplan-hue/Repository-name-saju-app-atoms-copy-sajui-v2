@@ -4,7 +4,7 @@ import { useState } from "react";
 import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng, QACategory } from "@/lib/qa/index";
 
-const FREE_COUNT = 5;
+const FREE_COUNT = 3;
 
 interface Props {
   name: string;
@@ -154,9 +154,9 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           boxShadow: "0 6px 20px rgba(236,72,153,0.3)",
         }}>
           <div>
-            <p style={{ fontSize: 13, margin: "0 0 1px", fontWeight: 900 }}>🔓 전체 Q&amp;A 열어볼래?</p>
+            <p style={{ fontSize: 13, margin: "0 0 1px", fontWeight: 900 }}>🔓 Q&amp;A 전체 + 복냥이 무제한 같이 열어볼래?</p>
             <p style={{ fontSize: 10, fontWeight: 700, margin: 0, opacity: 0.9 }}>
-              9카테고리 × 40문항 · {name}님 맞춤 답변
+              결제하면 360개 질문 전체 + 복냥이 채팅 무제한 하루 가능!
             </p>
           </div>
           <button
@@ -329,7 +329,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
                   fontSize: 12,
                   cursor: "pointer",
                 }}
-              >💎 구매하고 전체 보기</button>
+              >💎 구매하고 Q&amp;A + 복냥이 전체 열기</button>
             </div>
           )}
         </>

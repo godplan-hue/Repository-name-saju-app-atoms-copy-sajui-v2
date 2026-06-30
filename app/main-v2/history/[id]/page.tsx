@@ -464,7 +464,7 @@ export default function HistoryDetail() {
             sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: item.name, birthYear: Number(item.birthYear) } }));
             sessionStorage.setItem("v2_plan", item.planType === "package" ? "select" : "select");
           }
-          router.push("/main-v2/qa?list=1");
+          router.push("/main-v2/qa-list");
         }} style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
           💬 사주 Q&A — 무엇이든 물어보세요
         </button>

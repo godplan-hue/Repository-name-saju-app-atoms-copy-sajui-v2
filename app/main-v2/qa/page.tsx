@@ -99,8 +99,6 @@ export default function QAPage() {
   const [pendingPkg, setPendingPkg] = useState<string | null>(null);
   const [typing, setTyping] = useState(false);
   const [suggestions, setSuggestions] = useState<Array<{q: string; catId: string}>>([]);
-  const [showQList, setShowQList] = useState(false);
-  const [qListCat, setQListCat] = useState("wealth");
   const [chipKey, setChipKey] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
   const qaModalRef = useRef<HTMLDivElement>(null);
@@ -118,18 +116,12 @@ export default function QAPage() {
   }, [showModal]);
 
   useEffect(() => {
-    const listMode = typeof window !== "undefined" && window.location.search.includes("list=1");
     const raw = sessionStorage.getItem("v2_result");
     let n = "", y = 0;
     if (raw) {
       const r = JSON.parse(raw);
       n = r?.profile?.name ?? "";
       y = Number(r?.profile?.birthYear ?? 0);
-    } else if (listMode) {
-      try {
-        const saved = localStorage.getItem("v2_saved_profile");
-        if (saved) { const p = JSON.parse(saved); n = p?.name ?? ""; y = Number(p?.birthYear ?? 0); }
-      } catch {}
     }
     if (!n || !y) { router.replace("/main-v2"); return; }
     setName(n);
@@ -149,7 +141,6 @@ export default function QAPage() {
       const pick = cat.items[Math.floor(Math.random() * cat.items.length)];
       return { q: pick.question, catId: cat.id };
     }));
-    if (listMode) setShowQList(true);
     setReady(true);
   }, [router]);
 
@@ -326,18 +317,6 @@ export default function QAPage() {
         );
       })()}
 
-      {/* 질문 목록 버튼 — 입력창 바로 위 */}
-      <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "10px 14px 0", flexShrink: 0 }}>
-        <button onClick={() => setShowQList(true)} style={{
-          width: "100%", padding: "11px 0",
-          background: "linear-gradient(135deg, #8b5cf6, #ec4899)",
-          border: "none", borderRadius: 12,
-          fontSize: 14, fontWeight: 900, color: "white",
-          cursor: "pointer", letterSpacing: "-0.3px",
-          boxShadow: "0 4px 14px rgba(139,92,246,0.35)",
-        }}>📋 360개 질문 목록 보기 (탭하면 바로 답변!)</button>
-      </div>
-
       {/* 입력창 위 안내 */}
       <div style={{ background: "white", padding: "4px 14px 0", textAlign: "center" }}>
         <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>💳 결제 시 하루 동안 무제한 이용 가능</span>
@@ -354,56 +333,6 @@ export default function QAPage() {
         <button onClick={send} style={{ width: 44, height: 44, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", fontSize: 18, cursor: "pointer", flexShrink: 0 }}>↑</button>
       </div>
 
-      {/* ===== 질문 목록 바텀시트 ===== */}
-      {showQList && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 200 }} onClick={() => setShowQList(false)}>
-          <div
-            onClick={e => e.stopPropagation()}
-            style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "white", borderRadius: "20px 20px 0 0", maxHeight: "80vh", display: "flex", flexDirection: "column" }}
-          >
-            <div style={{ padding: "16px 16px 10px" }}>
-              <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-                <div>
-                  <h3 style={{ margin: "0 0 2px", fontSize: 15, fontWeight: 900, color: "#1a1a2e" }}>📋 질문 목록</h3>
-                  <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: "#8b5cf6" }}>카테고리마다 40개 질문 · 원하는 질문 탭하면 바로 답변!</p>
-                </div>
-                <button onClick={() => setShowQList(false)} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#9ca3af" }}>✕</button>
-              </div>
-              {/* 카테고리 탭 3×3 */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5 }}>
-                {QA_CATEGORIES.map(c => (
-                  <button key={c.id} onClick={() => setQListCat(c.id)} style={{
-                    padding: "8px 4px",
-                    background: qListCat === c.id ? "linear-gradient(135deg, #ec4899, #8b5cf6)" : "#f5f3ff",
-                    color: qListCat === c.id ? "white" : "#1a1a2e",
-                    border: qListCat === c.id ? "none" : "2px solid #c4b5fd",
-                    borderRadius: 9, fontWeight: 900, fontSize: 12, cursor: "pointer",
-                    boxShadow: qListCat === c.id ? "0 3px 10px rgba(236,72,153,0.3)" : "none",
-                  }}>{c.emoji} {c.label}</button>
-                ))}
-              </div>
-            </div>
-            {/* 질문 목록 스크롤 — 3단 그리드 */}
-            <div style={{ overflowY: "auto", padding: "4px 16px 32px", flex: 1 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 }}>
-                {(QA_CATEGORIES.find(c => c.id === qListCat)?.items ?? []).map((item, idx) => (
-                  <button key={idx} onClick={() => { setShowQList(false); sendMsg(item.question, qListCat); }} style={{
-                    padding: "10px 10px", background: "#fdf4ff",
-                    border: "1.5px solid #e9d5ff", borderRadius: 12,
-                    textAlign: "left", cursor: "pointer",
-                    display: "flex", flexDirection: "column", gap: 5,
-                  }}>
-                    <span style={{ fontSize: 10, fontWeight: 900, color: "white", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "2px 8px", borderRadius: 20, alignSelf: "flex-start" }}>Q{idx + 1}</span>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", lineHeight: 1.4 }}>{item.question}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* ===== 구매 유도 모달 ===== */}
       {showModal && (() => {
         const isHighlightSingle = (s: typeof SINGLES[0]) => !pendingPkg && s.catIds.includes(pendingCatId);
@@ -416,7 +345,7 @@ export default function QAPage() {
             <div ref={qaModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", height: 280, overflowY: "auto", overscrollBehavior: "contain", padding: "12px 12px 16px", zIndex: 101, willChange: "transform", transform: "translateZ(0)" }}>
               <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
               <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
-              <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>구매하면 Q&A 전체 열람 + 무제한 질문 가능</p>
+              <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>결제하면 복냥이 무제한 + Q&amp;A 전체 열람 하루 동안 가능!</p>
               {/* 단품 5개 ₩990 — 3열 */}
               <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>⚡ 단품 구매 · 1개 ₩990</p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, marginBottom: 12 }}>

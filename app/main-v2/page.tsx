@@ -744,7 +744,7 @@ export default function MainV2() {
           <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
           <h2 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>복냥이가 당신의 길을 안내합니다 🐾</p>
-          <a href="/main-v2/qa?list=1"
+          <a href="/main-v2/qa-list"
             style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "white", color: "#ec4899", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 18px rgba(0,0,0,0.15)", textDecoration: "none", textAlign: "center" }}>
             💬 사주 Q&amp;A 바로 확인하기
           </a>
