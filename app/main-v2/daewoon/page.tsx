@@ -30,6 +30,7 @@ export default function DaewoonPage() {
   const [selectCount, setSelectCount] = useState(1);
   const [loading, setLoading] = useState(true);
   const [currentAge, setCurrentAge] = useState(0);
+  const [selectedIdx, setSelectedIdx] = useState(-1);
 
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
@@ -48,6 +49,13 @@ export default function DaewoonPage() {
     const birth = `${p.birthYear}-${String(p.birthMonth).padStart(2, "0")}-${String(p.birthDay).padStart(2, "0")}`;
     fetchDaeun(p.name, birth, p.gender || "여", p.birthHour || "unknown", isPaid);
   }, []);
+
+  useEffect(() => {
+    if (daeunList.length > 0 && selectedIdx === -1) {
+      const idx = daeunList.findIndex(b => currentAge >= b.startAge && currentAge <= b.endAge);
+      setSelectedIdx(idx >= 0 ? idx : 0);
+    }
+  }, [daeunList, currentAge, selectedIdx]);
 
   const fetchDaeun = async (name: string, birth: string, gender: string, birthHour: string, isPaid: boolean) => {
     setLoading(true);
@@ -72,9 +80,16 @@ export default function DaewoonPage() {
     router.push(`/payment-complete?daeun=1&paid=${price}&daeunCount=${selectCount}`);
   };
 
-  const currentBlock = daeunList.find(b => currentAge >= b.startAge && currentAge <= b.endAge);
-
   const currentIndex = daeunList.findIndex(b => currentAge >= b.startAge && currentAge <= b.endAge);
+
+  const isBlockLocked = (i: number) => {
+    const relIdx = i - currentIndex;
+    return !paid || (relIdx > 0 && relIdx >= paidCount);
+  };
+
+  const selectedBlock = selectedIdx >= 0 ? daeunList[selectedIdx] : null;
+  const selectedLocked = selectedIdx >= 0 ? isBlockLocked(selectedIdx) : true;
+  const isSelectedCurrent = selectedIdx === currentIndex;
 
   return (
     <main style={{
@@ -109,184 +124,191 @@ export default function DaewoonPage() {
                   {profile.name}님의 대운 · {isForward ? "순행(順行)" : "역행(逆行)"} · 첫 대운 {daeunSu}세
                 </p>
                 <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 700, margin: 0 }}>
-                  현재 {currentAge}세 · {currentBlock ? `${currentBlock.startAge}~${currentBlock.endAge}세 ${currentBlock.gan}${currentBlock.ji} 대운` : "대운 계산 중"}
+                  현재 {currentAge}세 · {daeunList[currentIndex]
+                    ? `${daeunList[currentIndex].startAge}~${daeunList[currentIndex].endAge}세 ${daeunList[currentIndex].gan}${daeunList[currentIndex].ji} 대운`
+                    : "대운 계산 중"}
                 </p>
               </div>
             )}
 
-            {/* 현재 대운 — 무료 미리보기 */}
-            {currentBlock && (
-              <div style={{
-                background: "linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.08))",
-                border: "2px solid rgba(251,191,36,0.6)", borderRadius: 16, padding: "20px", marginBottom: 20,
-                boxShadow: "0 4px 24px rgba(251,191,36,0.15)",
-              }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                  <span style={{ background: "#fbbf24", color: "#1a0f2e", fontSize: 11, fontWeight: 900, padding: "3px 8px", borderRadius: 20 }}>🌕 지금 내 대운</span>
-                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }}>{currentBlock.startAge}~{currentBlock.endAge}세</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
-                  <span style={{ fontSize: 28, fontWeight: 900, color: "#fbbf24" }}>{currentBlock.ganHanja}{currentBlock.jiHanja}</span>
-                  <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 14 }}>({currentBlock.gan}{currentBlock.ji})</span>
-                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 13 }}>{UNSEONG_EMOJI[currentBlock.unseong]} {currentBlock.unseong}</span>
-                </div>
-                <p style={{ color: "#fbbf24", fontSize: 15, fontWeight: 700, margin: "0 0 12px" }}>「{currentBlock.chapter}」</p>
-
-                {paid && currentBlock.mental ? (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {currentBlock.cheonganEnergy && (
-                      <div style={{ background: "rgba(251,191,36,0.12)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "12px 14px" }}>
-                        <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, margin: "0 0 6px" }}>✨ {currentBlock.cheonganTitle}</p>
-                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>{currentBlock.cheonganEnergy}</p>
-                      </div>
-                    )}
-                    {[
-                      { label: "🧠 멘탈", text: currentBlock.mental },
-                      { label: "💰 재물·돈의 흐름", text: currentBlock.cheonganWealth },
-                      { label: "💼 직업·커리어", text: currentBlock.cheonganCareer },
-                      { label: "🤝 인간관계", text: (currentBlock.relationship ?? "") + (currentBlock.cheonganRelationship ? "\n" + currentBlock.cheonganRelationship : "") },
-                      { label: "⚖️ 현실", text: currentBlock.reality },
-                      { label: "🧭 이 10년을 내 편으로", text: (currentBlock.action ?? "") + (currentBlock.cheonganAdvice ? "\n" + currentBlock.cheonganAdvice : "") },
-                    ].filter(s => s.text).map(s => (
-                      <div key={s.label} style={{ background: "rgba(0,0,0,0.2)", borderRadius: 10, padding: "10px 12px" }}>
-                        <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>{s.label}</p>
-                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, lineHeight: 1.6, margin: 0, whiteSpace: "pre-line" }}>{s.text}</p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, lineHeight: 1.65, margin: 0, whiteSpace: "pre-line" }}>{teaserText}</p>
-                )}
-              </div>
-            )}
-
-            {/* 전체 8개 대운 타임라인 */}
-            <div style={{ marginBottom: 24 }}>
-              <h2 style={{ fontSize: 15, fontWeight: 700, color: "rgba(255,255,255,0.7)", margin: "0 0 12px", letterSpacing: 0.5 }}>
-                📅 전체 대운 타임라인
+            {/* 대운 타임라인 — 탭해서 선택 */}
+            <div style={{ marginBottom: 16 }}>
+              <h2 style={{ fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.6)", margin: "0 0 10px", letterSpacing: 0.5 }}>
+                📅 보고싶은 대운을 탭해서 선택하세요
               </h2>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {daeunList.map((b, i) => {
                   const isCurrent = currentAge >= b.startAge && currentAge <= b.endAge;
                   const isPast = currentAge > b.endAge;
-                  const relIdx = i - currentIndex;
-                  // 과거 + 현재: paid면 열림 / 미래: paid & 추가 구매한 개수 내에서만 열림
-                  const isLocked = !paid || (relIdx > 0 && relIdx >= paidCount);
+                  const locked = isBlockLocked(i);
+                  const isSelected = selectedIdx === i;
+
                   return (
-                    <div key={i} style={{
-                      background: isCurrent
-                        ? "linear-gradient(135deg, rgba(251,191,36,0.12), rgba(245,158,11,0.06))"
-                        : isPast ? "rgba(255,255,255,0.04)" : "rgba(139,92,246,0.08)",
-                      border: isCurrent ? "1.5px solid rgba(251,191,36,0.5)" : "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: 12, padding: "12px 14px", position: "relative", overflow: "hidden",
-                    }}>
+                    <div
+                      key={i}
+                      onClick={() => setSelectedIdx(i)}
+                      style={{
+                        background: isSelected
+                          ? (isCurrent ? "linear-gradient(135deg, rgba(251,191,36,0.28), rgba(245,158,11,0.18))" : "rgba(139,92,246,0.28)")
+                          : (isCurrent ? "linear-gradient(135deg, rgba(251,191,36,0.1), rgba(245,158,11,0.05))" : isPast ? "rgba(255,255,255,0.04)" : "rgba(139,92,246,0.06)"),
+                        border: isSelected
+                          ? (isCurrent ? "2px solid rgba(251,191,36,0.95)" : "2px solid rgba(139,92,246,0.85)")
+                          : (isCurrent ? "1.5px solid rgba(251,191,36,0.4)" : "1px solid rgba(255,255,255,0.08)"),
+                        borderRadius: 12, padding: "12px 14px", cursor: "pointer",
+                        transition: "all 0.15s ease",
+                      }}
+                    >
                       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                         <span style={{ fontSize: 16, minWidth: 20, textAlign: "center" }}>
-                          {isCurrent ? "🌕" : isPast ? "🌑" : "🔒"}
+                          {isCurrent ? "🌕" : isPast ? "🌑" : locked ? "🔒" : "🌙"}
                         </span>
                         <div style={{ flex: 1 }}>
                           <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                            <span style={{ fontSize: 16, fontWeight: 900, color: isCurrent ? "#fbbf24" : "rgba(255,255,255,0.6)" }}>
+                            <span style={{ fontSize: 16, fontWeight: 900, color: isCurrent ? "#fbbf24" : locked ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.75)" }}>
                               {b.ganHanja}{b.jiHanja}
                             </span>
-                            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{b.startAge}~{b.endAge}세</span>
-                            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{UNSEONG_EMOJI[b.unseong]} {b.unseong}</span>
+                            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{b.startAge}~{b.endAge}세</span>
+                            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{UNSEONG_EMOJI[b.unseong]} {b.unseong}</span>
                           </div>
-                          {isLocked ? (
-                            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", margin: "2px 0 0", filter: "blur(3px)" }}>
-                              {b.chapter}
-                            </p>
-                          ) : (
-                            <p style={{ fontSize: 12, color: isCurrent ? "rgba(251,191,36,0.8)" : "rgba(255,255,255,0.45)", margin: "2px 0 0" }}>
-                              {b.chapter}
-                            </p>
-                          )}
+                          <p style={{
+                            fontSize: 12,
+                            color: locked ? "rgba(255,255,255,0.2)" : (isCurrent ? "rgba(251,191,36,0.8)" : "rgba(255,255,255,0.45)"),
+                            margin: "2px 0 0",
+                            filter: locked ? "blur(4px)" : "none",
+                          }}>
+                            {b.chapter}
+                          </p>
                         </div>
-                        {isLocked && (
-                          <span style={{ fontSize: 18, color: "rgba(255,255,255,0.2)" }}>🔒</span>
-                        )}
+                        <span style={{
+                          fontSize: 11, fontWeight: 700,
+                          color: isSelected ? (isCurrent ? "#fbbf24" : "#a78bfa") : "rgba(255,255,255,0.25)",
+                          minWidth: 40, textAlign: "right",
+                        }}>
+                          {isSelected ? "▶ 선택됨" : "탭 →"}
+                        </span>
                       </div>
-
-                      {/* 잠긴 대운의 내용 블러 */}
-                      {paid && !isCurrent && b.mental && (
-                        <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 6 }}>
-                          {b.cheonganEnergy && (
-                            <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 8, padding: "8px 10px" }}>
-                              <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: "0 0 3px" }}>✨ {b.cheonganTitle}</p>
-                              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>{b.cheonganEnergy}</p>
-                            </div>
-                          )}
-                          {[
-                            { label: "🧠 멘탈", text: b.mental },
-                            { label: "💰 재물", text: b.cheonganWealth },
-                            { label: "💼 커리어", text: b.cheonganCareer },
-                            { label: "🤝 인간관계", text: b.relationship },
-                            { label: "⚖️ 현실", text: b.reality },
-                            { label: "🧭 대처법", text: b.action },
-                          ].filter(s => s.text).map(s => (
-                            <div key={s.label} style={{ background: "rgba(0,0,0,0.2)", borderRadius: 8, padding: "8px 10px" }}>
-                              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 700, margin: "0 0 3px" }}>{s.label}</p>
-                              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>{s.text}</p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
                     </div>
                   );
                 })}
               </div>
             </div>
 
-            {/* 결제 섹션 */}
-            {!paid && (
-              <div style={{
-                background: "linear-gradient(135deg, rgba(139,92,246,0.2), rgba(109,40,217,0.15))",
-                border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 18, padding: "24px 20px",
-                textAlign: "center",
-              }}>
-                <div style={{ fontSize: 28, marginBottom: 10 }}>🔓</div>
-                <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 6px" }}>대운 해설 보기</h3>
-                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, lineHeight: 1.6, margin: "0 0 20px" }}>
-                  현재 대운 기본 ₩3,900 · 추가 10년마다 +₩1,000
-                </p>
+            {/* 선택된 대운 상세 */}
+            {selectedBlock && (
+              <div style={{ marginBottom: 24 }}>
+                {selectedLocked ? (
+                  /* 잠긴 대운 선택 시 — 결제 유도 */
+                  <div style={{
+                    background: "linear-gradient(135deg, rgba(139,92,246,0.2), rgba(109,40,217,0.15))",
+                    border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 18, padding: "24px 20px",
+                    textAlign: "center",
+                  }}>
+                    <div style={{ fontSize: 28, marginBottom: 10 }}>🔓</div>
+                    <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 6px" }}>대운 해설 보기</h3>
+                    <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 14, margin: "0 0 4px" }}>
+                      {selectedBlock.ganHanja}{selectedBlock.jiHanja} · {selectedBlock.startAge}~{selectedBlock.endAge}세
+                    </p>
+                    <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 12, lineHeight: 1.6, margin: "0 0 20px" }}>
+                      {paid ? "이 대운은 구매 범위에 포함되지 않아요" : "현재 대운 기본 ₩3,900 · 추가 10년마다 +₩1,000"}
+                    </p>
 
-                {/* 개수 선택 */}
-                <div style={{ background: "rgba(0,0,0,0.25)", borderRadius: 14, padding: "16px", marginBottom: 16 }}>
-                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, margin: "0 0 10px" }}>몇 개 대운을 열람할까요?</p>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20 }}>
-                    <button onClick={() => setSelectCount(c => Math.max(1, c - 1))} style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(139,92,246,0.4)", border: "1px solid rgba(139,92,246,0.7)", color: "white", fontSize: 18, fontWeight: 900, cursor: "pointer", lineHeight: 1 }}>−</button>
-                    <div style={{ textAlign: "center" }}>
-                      <div style={{ color: "#fbbf24", fontSize: 24, fontWeight: 900 }}>{selectCount}개</div>
-                      <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>
-                        {selectCount === 1 ? "현재 대운만" : `현재 + 미래 ${selectCount - 1}개`}
+                    {/* 개수 선택 */}
+                    <div style={{ background: "rgba(0,0,0,0.25)", borderRadius: 14, padding: "16px", marginBottom: 16 }}>
+                      <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, margin: "0 0 10px" }}>몇 개 대운을 열람할까요?</p>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20 }}>
+                        <button onClick={() => setSelectCount(c => Math.max(1, c - 1))} style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(139,92,246,0.4)", border: "1px solid rgba(139,92,246,0.7)", color: "white", fontSize: 18, fontWeight: 900, cursor: "pointer", lineHeight: 1 }}>−</button>
+                        <div style={{ textAlign: "center" }}>
+                          <div style={{ color: "#fbbf24", fontSize: 24, fontWeight: 900 }}>{selectCount}개</div>
+                          <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>
+                            {selectCount === 1 ? "현재 대운만" : `현재 + 미래 ${selectCount - 1}개`}
+                          </div>
+                        </div>
+                        <button onClick={() => setSelectCount(c => Math.min(daeunList.length, c + 1))} style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(139,92,246,0.4)", border: "1px solid rgba(139,92,246,0.7)", color: "white", fontSize: 18, fontWeight: 900, cursor: "pointer", lineHeight: 1 }}>+</button>
                       </div>
                     </div>
-                    <button onClick={() => setSelectCount(c => Math.min(daeunList.length, c + 1))} style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(139,92,246,0.4)", border: "1px solid rgba(139,92,246,0.7)", color: "white", fontSize: 18, fontWeight: 900, cursor: "pointer", lineHeight: 1 }}>+</button>
-                  </div>
-                </div>
 
-                <div style={{ color: "#fbbf24", fontSize: 30, fontWeight: 900, marginBottom: 4 }}>
-                  ₩{(3900 + (selectCount - 1) * 1000).toLocaleString()}
-                </div>
-                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, margin: "0 0 16px" }}>
-                  기본 ₩3,900{selectCount > 1 ? ` + 추가 ${selectCount - 1}개 × ₩1,000` : ""}
-                </p>
-                <button
-                  onClick={handlePay}
-                  style={{
-                    background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a0f2e",
-                    border: "none", borderRadius: 12, padding: "14px 32px", fontSize: 15, fontWeight: 900,
-                    cursor: "pointer", width: "100%", boxShadow: "0 4px 20px rgba(251,191,36,0.35)",
-                  }}
-                >
-                  🌌 대운 {selectCount}개 해설 보기
-                </button>
+                    <div style={{ color: "#fbbf24", fontSize: 30, fontWeight: 900, marginBottom: 4 }}>
+                      ₩{(3900 + (selectCount - 1) * 1000).toLocaleString()}
+                    </div>
+                    <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, margin: "0 0 16px" }}>
+                      기본 ₩3,900{selectCount > 1 ? ` + 추가 ${selectCount - 1}개 × ₩1,000` : ""}
+                    </p>
+                    <button
+                      onClick={handlePay}
+                      style={{
+                        background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a0f2e",
+                        border: "none", borderRadius: 12, padding: "14px 32px", fontSize: 15, fontWeight: 900,
+                        cursor: "pointer", width: "100%", boxShadow: "0 4px 20px rgba(251,191,36,0.35)",
+                      }}
+                    >
+                      🌌 대운 {selectCount}개 해설 보기
+                    </button>
+                  </div>
+                ) : (
+                  /* 열린 대운 — 상세 내용 */
+                  <div style={{
+                    background: isSelectedCurrent
+                      ? "linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.08))"
+                      : "rgba(139,92,246,0.12)",
+                    border: isSelectedCurrent
+                      ? "2px solid rgba(251,191,36,0.65)" : "1.5px solid rgba(139,92,246,0.45)",
+                    borderRadius: 16, padding: "20px",
+                    boxShadow: isSelectedCurrent ? "0 4px 24px rgba(251,191,36,0.15)" : "0 4px 16px rgba(139,92,246,0.15)",
+                  }}>
+                    {/* 블록 헤더 */}
+                    <div style={{ marginBottom: 14 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                        {isSelectedCurrent && (
+                          <span style={{ background: "#fbbf24", color: "#1a0f2e", fontSize: 11, fontWeight: 900, padding: "3px 8px", borderRadius: 20 }}>🌕 지금 내 대운</span>
+                        )}
+                        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }}>{selectedBlock.startAge}~{selectedBlock.endAge}세</span>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
+                        <span style={{ fontSize: 28, fontWeight: 900, color: isSelectedCurrent ? "#fbbf24" : "rgba(255,255,255,0.92)" }}>
+                          {selectedBlock.ganHanja}{selectedBlock.jiHanja}
+                        </span>
+                        <span style={{ color: "rgba(255,255,255,0.6)", fontSize: 14 }}>({selectedBlock.gan}{selectedBlock.ji})</span>
+                        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 13 }}>{UNSEONG_EMOJI[selectedBlock.unseong]} {selectedBlock.unseong}</span>
+                      </div>
+                      <p style={{ color: isSelectedCurrent ? "#fbbf24" : "rgba(255,255,255,0.75)", fontSize: 15, fontWeight: 700, margin: 0 }}>
+                        「{selectedBlock.chapter}」
+                      </p>
+                    </div>
+
+                    {/* 내용 */}
+                    {selectedBlock.mental ? (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                        {selectedBlock.cheonganEnergy && (
+                          <div style={{ background: "rgba(251,191,36,0.12)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "12px 14px" }}>
+                            <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, margin: "0 0 6px" }}>✨ {selectedBlock.cheonganTitle}</p>
+                            <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>{selectedBlock.cheonganEnergy}</p>
+                          </div>
+                        )}
+                        {[
+                          { label: "🧠 멘탈", text: selectedBlock.mental },
+                          { label: "💰 재물·돈의 흐름", text: selectedBlock.cheonganWealth },
+                          { label: "💼 직업·커리어", text: selectedBlock.cheonganCareer },
+                          { label: "🤝 인간관계", text: (selectedBlock.relationship ?? "") + (selectedBlock.cheonganRelationship ? "\n" + selectedBlock.cheonganRelationship : "") },
+                          { label: "⚖️ 현실", text: selectedBlock.reality },
+                          { label: "🧭 이 10년을 내 편으로", text: (selectedBlock.action ?? "") + (selectedBlock.cheonganAdvice ? "\n" + selectedBlock.cheonganAdvice : "") },
+                        ].filter(s => s.text).map(s => (
+                          <div key={s.label} style={{ background: "rgba(0,0,0,0.2)", borderRadius: 10, padding: "10px 12px" }}>
+                            <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>{s.label}</p>
+                            <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, lineHeight: 1.6, margin: 0, whiteSpace: "pre-line" }}>{s.text}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, lineHeight: 1.65, margin: 0, whiteSpace: "pre-line" }}>{teaserText}</p>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
             {paid && (
               <div style={{ textAlign: "center", padding: "20px 0", color: "rgba(255,255,255,0.5)", fontSize: 13 }}>
-                ✨ 전체 대운이 해금되었습니다
+                ✨ 구매한 대운이 해금되었습니다
               </div>
             )}
           </>
