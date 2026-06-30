@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import QAChatWidget from "@/components/QAChatWidget";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 
@@ -77,12 +76,6 @@ export default function ShareClient({ id }: { id: string }) {
   const [speaking, setSpeaking] = useState(false);
   const [saving, setSaving] = useState(false);
   const [historySaved, setHistorySaved] = useState(false);
-  const [bannerIdx, setBannerIdx] = useState(0);
-  const BANNER_MSGS = ["오늘 재물운이 어떨까?", "취업 될 것 같아?", "연애운 알려줘!", "이직 타이밍 맞아?", "올해 대박 나는 달 언제야?", "내 강점이 뭐야?"];
-  useEffect(() => {
-    const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 700);
-    return () => clearInterval(t);
-  }, []);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
@@ -281,22 +274,6 @@ export default function ShareClient({ id }: { id: string }) {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
 
-        {/* ── Q&A 입장 버튼 ── */}
-        {!entry.businessName && (
-          <button
-            onClick={() => {
-              if (entry.name && entry.birthYear) {
-                sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
-                sessionStorage.setItem("v2_plan", "select");
-              }
-              router.push("/main-v2/qa");
-            }}
-            style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}
-          >
-            💬 사주 Q&amp;A — 무엇이든 물어보세요
-          </button>
-        )}
-
         {/* 분석 내용 캡처 영역 — 이미지 저장 시 이 범위만 캡처 */}
         <div ref={contentRef}>
 
@@ -467,45 +444,6 @@ export default function ShareClient({ id }: { id: string }) {
 
         </div>{/* /contentRef */}
 
-        {/* 보관함 저장 */}
-        <div style={{ marginBottom: 10 }}>
-          <button onClick={saveToHistory} disabled={historySaved}
-            style={{ width: "100%", padding: "13px 0", background: historySaved ? "#f0fdf4" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#16a34a" : "#4338ca", border: historySaved ? "1.5px solid #86efac" : "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: historySaved ? "default" : "pointer" }}>
-            {historySaved ? "✅ 보관함 저장 완료" : "📥 보관함 저장"}
-          </button>
-        </div>
-
-        {/* 이미지저장 + 읽기 */}
-        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-          <button onClick={saveImage} disabled={saving}
-            style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #fef3c7, #fde68a)", color: "#92400e", border: "1.5px solid rgba(245,158,11,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: saving ? "not-allowed" : "pointer" }}>
-            {saving ? "⏳..." : "🖼️ 이미지 저장"}
-          </button>
-          <button onClick={toggleReadAloud}
-            style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
-            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
-          </button>
-        </div>
-
-        {/* 공유 */}
-        <button onClick={() => {
-          const url = window.location.href;
-          const kakao = (window as any).Kakao;
-          if (kakao && !kakao.isInitialized()) { try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {} }
-          const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
-          if (kakaoReady && url) {
-            try {
-              kakao.Share.sendDefault({ objectType: "feed", content: { title: `🔮 ${entry.name}님의 사주 분석 결과`, description: `AI 사주 분석 결과 💰 990원 AI사주 점운 jeomun.com`, imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } }] });
-            } catch {
-              navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
-            }
-          } else {
-            navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
-          }
-        }} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-          📤 카카오톡 공유
-        </button>
-
         {!entry.businessName && (
           <button onClick={() => router.push("/main-v2")} style={{ width: "100%", marginBottom: 10, padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
             🔮 AI 사주 990원으로 시작하기
@@ -515,52 +453,6 @@ export default function ShareClient({ id }: { id: string }) {
         <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
         </button>
-
-        {/* 사주 Q&A 배너 */}
-        {!entry.businessName && (
-          <div
-            onClick={() => {
-              if (entry.name && entry.birthYear) {
-                sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
-                sessionStorage.setItem("v2_plan", "select");
-              }
-              router.push("/main-v2/qa");
-            }}
-            style={{ marginTop: 8, marginBottom: 10, borderRadius: 20, overflow: "hidden", cursor: "pointer", background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)", boxShadow: "0 10px 36px rgba(139,92,246,0.45)", position: "relative", minHeight: 140 }}
-          >
-            <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(236,72,153,0.18)", filter: "blur(30px)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(139,92,246,0.2)", filter: "blur(25px)", pointerEvents: "none" }} />
-            <div style={{ padding: "22px 20px 20px", position: "relative", zIndex: 2 }}>
-              <span style={{ fontSize: 10, fontWeight: 900, color: "#fbbf24", background: "rgba(251,191,36,0.18)", border: "1px solid rgba(251,191,36,0.4)", padding: "3px 10px", borderRadius: 20, letterSpacing: 0.5 }}>AI 사주 상담</span>
-              <p style={{ fontSize: 30, fontWeight: 900, color: "#ffffff", margin: "8px 0 2px", lineHeight: 1.15, letterSpacing: -1 }}>무엇이든<br/>물어보세요</p>
-              <p style={{ fontSize: 13, color: "#fbbf24", fontWeight: 800, margin: "0 0 12px", minHeight: 20 }}>💬 &ldquo;{BANNER_MSGS[bannerIdx]}&rdquo;</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 20px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 13, boxShadow: "0 4px 14px rgba(236,72,153,0.5)" }}>사주 상담 →</span>
-                <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>매일 무료 3회</span>
-              </div>
-            </div>
-            <div style={{ position: "absolute", right: 10, bottom: 0, zIndex: 2, userSelect: "none", textAlign: "center" }}>
-              <div style={{ fontSize: 13, marginBottom: 2, animation: "sparkle 1.5s infinite alternate", opacity: 0.9 }}>✨ ⭐ ✨</div>
-              <div style={{ fontSize: 72, lineHeight: 1 }}>🐱</div>
-            </div>
-            <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
-          </div>
-        )}
-
-        {/* 복냥이 채팅 */}
-        {!entry.businessName && entry.name && entry.birthYear && (
-          <QAChatWidget
-            name={entry.name}
-            birthYear={Number(entry.birthYear)}
-            unlocked={entry.tier === "select" || entry.tier === "package"}
-          />
-        )}
-      <style>{`
-        @keyframes qaSparkle {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-      `}</style>
 
       </div>
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive" onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
