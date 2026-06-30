@@ -508,7 +508,7 @@ export default function ShareClient({ id }: { id: string }) {
           const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
           if (kakaoReady && url) {
             try {
-              kakao.Share.sendDefault({ objectType: "feed", content: { title: `${entry.name}님의 사주 분석 🔮`, description: "AI 사주 분석 결과를 확인해보세요! jeomun.com", imageUrl: "https://jeomun.com/og-image.png", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "결과 보기", link: { mobileWebUrl: url, webUrl: url } }] });
+              kakao.Share.sendDefault({ objectType: "feed", content: { title: `🔮 ${entry.name}님의 사주 분석 결과`, description: `AI 사주 분석 결과 💰 990원 AI사주 점운 jeomun.com`, imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "다시 보기", link: { mobileWebUrl: url, webUrl: url } }, { title: "AI사주 990원 시작", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } }] });
             } catch {
               navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
             }
