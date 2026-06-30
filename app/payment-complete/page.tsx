@@ -27,6 +27,7 @@ function PaymentCompleteInner() {
   const searchParams = useSearchParams();
   const [packageName, setPackageName] = useState("");
   const [pages, setPages] = useState(0);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const isDaeun = searchParams.get("daeun") === "1";
@@ -83,7 +84,10 @@ function PaymentCompleteInner() {
 
     setPackageName(pkg);
     setPages(parseInt(pg));
+    setReady(true);
   }, [searchParams]);
+
+  if (!ready) return null;
 
   const handleHome = () => {
     router.push("/main-v2");
