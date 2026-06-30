@@ -266,18 +266,6 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
           <div key={chipKey} style={{ position: "absolute", top: 0, left: 0, height: "100%", background: "linear-gradient(90deg,#facc15,#f97316)", animation: "qaLineProgress 4s linear forwards", boxShadow: "0 0 8px rgba(250,204,21,0.7)" }} />
         </div>
 
-        {/* 질문 목록 버튼 */}
-        <div style={{ background: "white", padding: "8px 10px 0" }}>
-          <button onClick={() => setShowQList(true)} style={{
-            width: "100%", padding: "10px 0",
-            background: "linear-gradient(135deg, #8b5cf6, #ec4899)",
-            border: "none", borderRadius: 12,
-            fontSize: 13, fontWeight: 900, color: "white",
-            cursor: "pointer", letterSpacing: "-0.3px",
-            boxShadow: "0 4px 14px rgba(139,92,246,0.35)",
-          }}>📋 질문 목록 보기 (탭하면 바로 답변!)</button>
-        </div>
-
         {/* 입력창 */}
         <div style={{ background: "white", padding: "4px 14px 0", textAlign: "center" }}>
           <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>💳 결제 시 하루 동안 무제한 이용 가능</span>
