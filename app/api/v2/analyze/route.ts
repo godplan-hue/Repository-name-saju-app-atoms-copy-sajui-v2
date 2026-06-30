@@ -2180,10 +2180,23 @@ export async function POST(request: NextRequest) {
     // 대운 한 칸의 챕터명만 미리보기로, 결제(daeunPaid) 후에는 전체 8개 대운의
     // 5섹션 해설을 전부 공개함
     if (planType === "daeun") {
+      const [dy, dm, dd] = birth.split("-").map(Number);
+      const { isForward, daeunSu, list } = getDaeunList(dy, dm, dd, gender);
+      const listWithMeta = list.map(b => ({
+        gan: b.gan, ji: b.ji, ganHanja: (b as any).ganHanja ?? b.gan, jiHanja: (b as any).jiHanja ?? b.ji,
+        startAge: b.startAge, endAge: b.endAge, unseong: b.unseong,
+        chapter: SIBIUNSEONG_CONTENT[b.unseong]?.chapter ?? b.unseong,
+        ...(daeunPaid ? {
+          mental: SIBIUNSEONG_CONTENT[b.unseong]?.mental ?? "",
+          relationship: SIBIUNSEONG_CONTENT[b.unseong]?.relationship ?? "",
+          reality: SIBIUNSEONG_CONTENT[b.unseong]?.reality ?? "",
+          action: SIBIUNSEONG_CONTENT[b.unseong]?.action ?? "",
+        } : {}),
+      }));
       const analysis = daeunPaid
         ? getDaeunFullTemplate(name, birth, gender)
         : getDaeunFreeTeaser(name, birth, gender);
-      return NextResponse.json({ scores, analysis, luckyColor, luckyNumber, luckyDirection });
+      return NextResponse.json({ scores, analysis, luckyColor, luckyNumber, luckyDirection, daeunList: listWithMeta, isForward, daeunSu });
     }
 
     // ── 무료: 재물운만 템플릿 (1,000자) ────────────

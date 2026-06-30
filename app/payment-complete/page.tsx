@@ -29,6 +29,13 @@ function PaymentCompleteInner() {
   const [pages, setPages] = useState(0);
 
   useEffect(() => {
+    const isDaeun = searchParams.get("daeun") === "1";
+    if (isDaeun) {
+      sessionStorage.setItem("daeunPaid", "1");
+      router.replace("/main-v2/daewoon");
+      return;
+    }
+
     const pkg = searchParams.get("package") || "베이직";
     const pg = searchParams.get("pages") || "75";
     const paid = searchParams.get("paid") || "";
