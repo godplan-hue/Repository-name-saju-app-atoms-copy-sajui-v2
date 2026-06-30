@@ -275,7 +275,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
 }
 
 const EXTRA_ITEMS = [
-  { id: "sinyeon",    label: "신년운세",   sub: "병오년 내 사주 완전분석", emoji: "🎍", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/02/f0/96/02f09600043c46e6f0915a5a6aa1a224.jpg", accent: "#16a34a" },
+  { id: "sinyeon",    label: "신년운세",   sub: "병오년 내 사주 완전분석", emoji: "🎍", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/1200x/a6/30/a7/a630a728391bc4784a814211184b42bb.jpg", accent: "#16a34a" },
   { id: "daewoon",   label: "대운(大運)", sub: "10년 단위 운명 흐름",     emoji: "🌌", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", accent: "#7c3aed" },
   { id: "love_detail",      label: "연애사주",         sub: "나의 연애 DNA",           emoji: "💗", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", accent: "#be185d" },
   { id: "reunion",          label: "재회운",           sub: "그 사람 다시 만날까",     emoji: "💔", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg", accent: "#e11d48" },
