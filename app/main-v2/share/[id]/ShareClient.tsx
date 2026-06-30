@@ -274,6 +274,22 @@ export default function ShareClient({ id }: { id: string }) {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
 
+        {/* Q&A 버튼 */}
+        {!entry.businessName && (
+          <button
+            onClick={() => {
+              if (entry.name && entry.birthYear) {
+                sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
+                sessionStorage.setItem("v2_plan", "select");
+              }
+              router.push("/main-v2/qa");
+            }}
+            style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}
+          >
+            💬 사주 Q&amp;A — 무엇이든 물어보세요
+          </button>
+        )}
+
         {/* 분석 내용 캡처 영역 — 이미지 저장 시 이 범위만 캡처 */}
         <div ref={contentRef}>
 
