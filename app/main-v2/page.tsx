@@ -301,7 +301,7 @@ const EXTRA_MCFG: Record<string, { emoji: string; title: string; desc: string; p
 function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
   return (
     <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
         <div style={{ flex: 1, height: 1, background: "rgba(124,58,237,0.2)" }} />
         <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#7c3aed,#4c1d95)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(124,58,237,0.4)" }}>✨ 더 많은 운세 · 각 ₩3,900</span>
         <div style={{ flex: 1, height: 1, background: "rgba(124,58,237,0.2)" }} />
@@ -744,10 +744,10 @@ export default function MainV2() {
           <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
           <h2 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>복냥이가 당신의 길을 안내합니다 🐾</p>
-          <button onClick={() => router.push(user ? "/main-v2/profile" : "/main-v2/login")}
-            style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "white", color: "#ec4899", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 18px rgba(0,0,0,0.15)" }}>
-            🔮 무료 복냥이 코스 시작하기
-          </button>
+          <a href="/main-v2/qa"
+            style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "white", color: "#ec4899", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 18px rgba(0,0,0,0.15)", textDecoration: "none", textAlign: "center" }}>
+            💬 사주 Q&amp;A 바로 확인하기
+          </a>
         </div>
       </div>
 
