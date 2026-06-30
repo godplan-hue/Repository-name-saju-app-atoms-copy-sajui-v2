@@ -467,15 +467,11 @@ export default function ShareClient({ id }: { id: string }) {
 
         </div>{/* /contentRef */}
 
-        {/* 보관함 + 이미지저장 */}
-        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+        {/* 보관함 저장 */}
+        <div style={{ marginBottom: 10 }}>
           <button onClick={saveToHistory} disabled={historySaved}
-            style={{ flex: 1, padding: "13px 0", background: historySaved ? "#f0fdf4" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#16a34a" : "#4338ca", border: historySaved ? "1.5px solid #86efac" : "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: historySaved ? "default" : "pointer" }}>
+            style={{ width: "100%", padding: "13px 0", background: historySaved ? "#f0fdf4" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#16a34a" : "#4338ca", border: historySaved ? "1.5px solid #86efac" : "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: historySaved ? "default" : "pointer" }}>
             {historySaved ? "✅ 보관함 저장 완료" : "📥 보관함 저장"}
-          </button>
-          <button onClick={() => router.push("/main-v2/history")}
-            style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #fdf4ff, #fce7f3)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
-            📚 보관함 보기
           </button>
         </div>
 
