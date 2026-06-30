@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
+import QAChatWidget from "@/components/QAChatWidget";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -72,6 +74,59 @@ export default function ShareClient({ id }: { id: string }) {
   const router = useRouter();
   const [entry, setEntry] = useState<SharedEntry | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [historySaved, setHistorySaved] = useState(false);
+  const [bannerIdx, setBannerIdx] = useState(0);
+  const BANNER_MSGS = ["오늘 재물운이 어떨까?", "취업 될 것 같아?", "연애운 알려줘!", "이직 타이밍 맞아?", "올해 대박 나는 달 언제야?", "내 강점이 뭐야?"];
+  useEffect(() => {
+    const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 700);
+    return () => clearInterval(t);
+  }, []);
+  const readChunksRef = useRef<string[]>([]);
+  const readIdxRef = useRef(0);
+  const restartingRef = useRef(false);
+  const pageRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const saveToHistory = () => {
+    if (!entry || historySaved) return;
+    try {
+      const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
+      const histId = `share-${id}`;
+      if (hist.some((h: any) => h.id === histId)) { setHistorySaved(true); return; }
+      hist.unshift({
+        id: histId, date: new Date().toISOString(), name: entry.name,
+        category: entry.categories[0]?.label ?? "분석결과",
+        scores: entry.scores ?? {}, isPaid: true, planType: "special",
+        analysis: entry.categories.map(c => `${c.label}\n${c.text}`).join("\n\n"),
+        birthYear: entry.birthYear ?? "", luckyColor: entry.luckyColor ?? "",
+        luckyNumber: entry.luckyNumber ?? "", luckyDirection: entry.luckyDirection ?? "",
+        shareId: id,
+      });
+      localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
+      setHistorySaved(true);
+    } catch {}
+  };
+
+  const saveImage = async () => {
+    if (!contentRef.current || saving) return;
+    setSaving(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(contentRef.current, { backgroundColor: "#fdf2f8", scale: 1.5, useCORS: true });
+      canvas.toBlob(blob => {
+        if (!blob) { setSaving(false); return; }
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = `${entry?.name ?? "사주"}_분석결과.png`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+        setSaving(false);
+      }, "image/png");
+    } catch { setSaving(false); }
+  };
 
   useEffect(() => {
     fetch(`/api/v2/share?id=${encodeURIComponent(id)}`)
@@ -79,6 +134,113 @@ export default function ShareClient({ id }: { id: string }) {
       .then(data => setEntry(data.entry))
       .catch(() => setNotFound(true));
   }, [id]);
+
+  // 이 화면을 벗어나면 읽어주기가 계속 돌아가지 않도록 강제로 멈춤
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    };
+  }, []);
+
+  // 일부 기기(특히 안드로이드)는 음성 목록이 비동기로 늦게 로드되어, 그 전에
+  // speak()를 호출하면 에러도 없이 그냥 소리가 안 나는 경우가 있음 — 목록이
+  // 채워지길 잠깐 기다렸다가(최대 1초) 한국어 음성을 찾아서 명시적으로 지정함
+  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> => {
+    return new Promise(resolve => {
+      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
+      const existing = window.speechSynthesis.getVoices();
+      if (existing.length > 0) { resolve(pick(existing)); return; }
+      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
+      window.speechSynthesis.onvoiceschanged = () => {
+        clearTimeout(timer);
+        resolve(pick(window.speechSynthesis.getVoices()));
+      };
+    });
+  };
+
+  const speakFrom = async (chunks: string[], startIdx: number) => {
+    const voice = await getKoreanVoice();
+    chunks.slice(startIdx).forEach((chunk, i) => {
+      const idx = startIdx + i;
+      const utter = new SpeechSynthesisUtterance(chunk);
+      utter.lang = "ko-KR";
+      if (voice) utter.voice = voice;
+      utter.rate = 1;
+      utter.onstart = () => { readIdxRef.current = idx; };
+      utter.onerror = (e) => {
+        if (e.error === "canceled" || e.error === "interrupted") {
+          if (!restartingRef.current) setSpeaking(false);
+          return;
+        }
+        setSpeaking(false);
+        readChunksRef.current = [];
+        readIdxRef.current = 0;
+        // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
+        // 멈춰야 함 — 안 그러면 "멈추기"를 눌러도 계속 읽히는 것처럼 보임
+        window.speechSynthesis.cancel();
+        alert("읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      };
+      if (idx === chunks.length - 1) {
+        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
+      }
+      window.speechSynthesis.speak(utter);
+    });
+  };
+
+  const toggleReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      return;
+    }
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      return;
+    }
+    // 읽기를 시작하기 전에, 화면이 자동으로 꺼지면 끊길 수 있다는 걸 미리 한 번
+    // 안내함(끊긴 뒤에 알려주는 것보다 미리 설정해두게 하는 게 나음). 하루 한 번만
+    // 화면 자동꺼짐 안내는 모바일에서만 의미가 있으므로 PC에서는 띄우지 않음
+    const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const ttsTipKey = "share_tts_tip_shown_date";
+    if (isMobileDevice && localStorage.getItem(ttsTipKey) !== new Date().toDateString()) {
+      alert("💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      localStorage.setItem(ttsTipKey, new Date().toDateString());
+    }
+    if (readChunksRef.current.length === 0) {
+      const fullText = (entry?.categories ?? []).map(c => c.text).filter(Boolean).join("\n")
+        .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+        .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+        .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+        .replace(/[（(][一-鿿]+[）)]/g, "")
+        .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+        .replace(/×/g, " 와 ");
+      if (!fullText.trim()) return;
+      readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+      readIdxRef.current = 0;
+    }
+    window.speechSynthesis.cancel();
+    speakFrom(readChunksRef.current, readIdxRef.current);
+    setSpeaking(true);
+  };
+
+  const restartReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    restartingRef.current = true;
+    window.speechSynthesis.cancel();
+    const fullText = (entry?.categories ?? []).map(c => c.text).filter(Boolean).join("\n")
+      .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+      .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+      .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+      .replace(/[（(][一-鿿]+[）)]/g, "")
+      .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+      .replace(/×/g, " 와 ");
+    if (!fullText.trim()) return;
+    readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+    readIdxRef.current = 0;
+    speakFrom(readChunksRef.current, 0);
+    setSpeaking(true);
+    setTimeout(() => { restartingRef.current = false; }, 300);
+  };
 
   if (notFound) {
     return (
@@ -96,14 +258,47 @@ export default function ShareClient({ id }: { id: string }) {
   if (!entry) return null;
 
   return (
-    <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
-        <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-          {entry.businessName ? `🔮 ${entry.businessName}` : "🐱 점운"}
-        </span>
+    <main ref={pageRef} style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+      {/* 어디로 스크롤하든 항상 누를 수 있게 고정된 읽기 버튼 */}
+      <div style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+        <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(139,92,246,0.15)", color: "#8b5cf6", fontWeight: 800, fontSize: 16, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺ 처음부터 듣기</button>
+        <button onClick={toggleReadAloud}
+          style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
+          {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
+        </button>
+      </div>
+
+      <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
+        <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>{entry.businessName ? `🔮 ${entry.businessName}` : "🐱 점운"}</span>
+        <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
+          <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+          </button>
+          <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺ 처음부터 듣기</button>
+        </div>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
+
+
+        {/* ── Q&A 입장 버튼 ── */}
+        {!entry.businessName && (
+          <button
+            onClick={() => {
+              if (entry.name && entry.birthYear) {
+                sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
+                sessionStorage.setItem("v2_plan", "select");
+              }
+              router.push("/main-v2/qa");
+            }}
+            style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}
+          >
+            💬 사주 Q&amp;A — 무엇이든 물어보세요
+          </button>
+        )}
+
+        {/* 분석 내용 캡처 영역 — 이미지 저장 시 이 범위만 캡처 */}
+        <div ref={contentRef}>
 
         {/* 점수 요약 카드 */}
         <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
@@ -149,9 +344,7 @@ export default function ShareClient({ id }: { id: string }) {
           )}
         </div>
 
-
-
-        {/* 무료/990원/special: 사주팔자 맛보기 */}
+        {/* 무료/990원/special: 사주팔자 맛보기 (띠+오행만) */}
         {(entry.tier === "free" || entry.tier === "select" || entry.tier === "special") && entry.birthYear && (() => {
           const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
           const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
@@ -174,11 +367,19 @@ export default function ShareClient({ id }: { id: string }) {
                   <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
                 </div>
               </div>
+              <div style={{ padding: "0 18px 16px" }}>
+                <div style={{ background: "#fdf2f8", borderRadius: 14, padding: "12px 14px", textAlign: "center", marginBottom: 10 }}>
+                  <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, lineHeight: 1.6 }}>🪬 내 성격과 재물 흐름, 더 자세히 알고 싶다면?</div>
+                </div>
+                <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
+                  💎 9,900원 패키지로 전체 확인하기
+                </button>
+              </div>
             </div>
           );
         })()}
 
-        {/* 패키지: 사주팔자 한눈에 보기 */}
+        {/* 패키지: 사주팔자 한눈에 보기 + 오늘/내일의 한마디 — 원래 결과지와 동일 */}
         {entry.tier === "package" && entry.birthYear && (() => {
           const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
           const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
@@ -188,56 +389,184 @@ export default function ShareClient({ id }: { id: string }) {
           const z = zodiacList[((y - 4) % 12 + 12) % 12];
           const oh = ohArr[((y - 4) % 10 + 10) % 10];
           const gan = ganList[((y - 4) % 10 + 10) % 10];
-          const dayMsgs = ["오늘은 그동안 미뤄온 결정을 내리기 좋은 날입니다.","오늘은 사람과의 인연이 평소보다 강하게 작동하는 날입니다.","오늘은 돈과 관련된 작은 선택이 길게 영향을 미치는 날입니다.","오늘은 몸의 신호에 조금 더 귀 기울여야 하는 날입니다.","오늘은 새로운 시도를 해볼 만한 기운이 흐르는 날입니다.","오늘은 차분히 정리하고 돌아보기 좋은 날입니다.","오늘은 평소보다 직관을 믿어도 좋은 날입니다."];
+          const dayMsgs = [
+            "오늘은 그동안 미뤄온 결정을 내리기 좋은 날입니다.",
+            "오늘은 사람과의 인연이 평소보다 강하게 작동하는 날입니다.",
+            "오늘은 돈과 관련된 작은 선택이 길게 영향을 미치는 날입니다.",
+            "오늘은 몸의 신호에 조금 더 귀 기울여야 하는 날입니다.",
+            "오늘은 새로운 시도를 해볼 만한 기운이 흐르는 날입니다.",
+            "오늘은 차분히 정리하고 돌아보기 좋은 날입니다.",
+            "오늘은 평소보다 직관을 믿어도 좋은 날입니다.",
+          ];
           const dIdx = new Date().getDay();
-          const tomorrowMsgs = ["내일은 가까운 사람과의 대화에서 좋은 기운이 들어옵니다.","내일은 작은 기회가 평소보다 눈에 잘 들어오는 흐름입니다.","내일은 재물과 관련된 신호를 눈여겨봐야 하는 흐름입니다.","내일은 몸과 마음을 챙기는 것이 우선인 흐름입니다.","내일은 새로운 인연이나 제안이 들어올 수 있는 흐름입니다.","내일은 오늘 한 결정의 결과가 서서히 드러나는 흐름입니다.","내일은 한 주를 준비하는 마음가짐이 중요한 흐름입니다."];
+          const tomorrowMsgs = [
+            "내일은 가까운 사람과의 대화에서 좋은 기운이 들어옵니다.",
+            "내일은 작은 기회가 평소보다 눈에 잘 들어오는 흐름입니다.",
+            "내일은 재물과 관련된 신호를 눈여겨봐야 하는 흐름입니다.",
+            "내일은 몸과 마음을 챙기는 것이 우선인 흐름입니다.",
+            "내일은 새로운 인연이나 제안이 들어올 수 있는 흐름입니다.",
+            "내일은 오늘 한 결정의 결과가 서서히 드러나는 흐름입니다.",
+            "내일은 한 주를 준비하는 마음가짐이 중요한 흐름입니다.",
+          ];
           return (
             <div style={{ background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, overflow: "hidden", boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }}>
               <div style={{ background: "linear-gradient(135deg, #c026d3, #9333ea)", color: "white", padding: "12px 18px", fontSize: 13, fontWeight: 900 }}>🪬 {entry.name}님의 사주팔자 한눈에 보기</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "16px 18px" }}>
-                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}><div style={{ fontSize: 20, marginBottom: 4 }}>🐉</div><div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div><div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div></div>
-                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}><div style={{ fontSize: 20, marginBottom: 4 }}>{ohEmoji[oh]}</div><div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div><div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div></div>
-                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}><div style={{ fontSize: 20, marginBottom: 4 }}>🌳</div><div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>천간</div><div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{gan}({gan === "갑" ? "甲" : gan === "을" ? "乙" : gan === "병" ? "丙" : gan === "정" ? "丁" : gan === "무" ? "戊" : gan === "기" ? "己" : gan === "경" ? "庚" : gan === "신" ? "辛" : gan === "임" ? "壬" : "癸"})</div></div>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>🐉</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div>
+                </div>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>{ohEmoji[oh]}</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
+                </div>
+                <div style={{ background: BG, borderRadius: 14, padding: "12px 8px", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, marginBottom: 4 }}>🌳</div>
+                  <div style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>천간</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{gan}({gan === "갑" ? "甲" : gan === "을" ? "乙" : gan === "병" ? "丙" : gan === "정" ? "丁" : gan === "무" ? "戊" : gan === "기" ? "己" : gan === "경" ? "庚" : gan === "신" ? "辛" : gan === "임" ? "壬" : "癸"})</div>
+                </div>
               </div>
               <div style={{ padding: "0 18px 16px" }}>
-                <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px", marginBottom: 8 }}><div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🔮 오늘의 한마디</div><div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{dayMsgs[dIdx]}</div></div>
-                <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px" }}><div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🌙 내일의 예고</div><div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{tomorrowMsgs[(dIdx + 1) % 7]}</div></div>
+                <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px", marginBottom: 8 }}>
+                  <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🔮 오늘의 한마디</div>
+                  <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{dayMsgs[dIdx]}</div>
+                </div>
+                <div style={{ background: "#f5f3ff", borderRadius: 14, padding: "12px 14px" }}>
+                  <div style={{ fontSize: 11, color: "#6d28d9", fontWeight: 800, marginBottom: 4 }}>🌙 내일의 예고</div>
+                  <div style={{ fontSize: 12.5, color: "#374151", lineHeight: 1.6 }}>{tomorrowMsgs[(dIdx + 1) % 7]}</div>
+                </div>
               </div>
             </div>
           );
         })()}
 
-        {/* 카테고리별 카드 */}
+        {/* 카테고리별 카드 — 결과 페이지와 똑같이 아이콘/색으로 구분 */}
         {entry.categories.map((cat, i) => {
           const isPackageBadge = cat.badge === "📦 패키지";
           return (
-            <div key={i} style={isPackageBadge
-              ? { background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }
-              : { background: "white", borderRadius: 24, border: `1.5px solid ${cat.color}44`, marginBottom: 12 }}>
-              <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: isPackageBadge ? "1px solid rgba(217,180,80,0.18)" : "1px solid rgba(236,72,153,0.07)", background: isPackageBadge ? "linear-gradient(90deg, rgba(217,180,80,0.10), transparent)" : "transparent" }}>
-                <span style={{ fontSize: 22 }}>{cat.icon}</span>
-                <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{cat.label}</span>
-                {cat.badge && (
-                  <span style={{ fontSize: 10, background: isPackageBadge ? "linear-gradient(135deg, #c026d3, #9333ea)" : G, color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>{cat.badge}</span>
-                )}
-              </div>
-              <div style={{ padding: "14px 18px 20px" }}>
-                <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>
-                  {cat.text}
-                </p>
-              </div>
+          <div key={i} style={isPackageBadge
+            ? { background: "#fdf6e3", borderRadius: 24, border: "1.5px solid rgba(217,180,80,0.45)", marginBottom: 12, boxShadow: "0 2px 14px rgba(217,180,80,0.12)" }
+            : { background: "white", borderRadius: 24, border: `1.5px solid ${cat.color}44`, marginBottom: 12 }}>
+            <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", gap: 7, borderBottom: isPackageBadge ? "1px solid rgba(217,180,80,0.18)" : "1px solid rgba(236,72,153,0.07)", background: isPackageBadge ? "linear-gradient(90deg, rgba(217,180,80,0.10), transparent)" : "transparent" }}>
+              <span style={{ fontSize: 22 }}>{cat.icon}</span>
+              <span style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{cat.label}</span>
+              {cat.badge && (
+                <span style={{ fontSize: 10, background: isPackageBadge ? "linear-gradient(135deg, #c026d3, #9333ea)" : G, color: "white", padding: "2px 9px", borderRadius: 20, fontWeight: 800 }}>{cat.badge}</span>
+              )}
             </div>
+            <div style={{ padding: "14px 18px 20px" }}>
+              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>
+                {cat.text}
+              </p>
+            </div>
+          </div>
           );
         })}
 
-        {/* 나도 무료로 사주 보기 */}
+        </div>{/* /contentRef */}
+
+        {/* 보관함 + 이미지저장 */}
+        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+          <button onClick={saveToHistory} disabled={historySaved}
+            style={{ flex: 1, padding: "13px 0", background: historySaved ? "#f0fdf4" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#16a34a" : "#4338ca", border: historySaved ? "1.5px solid #86efac" : "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: historySaved ? "default" : "pointer" }}>
+            {historySaved ? "✅ 보관함 저장 완료" : "📥 보관함 저장"}
+          </button>
+          <button onClick={() => router.push("/main-v2/history")}
+            style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #fdf4ff, #fce7f3)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
+            📚 보관함 보기
+          </button>
+        </div>
+
+        {/* 이미지저장 + 읽기 */}
+        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+          <button onClick={saveImage} disabled={saving}
+            style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #fef3c7, #fde68a)", color: "#92400e", border: "1.5px solid rgba(245,158,11,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: saving ? "not-allowed" : "pointer" }}>
+            {saving ? "⏳..." : "🖼️ 이미지 저장"}
+          </button>
+          <button onClick={toggleReadAloud}
+            style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
+            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+          </button>
+        </div>
+
+        {/* 공유 */}
+        <button onClick={() => {
+          const url = window.location.href;
+          const kakao = (window as any).Kakao;
+          if (kakao && !kakao.isInitialized()) { try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {} }
+          const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
+          if (kakaoReady && url) {
+            try {
+              kakao.Share.sendDefault({ objectType: "feed", content: { title: `🔮 ${entry.name}님의 사주 분석 결과`, description: `AI 사주 분석 결과 💰 990원 AI사주 점운 jeomun.com`, imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } }] });
+            } catch {
+              navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
+            }
+          } else {
+            navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
+          }
+        }} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+          📤 카카오톡 공유
+        </button>
+
         {!entry.businessName && (
           <button onClick={() => router.push("/main-v2")} style={{ width: "100%", marginBottom: 10, padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-            🔮 나도 무료로 사주 보기
+            🔮 AI 사주 990원으로 시작하기
           </button>
         )}
 
+        <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
+          🏠 홈으로
+        </button>
+
+        {/* 사주 Q&A 배너 */}
+        {!entry.businessName && (
+          <div
+            onClick={() => {
+              if (entry.name && entry.birthYear) {
+                sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
+                sessionStorage.setItem("v2_plan", "select");
+              }
+              router.push("/main-v2/qa");
+            }}
+            style={{ marginTop: 8, marginBottom: 10, borderRadius: 20, overflow: "hidden", cursor: "pointer", background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)", boxShadow: "0 10px 36px rgba(139,92,246,0.45)", position: "relative", minHeight: 140 }}
+          >
+            <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(236,72,153,0.18)", filter: "blur(30px)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(139,92,246,0.2)", filter: "blur(25px)", pointerEvents: "none" }} />
+            <div style={{ padding: "22px 20px 20px", position: "relative", zIndex: 2 }}>
+              <span style={{ fontSize: 10, fontWeight: 900, color: "#fbbf24", background: "rgba(251,191,36,0.18)", border: "1px solid rgba(251,191,36,0.4)", padding: "3px 10px", borderRadius: 20, letterSpacing: 0.5 }}>AI 사주 상담</span>
+              <p style={{ fontSize: 30, fontWeight: 900, color: "#ffffff", margin: "8px 0 2px", lineHeight: 1.15, letterSpacing: -1 }}>무엇이든<br/>물어보세요</p>
+              <p style={{ fontSize: 13, color: "#fbbf24", fontWeight: 800, margin: "0 0 12px", minHeight: 20 }}>💬 &ldquo;{BANNER_MSGS[bannerIdx]}&rdquo;</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 20px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 13, boxShadow: "0 4px 14px rgba(236,72,153,0.5)" }}>사주 상담 →</span>
+                <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>매일 무료 3회</span>
+              </div>
+            </div>
+            <div style={{ position: "absolute", right: 10, bottom: 0, zIndex: 2, userSelect: "none", textAlign: "center" }}>
+              <div style={{ fontSize: 13, marginBottom: 2, animation: "sparkle 1.5s infinite alternate", opacity: 0.9 }}>✨ ⭐ ✨</div>
+              <div style={{ fontSize: 72, lineHeight: 1 }}>🐱</div>
+            </div>
+            <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
+          </div>
+        )}
+
+        {/* 복냥이 채팅 */}
+        {!entry.businessName && entry.name && entry.birthYear && (
+          <QAChatWidget
+            name={entry.name}
+            birthYear={Number(entry.birthYear)}
+            unlocked={entry.tier === "select" || entry.tier === "package"}
+          />
+        )}
+      <style>{`
+        @keyframes qaSparkle {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+      `}</style>
       </div>
+      <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive" onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
     </main>
   );
 }
