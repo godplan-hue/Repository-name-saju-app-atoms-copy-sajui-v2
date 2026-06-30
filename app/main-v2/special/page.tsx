@@ -9,13 +9,26 @@ function getOhaeng(birthYear: number): Ohaeng {
   return arr[((birthYear - 4) % 10 + 10) % 10];
 }
 
+function hasJong(ch: string): boolean {
+  const c = ch.charCodeAt(0);
+  return c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28 !== 0;
+}
+function fixJosa(text: string, word: string): string {
+  const esc = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const jong = hasJong(word[word.length - 1]);
+  return text
+    .replace(new RegExp(esc + "이([\\s,.]|$)", "g"), word + (jong ? "이" : "가") + "$1")
+    .replace(new RegExp(esc + "을([\\s,.]|$)", "g"), word + (jong ? "을" : "를") + "$1")
+    .replace(new RegExp(esc + "은([\\s,.]|$)", "g"), word + (jong ? "은" : "는") + "$1")
+    .replace(new RegExp(esc + "과([\\s,.]|$)", "g"), word + (jong ? "과" : "와") + "$1");
+}
 function fill(text: string, name: string, other: string = "그 사람", pet: string = "반려동물") {
   let result = text
     .replace(/\{\{name\}\}/g, name)
     .replace(/\{\{other\}\}/g, other)
     .replace(/\{\{pet\}\}/g, pet);
-  if (other !== "그 사람") result = result.replace(/그 사람/g, other);
-  if (pet !== "반려동물") result = result.replace(/반려동물/g, pet);
+  if (other !== "그 사람") result = fixJosa(result.replace(/그 사람/g, other), other);
+  if (pet !== "반려동물") result = fixJosa(result.replace(/반려동물/g, pet), pet);
   return result;
 }
 
