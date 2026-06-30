@@ -74,14 +74,12 @@ export default function DaewoonPage() {
     setProfile(p);
     const age = new Date().getFullYear() - parseInt(p.birthYear) + 1;
     setCurrentAge(age);
-    const isPaid = sessionStorage.getItem("daeunPaid") === "1";
-    const storedCount = parseInt(sessionStorage.getItem("daeunPaidCount") || "1");
-    setPaid(isPaid);
-    setPaidCount(isPaid ? storedCount : 0);
-    try {
-      const storedIndices = sessionStorage.getItem("daeunPaidIndices");
-      if (storedIndices) setPaidIndices(JSON.parse(storedIndices));
-    } catch {}
+    sessionStorage.removeItem("daeunPaid");
+    sessionStorage.removeItem("daeunPaidCount");
+    sessionStorage.removeItem("daeunPaidIndices");
+    const isPaid = false;
+    setPaid(false);
+    setPaidCount(0);
     const birth = `${p.birthYear}-${String(p.birthMonth).padStart(2, "0")}-${String(p.birthDay).padStart(2, "0")}`;
     fetchDaeun(p.name, birth, p.gender || "여", p.birthHour || "unknown", isPaid);
   }, []);
@@ -601,12 +599,6 @@ export default function DaewoonPage() {
                       </div>
                     </>
                   )}
-                </div>
-              )}
-
-              {paid && (
-                <div style={{ textAlign: "center", padding: "20px 0", color: "rgba(255,255,255,0.5)", fontSize: 13 }}>
-                  ✨ 구매한 대운이 해금되었습니다
                 </div>
               )}
 

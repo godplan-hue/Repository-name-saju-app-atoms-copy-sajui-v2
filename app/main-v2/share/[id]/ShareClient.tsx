@@ -300,15 +300,6 @@ export default function ShareClient({ id }: { id: string }) {
         {/* 분석 내용 캡처 영역 — 이미지 저장 시 이 범위만 캡처 */}
         <div ref={contentRef}>
 
-        {/* 상품명 헤더 (재회운·반려동물 궁합 등 special 상품일 때만 표시) */}
-        {entry.subtitle && (
-          <div style={{ textAlign: "center", marginBottom: 10 }}>
-            <span style={{ display: "inline-block", padding: "6px 20px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 15, boxShadow: "0 4px 14px rgba(236,72,153,0.35)" }}>
-              💫 {entry.subtitle}
-            </span>
-          </div>
-        )}
-
         {/* 점수 요약 카드 */}
         <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
           <div style={{ background: entry.tier === "package" ? "#eab308" : G, color: entry.tier === "package" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
@@ -508,7 +499,7 @@ export default function ShareClient({ id }: { id: string }) {
           const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
           if (kakaoReady && url) {
             try {
-              kakao.Share.sendDefault({ objectType: "feed", content: { title: `🔮 ${entry.name}님의 사주 분석 결과`, description: `AI 사주 분석 결과 💰 990원 AI사주 점운 jeomun.com`, imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "다시 보기", link: { mobileWebUrl: url, webUrl: url } }, { title: "AI사주 990원 시작", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } }] });
+              kakao.Share.sendDefault({ objectType: "feed", content: { title: `🔮 ${entry.name}님의 사주 분석 결과`, description: `AI 사주 분석 결과 💰 990원 AI사주 점운 jeomun.com`, imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } }] });
             } catch {
               navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
             }
