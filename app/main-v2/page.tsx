@@ -217,7 +217,7 @@ const BANNERS = [
 
 const FORTUNE_CATEGORIES = [
   { id: "free",          title: "오늘의 무료운세", sub: "무료 체험",          emoji: "🌟", img: "https://i.pinimg.com/1200x/2f/1b/4e/2f1b4e0713ac39d9090ae3a3e5862db9.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료",        priceBg: "#15803d" },
-  { id: "sinyeon_premium", title: "프리미엄 신년운세", sub: "신년+월별 12달", emoji: "⭐", img: "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#7c3aed", price: "₩5,900", priceBg: "#7c3aed" },
+  { id: "sinyeon_premium", title: "프리미엄 신년운세", sub: "신년+월별 12달", emoji: "⭐", img: "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#7c3aed", price: "₩4,900", priceBg: "#7c3aed" },
   { id: "yearly",        title: "기본 분석",         sub: "재물운+연애운",       emoji: "🎍", img: "https://i.pinimg.com/1200x/24/32/ee/2432eed06907654905c7949ce4ea350d.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900",     priceBg: "#2563eb", badgeSide: "right" },
   { id: "wealth",        title: "재물운",           sub: "돈이 들어오는 시기", emoji: "💰", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309", price: "₩990",      priceBg: "#ff0000" },
   { id: "love",          title: "연애운",           sub: "연애 타이밍과 인연", emoji: "💕", img: "https://i.pinimg.com/736x/8b/bc/25/8bbc258261ea953d149de68672016367.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
@@ -276,7 +276,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
 
 const EXTRA_ITEMS = [
   { id: "sinyeon",    label: "신년운세",   sub: "올해 내 사주 완전분석", emoji: "🎍", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/1200x/a6/30/a7/a630a728391bc4784a814211184b42bb.jpg", accent: "#16a34a" },
-  { id: "daewoon",   label: "대운(大運)", sub: "10년 단위 운명 흐름",     emoji: "🌌", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", accent: "#7c3aed" },
+  { id: "daewoon",   label: "대운(大運)", sub: "10년 단위 운명 흐름",     emoji: "🌌", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", accent: "#7c3aed" },
   { id: "love_detail",      label: "연애사주",         sub: "나의 연애 DNA",           emoji: "💗", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", accent: "#be185d" },
   { id: "reunion",          label: "재회운",           sub: "그 사람 다시 만날까",     emoji: "💔", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg", accent: "#e11d48" },
   { id: "findmatch",        label: "내 사람 찾기",     sub: "나에게 맞는 사람",        emoji: "🔍", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg", accent: "#9333ea" },
@@ -289,7 +289,7 @@ const EXTRA_ITEMS = [
 const EXTRA_MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; priceNum: number; features: string[] }> = {
   taegil:          { emoji: "📅", title: "택일(擇日)", desc: "결혼·이사·개업·계약 — 내 사주에 맞는 좋은 날 찾기", price: "₩2,900", priceNum: 2900, features: ["💒 결혼·예식 길일", "🏠 이사·입주 길일", "🏢 개업·창업 길일", "📝 계약·서류 길일", "📅 피해야 할 날짜"] },
   sinyeon:         { emoji: "🎍", title: "신년운세", desc: "올해 기운이 내 사주에 미치는 영향 전체 분석", price: "₩2,900", priceNum: 2900, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강 포인트", "🧭 올해 핵심 조언"] },
-  sinyeon_premium: { emoji: "⭐", title: "프리미엄 신년운세", desc: "신년 6개 섹션 + 1월~12월 월별 흐름까지 완전판", price: "₩5,900", priceNum: 5900, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강", "📅 1~12월 월별 흐름"] },
+  sinyeon_premium: { emoji: "⭐", title: "프리미엄 신년운세", desc: "신년 6개 섹션 + 1월~12월 월별 흐름까지 완전판", price: "₩4,900", priceNum: 4900, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강", "📅 1~12월 월별 흐름"] },
   love_detail:     { emoji: "💗", title: "연애사주", desc: "나의 연애 DNA — 스타일·강점·패턴·지금 흐름까지", price: "₩2,900", priceNum: 2900, features: ["💗 나의 연애 스타일", "✨ 연애할 때 강한 점", "⚠️ 반복되는 패턴", "🌊 지금 연애 흐름", "👑 나에게 맞는 이상형"] },
   reunion:         { emoji: "💔", title: "재회운", desc: "그 사람과 다시 이어질 수 있는지 사주로 풀어드립니다", price: "₩2,900", priceNum: 2900, features: ["💔 이별 후 감정 흐름", "🔮 재회 가능성", "⏰ 재회 타이밍", "⚠️ 재회 시 주의점", "🌱 새로운 방향"] },
   findmatch:       { emoji: "🔍", title: "내 사람 찾기", desc: "나와 진짜 맞는 사람의 특성과 만남의 흐름", price: "₩2,900", priceNum: 2900, features: ["✨ 나와 맞는 사람 특성", "⏰ 인연 오는 시기", "📍 인연 오는 방식", "💗 관계 발전 패턴", "🌱 놓치지 않으려면"] },
