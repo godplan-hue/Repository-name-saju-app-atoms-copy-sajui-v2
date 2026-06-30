@@ -254,6 +254,13 @@ function V2ResultInner() {
   const [allAnalyses, setAllAnalyses] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [changeInterest, setChangeInterest] = useState<string | null>(null);
+  const [bannerIdx, setBannerIdx] = useState(0);
+
+  const BANNER_MSGS = ["오늘 재물운이 어떨까?", "취업 될 것 같아?", "연애운 알려줘!", "이직 타이밍 맞아?", "올해 대박 나는 달 언제야?", "내 강점이 뭐야?"];
+  useEffect(() => {
+    const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 700);
+    return () => clearInterval(t);
+  }, []);
 
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
@@ -1018,22 +1025,38 @@ function V2ResultInner() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* ── 복냥이 상담창 입구 (보라색 네모창 → 클릭 시 복냥이 전체화면) ── */}
-        {!isPartner && (
-          <div onClick={() => router.push("/main-v2/qa")}
-            style={{ marginTop: 8, marginBottom: 14, borderRadius: 20, overflow: "hidden", boxShadow: "0 10px 36px rgba(139,92,246,0.2)", border: "1.5px solid #e9d5ff", background: "#f9f5ff", cursor: "pointer" }}>
-            <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, flexShrink: 0 }}>🐱</div>
-              <div style={{ flex: 1 }}>
-                <p style={{ margin: 0, fontSize: 13, fontWeight: 900, background: "linear-gradient(135deg, #ec4899, #8b5cf6, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "qaSparkle 1.8s ease-in-out infinite" }}>복냥이 사주 상담</p>
-                <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: "#8b5cf6" }}>무엇이든 물어보세요 · 매일 무료 3회</p>
+        {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 복냥이 전체화면) ── */}
+        {!isPartner && profile?.name && profile?.birthYear && (
+          <div
+            onClick={() => router.push("/main-v2/qa")}
+            style={{
+              marginTop: 8, marginBottom: 14,
+              borderRadius: 20, overflow: "hidden", cursor: "pointer",
+              background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)",
+              boxShadow: "0 10px 36px rgba(139,92,246,0.45)",
+              position: "relative", minHeight: 140,
+            }}
+          >
+            <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(236,72,153,0.18)", filter: "blur(30px)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(139,92,246,0.2)", filter: "blur(25px)", pointerEvents: "none" }} />
+            <div style={{ padding: "22px 20px 20px", position: "relative", zIndex: 2 }}>
+              <span style={{ fontSize: 10, fontWeight: 900, color: "#fbbf24", background: "rgba(251,191,36,0.18)", border: "1px solid rgba(251,191,36,0.4)", padding: "3px 10px", borderRadius: 20, letterSpacing: 0.5 }}>AI 사주 상담</span>
+              <p style={{ fontSize: 30, fontWeight: 900, color: "#ffffff", margin: "8px 0 2px", lineHeight: 1.15, letterSpacing: -1 }}>
+                무엇이든<br/>물어보세요
+              </p>
+              <p style={{ fontSize: 13, color: "#fbbf24", fontWeight: 800, margin: "0 0 12px", minHeight: 20 }}>
+                💬 &ldquo;{BANNER_MSGS[bannerIdx]}&rdquo;
+              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 20px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 13, boxShadow: "0 4px 14px rgba(236,72,153,0.5)" }}>사주 상담 →</span>
+                <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>매일 무료 3회</span>
               </div>
-              <span style={{ fontSize: 11, fontWeight: 900, color: "#8b5cf6", background: "#ede9fe", padding: "5px 12px", borderRadius: 50, flexShrink: 0 }}>입장 →</span>
             </div>
-            <div style={{ padding: "14px 16px", background: "#f9f5ff" }}>
-              <p style={{ margin: 0, fontSize: 12, color: "#6d28d9", fontWeight: 700 }}>💬 재물운, 연애운, 직업운... 궁금한 거 다 물어봐요!</p>
-              <p style={{ margin: "4px 0 0", fontSize: 11, color: "#9ca3af", fontWeight: 600 }}>탭하면 복냥이가 바로 대답해드려요 🐱</p>
+            <div style={{ position: "absolute", right: 10, bottom: 0, zIndex: 2, userSelect: "none", textAlign: "center" }}>
+              <div style={{ fontSize: 13, marginBottom: 2, animation: "sparkle 1.5s infinite alternate", opacity: 0.9 }}>✨ ⭐ ✨</div>
+              <div style={{ fontSize: 72, lineHeight: 1 }}>🐱</div>
             </div>
+            <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
           </div>
         )}
 

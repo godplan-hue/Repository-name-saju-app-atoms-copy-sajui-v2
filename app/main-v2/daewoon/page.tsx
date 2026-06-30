@@ -123,7 +123,14 @@ export default function DaewoonPage() {
     const indices = Array.from(purchaseSet);
     if (indices.length === 0) return;
     const price = 2900 + (indices.length - 1) * 1000;
-    router.push(`/payment-complete?daeun=1&paid=${price}&daeunCount=${indices.length}&daeunIndices=${indices.join(",")}`);
+    // 결제 전 단계: 가격 확인 페이지로 이동 (payment-complete는 결제 후 확인용)
+    const params = new URLSearchParams({
+      daeun: "1",
+      price: String(price),
+      count: String(indices.length),
+      indices: indices.join(","),
+    });
+    router.push(`/main-v2/daewoon/pay?${params.toString()}`);
   };
 
   const togglePurchase = (i: number) => {
