@@ -477,7 +477,7 @@ function SpecialPageContent() {
     fetch("/api/v2/share", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, categories, scores, tier: "special", birthYear: String(birthYear), luckyColor: lucky.color, luckyNumber: lucky.number, luckyDirection: lucky.direction }),
+      body: JSON.stringify({ name, categories, scores, tier: "special", birthYear: String(birthYear), luckyColor: lucky.color, luckyNumber: lucky.number, luckyDirection: lucky.direction, subtitle: product.title }),
     })
       .then(res => res.json())
       .then(data => {
