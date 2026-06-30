@@ -165,7 +165,7 @@ export default function HistoryDetail() {
 
   useEffect(() => {
     const hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
-    const found = hist.find(h => String(h.id) === String(params.id));
+    const found = hist.find(h => String(h.id) === decodeURIComponent(String(params.id)));
     if (!found) { router.replace("/main-v2/history"); return; }
     setItem(found);
   }, [params.id]);
