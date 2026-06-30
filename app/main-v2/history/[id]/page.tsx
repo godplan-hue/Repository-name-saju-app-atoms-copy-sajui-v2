@@ -147,6 +147,8 @@ export default function HistoryDetail() {
   const [saving, setSaving] = useState(false);
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
+  const [bannerIdx, setBannerIdx] = useState(0);
+  const BANNER_MSGS = ["오늘 재물운이 어떨까?", "취업 될 것 같아?", "연애운 알려줘!", "이직 타이밍 맞아?", "올해 대박 나는 달 언제야?", "내 강점이 뭐야?"];
 
   // 읽기(텍스트 음성 읽어주기) — 결과지 화면과 동일한 방식
   const [speaking, setSpeaking] = useState(false);
@@ -162,6 +164,11 @@ export default function HistoryDetail() {
     try { wakeLockRef.current?.release(); } catch {}
     wakeLockRef.current = null;
   };
+
+  useEffect(() => {
+    const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 700);
+    return () => clearInterval(t);
+  }, []);
 
   useEffect(() => {
     const hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
@@ -611,6 +618,34 @@ export default function HistoryDetail() {
             style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
             {speaking ? "⏹ 멈추기" : "🔊 읽기"}
           </button>
+        </div>
+
+        {/* ── 사주 Q&A 배너 (무엇이든 물어보세요) ── */}
+        <div
+          onClick={() => {
+            if (item.name && item.birthYear) {
+              sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: item.name, birthYear: Number(item.birthYear) } }));
+              sessionStorage.setItem("v2_plan", "select");
+            }
+            router.push("/main-v2/qa");
+          }}
+          style={{ marginTop: 16, borderRadius: 20, overflow: "hidden", cursor: "pointer", background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)", boxShadow: "0 10px 36px rgba(139,92,246,0.45)", position: "relative", minHeight: 140 }}
+        >
+          <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(236,72,153,0.18)", filter: "blur(30px)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(139,92,246,0.2)", filter: "blur(25px)", pointerEvents: "none" }} />
+          <div style={{ padding: "22px 20px 20px", position: "relative", zIndex: 2 }}>
+            <span style={{ fontSize: 10, fontWeight: 900, color: "#fbbf24", background: "rgba(251,191,36,0.18)", border: "1px solid rgba(251,191,36,0.4)", padding: "3px 10px", borderRadius: 20, letterSpacing: 0.5 }}>AI 사주 상담</span>
+            <p style={{ fontSize: 30, fontWeight: 900, color: "#ffffff", margin: "8px 0 2px", lineHeight: 1.15, letterSpacing: -1 }}>무엇이든<br/>물어보세요</p>
+            <p style={{ fontSize: 13, color: "#fbbf24", fontWeight: 800, margin: "0 0 12px", minHeight: 20 }}>💬 &ldquo;{BANNER_MSGS[bannerIdx]}&rdquo;</p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 20px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 13, boxShadow: "0 4px 14px rgba(236,72,153,0.5)" }}>사주 상담 →</span>
+              <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>매일 무료 3회</span>
+            </div>
+          </div>
+          <div style={{ position: "absolute", right: 10, bottom: 0, zIndex: 2, userSelect: "none", textAlign: "center" }}>
+            <div style={{ fontSize: 13, marginBottom: 2, opacity: 0.9 }}>✨ ⭐ ✨</div>
+            <div style={{ fontSize: 72, lineHeight: 1 }}>🐱</div>
+          </div>
         </div>
       </div>
 
