@@ -274,13 +274,29 @@ export default function ShareClient({ id }: { id: string }) {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
 
+        {/* ── Q&A 입장 버튼 ── */}
+        {!entry.businessName && (
+          <button
+            onClick={() => {
+              if (entry.name && entry.birthYear) {
+                sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
+                sessionStorage.setItem("v2_plan", "select");
+              }
+              router.push("/main-v2/qa");
+            }}
+            style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}
+          >
+            💬 사주 Q&amp;A — 무엇이든 물어보세요
+          </button>
+        )}
+
         {/* 분석 내용 캡처 영역 — 이미지 저장 시 이 범위만 캡처 */}
         <div ref={contentRef}>
 
         {/* 점수 요약 카드 */}
         <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
           <div style={{ background: entry.tier === "package" ? "#eab308" : G, color: entry.tier === "package" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
-            <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "14px 20px 0", letterSpacing: "-0.3px" }}>🔮 {entry.businessName || "점운"} · {entry.subtitle || "AI 사주 분석"}</p>
+            <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "14px 20px 0", letterSpacing: "-0.3px" }}>🔮 {entry.businessName || "점운"} · AI 사주 분석</p>
             <div style={{ padding: "14px 20px 24px" }}>
               <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
               <h1 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 12px", opacity: 0.9 }}>{entry.name}님의 운세 분석</h1>
