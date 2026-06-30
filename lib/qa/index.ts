@@ -21,6 +21,8 @@ export { successQA } from "./success";
 export { healthQA } from "./health";
 export { childrenQA } from "./children";
 export { generalQA } from "./general";
+export { daeunQA } from "./daeun";
+export { yearlyQA } from "./yearly";
 
 import { wealthQA } from "./wealth";
 import { loveQA } from "./love";
@@ -31,17 +33,21 @@ import { successQA } from "./success";
 import { healthQA } from "./health";
 import { childrenQA } from "./children";
 import { generalQA } from "./general";
+import { daeunQA } from "./daeun";
+import { yearlyQA } from "./yearly";
 
 export const QA_CATEGORIES: QACategory[] = [
-  { id: "wealth",   label: "재물운",  emoji: "💰", items: wealthQA },
-  { id: "love",     label: "연애운",  emoji: "💕", items: loveQA },
-  { id: "marriage", label: "결혼운",  emoji: "💍", items: marriageQA },
-  { id: "business", label: "사업운",  emoji: "🚀", items: businessQA },
-  { id: "career",   label: "직업운",  emoji: "💼", items: careerQA },
-  { id: "success",  label: "성공운",  emoji: "🏆", items: successQA },
-  { id: "health",   label: "건강운",  emoji: "🍀", items: healthQA },
-  { id: "children", label: "자녀운",  emoji: "👶", items: childrenQA },
-  { id: "general",  label: "일반운세", emoji: "🔮", items: generalQA },
+  { id: "wealth",   label: "재물운",    emoji: "💰", items: wealthQA },
+  { id: "love",     label: "연애운",    emoji: "💕", items: loveQA },
+  { id: "marriage", label: "결혼운",    emoji: "💍", items: marriageQA },
+  { id: "business", label: "사업운",    emoji: "🚀", items: businessQA },
+  { id: "career",   label: "직업운",    emoji: "💼", items: careerQA },
+  { id: "success",  label: "성공운",    emoji: "🏆", items: successQA },
+  { id: "health",   label: "건강운",    emoji: "🍀", items: healthQA },
+  { id: "children", label: "자녀운",    emoji: "👶", items: childrenQA },
+  { id: "general",  label: "일반운세",  emoji: "🔮", items: generalQA },
+  { id: "daeun",    label: "대운",      emoji: "🌊", items: daeunQA },
+  { id: "yearly",   label: "연도별운세", emoji: "📅", items: yearlyQA },
 ];
 
 export function getOhaeng(birthYear: number): Ohaeng {
