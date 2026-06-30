@@ -1018,24 +1018,21 @@ function V2ResultInner() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* ── 복냥이 배너 (클릭 → 복냥이 채팅 전체화면) ── */}
+        {/* ── 복냥이 상담창 입구 (보라색 네모창 → 클릭 시 복냥이 전체화면) ── */}
         {!isPartner && (
           <div onClick={() => router.push("/main-v2/qa")}
-            style={{ position: "relative", height: 180, borderRadius: 20, overflow: "hidden", cursor: "pointer", marginBottom: 14, boxShadow: "0 6px 28px rgba(139,92,246,0.25)" }}>
-            <img src="https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
-            <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.22)" }} />
-            <span style={{ position: "absolute", top: 16, left: 16, background: "#ec4899", color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2 }}>AI 사주 상담</span>
-            <div style={{ position: "absolute", bottom: 20, left: 18, zIndex: 3 }}>
-              <p style={{ margin: "0 0 10px", fontSize: 17, fontWeight: 900, lineHeight: 1.35, letterSpacing: "-0.3px" }}>
-                <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>복냥이에게 당신의 운명을</span><br />
-                <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>무엇이든 직접 물어봐요!</span>
-              </p>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ display: "inline-flex", alignItems: "center", padding: "8px 16px", background: "#ec4899", borderRadius: 50, boxShadow: "0 3px 12px rgba(236,72,153,0.5)" }}>
-                  <span style={{ fontSize: 12, fontWeight: 900, color: "white" }}>입장하기 →</span>
-                </div>
-                <span style={{ background: "white", color: "#ef4444", fontSize: 11, fontWeight: 900, padding: "5px 12px", borderRadius: 50, display: "inline-block", animation: "rsBadgePulse 1.2s ease-in-out infinite" }}>매일 무료 3회</span>
+            style={{ marginTop: 8, marginBottom: 14, borderRadius: 20, overflow: "hidden", boxShadow: "0 10px 36px rgba(139,92,246,0.2)", border: "1.5px solid #e9d5ff", background: "#f9f5ff", cursor: "pointer" }}>
+            <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, flexShrink: 0 }}>🐱</div>
+              <div style={{ flex: 1 }}>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 900, background: "linear-gradient(135deg, #ec4899, #8b5cf6, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "qaSparkle 1.8s ease-in-out infinite" }}>복냥이 사주 상담</p>
+                <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: "#8b5cf6" }}>무엇이든 물어보세요 · 매일 무료 3회</p>
               </div>
+              <span style={{ fontSize: 11, fontWeight: 900, color: "#8b5cf6", background: "#ede9fe", padding: "5px 12px", borderRadius: 50, flexShrink: 0 }}>입장 →</span>
+            </div>
+            <div style={{ padding: "14px 16px", background: "#f9f5ff" }}>
+              <p style={{ margin: 0, fontSize: 12, color: "#6d28d9", fontWeight: 700 }}>💬 재물운, 연애운, 직업운... 궁금한 거 다 물어봐요!</p>
+              <p style={{ margin: "4px 0 0", fontSize: 11, color: "#9ca3af", fontWeight: 600 }}>탭하면 복냥이가 바로 대답해드려요 🐱</p>
             </div>
           </div>
         )}
@@ -1610,6 +1607,10 @@ function V2ResultInner() {
         @keyframes rsBadgePulse {
           0%, 100% { transform: scale(1); }
           50% { transform: scale(1.12); box-shadow: 0 0 10px rgba(239,68,68,0.6); }
+        }
+        @keyframes qaSparkle {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
         }
       `}</style>
     </main>
