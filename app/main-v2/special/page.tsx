@@ -1,7 +1,6 @@
 "use client";
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
-import Script from "next/script";
 
 type Ohaeng = "목" | "화" | "토" | "금" | "수";
 
@@ -386,30 +385,6 @@ function SpecialPageContent() {
   const [productType, setProductType] = useState<string>("");
   const [isPaid, setIsPaid] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [speaking, setSpeaking] = useState(false);
-  const wakeLockRef = useRef<any>(null);
-  const resumeAfterHideRef = useRef<() => void>(() => {});
-
-  const requestWakeLock = async () => {
-    try { if ("wakeLock" in navigator) wakeLockRef.current = await (navigator as any).wakeLock.request("screen"); } catch {}
-  };
-  const releaseWakeLock = () => {
-    try { wakeLockRef.current?.release(); } catch {}
-    wakeLockRef.current = null;
-  };
-
-  useEffect(() => {
-    return () => {
-      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
-      releaseWakeLock();
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleVisibility = () => { if (document.visibilityState === "visible") resumeAfterHideRef.current(); };
-    document.addEventListener("visibilitychange", handleVisibility);
-    return () => document.removeEventListener("visibilitychange", handleVisibility);
-  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -425,6 +400,37 @@ function SpecialPageContent() {
       }
     } catch {}
   }, []);
+
+  useEffect(() => {
+    if (!mounted || !isPaid || !productType || !profile) return;
+    const product = PRODUCTS[productType];
+    if (!product) return;
+
+    const { name, birthYear } = profile;
+    const oh = getOhaeng(birthYear);
+    const displaySections = productType === "sinyeon_premium" ? PRODUCTS["sinyeon"].sections : product.sections;
+
+    const categories: { icon: string; label: string; color: string; text: string }[] = displaySections.map((s: Section) => ({
+      icon: s.emoji,
+      label: s.title,
+      color: product.color || "#ec4899",
+      text: fill(s.texts[oh], name),
+    }));
+
+    if (productType === "sinyeon_premium" && product.monthly) {
+      const monthlyText = product.monthly[oh].map((t: string, i: number) => `${i + 1}월: ${t}`).join("\n\n");
+      categories.push({ icon: "📅", label: "월별 흐름 (1~12월)", color: "#7c3aed", text: monthlyText });
+    }
+
+    fetch("/api/v2/share", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, categories, scores: {}, tier: "special", birthYear: String(birthYear) }),
+    })
+      .then(res => res.json())
+      .then(data => { if (data.id) router.replace(`/main-v2/share/${data.id}`); else router.replace("/main-v2"); })
+      .catch(() => router.replace("/main-v2"));
+  }, [mounted, isPaid, productType, profile, router]);
 
   if (!mounted) return null;
 
@@ -453,139 +459,11 @@ function SpecialPageContent() {
     );
   }
 
-  const name = profile?.name || "회원";
-  const birthYear = profile?.birthYear || 1990;
-  const oh = getOhaeng(birthYear);
-
-  // sinyeon_premium은 sinyeon 섹션을 그대로 사용
-  const displaySections = productType === "sinyeon_premium" ? PRODUCTS["sinyeon"].sections : product.sections;
-
-  // 보관함 저장
-  const saveHistory = () => {
-    try {
-      const fullText = displaySections.map(s => `${s.emoji} ${s.title}\n${fill(s.texts[oh], name)}`).join("\n\n");
-      const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
-      const id = `special-${productType}-${Date.now()}`;
-      hist.unshift({
-        id, date: new Date().toISOString(),
-        name, category: `${product.emoji} ${product.title}`,
-        scores: {}, analysis: fullText, isPaid: true,
-        planType: "special", birthYear,
-        luckyColor: "", luckyNumber: "", luckyDirection: "",
-        specialType: productType,
-      });
-      localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
-    } catch {}
-  };
-
-  // TTS
-  const buildChunks = (): string[] => {
-    const chunks: string[] = [`${product.title}. ${name}님의 사주 분석 결과입니다.`];
-    displaySections.forEach(s => {
-      chunks.push(`${s.title}.`);
-      chunks.push(fill(s.texts[oh], name));
-    });
-    if (productType === "sinyeon_premium" && product.monthly) {
-      chunks.push("월별 흐름입니다.");
-      product.monthly[oh].forEach((t, i) => chunks.push(`${i + 1}월. ${t}`));
-    }
-    return chunks;
-  };
-
-  const speakAll = (chunks: string[], idx: number, onDone: () => void) => {
-    if (idx >= chunks.length) { onDone(); return; }
-    const u = new SpeechSynthesisUtterance(chunks[idx]);
-    u.lang = "ko-KR"; u.rate = 0.92;
-    u.onend = () => speakAll(chunks, idx + 1, onDone);
-    u.onerror = () => speakAll(chunks, idx + 1, onDone);
-    window.speechSynthesis.speak(u);
-  };
-
-  const handleRead = (fromStart = false) => {
-    if (!("speechSynthesis" in window)) { alert("이 기기는 읽기 기능을 지원하지 않아요."); return; }
-    if (speaking && !fromStart) {
-      window.speechSynthesis.cancel();
-      setSpeaking(false);
-      releaseWakeLock();
-      resumeAfterHideRef.current = () => {};
-      return;
-    }
-    window.speechSynthesis.cancel();
-    setSpeaking(true);
-    requestWakeLock();
-    const chunks = buildChunks();
-    const resume = () => {
-      window.speechSynthesis.cancel();
-      setTimeout(() => speakAll(chunks, 0, () => { setSpeaking(false); releaseWakeLock(); }), 300);
-    };
-    resumeAfterHideRef.current = resume;
-    speakAll(chunks, 0, () => { setSpeaking(false); releaseWakeLock(); });
-  };
-
   return (
-    <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", paddingBottom: 80 }}>
-      {/* 헤더 */}
-      <div style={{ background: G, padding: "44px 20px 32px", textAlign: "center", position: "relative" }}>
-        <button onClick={() => router.push("/main-v2")} style={{ position: "absolute", top: 16, left: 16, background: "rgba(255,255,255,0.2)", border: "none", color: "white", borderRadius: 20, padding: "6px 14px", fontSize: 12, cursor: "pointer", fontWeight: 700 }}>← 홈</button>
-        {/* TTS 버튼 */}
-        <div style={{ position: "absolute", top: 14, right: 14, display: "flex", gap: 6 }}>
-          <button onClick={() => handleRead(true)} style={{ background: "rgba(255,255,255,0.2)", border: "none", color: "white", borderRadius: 20, padding: "6px 12px", fontSize: 11, cursor: "pointer", fontWeight: 700 }}>↺ 처음부터</button>
-          <button onClick={() => handleRead(false)} style={{ background: speaking ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.2)", border: "none", color: "white", borderRadius: 20, padding: "6px 12px", fontSize: 11, cursor: "pointer", fontWeight: 700 }}>{speaking ? "⏸ 멈추기" : "▶ 읽기"}</button>
-        </div>
-        <div style={{ fontSize: 52, marginBottom: 10 }}>{product.emoji}</div>
-        <h1 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 6px", color: "white" }}>{product.title}</h1>
-        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: "0 0 14px" }}>{product.subtitle}</p>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.18)", borderRadius: 20, padding: "6px 16px" }}>
-          <span style={{ fontSize: 12, fontWeight: 700, color: "white" }}>🐱 {name}님</span>
-          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.75)" }}>오행: {oh}</span>
-        </div>
-      </div>
-
-      {speaking && (
-        <div style={{ background: "#fdf4ff", borderBottom: "1px solid #f3e8ff", padding: "10px 20px", textAlign: "center", fontSize: 12, color: "#9333ea", fontWeight: 700 }}>
-          🔊 읽는 중... 화면이 꺼져도 이어서 들을 수 있어요
-        </div>
-      )}
-
-      <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px" }}>
-        {displaySections.map((sec, i) => (
-          <div key={i} style={{ marginBottom: 16, background: "white", borderRadius: 18, overflow: "hidden", boxShadow: "0 2px 12px rgba(236,72,153,0.08)" }}>
-            <div style={{ background: G, padding: "12px 18px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 18 }}>{sec.emoji}</span>
-              <span style={{ fontSize: 14, fontWeight: 900, color: "white" }}>{sec.title}</span>
-            </div>
-            <div style={{ padding: "18px 18px" }}>
-              <p style={{ fontSize: 14, lineHeight: 2, color: "#374151", margin: 0, whiteSpace: "pre-line" }}>
-                {fill(sec.texts[oh], name)}
-              </p>
-            </div>
-          </div>
-        ))}
-
-        {/* 프리미엄 신년운세 월별 섹션 */}
-        {productType === "sinyeon_premium" && product.monthly && (
-          <div style={{ marginBottom: 16, background: "white", borderRadius: 18, overflow: "hidden", boxShadow: "0 2px 12px rgba(124,58,237,0.1)" }}>
-            <div style={{ background: "linear-gradient(135deg,#7c3aed,#4c1d95)", padding: "12px 18px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 18 }}>📅</span>
-              <span style={{ fontSize: 14, fontWeight: 900, color: "white" }}>월별 흐름 (1~12월)</span>
-            </div>
-            <div style={{ padding: "18px 18px" }}>
-              {product.monthly[oh].map((text, idx) => (
-                <div key={idx} style={{ marginBottom: 14, display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <span style={{ fontSize: 12, fontWeight: 900, color: "white", background: "linear-gradient(135deg,#7c3aed,#4c1d95)", borderRadius: 20, padding: "3px 10px", whiteSpace: "nowrap", flexShrink: 0 }}>{idx + 1}월</span>
-                  <p style={{ fontSize: 13, lineHeight: 1.8, color: "#374151", margin: 0 }}>{text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <button onClick={() => { saveHistory(); router.push("/main-v2/history"); }} style={{ width: "100%", padding: "14px 0", background: "white", color: "#ec4899", border: "2px solid #ec4899", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", marginBottom: 10 }}>
-          📂 보관함에 저장하고 보기
-        </button>
-        <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
-          🏠 홈으로
-        </button>
+    <main style={{ minHeight: "100vh", background: "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+      <div style={{ textAlign: "center" }}>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>{product.emoji}</div>
+        <p style={{ fontSize: 15, fontWeight: 700, color: "#ec4899" }}>결과지를 불러오는 중...</p>
       </div>
     </main>
   );
