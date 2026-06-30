@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import QAChatWidget from "@/components/QAChatWidget";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 
@@ -76,6 +77,12 @@ export default function ShareClient({ id }: { id: string }) {
   const [speaking, setSpeaking] = useState(false);
   const [saving, setSaving] = useState(false);
   const [historySaved, setHistorySaved] = useState(false);
+  const [bannerIdx, setBannerIdx] = useState(0);
+  const BANNER_MSGS = ["오늘 재물운이 어떨까?", "취업 될 것 같아?", "연애운 알려줘!", "이직 타이밍 맞아?", "올해 대박 나는 달 언제야?", "내 강점이 뭐야?"];
+  useEffect(() => {
+    const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 700);
+    return () => clearInterval(t);
+  }, []);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
@@ -512,6 +519,52 @@ export default function ShareClient({ id }: { id: string }) {
         <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
         </button>
+
+        {/* 사주 Q&A 배너 */}
+        {!entry.businessName && (
+          <div
+            onClick={() => {
+              if (entry.name && entry.birthYear) {
+                sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
+                sessionStorage.setItem("v2_plan", "select");
+              }
+              router.push("/main-v2/qa");
+            }}
+            style={{ marginTop: 8, marginBottom: 10, borderRadius: 20, overflow: "hidden", cursor: "pointer", background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)", boxShadow: "0 10px 36px rgba(139,92,246,0.45)", position: "relative", minHeight: 140 }}
+          >
+            <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(236,72,153,0.18)", filter: "blur(30px)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(139,92,246,0.2)", filter: "blur(25px)", pointerEvents: "none" }} />
+            <div style={{ padding: "22px 20px 20px", position: "relative", zIndex: 2 }}>
+              <span style={{ fontSize: 10, fontWeight: 900, color: "#fbbf24", background: "rgba(251,191,36,0.18)", border: "1px solid rgba(251,191,36,0.4)", padding: "3px 10px", borderRadius: 20, letterSpacing: 0.5 }}>AI 사주 상담</span>
+              <p style={{ fontSize: 30, fontWeight: 900, color: "#ffffff", margin: "8px 0 2px", lineHeight: 1.15, letterSpacing: -1 }}>무엇이든<br/>물어보세요</p>
+              <p style={{ fontSize: 13, color: "#fbbf24", fontWeight: 800, margin: "0 0 12px", minHeight: 20 }}>💬 &ldquo;{BANNER_MSGS[bannerIdx]}&rdquo;</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 20px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 13, boxShadow: "0 4px 14px rgba(236,72,153,0.5)" }}>사주 상담 →</span>
+                <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>매일 무료 3회</span>
+              </div>
+            </div>
+            <div style={{ position: "absolute", right: 10, bottom: 0, zIndex: 2, userSelect: "none", textAlign: "center" }}>
+              <div style={{ fontSize: 13, marginBottom: 2, animation: "sparkle 1.5s infinite alternate", opacity: 0.9 }}>✨ ⭐ ✨</div>
+              <div style={{ fontSize: 72, lineHeight: 1 }}>🐱</div>
+            </div>
+            <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
+          </div>
+        )}
+
+        {/* 복냥이 채팅 */}
+        {!entry.businessName && entry.name && entry.birthYear && (
+          <QAChatWidget
+            name={entry.name}
+            birthYear={Number(entry.birthYear)}
+            unlocked={entry.tier === "select" || entry.tier === "package"}
+          />
+        )}
+      <style>{`
+        @keyframes qaSparkle {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+      `}</style>
 
       </div>
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive" onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
