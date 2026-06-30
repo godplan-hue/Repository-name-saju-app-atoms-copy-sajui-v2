@@ -1018,12 +1018,26 @@ function V2ResultInner() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* ── 사주 Q&A 버튼 ── */}
+        {/* ── 복냥이 배너 (클릭 → 복냥이 채팅 전체화면) ── */}
         {!isPartner && (
-          <button onClick={() => router.push("/main-v2/qa-list")}
-            style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
-            💬 사주 Q&amp;A — 무엇이든 물어보세요
-          </button>
+          <div onClick={() => router.push("/main-v2/qa")}
+            style={{ position: "relative", height: 180, borderRadius: 20, overflow: "hidden", cursor: "pointer", marginBottom: 14, boxShadow: "0 6px 28px rgba(139,92,246,0.25)" }}>
+            <img src="https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+            <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.22)" }} />
+            <span style={{ position: "absolute", top: 16, left: 16, background: "#ec4899", color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2 }}>AI 사주 상담</span>
+            <div style={{ position: "absolute", bottom: 20, left: 18, zIndex: 3 }}>
+              <p style={{ margin: "0 0 10px", fontSize: 17, fontWeight: 900, lineHeight: 1.35, letterSpacing: "-0.3px" }}>
+                <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>복냥이에게 당신의 운명을</span><br />
+                <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>무엇이든 직접 물어봐요!</span>
+              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ display: "inline-flex", alignItems: "center", padding: "8px 16px", background: "#ec4899", borderRadius: 50, boxShadow: "0 3px 12px rgba(236,72,153,0.5)" }}>
+                  <span style={{ fontSize: 12, fontWeight: 900, color: "white" }}>입장하기 →</span>
+                </div>
+                <span style={{ background: "white", color: "#ef4444", fontSize: 11, fontWeight: 900, padding: "5px 12px", borderRadius: 50, display: "inline-block", animation: "rsBadgePulse 1.2s ease-in-out infinite" }}>매일 무료 3회</span>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* ── 점수 요약 카드 ── */}
@@ -1592,6 +1606,12 @@ function V2ResultInner() {
         </div>
       )}
 
+      <style>{`
+        @keyframes rsBadgePulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.12); box-shadow: 0 0 10px rgba(239,68,68,0.6); }
+        }
+      `}</style>
     </main>
     </>
   );
