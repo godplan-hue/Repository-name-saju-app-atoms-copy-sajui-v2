@@ -282,7 +282,7 @@ const EXTRA_ITEMS = [
   { id: "findmatch",        label: "내 사람 찾기",     sub: "나에게 맞는 사람",        emoji: "🔍", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg", accent: "#9333ea" },
   { id: "marriage_detail",  label: "결혼사주",         sub: "배우자 복·결혼 타이밍",   emoji: "💍", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg", accent: "#ea580c" },
   { id: "divorce",          label: "이혼운세",         sub: "관계의 끝·새 출발",       emoji: "🌧", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg", accent: "#64748b" },
-  { id: "taegil",           label: "택일(擇日)",       sub: "내 사주에 맞는 좋은 날",  emoji: "📅", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/d5/86/02/d586023b366cd7359d84669929bb9bcf.jpg", accent: "#0284c7" },
+  { id: "taegil",           label: "택일(擇日)",       sub: "내 사주에 맞는 좋은 날",  emoji: "📅", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/1200x/b7/c3/ca/b7c3ca787665a1ec29ea1d2643ddc55a.jpg", accent: "#0284c7" },
   { id: "pet_compat",       label: "반려동물 궁합",    sub: "나와 우리 아이 궁합",     emoji: "🐾", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/4f/02/13/4f0213abf6635336a4b3719554766624.jpg", accent: "#f97316" },
 ];
 
