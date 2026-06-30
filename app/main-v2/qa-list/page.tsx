@@ -53,20 +53,17 @@ function QAListContent() {
     <main style={{ minHeight: "100vh", background: "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
       <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10, position: "sticky", top: 0, zIndex: 10 }}>
         <button onClick={() => router.back()} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#8b5cf6", padding: "0 4px" }}>←</button>
-        <div>
+        <div style={{ flex: 1 }}>
           <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>사주 Q&amp;A</p>
-          <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: "#8b5cf6" }}>
-            {unlocked ? `전체 열람 가능 · ${name}님 맞춤 답변` : `360개 질문 · ${name}님 오행 맞춤 답변`}
+          <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: unlocked ? "#8b5cf6" : "#ef4444", display: "flex", alignItems: "center", gap: 5 }}>
+            {unlocked ? "무제한 열람 가능" : "카테고리별 무료 3개 열람"}
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#ef4444" }}>· 결제 시 하루 무제한</span>
           </p>
         </div>
       </div>
-      {!unlocked && (
-        <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "6px 0", textAlign: "center" }}>
-          <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>
-            {`오늘 무료 ${3}개 열람 가능 · 💳 결제 시 하루 동안 무제한 이용 가능`}
-          </span>
-        </div>
-      )}
+      <div style={{ background: "white", padding: "4px 0", textAlign: "center", borderBottom: "1px solid #f3e8ff" }}>
+        <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>💳 결제 시 하루 동안 무제한 이용 가능</span>
+      </div>
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "0 16px 60px" }}>
         <QASection
           name={name}
