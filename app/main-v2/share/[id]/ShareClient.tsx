@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
@@ -72,6 +72,87 @@ export default function ShareClient({ id }: { id: string }) {
   const router = useRouter();
   const [entry, setEntry] = useState<SharedEntry | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const readChunksRef = useRef<string[]>([]);
+  const readIdxRef = useRef(0);
+  const restartingRef = useRef(false);
+
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    };
+  }, []);
+
+  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> => {
+    return new Promise(resolve => {
+      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
+      const existing = window.speechSynthesis.getVoices();
+      if (existing.length > 0) { resolve(pick(existing)); return; }
+      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
+      window.speechSynthesis.onvoiceschanged = () => { clearTimeout(timer); resolve(pick(window.speechSynthesis.getVoices())); };
+    });
+  };
+
+  const speakFrom = async (chunks: string[], startIdx: number) => {
+    const voice = await getKoreanVoice();
+    chunks.slice(startIdx).forEach((chunk, i) => {
+      const idx = startIdx + i;
+      const utter = new SpeechSynthesisUtterance(chunk);
+      utter.lang = "ko-KR";
+      if (voice) utter.voice = voice;
+      utter.rate = 1;
+      utter.onstart = () => { readIdxRef.current = idx; };
+      utter.onerror = (e) => {
+        if (e.error === "canceled" || e.error === "interrupted") { if (!restartingRef.current) setSpeaking(false); return; }
+        setSpeaking(false); readChunksRef.current = []; readIdxRef.current = 0;
+        window.speechSynthesis.cancel();
+        alert("읽어주기가 끊겼어요. 화면 자동꺼짐 시간을 늘리거나 '보고 있는 동안 화면 켜짐'을 켜두면 끊기지 않아요.");
+      };
+      if (idx === chunks.length - 1) {
+        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
+      }
+      window.speechSynthesis.speak(utter);
+    });
+  };
+
+  const getTextChunks = (e: SharedEntry) =>
+    (e.categories ?? []).map(c => c.text).filter(Boolean).join("\n")
+      .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+      .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+      .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+      .replace(/[（(][一-鿿]+[）)]/g, "")
+      .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+      .replace(/×/g, " 와 ")
+      .split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+
+  const toggleReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      alert("카카오톡 앱 안에서는 오른쪽 아래 ⋮ 버튼 → [다른 브라우저로 열기] 후 읽기를 눌러주세요."); return;
+    }
+    if (speaking) { window.speechSynthesis.cancel(); setSpeaking(false); return; }
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const key = "share_tts_tip_shown_date";
+    if (isMobile && localStorage.getItem(key) !== new Date().toDateString()) {
+      alert("💡 읽는 중 화면이 꺼지면 끊길 수 있어요.\n설정 > 디스플레이 > 화면 자동꺼짐 시간을 늘려두면 끊기지 않아요.");
+      localStorage.setItem(key, new Date().toDateString());
+    }
+    if (!entry) return;
+    if (readChunksRef.current.length === 0) { readChunksRef.current = getTextChunks(entry); readIdxRef.current = 0; }
+    window.speechSynthesis.cancel();
+    speakFrom(readChunksRef.current, readIdxRef.current);
+    setSpeaking(true);
+  };
+
+  const restartReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window) || !entry) return;
+    restartingRef.current = true;
+    window.speechSynthesis.cancel();
+    readChunksRef.current = getTextChunks(entry);
+    readIdxRef.current = 0;
+    speakFrom(readChunksRef.current, 0);
+    setSpeaking(true);
+    setTimeout(() => { restartingRef.current = false; }, 300);
+  };
 
   useEffect(() => {
     fetch(`/api/v2/share?id=${encodeURIComponent(id)}`)
@@ -102,10 +183,24 @@ export default function ShareClient({ id }: { id: string }) {
 
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
+      {/* 고정 읽기 버튼 (우측 하단) */}
+      <div style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+        <button onClick={restartReadAloud} style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(139,92,246,0.15)", color: "#8b5cf6", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺ 처음부터 듣기</button>
+        <button onClick={toggleReadAloud} style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
+          {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
+        </button>
+      </div>
+
+      <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
         <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
           {entry.businessName ? `🔮 ${entry.businessName}` : "🐱 점운"}
         </span>
+        <div style={{ display: "flex", gap: 7 }}>
+          <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+          </button>
+          <button onClick={restartReadAloud} style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺ 처음부터</button>
+        </div>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
