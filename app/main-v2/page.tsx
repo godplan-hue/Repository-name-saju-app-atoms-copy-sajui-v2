@@ -217,7 +217,7 @@ const BANNERS = [
 
 const FORTUNE_CATEGORIES = [
   { id: "free",          title: "오늘의 무료운세", sub: "무료 체험",          emoji: "🌟", img: "https://i.pinimg.com/1200x/2f/1b/4e/2f1b4e0713ac39d9090ae3a3e5862db9.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료",        priceBg: "#15803d" },
-  { id: "dateselect",    title: "대운(大運)",  sub: "10년 단위 운명 흐름", emoji: "🌌", img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", bg: "linear-gradient(145deg, #f0f9ff, #bae6fd)", accent: "#0284c7", price: "₩3,900",   priceBg: "#7c3aed" },
+  { id: "sinyeon_premium", title: "프리미엄 신년운세", sub: "신년+월별 12달", emoji: "⭐", img: "https://i.pinimg.com/736x/bb/b0/7e/bbb07e6bf2a39687d0fa55eb1a84cab1.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#7c3aed", price: "₩5,900", priceBg: "#7c3aed" },
   { id: "yearly",        title: "기본 분석",         sub: "재물운+연애운",       emoji: "🎍", img: "https://i.pinimg.com/736x/96/15/17/961517ad12759e2ebe8381ef66cf003a.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900",     priceBg: "#2563eb", badgeSide: "right" },
   { id: "wealth",        title: "재물운",           sub: "돈이 들어오는 시기", emoji: "💰", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309", price: "₩990",      priceBg: "#ff0000" },
   { id: "love",          title: "연애운",           sub: "연애 타이밍과 인연", emoji: "💕", img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
@@ -275,8 +275,8 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
 }
 
 const EXTRA_ITEMS = [
-  { id: "sinyeon",          label: "신년운세",         sub: "병오년 내 사주 완전분석", emoji: "🎍", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg", accent: "#16a34a" },
-  { id: "sinyeon_premium",  label: "프리미엄 신년운세", sub: "신년+월별 12달 완전판",  emoji: "⭐", price: "₩5,900", priceNum: 5900, premium: true,  img: "https://i.pinimg.com/736x/bb/b0/7e/bbb07e6bf2a39687d0fa55eb1a84cab1.jpg", accent: "#7c3aed" },
+  { id: "sinyeon",    label: "신년운세",   sub: "병오년 내 사주 완전분석", emoji: "🎍", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg", accent: "#16a34a" },
+  { id: "daewoon",   label: "대운(大運)", sub: "10년 단위 운명 흐름",     emoji: "🌌", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", accent: "#7c3aed" },
   { id: "love_detail",      label: "연애사주",         sub: "나의 연애 DNA",           emoji: "💗", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", accent: "#be185d" },
   { id: "reunion",          label: "재회운",           sub: "그 사람 다시 만날까",     emoji: "💔", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", accent: "#e11d48" },
   { id: "findmatch",        label: "내 사람 찾기",     sub: "나에게 맞는 사람",        emoji: "🔍", price: "₩3,900", priceNum: 3900, premium: false, img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg", accent: "#9333ea" },
@@ -684,7 +684,6 @@ export default function MainV2() {
           compatibility: "vip", naming: "vip", full: "vip",
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
-        else if (id === "dateselect") router.push("/main-v2/daewoon");
         else { if (id === "naming") setModalSelectedCats(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]); setShowModal(id); }
       }} />
 
@@ -755,6 +754,7 @@ export default function MainV2() {
       {/* ── 추가 운세 상품 섹션 ── */}
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
+          if (id === "daewoon") { router.push("/main-v2/daewoon"); return; }
           setShowModal(id);
         }} />
       )}
