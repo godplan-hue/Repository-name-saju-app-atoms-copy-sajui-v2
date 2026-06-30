@@ -69,9 +69,14 @@ export default function PartnerGuide() {
               {!isFreeTier && (
                 <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 0, marginBottom: 0 }}>※ 유료 등급은 이 사용료 할인·한도뿐 아니라 공유 기능까지 함께 제공됩니다(자세한 내용은 5번 참고).</p>
               )}
-              <button onClick={() => router.push("/partner/brand-settings")} style={{ marginTop: 14, padding: "9px 18px", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
-                💎 나만의 독립 사주앱 브랜드 설정하기
-              </button>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 14 }}>
+                <button onClick={() => router.push("/partner/brand-settings")} style={{ padding: "9px 18px", background: "linear-gradient(135deg, #667eea, #764ba2)", color: "white", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                  💎 나만의 독립 사주앱 브랜드 설정하기
+                </button>
+                <button onClick={() => router.push("/partner/landing-generator")} style={{ padding: "9px 18px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                  🎨 홍보용 랜딩페이지 만들기
+                </button>
+              </div>
               <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 10, marginBottom: 0 }}>※ 나만의 도메인 화면에 보일 패키지 가격도 직접 입력해 원하는 대로 바꿀 수 있어요(실제 결제는 어차피 직접 받으시는 것이라 점운 결제·정산과는 무관해요). 단, 가격은 9,900원 이상부터 입력 가능해요.</p>
             </section>
 
