@@ -60,6 +60,13 @@ function QAListContent() {
           </p>
         </div>
       </div>
+      {!unlocked && (
+        <div style={{ background: "white", borderTop: "1px solid #f3e8ff", padding: "6px 0", textAlign: "center" }}>
+          <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>
+            {`오늘 무료 ${3}개 열람 가능 · 💳 결제 시 하루 동안 무제한 이용 가능`}
+          </span>
+        </div>
+      )}
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "0 16px 60px" }}>
         <QASection
           name={name}

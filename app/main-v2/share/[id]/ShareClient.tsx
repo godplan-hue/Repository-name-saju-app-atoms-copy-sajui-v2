@@ -442,11 +442,54 @@ export default function ShareClient({ id }: { id: string }) {
 
         </div>{/* /contentRef */}
 
+        {/* Q&A 버튼 */}
+        {!entry.businessName && (
+          <button onClick={() => {
+            if (entry.name && entry.birthYear) {
+              sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
+              sessionStorage.setItem("v2_plan", "select");
+            }
+            router.push("/main-v2/qa-list");
+          }} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
+            💬 사주 Q&amp;A — 무엇이든 물어보세요
+          </button>
+        )}
+
+        {/* 보관함 + 이미지저장 */}
         <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-          <button onClick={toggleReadAloud} style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+          <button onClick={saveToHistory} disabled={historySaved}
+            style={{ flex: 1, padding: "13px 0", background: historySaved ? "#f0fdf4" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#16a34a" : "#4338ca", border: historySaved ? "1.5px solid #86efac" : "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: historySaved ? "default" : "pointer" }}>
+            {historySaved ? "✅ 보관함 저장 완료" : "📥 보관함 저장"}
+          </button>
+          <button onClick={() => router.push("/main-v2/history")}
+            style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #fdf4ff, #fce7f3)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
+            📚 보관함 보기
+          </button>
+        </div>
+
+        {/* 이미지저장 + 읽기 */}
+        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+          <button onClick={saveImage} disabled={saving}
+            style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #fef3c7, #fde68a)", color: "#92400e", border: "1.5px solid rgba(245,158,11,0.4)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: saving ? "not-allowed" : "pointer" }}>
+            {saving ? "⏳..." : "🖼️ 이미지 저장"}
+          </button>
+          <button onClick={toggleReadAloud}
+            style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
             {speaking ? "⏸ 멈추기" : "🔊 읽기"}
           </button>
         </div>
+
+        {/* 공유 */}
+        <button onClick={() => {
+          const url = window.location.href;
+          if (navigator.share) {
+            navigator.share({ title: `${entry.name}님의 사주 분석`, url });
+          } else {
+            navigator.clipboard.writeText(url).then(() => alert("링크가 복사됐어요!"));
+          }
+        }} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+          📤 공유하기
+        </button>
 
         {!entry.businessName && (
           <button onClick={() => router.push("/main-v2")} style={{ width: "100%", marginBottom: 10, padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
