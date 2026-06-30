@@ -36,6 +36,13 @@ function PaymentCompleteInner() {
       return;
     }
 
+    const isYearly = searchParams.get("yearly") === "1";
+    if (isYearly) {
+      sessionStorage.setItem("yearlyPaid", "1");
+      router.replace("/main-v2/yearly");
+      return;
+    }
+
     const pkg = searchParams.get("package") || "베이직";
     const pg = searchParams.get("pages") || "75";
     const paid = searchParams.get("paid") || "";
