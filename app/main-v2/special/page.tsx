@@ -422,13 +422,46 @@ function SpecialPageContent() {
       categories.push({ icon: "📅", label: "월별 흐름 (1~12월)", color: "#7c3aed", text: monthlyText });
     }
 
+    const ohScores: Record<Ohaeng, { total: number; wealth: number; love: number; health: number; success: number }> = {
+      목: { total: 73, wealth: 71, love: 78, health: 66, success: 75 },
+      화: { total: 76, wealth: 68, love: 83, health: 72, success: 78 },
+      토: { total: 72, wealth: 77, love: 68, health: 75, success: 70 },
+      금: { total: 75, wealth: 79, love: 71, health: 68, success: 82 },
+      수: { total: 73, wealth: 70, love: 77, health: 75, success: 72 },
+    };
+    const v = ((birthYear % 10) + 6) % 6;
+    const base = ohScores[oh];
+    const scores = {
+      total: Math.min(99, base.total + v),
+      wealth: Math.min(99, base.wealth + v),
+      love: Math.min(99, base.love + v),
+      health: Math.min(99, base.health + v),
+      success: Math.min(99, base.success + v),
+    };
+    const ohLucky: Record<Ohaeng, { color: string; number: number; direction: string }> = {
+      목: { color: "초록", number: 3, direction: "동쪽" },
+      화: { color: "빨강", number: 7, direction: "남쪽" },
+      토: { color: "노랑", number: 5, direction: "중앙" },
+      금: { color: "흰색", number: 4, direction: "서쪽" },
+      수: { color: "파랑", number: 1, direction: "북쪽" },
+    };
+    const lucky = ohLucky[oh];
+
     fetch("/api/v2/share", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, categories, scores: {}, tier: "special", birthYear: String(birthYear) }),
+      body: JSON.stringify({ name, categories, scores, tier: "special", birthYear: String(birthYear), luckyColor: lucky.color, luckyNumber: lucky.number, luckyDirection: lucky.direction }),
     })
       .then(res => res.json())
-      .then(data => { if (data.id) router.replace(`/main-v2/share/${data.id}`); else router.replace("/main-v2"); })
+      .then(data => {
+        if (data.id) {
+          sessionStorage.removeItem("specialPaid");
+          sessionStorage.removeItem("specialType");
+          router.replace(`/main-v2/share/${data.id}`);
+        } else {
+          router.replace("/main-v2");
+        }
+      })
       .catch(() => router.replace("/main-v2"));
   }, [mounted, isPaid, productType, profile, router]);
 

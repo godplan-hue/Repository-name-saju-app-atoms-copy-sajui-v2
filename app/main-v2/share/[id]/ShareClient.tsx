@@ -72,9 +72,46 @@ export default function ShareClient({ id }: { id: string }) {
   const [entry, setEntry] = useState<SharedEntry | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [historySaved, setHistorySaved] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
+  const pageRef = useRef<HTMLDivElement | null>(null);
+
+  const saveToHistory = () => {
+    if (!entry || historySaved) return;
+    try {
+      const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
+      const histId = `share-${id}`;
+      if (hist.some((h: any) => h.id === histId)) { setHistorySaved(true); return; }
+      hist.unshift({
+        id: histId, date: new Date().toISOString(), name: entry.name,
+        category: entry.categories[0]?.label ?? "분석결과",
+        scores: entry.scores ?? {}, isPaid: true, planType: "special",
+        analysis: entry.categories.map(c => `${c.label}\n${c.text}`).join("\n\n"),
+        birthYear: entry.birthYear ?? "", luckyColor: entry.luckyColor ?? "",
+        luckyNumber: entry.luckyNumber ?? "", luckyDirection: entry.luckyDirection ?? "",
+        shareId: id,
+      });
+      localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
+      setHistorySaved(true);
+    } catch {}
+  };
+
+  const saveImage = async () => {
+    if (!pageRef.current || saving) return;
+    setSaving(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(pageRef.current, { backgroundColor: "#fdf2f8", scale: 2, useCORS: true });
+      const link = document.createElement("a");
+      link.download = `${entry?.name ?? "사주"}_분석결과.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch {}
+    setSaving(false);
+  };
 
   useEffect(() => {
     fetch(`/api/v2/share?id=${encodeURIComponent(id)}`)
@@ -206,7 +243,7 @@ export default function ShareClient({ id }: { id: string }) {
   if (!entry) return null;
 
   return (
-    <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+    <main ref={pageRef} style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
       {/* 어디로 스크롤하든 항상 누를 수 있게 고정된 읽기 버튼 */}
       <div style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
         <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(139,92,246,0.15)", color: "#8b5cf6", fontWeight: 800, fontSize: 16, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺ 처음부터 듣기</button>
@@ -227,6 +264,20 @@ export default function ShareClient({ id }: { id: string }) {
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
+
+        {/* Q&A 버튼 */}
+        {!entry.businessName && (
+          <button onClick={() => {
+            if (entry.name && entry.birthYear) {
+              sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
+              sessionStorage.setItem("v2_plan", "select");
+            }
+            router.push("/main-v2/qa");
+          }} style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
+            💬 사주 Q&A — 무엇이든 물어보세요
+          </button>
+        )}
+
         {/* 점수 요약 카드 */}
         <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
           <div style={{ background: entry.tier === "package" ? "#eab308" : G, color: entry.tier === "package" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
@@ -271,8 +322,8 @@ export default function ShareClient({ id }: { id: string }) {
           )}
         </div>
 
-        {/* 무료/990원: 사주팔자 맛보기 (띠+오행만) — 원래 결과지와 동일 */}
-        {(entry.tier === "free" || entry.tier === "select") && entry.birthYear && (() => {
+        {/* 무료/990원/special: 사주팔자 맛보기 (띠+오행만) */}
+        {(entry.tier === "free" || entry.tier === "select" || entry.tier === "special") && entry.birthYear && (() => {
           const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
           const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
           const ohEmoji: Record<string, string> = { "목": "🌳", "화": "🔥", "토": "⛰️", "금": "⚪", "수": "💧" };
@@ -398,11 +449,27 @@ export default function ShareClient({ id }: { id: string }) {
           </button>
         </div>
 
+        <div style={{ marginBottom: 10 }}>
+          <button onClick={saveToHistory} disabled={historySaved} style={{ width: "100%", padding: "13px 0", background: historySaved ? "linear-gradient(135deg, #d1fae5, #a7f3d0)" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#065f46" : "#4338ca", border: `1.5px solid ${historySaved ? "rgba(16,185,129,0.35)" : "rgba(99,102,241,0.35)"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: historySaved ? "default" : "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
+            {historySaved ? "✅ 보관함에 저장됨" : "📥 보관함 저장"}
+          </button>
+        </div>
+
+        <div style={{ marginBottom: 10 }}>
+          <button onClick={saveImage} disabled={saving} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(245,158,11,0.3)", opacity: saving ? 0.7 : 1 }}>
+            {saving ? "⏳ 저장 중..." : "🖼️ 이미지 저장"}
+          </button>
+        </div>
+
         {!entry.businessName && (
           <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
             📱 나도 무료로 사주 보기
           </button>
         )}
+
+        <button onClick={() => router.push("/main-v2")} style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
+          🏠 홈으로
+        </button>
       </div>
     </main>
   );
