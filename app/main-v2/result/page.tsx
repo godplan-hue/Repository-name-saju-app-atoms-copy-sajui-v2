@@ -1018,11 +1018,11 @@ function V2ResultInner() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* ── 복냥이 채팅 버튼 ── */}
+        {/* ── 사주 Q&A 버튼 ── */}
         {!isPartner && (
-          <button onClick={() => router.push("/main-v2/qa")}
+          <button onClick={() => router.push("/main-v2/qa-list")}
             style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
-            💬 복냥이에게 무엇이든 물어보세요
+            💬 사주 Q&amp;A — 무엇이든 물어보세요
           </button>
         )}
 
