@@ -487,18 +487,16 @@ export default function DaewoonPage() {
                   ) : (
                     <>
                       {/* TTS 버튼 (상단) */}
-                      {selectedBlock.mental && (
-                        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-                          <button onClick={restartReadAloud}
-                            style={{ padding: "8px 14px", background: "rgba(139,92,246,0.2)", border: "1px solid rgba(139,92,246,0.4)", color: "rgba(255,255,255,0.7)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
-                            ↺ 처음부터
-                          </button>
-                          <button onClick={toggleReadAloud}
-                            style={{ flex: 1, padding: "8px 0", background: speaking ? "rgba(239,68,68,0.2)" : "rgba(139,92,246,0.2)", border: speaking ? "1px solid rgba(239,68,68,0.5)" : "1px solid rgba(139,92,246,0.4)", color: speaking ? "#f87171" : "rgba(255,255,255,0.8)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
-                            {speaking ? "⏹️ 멈추기" : "🔊 읽기 / 이어듣기"}
-                          </button>
-                        </div>
-                      )}
+                      <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+                        <button onClick={restartReadAloud}
+                          style={{ padding: "8px 14px", background: "rgba(139,92,246,0.2)", border: "1px solid rgba(139,92,246,0.4)", color: "rgba(255,255,255,0.7)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
+                          ↺ 처음부터
+                        </button>
+                        <button onClick={toggleReadAloud}
+                          style={{ flex: 1, padding: "8px 0", background: speaking ? "rgba(239,68,68,0.2)" : "rgba(139,92,246,0.2)", border: speaking ? "1px solid rgba(239,68,68,0.5)" : "1px solid rgba(139,92,246,0.4)", color: speaking ? "#f87171" : "rgba(255,255,255,0.8)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
+                          {speaking ? "⏹️ 멈추기" : "🔊 읽기 / 이어듣기"}
+                        </button>
+                      </div>
 
                       {/* 결과 카드 */}
                       <div ref={cardRef} style={{
