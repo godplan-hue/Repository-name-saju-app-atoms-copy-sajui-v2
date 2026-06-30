@@ -9,11 +9,12 @@ export async function POST(request: NextRequest) {
     if (!name || !categories || !Array.isArray(categories) || categories.length === 0) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
-    const entry = {
-      name, scores: scores || {},
+    const entry: Record<string, any> = {
+      name,
       luckyColor: luckyColor || "", luckyNumber: luckyNumber || "", luckyDirection: luckyDirection || "",
       categories, businessName: businessName || "", tier: tier || "package", birthYear: birthYear || "", createdAt: new Date().toISOString(),
     };
+    if (scores && typeof scores === "object" && Object.keys(scores).length > 0) entry.scores = scores;
     const ref = await db.ref("sharedResults").push(entry);
     return NextResponse.json({ id: ref.key });
   } catch (error) {

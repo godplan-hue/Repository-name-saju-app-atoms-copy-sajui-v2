@@ -294,11 +294,13 @@ export default function DaewoonPage() {
       el.style.overflow = "visible";
       el.style.maxHeight = "none";
       await document.fonts.ready;
+      await new Promise(r => setTimeout(r, 80));
       const isMobile = window.innerWidth < 768;
+      const fullH = el.scrollHeight + 40;
       const canvas = await html2canvas(el, {
         backgroundColor: "#0f0620", scale: isMobile ? 2 : 2.5,
         useCORS: true, allowTaint: true, logging: false,
-        height: el.scrollHeight, windowWidth: isMobile ? window.innerWidth : 480, windowHeight: el.scrollHeight,
+        height: fullH, windowWidth: isMobile ? window.innerWidth : 480, windowHeight: fullH,
       });
       el.style.overflow = prevOv;
       const b = daeunList[selectedIdx];

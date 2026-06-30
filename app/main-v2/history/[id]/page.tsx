@@ -204,31 +204,36 @@ export default function HistoryDetail() {
     });
   };
   const speakFrom = async (chunks: string[], startIdx: number) => {
-    const voice = await getKoreanVoice();
-    chunks.slice(startIdx).forEach((chunk, i) => {
-      const idx = startIdx + i;
-      const utter = new SpeechSynthesisUtterance(chunk);
-      utter.lang = "ko-KR";
-      if (voice) utter.voice = voice;
-      utter.rate = 1;
-      utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
-      utter.onerror = (e) => {
-        if (e.error === "canceled" || e.error === "interrupted") {
-          if (!restartingRef.current) setSpeaking(false);
-          return;
+    try {
+      const voice = await getKoreanVoice();
+      chunks.slice(startIdx).forEach((chunk, i) => {
+        const idx = startIdx + i;
+        const utter = new SpeechSynthesisUtterance(chunk);
+        utter.lang = "ko-KR";
+        if (voice) utter.voice = voice;
+        utter.rate = 1;
+        utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
+        utter.onerror = (e) => {
+          if (e.error === "canceled" || e.error === "interrupted") {
+            if (!restartingRef.current) setSpeaking(false);
+            return;
+          }
+          setSpeaking(false);
+          readChunksRef.current = [];
+          readIdxRef.current = 0;
+          window.speechSynthesis.cancel();
+          releaseWakeLock();
+          alert("읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+        };
+        if (idx === chunks.length - 1) {
+          utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); releaseWakeLock(); };
         }
-        setSpeaking(false);
-        readChunksRef.current = [];
-        readIdxRef.current = 0;
-        window.speechSynthesis.cancel();
-        releaseWakeLock();
-        alert("읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
-      };
-      if (idx === chunks.length - 1) {
-        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); releaseWakeLock(); };
-      }
-      window.speechSynthesis.speak(utter);
-    });
+        window.speechSynthesis.speak(utter);
+      });
+    } catch {
+      setSpeaking(false);
+      releaseWakeLock();
+    }
   };
   resumeAfterHideRef.current = () => {
     if (speaking && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -317,15 +322,17 @@ export default function HistoryDetail() {
       const prevMH = el.style.maxHeight;
       el.style.overflow = "visible";
       el.style.maxHeight = "none";
+      await new Promise(r => setTimeout(r, 80));
       const bg = item?.planType === "package" ? "#eab308" : "#fdf2f8";
+      const fullH = el.scrollHeight + 40;
       const canvas = await html2canvas(el, {
         backgroundColor: bg,
         scale: 2,
         useCORS: true,
         logging: false,
-        height: el.scrollHeight,
+        height: fullH,
         windowWidth: 480,
-        windowHeight: el.scrollHeight,
+        windowHeight: fullH,
       });
       el.style.overflow = prevOv;
       el.style.maxHeight = prevMH;
