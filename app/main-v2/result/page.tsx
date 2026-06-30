@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
+import QAChatWidget from "@/components/QAChatWidget";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -1500,6 +1501,11 @@ function V2ResultInner() {
           style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
         </button>
+
+        {/* 복냥이 채팅 */}
+        {!isPartner && profile?.name && profile?.birthYear && (
+          <QAChatWidget name={profile.name} birthYear={Number(profile.birthYear)} unlocked={paid} />
+        )}
       </div>
 
       {/* ── 운세 선택 모달 ── */}

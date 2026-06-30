@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import QAChatWidget from "@/components/QAChatWidget";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -500,6 +501,15 @@ export default function ShareClient({ id }: { id: string }) {
         <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
         </button>
+
+        {/* 복냥이 채팅 */}
+        {!entry.businessName && entry.name && entry.birthYear && (
+          <QAChatWidget
+            name={entry.name}
+            birthYear={Number(entry.birthYear)}
+            unlocked={entry.tier === "select" || entry.tier === "package"}
+          />
+        )}
       </div>
     </main>
   );
