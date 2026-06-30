@@ -43,6 +43,14 @@ function PaymentCompleteInner() {
       return;
     }
 
+    const specialType = searchParams.get("special");
+    if (specialType) {
+      sessionStorage.setItem("specialType", specialType);
+      sessionStorage.setItem("specialPaid", "1");
+      router.replace("/main-v2/special");
+      return;
+    }
+
     const pkg = searchParams.get("package") || "베이직";
     const pg = searchParams.get("pages") || "75";
     const paid = searchParams.get("paid") || "";

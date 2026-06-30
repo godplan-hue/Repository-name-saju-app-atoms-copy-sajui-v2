@@ -259,7 +259,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                     </span>
                   )}
                   {(cat as any).sub && (
-                    <div style={{ position: "absolute", bottom: 7, left: 0, right: 0, textAlign: "center", fontSize: 11, fontWeight: 900, color: "#fff", textShadow: "0 1px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9)", padding: "0 4px", whiteSpace: "pre-line", lineHeight: 1.4 }}>{(cat as any).sub}</div>
+                    <div style={{ position: "absolute", bottom: 7, left: 0, right: 0, textAlign: "center", fontSize: 10, fontWeight: 900, color: "#fff", textShadow: "0 1px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9)", padding: "0 4px", whiteSpace: "nowrap", overflow: "hidden" }}>{(cat as any).sub}</div>
                   )}
                 </>
               ) : (
@@ -271,6 +271,51 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
             </div>
           ))}
         </div>
+    </div>
+  );
+}
+
+const EXTRA_ITEMS = [
+  { id: "extra_daeun",      label: "대운(大運)",       sub: "10년 운명 흐름",        emoji: "🌌", price: "₩3,900", priceNum: 3900, img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", accent: "#7c3aed", priceBg: "#7c3aed" },
+  { id: "taegil",           label: "택일(擇日)",       sub: "좋은 날 찾기",          emoji: "📅", price: "₩3,900", priceNum: 3900, img: "https://i.pinimg.com/736x/96/15/17/961517ad12759e2ebe8381ef66cf003a.jpg", accent: "#0284c7", priceBg: "#0284c7" },
+  { id: "sinyeon",          label: "신년운세",         sub: "병오년 기운 × 내 사주", emoji: "🎍", price: "₩3,900", priceNum: 3900, img: "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg", accent: "#16a34a", priceBg: "#15803d" },
+  { id: "sinyeon_premium",  label: "프리미엄 신년운세", sub: "신년 + 월별 12달",     emoji: "⭐", price: "₩5,900", priceNum: 5900, img: "https://i.pinimg.com/736x/bb/b0/7e/bbb07e6bf2a39687d0fa55eb1a84cab1.jpg", accent: "#7c3aed", priceBg: "#7c3aed" },
+  { id: "love_detail",      label: "연애사주",         sub: "나의 연애 DNA",         emoji: "💗", price: "₩3,900", priceNum: 3900, img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", accent: "#be185d", priceBg: "#be185d" },
+  { id: "reunion",          label: "재회운",           sub: "그 사람 다시 만날까",   emoji: "💔", price: "₩3,900", priceNum: 3900, img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", accent: "#e11d48", priceBg: "#e11d48" },
+  { id: "findmatch",        label: "내 사람 찾기",     sub: "나에게 맞는 사람",      emoji: "🔍", price: "₩3,900", priceNum: 3900, img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg", accent: "#9333ea", priceBg: "#9333ea" },
+  { id: "marriage_detail",  label: "결혼사주",         sub: "배우자 복·결혼 타이밍", emoji: "💍", price: "₩3,900", priceNum: 3900, img: "https://i.pinimg.com/736x/4d/19/ba/4d19bac9e87e2f3d28505b6e59992c02.jpg", accent: "#ea580c", priceBg: "#ea580c" },
+  { id: "divorce",          label: "이혼운세",         sub: "관계의 끝·새 출발",     emoji: "🌧", price: "₩3,900", priceNum: 3900, img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg", accent: "#64748b", priceBg: "#475569" },
+];
+
+const EXTRA_MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; priceNum: number; features: string[] }> = {
+  taegil:          { emoji: "📅", title: "택일(擇日)", desc: "결혼·이사·개업·계약 — 내 사주에 맞는 좋은 날 찾기", price: "₩3,900", priceNum: 3900, features: ["💒 결혼·예식 길일", "🏠 이사·입주 길일", "🏢 개업·창업 길일", "📝 계약·서류 길일", "📅 피해야 할 날짜"] },
+  sinyeon:         { emoji: "🎍", title: "신년운세", desc: "병오년(2026년) 기운이 내 사주에 미치는 영향 전체 분석", price: "₩3,900", priceNum: 3900, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강 포인트", "🧭 올해 핵심 조언"] },
+  sinyeon_premium: { emoji: "⭐", title: "프리미엄 신년운세", desc: "신년 6개 섹션 + 1월~12월 월별 흐름까지 완전판", price: "₩5,900", priceNum: 5900, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강", "📅 1~12월 월별 흐름"] },
+  love_detail:     { emoji: "💗", title: "연애사주", desc: "나의 연애 DNA — 스타일·강점·패턴·지금 흐름까지", price: "₩3,900", priceNum: 3900, features: ["💗 나의 연애 스타일", "✨ 연애할 때 강한 점", "⚠️ 반복되는 패턴", "🌊 지금 연애 흐름", "👑 나에게 맞는 이상형"] },
+  reunion:         { emoji: "💔", title: "재회운", desc: "그 사람과 다시 이어질 수 있는지 사주로 풀어드립니다", price: "₩3,900", priceNum: 3900, features: ["💔 이별 후 감정 흐름", "🔮 재회 가능성", "⏰ 재회 타이밍", "⚠️ 재회 시 주의점", "🌱 새로운 방향"] },
+  findmatch:       { emoji: "🔍", title: "내 사람 찾기", desc: "나와 진짜 맞는 사람의 특성과 만남의 흐름", price: "₩3,900", priceNum: 3900, features: ["✨ 나와 맞는 사람 특성", "⏰ 인연 오는 시기", "📍 인연 오는 방식", "💗 관계 발전 패턴", "🌱 놓치지 않으려면"] },
+  marriage_detail: { emoji: "💍", title: "결혼사주", desc: "배우자 복·만나는 시기·결혼 후 흐름 완전 분석", price: "₩3,900", priceNum: 3900, features: ["💑 타고난 배우자 스타일", "📍 만나는 시기·방식", "👤 배우자 특성", "🏠 결혼 후 흐름", "⚠️ 결혼에서 조심할 점"] },
+  divorce:         { emoji: "🌧", title: "이혼운세", desc: "현재 관계 에너지·분리 흐름·새 출발 타이밍", price: "₩3,900", priceNum: 3900, features: ["🌊 지금 관계 에너지", "📋 분리 과정 흐름", "💰 재산·현실 측면", "🌅 이후 새 출발", "💪 앞으로를 위한 조언"] },
+};
+
+function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
+  return (
+    <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+        <div style={{ flex: 1, height: 1, background: "rgba(236,72,153,0.2)" }} />
+        <span style={{ fontSize: 12, fontWeight: 900, color: "#be185d", background: "rgba(255,255,255,0.85)", padding: "4px 12px", borderRadius: 20 }}>✨ 더 많은 운세</span>
+        <div style={{ flex: 1, height: 1, background: "rgba(236,72,153,0.2)" }} />
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
+        {EXTRA_ITEMS.map(item => (
+          <div key={item.id} onClick={() => onPick(item.id)} style={{ aspectRatio: "1 / 1", borderRadius: 16, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 14px ${item.accent}1f` }}>
+            <img src={item.img} alt={item.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 70%)" }} />
+            <span style={{ position: "absolute", top: 6, left: 6, background: item.priceBg, color: "#fff", fontSize: 10, fontWeight: 900, padding: "3px 8px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)" }}>{item.price}</span>
+            <div style={{ position: "absolute", bottom: 7, left: 0, right: 0, textAlign: "center", fontSize: 11, fontWeight: 900, color: "#fff", textShadow: "0 1px 4px rgba(0,0,0,1)", padding: "0 4px", lineHeight: 1.3 }}>{item.sub}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -703,6 +748,14 @@ export default function MainV2() {
         </div>
       </div>
 
+      {/* ── 추가 운세 상품 섹션 ── */}
+      {!isPartner && (
+        <ExtraFortuneSection onPick={(id) => {
+          if (id === "extra_daeun") { router.push("/main-v2/daewoon"); return; }
+          setShowModal(id);
+        }} />
+      )}
+
       {/* 복냥이 상담창 — 내정보(푸터) 바로 위 */}
       {!isPartner && savedProfile && (
         <div id="chat-widget" style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
@@ -800,6 +853,36 @@ export default function MainV2() {
           naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "원하는 운세 골라 담기 · 개당 ₩990",     price: "₩990/개",  features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"] },
           full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
+        // 추가 상품 모달 처리
+        if (showModal && EXTRA_MCFG[showModal]) {
+          const ec = EXTRA_MCFG[showModal];
+          return (
+            <div onClick={() => setShowModal(null)} style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+              <div onClick={e => e.stopPropagation()} style={{ background: "#16103a", border: "1px solid rgba(167,139,250,0.2)", borderRadius: "16px 16px 0 0", padding: "20px 20px 32px", width: "100%", maxWidth: 420 }}>
+                <div style={{ width: 36, height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 2, margin: "0 auto 18px" }} />
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                  <span style={{ fontSize: 34 }}>{ec.emoji}</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{ec.title}</div>
+                    <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{ec.desc}</div>
+                  </div>
+                  <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{ec.price}</div>
+                </div>
+                <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
+                  {ec.features.map((f, i) => <div key={i} style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: 700, lineHeight: 1.9 }}>✓ {f}</div>)}
+                </div>
+                <button onClick={() => {
+                  setShowModal(null);
+                  router.push(`/payment-complete?special=${showModal}&paid=${ec.priceNum}`);
+                }} style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
+                  결제하기
+                </button>
+                <button onClick={() => setShowModal(null)} style={{ width: "100%", padding: "10px 0", background: "transparent", color: "rgba(255,255,255,0.3)", border: "none", fontSize: 13, cursor: "pointer" }}>닫기</button>
+              </div>
+            </div>
+          );
+        }
+
         const cfg = showModal ? MCFG[showModal] : null;
         if (!cfg) return null;
         return (
