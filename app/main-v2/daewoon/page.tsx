@@ -137,7 +137,7 @@ export default function DaewoonPage() {
                     {currentBlock.cheonganEnergy && (
                       <div style={{ background: "rgba(251,191,36,0.12)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "12px 14px" }}>
                         <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, margin: "0 0 6px" }}>✨ {currentBlock.cheonganTitle}</p>
-                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, lineHeight: 1.7, margin: 0 }}>{currentBlock.cheonganEnergy}</p>
+                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>{currentBlock.cheonganEnergy}</p>
                       </div>
                     )}
                     {[
@@ -150,12 +150,12 @@ export default function DaewoonPage() {
                     ].filter(s => s.text).map(s => (
                       <div key={s.label} style={{ background: "rgba(0,0,0,0.2)", borderRadius: 10, padding: "10px 12px" }}>
                         <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>{s.label}</p>
-                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, lineHeight: 1.7, margin: 0, whiteSpace: "pre-line" }}>{s.text}</p>
+                        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 11, lineHeight: 1.6, margin: 0, whiteSpace: "pre-line" }}>{s.text}</p>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 13, lineHeight: 1.8, margin: 0, whiteSpace: "pre-line" }}>{teaserText}</p>
+                  <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, lineHeight: 1.65, margin: 0, whiteSpace: "pre-line" }}>{teaserText}</p>
                 )}
               </div>
             )}
@@ -213,7 +213,7 @@ export default function DaewoonPage() {
                           {b.cheonganEnergy && (
                             <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 8, padding: "8px 10px" }}>
                               <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 800, margin: "0 0 3px" }}>✨ {b.cheonganTitle}</p>
-                              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 12, lineHeight: 1.6, margin: 0 }}>{b.cheonganEnergy}</p>
+                              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>{b.cheonganEnergy}</p>
                             </div>
                           )}
                           {[
@@ -226,7 +226,7 @@ export default function DaewoonPage() {
                           ].filter(s => s.text).map(s => (
                             <div key={s.label} style={{ background: "rgba(0,0,0,0.2)", borderRadius: 8, padding: "8px 10px" }}>
                               <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 700, margin: "0 0 3px" }}>{s.label}</p>
-                              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 12, lineHeight: 1.6, margin: 0 }}>{s.text}</p>
+                              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>{s.text}</p>
                             </div>
                           ))}
                         </div>
