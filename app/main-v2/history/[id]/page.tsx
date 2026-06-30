@@ -452,6 +452,17 @@ export default function HistoryDetail() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 72px" }}>
 
+        {/* Q&A 버튼 */}
+        <button onClick={() => {
+          if (item.name && item.birthYear) {
+            sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: item.name, birthYear: Number(item.birthYear) } }));
+            sessionStorage.setItem("v2_plan", item.planType === "package" ? "select" : "select");
+          }
+          router.push("/main-v2/qa?list=1");
+        }} style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
+          💬 사주 Q&A — 무엇이든 물어보세요
+        </button>
+
         {/* 이미지 저장 대상 카드 */}
         <div ref={cardRef} style={{ background: "white", borderRadius: 24, overflow: "hidden", border: "1.5px solid rgba(236,72,153,0.1)" }}>
 
@@ -583,15 +594,15 @@ export default function HistoryDetail() {
         </div>
 
         {/* 하단 버튼 */}
-        <div style={{ display: "grid", gridTemplateColumns: item.planType === "package" ? "1fr 1fr" : "1fr", gap: 10, marginTop: 14 }}>
-          {item.planType === "package" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 14 }}>
+          {item.isPaid && (
             <button onClick={saveImage} disabled={saving}
-              style={{ padding: "13px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(245,158,11,0.3)" }}>
-              {saving ? "저장 중..." : "🖼️ 이미지 저장"}
+              style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(245,158,11,0.3)", opacity: saving ? 0.7 : 1 }}>
+              {saving ? "⏳ 저장 중..." : "🖼️ 이미지 저장"}
             </button>
           )}
           <button onClick={toggleReadAloud}
-            style={{ padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
+            style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
             {speaking ? "⏹ 멈추기" : "🔊 읽기"}
           </button>
         </div>
