@@ -726,24 +726,31 @@ function V2ResultInner() {
       }
     } catch {}
     const kakao = (window as any).Kakao;
-    if (kakao && kakao.isInitialized() && url) {
-      kakao.Share.sendDefault({
-        objectType: "feed",
-        content: {
-          title: `🔮 ${result.profile?.name}님의 사주 분석 결과`,
-          description: `총운 ${result.scores?.total}점! 💰 990원 AI사주 점운 jeomun.com`,
-          imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
-          link: { mobileWebUrl: url, webUrl: url },
-        },
-        buttons: [
-          { title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } },
-          { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
-        ],
-      });
+    if (kakao && !kakao.isInitialized()) {
+      try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {}
+    }
+    const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
+    const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로! jeomun.com`;
+    if (kakaoReady && url) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: `🔮 ${result.profile?.name}님의 사주 분석 결과`,
+            description: `총운 ${result.scores?.total}점! 💰 990원 AI사주 점운 jeomun.com`,
+            imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
+          ],
+        });
+      } catch {
+        navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크가 복사되었습니다!"));
+      }
     } else {
-      const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로! jeomun.com`;
-      if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
-      else navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크 복사됨!"));
+      navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크가 복사되었습니다!"));
     }
   };
 

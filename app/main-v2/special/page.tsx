@@ -14,6 +14,7 @@ function fill(text: string, name: string, other: string = "그 사람", pet: str
     .replace(/\{\{name\}\}/g, name)
     .replace(/\{\{other\}\}/g, other)
     .replace(/\{\{pet\}\}/g, pet);
+  if (other !== "그 사람") result = result.replace(/그 사람/g, other);
   if (pet !== "반려동물") result = result.replace(/반려동물/g, pet);
   return result;
 }
