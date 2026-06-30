@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
+import QASection from "@/components/QASection";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -1486,6 +1487,16 @@ function V2ResultInner() {
             </div>
           </>
         )}
+        {/* ── 사주 Q&A 섹션 ── */}
+        {!isPartner && profile?.name && profile?.birthYear && (
+          <QASection
+            name={profile.name}
+            birthYear={Number(profile.birthYear)}
+            unlocked={paid}
+            onBuyClick={() => router.push("/main-v2/payment")}
+          />
+        )}
+
         {/* ── 사주 Q&A 배너 ── */}
         {!isPartner && profile?.name && profile?.birthYear && (
           <div
