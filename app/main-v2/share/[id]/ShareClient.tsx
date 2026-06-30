@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 import QAChatWidget from "@/components/QAChatWidget";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
@@ -533,13 +534,20 @@ export default function ShareClient({ id }: { id: string }) {
         {/* 공유 */}
         <button onClick={() => {
           const url = window.location.href;
-          if (navigator.share) {
-            navigator.share({ title: `${entry.name}님의 사주 분석`, url });
+          const kakao = (window as any).Kakao;
+          if (kakao && !kakao.isInitialized()) { try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {} }
+          const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
+          if (kakaoReady && url) {
+            try {
+              kakao.Share.sendDefault({ objectType: "feed", content: { title: `${entry.name}님의 사주 분석 🔮`, description: "AI 사주 분석 결과를 확인해보세요! jeomun.com", imageUrl: "https://jeomun.com/og-image.png", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "결과 보기", link: { mobileWebUrl: url, webUrl: url } }] });
+            } catch {
+              navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
+            }
           } else {
-            navigator.clipboard.writeText(url).then(() => alert("링크가 복사됐어요!"));
+            navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
           }
         }} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-          📤 공유하기
+          📤 카카오톡 공유
         </button>
 
         {!entry.businessName && (
@@ -567,6 +575,7 @@ export default function ShareClient({ id }: { id: string }) {
         }
       `}</style>
       </div>
+      <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive" onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
     </main>
   );
 }
