@@ -105,13 +105,18 @@ export default function ShareClient({ id }: { id: string }) {
     setSaving(true);
     try {
       const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(contentRef.current, { backgroundColor: "#fdf2f8", scale: 2, useCORS: true });
-      const link = document.createElement("a");
-      link.download = `${entry?.name ?? "사주"}_분석결과.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    } catch {}
-    setSaving(false);
+      const canvas = await html2canvas(contentRef.current, { backgroundColor: "#fdf2f8", scale: 1.5, useCORS: true });
+      canvas.toBlob(blob => {
+        if (!blob) { setSaving(false); return; }
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = `${entry?.name ?? "사주"}_분석결과.png`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+        setSaving(false);
+      }, "image/png");
+    } catch { setSaving(false); }
   };
 
   useEffect(() => {

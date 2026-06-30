@@ -336,11 +336,17 @@ export default function HistoryDetail() {
       });
       el.style.overflow = prevOv;
       el.style.maxHeight = prevMH;
-      const link = document.createElement("a");
-      link.download = `점운_${item?.name ?? "운세"}_${item?.category?.replace(/\S+\s/, "") ?? ""}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-      setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "사진 앱(갤러리)" : "다운로드 폴더"}에 저장됐어요!`), 0);
+      const name = `점운_${item?.name ?? "운세"}_${item?.category?.replace(/\S+\s/, "") ?? ""}.png`;
+      canvas.toBlob(blob => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = name;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+        setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "사진 앱(갤러리)" : "다운로드 폴더"}에 저장됐어요!`), 0);
+      }, "image/png");
     } catch {
       alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요.");
     } finally {
