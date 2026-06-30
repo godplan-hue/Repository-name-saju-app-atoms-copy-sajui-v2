@@ -289,6 +289,9 @@ function V2ResultInner() {
   const [planType, setPlanType] = useState("");
   const [tier, setTier] = useState<"free" | "select" | "package">("free");
   const [pkgName, setPkgName] = useState("");
+  const [couponPhone, setCouponPhone] = useState("");
+  const [couponSubmitting, setCouponSubmitting] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
@@ -1340,6 +1343,59 @@ function V2ResultInner() {
           ))
         )}
 
+
+        {/* ── 무료: 쿠폰 퍼널 ── */}
+        {tier === "free" && !isPartner && (
+          <div style={{ marginBottom: 16, borderRadius: 18, background: "linear-gradient(135deg, #fff7ed, #fef3c7)", border: "1.5px solid rgba(245,158,11,0.35)", padding: "20px 18px" }}>
+            {couponCode ? (
+              <>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#92400e", margin: "0 0 6px" }}>🎉 쿠폰이 발급됐어요!</p>
+                <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 12px", lineHeight: 1.6 }}>결제 화면에서 아래 코드를 입력하면 <b>30% 할인</b>이 적용돼요.</p>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ flex: 1, background: "white", border: "2px dashed rgba(245,158,11,0.5)", borderRadius: 10, padding: "10px 14px", fontFamily: "monospace", fontSize: 18, fontWeight: 900, color: "#b45309", letterSpacing: 2, textAlign: "center" }}>
+                    {couponCode}
+                  </div>
+                  <button
+                    onClick={() => { navigator.clipboard.writeText(couponCode).then(() => alert("복사됐어요!")).catch(() => alert(couponCode)); }}
+                    style={{ padding: "10px 14px", background: "#f59e0b", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}
+                  >복사</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#92400e", margin: "0 0 4px" }}>🎁 30% 할인 쿠폰 받기</p>
+                <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 12px" }}>연락처만 남기면 바로 쿠폰코드를 드려요!</p>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <input
+                    type="tel"
+                    value={couponPhone}
+                    onChange={e => setCouponPhone(e.target.value)}
+                    placeholder="010-0000-0000"
+                    style={{ flex: 1, padding: "10px 12px", border: "1.5px solid rgba(245,158,11,0.4)", borderRadius: 10, fontSize: 14, outline: "none", background: "white", color: "#1f2937" }}
+                  />
+                  <button
+                    disabled={couponSubmitting || couponPhone.replace(/\D/g, "").length < 10}
+                    onClick={async () => {
+                      setCouponSubmitting(true);
+                      try {
+                        const res = await fetch("/api/coupon-lead", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ phone: couponPhone, name: profile?.name ?? "" }),
+                        });
+                        const data = await res.json();
+                        if (data.code) setCouponCode(data.code);
+                        else alert("쿠폰 발급에 실패했어요. 다시 시도해주세요.");
+                      } catch { alert("네트워크 오류가 발생했어요."); }
+                      finally { setCouponSubmitting(false); }
+                    }}
+                    style={{ padding: "10px 16px", background: "#f59e0b", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 13, cursor: couponPhone.replace(/\D/g, "").length < 10 ? "not-allowed" : "pointer", opacity: couponPhone.replace(/\D/g, "").length < 10 ? 0.6 : 1, whiteSpace: "nowrap" }}
+                  >{couponSubmitting ? "..." : "쿠폰받기"}</button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
 
         {/* ── 무료: 공유하기 + 유료 결제하기 ── */}
         {tier === "free" && (
