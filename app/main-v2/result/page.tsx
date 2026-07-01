@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
+import { flushSync } from "react-dom";
 import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
@@ -531,9 +532,8 @@ function V2ResultInner() {
   const saveImage = async () => {
     if (savingRef.current) return;
     savingRef.current = true;
-    setSaving(true);
-    // React가 !saving 조건으로 버튼을 숨기도록 두 프레임 기다림
-    await new Promise<void>(resolve => requestAnimationFrame(() => { requestAnimationFrame(() => resolve()); }));
+    // flushSync로 즉시 DOM 업데이트 → saving=true가 된 채로 html2canvas 실행
+    flushSync(() => setSaving(true));
     try {
       const html2canvas = (await import("html2canvas")).default;
       const elements = cardRefs.current.filter(Boolean) as HTMLDivElement[];
