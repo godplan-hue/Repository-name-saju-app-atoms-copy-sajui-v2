@@ -128,7 +128,7 @@ function PartnerAnalysisResultInner() {
       // 화면(로그인 필요)으로 돌려보내면 고객이 그 화면을 보게 될 수 있어서,
       // 공유 id(sid)가 같이 와있다면 누구나 볼 수 있는 공개 결과 페이지로 대신 보냄
       const sid = searchParams.get("sid");
-      if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
+      if (sid) { router.replace(`/main-v2/share-kakao/${sid}`); return; }
       router.push("/partner/create-analysis");
       return;
     }
@@ -259,7 +259,7 @@ function PartnerAnalysisResultInner() {
       });
       if (!res.ok) throw new Error("공유 저장 실패");
       const data = await res.json();
-      const url = `${window.location.origin}/main-v2/share/${data.id}`;
+      const url = `${window.location.origin}/main-v2/share-kakao/${data.id}`;
       const text = `${customerName}님의 운세 분석 🔮\n총운 ${analysisResults.scores?.total}점\n\n${businessName || "점운"}에서 보내드려요`;
       if (navigator.share) await navigator.share({ title: "사주 분석 결과", text, url }).catch(() => {});
       else { await navigator.clipboard.writeText(`${text}\n${url}`); alert("✅ 링크 복사됨! 고객님께 보내주세요."); }
