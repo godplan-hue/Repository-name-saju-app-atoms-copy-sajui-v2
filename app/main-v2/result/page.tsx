@@ -1559,6 +1559,16 @@ function V2ResultInner() {
           </div>
         )}
 
+        {/* 사주 Q&A 360개 질문 (배너 아래) */}
+        {!isPartner && profile?.name && profile?.birthYear && (
+          <QASection
+            name={profile.name}
+            birthYear={Number(profile.birthYear)}
+            unlocked={paid}
+            onBuyClick={() => router.push("/main-v2/payment?scrollTo=packages")}
+          />
+        )}
+
         {/* 복냥이 채팅 */}
         {!isPartner && profile?.name && profile?.birthYear && (
           <QAChatWidget name={profile.name} birthYear={Number(profile.birthYear)} unlocked={paid} />
