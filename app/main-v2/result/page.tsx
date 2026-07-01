@@ -1051,7 +1051,7 @@ function V2ResultInner() {
             onClick={() => {
               sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: profile.name, birthYear: Number(profile.birthYear) } }));
               sessionStorage.setItem("v2_plan", paid ? "select" : "free");
-              router.push("/main-v2/qa");
+              router.push("/main-v2/qa-list");
             }}
             style={{ width: "100%", padding: "14px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}
           >
@@ -1530,7 +1530,7 @@ function V2ResultInner() {
         {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 Q&A 페이지 이동) ── */}
         {!isPartner && profile?.name && profile?.birthYear && (
           <div
-            onClick={() => { sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: profile.name, birthYear: Number(profile.birthYear) } })); router.push("/main-v2/qa"); }}
+            onClick={() => { sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: profile.name, birthYear: Number(profile.birthYear) } })); router.push("/main-v2/qa-list"); }}
             style={{
               marginTop: 8, marginBottom: 14,
               borderRadius: 20, overflow: "hidden", cursor: "pointer",
