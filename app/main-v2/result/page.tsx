@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
-import QASection from "@/components/QASection";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -296,7 +295,6 @@ function V2ResultInner() {
   const [couponPhone, setCouponPhone] = useState("");
   const [couponSubmitting, setCouponSubmitting] = useState(false);
   const [couponCode, setCouponCode] = useState("");
-  const [showQABanner, setShowQABanner] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
@@ -1529,13 +1527,13 @@ function V2ResultInner() {
           🏠 홈으로
         </button>
 
-        {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 360개 질문 펼침) ── */}
+        {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 Q&A 페이지 이동) ── */}
         {!isPartner && profile?.name && profile?.birthYear && (
           <div
-            onClick={() => setShowQABanner(v => !v)}
+            onClick={() => { sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: profile.name, birthYear: Number(profile.birthYear) } })); router.push("/main-v2/qa"); }}
             style={{
-              marginTop: 8, marginBottom: showQABanner ? 0 : 14,
-              borderRadius: showQABanner ? "20px 20px 0 0" : 20, overflow: "hidden", cursor: "pointer",
+              marginTop: 8, marginBottom: 14,
+              borderRadius: 20, overflow: "hidden", cursor: "pointer",
               background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)",
               boxShadow: "0 10px 36px rgba(139,92,246,0.45)",
               position: "relative", minHeight: 140,
@@ -1561,18 +1559,6 @@ function V2ResultInner() {
               <div style={{ fontSize: 72, lineHeight: 1 }}>🐱</div>
             </div>
             <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
-          </div>
-        )}
-
-        {/* 360개 질문 (배너 클릭 시 펼침) */}
-        {showQABanner && !isPartner && profile?.name && profile?.birthYear && (
-          <div style={{ marginBottom: 14 }}>
-            <QASection
-              name={profile.name}
-              birthYear={Number(profile.birthYear)}
-              unlocked={paid}
-              onBuyClick={() => router.push("/main-v2/payment?scrollTo=packages")}
-            />
           </div>
         )}
 
