@@ -145,7 +145,7 @@ export default function V2History() {
             icon: matchedCat?.icon ?? "🔮",
             label: item.category?.replace(/\S+\s/, "") ?? "운세",
             color: matchedCat?.color ?? "#8b5cf6",
-            text: item.analysis,
+            text: (item as any).fullAnalysis ?? item.analysis,
             badge: item.planType === "package" ? "📦 패키지" : "💎 심층",
           }],
           tier: item.planType === "package" ? "package" : "select",
@@ -155,7 +155,7 @@ export default function V2History() {
           luckyDirection: (item as any).luckyDirection ?? "",
         }),
       });
-      if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
+      if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share-kakao/${data.id}`; }
     } catch {}
     const kakao = (window as any).Kakao;
     if (kakao && kakao.isInitialized()) {
@@ -268,19 +268,11 @@ export default function V2History() {
                     </div>
                     <div style={{ display: "flex", gap: 5 }}>
                       <button
-                        onClick={e => { e.stopPropagation(); router.push(`/main-v2/history/${encodeURIComponent(item.id)}`); }}
-                        style={{ padding: "4px 10px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
+                        onClick={e => shareItem(item, e)}
+                        style={{ padding: "4px 10px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
                       >
-                        🔊 읽기
+                        📤 공유
                       </button>
-                      {item.planType !== "select" && (
-                        <button
-                          onClick={e => shareItem(item, e)}
-                          style={{ padding: "4px 10px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
-                        >
-                          📤 공유
-                        </button>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -318,7 +310,7 @@ export default function V2History() {
               </div>
             ))}
 
-            <button onClick={() => setShowSelect(true)}
+            <button onClick={() => router.push("/main-v2")}
               style={{ padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", marginTop: 4, boxShadow: "0 6px 20px rgba(236,72,153,0.3)" }}>
               💎 다시 분석하기
             </button>
