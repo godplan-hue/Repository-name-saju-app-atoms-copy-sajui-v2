@@ -296,6 +296,7 @@ function V2ResultInner() {
   const [couponPhone, setCouponPhone] = useState("");
   const [couponSubmitting, setCouponSubmitting] = useState(false);
   const [couponCode, setCouponCode] = useState("");
+  const [showQABanner, setShowQABanner] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
@@ -1528,13 +1529,13 @@ function V2ResultInner() {
           🏠 홈으로
         </button>
 
-        {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 복냥이 전체화면) ── */}
+        {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 360개 질문 펼침) ── */}
         {!isPartner && profile?.name && profile?.birthYear && (
           <div
-            onClick={() => router.push("/main-v2/qa")}
+            onClick={() => setShowQABanner(v => !v)}
             style={{
-              marginTop: 8, marginBottom: 14,
-              borderRadius: 20, overflow: "hidden", cursor: "pointer",
+              marginTop: 8, marginBottom: showQABanner ? 0 : 14,
+              borderRadius: showQABanner ? "20px 20px 0 0" : 20, overflow: "hidden", cursor: "pointer",
               background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)",
               boxShadow: "0 10px 36px rgba(139,92,246,0.45)",
               position: "relative", minHeight: 140,
@@ -1563,9 +1564,16 @@ function V2ResultInner() {
           </div>
         )}
 
-        {/* 복냥이 채팅 */}
-        {!isPartner && profile?.name && profile?.birthYear && (
-          <QAChatWidget name={profile.name} birthYear={Number(profile.birthYear)} unlocked={paid} />
+        {/* 360개 질문 (배너 클릭 시 펼침) */}
+        {showQABanner && !isPartner && profile?.name && profile?.birthYear && (
+          <div style={{ marginBottom: 14 }}>
+            <QASection
+              name={profile.name}
+              birthYear={Number(profile.birthYear)}
+              unlocked={paid}
+              onBuyClick={() => router.push("/main-v2/payment?scrollTo=packages")}
+            />
+          </div>
         )}
       </div>
 
