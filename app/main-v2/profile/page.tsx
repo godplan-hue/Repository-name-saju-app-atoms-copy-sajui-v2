@@ -141,10 +141,14 @@ export default function V2Profile() {
       body: JSON.stringify(form),
     }).catch(() => {});
     const pendingModal = sessionStorage.getItem("v2_after_profile_modal");
+    const afterPaymentGoto = sessionStorage.getItem("v2_after_payment_goto");
     if (pendingModal === "daewoon") {
       router.push("/main-v2/daewoon");
     } else if (pendingModal) {
       router.push("/main-v2");
+    } else if (afterPaymentGoto === "special") {
+      sessionStorage.removeItem("v2_after_payment_goto");
+      router.push("/main-v2/special");
     } else {
       router.push("/main-v2/analysis");
     }

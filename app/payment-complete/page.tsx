@@ -79,8 +79,9 @@ function PaymentCompleteInner() {
     if (specialType) {
       sessionStorage.setItem("specialType", specialType);
       sessionStorage.setItem("specialPaid", "1");
+      sessionStorage.setItem("v2_after_payment_goto", "special");
       setPackageName(SPECIAL_NAMES[specialType] || specialType);
-      setRedirectTo("/main-v2/special");
+      setRedirectTo("/main-v2/profile");
       setReady(true);
       return;
     }
