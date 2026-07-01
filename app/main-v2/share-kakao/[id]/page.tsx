@@ -14,11 +14,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     const description = isPartner
       ? `총운 ${entry.scores?.total ?? "?"}점! AI 사주 분석 결과`
       : `총운 ${entry.scores?.total ?? "?"}점! 나도 무료로 사주 보기 👉 jeomun.com`;
-    const image = "https://jeomun.com/saju-cat.png";
     return {
       title,
       description,
-      openGraph: { title, description, images: [image] },
+      openGraph: isPartner
+        ? { title, description }
+        : { title, description, images: ["https://jeomun.com/saju-cat.png"] },
     };
   } catch {
     return { title: "점운 - 사주 결과" };
