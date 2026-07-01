@@ -367,14 +367,6 @@ export default function ShareClient({ id }: { id: string }) {
                   <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
                 </div>
               </div>
-              <div style={{ padding: "0 18px 16px" }}>
-                <div style={{ background: "#fdf2f8", borderRadius: 14, padding: "12px 14px", textAlign: "center", marginBottom: 10 }}>
-                  <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, lineHeight: 1.6 }}>🪬 내 성격과 재물 흐름, 더 자세히 알고 싶다면?</div>
-                </div>
-                <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
-                  💎 9,900원 패키지로 전체 확인하기
-                </button>
-              </div>
             </div>
           );
         })()}
