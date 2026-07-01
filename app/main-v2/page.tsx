@@ -311,7 +311,7 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
           <div key={item.id} onClick={() => onPick(item.id)} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 12px ${item.accent}28` }}>
             <img src={item.img} alt={item.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 75%)" }} />
-            <span style={{ position: "absolute", top: 5, left: 5, fontSize: item.priceNum === 990 ? 9 : 8, fontWeight: 900, padding: item.priceNum === 990 ? "2px 7px" : "2px 5px", borderRadius: 20, ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "rgba(255,255,255,0.92)", color: "#6b21a8", border: "1px solid rgba(255,255,255,0.6)" }) }}>{item.price}</span>
+            <span style={{ position: "absolute", top: 5, left: 5, fontSize: item.priceNum === 990 ? 9 : 8, fontWeight: 900, padding: item.priceNum === 990 ? "2px 7px" : "2px 5px", borderRadius: 20, ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "#15803d", color: "#fff" }) }}>{item.price}</span>
             <div style={{ position: "absolute", bottom: 6, left: 0, right: 0, textAlign: "center", padding: "0 4px" }}>
               <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)", lineHeight: 1.25, whiteSpace: "nowrap", overflow: "hidden" }}>{item.label}</div>
               <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.72)", textShadow: "0 1px 4px rgba(0,0,0,0.9)", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden" }}>{item.sub}</div>
@@ -690,8 +690,8 @@ export default function MainV2() {
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
         else if (id === "sinyeon_premium") {
-          sessionStorage.setItem("v2_after_profile_modal", id);
-          router.push(user ? "/main-v2/profile" : "/main-v2/login");
+          if (!user) { router.push("/main-v2/login"); return; }
+          setShowModal(id);
         }
         else { if (id === "naming") setModalSelectedCats(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]); setShowModal(id); }
       }} />
@@ -763,9 +763,9 @@ export default function MainV2() {
       {/* ── 추가 운세 상품 섹션 ── */}
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
-          // 결제/진입 전에 항상 프로필 입력 화면 거치게 함 (대운 포함 전체)
-          sessionStorage.setItem("v2_after_profile_modal", id);
-          router.push(user ? "/main-v2/profile" : "/main-v2/login");
+          if (!user) { router.push("/main-v2/login"); return; }
+          if (id === "daewoon") { router.push("/main-v2/daewoon"); return; }
+          setShowModal(id);
         }} />
       )}
 
