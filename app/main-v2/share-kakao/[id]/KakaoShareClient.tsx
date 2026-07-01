@@ -197,12 +197,14 @@ export default function KakaoShareClient({ id }: { id: string }) {
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
       <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
         <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>🐱 점운</span>
-        <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
-          <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
-            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
-          </button>
-          <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺ 처음부터 듣기</button>
-        </div>
+        {!entry.businessName && (
+          <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
+            <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+              {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+            </button>
+            <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺ 처음부터 듣기</button>
+          </div>
+        )}
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
@@ -276,11 +278,13 @@ export default function KakaoShareClient({ id }: { id: string }) {
           );
         })}
 
-        {/* 나도 무료로 사주 보기 */}
-        <button onClick={() => router.push("/main-v2")}
-          style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-          🔮 나도 무료로 사주 보기
-        </button>
+        {/* 나도 무료로 사주 보기 — 파트너 공유 결과지에는 표시 안 함 */}
+        {!entry.businessName && (
+          <button onClick={() => router.push("/main-v2")}
+            style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+            🔮 나도 무료로 사주 보기
+          </button>
+        )}
 
       </div>
     </main>
