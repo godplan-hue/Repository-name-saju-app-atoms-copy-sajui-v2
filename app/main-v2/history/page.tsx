@@ -268,10 +268,10 @@ export default function V2History() {
                     </div>
                     <div style={{ display: "flex", gap: 5 }}>
                       <button
-                        onClick={e => shareItem(item, e)}
-                        style={{ padding: "4px 10px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
+                        onClick={e => { e.stopPropagation(); router.push(`/main-v2/history/${encodeURIComponent(item.id)}`); }}
+                        style={{ padding: "4px 10px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
                       >
-                        📤 공유
+                        🔊 읽기
                       </button>
                     </div>
                   </div>
