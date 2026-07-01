@@ -30,17 +30,17 @@ function isPrivacyAgreementValid(): boolean {
 }
 
 const inp: React.CSSProperties = {
-  width: "100%", padding: "12px 14px", borderRadius: 12,
-  border: "1.5px solid rgba(139,92,246,0.3)", fontSize: 15,
+  width: "100%", padding: "13px 14px", borderRadius: 12,
+  border: "1.5px solid rgba(251,191,36,0.4)", fontSize: 15,
   boxSizing: "border-box", outline: "none",
   fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
-  color: "#1a1a2e", background: "rgba(255,255,255,0.9)",
+  color: "#1a1a2e", background: "rgba(255,255,255,0.85)",
   boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
 };
 
 const label: React.CSSProperties = {
   display: "block", fontSize: 13, fontWeight: 900,
-  color: "#4c1d95", marginBottom: 7,
+  color: "#1a1a2e", marginBottom: 7,
 };
 
 export default function V2Profile() {
@@ -163,7 +163,7 @@ export default function V2Profile() {
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", margin: 0, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>저장된 정보가 있으면 자동으로 채워집니다</p>
         </div>
 
-        <div style={{ background: "rgba(255,255,255,0.88)", backdropFilter: "blur(14px)", borderRadius: 22, padding: "22px 16px", boxShadow: "0 12px 40px rgba(0,0,0,0.22)", border: "1.5px solid rgba(139,92,246,0.25)", display: "flex", flexDirection: "column", gap: 18 }}>
+        <div style={{ background: "rgba(255,255,255,0.78)", backdropFilter: "blur(14px)", borderRadius: 24, padding: "22px 16px", boxShadow: "0 12px 40px rgba(0,0,0,0.18)", border: "1.5px solid rgba(251,191,36,0.45)", display: "flex", flexDirection: "column", gap: 18 }}>
 
           {/* 이름 */}
           <div>
@@ -182,8 +182,8 @@ export default function V2Profile() {
                 onChange={e => setForm(p => ({ ...p, birthYear: e.target.value }))}
                 placeholder="1990" min="1900" max="2024"
                 style={{ ...inp, textAlign: "center" }}
-                onFocus={e => (e.currentTarget.style.borderColor = "#8b5cf6")}
-                onBlur={e => (e.currentTarget.style.borderColor = "rgba(139,92,246,0.3)")} />
+                onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
+                onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")} />
               <select value={form.birthMonth} onChange={e => setForm(p => ({ ...p, birthMonth: e.target.value }))} style={{ ...inp, textAlign: "center" }}>
                 <option value="">월</option>
                 {Array.from({ length: 12 }, (_, i) => <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}월</option>)}
@@ -239,19 +239,19 @@ export default function V2Profile() {
                   setForm(p => ({ ...p, phone: formatted }));
                 }}
                 placeholder="010-0000-0000" style={inp}
-                onFocus={e => (e.currentTarget.style.borderColor = "#8b5cf6")}
-                onBlur={e => (e.currentTarget.style.borderColor = "rgba(139,92,246,0.3)")} />
+                onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
+                onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")} />
               <input type="email" value={form.email}
                 onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
                 placeholder="example@email.com" style={inp}
-                onFocus={e => (e.currentTarget.style.borderColor = "#8b5cf6")}
-                onBlur={e => (e.currentTarget.style.borderColor = "rgba(139,92,246,0.3)")} />
+                onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
+                onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")} />
             </div>
           </div>
 
           {/* 개인정보 동의 */}
-          <div style={{ background: "rgba(139,92,246,0.06)", borderRadius: 14, padding: "14px 14px 12px", border: "1.5px solid rgba(139,92,246,0.2)" }}>
-            <p style={{ fontSize: 12, fontWeight: 900, color: "#4c1d95", margin: "0 0 8px" }}>📋 개인정보 수집·이용 동의</p>
+          <div style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(6px)", borderRadius: 14, padding: "14px 14px 12px", border: "1.5px solid rgba(251,191,36,0.35)" }}>
+            <p style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>📋 개인정보 수집·이용 동의</p>
             <div style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.8, marginBottom: 10 }}>
               <div>• 수집 목적: 사주 분석 서비스 제공</div>
               <div>• 수집 항목: 이름, 생년월일, 성별, 출생시간, 전화번호, 이메일</div>
@@ -262,8 +262,8 @@ export default function V2Profile() {
                 setAgreed(e.target.checked);
                 localStorage.setItem("v2_privacy_agreed", e.target.checked ? "1" : "0");
                 if (e.target.checked) localStorage.setItem("v2_privacy_agreed_at", String(Date.now()));
-              }} style={{ width: 18, height: 18, accentColor: "#8b5cf6", cursor: "pointer", flexShrink: 0 }} />
-              <span style={{ fontSize: 13, fontWeight: 800, color: agreed ? "#6d28d9" : "#374151" }}>
+              }} style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
+              <span style={{ fontSize: 13, fontWeight: 800, color: agreed ? "#be185d" : "#374151" }}>
                 동의합니다 <span style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af" }}>(필수)</span>
               </span>
             </label>
