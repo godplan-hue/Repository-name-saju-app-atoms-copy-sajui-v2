@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng, QACategory } from "@/lib/qa/index";
 
@@ -285,51 +285,91 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
             ))}
           </div>
 
-          {/* Q&A 목록 — 열람 가능(Q1~Q5) */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 10 }}>
-            {cat.items.slice(0, unlocked ? cat.items.length : FREE_COUNT).map((item, idx) =>
-              renderQAItem(item, idx, cat.id, true)
-            )}
+          {/* Q&A 목록 — 4열 그리드, 전체 질문 한눈에 */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 10 }}>
+            {cat.items.map((item, idx) => {
+              const isLocked = !unlocked && idx >= FREE_COUNT;
+              const key = `${cat.id}-${idx}`;
+              const isSelected = openIdx === key;
+              return (
+                <button
+                  key={key}
+                  onClick={() => {
+                    if (isLocked) { onBuyClick ? onBuyClick() : window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+                    setOpenIdx(isSelected ? null : key);
+                  }}
+                  style={{
+                    padding: "7px 5px",
+                    background: isSelected
+                      ? "linear-gradient(135deg, #ec4899, #8b5cf6)"
+                      : isLocked ? "#f9f5ff" : "white",
+                    color: isSelected ? "white" : isLocked ? "#c4b5fd" : "#1a1a2e",
+                    border: `1.5px solid ${isSelected ? "transparent" : isLocked ? "#e9d5ff" : "#f0e6ff"}`,
+                    borderRadius: 10,
+                    fontWeight: 700,
+                    fontSize: 10,
+                    cursor: "pointer",
+                    textAlign: "left",
+                    lineHeight: 1.4,
+                    boxShadow: isSelected ? "0 4px 12px rgba(236,72,153,0.3)" : "none",
+                    minHeight: 56,
+                  }}
+                >
+                  <span style={{
+                    fontSize: 9, fontWeight: 900, display: "block", marginBottom: 2,
+                    color: isSelected ? "rgba(255,255,255,0.85)" : isLocked ? "#c4b5fd" : "#ec4899",
+                  }}>
+                    Q{idx + 1}{isLocked ? " 🔒" : ""}
+                  </span>
+                  <span style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    fontSize: 10,
+                  } as React.CSSProperties}>
+                    {item.question}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
-          {/* 잠긴 항목 — Q번호 칩 + 잠금 배너 */}
-          {!unlocked && (
-            <div style={{
-              background: "#fff",
-              borderRadius: 16,
-              border: "1.5px solid #e9d5ff",
-              padding: "16px",
-              textAlign: "center",
-            }}>
-              {/* Q번호 칩들 */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "center", marginBottom: 14 }}>
-                {cat.items.slice(FREE_COUNT).map((_, idx) => (
-                  <span key={idx} style={{
-                    fontSize: 11,
-                    fontWeight: 800,
-                    color: "#c4b5fd",
-                    background: "#f5f3ff",
-                    padding: "4px 10px",
-                    borderRadius: 20,
-                  }}>Q{FREE_COUNT + idx + 1}</span>
-                ))}
+          {/* 선택된 질문 답변 */}
+          {openIdx && openIdx.startsWith(cat.id + "-") && (() => {
+            const idx = Number(openIdx.split("-")[1]);
+            const item = cat.items[idx];
+            if (!item) return null;
+            const answer = fillTemplate(item.answers[ohaeng], name);
+            return (
+              <div style={{ background: "white", borderRadius: 14, border: "2px solid #ec4899", overflow: "hidden", marginBottom: 10, boxShadow: "0 4px 20px rgba(236,72,153,0.15)" }}>
+                <div style={{ padding: "12px 16px 10px", background: "linear-gradient(135deg, #fff0f9, #f5f0ff)", borderBottom: "1px solid #fce7f3" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 11, fontWeight: 900, color: "white", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "3px 9px", borderRadius: 20, flexShrink: 0 }}>Q{idx + 1}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{item.question}</span>
+                  </div>
+                </div>
+                <div style={{ padding: "14px 16px" }}>
+                  <div style={{ background: "linear-gradient(135deg, #fff0f9, #ede9fe)", borderRadius: 12, padding: "14px 16px", borderLeft: "3px solid #ec4899" }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: "#374151", lineHeight: 1.8, margin: 0 }}>{answer}</p>
+                    <div style={{ marginTop: 10 }}>
+                      <span style={{ fontSize: 10, color: "white", fontWeight: 800, background: "linear-gradient(135deg, #8b5cf6, #ec4899)", padding: "2px 10px", borderRadius: 20 }}>
+                        {ohaeng}오행 · {name}님 맞춤 답변
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <p style={{ fontSize: 12, color: "#9ca3af", fontWeight: 700, margin: "0 0 12px" }}>
-                🔒 {cat.items.length - FREE_COUNT}개 질문이 더 있어
-              </p>
+            );
+          })()}
+
+          {/* 비결제 시 구매 유도 */}
+          {!unlocked && (
+            <div style={{ textAlign: "center", marginBottom: 4 }}>
               <button
                 onClick={() => onBuyClick ? onBuyClick() : window.scrollTo({ top: 0, behavior: "smooth" })}
-                style={{
-                  padding: "9px 22px",
-                  background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: 50,
-                  fontWeight: 900,
-                  fontSize: 12,
-                  cursor: "pointer",
-                }}
-              >💎 구매하고 Q&amp;A + 복냥이 전체 열기</button>
+                style={{ padding: "9px 22px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 12, cursor: "pointer" }}
+              >💎 구매하고 Q&amp;A 전체 열기</button>
             </div>
           )}
         </>
