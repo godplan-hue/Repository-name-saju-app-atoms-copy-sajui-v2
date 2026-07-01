@@ -532,6 +532,8 @@ function V2ResultInner() {
     if (savingRef.current) return;
     savingRef.current = true;
     setSaving(true);
+    // React가 !saving 조건으로 버튼을 숨기도록 두 프레임 기다림
+    await new Promise<void>(resolve => requestAnimationFrame(() => { requestAnimationFrame(() => resolve()); }));
     try {
       const html2canvas = (await import("html2canvas")).default;
       const elements = cardRefs.current.filter(Boolean) as HTMLDivElement[];
@@ -556,8 +558,6 @@ function V2ResultInner() {
         el.style.overflowX = "hidden";
         el.style.maxHeight = "none";
         const captureBg = tier !== "package" ? "#ffffff" : (elIdx === 0 ? "#eab308" : "#fdf6e3");
-        const noCaptureEls = Array.from(el.querySelectorAll("[data-no-capture]")) as HTMLElement[];
-        noCaptureEls.forEach(n => { n.style.display = "none"; });
         const c = await html2canvas(el, {
           backgroundColor: captureBg,
           scale: sharedScale,
@@ -568,7 +568,6 @@ function V2ResultInner() {
           windowWidth: isMobile ? window.innerWidth : 480,
           windowHeight: el.scrollHeight,
         });
-        noCaptureEls.forEach(n => { n.style.display = ""; });
         el.style.overflow = prevOv;
         el.style.overflowX = prevOvX;
         el.style.maxHeight = prevMH;
@@ -1119,14 +1118,16 @@ function V2ResultInner() {
                     <div style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
                   </div>
                 </div>
-                <div data-no-capture style={{ padding: "0 16px 14px" }}>
-                  <div style={{ background: "#fdf2f8", borderRadius: 12, padding: "10px 12px", textAlign: "center", marginBottom: 8 }}>
-                    <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, lineHeight: 1.6 }}>🪬 내 성격과 재물 흐름, 더 자세히 알고 싶다면?</div>
+                {!saving && (
+                  <div style={{ padding: "0 16px 14px" }}>
+                    <div style={{ background: "#fdf2f8", borderRadius: 12, padding: "10px 12px", textAlign: "center", marginBottom: 8 }}>
+                      <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, lineHeight: 1.6 }}>🪬 내 성격과 재물 흐름, 더 자세히 알고 싶다면?</div>
+                    </div>
+                    <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", padding: "11px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
+                      💎 9,900원 패키지 결제하고 전체 확인하기
+                    </button>
                   </div>
-                  <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", padding: "11px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
-                    💎 9,900원 패키지 결제하고 전체 확인하기
-                  </button>
-                </div>
+                )}
               </div>
             );
           })()}
