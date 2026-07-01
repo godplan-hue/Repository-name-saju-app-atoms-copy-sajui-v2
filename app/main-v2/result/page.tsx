@@ -1051,7 +1051,6 @@ function V2ResultInner() {
         {!isPartner && profile?.name && profile?.birthYear && (
           <button
             onClick={() => {
-              sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: profile.name, birthYear: Number(profile.birthYear) } }));
               sessionStorage.setItem("v2_plan", paid ? "select" : "free");
               router.push("/main-v2/qa-list");
             }}
@@ -1532,7 +1531,7 @@ function V2ResultInner() {
         {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 Q&A 페이지 이동) ── */}
         {!isPartner && profile?.name && profile?.birthYear && (
           <div
-            onClick={() => { sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: profile.name, birthYear: Number(profile.birthYear) } })); router.push("/main-v2/qa-list"); }}
+            onClick={() => { router.push("/main-v2/qa-list"); }}
             style={{
               marginTop: 8, marginBottom: 14,
               borderRadius: 20, overflow: "hidden", cursor: "pointer",
