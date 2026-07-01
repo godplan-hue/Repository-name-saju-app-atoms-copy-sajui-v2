@@ -1046,14 +1046,18 @@ function V2ResultInner() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* ── 사주 Q&A 360개 질문 ── */}
+        {/* ── 사주 Q&A 버튼 (클릭 시 Q&A 페이지로 이동) ── */}
         {!isPartner && profile?.name && profile?.birthYear && (
-          <QASection
-            name={profile.name}
-            birthYear={Number(profile.birthYear)}
-            unlocked={paid}
-            onBuyClick={() => router.push("/main-v2/payment?scrollTo=packages")}
-          />
+          <button
+            onClick={() => {
+              sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: profile.name, birthYear: Number(profile.birthYear) } }));
+              sessionStorage.setItem("v2_plan", paid ? "select" : "free");
+              router.push("/main-v2/qa");
+            }}
+            style={{ width: "100%", padding: "14px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}
+          >
+            💬 사주 Q&amp;A — 무엇이든 물어보세요
+          </button>
         )}
 
         {/* ── 점수 요약 카드 ── */}
@@ -1557,16 +1561,6 @@ function V2ResultInner() {
             </div>
             <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
           </div>
-        )}
-
-        {/* 사주 Q&A 360개 질문 (배너 아래) */}
-        {!isPartner && profile?.name && profile?.birthYear && (
-          <QASection
-            name={profile.name}
-            birthYear={Number(profile.birthYear)}
-            unlocked={paid}
-            onBuyClick={() => router.push("/main-v2/payment?scrollTo=packages")}
-          />
         )}
 
         {/* 복냥이 채팅 */}
