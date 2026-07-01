@@ -565,6 +565,9 @@ function V2ResultInner() {
           height: el.scrollHeight,
           windowWidth: isMobile ? window.innerWidth : 480,
           windowHeight: el.scrollHeight,
+          onclone: (doc: Document) => {
+            doc.querySelectorAll("[data-no-capture]").forEach(n => { (n as HTMLElement).style.display = "none"; });
+          },
         });
         el.style.overflow = prevOv;
         el.style.overflowX = prevOvX;
@@ -734,21 +737,28 @@ function V2ResultInner() {
       try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {}
     }
     const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
-    const text = `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로! jeomun.com`;
+    const isPartnerShare = !!brand?.businessName;
+    const text = isPartnerShare
+      ? `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}`
+      : `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로! jeomun.com`;
     if (kakaoReady && url) {
       try {
         kakao.Share.sendDefault({
           objectType: "feed",
           content: {
             title: `🔮 ${result.profile?.name}님의 사주 분석 결과`,
-            description: `총운 ${result.scores?.total}점! 💰 990원 AI사주 점운 jeomun.com`,
+            description: isPartnerShare
+              ? `총운 ${result.scores?.total}점! AI 사주 분석 결과`
+              : `총운 ${result.scores?.total}점! 💰 990원 AI사주 점운 jeomun.com`,
             imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
-          buttons: [
-            { title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } },
-            { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
-          ],
+          buttons: isPartnerShare
+            ? [{ title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } }]
+            : [
+                { title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } },
+                { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
+              ],
         });
       } catch {
         navigator.clipboard.writeText(`${text}\n${url}`).then(() => alert("✅ 링크가 복사되었습니다!"));
@@ -1108,16 +1118,14 @@ function V2ResultInner() {
                     <div style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{oh}({oh === "목" ? "木" : oh === "화" ? "火" : oh === "토" ? "土" : oh === "금" ? "金" : "水"})</div>
                   </div>
                 </div>
-                {!saving && (
-                  <div style={{ padding: "0 16px 14px" }}>
-                    <div style={{ background: "#fdf2f8", borderRadius: 12, padding: "10px 12px", textAlign: "center", marginBottom: 8 }}>
-                      <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, lineHeight: 1.6 }}>🪬 내 성격과 재물 흐름, 더 자세히 알고 싶다면?</div>
-                    </div>
-                    <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", padding: "11px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
-                      💎 9,900원 패키지 결제하고 전체 확인하기
-                    </button>
+                <div data-no-capture style={{ padding: "0 16px 14px" }}>
+                  <div style={{ background: "#fdf2f8", borderRadius: 12, padding: "10px 12px", textAlign: "center", marginBottom: 8 }}>
+                    <div style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, lineHeight: 1.6 }}>🪬 내 성격과 재물 흐름, 더 자세히 알고 싶다면?</div>
                   </div>
-                )}
+                  <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", padding: "11px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>
+                    💎 9,900원 패키지 결제하고 전체 확인하기
+                  </button>
+                </div>
               </div>
             );
           })()}
