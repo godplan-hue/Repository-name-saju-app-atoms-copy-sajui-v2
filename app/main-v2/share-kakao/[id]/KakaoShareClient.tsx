@@ -27,6 +27,22 @@ interface SharedEntry {
   subtitle?: string;
 }
 
+function Bar({ label, score, color }: { label: string; score: number; color: string }) {
+  const [w, setW] = useState(0);
+  useEffect(() => { const t = setTimeout(() => setW(score), 300); return () => clearTimeout(t); }, [score]);
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#374151" }}>{label}</span>
+        <span style={{ fontSize: 13, fontWeight: 900, color }}>{score}점</span>
+      </div>
+      <div style={{ height: 7, background: "#f3e8ff", borderRadius: 99, overflow: "hidden" }}>
+        <div style={{ height: "100%", width: `${w}%`, background: G, borderRadius: 99, transition: "width 1s ease" }} />
+      </div>
+    </div>
+  );
+}
+
 function ScoreCircle({ score, size = 130 }: { score: number; size?: number }) {
   const r = 44;
   const circ = 2 * Math.PI * r;
@@ -228,6 +244,23 @@ export default function KakaoShareClient({ id }: { id: string }) {
             </div>
           )}
         </div>
+
+        {/* 분야별 점수 막대 */}
+        {entry.scores && (
+          <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, padding: "18px 18px 8px" }}>
+            <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 14 }}>📊 분야별 운세 점수</div>
+            {[
+              { label: "🌟 오늘의 운세", key: "total",   color: "#f59e0b" },
+              { label: "💰 재물운",      key: "wealth",  color: "#f59e0b" },
+              { label: "💕 연애운",      key: "love",    color: "#ec4899" },
+              { label: "💪 건강운",      key: "health",  color: "#10b981" },
+              { label: "🎯 성공운",      key: "success", color: "#8b5cf6" },
+              { label: "✨ 총운",        key: "total",   color: "#6366f1" },
+            ].filter(b => (entry.scores as any)[b.key] != null).map(b => (
+              <Bar key={b.label} label={b.label} score={(entry.scores as any)[b.key]} color={b.color} />
+            ))}
+          </div>
+        )}
 
         {/* 카테고리별 카드 */}
         {entry.categories.map((cat, i) => {
