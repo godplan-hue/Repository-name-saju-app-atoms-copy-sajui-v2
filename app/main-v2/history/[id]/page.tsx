@@ -392,7 +392,7 @@ export default function HistoryDetail() {
           luckyDirection: item.luckyDirection ?? "",
         }),
       });
-      if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share/${data.id}`; }
+      if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share-kakao/${data.id}`; }
     } catch {}
     const kakao = (window as any).Kakao;
     if (kakao && kakao.isInitialized()) {
