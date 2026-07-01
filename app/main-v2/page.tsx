@@ -691,6 +691,10 @@ export default function MainV2() {
           compatibility: "vip", naming: "vip", full: "vip",
         };
         if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
+        else if (id === "sinyeon_premium") {
+          sessionStorage.setItem("v2_after_profile_modal", id);
+          router.push(user ? "/main-v2/profile" : "/main-v2/login");
+        }
         else { if (id === "naming") setModalSelectedCats(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]); setShowModal(id); }
       }} />
 
