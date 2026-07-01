@@ -289,7 +289,7 @@ export default function ShareClient({ id }: { id: string }) {
                 sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
                 sessionStorage.setItem("v2_plan", "select");
               }
-              router.push("/main-v2/qa");
+              router.push("/main-v2/qa-list");
             }}
             style={{ width: "100%", marginBottom: 14, padding: "13px 0", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "1px solid rgba(139,92,246,0.5)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}
           >
@@ -528,7 +528,7 @@ export default function ShareClient({ id }: { id: string }) {
                 sessionStorage.setItem("v2_result", JSON.stringify({ profile: { name: entry.name, birthYear: Number(entry.birthYear) } }));
                 sessionStorage.setItem("v2_plan", "select");
               }
-              router.push("/main-v2/qa");
+              router.push("/main-v2/qa-list");
             }}
             style={{ marginTop: 8, marginBottom: 10, borderRadius: 20, overflow: "hidden", cursor: "pointer", background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)", boxShadow: "0 10px 36px rgba(139,92,246,0.45)", position: "relative", minHeight: 140 }}
           >
