@@ -1575,6 +1575,11 @@ function V2ResultInner() {
             />
           </div>
         )}
+
+        {/* 복냥이 채팅 */}
+        {!isPartner && profile?.name && profile?.birthYear && (
+          <QAChatWidget name={profile.name} birthYear={Number(profile.birthYear)} unlocked={paid} />
+        )}
       </div>
 
       {/* ── 운세 선택 모달 ── */}
