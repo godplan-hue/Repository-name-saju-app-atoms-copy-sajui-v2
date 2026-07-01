@@ -556,6 +556,8 @@ function V2ResultInner() {
         el.style.overflowX = "hidden";
         el.style.maxHeight = "none";
         const captureBg = tier !== "package" ? "#ffffff" : (elIdx === 0 ? "#eab308" : "#fdf6e3");
+        const noCaptureEls = Array.from(el.querySelectorAll("[data-no-capture]")) as HTMLElement[];
+        noCaptureEls.forEach(n => { n.style.display = "none"; });
         const c = await html2canvas(el, {
           backgroundColor: captureBg,
           scale: sharedScale,
@@ -565,10 +567,8 @@ function V2ResultInner() {
           height: el.scrollHeight,
           windowWidth: isMobile ? window.innerWidth : 480,
           windowHeight: el.scrollHeight,
-          onclone: (doc: Document) => {
-            doc.querySelectorAll("[data-no-capture]").forEach(n => { (n as HTMLElement).style.display = "none"; });
-          },
         });
+        noCaptureEls.forEach(n => { n.style.display = ""; });
         el.style.overflow = prevOv;
         el.style.overflowX = prevOvX;
         el.style.maxHeight = prevMH;
