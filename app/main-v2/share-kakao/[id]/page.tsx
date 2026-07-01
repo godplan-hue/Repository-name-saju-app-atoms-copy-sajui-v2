@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       description,
       openGraph: isPartner
         ? { title, description }
-        : { title, description, images: ["https://jeomun.com/saju-cat.png"] },
+        : { title, description, images: ["https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg"] },
     };
   } catch {
     return { title: "점운 - 사주 결과" };
