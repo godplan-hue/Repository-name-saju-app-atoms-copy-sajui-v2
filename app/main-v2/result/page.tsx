@@ -721,6 +721,9 @@ function V2ResultInner() {
             // "생년월일 정보 공개"를 꺼두면 birthYear를 안 보내서, 공유받은 사람한테
             // 띠·오행 미리보기(생년월일 기반 정보)가 안 보이고 이름+분석글만 보임
             birthYear: shareIncludeBirth ? result.profile?.birthYear : undefined,
+            // 파트너 서브도메인에서 공유할 때만 businessName을 실어 보내서,
+            // KakaoShareClient에서 파트너 공유임을 감지해 버튼을 숨기게 함
+            businessName: brand?.businessName || undefined,
           }),
         });
         if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share-kakao/${data.id}`; }
