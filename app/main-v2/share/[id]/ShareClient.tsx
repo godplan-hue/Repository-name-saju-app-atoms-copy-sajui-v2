@@ -493,7 +493,7 @@ export default function ShareClient({ id }: { id: string }) {
 
         {/* 공유 */}
         <button onClick={() => {
-          const url = window.location.href;
+          const url = `${window.location.origin}/main-v2/share-kakao/${id}`;
           const kakao = (window as any).Kakao;
           if (kakao && !kakao.isInitialized()) { try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {} }
           const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
@@ -507,7 +507,7 @@ export default function ShareClient({ id }: { id: string }) {
             navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
           }
         }} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-          📤 카카오톡 공유
+          📤 카카오톡으로 공유
         </button>
 
         {!entry.businessName && (
