@@ -257,7 +257,7 @@ function PaymentInner() {
           <div style={{ fontSize: 30, marginBottom: 10 }}>🔓</div>
           <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 8px", letterSpacing: "0.5px" }}>전체 AI 심층 분석</h3>
           <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, margin: "0 0 6px" }}>운세를 완전히 해석해드립니다</p>
-          <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&amp;보관함 포함</p>
+          <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: 0 }}>₩3,900부터 시작 · 이미지 저장&amp;보관함 포함</p>
         </div>
 
         {/* 할인코드(일반고객용 — 파트너 사용료와는 무관) */}
@@ -333,7 +333,7 @@ function PaymentInner() {
 
         <div style={{ maxWidth: 1000, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 4 }}>【사주 완벽분석】</p>
-          <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>990~29,900원</p>
+          <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>3,900~29,900원</p>
         </div>
 
         <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 20, background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 24, borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
@@ -382,7 +382,7 @@ function PaymentInner() {
         <div id="select-section" style={{ maxWidth: 1000, margin: "0 auto 40px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: "24px 22px", borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
           <h2 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 6, letterSpacing: "-0.3px" }}>✨ 어떤 운세를 확인할까요?</h2>
           <p style={{ fontSize: 13, fontWeight: 700, marginBottom: 16 }}>
-            <span style={{ color: "rgba(255,255,255,0.7)" }}>1개 선택 · </span><span style={{ color: "#ff69b4", fontWeight: 900 }}>₩990</span>
+            <span style={{ color: "rgba(255,255,255,0.7)" }}>1개 선택 · </span><span style={{ color: "#ff69b4", fontWeight: 900 }}>₩3,900</span>
           </p>
 
           <button
@@ -425,14 +425,14 @@ function PaymentInner() {
               // (이게 없으면 결과 페이지가 기본값으로 5개 전부를 보여주는 버그가 생김)
               sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
               const pkgName = selectedCats.map(c => c.replace(/\S+\s/, "")).join("+");
-              const originalPrice = selectedCats.length * 990;
+              const originalPrice = selectedCats.length * 3900;
               const paidPrice = await finalPrice(originalPrice); // 할인 적용 + 정산 자동 계산/기록
               router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${selectedCats.length * 30}&paid=${paidPrice}`);
             }}
             disabled={selectedCats.length === 0}
             style={{ width: "100%", marginTop: 18, padding: "15px 0", background: selectedCats.length > 0 ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(255,255,255,0.1)", color: selectedCats.length > 0 ? "#1a0f2e" : "rgba(255,255,255,0.4)", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: selectedCats.length > 0 ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 ? "0 6px 22px rgba(251,191,36,0.35)" : "none", letterSpacing: "-0.2px" }}
           >
-            {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 결제하기 · ₩${(appliedDiscount ? Math.round(selectedCats.length * 990 * (1 - appliedDiscount.discountPercent / 100)) : selectedCats.length * 990).toLocaleString()}` : "운세를 선택하세요"}
+            {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 결제하기 · ₩${(appliedDiscount ? Math.round(selectedCats.length * 3900 * (1 - appliedDiscount.discountPercent / 100)) : selectedCats.length * 3900).toLocaleString()}` : "운세를 선택하세요"}
           </button>
         </div>
         )}
@@ -444,13 +444,13 @@ function PaymentInner() {
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>사주 완벽분석</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>990원부터<br/>VIP 커플팩 분석까지</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3,900원부터<br/>VIP 커플팩 분석까지</p>
             </div>
 
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
               <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>990~29,900원</p>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3,900~29,900원</p>
             </div>
 
             <div style={{ textAlign: "center" }}>

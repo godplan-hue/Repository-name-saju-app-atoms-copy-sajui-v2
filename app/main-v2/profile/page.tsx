@@ -103,7 +103,7 @@ export default function V2Profile() {
   }, []);
 
   useEffect(() => {
-    // 저장된 정보가 있으면 자동으로 채워줌 — 매번 화면을 보여주되 다음만 누르면 됨
+    // 저장된 정보가 있으면 자동으로 채워주고 1단계(누구의 운세) 스킵 — 다음만 누르면 됨
     const saved = localStorage.getItem("v2_saved_profile");
     const loggedInName = localStorage.getItem("v2_user_name") ?? "";
     if (saved) {
@@ -122,6 +122,7 @@ export default function V2Profile() {
             phone: p.phone ?? prev.phone,
             email: p.email ?? prev.email,
           }));
+          setStep(2); // 이미 정보 있으면 1단계(누구의 운세) 건너뜀
           return;
         }
       } catch {}
