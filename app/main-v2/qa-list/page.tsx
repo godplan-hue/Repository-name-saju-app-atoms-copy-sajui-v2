@@ -64,6 +64,9 @@ function QAListContent() {
       <div style={{ background: "white", padding: "4px 0", textAlign: "center", borderBottom: "1px solid #f3e8ff" }}>
         <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>💳 결제 시 하루 동안 무제한 이용 가능</span>
       </div>
+      <div style={{ maxWidth: 480, margin: "0 auto", overflow: "hidden" }}>
+        <img src="https://i.pinimg.com/736x/b2/04/5c/b2045cb867f2f5391ff2c1be63ed078d.jpg" alt="" style={{ width: "100%", display: "block", objectFit: "cover", maxHeight: 200 }} />
+      </div>
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "0 16px 60px" }}>
         <QASection
           name={name}

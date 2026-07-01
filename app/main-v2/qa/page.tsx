@@ -233,7 +233,9 @@ export default function QAPage() {
       {/* 헤더 */}
       <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
         <button onClick={() => router.back()} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#8b5cf6", padding: "0 4px" }}>←</button>
-        <div style={{ width: 38, height: 38, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>🐱</div>
+        <div style={{ width: 38, height: 38, borderRadius: "50%", overflow: "hidden", flexShrink: 0 }}>
+          <img src="https://i.pinimg.com/736x/b2/04/5c/b2045cb867f2f5391ff2c1be63ed078d.jpg" alt="복냥이" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        </div>
         <div style={{ flex: 1 }}>
           <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>복냥이 사주 상담</p>
           <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: remaining > 0 ? "#8b5cf6" : "#ef4444", display: "flex", alignItems: "center", gap: 5 }}>
@@ -251,7 +253,9 @@ export default function QAPage() {
             <div key={i}>
               <div style={{ display: "flex", justifyContent: msg.from === "user" ? "flex-end" : "flex-start", gap: 8, alignItems: "flex-end" }}>
                 {msg.from === "cat" && (
-                  <div style={{ width: 30, height: 30, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, flexShrink: 0, marginBottom: 2 }}>🐱</div>
+                  <div style={{ width: 30, height: 30, borderRadius: "50%", overflow: "hidden", flexShrink: 0, marginBottom: 2 }}>
+                    <img src="https://i.pinimg.com/736x/b2/04/5c/b2045cb867f2f5391ff2c1be63ed078d.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  </div>
                 )}
                 <div style={{
                   maxWidth: "75%", padding: "12px 15px",
@@ -275,7 +279,9 @@ export default function QAPage() {
         })}
         {typing && (
           <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
-            <div style={{ width: 30, height: 30, borderRadius: "50%", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, flexShrink: 0 }}>🐱</div>
+            <div style={{ width: 30, height: 30, borderRadius: "50%", overflow: "hidden", flexShrink: 0 }}>
+              <img src="https://i.pinimg.com/736x/b2/04/5c/b2045cb867f2f5391ff2c1be63ed078d.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
             <div style={{ background: "white", borderRadius: "4px 18px 18px 18px", padding: "12px 18px", boxShadow: "0 2px 10px rgba(0,0,0,0.07)", display: "flex", gap: 5, alignItems: "center" }}>
               {[0, 1, 2].map(n => (
                 <div key={n} style={{ width: 7, height: 7, borderRadius: "50%", background: "#c4b5fd", animation: `bounce 0.9s ${n * 0.15}s infinite` }} />
