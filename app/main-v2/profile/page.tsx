@@ -146,9 +146,11 @@ export default function V2Profile() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     }).catch(() => {});
-    // 특별 사주(신년운세, 연애사주 등) 클릭 후 정보 입력한 경우 → 메인으로 돌아가서 결제 모달 오픈
+    // 특별 사주 클릭 후 정보 입력한 경우 → 대운은 바로 대운 페이지로, 나머지는 메인으로 돌아가서 결제 모달 오픈
     const pendingModal = sessionStorage.getItem("v2_after_profile_modal");
-    if (pendingModal) {
+    if (pendingModal === "daewoon") {
+      router.push("/main-v2/daewoon");
+    } else if (pendingModal) {
       router.push("/main-v2");
     } else {
       router.push("/main-v2/analysis");

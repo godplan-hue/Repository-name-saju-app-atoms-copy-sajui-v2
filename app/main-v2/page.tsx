@@ -761,8 +761,7 @@ export default function MainV2() {
       {/* ── 추가 운세 상품 섹션 ── */}
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
-          if (id === "daewoon") { router.push("/main-v2/daewoon"); return; }
-          // 결제 전에 항상 프로필 입력 화면 거치게 함
+          // 결제/진입 전에 항상 프로필 입력 화면 거치게 함 (대운 포함 전체)
           sessionStorage.setItem("v2_after_profile_modal", id);
           router.push(user ? "/main-v2/profile" : "/main-v2/login");
         }} />
