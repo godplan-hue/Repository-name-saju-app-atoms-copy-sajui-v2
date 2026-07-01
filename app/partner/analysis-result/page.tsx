@@ -260,9 +260,8 @@ function PartnerAnalysisResultInner() {
       if (!res.ok) throw new Error("공유 저장 실패");
       const data = await res.json();
       const url = `${window.location.origin}/main-v2/share-kakao/${data.id}`;
-      const text = `${customerName}님의 운세 분석 🔮\n총운 ${analysisResults.scores?.total}점\n\n${businessName || "점운"}에서 보내드려요`;
-      if (navigator.share) await navigator.share({ title: "사주 분석 결과", text, url }).catch(() => {});
-      else { await navigator.clipboard.writeText(`${text}\n${url}`); alert("✅ 링크 복사됨! 고객님께 보내주세요."); }
+      if (navigator.share) await navigator.share({ title: `${customerName}님의 운세 분석`, url }).catch(() => {});
+      else { await navigator.clipboard.writeText(url); alert("✅ 링크 복사됨! 고객님께 보내주세요."); }
     } catch {
       alert("공유 링크 생성에 실패했습니다.");
     } finally {
