@@ -578,7 +578,7 @@ export default function MainV2() {
 
   const handleCourse = (c: typeof COURSES[0]) => {
     if (c.id === "free") {
-      router.push(user ? "/main-v2/profile" : "/main-v2/login");
+      if (user) { sessionStorage.setItem("v2_profile_flow", "free"); router.push("/main-v2/profile"); } else router.push("/main-v2/login");
     } else {
       sessionStorage.setItem("selectedPackage", c.packageName ?? "");
       router.push(`/payment-complete?package=${encodeURIComponent(c.packageName ?? "")}&pages=${c.pages}`);
@@ -657,7 +657,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => router.push(route === "package" ? "/main-v2/payment?highlight=wealthlove" : (user ? "/main-v2/profile" : "/main-v2/login"))} onModal={id => setShowModal(id)} />
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else if (user) { sessionStorage.setItem("v2_profile_flow", "free"); router.push("/main-v2/profile"); } else { router.push("/main-v2/login"); } }} onModal={id => setShowModal(id)} />
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
@@ -688,7 +688,7 @@ export default function MainV2() {
           health: "premium",
           compatibility: "vip", naming: "vip", full: "vip",
         };
-        if (id === "free") router.push(user ? "/main-v2/profile" : "/main-v2/login");
+        if (id === "free") { if (user) { sessionStorage.setItem("v2_profile_flow", "free"); router.push("/main-v2/profile"); } else router.push("/main-v2/login"); }
         else if (id === "sinyeon_premium") {
           if (!user) { router.push("/main-v2/login"); return; }
           setShowModal(id);

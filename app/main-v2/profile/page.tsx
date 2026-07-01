@@ -40,6 +40,8 @@ const HOURS = [
   { label: "모름", value: "unknown", time: "모르는 경우" },
 ];
 
+const HOUR_LABEL: Record<string, string> = Object.fromEntries(HOURS.map(h => [h.value, h.label]));
+
 const PRIVACY_AGREEMENT_VALID_MS = 3 * 365 * 24 * 60 * 60 * 1000;
 function isPrivacyAgreementValid(): boolean {
   if (localStorage.getItem("v2_privacy_agreed") !== "1") return false;
@@ -67,7 +69,10 @@ const STEPS = [
 export default function V2Profile() {
   const router = useRouter();
   const [step, setStep] = useState(1);
+  // savedMode: 저장된 정보 있고 무료 플로우가 아닐 때 단일 폼 표시
+  const [savedMode, setSavedMode] = useState(false);
   const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
+
   useEffect(() => {
     const hostname = window.location.hostname;
     if (!isPartnerHost(hostname)) return;
@@ -97,14 +102,43 @@ export default function V2Profile() {
   }, []);
 
   useEffect(() => {
-    // 저장된 정보가 있으면 자동으로 채워주고 1단계(누구의 운세) 스킵
+    // 무료 플로우에서 왔으면 savedMode 스킵 → 항상 5단계 마법사
+    const flow = sessionStorage.getItem("v2_profile_flow");
+    if (flow === "free") {
+      sessionStorage.removeItem("v2_profile_flow");
+      // 저장된 정보 있으면 채워주되, 마법사는 그대로 표시
+      const saved = localStorage.getItem("v2_saved_profile");
+      const loggedInName = localStorage.getItem("v2_user_name") ?? "";
+      if (saved) {
+        try {
+          const p = JSON.parse(saved);
+          const sameName = !loggedInName || p.name === loggedInName;
+          if (sameName) {
+            setForm(prev => ({
+              ...prev,
+              name: p.name ?? prev.name,
+              birthYear: p.birthYear ?? prev.birthYear,
+              birthMonth: p.birthMonth ?? prev.birthMonth,
+              birthDay: p.birthDay ?? prev.birthDay,
+              gender: p.gender ?? prev.gender,
+              birthHour: p.birthHour ?? prev.birthHour,
+              phone: p.phone ?? prev.phone,
+              email: p.email ?? prev.email,
+            }));
+          }
+        } catch {}
+      }
+      return; // savedMode 활성화 안 함 → 5단계 마법사 표시
+    }
+
+    // 유료 or 일반 플로우: 저장된 정보 있으면 단일 확인 폼
     const saved = localStorage.getItem("v2_saved_profile");
     const loggedInName = localStorage.getItem("v2_user_name") ?? "";
     if (saved) {
       try {
         const p = JSON.parse(saved);
         const sameName = !loggedInName || p.name === loggedInName;
-        if (sameName) {
+        if (sameName && p.birthYear && p.gender && p.birthHour) {
           setForm(prev => ({
             ...prev,
             name: p.name ?? prev.name,
@@ -116,7 +150,7 @@ export default function V2Profile() {
             phone: p.phone ?? prev.phone,
             email: p.email ?? prev.email,
           }));
-          setStep(2); // 이미 정보 있으면 1단계 건너뜀
+          setSavedMode(true);
           return;
         }
       } catch {}
@@ -167,6 +201,82 @@ export default function V2Profile() {
     finish();
   };
 
+  // ── 저장된 정보 단일 폼 (유료 재방문자) ──────────────────
+  if (savedMode) {
+    const bgImg = "https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg";
+    const cardInp: React.CSSProperties = {
+      width: "100%", padding: "11px 14px", borderRadius: 10,
+      border: "1.5px solid rgba(255,255,255,0.25)", fontSize: 15,
+      boxSizing: "border-box", outline: "none",
+      fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
+      color: "#fff", background: "rgba(255,255,255,0.12)",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+    };
+    return (
+      <main style={{ minHeight: "100vh", backgroundImage: `url('${bgImg}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(20,5,50,0.68)", zIndex: 1, pointerEvents: "none" }} />
+        <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.08)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
+          <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+            <span style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
+          </button>
+        </header>
+
+        <div style={{ position: "relative", zIndex: 10, maxWidth: 480, margin: "0 auto", padding: "32px 16px 60px" }}>
+          <div style={{ textAlign: "center", marginBottom: 20 }}>
+            <div style={{ fontSize: 42, lineHeight: 1, marginBottom: 8 }}>🔮</div>
+            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#ffffff", margin: "0 0 4px" }}>점운 분석</h1>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", margin: 0 }}>당신의 정보를 입력해주세요</p>
+          </div>
+
+          <div style={{ background: "rgba(60,20,100,0.72)", backdropFilter: "blur(16px)", borderRadius: 20, padding: "22px 18px 24px", boxShadow: "0 12px 40px rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.15)" }}>
+            <p style={{ fontSize: 12, fontWeight: 900, color: "#fbbf24", margin: "0 0 14px" }}>본인 정보</p>
+
+            <label style={{ fontSize: 12, fontWeight: 700, color: "#fbbf24", display: "block", marginBottom: 6 }}>이름</label>
+            <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="이름 입력" style={{ ...cardInp, marginBottom: 14 }} />
+
+            <label style={{ fontSize: 12, fontWeight: 700, color: "#fbbf24", display: "block", marginBottom: 6 }}>생년월일</label>
+            <input type="number" value={form.birthYear} onChange={e => setForm(p => ({ ...p, birthYear: e.target.value }))} placeholder="1990" min="1900" max="2024" style={{ ...cardInp, marginBottom: 8, textAlign: "center" }} />
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
+              <select value={form.birthMonth} onChange={e => setForm(p => ({ ...p, birthMonth: e.target.value }))} style={{ ...cardInp, cursor: "pointer" }}>
+                <option value="">월</option>
+                {Array.from({ length: 12 }, (_, i) => <option key={i+1} value={String(i+1).padStart(2,"0")}>{i+1}월</option>)}
+              </select>
+              <select value={form.birthDay} onChange={e => setForm(p => ({ ...p, birthDay: e.target.value }))} style={{ ...cardInp, cursor: "pointer" }}>
+                <option value="">일</option>
+                {Array.from({ length: 31 }, (_, i) => <option key={i+1} value={String(i+1).padStart(2,"0")}>{i+1}일</option>)}
+              </select>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 6, marginBottom: 8 }}>
+              {HOURS.filter(h => h.value !== "unknown").map(h => (
+                <button key={h.value} onClick={() => setForm(p => ({ ...p, birthHour: h.value }))}
+                  style={{ padding: "8px 2px", borderRadius: 10, border: form.birthHour === h.value ? "2px solid #fbbf24" : "1px solid rgba(255,255,255,0.2)", background: form.birthHour === h.value ? "rgba(251,191,36,0.2)" : "rgba(255,255,255,0.07)", color: form.birthHour === h.value ? "#fbbf24" : "rgba(255,255,255,0.8)", fontWeight: 800, fontSize: 10, cursor: "pointer", textAlign: "center", transition: "all 0.15s" }}>
+                  <div>{h.label}</div>
+                  <div style={{ fontSize: 9, opacity: 0.7, marginTop: 2 }}>{h.time}</div>
+                </button>
+              ))}
+            </div>
+            <button onClick={() => setForm(p => ({ ...p, birthHour: "unknown" }))}
+              style={{ width: "100%", padding: "10px 0", borderRadius: 10, border: form.birthHour === "unknown" ? "2px solid #fbbf24" : "1px solid rgba(255,255,255,0.2)", background: form.birthHour === "unknown" ? "rgba(251,191,36,0.2)" : "rgba(255,255,255,0.07)", color: form.birthHour === "unknown" ? "#fbbf24" : "rgba(255,255,255,0.8)", fontWeight: 800, fontSize: 13, cursor: "pointer", marginBottom: 20 }}>
+              모름
+            </button>
+
+            <button
+              onClick={() => {
+                if (!form.birthYear || !form.birthMonth || !form.birthDay) { alert("생년월일을 입력해주세요"); return; }
+                if (!form.birthHour) { alert("태어난 시를 선택해주세요"); return; }
+                finish();
+              }}
+              style={{ width: "100%", padding: "16px 0", background: "#fbbf24", color: "#1a0f2e", border: "none", borderRadius: 14, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.45)" }}>
+              분석 시작
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // ── 5단계 마법사 (새 사용자 or 무료 플로우) ──────────────
   return (
     <main style={{ minHeight: "100vh", backgroundImage: `url('${STEP_BACKGROUNDS[step]}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
 
