@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
+import QASection from "@/components/QASection";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -1044,6 +1045,16 @@ function V2ResultInner() {
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
+
+        {/* ── 사주 Q&A 360개 질문 ── */}
+        {!isPartner && profile?.name && profile?.birthYear && (
+          <QASection
+            name={profile.name}
+            birthYear={Number(profile.birthYear)}
+            unlocked={paid}
+            onBuyClick={() => router.push("/main-v2/payment?scrollTo=packages")}
+          />
+        )}
 
         {/* ── 점수 요약 카드 ── */}
         <div
