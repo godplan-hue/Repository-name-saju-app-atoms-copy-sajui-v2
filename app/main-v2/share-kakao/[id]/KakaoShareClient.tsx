@@ -236,33 +236,6 @@ export default function KakaoShareClient({ id }: { id: string }) {
               </div>
             </div>
           )}
-          {/* 사주팔자 맛보기 — 띠/오행 */}
-          {entry.birthYear && (() => {
-            const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
-            const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
-            const ohEmoji: Record<string,string> = { "목":"🌳","화":"🔥","토":"⛰️","금":"⚪","수":"💧" };
-            const ohHanja: Record<string,string> = { "목":"木","화":"火","토":"土","금":"金","수":"水" };
-            const y = Number(entry.birthYear);
-            const z = zodiacList[((y - 4) % 12 + 12) % 12];
-            const oh = ohArr[((y - 4) % 10 + 10) % 10];
-            return (
-              <div style={{ margin: "0 12px 12px", borderRadius: 16, overflow: "hidden", border: "1.5px solid rgba(236,72,153,0.12)" }}>
-                <div style={{ background: G, color: "white", padding: "10px 16px", fontSize: 13, fontWeight: 900 }}>🔮 {entry.name}님의 사주팔자 맛보기</div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: "14px 16px" }}>
-                  <div style={{ background: BG, borderRadius: 12, padding: "10px 6px", textAlign: "center" }}>
-                    <div style={{ fontSize: 18, marginBottom: 3 }}>🐉</div>
-                    <div style={{ fontSize: 9, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div>
-                    <div style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div>
-                  </div>
-                  <div style={{ background: BG, borderRadius: 12, padding: "10px 6px", textAlign: "center" }}>
-                    <div style={{ fontSize: 18, marginBottom: 3 }}>{ohEmoji[oh]}</div>
-                    <div style={{ fontSize: 9, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div>
-                    <div style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{oh}({ohHanja[oh]})</div>
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
         </div>
 
         {/* 분야별 점수 막대 */}
@@ -281,6 +254,34 @@ export default function KakaoShareClient({ id }: { id: string }) {
             ))}
           </div>
         )}
+
+        {/* 사주팔자 맛보기 — 띠/오행 (점수 바 다음에 표시) */}
+        {entry.birthYear && (() => {
+          const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
+          const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
+          const ohEmoji: Record<string,string> = { "목":"🌳","화":"🔥","토":"⛰️","금":"⚪","수":"💧" };
+          const ohHanja: Record<string,string> = { "목":"木","화":"火","토":"土","금":"金","수":"水" };
+          const y = Number(entry.birthYear);
+          const z = zodiacList[((y - 4) % 12 + 12) % 12];
+          const oh = ohArr[((y - 4) % 10 + 10) % 10];
+          return (
+            <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}>
+              <div style={{ background: G, color: "white", padding: "10px 16px", fontSize: 13, fontWeight: 900 }}>🔮 {entry.name}님의 사주팔자 맛보기</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: "14px 16px" }}>
+                <div style={{ background: BG, borderRadius: 12, padding: "10px 6px", textAlign: "center" }}>
+                  <div style={{ fontSize: 18, marginBottom: 3 }}>🐉</div>
+                  <div style={{ fontSize: 9, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>띠</div>
+                  <div style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{z}띠</div>
+                </div>
+                <div style={{ background: BG, borderRadius: 12, padding: "10px 6px", textAlign: "center" }}>
+                  <div style={{ fontSize: 18, marginBottom: 3 }}>{ohEmoji[oh]}</div>
+                  <div style={{ fontSize: 9, color: "#9ca3af", fontWeight: 600, marginBottom: 2 }}>오행</div>
+                  <div style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{oh}({ohHanja[oh]})</div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* 카테고리별 카드 */}
         {entry.categories.map((cat, i) => {
