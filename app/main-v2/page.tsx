@@ -275,26 +275,26 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
 }
 
 const EXTRA_ITEMS = [
-  { id: "sinyeon",    label: "신년운세",   sub: "올해 내 사주 완전분석", emoji: "🎍", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/1200x/a6/30/a7/a630a728391bc4784a814211184b42bb.jpg", accent: "#16a34a" },
+  { id: "sinyeon",    label: "신년운세",   sub: "올해 내 사주 완전분석", emoji: "🎍", price: "₩990",   priceNum: 990,  premium: false, img: "https://i.pinimg.com/1200x/a6/30/a7/a630a728391bc4784a814211184b42bb.jpg", accent: "#16a34a" },
   { id: "daewoon",   label: "대운(大運)", sub: "10년 단위 운명 흐름",     emoji: "🌌", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", accent: "#7c3aed" },
-  { id: "love_detail",      label: "연애사주",         sub: "나의 연애 DNA",           emoji: "💗", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", accent: "#be185d" },
+  { id: "love_detail",      label: "연애사주",         sub: "나의 연애 DNA",           emoji: "💗", price: "₩990",   priceNum: 990,  premium: false, img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", accent: "#be185d" },
   { id: "reunion",          label: "재회운",           sub: "그 사람 다시 만날까",     emoji: "💔", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg", accent: "#e11d48" },
-  { id: "findmatch",        label: "내 사람 찾기",     sub: "나에게 맞는 사람",        emoji: "🔍", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg", accent: "#9333ea" },
-  { id: "marriage_detail",  label: "결혼사주",         sub: "배우자 복·결혼 타이밍",   emoji: "💍", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg", accent: "#ea580c" },
-  { id: "divorce",          label: "이혼운세",         sub: "관계의 끝·새 출발",       emoji: "🌧", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg", accent: "#64748b" },
+  { id: "findmatch",        label: "내 사람 찾기",     sub: "나에게 맞는 사람",        emoji: "🔍", price: "₩990",   priceNum: 990,  premium: false, img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg", accent: "#9333ea" },
+  { id: "marriage_detail",  label: "결혼사주",         sub: "배우자 복·결혼 타이밍",   emoji: "💍", price: "₩990",   priceNum: 990,  premium: false, img: "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg", accent: "#ea580c" },
+  { id: "divorce",          label: "이혼운세",         sub: "관계의 끝·새 출발",       emoji: "🌧", price: "₩990",   priceNum: 990,  premium: false, img: "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg", accent: "#64748b" },
   { id: "taegil",           label: "택일(擇日)",       sub: "내 사주에 맞는 좋은 날",  emoji: "📅", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/1200x/b7/c3/ca/b7c3ca787665a1ec29ea1d2643ddc55a.jpg", accent: "#0284c7" },
   { id: "pet_compat",       label: "반려동물 궁합",    sub: "나와 우리 아이 궁합",     emoji: "🐾", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/736x/4f/02/13/4f0213abf6635336a4b3719554766624.jpg", accent: "#f97316" },
 ];
 
 const EXTRA_MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; priceNum: number; features: string[] }> = {
   taegil:          { emoji: "📅", title: "택일(擇日)", desc: "결혼·이사·개업·계약 — 내 사주에 맞는 좋은 날 찾기", price: "₩2,900", priceNum: 2900, features: ["💒 결혼·예식 길일", "🏠 이사·입주 길일", "🏢 개업·창업 길일", "📝 계약·서류 길일", "📅 피해야 할 날짜"] },
-  sinyeon:         { emoji: "🎍", title: "신년운세", desc: "올해 기운이 내 사주에 미치는 영향 전체 분석", price: "₩2,900", priceNum: 2900, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강 포인트", "🧭 올해 핵심 조언"] },
+  sinyeon:         { emoji: "🎍", title: "신년운세", desc: "올해 기운이 내 사주에 미치는 영향 전체 분석", price: "₩990", priceNum: 990, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강 포인트", "🧭 올해 핵심 조언"] },
   sinyeon_premium: { emoji: "⭐", title: "프리미엄 신년운세", desc: "신년 6개 섹션 + 1월~12월 월별 흐름까지 완전판", price: "₩4,900", priceNum: 4900, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강", "📅 1~12월 월별 흐름"] },
-  love_detail:     { emoji: "💗", title: "연애사주", desc: "나의 연애 DNA — 스타일·강점·패턴·지금 흐름까지", price: "₩2,900", priceNum: 2900, features: ["💗 나의 연애 스타일", "✨ 연애할 때 강한 점", "⚠️ 반복되는 패턴", "🌊 지금 연애 흐름", "👑 나에게 맞는 이상형"] },
+  love_detail:     { emoji: "💗", title: "연애사주", desc: "나의 연애 DNA — 스타일·강점·패턴·지금 흐름까지", price: "₩990", priceNum: 990, features: ["💗 나의 연애 스타일", "✨ 연애할 때 강한 점", "⚠️ 반복되는 패턴", "🌊 지금 연애 흐름", "👑 나에게 맞는 이상형"] },
   reunion:         { emoji: "💔", title: "재회운", desc: "그 사람과 다시 이어질 수 있는지 사주로 풀어드립니다", price: "₩2,900", priceNum: 2900, features: ["💔 이별 후 감정 흐름", "🔮 재회 가능성", "⏰ 재회 타이밍", "⚠️ 재회 시 주의점", "🌱 새로운 방향"] },
-  findmatch:       { emoji: "🔍", title: "내 사람 찾기", desc: "나와 진짜 맞는 사람의 특성과 만남의 흐름", price: "₩2,900", priceNum: 2900, features: ["✨ 나와 맞는 사람 특성", "⏰ 인연 오는 시기", "📍 인연 오는 방식", "💗 관계 발전 패턴", "🌱 놓치지 않으려면"] },
-  marriage_detail: { emoji: "💍", title: "결혼사주", desc: "배우자 복·만나는 시기·결혼 후 흐름 완전 분석", price: "₩2,900", priceNum: 2900, features: ["💑 타고난 배우자 스타일", "📍 만나는 시기·방식", "👤 배우자 특성", "🏠 결혼 후 흐름", "⚠️ 결혼에서 조심할 점"] },
-  divorce:         { emoji: "🌧", title: "이혼운세", desc: "현재 관계 에너지·분리 흐름·새 출발 타이밍", price: "₩2,900", priceNum: 2900, features: ["🌊 지금 관계 에너지", "📋 분리 과정 흐름", "💰 재산·현실 측면", "🌅 이후 새 출발", "💪 앞으로를 위한 조언"] },
+  findmatch:       { emoji: "🔍", title: "내 사람 찾기", desc: "나와 진짜 맞는 사람의 특성과 만남의 흐름", price: "₩990", priceNum: 990, features: ["✨ 나와 맞는 사람 특성", "⏰ 인연 오는 시기", "📍 인연 오는 방식", "💗 관계 발전 패턴", "🌱 놓치지 않으려면"] },
+  marriage_detail: { emoji: "💍", title: "결혼사주", desc: "배우자 복·만나는 시기·결혼 후 흐름 완전 분석", price: "₩990", priceNum: 990, features: ["💑 타고난 배우자 스타일", "📍 만나는 시기·방식", "👤 배우자 특성", "🏠 결혼 후 흐름", "⚠️ 결혼에서 조심할 점"] },
+  divorce:         { emoji: "🌧", title: "이혼운세", desc: "현재 관계 에너지·분리 흐름·새 출발 타이밍", price: "₩990", priceNum: 990, features: ["🌊 지금 관계 에너지", "📋 분리 과정 흐름", "💰 재산·현실 측면", "🌅 이후 새 출발", "💪 앞으로를 위한 조언"] },
   pet_compat:      { emoji: "🐾", title: "반려동물 궁합", desc: "내 사주와 우리 아이의 기운 — 궁합과 함께하는 법", price: "₩2,900", priceNum: 2900, features: ["🐾 나와 반려동물의 기운 궁합", "💗 교감하는 방법", "🌟 반려동물이 주는 에너지", "⚠️ 함께할 때 조심할 점", "🌱 더 깊은 유대를 위해"] },
 };
 
@@ -303,7 +303,7 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
     <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
         <div style={{ flex: 1, height: 1, background: "rgba(124,58,237,0.2)" }} />
-        <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#7c3aed,#4c1d95)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(124,58,237,0.4)" }}>✨ 더 많은 운세 · ₩2,900부터</span>
+        <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#7c3aed,#4c1d95)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(124,58,237,0.4)" }}>✨ 더 많은 운세 · ₩990부터</span>
         <div style={{ flex: 1, height: 1, background: "rgba(124,58,237,0.2)" }} />
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
@@ -311,9 +311,7 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
           <div key={item.id} onClick={() => onPick(item.id)} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 12px ${item.accent}28` }}>
             <img src={item.img} alt={item.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 75%)" }} />
-            {item.premium && (
-              <span style={{ position: "absolute", top: 5, right: 5, background: "#7c3aed", color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 6px", borderRadius: 20 }}>₩5,900</span>
-            )}
+            <span style={{ position: "absolute", top: 5, left: 5, fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "rgba(255,255,255,0.18)", color: "rgba(255,255,255,0.9)", border: "1px solid rgba(255,255,255,0.35)" }) }}>{item.price}</span>
             <div style={{ position: "absolute", bottom: 6, left: 0, right: 0, textAlign: "center", padding: "0 4px" }}>
               <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)", lineHeight: 1.25, whiteSpace: "nowrap", overflow: "hidden" }}>{item.label}</div>
               <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.72)", textShadow: "0 1px 4px rgba(0,0,0,0.9)", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden" }}>{item.sub}</div>
