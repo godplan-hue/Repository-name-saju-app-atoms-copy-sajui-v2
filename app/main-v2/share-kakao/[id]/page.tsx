@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     const description = isPartner
       ? `총운 ${entry.scores?.total ?? "?"}점! AI 사주 분석 결과`
       : `총운 ${entry.scores?.total ?? "?"}점! 나도 무료로 사주 보기 👉 jeomun.com`;
-    const image = "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg";
+    const image = "https://jeomun.com/saju-cat.png";
     return {
       title,
       description,
