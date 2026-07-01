@@ -858,12 +858,12 @@ export default function MainV2() {
       {/* ── 운세 바로결제 모달 (통합) ── */}
       {(() => {
         const MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; features?: string[]; catKey?: string; catKeys?: string[]; priceNum?: number; preselect?: string }> = {
-          wealth:        { emoji: "💰", title: "재물운",              desc: "나의 돈 흐름 · 재물이 들어오는 시기",     price: "₩990",    catKey: "💰 재물운", priceNum: 990 },
-          love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩990",    catKey: "💕 연애운", priceNum: 990 },
+          wealth:        { emoji: "💰", title: "재물운",              desc: "나의 돈 흐름 · 재물이 들어오는 시기",     price: "₩3,900",  catKey: "💰 재물운", priceNum: 3900 },
+          love:          { emoji: "💕", title: "연애운",              desc: "사랑과 인연 · 연애 타이밍과 궁합",       price: "₩3,900",  catKey: "💕 연애운", priceNum: 3900 },
           yearly:        { emoji: "🎍", title: "기본 분석",             desc: "재물운 + 연애운 심층 분석",               price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic", priceNum: 9900 },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
-          naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "원하는 운세 골라 담기 · 개당 ₩990",     price: "₩990/개",  features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"] },
+          naming:        { emoji: "🌟", title: "5개 운세 묶음",       desc: "원하는 운세 골라 담기 · 개당 ₩3,900",   price: "₩3,900/개", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"] },
           full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
         // 추가 상품 모달 처리
@@ -927,7 +927,7 @@ export default function MainV2() {
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
                   <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{cfg.desc}</div>
                 </div>
-                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{showModal === "naming" ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 990).toLocaleString()}` : "₩990/개") : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
+                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{showModal === "naming" ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 3900).toLocaleString()}` : "₩3,900/개") : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
               </div>
               {cfg.features && (
                 <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
@@ -951,13 +951,13 @@ export default function MainV2() {
                     if (!isPartner || !cfg.preselect) return cfg.priceNum ?? 990;
                     const customMap: Record<string, string | undefined> = { basic: brand?.customPriceBasic, standard: brand?.customPriceStandard, premium: brand?.customPricePremium, vip: brand?.customPriceVip };
                     const raw = customMap[cfg.preselect];
-                    return parseInt((raw || "").replace(/[^0-9]/g, "")) || defaultPrices[cfg.preselect] || (cfg.priceNum ?? 990);
+                    return parseInt((raw || "").replace(/[^0-9]/g, "")) || defaultPrices[cfg.preselect] || (cfg.priceNum ?? 3900);
                   })();
                   if (showModal === "naming") {
                     if (modalSelectedCats.length === 0) return;
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
                     const namingLabel = modalSelectedCats.length === 1 ? modalSelectedCats[0].split(" ").slice(1).join(" ") : `${modalSelectedCats.length}개 운세 묶음`;
-                    router.push(`/payment-complete?package=${encodeURIComponent(namingLabel)}&pages=${modalSelectedCats.length * 30}&paid=${modalSelectedCats.length * 990}`);
+                    router.push(`/payment-complete?package=${encodeURIComponent(namingLabel)}&pages=${modalSelectedCats.length * 30}&paid=${modalSelectedCats.length * 3900}`);
                   } else if (cfg.catKeys) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
                     router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`);
