@@ -570,6 +570,12 @@ export default function MainV2() {
         if (p?.name && p?.birthYear) setSavedProfile({ name: p.name, birthYear: Number(p.birthYear) });
       }
     } catch {}
+    // 프로필 입력 후 돌아왔을 때 대기 중이던 특별 사주 모달 자동 오픈
+    const pendingModal = sessionStorage.getItem("v2_after_profile_modal");
+    if (pendingModal) {
+      sessionStorage.removeItem("v2_after_profile_modal");
+      setShowModal(pendingModal);
+    }
   }, []);
 
   const handleCourse = (c: typeof COURSES[0]) => {
@@ -756,7 +762,9 @@ export default function MainV2() {
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
           if (id === "daewoon") { router.push("/main-v2/daewoon"); return; }
-          setShowModal(id);
+          // 결제 전에 항상 프로필 입력 화면 거치게 함
+          sessionStorage.setItem("v2_after_profile_modal", id);
+          router.push(user ? "/main-v2/profile" : "/main-v2/login");
         }} />
       )}
 
