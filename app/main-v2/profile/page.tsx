@@ -69,8 +69,8 @@ const STEPS = [
 export default function V2Profile() {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  // savedMode: 저장된 정보 있고 무료 플로우가 아닐 때 단일 폼 표시
   const [savedMode, setSavedMode] = useState(false);
+  const [isFreeFlow, setIsFreeFlow] = useState(false);
   const [brand, setBrand] = useState<{ businessName: string; logoUrl: string } | null>(null);
 
   useEffect(() => {
@@ -106,6 +106,7 @@ export default function V2Profile() {
     const flow = sessionStorage.getItem("v2_profile_flow");
     if (flow === "free") {
       sessionStorage.removeItem("v2_profile_flow");
+      setIsFreeFlow(true);
       // 저장된 정보 있으면 채워주되, 마법사는 그대로 표시
       const saved = localStorage.getItem("v2_saved_profile");
       const loggedInName = localStorage.getItem("v2_user_name") ?? "";
@@ -174,6 +175,14 @@ export default function V2Profile() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     }).catch(() => {});
+    // 무료 플로우: 이전 결제 잔여 플래그 전부 제거 후 analysis로 강제 이동
+    if (isFreeFlow) {
+      sessionStorage.removeItem("v2_after_payment_goto");
+      sessionStorage.removeItem("specialPaid");
+      sessionStorage.removeItem("specialType");
+      router.push("/main-v2/analysis");
+      return;
+    }
     const pendingModal = sessionStorage.getItem("v2_after_profile_modal");
     const afterPaymentGoto = sessionStorage.getItem("v2_after_payment_goto");
     if (pendingModal === "daewoon") {
@@ -205,12 +214,12 @@ export default function V2Profile() {
   if (savedMode) {
     const bgImg = "https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg";
     const cardInp: React.CSSProperties = {
-      width: "100%", padding: "11px 14px", borderRadius: 10,
-      border: "1.5px solid rgba(255,255,255,0.25)", fontSize: 15,
+      width: "100%", padding: "13px 14px", borderRadius: 12,
+      border: "1.5px solid rgba(251,191,36,0.4)", fontSize: 15,
       boxSizing: "border-box", outline: "none",
       fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
-      color: "#fff", background: "rgba(255,255,255,0.12)",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+      color: "#1a1a2e", background: "rgba(255,255,255,0.85)",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
     };
     return (
       <main style={{ minHeight: "100vh", backgroundImage: `url('${bgImg}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
@@ -250,14 +259,14 @@ export default function V2Profile() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 6, marginBottom: 8 }}>
               {HOURS.filter(h => h.value !== "unknown").map(h => (
                 <button key={h.value} onClick={() => setForm(p => ({ ...p, birthHour: h.value }))}
-                  style={{ padding: "8px 2px", borderRadius: 10, border: form.birthHour === h.value ? "2px solid #fbbf24" : "1px solid rgba(255,255,255,0.2)", background: form.birthHour === h.value ? "rgba(251,191,36,0.2)" : "rgba(255,255,255,0.07)", color: form.birthHour === h.value ? "#fbbf24" : "rgba(255,255,255,0.8)", fontWeight: 800, fontSize: 10, cursor: "pointer", textAlign: "center", transition: "all 0.15s" }}>
+                  style={{ padding: "8px 2px", borderRadius: 10, border: form.birthHour === h.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.birthHour === h.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.birthHour === h.value ? "#be185d" : "#374151", fontWeight: 800, fontSize: 10, cursor: "pointer", textAlign: "center", transition: "all 0.15s" }}>
                   <div>{h.label}</div>
                   <div style={{ fontSize: 9, opacity: 0.7, marginTop: 2 }}>{h.time}</div>
                 </button>
               ))}
             </div>
             <button onClick={() => setForm(p => ({ ...p, birthHour: "unknown" }))}
-              style={{ width: "100%", padding: "10px 0", borderRadius: 10, border: form.birthHour === "unknown" ? "2px solid #fbbf24" : "1px solid rgba(255,255,255,0.2)", background: form.birthHour === "unknown" ? "rgba(251,191,36,0.2)" : "rgba(255,255,255,0.07)", color: form.birthHour === "unknown" ? "#fbbf24" : "rgba(255,255,255,0.8)", fontWeight: 800, fontSize: 13, cursor: "pointer", marginBottom: 20 }}>
+              style={{ width: "100%", padding: "10px 0", borderRadius: 10, border: form.birthHour === "unknown" ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.birthHour === "unknown" ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.birthHour === "unknown" ? "#be185d" : "#374151", fontWeight: 800, fontSize: 13, cursor: "pointer", marginBottom: 20 }}>
               모름
             </button>
 
