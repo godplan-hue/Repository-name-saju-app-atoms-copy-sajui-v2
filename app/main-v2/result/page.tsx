@@ -726,7 +726,8 @@ function V2ResultInner() {
             birthYear: shareIncludeBirth ? result.profile?.birthYear : undefined,
             // 파트너 서브도메인에서 공유할 때만 businessName을 실어 보내서,
             // KakaoShareClient에서 파트너 공유임을 감지해 버튼을 숨기게 함
-            businessName: brand?.businessName || undefined,
+            // isPartner(서브도메인 즉시 판단)를 1차로 쓰고, brand API가 성공했으면 실제 상호명 우선
+            businessName: isPartner ? (brand?.businessName || "partner") : undefined,
           }),
         });
         if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share-kakao/${data.id}`; }
