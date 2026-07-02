@@ -1,8 +1,35 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng, QACategory } from "@/lib/qa/index";
+
+const QA_SPECIAL_990 = [
+  { id: "sinyeon",         emoji: "🎍", label: "신년운세" },
+  { id: "love_detail",     emoji: "💝", label: "연애사주" },
+  { id: "findmatch",       emoji: "🔮", label: "내 사람 찾기" },
+  { id: "marriage_detail", emoji: "💍", label: "결혼사주" },
+  { id: "divorce",         emoji: "🌱", label: "이혼운세" },
+];
+const QA_SPECIAL_2900 = [
+  { id: "reunion",    emoji: "💔", label: "재회운" },
+  { id: "taegil",     emoji: "📅", label: "택일(擇日)" },
+  { id: "pet_compat", emoji: "🐾", label: "반려동물 궁합" },
+];
+const QA_OLD_SINGLES = [
+  { id: "재물운", label: "재물운" },
+  { id: "연애운", label: "연애운" },
+  { id: "건강운", label: "건강운" },
+  { id: "성공운", label: "성공운" },
+  { id: "총운",   label: "총운" },
+];
+const QA_PKGS = [
+  { id: "basic",    label: "기본 분석",  price: "₩9,900",  desc: "재물운 + 연애운" },
+  { id: "standard", label: "베이직",    price: "₩19,900", desc: "올해 + 재물 + 연애 + 월별" },
+  { id: "premium",  label: "프리미엄",  price: "₩24,900", desc: "올해 + 재물 + 연애 + 월별 + 건강" },
+  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "8개 전부 + 궁합" },
+];
 
 const FREE_COUNT = 3;
 
@@ -19,12 +46,17 @@ interface Props {
 }
 
 export default function QASection({ name, birthYear, unlocked = false, onBuyClick }: Props) {
+  const router = useRouter();
   const ohaeng: Ohaeng = getOhaeng(birthYear);
   const [activeCatId, setActiveCatId] = useState(QA_CATEGORIES[0].id);
   const [openIdx, setOpenIdx] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [todayFreeCatId, setTodayFreeCatId] = useState<string | null>(null);
+  const [showBuyModal, setShowBuyModal] = useState(false);
   const answerRef = useRef<HTMLDivElement>(null);
+  const buyModalRef = useRef<HTMLDivElement>(null);
+
+  const openPayment = () => setShowBuyModal(true);
 
   useEffect(() => {
     const saved = localStorage.getItem(`v2_qa_free_cat_${name}_${birthYear}_${todayKey()}`);
@@ -36,6 +68,22 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
       answerRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   }, [openIdx]);
+
+  useEffect(() => {
+    if (!showBuyModal) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      const panel = buyModalRef.current;
+      if (!panel) return;
+      const offset = window.innerHeight - vv.height - vv.offsetTop;
+      panel.style.bottom = `${Math.max(0, offset)}px`;
+    };
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => { vv.removeEventListener("resize", update); vv.removeEventListener("scroll", update); };
+  }, [showBuyModal]);
 
   const chooseFreeCategory = (catId: string) => {
     localStorage.setItem(`v2_qa_free_cat_${name}_${birthYear}_${todayKey()}`, catId);
@@ -153,6 +201,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
   };
 
   return (
+    <>
     <div style={{ marginTop: 32, padding: "0 4px" }}>
       <div style={{ textAlign: "center", marginBottom: 18 }}>
         <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", textShadow: "0 1px 8px rgba(255,255,255,0.9)" }}>
@@ -381,7 +430,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
                 <button
                   key={key}
                   onClick={() => {
-                    if (isLocked) { onBuyClick ? onBuyClick() : window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+                    if (isLocked) { openPayment(); return; }
                     setOpenIdx(isSelected ? null : key);
                   }}
                   style={{
@@ -425,7 +474,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           {!unlocked && (
             <div style={{ textAlign: "center", marginBottom: 4 }}>
               <button
-                onClick={() => onBuyClick ? onBuyClick() : window.scrollTo({ top: 0, behavior: "smooth" })}
+                onClick={openPayment}
                 style={{ padding: "9px 22px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 12, cursor: "pointer" }}
               >💎 구매하고 Q&amp;A 전체 열기</button>
             </div>
@@ -434,5 +483,77 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
       )}
 
     </div>
+
+    {/* 결제 바텀시트 */}
+    {showBuyModal && (
+      <>
+        <div onClick={() => setShowBuyModal(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 300 }} />
+        <div ref={buyModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", maxHeight: "88vh", overflowY: "auto", overscrollBehavior: "contain", padding: "12px 14px 20px", zIndex: 301, willChange: "transform", transform: "translateZ(0)" }}>
+          <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 12px" }} />
+          <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 2px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
+          <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 14px", textAlign: "center" }}>결제하면 Q&amp;A 전체 열람 하루 동안 가능!</p>
+
+          <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>⚡ 신규 990원</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5, marginBottom: 10 }}>
+            {QA_SPECIAL_990.map(s => (
+              <button key={s.id} onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=${s.id}&paid=990`); }}
+                style={{ padding: "9px 5px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
+                <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
+                <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
+                <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: "#ec4899" }}>₩990</p>
+              </button>
+            ))}
+          </div>
+
+          <button onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=sinyeon_premium&paid=4900`); }}
+            style={{ width: "100%", marginBottom: 10, padding: "9px 14px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ textAlign: "left" }}>
+              <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>📅 신년+월별 12달</p>
+              <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>신년운세 + 12달 월별 상세</p>
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>₩4,900</span>
+          </button>
+
+          <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>💫 특별 2,900원</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5, marginBottom: 10 }}>
+            {QA_SPECIAL_2900.map(s => (
+              <button key={s.id} onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=${s.id}&paid=2900`); }}
+                style={{ padding: "9px 5px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
+                <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
+                <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
+                <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: "#7c3aed" }}>₩2,900</p>
+              </button>
+            ))}
+          </div>
+
+          <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>✨ 심층 분석 3,900원</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, marginBottom: 10 }}>
+            {QA_OLD_SINGLES.map(s => (
+              <button key={s.id} onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?single=${s.id}`); }}
+                style={{ padding: "8px 3px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
+                <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
+                <p style={{ margin: 0, fontSize: 9, fontWeight: 700, color: "#6b7280" }}>₩3,900</p>
+              </button>
+            ))}
+          </div>
+
+          <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>📦 패키지 (더 저렴해!)</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 5, marginBottom: 10 }}>
+            {QA_PKGS.map(p => (
+              <button key={p.id} onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?preselect=${p.id}&scrollTo=packages`); }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 12px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer" }}>
+                <div style={{ textAlign: "left" }}>
+                  <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{p.label}</p>
+                  <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>{p.desc}</p>
+                </div>
+                <span style={{ fontSize: 12, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>{p.price}</span>
+              </button>
+            ))}
+          </div>
+          <button onClick={() => setShowBuyModal(false)} style={{ width: "100%", padding: 12, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>나중에 할게</button>
+        </div>
+      </>
+    )}
+    </>
   );
 }

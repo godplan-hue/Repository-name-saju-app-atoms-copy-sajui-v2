@@ -239,18 +239,74 @@ function PaymentInner() {
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(194, 65, 12, 0.2)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px" }}>
 
-        <section style={{ maxWidth: 800, margin: "0 auto 60px", textAlign: "center" }}>
-          <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>정확한 사주 원국 분석</h1>
-          <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 12, lineHeight: 1.8 }}>만세력 기반 · 음양오행 · 천간지지 · 십성 완벽 분석</p>
-          <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 12 }}>연주 · 월주 · 일주 · 시주 사주팔자 완전 해석</p>
-          <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, marginBottom: 32, lineHeight: 1.8 }}>당신의 인생을 완벽하게 읽어드립니다</p>
+        <h2 style={{ textAlign: "center", color: "#fbbf24", marginBottom: 16, fontSize: "clamp(18px, 5vw, 26px)", fontWeight: 900 }}>💎 운세 구매</h2>
 
-          <p style={{ color: "#ff1493", fontSize: 15, fontWeight: 900, marginBottom: 24, lineHeight: 1.8 }}>
-            올해 운세, 월별 운세,<br/>재물운, 연애운, 건강운,<br/>궁합분석까지
-          </p>
-        </section>
+        {/* 신규 990원 */}
+        <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
+          <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>⚡ 신규 990원</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+            {[
+              { id: "sinyeon",         emoji: "🎍", label: "신년운세",     sub: "올해 사주 완벽분석" },
+              { id: "love_detail",     emoji: "💝", label: "연애사주",     sub: "나의 연애 DNA" },
+              { id: "findmatch",       emoji: "🔮", label: "내 사람 찾기", sub: "나에게 맞는 사람" },
+              { id: "marriage_detail", emoji: "💍", label: "결혼사주",     sub: "결혼 타이밍" },
+              { id: "divorce",         emoji: "🌱", label: "이혼운세",     sub: "관계의 끝·새 출발" },
+            ].map(s => (
+              <button key={s.id}
+                onClick={async () => {
+                  const paidPrice = await finalPrice(990);
+                  router.push(`/payment-complete?special=${s.id}&paid=${paidPrice}`);
+                }}
+                style={{ padding: "12px 6px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
+              >
+                <p style={{ margin: "0 0 3px", fontSize: 22 }}>{s.emoji}</p>
+                <p style={{ margin: "0 0 2px", fontSize: 12, fontWeight: 900 }}>{s.label}</p>
+                <p style={{ margin: "0 0 4px", fontSize: 10, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{s.sub}</p>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#fbbf24" }}>₩990</p>
+              </button>
+            ))}
+            <button
+              onClick={async () => {
+                const paidPrice = await finalPrice(4900);
+                router.push(`/payment-complete?special=sinyeon_premium&paid=${paidPrice}`);
+              }}
+              style={{ gridColumn: "span 3", padding: "12px 16px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", color: "white" }}
+            >
+              <div style={{ textAlign: "left" }}>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 900 }}>📅 신년+월별 12달</p>
+                <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>신년운세 + 12달 월별 상세 분석</p>
+              </div>
+              <span style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", flexShrink: 0 }}>₩4,900</span>
+            </button>
+          </div>
+        </div>
 
-        <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 20, fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900 }}>💳 패키지 선택</h2>
+        {/* 특별 2900원 */}
+        <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
+          <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>💫 특별 2,900원</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+            {[
+              { id: "reunion",    emoji: "💔", label: "재회운",        sub: "다시 만날 수 있을까" },
+              { id: "taegil",     emoji: "📅", label: "택일(擇日)",   sub: "내 사주에 맞는 좋은 날" },
+              { id: "pet_compat", emoji: "🐾", label: "반려동물 궁합", sub: "나와 우리 아이 궁합" },
+            ].map(s => (
+              <button key={s.id}
+                onClick={async () => {
+                  const paidPrice = await finalPrice(2900);
+                  router.push(`/payment-complete?special=${s.id}&paid=${paidPrice}`);
+                }}
+                style={{ padding: "12px 6px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
+              >
+                <p style={{ margin: "0 0 3px", fontSize: 22 }}>{s.emoji}</p>
+                <p style={{ margin: "0 0 2px", fontSize: 12, fontWeight: 900 }}>{s.label}</p>
+                <p style={{ margin: "0 0 4px", fontSize: 10, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{s.sub}</p>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#c4b5fd" }}>₩2,900</p>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 16, fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 900 }}>📦 패키지 선택</h2>
 
         {/* 헤더 배너 */}
         <div style={{ maxWidth: 1200, margin: "0 auto 30px", background: "linear-gradient(135deg, rgba(20,10,40,0.6), rgba(74,26,84,0.45))", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 16, padding: "26px 24px", textAlign: "center", boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
@@ -437,29 +493,6 @@ function PaymentInner() {
         </div>
         )}
 
-        <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
-          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>【왜 {brand?.businessName || "점운"}인가?】</h2>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24 }}>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>사주 완벽분석</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3,900원부터<br/>VIP 커플팩 분석까지</p>
-            </div>
-
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3,900~29,900원</p>
-            </div>
-
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>즉시 다운로드</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3초 이내 완성</p>
-            </div>
-          </div>
-        </section>
 
         {/* 사업자 고지 — 파트너 브랜드(서브도메인)로 들어와도 실제 결제·운영 주체가
             누구인지 분명히 밝혀서, 결제사 문의나 고객 혼란을 미리 막기 위함 */}
