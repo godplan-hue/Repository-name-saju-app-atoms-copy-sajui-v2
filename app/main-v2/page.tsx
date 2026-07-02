@@ -196,7 +196,7 @@ const BANNERS = [
     img: "https://i.pinimg.com/736x/8b/bc/25/8bbc258261ea953d149de68672016367.jpg",
     badge: "연애운",
     badgeBg: "#ec4899",
-    lines: ["사랑이 찾아오는 시기", "연애운 심층 분석", "내 인연의 흐름을 확인해보세요"],
+    lines: ["사랑이 찾아오는 시기", "연애 타이밍과 인연", "내 인연의 흐름을 확인해보세요"],
     lineSizes: [20, 16, 15],
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(239,68,68,0.45) 100%)",
     fit: "contain" as const,
