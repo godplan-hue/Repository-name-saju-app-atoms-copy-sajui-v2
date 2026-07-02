@@ -71,6 +71,7 @@ export default function KakaoShareClient({ id }: { id: string }) {
   const [entry, setEntry] = useState<SharedEntry | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
@@ -141,7 +142,7 @@ export default function KakaoShareClient({ id }: { id: string }) {
 
   const toggleReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.");
+      setTipModal({ text: "카카오톡 등 앱 안에서는\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n읽기를 누르면 읽어주기 기능이 작동합니다." });
       return;
     }
     if (speaking) {
@@ -152,8 +153,22 @@ export default function KakaoShareClient({ id }: { id: string }) {
     const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const ttsTipKey = "kakao_share_tts_tip_shown_date";
     if (isMobileDevice && localStorage.getItem(ttsTipKey) !== new Date().toDateString()) {
-      alert("💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      setTipModal({
+        text: "💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n\n휴대폰 설정 → 디스플레이 → 화면 자동 꺼짐 시간을 늘리거나,\n'보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.\n\n확인을 누르면 바로 읽기 시작해요.",
+        onConfirm: () => {
+          if (readChunksRef.current.length === 0) {
+            const chunks = buildChunks();
+            if (!chunks.length) return;
+            readChunksRef.current = chunks;
+            readIdxRef.current = 0;
+          }
+          window.speechSynthesis.cancel();
+          speakFrom(readChunksRef.current, readIdxRef.current);
+          setSpeaking(true);
+        },
+      });
       localStorage.setItem(ttsTipKey, new Date().toDateString());
+      return;
     }
     if (readChunksRef.current.length === 0) {
       const chunks = buildChunks();
@@ -196,6 +211,17 @@ export default function KakaoShareClient({ id }: { id: string }) {
 
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+      {tipModal && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setTipModal(null)}>
+          <div style={{ background: "white", borderRadius: 20, padding: "28px 24px 20px", maxWidth: 340, width: "100%", boxShadow: "0 8px 40px rgba(0,0,0,0.25)" }} onClick={e => e.stopPropagation()}>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#333", margin: "0 0 16px", lineHeight: 1.6, whiteSpace: "pre-line" }}>{tipModal.text}</p>
+            <button
+              onClick={() => { const cb = tipModal.onConfirm; setTipModal(null); if (cb) cb(); }}
+              style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}
+            >확인</button>
+          </div>
+        </div>
+      )}
       <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
         <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>🐱 {entry.businessName || "점운"}</span>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
