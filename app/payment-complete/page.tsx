@@ -292,7 +292,13 @@ function PaymentCompleteInner() {
       const _tk = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,"0")}-${String(_d.getDate()).padStart(2,"0")}`;
       localStorage.setItem(`v2_qa_unlock_${p.name}_${p.birthYear}`, _tk);
 
-      router.push("/main-v2/result");
+      const specialT = sessionStorage.getItem("specialType");
+      const specialP = sessionStorage.getItem("specialPaid");
+      if (specialT && specialP === "1") {
+        router.push("/main-v2/special");
+      } else {
+        router.push("/main-v2/result");
+      }
     } catch (error) {
       console.error("분석 오류:", error);
       alert("분석 중 오류가 발생했습니다.");
