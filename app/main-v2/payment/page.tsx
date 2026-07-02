@@ -79,7 +79,7 @@ function PaymentInner() {
       return originalPrice;
     }
   };
-  const [isProcessing, setIsProcessing] = useState(false);
+
   const [analysisName, setAnalysisName] = useState("");
   const [awaitOther, setAwaitOther] = useState<{ id: string; label: string } | null>(null);
   const [otherInput, setOtherInput] = useState("");
@@ -152,25 +152,6 @@ function PaymentInner() {
     { id: "couple", icon: "👫", name: "궁합분석" }
   ];
 
-  const handlePayment = async () => {
-    setIsProcessing(true);
-
-    try {
-      sessionStorage.setItem("selectedPackage", selectedPackage);
-
-      const currentPackage = packages.find(p => p.name === selectedPackage);
-      const pages = currentPackage?.pages || 30;
-      const originalPrice = Number((currentPackage?.price ?? "0").replace(/[^0-9]/g, ""));
-      const paidPrice = await finalPrice(originalPrice);
-
-      router.push(`/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${pages}&paid=${paidPrice}`);
-    } catch (error) {
-      alert("결제 처리 중 오류가 발생했습니다.");
-      console.error(error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
 
   const currentPackage = packages.find(p => p.name === selectedPackage);
   const currentPages = currentPackage?.pages || 30;
@@ -435,13 +416,11 @@ function PaymentInner() {
         </div>
 
         <div style={{ maxWidth: 320, margin: "0 auto 40px", textAlign: "center" }}>
-          {isPartner ? (
+          {isPartner && (
             <div style={{ background: "rgba(251,191,36,0.12)", border: "1.5px solid rgba(251,191,36,0.5)", borderRadius: 12, padding: 16, marginBottom: 12 }}>
               <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 6px 0" }}>📞 {brand?.businessName || "담당자"}에게 직접 문의해주세요</p>
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: 0, lineHeight: 1.6 }}>이 가격은 안내용이며, 결제·상담은 {brand?.businessName || "담당자"}에게 직접 문의해주세요.</p>
             </div>
-          ) : (
-            <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, rgba(251,191,36,0.85), rgba(124,58,237,0.8))", backdropFilter: "blur(8px)", color: "white", border: "1px solid rgba(251,191,36,0.5)", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1, marginBottom: 12, boxShadow: "0 8px 24px rgba(251,191,36,0.25)" }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
           )}
 
           <a href="/main-v2" style={{ display: "inline-block", padding: 12, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textDecoration: "none" }}>
