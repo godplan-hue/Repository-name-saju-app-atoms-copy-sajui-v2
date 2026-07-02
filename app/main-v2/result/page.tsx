@@ -914,9 +914,8 @@ function V2ResultInner() {
 
       // "당신의 변화" 카드도 화면에 실제로 보이는 만큼만 읽음 — 무료에서 아직
       // 결제 안 한 상태면 블러 처리된 hidden2(990원 결제 시 공개)는 절대 읽지
-      // 않음(화면 렌더링과 똑같은 조건을 그대로 다시 확인해서 가져옴). 파트너
-      // 서브도메인에서는 이 섹션 자체를 화면에 안 보여주므로 읽기에서도 제외
-      if (!isPartner && profile?.name && profile?.birthYear) {
+      // 않음(화면 렌더링과 똑같은 조건을 그대로 다시 확인해서 가져옴)
+      if (profile?.name && profile?.birthYear) {
         const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
         const todayKey = new Date().toDateString();
         const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${todayKey}`;
@@ -969,7 +968,7 @@ function V2ResultInner() {
       tier === "free" ? [freeAnalysis]
       : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
       : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
-    if (!isPartner && profile?.name && profile?.birthYear) {
+    if (profile?.name && profile?.birthYear) {
       const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
       const todayKey = new Date().toDateString();
       const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${todayKey}`;
@@ -1048,7 +1047,7 @@ function V2ResultInner() {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
         {/* ── 사주 Q&A 버튼 (클릭 시 Q&A 페이지로 이동) ── */}
-        {!isPartner && profile?.name && profile?.birthYear && (
+        {profile?.name && profile?.birthYear && (
           <button
             onClick={() => {
               sessionStorage.setItem("v2_plan", paid ? "select" : "free");
@@ -1216,7 +1215,7 @@ function V2ResultInner() {
              - 유료(select/package): 무료에서 실제로 골랐던 적이 있는 사람한테만, 결제 후
                딱 한 번 전체 공개로 보여주고(보너스 성격), 그 다음부터는(같은 사람 재구매 포함)
                다시 보여주지 않음. 결제 직행(고른 적 없음)은 섹션 자체를 표시하지 않음 */}
-        {!isPartner && (tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
+        {(tier === "free" || tier === "select" || tier === "package") && profile?.name && profile?.birthYear && (() => {
           const locked = tier === "free";
           const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
           // main-v2/profile(무료)은 월/일을 "05"처럼 0패딩해서 저장하고 paid-info-input(결제
@@ -1541,7 +1540,7 @@ function V2ResultInner() {
         </button>
 
         {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 Q&A 페이지 이동) ── */}
-        {!isPartner && profile?.name && profile?.birthYear && (
+        {profile?.name && profile?.birthYear && (
           <div
             onClick={() => { router.push("/main-v2/qa-list"); }}
             style={{
@@ -1576,7 +1575,7 @@ function V2ResultInner() {
         )}
 
         {/* 복냥이 채팅 */}
-        {!isPartner && profile?.name && profile?.birthYear && (
+        {profile?.name && profile?.birthYear && (
           <QAChatWidget name={profile.name} birthYear={Number(profile.birthYear)} unlocked={paid} />
         )}
       </div>
