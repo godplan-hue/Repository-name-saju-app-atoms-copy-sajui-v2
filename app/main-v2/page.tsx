@@ -253,7 +253,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                   <img src={(cat as any).img} alt={cat.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 70%)" }} />
                   {(cat as any).price && (
-                    <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "inline-block" }}>
+                    <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
                       {isPartner && (cat.id === "wealth" || cat.id === "love") ? "9,900원~" : (cat as any).price}
                     </span>
                   )}
@@ -311,7 +311,7 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
           <div key={item.id} onClick={() => onPick(item.id)} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 12px ${item.accent}28` }}>
             <img src={item.img} alt={item.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 75%)" }} />
-            <span style={{ position: "absolute", top: 5, left: 5, fontSize: item.priceNum === 990 ? 9 : 8, fontWeight: 900, padding: item.priceNum === 990 ? "2px 7px" : "2px 5px", borderRadius: 20, ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "#15803d", color: "#fff" }) }}>{item.price}</span>
+            <span style={{ position: "absolute", top: 5, left: 5, fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, minWidth: 52, textAlign: "center", display: "inline-block", ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "#15803d", color: "#fff" }) }}>{item.price}</span>
             <div style={{ position: "absolute", bottom: 6, left: 0, right: 0, textAlign: "center", padding: "0 4px" }}>
               <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)", lineHeight: 1.25, whiteSpace: "nowrap", overflow: "hidden" }}>{item.label}</div>
               <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.72)", textShadow: "0 1px 4px rgba(0,0,0,0.9)", marginTop: 2, whiteSpace: item.sub.includes('\n') ? "pre-line" : "nowrap", overflow: "hidden" }}>{item.sub}</div>
