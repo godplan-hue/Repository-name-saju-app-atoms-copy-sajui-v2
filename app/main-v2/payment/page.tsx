@@ -428,15 +428,12 @@ function PaymentInner() {
           <h3 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 20, letterSpacing: "-0.3px" }}>✨ 포함된 운세</h3>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 16 }}>
-            {fortuneItems.map(item => {
-              const on = selectedFeatures.includes(item.id);
-              return (
-                <div key={item.id} style={{ background: on ? "linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25))" : "rgba(255,255,255,0.05)", border: on ? "1.5px solid #fbbf24" : "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "8px 4px", textAlign: "center", boxShadow: on ? "0 4px 14px rgba(251,191,36,0.18)" : "none", transition: "all 0.15s" }}>
-                  <div style={{ fontSize: 18, marginBottom: 4 }}>{item.icon}</div>
-                  <p style={{ color: on ? "#fbbf24" : "rgba(255,255,255,0.7)", fontSize: 9, fontWeight: 900, margin: 0, wordBreak: "keep-all", lineHeight: 1.2 }}>{item.name}</p>
-                </div>
-              );
-            })}
+            {fortuneItems.map(item => (
+              <div key={item.id} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "8px 4px", textAlign: "center" }}>
+                <div style={{ fontSize: 18, marginBottom: 4 }}>{item.icon}</div>
+                <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 9, fontWeight: 900, margin: 0, wordBreak: "keep-all", lineHeight: 1.2 }}>{item.name}</p>
+              </div>
+            ))}
           </div>
         </div>
 
