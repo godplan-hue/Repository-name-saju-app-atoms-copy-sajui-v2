@@ -161,7 +161,7 @@ const BANNERS = [
     img: "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg",
     badge: "🐱 점운",
     badgeBg: G,
-    lines: ["점운에 오신 걸 환영합니다", "특별이벤트", "사주 990원"],
+    lines: ["점운에 오신 걸 환영합니다", "특별이벤트", "운세 ₩3,900"],
     lineSizes: [17, 20, 24],
     lineColors: ["#fff700", "#ffffff", "#ff3b3b"],
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(139,92,246,0.55) 100%)",
@@ -657,7 +657,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else if (user) { sessionStorage.setItem("v2_profile_flow", "free"); router.push("/main-v2/profile"); } else { router.push("/main-v2/login"); } }} onModal={id => setShowModal(id)} />
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else if (user) { sessionStorage.setItem("v2_profile_flow", "free"); router.push("/main-v2/profile"); } else { router.push("/main-v2/login"); } }} onModal={id => { if (id === "naming") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
