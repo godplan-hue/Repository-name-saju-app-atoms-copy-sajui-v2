@@ -56,11 +56,12 @@ function findAnswer(question: string, ohaeng: Ohaeng, name: string, forceCatId?:
 }
 
 const SPECIAL_990 = [
-  { id: "sinyeon",         emoji: "🎍", label: "신년운세",     price: "₩990" },
-  { id: "love_detail",     emoji: "💝", label: "연애사주",     price: "₩990" },
-  { id: "findmatch",       emoji: "🔮", label: "내 사람 찾기", price: "₩990" },
-  { id: "marriage_detail", emoji: "💍", label: "결혼사주",     price: "₩990" },
-  { id: "divorce",         emoji: "🌱", label: "이혼운세",     price: "₩990" },
+  { id: "sinyeon",         emoji: "🎍", label: "신년운세",      paid: 990,  red: false },
+  { id: "love_detail",     emoji: "💝", label: "연애사주",      paid: 990,  red: false },
+  { id: "findmatch",       emoji: "🔮", label: "내 사람 찾기",  paid: 990,  red: false },
+  { id: "marriage_detail", emoji: "💍", label: "결혼사주",      paid: 990,  red: false },
+  { id: "divorce",         emoji: "🌱", label: "이혼운세",      paid: 990,  red: false },
+  { id: "sinyeon_premium", emoji: "📅", label: "신년+월별12달", paid: 4900, red: true  },
 ];
 const SPECIAL_2900 = [
   { id: "daeun",      emoji: "🌌", label: "대운(大運)",   price: "₩2,900", daeun: true },
@@ -79,7 +80,7 @@ const PKGS = [
   { id: "basic",    label: "기본 분析",  price: "₩9,900",  paid: 9900,  pages: 30,  desc: "재물운 + 연애운" },
   { id: "standard", label: "베이직",    price: "₩19,900", paid: 19900, pages: 75,  desc: "올해 + 재물 + 연애 + 월별" },
   { id: "premium",  label: "프리미엄",  price: "₩24,900", paid: 24900, pages: 100, desc: "올해 + 재물 + 연애 + 월별 + 건강" },
-  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", paid: 29900, pages: 150, desc: "8개 전부 + 궁합" },
+  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", paid: 29900, pages: 150, desc: "본인 분析(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)" },
 ];
 
 const CHIP_COLORS = [
@@ -350,32 +351,20 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
             <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 2px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
             <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 14px", textAlign: "center" }}>결제하면 복냥이 무제한 + Q&amp;A 전체 열람 하루 동안 가능!</p>
 
-            {/* 신규 990원 */}
+            {/* 신규 990원 — 신년+월별 12달(4900) 포함 6개, 빨간 카드 */}
             <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>⚡ 신규 990원</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5, marginBottom: 10 }}>
               {SPECIAL_990.map(s => (
                 <button key={s.id}
-                  onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=${s.id}&paid=990`); }}
-                  style={{ padding: "9px 5px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}
+                  onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=${s.id}&paid=${s.paid}`); }}
+                  style={{ padding: "9px 5px", background: s.red ? "rgba(40,5,5,0.9)" : "#fdf4ff", border: `1.5px solid ${s.red ? "rgba(239,68,68,0.8)" : "#e9d5ff"}`, borderRadius: 10, cursor: "pointer", textAlign: "center" }}
                 >
                   <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
-                  <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
-                  <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: "#ec4899" }}>{s.price}</p>
+                  <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: s.red ? "#ffffff" : "#1a1a2e" }}>{s.label}</p>
+                  <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: s.red ? "#ef4444" : "#ec4899" }}>₩{s.paid.toLocaleString()}</p>
                 </button>
               ))}
             </div>
-
-            {/* 신년+월별 4900원 */}
-            <button
-              onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=sinyeon_premium&paid=4900`); }}
-              style={{ width: "100%", marginBottom: 10, padding: "9px 14px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
-            >
-              <div style={{ textAlign: "left" }}>
-                <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>📅 신년+월별 12달</p>
-                <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>신년운세 + 12달 월별 상세</p>
-              </div>
-              <span style={{ fontSize: 12, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>₩4,900</span>
-            </button>
 
             {/* 2900원 */}
             <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>💫 특별 2,900원</p>
@@ -392,13 +381,13 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
                 >
                   <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
                   <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
-                  <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: "#7c3aed" }}>{s.price}</p>
+                  <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: "#7c3aed" }}>₩2,900</p>
                 </button>
               ))}
             </div>
 
             {/* 심층 분석 3900원 */}
-            <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>✨ 심층 분석 3,900원</p>
+            <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>✨ 심층 분析 3,900원</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, marginBottom: 10 }}>
               {OLD_SINGLES.map(s => (
                 <button key={s.id}
@@ -412,26 +401,29 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
                 >
                   {(s as any).hot && <span style={{ position: "absolute", top: -5, right: -3, background: "#ef4444", color: "white", fontSize: 8, fontWeight: 900, padding: "1px 4px", borderRadius: 20 }}>추천</span>}
                   <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
-                  <p style={{ margin: 0, fontSize: 9, fontWeight: 700, color: "#6b7280" }}>{s.price}</p>
+                  <p style={{ margin: 0, fontSize: 9, fontWeight: 700, color: "#6b7280" }}>₩3,900</p>
                 </button>
               ))}
             </div>
 
-            {/* 패키지 */}
+            {/* 패키지 — 어두운 4열 카드 그리드 */}
             <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>📦 패키지 (더 저렴해!)</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 5, marginBottom: 10 }}>
-              {PKGS.map(p => (
-                <button key={p.id}
-                  onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?package=${encodeURIComponent(p.label)}&pages=${p.pages}&paid=${p.paid}`); }}
-                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 12px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer" }}
-                >
-                  <div style={{ textAlign: "left" }}>
-                    <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{p.label}</p>
-                    <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>{p.desc}</p>
-                  </div>
-                  <span style={{ fontSize: 12, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>{p.price}</span>
-                </button>
-              ))}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 10 }}>
+              {PKGS.map(p => {
+                const pkgEmojis: Record<string, string> = { "기본 분析": "🐱", "베이직": "🌟", "프리미엄": "💎", "VIP 커플팩": "👑" };
+                const emoji = pkgEmojis[p.label] ?? "✨";
+                return (
+                  <button key={p.id}
+                    onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?package=${encodeURIComponent(p.label)}&pages=${p.pages}&paid=${p.paid}`); }}
+                    style={{ padding: "8px 3px", background: "rgba(20,10,40,0.85)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 10, cursor: "pointer", textAlign: "center", color: "white" }}
+                  >
+                    <p style={{ margin: "0 0 2px", fontSize: 18 }}>{emoji}</p>
+                    <p style={{ margin: "0 0 2px", fontSize: 9, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{p.label}</p>
+                    <p style={{ margin: "0 0 3px", fontSize: 7, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }} dangerouslySetInnerHTML={{ __html: p.desc }} />
+                    <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: "#c4b5fd" }}>{p.price}</p>
+                  </button>
+                );
+              })}
             </div>
             <button onClick={() => setShowBuyModal(false)} style={{ width: "100%", padding: 12, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>나중에 할게</button>
           </div>

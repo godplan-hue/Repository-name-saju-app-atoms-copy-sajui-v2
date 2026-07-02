@@ -204,7 +204,6 @@ function PaymentCompleteInner() {
     sessionStorage.setItem("selectedPackage", pkg);
     if (paid) sessionStorage.setItem("price", paid);
     sessionStorage.setItem("v2_plan", "package");
-    sessionStorage.removeItem("v2_paid_cats"); // 이전 개별 카테고리 선택 초기화
 
     // 추천인 커미션
     const refPartnerId = localStorage.getItem("v2_ref");
