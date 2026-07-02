@@ -84,6 +84,7 @@ function PaymentCompleteInner() {
   const [birthMonth, setBirthMonth] = useState("");
   const [birthDay, setBirthDay] = useState("");
   const [birthHour, setBirthHour] = useState("unknown");
+  const [gender, setGender] = useState("");
 
   // 사주 정보 폼 — 상대방 (VIP 커플팩 전용)
   const [partnerName, setPartnerName] = useState("");
@@ -119,6 +120,7 @@ function PaymentCompleteInner() {
           ? HOUR_PERIOD_TO_24H[p.birthHour]
           : "unknown"
       );
+      if (p.gender) setGender(p.gender);
     } catch {}
   }, []);
 
@@ -186,7 +188,7 @@ function PaymentCompleteInner() {
         sessionStorage.setItem("v2_after_payment_goto", "special");
       }
       setPackageName(searchParams.get("package") || `${queueArr.length}개 운세 묶음`);
-      setRedirectTo("/main-v2/profile");
+      setRedirectTo("/main-v2/special");
       setNeedsForm(true);
       setReady(true);
       return;
@@ -338,6 +340,10 @@ function PaymentCompleteInner() {
       alert("이름과 생년월일을 입력해주세요!");
       return;
     }
+    if (redirectTo && !gender) {
+      alert("성별을 선택해주세요!");
+      return;
+    }
     if (packageName === "VIP 커플팩") {
       if (!partnerName || !partnerBirthYear || !partnerBirthMonth || !partnerBirthDay) {
         alert("상대방의 정보를 입력해주세요!");
@@ -362,7 +368,9 @@ function PaymentCompleteInner() {
     if (redirectTo) {
       let prev: Record<string,string> = {};
       try { prev = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); } catch {}
-      localStorage.setItem("v2_saved_profile", JSON.stringify({ ...prev, name, birthYear, birthMonth: String(birthMonth).padStart(2,"0"), birthDay: String(birthDay).padStart(2,"0"), birthHour }));
+      const fullProfile = { ...prev, name, birthYear, birthMonth: String(birthMonth).padStart(2,"0"), birthDay: String(birthDay).padStart(2,"0"), birthHour, gender, relationship: "나" };
+      localStorage.setItem("v2_saved_profile", JSON.stringify(fullProfile));
+      sessionStorage.setItem("v2_profile", JSON.stringify(fullProfile));
       router.replace(redirectTo);
       return;
     }
@@ -455,6 +463,19 @@ function PaymentCompleteInner() {
                     </select>
                   </div>
                 </div>
+
+                {redirectTo && (
+                  <div style={{ marginBottom: 4 }}>
+                    <label style={{ display: "block", fontSize: 10, fontWeight: 700, color: "#fbbf24", marginBottom: 2 }}>성별</label>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      {["남자", "여자"].map(g => (
+                        <button key={g} onClick={() => setGender(g)} style={{ flex: 1, padding: "4px 0", border: gender === g ? "2px solid #fbbf24" : "1.5px solid #ddd", background: gender === g ? "#fffbeb" : "#fff", borderRadius: 6, fontWeight: 700, fontSize: 11, cursor: "pointer", color: gender === g ? "#b45309" : "#333" }}>
+                          {g === "남자" ? "👦 남자" : "👧 여자"}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div style={{ marginBottom: 4 }}>
                   <label style={{ display: "block", fontSize: 10, fontWeight: 700, color: "#fbbf24", marginBottom: 2 }}>태어난 시</label>
