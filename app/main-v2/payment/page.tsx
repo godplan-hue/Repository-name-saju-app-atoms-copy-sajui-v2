@@ -431,12 +431,12 @@ function PaymentInner() {
           })}
         </div>
 
-        <div style={{ maxWidth: 1000, margin: "0 auto 40px", textAlign: "center" }}>
+        <div style={{ maxWidth: 600, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 4 }}>【사주 완벽분析】</p>
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>990원~29,900원</p>
         </div>
 
-        <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 20, background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 24, borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
+        <div style={{ maxWidth: 600, margin: "0 auto", marginBottom: 20, background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 24, borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
           <h3 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 20, letterSpacing: "-0.3px" }}>✨ 포함된 운세</h3>
 
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
@@ -452,7 +452,7 @@ function PaymentInner() {
           </div>
         </div>
 
-        <div style={{ maxWidth: 500, margin: "0 auto 40px", textAlign: "center" }}>
+        <div style={{ maxWidth: 600, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900, marginBottom: 10 }}>
             선택된 패키지: <span style={{ color: "#fbbf24", fontWeight: 900 }}>{selectedPackage}</span>
           </p>
@@ -476,7 +476,7 @@ function PaymentInner() {
           </a>
         </div>
 
-        <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
+        <section style={{ maxWidth: 600, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
           <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>【왜 {brand?.businessName || "점운"}인가?】</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24 }}>
             <div style={{ textAlign: "center" }}>
