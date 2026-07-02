@@ -128,14 +128,13 @@ function PaymentCompleteInner() {
     const paidParam = searchParams.get("paid") || "";
     if (paidParam) setPaidAmount(paidParam);
 
-    // 모든 이전 세션값 초기화 — 상품 섞임 완전 방지
+    // 이전 세션값 초기화 — 상품 섞임 방지 (v2_paid_cats는 모달에서 직접 세팅하므로 제외)
     sessionStorage.removeItem("specialType");
     sessionStorage.removeItem("specialPaid");
     sessionStorage.removeItem("v2_after_payment_goto");
     sessionStorage.removeItem("v2_naming_queue");
     sessionStorage.removeItem("selectedPackage");
     sessionStorage.removeItem("v2_plan");
-    sessionStorage.removeItem("v2_paid_cats");
     sessionStorage.removeItem("yearlyPaid");
     sessionStorage.removeItem("daeunPaid");
 
