@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -83,7 +83,6 @@ function PaymentInner() {
       return originalPrice;
     }
   };
-  const [isMobile, setIsMobile] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisName, setAnalysisName] = useState("");
   const [awaitOther, setAwaitOther] = useState<{ id: string; label: string } | null>(null);
@@ -91,14 +90,8 @@ function PaymentInner() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth < 768);
-      const handleResize = () => setIsMobile(window.innerWidth < 768);
-      window.addEventListener("resize", handleResize);
-
       const name = sessionStorage.getItem("analysisName") || "분석 완료";
       setAnalysisName(name);
-
-      return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
 
@@ -372,16 +365,16 @@ function PaymentInner() {
         {/* 만세력 신뢰 문구 — 패키지 구매 직전 신뢰 형성용 */}
         <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "rgba(20,10,40,0.5)", backdropFilter: "blur(10px)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 14, padding: "18px 20px", textAlign: "center" }}>
           <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 6px" }}>🔮 정확한 사주 원국 분석</p>
-          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 700, margin: "0 0 3px", lineHeight: 1.7 }}>만세력 기반 · 음양오행 · 천간지지 · 십성 완벽 분析</p>
+          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 700, margin: "0 0 3px", lineHeight: 1.7 }}>만세력 기반 · 음양오행 · 천간지지 · 십성 완벽 분석</p>
           <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 700, margin: "0 0 3px", lineHeight: 1.7 }}>연주 · 월주 · 일주 · 시주 사주팔자 완전 해석</p>
-          <p style={{ color: "#ff69b4", fontSize: 12, fontWeight: 900, margin: 0, lineHeight: 1.7 }}>올해 운세 · 재물운 · 연애운 · 건강운 · 궁합분析까지</p>
+          <p style={{ color: "#ff69b4", fontSize: 12, fontWeight: 900, margin: 0, lineHeight: 1.7 }}>올해 운세 · 재물운 · 연애운 · 건강운 · 궁합분석까지</p>
         </div>
 
         <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 16, fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 900 }}>📦 패키지 (더 저렴해!)</h2>
 
         {/* 헤더 배너 */}
         <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "linear-gradient(135deg, rgba(20,10,40,0.6), rgba(74,26,84,0.45))", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 14, padding: "12px 20px", textAlign: "center" }}>
-          <p style={{ color: "#fbbf24", fontSize: 15, fontWeight: 900, margin: "0 0 3px" }}>🔓 전체 AI 심층 분析</p>
+          <p style={{ color: "#fbbf24", fontSize: 15, fontWeight: 900, margin: "0 0 3px" }}>🔓 전체 AI 심층 분석</p>
           <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, margin: "0 0 3px" }}>운세를 완전히 해석해드립니다</p>
           <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&amp;보관함 포함</p>
         </div>
@@ -414,7 +407,7 @@ function PaymentInner() {
                   </p>
                 )}
                 <h3 style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
-                <p style={{ color: "#f5f5f5", fontSize: 9, fontWeight: 700, margin: "0 0 6px 0", opacity: 0.85 }}>【심층 상세 분析】</p>
+                <p style={{ color: "#f5f5f5", fontSize: 9, fontWeight: 700, margin: "0 0 6px 0", opacity: 0.85 }}>【심층 상세 분석】</p>
                 {appliedDiscount && !isPartner ? (
                   <p style={{ margin: "0 0 6px 0" }}>
                     <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 700, textDecoration: "line-through", marginRight: 4 }}>{pkg.price}</span>
@@ -432,20 +425,20 @@ function PaymentInner() {
         </div>
 
         <div style={{ maxWidth: 600, margin: "0 auto 40px", textAlign: "center" }}>
-          <p style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 4 }}>【사주 완벽분析】</p>
+          <p style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 4 }}>【사주 완벽분석】</p>
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>990원~29,900원</p>
         </div>
 
         <div style={{ maxWidth: 320, margin: "0 auto", marginBottom: 20, background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 16, borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
           <h3 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 20, letterSpacing: "-0.3px" }}>✨ 포함된 운세</h3>
 
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 16 }}>
             {fortuneItems.map(item => {
               const on = selectedFeatures.includes(item.id);
               return (
-                <div key={item.id} style={{ background: on ? "linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25))" : "rgba(255,255,255,0.05)", border: on ? "1.5px solid #fbbf24" : "1px solid rgba(255,255,255,0.15)", borderRadius: 14, padding: 14, textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", boxShadow: on ? "0 4px 14px rgba(251,191,36,0.18)" : "none", transition: "all 0.15s" }}>
-                  <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
-                  <p style={{ color: on ? "#fbbf24" : "rgba(255,255,255,0.7)", fontSize: 11, fontWeight: 900, margin: 0, whiteSpace: "normal", wordBreak: "keep-all" }}>{item.name}</p>
+                <div key={item.id} style={{ background: on ? "linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25))" : "rgba(255,255,255,0.05)", border: on ? "1.5px solid #fbbf24" : "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "8px 4px", textAlign: "center", boxShadow: on ? "0 4px 14px rgba(251,191,36,0.18)" : "none", transition: "all 0.15s" }}>
+                  <div style={{ fontSize: 18, marginBottom: 4 }}>{item.icon}</div>
+                  <p style={{ color: on ? "#fbbf24" : "rgba(255,255,255,0.7)", fontSize: 9, fontWeight: 900, margin: 0, wordBreak: "keep-all", lineHeight: 1.2 }}>{item.name}</p>
                 </div>
               );
             })}
