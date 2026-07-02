@@ -579,20 +579,30 @@ function V2ResultInner() {
       const totalH = canvases.reduce((s, c) => s + c.height, 0) + (canvases.length - 1) * 16;
 
       let iosAlertShown = false;
-      const downloadCanvas = (canvas: HTMLCanvasElement, idx: number, total: number, label?: string) => {
+      const downloadCanvas = (canvas: HTMLCanvasElement, idx: number, total: number, label?: string): Promise<void> => {
         if (isIOSDevice) {
           const w = window.open(canvas.toDataURL("image/png"), "_blank");
           if (!iosAlertShown && w) {
             iosAlertShown = true;
             setTimeout(() => alert(`아이폰에서는 열린 이미지를 길게 눌러 [사진에 추가]를 선택하면 저장돼요!${total > 1 ? `\n\n이미지 ${total}개가 각각 새 탭으로 열려요. 각 탭에서 같은 방법으로 저장해주세요.` : ""}`), 800);
           }
-          return;
+          return Promise.resolve();
         }
-        const link = document.createElement("a");
-        const suffix = label ? `_${label}` : (total > 1 ? `_${idx + 1}of${total}` : "");
-        link.download = `점운_${result?.profile?.name ?? "운세"}_${new Date().toLocaleDateString("ko")}${suffix}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
+        return new Promise<void>(resolve => {
+          canvas.toBlob(blob => {
+            if (!blob) { resolve(); return; }
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            const suffix = label ? `_${label}` : (total > 1 ? `_${idx + 1}of${total}` : "");
+            link.download = `점운_${result?.profile?.name ?? "운세"}_${new Date().toLocaleDateString("ko")}${suffix}.png`;
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 60000);
+            resolve();
+          }, "image/png");
+        });
       };
 
       // 9900원 이상 패키지(카테고리 여러 개)는 합쳐서 하나의 거대한 캔버스를 만들지 않고,
@@ -602,7 +612,7 @@ function V2ResultInner() {
         const pkgCats = (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]);
         const summary = canvases[0];
         const failedLabels: string[] = [];
-        canvases.slice(1).forEach((c, i) => {
+        for (const [i, c] of canvases.slice(1).entries()) {
           const label = pkgCats[i]?.label ?? `사주${i + 1}`;
           try {
             // 요약 카드 + 해당 카테고리 카드를 위아래로 이어붙인 새 캔버스를 만들어 저장.
@@ -619,12 +629,12 @@ function V2ResultInner() {
             ctx.fillRect(0, 0, merged.width, merged.height);
             ctx.drawImage(summary, 0, 0, summary.width * scale, summary.height * scale);
             ctx.drawImage(c, 0, (summary.height + 16) * scale, c.width * scale, c.height * scale);
-            downloadCanvas(merged, i, canvases.length - 1, label);
+            await downloadCanvas(merged, i, canvases.length - 1, label);
           } catch (e) {
             console.error(`이미지 저장 실패(${label}):`, e);
             failedLabels.push(label);
           }
-        });
+        }
         if (failedLabels.length > 0) alert(`다음 항목은 이미지 저장에 실패했습니다: ${failedLabels.join(", ")}`);
         else setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "사진 앱(갤러리)" : "다운로드 폴더"}에 저장됐어요!`), 0);
         return;
@@ -642,7 +652,7 @@ function V2ResultInner() {
           ctx.drawImage(canvases[i], 0, y);
           y += canvases[i].height + 16;
         }
-        downloadCanvas(merged, 0, 1);
+        await downloadCanvas(merged, 0, 1);
       } else {
         // 내용이 길어 한 장에 다 못 담으면, 안전한 크기로 나눠서 여러 장으로 저장
         const groups: HTMLCanvasElement[][] = [];
@@ -659,7 +669,7 @@ function V2ResultInner() {
         }
         if (cur.length > 0) groups.push(cur);
 
-        groups.forEach((group, gi) => {
+        for (const [gi, group] of groups.entries()) {
           // 첫 장은 이미 브랜드 카드(🐱 점운)가 맨 위에 있으므로, 2번째 장부터는
           // 어느 카테고리든 잘리지 않고 시작하는 것과 별개로 상단에 브랜드 헤더를 직접 그려 넣음
           const needsHeader = gi > 0;
@@ -687,8 +697,8 @@ function V2ResultInner() {
             ctx.drawImage(c, 0, y);
             y += c.height + 16;
           }
-          downloadCanvas(merged, gi, groups.length);
-        });
+          await downloadCanvas(merged, gi, groups.length);
+        }
       }
       setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "사진 앱(갤러리)" : "다운로드 폴더"}에 저장됐어요!`), 0);
     } catch (e) {
