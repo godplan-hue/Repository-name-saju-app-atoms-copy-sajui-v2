@@ -164,11 +164,13 @@ export default function HistoryDetail() {
     wakeLockRef.current = null;
   };
 
+  const itemLoadedRef = useRef(false);
   useEffect(() => {
+    if (!params.id) return;
     const hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
     const found = hist.find(h => String(h.id) === decodeURIComponent(String(params.id)));
-    if (!found) { router.replace("/main-v2/history"); return; }
-    setItem(found);
+    if (found) { itemLoadedRef.current = true; setItem(found); }
+    else if (!itemLoadedRef.current) { router.replace("/main-v2/history"); }
   }, [params.id]);
 
   useEffect(() => {
