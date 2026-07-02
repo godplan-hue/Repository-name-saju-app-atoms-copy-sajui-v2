@@ -327,7 +327,7 @@ function PaymentInner() {
             <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>📦 패키지 (더 저렴해!)</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
               {[
-                { id: "basic",    emoji: "🐱", label: "기본 분析",  sub: "재물운 + 연애운",        pages: 30,  price: 9900  },
+                { id: "basic",    emoji: "🐱", label: "기본 분석",  sub: "재물운 + 연애운",        pages: 30,  price: 9900  },
                 { id: "standard", emoji: "🌟", label: "베이직",     sub: "올해+재물+연애+월별",     pages: 75,  price: 19900 },
                 { id: "premium",  emoji: "💎", label: "프리미엄",   sub: "올해+재물+연애+월별+건강", pages: 100, price: 24900 },
                 { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "이름+전체사주+궁합포함",   pages: 150, price: 29900 },
@@ -349,25 +349,8 @@ function PaymentInner() {
           </div>
         )}
 
-        {/* 만세력 신뢰 문구 — 패키지 구매 직전 신뢰 형성용 */}
-        <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "rgba(20,10,40,0.5)", backdropFilter: "blur(10px)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 14, padding: "18px 20px", textAlign: "center" }}>
-          <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 6px" }}>🔮 정확한 사주 원국 분석</p>
-          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 700, margin: "0 0 3px", lineHeight: 1.7 }}>만세력 기반 · 음양오행 · 천간지지 · 십성 완벽 분석</p>
-          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 700, margin: "0 0 3px", lineHeight: 1.7 }}>연주 · 월주 · 일주 · 시주 사주팔자 완전 해석</p>
-          <p style={{ color: "#ff69b4", fontSize: 12, fontWeight: 900, margin: 0, lineHeight: 1.7 }}>올해 운세 · 재물운 · 연애운 · 건강운 · 궁합분석까지</p>
-        </div>
-
-        <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 16, fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 900 }}>📦 패키지 (더 저렴해!)</h2>
-
-        {/* 헤더 배너 */}
-        <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "linear-gradient(135deg, rgba(20,10,40,0.6), rgba(74,26,84,0.45))", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 14, padding: "12px 20px", textAlign: "center" }}>
-          <p style={{ color: "#fbbf24", fontSize: 15, fontWeight: 900, margin: "0 0 3px" }}>🔓 전체 AI 심층 분석</p>
-          <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, margin: "0 0 3px" }}>운세를 완전히 해석해드립니다</p>
-          <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&amp;보관함 포함</p>
-        </div>
-
         {/* 할인코드(일반고객용 — 파트너 사용료와는 무관) */}
-        <div style={{ maxWidth: 480, margin: "0 auto 30px" }}>
+        <div style={{ maxWidth: 480, margin: "0 auto 16px" }}>
           <div style={{ display: "flex", gap: 8 }}>
             <input
               value={discountInput}
@@ -386,34 +369,66 @@ function PaymentInner() {
           )}
         </div>
 
+        {/* 만세력 신뢰 문구 — 패키지 구매 직전 신뢰 형성용 */}
+        <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "rgba(20,10,40,0.5)", backdropFilter: "blur(10px)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 14, padding: "18px 20px", textAlign: "center" }}>
+          <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 6px" }}>🔮 정확한 사주 원국 분석</p>
+          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 700, margin: "0 0 3px", lineHeight: 1.7 }}>만세력 기반 · 음양오행 · 천간지지 · 십성 완벽 분析</p>
+          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 700, margin: "0 0 3px", lineHeight: 1.7 }}>연주 · 월주 · 일주 · 시주 사주팔자 완전 해석</p>
+          <p style={{ color: "#ff69b4", fontSize: 12, fontWeight: 900, margin: 0, lineHeight: 1.7 }}>올해 운세 · 재물운 · 연애운 · 건강운 · 궁합분析까지</p>
+        </div>
 
-        <div id="packages-section" style={{ maxWidth: 600, margin: "0 auto 20px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
-            {packages.map(pkg => {
-              const pkgEmojis: Record<string, string> = { "기본 분析": "🐱", "베이직": "🌟", "프리미엄": "💎", "VIP 커플팩": "👑" };
-              const emoji2 = pkgEmojis[pkg.name] ?? "✨";
-              const isSelected2 = selectedPackage === pkg.name;
-              const customPriceMap2: Record<string, string | undefined> = {
-                basic: brand?.customPriceBasic, standard: brand?.customPriceStandard,
-                premium: brand?.customPricePremium, vip: brand?.customPriceVip,
-              };
-              const displayPrice2 = (isPartner && customPriceMap2[pkg.id]) ? customPriceMap2[pkg.id]! : pkg.price;
-              return (
-                <button key={pkg.id + "_large"} onClick={() => handlePackageSelect(pkg)}
-                  style={{ padding: "10px 4px", background: isSelected2 ? "rgba(251,191,36,0.18)" : "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: isSelected2 ? "2px solid #fbbf24" : "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white", transition: "all 0.15s" }}
-                >
-                  <p style={{ margin: "0 0 3px", fontSize: 20 }}>{emoji2}</p>
-                  <p style={{ margin: "0 0 2px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3, color: isSelected2 ? "#fbbf24" : "#ffffff" }}>{pkg.name}</p>
-                  <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }} dangerouslySetInnerHTML={{ __html: pkg.desc }} />
-                  {appliedDiscount && !isPartner ? (
-                    <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#90EE90" }}>₩{Math.round(Number(pkg.price.replace(/[^0-9]/g, "")) * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}</p>
-                  ) : (
-                    <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: isSelected2 ? "#fbbf24" : "#c4b5fd" }}>{displayPrice2}</p>
-                  )}
-                </button>
-              );
-            })}
-          </div>
+        <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 16, fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 900 }}>📦 패키지 (더 저렴해!)</h2>
+
+        {/* 헤더 배너 */}
+        <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "linear-gradient(135deg, rgba(20,10,40,0.6), rgba(74,26,84,0.45))", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 14, padding: "12px 20px", textAlign: "center" }}>
+          <p style={{ color: "#fbbf24", fontSize: 15, fontWeight: 900, margin: "0 0 3px" }}>🔓 전체 AI 심층 분析</p>
+          <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, margin: "0 0 3px" }}>운세를 완전히 해석해드립니다</p>
+          <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&amp;보관함 포함</p>
+        </div>
+
+
+        <div id="packages-section" style={{ maxWidth: 600, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10, marginBottom: 30 }}>
+          {packages.map(pkg => {
+            const wlBadge = pkg.id === "basic" ? { prefix: "💰 재물·연애 포함 · ", highlight: "가장 저렴" }
+              : pkg.id === "vip" ? { prefix: "👑 전부 포함 · ", highlight: "최고급" }
+              : null;
+            const isSelected2 = selectedPackage === pkg.name;
+            const cardBg2 = isSelected2
+              ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))"
+              : pkg.id === "vip" && wlBadge
+              ? "linear-gradient(135deg, rgba(84,20,105,0.55), rgba(122,38,145,0.45))"
+              : wlBadge
+              ? "linear-gradient(135deg, rgba(139,92,246,0.55), rgba(168,85,247,0.42))"
+              : "rgba(139,92,246,0.16)";
+            const customPriceMap2: Record<string, string | undefined> = {
+              basic: brand?.customPriceBasic, standard: brand?.customPriceStandard,
+              premium: brand?.customPricePremium, vip: brand?.customPriceVip,
+            };
+            const displayPrice2 = (isPartner && customPriceMap2[pkg.id]) ? customPriceMap2[pkg.id]! : pkg.price;
+            return (
+              <div key={pkg.id + "_large"} onClick={() => handlePackageSelect(pkg)} style={{ background: cardBg2, backdropFilter: "blur(10px)", border: isSelected2 ? "2px solid #fbbf24" : wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 12, padding: 12, cursor: "pointer", transition: "all 0.3s", boxShadow: isSelected2 ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
+                {wlBadge && (
+                  <p style={{ fontSize: 9, fontWeight: 900, margin: "0 0 4px 0", textShadow: "0 1px 3px rgba(0,0,0,0.5)", wordBreak: "keep-all", lineHeight: 1.4 }}>
+                    <span style={{ color: "#ff3b3b" }}>{wlBadge.prefix}</span>
+                    <span style={{ color: "#ffffff" }}>{wlBadge.highlight}</span>
+                  </p>
+                )}
+                <h3 style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
+                <p style={{ color: "#f5f5f5", fontSize: 9, fontWeight: 700, margin: "0 0 6px 0", opacity: 0.85 }}>【심층 상세 분析】</p>
+                {appliedDiscount && !isPartner ? (
+                  <p style={{ margin: "0 0 6px 0" }}>
+                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 700, textDecoration: "line-through", marginRight: 4 }}>{pkg.price}</span>
+                    <span style={{ color: "#90EE90", fontSize: 16, fontWeight: 900 }}>₩{Math.round(Number(pkg.price.replace(/[^0-9]/g, "")) * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}</span>
+                  </p>
+                ) : (
+                  <p style={{ color: "#ffffff", fontSize: 16, fontWeight: 900, margin: "0 0 6px 0" }}>{displayPrice2}</p>
+                )}
+                <p style={{ color: "#f5f5f5", fontSize: 10, fontWeight: 700, margin: "0 0 6px 0", lineHeight: 1.5, wordBreak: "keep-all" }} dangerouslySetInnerHTML={{ __html: pkg.desc }} />
+                <p style={{ color: "#fbbf24", fontSize: 9, fontWeight: 700, margin: "0 0 3px 0" }}>🎯 {pkg.count}개 운세</p>
+                <p style={{ color: "#ffffff", fontSize: 9, fontWeight: 700, margin: 0 }}>📄 {pkg.chars}</p>
+              </div>
+            );
+          })}
         </div>
 
         <div style={{ maxWidth: 1000, margin: "0 auto 40px", textAlign: "center" }}>
