@@ -29,7 +29,7 @@ const QA_PKGS = [
   { id: "basic",    label: "기본 분석",  price: "₩9,900",  desc: "재물운 + 연애운" },
   { id: "standard", label: "베이직",    price: "₩19,900", desc: "올해 + 재물 + 연애 + 월별" },
   { id: "premium",  label: "프리미엄",  price: "₩24,900", desc: "올해 + 재물 + 연애 + 월별 + 건강" },
-  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "8개 전부 + 궁합" },
+  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "이름+전체사주+궁합포함" },
 ];
 
 const FREE_COUNT = 3;
@@ -555,17 +555,20 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           </div>
 
           <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>📦 패키지 (더 저렴해!)</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 5, marginBottom: 10 }}>
-            {QA_PKGS.map(p => (
-              <button key={p.id} onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?preselect=${p.id}&scrollTo=packages`); }}
-                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 12px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer" }}>
-                <div style={{ textAlign: "left" }}>
-                  <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>{p.label}</p>
-                  <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>{p.desc}</p>
-                </div>
-                <span style={{ fontSize: 12, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>{p.price}</span>
-              </button>
-            ))}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 10 }}>
+            {QA_PKGS.map(p => {
+              const pkgEmojis: Record<string, string> = { "기본 분析": "🐱", "베이직": "🌟", "프리미엄": "💎", "VIP 커플팩": "👑" };
+              const emoji = pkgEmojis[p.label] ?? "✨";
+              return (
+                <button key={p.id} onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?preselect=${p.id}&scrollTo=packages`); }}
+                  style={{ padding: "8px 3px", background: "rgba(20,10,40,0.85)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 10, cursor: "pointer", textAlign: "center", color: "white" }}>
+                  <p style={{ margin: "0 0 2px", fontSize: 18 }}>{emoji}</p>
+                  <p style={{ margin: "0 0 2px", fontSize: 9, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{p.label}</p>
+                  <p style={{ margin: "0 0 3px", fontSize: 7, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }}>{p.desc}</p>
+                  <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: "#c4b5fd" }}>{p.price}</p>
+                </button>
+              );
+            })}
           </div>
           <button onClick={() => setShowBuyModal(false)} style={{ width: "100%", padding: 12, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>나중에 할게</button>
         </div>
