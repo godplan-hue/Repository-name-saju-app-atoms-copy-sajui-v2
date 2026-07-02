@@ -519,8 +519,11 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
               <button key={s.id} onClick={() => {
                 if ((s as any).daeun) { setShowBuyModal(false); router.push(`/main-v2/daewoon/pay`); return; }
                 if (s.id === "reunion" || s.id === "pet_compat") { setAwaitOther({ id: s.id }); return; }
+                const SPECIAL_TO_CAT: Record<string, string> = { sinyeon: "🎍 신년운세", love_detail: "💗 연애사주", findmatch: "🔍 내 사람 찾기", marriage_detail: "💍 결혼사주", divorce: "🌧 이혼운세" };
+                const catLabel = SPECIAL_TO_CAT[s.id];
                 setShowBuyModal(false);
-                router.push(`/payment-complete?special=${s.id}&paid=2900`);
+                if (catLabel) { sessionStorage.setItem("v2_paid_cats", JSON.stringify([catLabel])); router.push(`/payment-complete?naming=1&queue=${s.id}&paid=2900&package=${encodeURIComponent(s.label)}`); }
+                else { router.push(`/payment-complete?special=${s.id}&paid=2900`); }
               }}
                 style={{ padding: "9px 5px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
                 <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
