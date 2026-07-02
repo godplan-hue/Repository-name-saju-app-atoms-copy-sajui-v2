@@ -1037,7 +1037,7 @@ function V2ResultInner() {
           <button onClick={() => setShowShareModal(true)} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             📱 공유
           </button>
-          {paid && planType !== "select" && (
+          {paid && (
             <button onClick={saveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
               {saving ? "⏳..." : "🖼️ 저장"}
             </button>
@@ -1475,6 +1475,12 @@ function V2ResultInner() {
               <button onClick={() => router.push("/main-v2/history")}
                 style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
                 📥 보관함 저장
+              </button>
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <button onClick={saveImage} disabled={saving}
+                style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(245,158,11,0.3)", opacity: saving ? 0.7 : 1 }}>
+                {saving ? "⏳ 저장 중..." : "🖼️ 이미지 저장"}
               </button>
             </div>
           </>
