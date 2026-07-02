@@ -30,7 +30,7 @@ const QA_PKGS = [
   { id: "basic",    label: "기본 분석",  price: "₩9,900",  desc: "재물운 + 연애운" },
   { id: "standard", label: "베이직",    price: "₩19,900", desc: "올해 + 재물 + 연애 + 월별" },
   { id: "premium",  label: "프리미엄",  price: "₩24,900", desc: "올해 + 재물 + 연애 + 월별 + 건강" },
-  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "이름+전체사주+궁합포함 · 8개 전부" },
+  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "본인 사주 8개분석<br/>+상대방 궁합포함" },
 ];
 
 const FREE_COUNT = 3;
@@ -556,7 +556,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
                   style={{ padding: "8px 3px", background: "rgba(20,10,40,0.85)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 10, cursor: "pointer", textAlign: "center", color: "white" }}>
                   <p style={{ margin: "0 0 2px", fontSize: 18 }}>{emoji}</p>
                   <p style={{ margin: "0 0 2px", fontSize: 9, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{p.label}</p>
-                  <p style={{ margin: "0 0 3px", fontSize: 7, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }}>{p.desc}</p>
+                  <p style={{ margin: "0 0 3px", fontSize: 7, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }} dangerouslySetInnerHTML={{ __html: p.desc }} />
                   <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: "#c4b5fd" }}>{p.price}</p>
                 </button>
               );

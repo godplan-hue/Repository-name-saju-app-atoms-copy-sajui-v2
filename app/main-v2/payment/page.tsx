@@ -30,12 +30,8 @@ function PaymentInner() {
     vip:      { name: "VIP 커플팩", features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"] },
   };
   const preselectInfo = preselectId ? PRESELECT_INFO[preselectId] : undefined;
-  const [selectedPackage, setSelectedPackage] = useState(
-    highlightWealthLove ? "기본 분석" : preselectInfo ? preselectInfo.name : "기본 분석"
-  );
-  const [selectedFeatures, setSelectedFeatures] = useState(
-    highlightWealthLove ? ["wealthLuck", "loveLuck"] : preselectInfo ? preselectInfo.features : ["wealthLuck", "loveLuck"]
-  );
+  const selectedPackage = highlightWealthLove ? "기본 분석" : preselectInfo ? preselectInfo.name : "기본 분석";
+  const selectedFeatures = highlightWealthLove ? ["wealthLuck", "loveLuck"] : preselectInfo ? preselectInfo.features : ["wealthLuck", "loveLuck"];
   const [isPartner, setIsPartner] = useState(false);
   const [brand, setBrand] = useState<{ businessName: string; logoUrl: string; customPriceBasic?: string; customPriceStandard?: string; customPricePremium?: string; customPriceVip?: string } | null>(null);
   useEffect(() => {
@@ -155,11 +151,6 @@ function PaymentInner() {
     { id: "healthLuck", icon: "🌿", name: "건강운" },
     { id: "couple", icon: "👫", name: "궁합분석" }
   ];
-
-  const handlePackageSelect = (pkg: any) => {
-    setSelectedPackage(pkg.name);
-    setSelectedFeatures(pkg.features);
-  };
 
   const handlePayment = async () => {
     setIsProcessing(true);
@@ -323,7 +314,7 @@ function PaymentInner() {
                 { id: "basic",    emoji: "🐱", label: "기본 분석",  sub: "재물운 + 연애운",        pages: 30,  price: 9900  },
                 { id: "standard", emoji: "🌟", label: "베이직",     sub: "올해+재물+연애+월별",     pages: 75,  price: 19900 },
                 { id: "premium",  emoji: "💎", label: "프리미엄",   sub: "올해+재물+연애+월별+건강", pages: 100, price: 24900 },
-                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "이름+전체사주+궁합포함",   pages: 150, price: 29900 },
+                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "본인사주 8개+궁합포함",   pages: 150, price: 29900 },
               ].map(s => (
                 <button key={s.id}
                   onClick={async () => {
@@ -399,7 +390,11 @@ function PaymentInner() {
             };
             const displayPrice2 = (isPartner && customPriceMap2[pkg.id]) ? customPriceMap2[pkg.id]! : pkg.price;
             return (
-              <div key={pkg.id + "_large"} onClick={() => handlePackageSelect(pkg)} style={{ background: cardBg2, backdropFilter: "blur(10px)", border: isSelected2 ? "2px solid #fbbf24" : wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 12, padding: 12, cursor: "pointer", transition: "all 0.3s", boxShadow: isSelected2 ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
+              <div key={pkg.id + "_large"} onClick={async () => {
+                const originalPrice = Number(pkg.price.replace(/[^0-9]/g, ""));
+                const paidPrice = await finalPrice(originalPrice);
+                router.push(`/payment-complete?package=${encodeURIComponent(pkg.name)}&pages=${pkg.pages}&paid=${paidPrice}`);
+              }} style={{ background: cardBg2, backdropFilter: "blur(10px)", border: wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 12, padding: 12, cursor: "pointer", transition: "all 0.3s", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
                 {wlBadge && (
                   <p style={{ fontSize: 9, fontWeight: 900, margin: "0 0 4px 0", textShadow: "0 1px 3px rgba(0,0,0,0.5)", wordBreak: "keep-all", lineHeight: 1.4 }}>
                     <span style={{ color: "#ff3b3b" }}>{wlBadge.prefix}</span>
