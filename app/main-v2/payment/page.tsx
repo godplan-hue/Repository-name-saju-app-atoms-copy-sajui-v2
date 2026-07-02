@@ -284,14 +284,16 @@ function PaymentInner() {
         {/* 특별 2900원 */}
         <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
           <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>💫 특별 2,900원</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
             {[
+              { id: "daeun",      emoji: "🌌", label: "대운(大運)",   sub: "10년 단위 운명 흐름", daeun: true },
               { id: "reunion",    emoji: "💔", label: "재회운",        sub: "다시 만날 수 있을까" },
               { id: "taegil",     emoji: "📅", label: "택일(擇日)",   sub: "내 사주에 맞는 좋은 날" },
               { id: "pet_compat", emoji: "🐾", label: "반려동물 궁합", sub: "나와 우리 아이 궁합" },
             ].map(s => (
               <button key={s.id}
                 onClick={async () => {
+                  if ((s as any).daeun) { router.push(`/main-v2/daewoon/pay`); return; }
                   const paidPrice = await finalPrice(2900);
                   router.push(`/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}

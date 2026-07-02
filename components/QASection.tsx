@@ -13,6 +13,7 @@ const QA_SPECIAL_990 = [
   { id: "divorce",         emoji: "🌱", label: "이혼운세" },
 ];
 const QA_SPECIAL_2900 = [
+  { id: "daeun",      emoji: "🌌", label: "대운(大運)",   daeun: true },
   { id: "reunion",    emoji: "💔", label: "재회운" },
   { id: "taegil",     emoji: "📅", label: "택일(擇日)" },
   { id: "pet_compat", emoji: "🐾", label: "반려동물 궁합" },
@@ -515,9 +516,13 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           </button>
 
           <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>💫 특별 2,900원</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5, marginBottom: 10 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 10 }}>
             {QA_SPECIAL_2900.map(s => (
-              <button key={s.id} onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=${s.id}&paid=2900`); }}
+              <button key={s.id} onClick={() => {
+                setShowBuyModal(false);
+                if ((s as any).daeun) { router.push(`/main-v2/daewoon/pay`); return; }
+                router.push(`/payment-complete?special=${s.id}&paid=2900`);
+              }}
                 style={{ padding: "9px 5px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
                 <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
                 <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
