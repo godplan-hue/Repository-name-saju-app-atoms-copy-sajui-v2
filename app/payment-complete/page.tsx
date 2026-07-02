@@ -176,9 +176,13 @@ function PaymentCompleteInner() {
       return;
     }
 
-    // 묶음 naming — profile 페이지로 이동
+    // 묶음 naming — special 페이지로 이동
     const namingFlag = searchParams.get("naming");
     if (namingFlag === "1") {
+      // 이전 세션 잔류값 초기화
+      sessionStorage.removeItem("selectedPackage");
+      sessionStorage.removeItem("v2_plan");
+      sessionStorage.removeItem("v2_paid_cats");
       const queueStr = searchParams.get("queue") || "";
       const queueArr = queueStr ? queueStr.split(",").filter(Boolean) : [];
       if (queueArr.length > 0) {
@@ -197,6 +201,11 @@ function PaymentCompleteInner() {
     // 개별 special — 폼 인라인으로 보여주기
     const specialType = searchParams.get("special");
     if (specialType) {
+      // 이전 세션 잔류값 초기화
+      sessionStorage.removeItem("selectedPackage");
+      sessionStorage.removeItem("v2_plan");
+      sessionStorage.removeItem("v2_paid_cats");
+      sessionStorage.removeItem("v2_naming_queue");
       sessionStorage.setItem("specialType", specialType);
       sessionStorage.setItem("specialPaid", "1");
       sessionStorage.setItem("v2_after_payment_goto", "special");
@@ -210,6 +219,12 @@ function PaymentCompleteInner() {
     const pkg = searchParams.get("package") || "베이직";
     const pg = searchParams.get("pages") || "75";
     const paid = searchParams.get("paid") || "";
+
+    // 이전 세션 잔류값 초기화 (다른 상품 섞임 방지)
+    sessionStorage.removeItem("specialType");
+    sessionStorage.removeItem("specialPaid");
+    sessionStorage.removeItem("v2_after_payment_goto");
+    sessionStorage.removeItem("v2_naming_queue");
 
     sessionStorage.setItem("selectedPackage", pkg);
     if (paid) sessionStorage.setItem("price", paid);
