@@ -219,9 +219,9 @@ const FORTUNE_CATEGORIES = [
   { id: "free",          title: "오늘의 무료운세", sub: "무료 체험",          emoji: "🌟", img: "https://i.pinimg.com/1200x/2f/1b/4e/2f1b4e0713ac39d9090ae3a3e5862db9.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "무료",        priceBg: "#15803d" },
   { id: "sinyeon_premium", title: "프리미엄 신년운세", sub: "신년+월별 12달", emoji: "⭐", img: "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#7c3aed", price: "₩4,900", priceBg: "#7c3aed" },
   { id: "yearly",        title: "기본 분석",         sub: "재물운+연애운",       emoji: "🎍", img: "https://i.pinimg.com/1200x/24/32/ee/2432eed06907654905c7949ce4ea350d.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900",     priceBg: "#fbbf24", priceColor: "#1a1a2e" },
-  { id: "wealth",        title: "재물운",           sub: "돈이 들어오는 시기", emoji: "💰", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #fef3c7, #fde68a)", accent: "#b45309", price: "₩3,900",    priceBg: "#ff0000" },
+  { id: "dream",         title: "꿈해몽",            sub: "꿈 해석",            emoji: "🌙", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#7c3aed", price: "🌙 꿈해몽",   priceBg: "#7c3aed" },
   { id: "love",          title: "연애운",           sub: "연애 타이밍과 인연", emoji: "💕", img: "https://i.pinimg.com/736x/8b/bc/25/8bbc258261ea953d149de68672016367.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩3,900",    priceBg: "#ff0000" },
-  { id: "naming",        title: "심층 5개 운세",      sub: "1개 선택 · ₩3,900",   emoji: "💫", img: "https://i.pinimg.com/1200x/23/01/49/2301499ea90a65609becd809e3554796.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩3,900",     priceBg: "#ff0000" },
+  { id: "naming",        title: "심층 운세 5개 묶음",  sub: "심층 운세 5개 묶음",   emoji: "💫", img: "https://i.pinimg.com/1200x/23/01/49/2301499ea90a65609becd809e3554796.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩3,900",     priceBg: "#ff0000" },
   { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
   { id: "health",        title: "건강운",           sub: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d" },
   { id: "full",          title: "베이직",            sub: "올해+월별 운세", emoji: "🎯", img: "https://i.pinimg.com/1200x/5a/27/e1/5a27e1d0bf4ea71ee0dfc035f4724e5e.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "베이직",     priceBg: "#2563eb" },
@@ -763,7 +763,7 @@ export default function MainV2() {
             if (!user) { router.push("/main-v2/login"); return; }
             setShowModal(id);
           }
-          else { if (id === "naming") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }
+          else { if (id === "dream") return; if (id === "naming") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }
         }} />
       )}
 
