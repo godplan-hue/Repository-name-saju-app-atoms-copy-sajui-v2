@@ -201,7 +201,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(239,68,68,0.45) 100%)",
     fit: "contain" as const,
     route: "package" as const,
-    directUrl: "/payment-complete?naming=1&queue=love_detail&paid=990&package=%EC%97%B0%EC%95%A0%EC%82%AC%EC%A3%BC",
+    modalId: "love_detail",
   },
   {
     // 사진이 아니라 글자+도형으로 직접 그리는 배너 — 990원 가격을 큰 숫자
@@ -290,7 +290,7 @@ const EXTRA_MCFG: Record<string, { emoji: string; title: string; desc: string; p
   taegil:          { emoji: "📅", title: "택일(擇日)", desc: "결혼·이사·개업·계약 — 내 사주에 맞는 좋은 날 찾기", price: "₩2,900", priceNum: 2900, features: ["💒 결혼·예식 길일", "🏠 이사·입주 길일", "🏢 개업·창업 길일", "📝 계약·서류 길일", "📅 피해야 할 날짜"] },
   sinyeon:         { emoji: "🎍", title: "신년운세", desc: "올해 기운이 내 사주에 미치는 영향 전체 분석", price: "₩990", priceNum: 990, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강 포인트", "🧭 올해 핵심 조언"] },
   sinyeon_premium: { emoji: "⭐", title: "프리미엄 신년운세", desc: "신년 6개 섹션 + 1월~12월 월별 흐름까지 완전판", price: "₩4,900", priceNum: 4900, features: ["🌊 올해 전체 흐름", "💰 재물·돈 흐름", "💕 연애·인연", "💼 직업·커리어", "🌿 건강", "📅 1~12월 월별 흐름"] },
-  love_detail:     { emoji: "💗", title: "연애사주", desc: "나의 연애 DNA — 스타일·강점·패턴·지금 흐름까지", price: "₩990", priceNum: 990, features: ["💗 나의 연애 스타일", "✨ 연애할 때 강한 점", "⚠️ 반복되는 패턴", "🌊 지금 연애 흐름", "👑 나에게 맞는 이상형"] },
+  love_detail:     { emoji: "💗", title: "연애사주", desc: "나의 연애 DNA —\n스타일·강점·패턴·지금 흐름까지", price: "₩990", priceNum: 990, features: ["💗 나의 연애 스타일", "✨ 연애할 때 강한 점", "⚠️ 반복되는 패턴", "🌊 지금 연애 흐름", "👑 나에게 맞는 이상형"] },
   reunion:         { emoji: "💔", title: "재회운", desc: "그 사람과 다시 이어질 수 있는지 사주로 풀어드립니다", price: "₩2,900", priceNum: 2900, features: ["💔 이별 후 감정 흐름", "🔮 재회 가능성", "⏰ 재회 타이밍", "⚠️ 재회 시 주의점", "🌱 새로운 방향"] },
   findmatch:       { emoji: "🔍", title: "내 사람 찾기", desc: "나와 진짜 맞는 사람의 특성과 만남의 흐름", price: "₩990", priceNum: 990, features: ["✨ 나와 맞는 사람 특성", "⏰ 인연 오는 시기", "📍 인연 오는 방식", "💗 관계 발전 패턴", "🌱 놓치지 않으려면"] },
   marriage_detail: { emoji: "💍", title: "결혼사주", desc: "배우자 복·만나는 시기·결혼 후 흐름 완전 분석", price: "₩990", priceNum: 990, features: ["💑 타고난 배우자 스타일", "📍 만나는 시기·방식", "👤 배우자 특성", "🏠 결혼 후 흐름", "⚠️ 결혼에서 조심할 점"] },
@@ -951,7 +951,7 @@ export default function MainV2() {
                   <span style={{ fontSize: 34 }}>{ec.emoji}</span>
                   <div style={{ flex: 1 }}>
                     <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{ec.title}</div>
-                    <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{ec.desc}</div>
+                    <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2, whiteSpace: "pre-line" }}>{ec.desc}</div>
                   </div>
                   <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{ec.price}</div>
                 </div>
