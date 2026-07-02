@@ -148,7 +148,7 @@ function PaymentInner() {
       features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"],
       count: 8,
       chars: "전문가급 심층 분석",
-      desc: "본인 分析(8개) + 상대방 정보 입력<br/>궁합分析 포함"
+      desc: "이름+전체사주+궁합포함<br/>본인 分析(8개) + 상대방 정보 입력<br/>궁합分析 포함"
     }
   ];
 
