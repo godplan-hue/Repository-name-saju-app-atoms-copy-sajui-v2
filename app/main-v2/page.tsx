@@ -961,9 +961,17 @@ export default function MainV2() {
                   })();
                   if (showModal === "naming") {
                     if (modalSelectedCats.length === 0) return;
+                    const NAMING_TO_SPECIAL: Record<string, string> = {
+                      "🎍 신년운세": "sinyeon", "💗 연애사주": "love_detail",
+                      "🔍 내 사람 찾기": "findmatch", "💍 결혼사주": "marriage_detail", "🌧 이혼운세": "divorce",
+                    };
+                    const allSpecials = modalSelectedCats.map(c => NAMING_TO_SPECIAL[c]).filter(Boolean);
+                    sessionStorage.setItem("v2_naming_queue", JSON.stringify(allSpecials));
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
-                    const namingLabel = modalSelectedCats.length === 1 ? modalSelectedCats[0].split(" ").slice(1).join(" ") : `${modalSelectedCats.length}개 운세 묶음`;
-                    router.push(`/payment-complete?package=${encodeURIComponent(namingLabel)}&pages=${modalSelectedCats.length * 30}&paid=${modalSelectedCats.length * 990}`);
+                    const firstSpecial = allSpecials[0] || "sinyeon";
+                    const totalPaid = modalSelectedCats.length * 990;
+                    const label = modalSelectedCats.length === 1 ? (modalSelectedCats[0].split(" ").slice(1).join(" ") || "신년운세") : `${modalSelectedCats.length}개 운세 묶음`;
+                    router.push(`/payment-complete?special=${firstSpecial}&paid=${totalPaid}&package=${encodeURIComponent(label)}`);
                   } else if (cfg.catKeys) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
                     router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`);
