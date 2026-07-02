@@ -137,7 +137,7 @@ function PaymentInner() {
       features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"],
       count: 8,
       chars: "전문가급 심층 분석",
-      desc: "이름+전체사주+궁합포함<br/>본인 분석(8개) + 상대방 정보 입력<br/>궁합분석 포함"
+      desc: "이름+전체사주+궁합포함<br/>본인 분석(8개) +<br/>상대방 정보 입력<br/>궁합분석 포함"
     }
   ];
 
@@ -314,7 +314,7 @@ function PaymentInner() {
                 { id: "basic",    emoji: "🐱", label: "기본 분석",  sub: "재물운 + 연애운",        pages: 30,  price: 9900  },
                 { id: "standard", emoji: "🌟", label: "베이직",     sub: "올해+재물+연애+월별",     pages: 75,  price: 19900 },
                 { id: "premium",  emoji: "💎", label: "프리미엄",   sub: "올해+재물+연애+월별+건강", pages: 100, price: 24900 },
-                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "본인사주 8개+궁합포함",   pages: 150, price: 29900 },
+                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "이름+전체사주+궁합포함<br/>본인 분석(8개) +<br/>상대방 정보 입력<br/>궁합분석 포함",   pages: 150, price: 29900 },
               ].map(s => (
                 <button key={s.id}
                   onClick={async () => {
@@ -325,7 +325,7 @@ function PaymentInner() {
                 >
                   <p style={{ margin: "0 0 3px", fontSize: 20 }}>{s.emoji}</p>
                   <p style={{ margin: "0 0 2px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
-                  <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.sub}</p>
+                  <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }} dangerouslySetInnerHTML={{ __html: s.sub }} />
                   <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#c4b5fd" }}>₩{s.price.toLocaleString()}</p>
                 </button>
               ))}
