@@ -547,9 +547,14 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           </div>
 
           <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>📦 패키지 (더 저렴해!)</p>
+          <button onClick={() => { setShowBuyModal(false); router.push("/payment-complete?special=sinyeon_premium&paid=4900"); }}
+            style={{ width: "100%", marginBottom: 6, padding: "8px 12px", background: "rgba(40,5,5,0.9)", border: "1.5px solid rgba(239,68,68,0.8)", borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 12, fontWeight: 900, color: "#ffffff" }}>📅 신년+월별 12달</span>
+            <span style={{ fontSize: 12, fontWeight: 900, color: "#ef4444" }}>₩4,900</span>
+          </button>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 10 }}>
             {QA_PKGS.map(p => {
-              const pkgEmojis: Record<string, string> = { "기본 분析": "🐱", "베이직": "🌟", "프리미엄": "💎", "VIP 커플팩": "👑" };
+              const pkgEmojis: Record<string, string> = { "기본 분석": "🐱", "베이직": "🌟", "프리미엄": "💎", "VIP 커플팩": "👑" };
               const emoji = pkgEmojis[p.label] ?? "✨";
               return (
                 <button key={p.id} onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?preselect=${p.id}&scrollTo=packages`); }}
