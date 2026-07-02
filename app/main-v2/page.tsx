@@ -167,7 +167,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(139,92,246,0.55) 100%)",
     fit: "contain" as const,
     route: "free" as const,
-    modalId: "naming",
+    modalId: "love",
   },
   {
     img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg",
@@ -728,7 +728,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={id => { if (id === "naming") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={id => { if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id); }} />
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
