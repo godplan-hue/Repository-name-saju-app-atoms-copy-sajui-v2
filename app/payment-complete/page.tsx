@@ -75,6 +75,22 @@ function PaymentCompleteInner() {
       return;
     }
 
+    const namingFlag = searchParams.get("naming");
+    if (namingFlag === "1") {
+      const queueStr = searchParams.get("queue") || "";
+      const queueArr = queueStr ? queueStr.split(",").filter(Boolean) : [];
+      if (queueArr.length > 0) {
+        sessionStorage.setItem("v2_naming_queue", JSON.stringify(queueArr));
+        sessionStorage.setItem("specialType", queueArr[0]);
+        sessionStorage.setItem("specialPaid", "1");
+        sessionStorage.setItem("v2_after_payment_goto", "special");
+      }
+      setPackageName(searchParams.get("package") || `${queueArr.length}개 운세 묶음`);
+      setRedirectTo("/main-v2/profile");
+      setReady(true);
+      return;
+    }
+
     const specialType = searchParams.get("special");
     if (specialType) {
       sessionStorage.setItem("specialType", specialType);

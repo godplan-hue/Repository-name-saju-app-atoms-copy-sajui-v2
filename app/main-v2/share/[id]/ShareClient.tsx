@@ -70,6 +70,10 @@ function ScoreBar({ label, score, color }: { label: string; score: number; color
   );
 }
 
+const SPECIAL_LABELS: Record<string, string> = {
+  sinyeon: "신년운세", love_detail: "연애사주", findmatch: "내 사람 찾기", marriage_detail: "결혼사주", divorce: "이혼운세",
+};
+
 export default function ShareClient({ id }: { id: string }) {
   const router = useRouter();
   const [entry, setEntry] = useState<SharedEntry | null>(null);
@@ -77,6 +81,14 @@ export default function ShareClient({ id }: { id: string }) {
   const [speaking, setSpeaking] = useState(false);
   const [saving, setSaving] = useState(false);
   const [historySaved, setHistorySaved] = useState(false);
+  const [namingQueue, setNamingQueue] = useState<string[]>([]);
+
+  useEffect(() => {
+    try {
+      const q = JSON.parse(sessionStorage.getItem("v2_naming_queue") || "[]");
+      if (Array.isArray(q) && q.length > 0) setNamingQueue(q);
+    } catch {}
+  }, []);
   const [bannerIdx, setBannerIdx] = useState(0);
   const BANNER_MSGS = ["오늘 재물운이 어떨까?", "취업 될 것 같아?", "연애운 알려줘!", "이직 타이밍 맞아?", "올해 대박 나는 달 언제야?", "내 강점이 뭐야?"];
   useEffect(() => {
@@ -508,6 +520,17 @@ export default function ShareClient({ id }: { id: string }) {
           </button>
         )}
 
+        {namingQueue.length > 0 && (
+          <button onClick={() => {
+            const next = namingQueue[0];
+            sessionStorage.setItem("specialType", next);
+            sessionStorage.setItem("specialPaid", "1");
+            sessionStorage.setItem("v2_after_payment_goto", "special");
+            router.push("/main-v2/special");
+          }} style={{ width: "100%", marginBottom: 10, padding: "14px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.35)" }}>
+            🔮 다음 운세 보기 · {SPECIAL_LABELS[namingQueue[0]] || namingQueue[0]} ({namingQueue.length}개 남음)
+          </button>
+        )}
         <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
         </button>

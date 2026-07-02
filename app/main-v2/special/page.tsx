@@ -484,6 +484,11 @@ function SpecialPageContent() {
         if (data.id) {
           sessionStorage.removeItem("specialPaid");
           sessionStorage.removeItem("specialType");
+          try {
+            const q = JSON.parse(sessionStorage.getItem("v2_naming_queue") || "[]");
+            if (q.length > 1) sessionStorage.setItem("v2_naming_queue", JSON.stringify(q.slice(1)));
+            else sessionStorage.removeItem("v2_naming_queue");
+          } catch {}
           router.replace(`/main-v2/share/${data.id}`);
         } else {
           router.replace("/main-v2");
