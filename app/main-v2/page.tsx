@@ -576,9 +576,15 @@ export default function MainV2() {
     }
   }, []);
 
+  const goFree = () => {
+    if (!user) { router.push("/main-v2/login"); return; }
+    try { const sp = localStorage.getItem("v2_saved_profile"); if (sp) { const p = JSON.parse(sp); if (p.birthYear && p.gender && p.birthHour) { sessionStorage.setItem("v2_profile", JSON.stringify(p)); router.push("/main-v2/analysis"); return; } } } catch {}
+    router.push("/main-v2/profile");
+  };
+
   const handleCourse = (c: typeof COURSES[0]) => {
     if (c.id === "free") {
-      if (user) { sessionStorage.setItem("v2_profile_flow", "free"); router.push("/main-v2/profile"); } else router.push("/main-v2/login");
+      goFree(); return;
     } else {
       sessionStorage.setItem("selectedPackage", c.packageName ?? "");
       router.push(`/payment-complete?package=${encodeURIComponent(c.packageName ?? "")}&pages=${c.pages}`);
@@ -657,7 +663,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else if (user) { sessionStorage.setItem("v2_profile_flow", "free"); router.push("/main-v2/profile"); } else { router.push("/main-v2/login"); } }} onModal={id => { if (id === "naming") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id); }} />
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={id => { if (id === "naming") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id); }} />
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
@@ -688,7 +694,7 @@ export default function MainV2() {
           health: "premium",
           compatibility: "vip", naming: "vip", full: "vip",
         };
-        if (id === "free") { if (user) { sessionStorage.setItem("v2_profile_flow", "free"); router.push("/main-v2/profile"); } else router.push("/main-v2/login"); }
+        if (id === "free") { goFree(); return; }
         else if (id === "sinyeon_premium") {
           if (!user) { router.push("/main-v2/login"); return; }
           setShowModal(id);
