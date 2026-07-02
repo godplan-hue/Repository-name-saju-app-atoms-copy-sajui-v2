@@ -102,34 +102,29 @@ export default function V2Profile() {
   }, []);
 
   useEffect(() => {
-    // 무료 플로우에서 왔으면 savedMode 스킵 → 항상 5단계 마법사
+    // 무료 플로우: 저장된 정보 있으면 바로 분석 페이지로, 없으면 5단계 마법사
     const flow = sessionStorage.getItem("v2_profile_flow");
     if (flow === "free") {
       sessionStorage.removeItem("v2_profile_flow");
       setIsFreeFlow(true);
-      // 저장된 정보 있으면 채워주되, 마법사는 그대로 표시
       const saved = localStorage.getItem("v2_saved_profile");
       const loggedInName = localStorage.getItem("v2_user_name") ?? "";
       if (saved) {
         try {
           const p = JSON.parse(saved);
           const sameName = !loggedInName || p.name === loggedInName;
-          if (sameName) {
-            setForm(prev => ({
-              ...prev,
-              name: p.name ?? prev.name,
-              birthYear: p.birthYear ?? prev.birthYear,
-              birthMonth: p.birthMonth ?? prev.birthMonth,
-              birthDay: p.birthDay ?? prev.birthDay,
-              gender: p.gender ?? prev.gender,
-              birthHour: p.birthHour ?? prev.birthHour,
-              phone: p.phone ?? prev.phone,
-              email: p.email ?? prev.email,
-            }));
+          if (sameName && p.birthYear && p.gender && p.birthHour) {
+            // 이미 저장된 정보 있음 → 바로 분석 페이지로
+            sessionStorage.setItem("v2_profile", JSON.stringify(p));
+            sessionStorage.removeItem("v2_after_payment_goto");
+            sessionStorage.removeItem("specialPaid");
+            sessionStorage.removeItem("specialType");
+            router.replace("/main-v2/analysis");
+            return;
           }
         } catch {}
       }
-      return; // savedMode 활성화 안 함 → 5단계 마법사 표시
+      return; // 저장 정보 없음 → 5단계 마법사 표시
     }
 
     // 유료 or 일반 플로우: 저장된 정보 있으면 단일 확인 폼
