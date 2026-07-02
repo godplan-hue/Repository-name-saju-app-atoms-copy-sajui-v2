@@ -97,6 +97,8 @@ function PaymentInner() {
   const [isMobile, setIsMobile] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisName, setAnalysisName] = useState("");
+  const [awaitOther, setAwaitOther] = useState<{ id: string; label: string } | null>(null);
+  const [otherInput, setOtherInput] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -205,6 +207,39 @@ function PaymentInner() {
 
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://images.unsplash.com/photo-1719399184315-5ffab4006e18?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fCVFQyVCQiVBOCVFQyU4NSU4OSUyMCVFQyU5NSU4NCVFRCU4QSVCOHxlbnwwfHwwfHx8MA%3D%3D')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "scroll", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
+
+      {/* 재회운/반려동물 궁합 이름 입력 오버레이 */}
+      {awaitOther && (
+        <>
+          <div onClick={() => setAwaitOther(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 302 }} />
+          <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 303, background: "linear-gradient(180deg,#1a0f35,#0f0620)", borderRadius: "20px 20px 0 0", padding: "28px 20px 40px", maxWidth: 500, margin: "0 auto" }}>
+            <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 16, marginBottom: 16, textAlign: "center" }}>
+              {awaitOther.id === "pet_compat" ? "🐾 반려동물 이름을 입력해주세요" : "💔 상대방 이름을 입력해주세요"}
+            </p>
+            <input
+              value={otherInput}
+              onChange={e => setOtherInput(e.target.value)}
+              onKeyDown={e => { if (e.key === "Enter" && otherInput.trim()) { const go = async () => { sessionStorage.setItem("specialOtherName", otherInput.trim()); const paidPrice = await finalPrice(2900); setAwaitOther(null); router.push(`/payment-complete?special=${awaitOther.id}&paid=${paidPrice}`); }; go(); } }}
+              placeholder={awaitOther.id === "pet_compat" ? "예: 초코" : "예: 홍길동"}
+              autoFocus
+              style={{ width: "100%", padding: "13px 16px", borderRadius: 12, border: "1.5px solid rgba(251,191,36,0.5)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box", marginBottom: 14 }}
+            />
+            <button
+              onClick={async () => {
+                if (!otherInput.trim()) return;
+                sessionStorage.setItem("specialOtherName", otherInput.trim());
+                const paidPrice = await finalPrice(2900);
+                setAwaitOther(null);
+                router.push(`/payment-complete?special=${awaitOther.id}&paid=${paidPrice}`);
+              }}
+              disabled={!otherInput.trim()}
+              style={{ width: "100%", padding: "14px 0", background: otherInput.trim() ? "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)" : "rgba(255,255,255,0.1)", color: otherInput.trim() ? "#1a0f2e" : "rgba(255,255,255,0.4)", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: otherInput.trim() ? "pointer" : "not-allowed" }}
+            >
+              💳 결제하기 · ₩2,900
+            </button>
+          </div>
+        </>
+      )}
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(194, 65, 12, 0.2)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px" }}>
 
@@ -263,6 +298,11 @@ function PaymentInner() {
               <button key={s.id}
                 onClick={async () => {
                   if ((s as any).daeun) { router.push(`/main-v2/daewoon/pay`); return; }
+                  if (s.id === "reunion" || s.id === "pet_compat") {
+                    setOtherInput("");
+                    setAwaitOther({ id: s.id, label: s.label });
+                    return;
+                  }
                   const paidPrice = await finalPrice(2900);
                   router.push(`/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}
