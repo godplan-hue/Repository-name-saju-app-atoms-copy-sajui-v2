@@ -137,7 +137,7 @@ function PaymentInner() {
       features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"],
       count: 8,
       chars: "전문가급 심층 분석",
-      desc: "이름+전체사주+궁합포함<br/>본인 분석(8개) +<br/>상대방 정보 입력<br/>궁합분석 포함"
+      desc: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)"
     }
   ];
 
@@ -314,7 +314,7 @@ function PaymentInner() {
                 { id: "basic",    emoji: "🐱", label: "기본 분석",  sub: "재물운 + 연애운",        pages: 30,  price: 9900  },
                 { id: "standard", emoji: "🌟", label: "베이직",     sub: "올해+재물+연애+월별",     pages: 75,  price: 19900 },
                 { id: "premium",  emoji: "💎", label: "프리미엄",   sub: "올해+재물+연애+월별+건강", pages: 100, price: 24900 },
-                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "이름+전체사주+궁합포함<br/>본인 분석(8개) +<br/>상대방 정보 입력<br/>궁합분석 포함",   pages: 150, price: 29900 },
+                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)",   pages: 150, price: 29900 },
               ].map(s => (
                 <button key={s.id}
                   onClick={async () => {
