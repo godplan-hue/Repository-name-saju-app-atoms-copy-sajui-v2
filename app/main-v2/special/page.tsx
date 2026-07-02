@@ -449,6 +449,23 @@ function SpecialPageContent() {
       categories.push({ icon: "📅", label: "월별 흐름 (1~12월)", color: "#7c3aed", text: monthlyText });
     }
 
+    // naming 묶음: 나머지 항목 섹션도 한 페이지에 합치기
+    let namingSubtitle = product.title;
+    try {
+      const nq: string[] = JSON.parse(sessionStorage.getItem("v2_naming_queue") || "[]");
+      if (nq.length > 1) {
+        for (let i = 1; i < nq.length; i++) {
+          const ep = PRODUCTS[nq[i]];
+          if (!ep) continue;
+          ep.sections.forEach((s: Section) => {
+            categories.push({ icon: s.emoji, label: s.title, color: ep.color || "#ec4899", text: fill(s.texts[oh], name, filledOther, filledPet) });
+          });
+        }
+        namingSubtitle = `${nq.length}개 운세 묶음`;
+        sessionStorage.removeItem("v2_naming_queue");
+      }
+    } catch {}
+
     const ohScores: Record<Ohaeng, { total: number; wealth: number; love: number; health: number; success: number }> = {
       목: { total: 73, wealth: 71, love: 78, health: 66, success: 75 },
       화: { total: 76, wealth: 68, love: 83, health: 72, success: 78 },
@@ -477,18 +494,13 @@ function SpecialPageContent() {
     fetch("/api/v2/share", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, categories, scores, tier: "special", birthYear: String(birthYear), luckyColor: lucky.color, luckyNumber: lucky.number, luckyDirection: lucky.direction, subtitle: product.title }),
+      body: JSON.stringify({ name, categories, scores, tier: "special", birthYear: String(birthYear), luckyColor: lucky.color, luckyNumber: lucky.number, luckyDirection: lucky.direction, subtitle: namingSubtitle }),
     })
       .then(res => res.json())
       .then(data => {
         if (data.id) {
           sessionStorage.removeItem("specialPaid");
           sessionStorage.removeItem("specialType");
-          try {
-            const q = JSON.parse(sessionStorage.getItem("v2_naming_queue") || "[]");
-            if (q.length > 1) sessionStorage.setItem("v2_naming_queue", JSON.stringify(q.slice(1)));
-            else sessionStorage.removeItem("v2_naming_queue");
-          } catch {}
           router.replace(`/main-v2/share/${data.id}`);
         } else {
           router.replace("/main-v2");

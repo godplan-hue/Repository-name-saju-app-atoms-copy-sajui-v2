@@ -520,17 +520,6 @@ export default function ShareClient({ id }: { id: string }) {
           </button>
         )}
 
-        {namingQueue.length > 0 && (
-          <button onClick={() => {
-            const next = namingQueue[0];
-            sessionStorage.setItem("specialType", next);
-            sessionStorage.setItem("specialPaid", "1");
-            sessionStorage.setItem("v2_after_payment_goto", "special");
-            router.push("/main-v2/special");
-          }} style={{ width: "100%", marginBottom: 10, padding: "14px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.35)" }}>
-            🔮 다음 운세 보기 · {SPECIAL_LABELS[namingQueue[0]] || namingQueue[0]} ({namingQueue.length}개 남음)
-          </button>
-        )}
         <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
         </button>
