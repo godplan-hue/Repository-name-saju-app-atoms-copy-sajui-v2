@@ -201,7 +201,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(239,68,68,0.45) 100%)",
     fit: "contain" as const,
     route: "package" as const,
-    modalId: "love", preselect: "💗 연애사주",
+    directUrl: "/payment-complete?naming=1&queue=love_detail&paid=990&package=%EC%97%B0%EC%95%A0%EC%82%AC%EC%A3%BC",
   },
   {
     // 사진이 아니라 글자+도형으로 직접 그리는 배너 — 990원 가격을 큰 숫자
@@ -387,6 +387,7 @@ function PartnerFortuneGrid({ brand, onPick, onBundle }: {
 }
 
 function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; onModal?: (id: string, preselect?: string) => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
+  const router = useRouter();
   const [cur, setCur] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
@@ -421,6 +422,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
             document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" });
             return;
           }
+          if ((b as any).directUrl) { router.push((b as any).directUrl); return; }
           if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
         }}
@@ -997,7 +999,7 @@ export default function MainV2() {
                 <span style={{ fontSize: 34 }}>{cfg.emoji}</span>
                 <div style={{ flex: 1 }}>
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
-                  <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{cfg.desc}</div>
+                  <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2, whiteSpace: "pre-line" }}>{cfg.desc}</div>
                 </div>
                 <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{(showModal === "naming" || showModal === "love") ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * (showModal === "naming" ? 3900 : 990)).toLocaleString()}` : (showModal === "naming" ? "₩3,900" : "₩990")) : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
               </div>
