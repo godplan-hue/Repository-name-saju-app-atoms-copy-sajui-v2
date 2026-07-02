@@ -128,6 +128,17 @@ function PaymentCompleteInner() {
     const paidParam = searchParams.get("paid") || "";
     if (paidParam) setPaidAmount(paidParam);
 
+    // 모든 이전 세션값 초기화 — 상품 섞임 완전 방지
+    sessionStorage.removeItem("specialType");
+    sessionStorage.removeItem("specialPaid");
+    sessionStorage.removeItem("v2_after_payment_goto");
+    sessionStorage.removeItem("v2_naming_queue");
+    sessionStorage.removeItem("selectedPackage");
+    sessionStorage.removeItem("v2_plan");
+    sessionStorage.removeItem("v2_paid_cats");
+    sessionStorage.removeItem("yearlyPaid");
+    sessionStorage.removeItem("daeunPaid");
+
     // Q&A 무제한 해제
     try {
       const profileRaw = localStorage.getItem("v2_saved_profile");
