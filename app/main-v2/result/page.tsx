@@ -1442,6 +1442,12 @@ function V2ResultInner() {
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
+              <button onClick={() => router.push("/payment-complete?special=sinyeon_premium&paid=4900")}
+                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ef4444, #dc2626)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(239,68,68,0.35)" }}>
+                📅 신년+월별 12달 ₩4,900
+              </button>
+            </div>
+            <div style={{ marginBottom: 10 }}>
               <button onClick={() => router.push("/main-v2/payment")}
                 style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
                 💳 유료 운세 결제하기

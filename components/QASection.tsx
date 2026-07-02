@@ -6,11 +6,12 @@ import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng, QACategory } from "@/lib/qa/index";
 
 const QA_SPECIAL_990 = [
-  { id: "sinyeon",         emoji: "🎍", label: "신년운세" },
-  { id: "love_detail",     emoji: "💝", label: "연애사주" },
-  { id: "findmatch",       emoji: "🔮", label: "내 사람 찾기" },
-  { id: "marriage_detail", emoji: "💍", label: "결혼사주" },
-  { id: "divorce",         emoji: "🌱", label: "이혼운세" },
+  { id: "sinyeon",         emoji: "🎍", label: "신년운세",     price: 990,  red: false },
+  { id: "love_detail",     emoji: "💝", label: "연애사주",     price: 990,  red: false },
+  { id: "findmatch",       emoji: "🔮", label: "내 사람 찾기", price: 990,  red: false },
+  { id: "marriage_detail", emoji: "💍", label: "결혼사주",     price: 990,  red: false },
+  { id: "divorce",         emoji: "🌱", label: "이혼운세",     price: 990,  red: false },
+  { id: "sinyeon_premium", emoji: "📅", label: "신년+월별12달", price: 4900, red: true  },
 ];
 const QA_SPECIAL_2900 = [
   { id: "daeun",      emoji: "🌌", label: "대운(大運)",   daeun: true },
@@ -503,23 +504,14 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>⚡ 신규 990원</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5, marginBottom: 10 }}>
             {QA_SPECIAL_990.map(s => (
-              <button key={s.id} onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=${s.id}&paid=990`); }}
-                style={{ padding: "9px 5px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
+              <button key={s.id} onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=${s.id}&paid=${s.price}`); }}
+                style={{ padding: "9px 5px", background: s.red ? "#fff5f5" : "#fdf4ff", border: `1.5px solid ${s.red ? "#fca5a5" : "#e9d5ff"}`, borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
                 <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
-                <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
-                <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: "#ec4899" }}>₩990</p>
+                <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e", wordBreak: "keep-all", lineHeight: 1.2 }}>{s.label}</p>
+                <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: s.red ? "#ef4444" : "#ec4899" }}>₩{s.price.toLocaleString()}</p>
               </button>
             ))}
           </div>
-
-          <button onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=sinyeon_premium&paid=4900`); }}
-            style={{ width: "100%", marginBottom: 10, padding: "9px 14px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ textAlign: "left" }}>
-              <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#1a1a2e" }}>📅 신년+월별 12달</p>
-              <p style={{ margin: 0, fontSize: 10, color: "#6b7280", fontWeight: 700 }}>신년운세 + 12달 월별 상세</p>
-            </div>
-            <span style={{ fontSize: 12, fontWeight: 900, color: "#ec4899", flexShrink: 0 }}>₩4,900</span>
-          </button>
 
           <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>💫 특별 2,900원</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 10 }}>
