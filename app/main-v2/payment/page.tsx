@@ -3,7 +3,6 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
-
 interface PromoCode {
   code: string;
   discountPercent: number;
@@ -23,10 +22,22 @@ function PaymentInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const highlightWealthLove = searchParams.get("highlight") === "wealthlove";
-
+  const preselectId = searchParams.get("preselect");
+  const PRESELECT_INFO: Record<string, { name: string; features: string[] }> = {
+    basic:    { name: "기본 분석", features: ["wealthLuck", "loveLuck"] },
+    standard: { name: "베이직",   features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"] },
+    premium:  { name: "프리미엄", features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"] },
+    vip:      { name: "VIP 커플팩", features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"] },
+  };
+  const preselectInfo = preselectId ? PRESELECT_INFO[preselectId] : undefined;
+  const [selectedPackage, setSelectedPackage] = useState(
+    highlightWealthLove ? "기본 분석" : preselectInfo ? preselectInfo.name : "기본 분석"
+  );
+  const [selectedFeatures, setSelectedFeatures] = useState(
+    highlightWealthLove ? ["wealthLuck", "loveLuck"] : preselectInfo ? preselectInfo.features : ["wealthLuck", "loveLuck"]
+  );
   const [isPartner, setIsPartner] = useState(false);
   const [brand, setBrand] = useState<{ businessName: string; logoUrl: string; customPriceBasic?: string; customPriceStandard?: string; customPricePremium?: string; customPriceVip?: string } | null>(null);
-
   useEffect(() => {
     const hostname = window.location.hostname;
     const partner = isPartnerHost(hostname);
@@ -40,19 +51,9 @@ function PaymentInner() {
     }
   }, []);
 
-  useEffect(() => {
-    if (highlightWealthLove || searchParams.get("scrollTo") === "packages") {
-      const el = document.getElementById("packages-section");
-      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
-    }
-  }, [highlightWealthLove, searchParams]);
-
   const [discountInput, setDiscountInput] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<PromoCode | null>(null);
   const [discountError, setDiscountError] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [awaitOther, setAwaitOther] = useState<{ id: string; label: string } | null>(null);
-  const [otherInput, setOtherInput] = useState("");
 
   const applyDiscountCode = async () => {
     try {
@@ -82,26 +83,114 @@ function PaymentInner() {
       return originalPrice;
     }
   };
+  const [isMobile, setIsMobile] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [analysisName, setAnalysisName] = useState("");
+  const [awaitOther, setAwaitOther] = useState<{ id: string; label: string } | null>(null);
+  const [otherInput, setOtherInput] = useState("");
 
-  const PACKAGES = [
-    { id: "basic",    emoji: "💎", name: "기본 분석",  sub: "재물운 + 연애운",          price: "₩9,900",  priceNum: 9900,  pages: 30,  count: 2, chars: "전문가급 심층 분석", features: ["wealthLuck", "loveLuck"] },
-    { id: "standard", emoji: "☀️", name: "베이직",     sub: "올해+재물+연애+월별",      price: "₩19,900", priceNum: 19900, pages: 75,  count: 4, chars: "전문가급 심층 분석", features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"] },
-    { id: "premium",  emoji: "🌿", name: "프리미엄",   sub: "올해+재물+연애+월별+건강", price: "₩24,900", priceNum: 24900, pages: 100, count: 5, chars: "전문가급 심층 분석", features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"] },
-    { id: "vip",      emoji: "👑", name: "VIP 커플팩", sub: "8개 전부 + 궁합",          price: "₩29,900", priceNum: 29900, pages: 150, count: 8, chars: "전문가급 심층 분석", features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"] },
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth < 768);
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      window.addEventListener("resize", handleResize);
+
+      const name = sessionStorage.getItem("analysisName") || "분석 완료";
+      setAnalysisName(name);
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (highlightWealthLove || searchParams.get("scrollTo") === "packages") {
+      const el = document.getElementById("packages-section");
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    }
+  }, [highlightWealthLove, searchParams]);
+
+  const packages = [
+    {
+      id: "basic",
+      name: "기본 분석",
+      price: "₩9,900",
+      pages: 30,
+      features: ["wealthLuck", "loveLuck"],
+      count: 2,
+      chars: "전문가급 심층 분석",
+      desc: "재물운 + 연애운"
+    },
+    {
+      id: "standard",
+      name: "베이직",
+      price: "₩19,900",
+      pages: 75,
+      features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"],
+      count: 4,
+      chars: "전문가급 심층 분석",
+      desc: "올해 운세 + 재물운 + 연애운 + 월별 운세"
+    },
+    {
+      id: "premium",
+      name: "프리미엄",
+      price: "₩24,900",
+      pages: 100,
+      features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"],
+      count: 5,
+      chars: "전문가급 심층 분석",
+      desc: "올해 운세 + 재물운 + 연애운 + 월별 운세 + 건강운"
+    },
+    {
+      id: "vip",
+      name: "VIP 커플팩",
+      price: "₩29,900",
+      pages: 150,
+      features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"],
+      count: 8,
+      chars: "전문가급 심층 분석",
+      desc: "본인 분석(8개) + 상대방 정보 입력<br/>궁합분석 포함"
+    }
   ];
 
-  const [selectedPackage, setSelectedPackage] = useState("기본 분석");
+  const fortuneItems = [
+    { id: "name", icon: "📝", name: "이름분석" },
+    { id: "yearlyLuck", icon: "☀️", name: "올해 운세" },
+    { id: "monthlyLuck", icon: "🌙", name: "월별 운세" },
+    { id: "analysis", icon: "✨", name: "전체 사주분석" },
+    { id: "wealthLuck", icon: "💎", name: "재물운" },
+    { id: "loveLuck", icon: "💕", name: "연애운" },
+    { id: "healthLuck", icon: "🌿", name: "건강운" },
+    { id: "couple", icon: "👫", name: "궁합분석" }
+  ];
 
-  const currentPkg = PACKAGES.find(p => p.name === selectedPackage) ?? PACKAGES[0];
-
-  const getDisplayPrice = (pkg: typeof PACKAGES[0]) => {
-    const customPriceMap: Record<string, string | undefined> = {
-      basic: brand?.customPriceBasic, standard: brand?.customPriceStandard,
-      premium: brand?.customPricePremium, vip: brand?.customPriceVip,
-    };
-    return (isPartner && customPriceMap[pkg.id]) ? customPriceMap[pkg.id]! : pkg.price;
+  const handlePackageSelect = (pkg: any) => {
+    setSelectedPackage(pkg.name);
+    setSelectedFeatures(pkg.features);
   };
 
+  const handlePayment = async () => {
+    setIsProcessing(true);
+
+    try {
+      sessionStorage.setItem("selectedPackage", selectedPackage);
+
+      const currentPackage = packages.find(p => p.name === selectedPackage);
+      const pages = currentPackage?.pages || 30;
+      const originalPrice = Number((currentPackage?.price ?? "0").replace(/[^0-9]/g, ""));
+      const paidPrice = await finalPrice(originalPrice);
+
+      router.push(`/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${pages}&paid=${paidPrice}`);
+    } catch (error) {
+      alert("결제 처리 중 오류가 발생했습니다.");
+      console.error(error);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const currentPackage = packages.find(p => p.name === selectedPackage);
+  const currentPages = currentPackage?.pages || 30;
+  const currentCount = currentPackage?.count || 2;
 
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://images.unsplash.com/photo-1719399184315-5ffab4006e18?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fCVFQyVCQiVBOCVFQyU4NSU4OSUyMCVFQyU5NSU4NCVFRCU4QSVCOHxlbnwwfHwwfHx8MA%3D%3D')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "scroll", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
@@ -117,17 +206,7 @@ function PaymentInner() {
             <input
               value={otherInput}
               onChange={e => setOtherInput(e.target.value)}
-              onKeyDown={e => {
-                if (e.key === "Enter" && otherInput.trim()) {
-                  const go = async () => {
-                    sessionStorage.setItem("specialOtherName", otherInput.trim());
-                    const paidPrice = await finalPrice(2900);
-                    setAwaitOther(null);
-                    router.push(`/payment-complete?special=${awaitOther!.id}&paid=${paidPrice}`);
-                  };
-                  go();
-                }
-              }}
+              onKeyDown={e => { if (e.key === "Enter" && otherInput.trim()) { const go = async () => { sessionStorage.setItem("specialOtherName", otherInput.trim()); const paidPrice = await finalPrice(2900); setAwaitOther(null); router.push(`/payment-complete?special=${awaitOther.id}&paid=${paidPrice}`); }; go(); } }}
               placeholder={awaitOther.id === "pet_compat" ? "예: 초코" : "예: 홍길동"}
               autoFocus
               style={{ width: "100%", padding: "13px 16px", borderRadius: 12, border: "1.5px solid rgba(251,191,36,0.5)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box", marginBottom: 14 }}
@@ -138,7 +217,7 @@ function PaymentInner() {
                 sessionStorage.setItem("specialOtherName", otherInput.trim());
                 const paidPrice = await finalPrice(2900);
                 setAwaitOther(null);
-                router.push(`/payment-complete?special=${awaitOther!.id}&paid=${paidPrice}`);
+                router.push(`/payment-complete?special=${awaitOther.id}&paid=${paidPrice}`);
               }}
               disabled={!otherInput.trim()}
               style={{ width: "100%", padding: "14px 0", background: otherInput.trim() ? "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)" : "rgba(255,255,255,0.1)", color: otherInput.trim() ? "#1a0f2e" : "rgba(255,255,255,0.4)", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: otherInput.trim() ? "pointer" : "not-allowed" }}
@@ -148,7 +227,6 @@ function PaymentInner() {
           </div>
         </>
       )}
-
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(194, 65, 12, 0.2)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px" }}>
 
@@ -255,7 +333,7 @@ function PaymentInner() {
           </div>
         )}
 
-        {/* 만세력 신뢰 문구 */}
+        {/* 만세력 신뢰 문구 — 패키지 구매 직전 신뢰 형성용 */}
         <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "rgba(20,10,40,0.5)", backdropFilter: "blur(10px)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 14, padding: "18px 20px", textAlign: "center" }}>
           <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 6px" }}>🔮 정확한 사주 원국 분석</p>
           <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 700, margin: "0 0 3px", lineHeight: 1.7 }}>만세력 기반 · 음양오행 · 천간지지 · 십성 완벽 분석</p>
@@ -265,8 +343,16 @@ function PaymentInner() {
 
         <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 16, fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 900 }}>📦 패키지 (더 저렴해!)</h2>
 
-        {/* 할인코드 */}
-        <div style={{ maxWidth: 480, margin: "0 auto 20px" }}>
+        {/* 헤더 배너 */}
+        <div style={{ maxWidth: 1200, margin: "0 auto 30px", background: "linear-gradient(135deg, rgba(20,10,40,0.6), rgba(74,26,84,0.45))", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 16, padding: "26px 24px", textAlign: "center", boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
+          <div style={{ fontSize: 30, marginBottom: 10 }}>🔓</div>
+          <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 8px", letterSpacing: "0.5px" }}>전체 AI 심층 분석</h3>
+          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, margin: "0 0 6px" }}>운세를 완전히 해석해드립니다</p>
+          <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700, margin: 0 }}>₩3,900부터 시작 · 이미지 저장&amp;보관함 포함</p>
+        </div>
+
+        {/* 할인코드(일반고객용 — 파트너 사용료와는 무관) */}
+        <div style={{ maxWidth: 480, margin: "0 auto 30px" }}>
           <div style={{ display: "flex", gap: 8 }}>
             <input
               value={discountInput}
@@ -285,74 +371,116 @@ function PaymentInner() {
           )}
         </div>
 
-        {/* 패키지 카드 — 2×2 소형 그리드, 클릭하면 선택 */}
-        <div id="packages-section" style={{ maxWidth: 600, margin: "0 auto 24px", display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
-          {PACKAGES.map(pkg => {
-            const isSelected = selectedPackage === pkg.name;
-            const displayPrice = getDisplayPrice(pkg);
-            const discountedPrice = appliedDiscount && !isPartner
-              ? `₩${Math.round(pkg.priceNum * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}`
+        <div id="packages-section" style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20, marginBottom: 40 }}>
+          {packages.map(pkg => {
+            const wlBadge = pkg.id === "basic" ? { prefix: "💰 재물운·연애운 포함 · ", highlight: "가장 저렴" }
+              : pkg.id === "vip" ? { prefix: "👑 전부 다 포함 · ", highlight: "최고급" }
               : null;
+            const isSelected = selectedPackage === pkg.name;
+            const cardBg = isSelected
+              ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))"
+              : pkg.id === "vip" && wlBadge
+              ? "linear-gradient(135deg, rgba(84,20,105,0.55), rgba(122,38,145,0.45))"
+              : wlBadge
+              ? "linear-gradient(135deg, rgba(139,92,246,0.55), rgba(168,85,247,0.42))"
+              : "rgba(139,92,246,0.16)";
+            const customPriceMap: Record<string, string | undefined> = {
+              basic: brand?.customPriceBasic, standard: brand?.customPriceStandard,
+              premium: brand?.customPricePremium, vip: brand?.customPriceVip,
+            };
+            const displayPrice = (isPartner && customPriceMap[pkg.id]) ? customPriceMap[pkg.id]! : pkg.price;
             return (
-              <button key={pkg.id}
-                onClick={async () => {
-                  setSelectedPackage(pkg.name);
-                  if (isPartner) { alert(`${brand?.businessName || "담당자"}에게 직접 문의해주세요.`); return; }
-                  setIsProcessing(true);
-                  try {
-                    sessionStorage.setItem("selectedPackage", pkg.name);
-                    const paidPrice = await finalPrice(pkg.priceNum);
-                    router.push(`/payment-complete?package=${encodeURIComponent(pkg.name)}&pages=${pkg.pages}&paid=${paidPrice}`);
-                  } finally { setIsProcessing(false); }
-                }}
-                disabled={isProcessing}
-                style={{ padding: "14px 8px", background: isSelected ? "linear-gradient(135deg, rgba(251,191,36,0.22), rgba(236,72,153,0.18))" : "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: isSelected ? "2px solid #fbbf24" : "1.5px solid rgba(196,181,253,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white", transition: "all 0.15s", boxShadow: isSelected ? "0 6px 22px rgba(251,191,36,0.2)" : "none" }}
-              >
-                <p style={{ margin: "0 0 4px", fontSize: 24 }}>{pkg.emoji}</p>
-                <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 900, color: isSelected ? "#fbbf24" : "#ffffff" }}>{pkg.name}</p>
-                <p style={{ margin: "0 0 6px", fontSize: 10, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.4 }}>{pkg.sub}</p>
-                {discountedPrice ? (
-                  <>
-                    <p style={{ margin: "0 0 1px", fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 700, textDecoration: "line-through" }}>{displayPrice}</p>
-                    <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#90EE90" }}>{discountedPrice}</p>
-                  </>
-                ) : (
-                  <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: isSelected ? "#fbbf24" : "#c4b5fd" }}>{displayPrice}</p>
-                )}
-              </button>
+            <div key={pkg.id} onClick={() => handlePackageSelect(pkg)} style={{ background: cardBg, backdropFilter: "blur(10px)", border: isSelected ? "2px solid #fbbf24" : wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 14, padding: 20, cursor: "pointer", transition: "all 0.3s", boxShadow: isSelected ? "0 6px 22px rgba(251,191,36,0.2)" : "0 4px 16px rgba(0,0,0,0.15)" }}>
+              {wlBadge && (
+                <p style={{ fontSize: 11, fontWeight: 900, margin: "0 0 6px 0", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}>
+                  <span style={{ color: "#ff3b3b" }}>{wlBadge.prefix}</span>
+                  <span style={{ color: "#ffffff" }}>{wlBadge.highlight}</span>
+                </p>
+              )}
+              <h3 style={{ color: "#fbbf24", fontSize: 18, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
+              <p style={{ color: "#f5f5f5", fontSize: 11, fontWeight: 700, margin: "0 0 8px 0", opacity: 0.85 }}>【심층 상세 분석】</p>
+              {appliedDiscount && !isPartner ? (
+                <p style={{ margin: "0 0 10px 0" }}>
+                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: 700, textDecoration: "line-through", marginRight: 8 }}>{pkg.price}</span>
+                  <span style={{ color: "#90EE90", fontSize: 24, fontWeight: 900 }}>₩{Math.round(Number(pkg.price.replace(/[^0-9]/g, "")) * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}</span>
+                </p>
+              ) : (
+                <p style={{ color: "#ffffff", fontSize: 24, fontWeight: 900, margin: "0 0 10px 0" }}>{displayPrice}</p>
+              )}
+              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 10px 0", lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: pkg.desc }} />
+              <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: "0 0 6px 0" }}>🎯 {pkg.count}개 운세</p>
+              <p style={{ color: "#ffffff", fontSize: 11, fontWeight: 700, margin: 0 }}>📄 {(pkg as any).chars}</p>
+            </div>
             );
           })}
         </div>
 
-        {/* 사주 완벽분석 가격 표시 */}
         <div style={{ maxWidth: 1000, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 4 }}>【사주 완벽분석】</p>
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>990원~29,900원</p>
         </div>
 
-        {/* 선택된 패키지 정보 텍스트 */}
+        <div style={{ maxWidth: 1000, margin: "0 auto", marginBottom: 20, background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 24, borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
+          <h3 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 20, letterSpacing: "-0.3px" }}>✨ 포함된 운세</h3>
+
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+            {fortuneItems.map(item => {
+              const on = selectedFeatures.includes(item.id);
+              return (
+                <div key={item.id} style={{ background: on ? "linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25))" : "rgba(255,255,255,0.05)", border: on ? "1.5px solid #fbbf24" : "1px solid rgba(255,255,255,0.15)", borderRadius: 14, padding: 14, textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", boxShadow: on ? "0 4px 14px rgba(251,191,36,0.18)" : "none", transition: "all 0.15s" }}>
+                  <div style={{ fontSize: 24, marginBottom: 6 }}>{item.icon}</div>
+                  <p style={{ color: on ? "#fbbf24" : "rgba(255,255,255,0.7)", fontSize: 11, fontWeight: 900, margin: 0, whiteSpace: "normal", wordBreak: "keep-all" }}>{item.name}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         <div style={{ maxWidth: 500, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900, marginBottom: 10 }}>
-            선택된 패키지: <span style={{ color: "#fbbf24", fontWeight: 900 }}>{currentPkg.name}</span>
+            선택된 패키지: <span style={{ color: "#fbbf24", fontWeight: 900 }}>{selectedPackage}</span>
           </p>
           <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 10 }}>
-            🎯 {currentPkg.count}개 운세
+            🎯 {currentCount}개 운세
           </p>
           <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
-            📄 {currentPkg.chars}
+            📄 {currentPackage?.chars ?? "전문가급 심층 분석"}
           </p>
-          {isPartner && (
+          {isPartner ? (
             <div style={{ background: "rgba(251,191,36,0.12)", border: "1.5px solid rgba(251,191,36,0.5)", borderRadius: 12, padding: 16, marginBottom: 12 }}>
               <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 6px 0" }}>📞 {brand?.businessName || "담당자"}에게 직접 문의해주세요</p>
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: 0, lineHeight: 1.6 }}>이 가격은 안내용이며, 결제·상담은 {brand?.businessName || "담당자"}에게 직접 문의해주세요.</p>
             </div>
+          ) : (
+            <button onClick={handlePayment} disabled={isProcessing} style={{ width: "100%", padding: 16, background: "linear-gradient(135deg, rgba(251,191,36,0.85), rgba(124,58,237,0.8))", backdropFilter: "blur(8px)", color: "white", border: "1px solid rgba(251,191,36,0.5)", borderRadius: 10, fontWeight: 900, fontSize: 16, cursor: isProcessing ? "not-allowed" : "pointer", opacity: isProcessing ? 0.6 : 1, marginBottom: 12, boxShadow: "0 8px 24px rgba(251,191,36,0.25)" }}>💳 {isProcessing ? "처리중..." : "결제하기"}</button>
           )}
+
           <a href="/main-v2" style={{ display: "inline-block", padding: 12, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textDecoration: "none" }}>
             ← 돌아가기
           </a>
         </div>
 
-        {/* 사업자 고지 */}
+        <section style={{ maxWidth: 900, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 40, borderRadius: 12 }}>
+          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>【왜 {brand?.businessName || "점운"}인가?】</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24 }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
+              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>사주 완벽분석</h3>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>990원부터<br/>VIP 커플팩 분석까지</p>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
+              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>990~29,900원</p>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
+              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>즉시 다운로드</h3>
+              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3초 이내 완성</p>
+            </div>
+          </div>
+        </section>
+
         <p style={{ textAlign: "center", color: "rgba(255,255,255,0.45)", fontSize: 11, fontWeight: 600, padding: "0 16px 24px" }}>
           본 서비스는 기획의신(대표 장문정)<br/>사업자등록번호<br/>773-60-00359가 운영합니다.
         </p>
