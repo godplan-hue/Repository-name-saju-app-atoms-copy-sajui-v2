@@ -46,7 +46,7 @@ const BIRTH_HOURS = [
 ];
 
 const PKG_PRICE_MAP: Record<string, string> = {
-  "기본 분석": "9900", "기본 분석": "9900",
+  "기본 분析": "9900",
   "베이직": "19900", "프리미엄": "24900", "VIP 커플팩": "29900",
 };
 

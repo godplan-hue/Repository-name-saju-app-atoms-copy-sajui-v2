@@ -76,10 +76,10 @@ const OLD_SINGLES = [
   { id: "총운",   label: "총운",   price: "₩3,900", hot: true },
 ];
 const PKGS = [
-  { id: "basic",    label: "기본 분석",  price: "₩9,900",  desc: "재물운 + 연애운" },
-  { id: "standard", label: "베이직",    price: "₩19,900", desc: "올해 + 재물 + 연애 + 월별" },
-  { id: "premium",  label: "프리미엄",  price: "₩24,900", desc: "올해 + 재물 + 연애 + 월별 + 건강" },
-  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "8개 전부 + 궁합" },
+  { id: "basic",    label: "기본 분析",  price: "₩9,900",  paid: 9900,  pages: 30,  desc: "재물운 + 연애운" },
+  { id: "standard", label: "베이직",    price: "₩19,900", paid: 19900, pages: 75,  desc: "올해 + 재물 + 연애 + 월별" },
+  { id: "premium",  label: "프리미엄",  price: "₩24,900", paid: 24900, pages: 100, desc: "올해 + 재물 + 연애 + 월별 + 건강" },
+  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", paid: 29900, pages: 150, desc: "8개 전부 + 궁합" },
 ];
 
 const CHIP_COLORS = [
@@ -422,7 +422,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
             <div style={{ display: "flex", flexDirection: "column", gap: 5, marginBottom: 10 }}>
               {PKGS.map(p => (
                 <button key={p.id}
-                  onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?preselect=${p.id}&scrollTo=packages`); }}
+                  onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?package=${encodeURIComponent(p.label)}&pages=${p.pages}&paid=${p.paid}`); }}
                   style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 12px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer" }}
                 >
                   <div style={{ textAlign: "left" }}>
