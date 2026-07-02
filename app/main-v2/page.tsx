@@ -309,7 +309,7 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
         {EXTRA_ITEMS.map(item => (
-          <div key={item.id} onClick={() => onPick(item.id)} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 12px ${item.accent}28` }}>
+          <div key={item.id} onClick={() => onPick(item.id)} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 12px ${item.accent}28`, WebkitTransform: "translateZ(0)", transform: "translateZ(0)" }}>
             <img src={item.img} alt={item.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 75%)" }} />
             <span style={{ position: "absolute", top: 5, left: 5, fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, minWidth: 52, textAlign: "center", display: "inline-block", ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "#15803d", color: "#fff" }) }}>{item.price}</span>
