@@ -534,7 +534,12 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>✨ 심층 분석 3,900원</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, marginBottom: 10 }}>
             {QA_OLD_SINGLES.map(s => (
-              <button key={s.id} onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?single=${s.id}`); }}
+              <button key={s.id} onClick={() => {
+                const catKeyMap: Record<string, string> = { "재물운": "💰 재물운", "연애운": "💕 연애운", "건강운": "💪 건강운", "성공운": "🎯 성공운", "총운": "✨ 총운" };
+                sessionStorage.setItem("v2_paid_cats", JSON.stringify([catKeyMap[s.id] ?? s.id]));
+                setShowBuyModal(false);
+                router.push(`/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=3900`);
+              }}
                 style={{ padding: "8px 3px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
                 <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
                 <p style={{ margin: 0, fontSize: 9, fontWeight: 700, color: "#6b7280" }}>₩3,900</p>

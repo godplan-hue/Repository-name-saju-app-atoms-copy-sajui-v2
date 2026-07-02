@@ -42,9 +42,13 @@ function PaymentCompleteInner() {
   const [ready, setReady] = useState(false);
   const [isPackage, setIsPackage] = useState(false);
   const [redirectTo, setRedirectTo] = useState("");
+  const [paidAmount, setPaidAmount] = useState("");
 
   useEffect(() => {
     setIsPackage(false);
+
+    const paidParam = searchParams.get("paid") || "";
+    if (paidParam) setPaidAmount(paidParam);
 
     const isDaeun = searchParams.get("daeun") === "1";
     if (isDaeun) {
@@ -164,10 +168,11 @@ function PaymentCompleteInner() {
                 <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분석 수준: <span style={{ fontWeight: 900 }}>{CHARS_MAP[pages] ?? "전문가급 심층 분석 포함"}</span></p>
               </>
             ) : isPackage ? (
-              <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName.replace(/\+/g, ", ")}</span></p>
+              <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>상품: <span style={{ fontWeight: 900 }}>{packageName.replace(/\+/g, ", ")}</span></p>
             ) : (
               <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>상품: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
             )}
+            {paidAmount && <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>결제 금액: <span style={{ color: "#fbbf24", fontWeight: 900 }}>₩{Number(paidAmount).toLocaleString()}</span></p>}
             <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: 0 }}>상태: <span style={{ color: "#90EE90", fontWeight: 900 }}>완료</span></p>
           </div>
 

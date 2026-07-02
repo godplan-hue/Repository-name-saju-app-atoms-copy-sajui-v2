@@ -399,7 +399,12 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
             <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, marginBottom: 10 }}>
               {OLD_SINGLES.map(s => (
                 <button key={s.id}
-                  onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?single=${s.id}`); }}
+                  onClick={() => {
+                    const catKeyMap: Record<string, string> = { "재물운": "💰 재물운", "연애운": "💕 연애운", "건강운": "💪 건강운", "성공운": "🎯 성공운", "총운": "✨ 총운" };
+                    sessionStorage.setItem("v2_paid_cats", JSON.stringify([catKeyMap[s.id] ?? s.id]));
+                    setShowBuyModal(false);
+                    router.push(`/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=3900`);
+                  }}
                   style={{ position: "relative", padding: "8px 3px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}
                 >
                   {(s as any).hot && <span style={{ position: "absolute", top: -5, right: -3, background: "#ef4444", color: "white", fontSize: 8, fontWeight: 900, padding: "1px 4px", borderRadius: 20 }}>추천</span>}
