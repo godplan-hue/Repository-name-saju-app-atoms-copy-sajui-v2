@@ -158,6 +158,7 @@ function PaymentCompleteInner() {
       }
       setPackageName("대운(大運)");
       setRedirectTo("/main-v2/daewoon");
+      setNeedsForm(true);
       setReady(true);
       return;
     }
@@ -168,6 +169,7 @@ function PaymentCompleteInner() {
       sessionStorage.setItem("yearlyPaid", "1");
       setPackageName("올해 운세");
       setRedirectTo("/main-v2/yearly");
+      setNeedsForm(true);
       setReady(true);
       return;
     }
@@ -185,6 +187,7 @@ function PaymentCompleteInner() {
       }
       setPackageName(searchParams.get("package") || `${queueArr.length}개 운세 묶음`);
       setRedirectTo("/main-v2/profile");
+      setNeedsForm(true);
       setReady(true);
       return;
     }
@@ -355,6 +358,14 @@ function PaymentCompleteInner() {
         }
       } catch {}
     }
+    // naming/daeun/yearly: 프로필 저장 후 redirectTo로 이동
+    if (redirectTo) {
+      let prev: Record<string,string> = {};
+      try { prev = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); } catch {}
+      localStorage.setItem("v2_saved_profile", JSON.stringify({ ...prev, name, birthYear, birthMonth: String(birthMonth).padStart(2,"0"), birthDay: String(birthDay).padStart(2,"0"), birthHour }));
+      router.replace(redirectTo);
+      return;
+    }
     runAnalysis({
       name, birthYear, birthMonth, birthDay, birthHour,
       pkg: packageName,
@@ -514,7 +525,7 @@ function PaymentCompleteInner() {
                 <div style={{ display: "flex", gap: 8 }}>
                   <input
                     type="text"
-                    placeholder="할인코드 입력 (3,900원 사주부터 적용)"
+                    placeholder="할인코드 입력 (3,900원 이상 적용)"
                     value={discountInput}
                     onChange={e => { setDiscountInput(e.target.value); setDiscountError(""); }}
                     style={{ flex: 1, padding: 9, borderRadius: 8, border: "1px solid #fbbf24", background: "#fff", color: "#333", fontSize: 14, fontWeight: 700, fontFamily: "inherit" }}
