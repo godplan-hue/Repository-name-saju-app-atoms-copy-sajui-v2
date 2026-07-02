@@ -936,7 +936,7 @@ export default function MainV2() {
           yearly:        { emoji: "🎍", title: "기본 분석",             desc: "재물운 + 연애운 심층 분석",               price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic", priceNum: 9900 },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
-          naming:        { emoji: "💫", title: "심층 5개 운세 묶음", desc: "원하는 운세 1개 선택 · ₩3,900", price: "₩3,900", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 3900 },
+          naming:        { emoji: "💫", title: "심층 5개 운세 묶음", desc: "운세 5개 묶음", price: "₩3,900", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 3900 },
           full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
         // 추가 상품 모달 처리
@@ -1000,13 +1000,13 @@ export default function MainV2() {
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
                   <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>{cfg.desc}</div>
                 </div>
-                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{showModal === "naming" ? "₩3,900" : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
+                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{showModal === "naming" ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 3900).toLocaleString()}` : "₩3,900") : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
               </div>
               {cfg.features && (
                 <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
                   {cfg.features.map((f, i) => (
                     showModal === "naming" ? (
-                      <div key={i} onClick={() => setModalSelectedCats([f])} style={{ display: "flex", alignItems: "center", gap: 10, color: modalSelectedCats.includes(f) ? "#fff" : "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: 700, lineHeight: 2.2, cursor: "pointer" }}>
+                      <div key={i} onClick={() => setModalSelectedCats(prev => prev.includes(f) ? prev.filter(x => x !== f) : [...prev, f])} style={{ display: "flex", alignItems: "center", gap: 10, color: modalSelectedCats.includes(f) ? "#fff" : "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: 700, lineHeight: 2.2, cursor: "pointer" }}>
                         <span style={{ width: 20, height: 20, border: `2px solid ${modalSelectedCats.includes(f) ? "#a78bfa" : "rgba(255,255,255,0.25)"}`, borderRadius: 5, display: "inline-flex", alignItems: "center", justifyContent: "center", background: modalSelectedCats.includes(f) ? "#7c3aed" : "transparent", flexShrink: 0, fontSize: 12 }}>{modalSelectedCats.includes(f) ? "✓" : ""}</span>
                         {f}
                       </div>
@@ -1028,9 +1028,10 @@ export default function MainV2() {
                   })();
                   if (showModal === "naming") {
                     if (modalSelectedCats.length === 0) return;
-                    const catName = modalSelectedCats[0].replace(/^\S+\s/, "");
-                    sessionStorage.setItem("v2_paid_cats", JSON.stringify([modalSelectedCats[0]]));
-                    router.push(`/payment-complete?package=${encodeURIComponent(catName)}&pages=30&paid=3900`);
+                    const totalPaid = modalSelectedCats.length * 3900;
+                    sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
+                    const label = modalSelectedCats.length === 1 ? (modalSelectedCats[0].replace(/^\S+\s/, "") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
+                    router.push(`/payment-complete?package=${encodeURIComponent(label)}&pages=${modalSelectedCats.length * 30}&paid=${totalPaid}`);
                   } else if (cfg.catKeys) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
                     router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`);
