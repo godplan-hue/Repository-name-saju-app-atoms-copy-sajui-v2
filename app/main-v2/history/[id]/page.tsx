@@ -384,9 +384,11 @@ export default function HistoryDetail() {
           const link = document.createElement("a");
           link.download = name;
           link.href = url;
+          document.body.appendChild(link);
           link.click();
+          document.body.removeChild(link);
           setTimeout(() => URL.revokeObjectURL(url), 60000);
-          setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "사진 앱(갤러리)" : "다운로드 폴더"}에 저장됐어요!`), 0);
+          setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "갤러리(사진 앱)나 파일 앱 → 다운로드 폴더" : "다운로드 폴더"}에 저장됐어요!\n\n바로 안 보이면 10초 뒤 파일 앱을 확인해보세요.`), 300);
         }, "image/png");
       }
     } catch {
