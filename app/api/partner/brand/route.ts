@@ -16,7 +16,7 @@ function isValidSubdomain(s: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
-    const { partnerId, subdomain, businessName, logoUrl, customPriceBasic, customPriceStandard, customPricePremium, customPriceVip } = await request.json();
+    const { partnerId, subdomain, businessName, logoUrl, customPriceBasic, customPriceStandard, customPricePremium, customPriceVip, customPricePinkBundle } = await request.json();
     if (!partnerId || !subdomain || !businessName) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 클라이언트 검증과 동일하게, 가격을 9,900원보다 낮게는 못 적게 서버에서도 한 번 더 확인
-    for (const p of [customPriceBasic, customPriceStandard, customPricePremium, customPriceVip]) {
+    for (const p of [customPriceBasic, customPriceStandard, customPricePremium, customPriceVip, customPricePinkBundle]) {
       if (!p) continue;
       const num = Number(String(p).replace(/[^0-9]/g, ""));
       if (num > 0 && num < 9900) {
@@ -63,6 +63,7 @@ export async function POST(request: NextRequest) {
       // 어차피 직접 받으므로 점운 시스템 결제·정산에는 전혀 영향 없는 표시용 값)
       customPriceBasic: customPriceBasic || "", customPriceStandard: customPriceStandard || "",
       customPricePremium: customPricePremium || "", customPriceVip: customPriceVip || "",
+      customPricePinkBundle: customPricePinkBundle || "",
     });
     await db.ref(`partners/${partnerId}/subdomain`).set(slug);
 
@@ -87,11 +88,12 @@ export async function GET(request: NextRequest) {
       if (!slug) return NextResponse.json({ error: "등록된 브랜드가 없습니다." }, { status: 404 });
       const brandSnap = await db.ref(`partnerBrands/${slug}`).once("value");
       if (!brandSnap.exists()) return NextResponse.json({ error: "등록된 브랜드가 없습니다." }, { status: 404 });
-      const { businessName, logoUrl, customPriceBasic, customPriceStandard, customPricePremium, customPriceVip } = brandSnap.val();
+      const { businessName, logoUrl, customPriceBasic, customPriceStandard, customPricePremium, customPriceVip, customPricePinkBundle } = brandSnap.val();
       return NextResponse.json({
         subdomain: slug, businessName, logoUrl: logoUrl || "",
         customPriceBasic: customPriceBasic || "", customPriceStandard: customPriceStandard || "",
         customPricePremium: customPricePremium || "", customPriceVip: customPriceVip || "",
+        customPricePinkBundle: customPricePinkBundle || "",
       });
     }
 
@@ -101,11 +103,12 @@ export async function GET(request: NextRequest) {
     const snap = await db.ref(`partnerBrands/${subdomainParam.toLowerCase()}`).once("value");
     if (!snap.exists()) return NextResponse.json({ error: "등록된 브랜드가 없습니다." }, { status: 404 });
 
-    const { businessName, logoUrl, customPriceBasic, customPriceStandard, customPricePremium, customPriceVip } = snap.val();
+    const { businessName, logoUrl, customPriceBasic, customPriceStandard, customPricePremium, customPriceVip, customPricePinkBundle: bundleP } = snap.val();
     return NextResponse.json({
       businessName, logoUrl: logoUrl || "",
       customPriceBasic: customPriceBasic || "", customPriceStandard: customPriceStandard || "",
       customPricePremium: customPricePremium || "", customPriceVip: customPriceVip || "",
+      customPricePinkBundle: bundleP || "",
     });
   } catch (error) {
     console.error("Brand lookup error:", error);

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -323,27 +323,91 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
   );
 }
 
+const PARTNER_PKG_LIST = [
+  { id: "yearly",        title: "기본 분析",  sub: "재물운 + 연애운",      priceFallback: "₩9,900",  customKey: "customPriceBasic",    img: "https://i.pinimg.com/1200x/24/32/ee/2432eed06907654905c7949ce4ea350d.jpg" },
+  { id: "full",          title: "베이직",      sub: "4개 분야 심층",        priceFallback: "₩19,900", customKey: "customPriceStandard", img: "https://i.pinimg.com/1200x/5a/27/e1/5a27e1d0bf4ea71ee0dfc035f4724e5e.jpg" },
+  { id: "health",        title: "프리미엄",    sub: "5개 분야 + 월별",      priceFallback: "₩24,900", customKey: "customPricePremium",  img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg" },
+  { id: "compatibility", title: "VIP 커플팩", sub: "커플 궁합 완전분析",    priceFallback: "₩29,900", customKey: "customPriceVip",      img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg" },
+];
+
+function PartnerFortuneGrid({ brand, onPick, onBundle }: {
+  brand: { businessName: string; logoUrl: string; customPriceBasic?: string; customPriceStandard?: string; customPricePremium?: string; customPriceVip?: string; customPricePinkBundle?: string } | null;
+  onPick: (id: string) => void;
+  onBundle: () => void;
+}) {
+  const rawBundlePrice = brand?.customPricePinkBundle || "";
+  const bundleDisplayPrice = rawBundlePrice || "₩6,900";
+  const BUNDLE_ITEMS = [
+    { icon: "💰", name: "재물운", desc: "돈·사업·재테크" },
+    { icon: "💕", name: "연애운", desc: "사랑·이성·궁합" },
+    { icon: "💪", name: "건강운", desc: "몸·기운·건강" },
+    { icon: "🎯", name: "성공운", desc: "목표·직업·성취" },
+    { icon: "✨", name: "총운", desc: "전체 흐름 총정리" },
+  ];
+  return (
+    <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+        {PARTNER_PKG_LIST.map(pkg => {
+          const customPrice = brand ? (brand as Record<string, string | undefined>)[pkg.customKey] : undefined;
+          const displayPrice = customPrice || pkg.priceFallback;
+          return (
+            <div key={pkg.id} onClick={() => onPick(pkg.id)} style={{ aspectRatio: "4/3", borderRadius: 16, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: "0 3px 14px rgba(0,0,0,0.2)" }}>
+              <img src={pkg.img} alt={pkg.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 75%)" }} />
+              <span style={{ position: "absolute", top: 7, right: 7, background: "rgba(0,0,0,0.65)", color: "#fbbf24", fontSize: 10, fontWeight: 900, padding: "3px 8px", borderRadius: 20, boxShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>{displayPrice}</span>
+              <div style={{ position: "absolute", bottom: 8, left: 0, right: 0, textAlign: "center" }}>
+                <div style={{ fontSize: 13, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)" }}>{pkg.title}</div>
+                <div style={{ fontSize: 9, color: "rgba(255,255,255,0.75)", marginTop: 2 }}>{pkg.sub}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ background: "linear-gradient(135deg, #fff0f6, #fce7f3)", borderRadius: 14, padding: "12px 14px", border: "2px solid #ffa0c5" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 900, color: "#c44569" }}>💗 심층 분析 5개 묶음</div>
+            <div style={{ fontSize: 10, color: "#888", marginTop: 2 }}>5개 전부 한 번에 — 묶음 특가</div>
+          </div>
+          <div style={{ fontSize: 20, fontWeight: 900, color: "#c44569" }}>{bundleDisplayPrice}</div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6 }}>
+          {BUNDLE_ITEMS.map(item => (
+            <div key={item.name} onClick={onBundle} style={{ background: "white", borderRadius: 10, padding: "8px 4px", textAlign: "center", cursor: "pointer", boxShadow: "0 2px 8px rgba(196,69,105,0.15)", border: "1px solid rgba(255,160,197,0.4)" }}>
+              <div style={{ fontSize: 18 }}>{item.icon}</div>
+              <div style={{ fontSize: 10, fontWeight: 900, color: "#c44569", marginTop: 3 }}>{item.name}</div>
+              <div style={{ fontSize: 8, color: "#999", marginTop: 1 }}>{item.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; onModal?: (id: string) => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
   const [cur, setCur] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
 
+  const displayBanners = isPartner ? [BANNERS[2], BANNERS[3]] : BANNERS;
+
   const resetTimer = (next: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setCur(c => {
-      return (c + 1) % BANNERS.length;
+      return (c + 1) % displayBanners.length;
     }), 4500);
     setCur(next);
   };
 
   useEffect(() => {
     timerRef.current = setInterval(() => setCur(c => {
-      return (c + 1) % BANNERS.length;
+      return (c + 1) % displayBanners.length;
     }), 4500);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, []);
+  }, [displayBanners.length]);
 
-  const b = BANNERS[cur];
+  const b = displayBanners[cur] ?? displayBanners[0];
 
   const lineColors = ["#fff700", "#ffffff", "#ffd6f0"];
 
@@ -495,7 +559,7 @@ export default function MainV2() {
   const [isPartner, setIsPartner] = useState(false);
   // 다이아 등급 파트너의 서브도메인(예: kim.jeomun.com)으로 들어온 경우,
   // "점운" 대신 그 파트너가 등록한 상호명·로고로 헤더를 바꿔서 보여줌
-  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string; customPriceBasic?: string; customPriceStandard?: string; customPricePremium?: string; customPriceVip?: string } | null>(null);
+  const [brand, setBrand] = useState<{ businessName: string; logoUrl: string; customPriceBasic?: string; customPriceStandard?: string; customPricePremium?: string; customPriceVip?: string; customPricePinkBundle?: string } | null>(null);
   useEffect(() => {
     const hostname = window.location.hostname;
     const partner = isPartnerHost(hostname);
@@ -680,27 +744,28 @@ export default function MainV2() {
           8개 항목을 그대로 미리보기 — 그래서 이름/내용을 다른 걸로 바꾸지 않음).
           재물운/연애운은 990원 단품 결제로, 나머지는 패키지(9,900원~) 결제로 보냄.
           무료체험은 별도의 진짜 무료 분석 플로우로 보냄(여기서 결제 없음). */}
-      <FortuneGrid isPartner={isPartner} onPick={id => {
-        sessionStorage.setItem("selectedFortune", id);
-        // 파트너 서브도메인에서는 990원 단품 결제를 팔지 않기로 했으므로, 재물운/연애운도
-        // 다른 항목들처럼 패키지(9,900원~) 화면으로 보냄
-        const SELECT_ROUTE_IDS = isPartner ? new Set<string>() : new Set(["wealth", "love"]);
-        // 박스에 표시된 가격 배지(9,900~/프리미엄전용/VIP전용)에 맞는 패키지가
-        // 실제로 미리 선택된 채로 들어가게 — 안 그러면 늘 기본값(기본분석 9,900원)
-        // 이 선택된 걸로 보여서 "프리미엄 전용"이라고 눌렀는데 다른 게 선택된
-        // 것처럼 보이는 문제가 생김
-        const PRESELECT: Record<string, string> = {
-          yearly: "basic", monthly: "basic",
-          health: "premium",
-          compatibility: "vip", naming: "vip", full: "vip",
-        };
-        if (id === "free") { goFree(); return; }
-        else if (id === "sinyeon_premium") {
-          if (!user) { router.push("/main-v2/login"); return; }
-          setShowModal(id);
-        }
-        else { if (id === "naming") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id); }
-      }} />
+            {isPartner ? (
+        <PartnerFortuneGrid
+          brand={brand}
+          onPick={id => { setShowModal(id); }}
+          onBundle={() => {
+            const rawPrice = brand?.customPricePinkBundle || "";
+            const bundlePrice = rawPrice ? (Number(rawPrice.replace(/[^0-9]/g, "")) || 6900) : 6900;
+            sessionStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]));
+            router.push("/payment-complete?package=" + encodeURIComponent("5개심층번들") + "&pages=150&paid=" + bundlePrice);
+          }}
+        />
+      ) : (
+        <FortuneGrid isPartner={isPartner} onPick={id => {
+          sessionStorage.setItem("selectedFortune", id);
+          if (id === "free") { goFree(); return; }
+          else if (id === "sinyeon_premium") {
+            if (!user) { router.push("/main-v2/login"); return; }
+            setShowModal(id);
+          }
+          else { if (id === "naming") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id); }
+        }} />
+      )}
 
       {/* 가격 신뢰 후킹 문구 */}
       <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
@@ -720,11 +785,11 @@ export default function MainV2() {
               <span key={i} style={{ display: "inline-block", color: "#dc2626", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>✨</span>
             ))}
           </div>
-          <div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.1, marginBottom: 12, color: "#8b2f8f", textShadow: "0 0 8px #fff, 0 0 8px #fff, 0 2px 5px #fff", animation: "bigGlow 2.4s ease-in-out infinite" }}>
+          {!isPartner && (<div style={{ fontSize: 46, fontWeight: 900, lineHeight: 1.1, marginBottom: 12, color: "#8b2f8f", textShadow: "0 0 8px #fff, 0 0 8px #fff, 0 2px 5px #fff", animation: "bigGlow 2.4s ease-in-out infinite" }}>
             <span style={{ display: "inline-block", transform: "rotate(-8deg) translateX(-4px)" }}>점</span>
             <br/>
             <span style={{ display: "inline-block", transform: "rotate(6deg) translateX(8px)" }}>운</span>
-          </div>
+          </div>)}
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(255,255,255,0.9)", borderRadius: 20 }}>
             <span style={{ fontSize: 12 }}>🌸</span>
             <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>오늘의 무료사주</span>
@@ -742,13 +807,13 @@ export default function MainV2() {
               animation: "catFloat 3s ease-in-out infinite",
             }}
           />
-          <div style={{
+          {!isPartner && (<div style={{
             position: "absolute", bottom: -8, right: -8,
             background: "linear-gradient(135deg, #ec4899, #8b5cf6)",
             color: "white", fontSize: 10, fontWeight: 900,
             padding: "4px 10px", borderRadius: 20,
             boxShadow: "0 3px 12px rgba(139,92,246,0.4)",
-          }}>✨ AI 사주 점운</div>
+          }}>✨ AI 사주 점운</div>)}
         </div>
         </div>
       </section>
@@ -785,7 +850,7 @@ export default function MainV2() {
       {/* 푸터 */}
       <footer style={{ padding: "0 30px 24px", textAlign: "center" }}>
         <div style={{ maxWidth: 320, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#fff5f8" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, marginBottom: 5 }}>
+        {!isPartner && (<><div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, marginBottom: 5 }}>
           <span>🐱</span>
           <span style={{ fontSize: 13, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운</span>
         </div>
@@ -808,7 +873,7 @@ export default function MainV2() {
           <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
           <a href="/refund" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
         </div>
-        <a href="/partner" style={{ color: "#dc2626", textDecoration: "none", fontSize: 11, fontWeight: 700 }}>사주 사업을 하고 계신가요? 파트너 모집 안내 →</a>
+        <a href="/partner" style={{ color: "#dc2626", textDecoration: "none", fontSize: 11, fontWeight: 700 }}>사주 사업을 하고 계신가요? 파트너 모집 안내 →</a></>)}
         </div>
       </footer>
 

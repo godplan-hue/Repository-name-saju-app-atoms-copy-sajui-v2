@@ -19,6 +19,7 @@ export default function PartnerBrandSettings() {
   const [customPriceStandard, setCustomPriceStandard] = useState("");
   const [customPricePremium, setCustomPricePremium] = useState("");
   const [customPriceVip, setCustomPriceVip] = useState("");
+  const [customPricePinkBundle, setCustomPricePinkBundle] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -43,6 +44,7 @@ export default function PartnerBrandSettings() {
             setCustomPriceStandard(data.customPriceStandard || "");
             setCustomPricePremium(data.customPricePremium || "");
             setCustomPriceVip(data.customPriceVip || "");
+            setCustomPricePinkBundle(data.customPricePinkBundle || "");
           }
         })
         .catch(() => {});
@@ -59,7 +61,7 @@ export default function PartnerBrandSettings() {
     }
     // 가격을 너무 낮게 적어서 점운 브랜드 이미지를 깎아먹는 걸 막기 위해, 적어도
     // 가장 싼 기본 패키지 정가(9,900원)보다는 낮게 못 적게 함
-    const prices = [customPriceBasic, customPriceStandard, customPricePremium, customPriceVip];
+    const prices = [customPriceBasic, customPriceStandard, customPricePremium, customPriceVip, customPricePinkBundle];
     for (const p of prices) {
       if (!p.trim()) continue;
       const num = Number(p.replace(/[^0-9]/g, ""));
@@ -77,6 +79,7 @@ export default function PartnerBrandSettings() {
           partnerId, subdomain: subdomain.trim(), businessName: businessName.trim(), logoUrl: logoUrl.trim(),
           customPriceBasic: customPriceBasic.trim(), customPriceStandard: customPriceStandard.trim(),
           customPricePremium: customPricePremium.trim(), customPriceVip: customPriceVip.trim(),
+          customPricePinkBundle: customPricePinkBundle.trim(),
         }),
       });
       const data = await res.json();
@@ -173,6 +176,12 @@ export default function PartnerBrandSettings() {
               <p style={{ fontSize: 11, color: "#666", margin: "0 0 4px" }}>VIP 커플팩 (기본 ₩29,900)</p>
               <input type="text" value={customPriceVip} onChange={e => setCustomPriceVip(e.target.value)} placeholder="₩29,900" style={{ width: "100%", padding: 10, border: "2px solid #ddd", borderRadius: 8, fontSize: 13, boxSizing: "border-box" }} />
             </div>
+          </div>
+
+          <div style={{ marginTop: 12, padding: "14px 16px", background: "#fff0f6", borderRadius: 10, border: "2px solid #ffa0c5", marginBottom: 18 }}>
+            <p style={{ fontSize: 12, fontWeight: 900, color: "#c44569", margin: "0 0 6px" }}>💗 핑크 사주 묶음 (5개 운세 번들)</p>
+            <p style={{ fontSize: 10, color: "#888", margin: "0 0 8px" }}>기본 ₩6,900 | 수정 시 최소 ₩9,900 이상만 설정 가능</p>
+            <input type="text" value={customPricePinkBundle} onChange={e => setCustomPricePinkBundle(e.target.value)} placeholder="₩6,900 (비우면 기본가)" style={{ width: "100%", padding: 10, border: "2px solid #ffa0c5", borderRadius: 8, fontSize: 13, boxSizing: "border-box" }} />
           </div>
 
           {error && <p style={{ color: "#dc2626", fontSize: 13, fontWeight: 700, marginBottom: 14 }}>{error}</p>}
