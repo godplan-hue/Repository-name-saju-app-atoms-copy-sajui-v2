@@ -297,12 +297,12 @@ function PaymentInner() {
                   const paidPrice = await finalPrice(2900);
                   router.push(`/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}
-                style={{ padding: "12px 6px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
+                style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
               >
-                <p style={{ margin: "0 0 3px", fontSize: 22 }}>{s.emoji}</p>
-                <p style={{ margin: "0 0 2px", fontSize: 12, fontWeight: 900 }}>{s.label}</p>
-                <p style={{ margin: "0 0 4px", fontSize: 10, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{s.sub}</p>
-                <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#c4b5fd" }}>₩2,900</p>
+                <p style={{ margin: "0 0 3px", fontSize: 20 }}>{s.emoji}</p>
+                <p style={{ margin: "0 0 2px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
+                <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.sub}</p>
+                <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#c4b5fd" }}>₩2,900</p>
               </button>
             ))}
           </div>
