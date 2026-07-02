@@ -1,4 +1,4 @@
-// app/payment-complete/page.tsx
+﻿// app/payment-complete/page.tsx
 
 "use client";
 
@@ -46,7 +46,7 @@ const BIRTH_HOURS = [
 ];
 
 const PKG_PRICE_MAP: Record<string, string> = {
-  "기본 분析": "9900", "기본 분석": "9900",
+  "기본 분석": "9900", "기본 분석": "9900",
   "베이직": "19900", "프리미엄": "24900", "VIP 커플팩": "29900",
 };
 
@@ -57,7 +57,7 @@ const CHARS_MAP: Record<number, string> = {
   150: "전문가급 심층 분석 포함",
 };
 
-const PKG_DISPLAY_NAMES = ["기본 분析", "기본 분석", "베이직", "프리미엄", "VIP 커플팩"];
+const PKG_DISPLAY_NAMES = ["기본 분석", "기본 분석", "베이직", "프리미엄", "VIP 커플팩"];
 
 export default function PaymentComplete() {
   return (
@@ -351,7 +351,7 @@ function PaymentCompleteInner() {
           {/* 결제 정보 카드 */}
           <div style={{ background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 24, borderRadius: 18, marginBottom: 24, boxShadow: "0 8px 32px rgba(0,0,0,0.35)", textAlign: "left" }}>
             <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 12px 0" }}>📊 결제 정보</p>
-            {isPackage && ["기본 분析","기본 분석","베이직","프리미엄","VIP 커플팩"].includes(packageName) ? (
+            {isPackage && ["기본 분석","기본 분석","베이직","프리미엄","VIP 커플팩"].includes(packageName) ? (
               <>
                 <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
                 <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분석 수준: <span style={{ fontWeight: 900 }}>{CHARS_MAP[pages] ?? "전문가급 심층 분석 포함"}</span></p>

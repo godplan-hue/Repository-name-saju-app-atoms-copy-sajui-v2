@@ -27,10 +27,10 @@ const QA_OLD_SINGLES = [
   { id: "총운",   label: "총운" },
 ];
 const QA_PKGS = [
-  { id: "basic",    label: "기본 분析", price: "₩9,900",  paid: 9900,  pages: 30,  desc: "재물운 + 연애운" },
+  { id: "basic",    label: "기본 분석", price: "₩9,900",  paid: 9900,  pages: 30,  desc: "재물운 + 연애운" },
   { id: "standard", label: "베이직",    price: "₩19,900", paid: 19900, pages: 75,  desc: "올해 + 재물 + 연애 + 월별" },
   { id: "premium",  label: "프리미엄",  price: "₩24,900", paid: 24900, pages: 100, desc: "올해 + 재물 + 연애 + 월별 + 건강" },
-  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", paid: 29900, pages: 150, desc: "본인 분析(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)" },
+  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", paid: 29900, pages: 150, desc: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)" },
 ];
 
 const FREE_COUNT = 3;
