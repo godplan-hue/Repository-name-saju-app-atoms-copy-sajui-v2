@@ -190,7 +190,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(180,83,9,0.4) 0%, rgba(245,158,11,0.35) 100%)",
     fit: "contain" as const,
     route: "package" as const,
-    modalId: "yearly",
+    modalId: "naming", preselect: "💰 재물운",
   },
   {
     img: "https://i.pinimg.com/736x/8b/bc/25/8bbc258261ea953d149de68672016367.jpg",
@@ -201,7 +201,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(239,68,68,0.45) 100%)",
     fit: "contain" as const,
     route: "package" as const,
-    modalId: "yearly",
+    modalId: "love", preselect: "💗 연애사주",
   },
   {
     // 사진이 아니라 글자+도형으로 직접 그리는 배너 — 990원 가격을 큰 숫자
@@ -386,7 +386,7 @@ function PartnerFortuneGrid({ brand, onPick, onBundle }: {
   );
 }
 
-function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; onModal?: (id: string) => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
+function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; onModal?: (id: string, preselect?: string) => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
   const [cur, setCur] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
@@ -421,7 +421,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
             document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" });
             return;
           }
-          if ((b as any).modalId && onModal) { onModal((b as any).modalId); return; }
+          if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
         }}
         onTouchStart={e => { startXRef.current = e.touches[0].clientX; }}
@@ -728,7 +728,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={id => { if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id); }} />
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); setShowModal(id); }} />
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
@@ -931,11 +931,11 @@ export default function MainV2() {
       {(() => {
         const MCFG: Record<string, { emoji: string; title: string; desc: string; price: string; features?: string[]; catKey?: string; catKeys?: string[]; priceNum?: number; preselect?: string }> = {
           wealth:        { emoji: "💰", title: "재물운",              desc: "나의 돈 흐름 · 재물이 들어오는 시기",     price: "₩3,900",  catKey: "💰 재물운", priceNum: 3900 },
-          love:          { emoji: "💕", title: "운세 5개 묶음",   desc: "원하는 운세 골라 담기 · 개당 ₩990",   price: "₩990/개", features: ["🎍 신년운세", "💗 연애사주", "🔍 내 사람 찾기", "💍 결혼사주", "🌧 이혼운세"] },
+          love:          { emoji: "💕", title: "연애운 5개 묶음",   desc: "사랑·인연·결혼·재회까지 — 원하는 것만 골라서 · 개당 ₩990",   price: "₩990/개", features: ["🎍 신년운세", "💗 연애사주", "🔍 내 사람 찾기", "💍 결혼사주", "🌧 이혼운세"] },
           yearly:        { emoji: "🎍", title: "기본 분석",             desc: "재물운 + 연애운 심층 분석",               price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic", priceNum: 9900 },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
-          naming:        { emoji: "💫", title: "심층 5개 운세 묶음", desc: "운세 5개 묶음", price: "₩3,900", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 3900 },
+          naming:        { emoji: "💫", title: "심층 5개 운세 묶음", desc: "재물·연애·건강·성공·총운 — 5가지 심층 분석을 한 번에 · ₩3,900", price: "₩3,900", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 3900 },
           full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
         // 추가 상품 모달 처리
