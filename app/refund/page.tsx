@@ -54,6 +54,7 @@ export default function Refund() {
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>3. 환불 불가능한 경우</h2>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20 }}>
+              <li>• <span style={{ color: "#ff6b6b", fontWeight: 900 }}>단순 변심에 의한 환불 불가</span></li>
               <li>• 분석 결과의 내용에 만족하지 않음</li>
               <li>• 고객의 실수로 인한 결제</li>
               <li>• 기대치와 다른 결과</li>

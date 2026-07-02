@@ -96,6 +96,11 @@ function PaymentCompleteInner() {
   const [needsForm, setNeedsForm] = useState(false);
   const [redirectTo, setRedirectTo] = useState(""); // daeun/yearly/naming용
 
+  // 할인코드
+  const [discountInput, setDiscountInput] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; discountPercent: number } | null>(null);
+  const [discountError, setDiscountError] = useState("");
+
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
@@ -224,12 +229,31 @@ function PaymentCompleteInner() {
   }, [searchParams]);
 
   // 분석 API 호출 → 결과지 이동
+  const applyDiscountCode = async () => {
+    const code = discountInput.trim().toUpperCase();
+    if (!code) return;
+    if (Number(paidAmount) < 3900) {
+      setDiscountError("3,900원 미만 상품은 할인코드를 사용할 수 없습니다.");
+      return;
+    }
+    try {
+      const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(code)}`);
+      if (!res.ok) { setDiscountError("유효하지 않은 코드입니다."); return; }
+      const data = await res.json();
+      if (!data.active) { setDiscountError("이미 사용된 코드입니다."); return; }
+      setAppliedDiscount({ code, discountPercent: data.discountPercent });
+      setDiscountError("");
+    } catch {
+      setDiscountError("코드 확인 중 오류가 발생했습니다.");
+    }
+  };
+
   const runAnalysis = async (p: {
     name: string; birthYear: string; birthMonth: string; birthDay: string;
     birthHour: string; pkg: string;
     partnerName?: string; partnerBirthYear?: string; partnerBirthMonth?: string;
     partnerBirthDay?: string; partnerBirthHour?: string;
-  }) => {
+  }, pricePaid?: string) => {
     setIsLoading(true);
     try {
       const birthDate = `${p.birthYear}-${String(p.birthMonth).padStart(2, "0")}-${String(p.birthDay).padStart(2, "0")}`;
@@ -280,7 +304,7 @@ function PaymentCompleteInner() {
         birthDay: p.birthDay, birthHour: p.birthHour, gender: "N", relationship: "solo",
       };
       const result = { ...data, profile, histId: Date.now(), savedAt: new Date().toISOString() };
-      const price = plan === "select" ? (paidAmount || "990") : (PKG_PRICE_MAP[p.pkg] ?? "9900");
+      const price = plan === "select" ? (pricePaid || paidAmount || "990") : (PKG_PRICE_MAP[p.pkg] ?? "9900");
 
       sessionStorage.setItem("v2_result", JSON.stringify(result));
       sessionStorage.setItem("v2_paid", "1");
@@ -317,11 +341,25 @@ function PaymentCompleteInner() {
         return;
       }
     }
+    let effectivePaid = paidAmount;
+    if (appliedDiscount) {
+      try {
+        const res = await fetch("/api/promo-codes", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: appliedDiscount.code }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          effectivePaid = String(Math.round(Number(paidAmount) * (1 - data.discountPercent / 100)));
+        }
+      } catch {}
+    }
     runAnalysis({
       name, birthYear, birthMonth, birthDay, birthHour,
       pkg: packageName,
       partnerName, partnerBirthYear, partnerBirthMonth, partnerBirthDay, partnerBirthHour,
-    });
+    }, effectivePaid);
   };
 
   if (!ready) return null;
@@ -457,6 +495,38 @@ function PaymentCompleteInner() {
                     </div>
                     <button onClick={() => setPartnerBirthHour("unknown")} style={{ width: "100%", padding: "8px 0", border: partnerBirthHour === "unknown" ? "2px solid #c4b5fd" : "1.5px solid #ddd", background: partnerBirthHour === "unknown" ? "#f5f3ff" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: "pointer", color: partnerBirthHour === "unknown" ? "#6d28d9" : "#333" }}>모름</button>
                   </div>
+                </div>
+              )}
+
+              {/* 할인코드 (3,900원 이상만) */}
+              {Number(paidAmount) >= 3900 && (
+                <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(251,191,36,0.3)" }}>
+                  <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#fbbf24", marginBottom: 6 }}>할인코드</label>
+                  {!appliedDiscount ? (
+                    <>
+                      <div style={{ display: "flex", gap: 8 }}>
+                        <input
+                          type="text"
+                          placeholder="할인코드 입력"
+                          value={discountInput}
+                          onChange={e => { setDiscountInput(e.target.value); setDiscountError(""); }}
+                          style={{ flex: 1, padding: 9, borderRadius: 8, border: "1px solid #fbbf24", background: "#fff", color: "#333", fontSize: 14, fontWeight: 700, fontFamily: "inherit" }}
+                        />
+                        <button onClick={applyDiscountCode} style={{ padding: "9px 16px", background: "rgba(251,191,36,0.15)", border: "1px solid #fbbf24", color: "#fbbf24", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}>적용</button>
+                      </div>
+                      {discountError && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "6px 0 0 0" }}>{discountError}</p>}
+                    </>
+                  ) : (
+                    <div style={{ background: "rgba(144,238,144,0.15)", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(144,238,144,0.5)" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                        <span style={{ color: "#90EE90", fontWeight: 900, fontSize: 13 }}>{"✓"} {appliedDiscount.discountPercent}% 할인 적용!</span>
+                        <button onClick={() => { setAppliedDiscount(null); setDiscountInput(""); }} style={{ background: "none", border: "none", color: "#ff6b6b", cursor: "pointer", fontSize: 12, fontWeight: 700 }}>취소</button>
+                      </div>
+                      <span style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700 }}>
+                        {Number(paidAmount).toLocaleString()}원 → {Math.round(Number(paidAmount) * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}원
+                      </span>
+                    </div>
+                  )}
                 </div>
               )}
 
