@@ -27,10 +27,10 @@ const QA_OLD_SINGLES = [
   { id: "총운",   label: "총운" },
 ];
 const QA_PKGS = [
-  { id: "basic",    label: "기본 분석",  price: "₩9,900",  desc: "재물운 + 연애운" },
-  { id: "standard", label: "베이직",    price: "₩19,900", desc: "올해 + 재물 + 연애 + 월별" },
-  { id: "premium",  label: "프리미엄",  price: "₩24,900", desc: "올해 + 재물 + 연애 + 월별 + 건강" },
-  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "본인 사주 8개분석<br/>+상대방 궁합포함" },
+  { id: "basic",    label: "기본 분析", price: "₩9,900",  paid: 9900,  pages: 30,  desc: "재물운 + 연애운" },
+  { id: "standard", label: "베이직",    price: "₩19,900", paid: 19900, pages: 75,  desc: "올해 + 재물 + 연애 + 월별" },
+  { id: "premium",  label: "프리미엄",  price: "₩24,900", paid: 24900, pages: 100, desc: "올해 + 재물 + 연애 + 월별 + 건강" },
+  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", paid: 29900, pages: 150, desc: "본인 분析(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)" },
 ];
 
 const FREE_COUNT = 3;
@@ -547,17 +547,12 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           </div>
 
           <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>📦 패키지 (더 저렴해!)</p>
-          <button onClick={() => { setShowBuyModal(false); router.push("/payment-complete?special=sinyeon_premium&paid=4900"); }}
-            style={{ width: "100%", marginBottom: 6, padding: "8px 12px", background: "rgba(40,5,5,0.9)", border: "1.5px solid rgba(239,68,68,0.8)", borderRadius: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontSize: 12, fontWeight: 900, color: "#ffffff" }}>📅 신년+월별 12달</span>
-            <span style={{ fontSize: 12, fontWeight: 900, color: "#ef4444" }}>₩4,900</span>
-          </button>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 10 }}>
             {QA_PKGS.map(p => {
               const pkgEmojis: Record<string, string> = { "기본 분석": "🐱", "베이직": "🌟", "프리미엄": "💎", "VIP 커플팩": "👑" };
               const emoji = pkgEmojis[p.label] ?? "✨";
               return (
-                <button key={p.id} onClick={() => { setShowBuyModal(false); router.push(`/main-v2/payment?preselect=${p.id}&scrollTo=packages`); }}
+                <button key={p.id} onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?package=${encodeURIComponent(p.label)}&pages=${p.pages}&paid=${p.paid}`); }}
                   style={{ padding: "8px 3px", background: "rgba(20,10,40,0.85)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 10, cursor: "pointer", textAlign: "center", color: "white" }}>
                   <p style={{ margin: "0 0 2px", fontSize: 18 }}>{emoji}</p>
                   <p style={{ margin: "0 0 2px", fontSize: 9, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{p.label}</p>
