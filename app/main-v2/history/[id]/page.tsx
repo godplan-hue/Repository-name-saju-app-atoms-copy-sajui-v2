@@ -377,18 +377,30 @@ export default function HistoryDetail() {
         if (w) setTimeout(() => alert("열린 이미지를 길게 눌러 [사진에 추가]를 선택하면 저장돼요!"), 800);
         else alert("팝업이 차단됐어요. 주소창 위 팝업 허용 버튼을 눌러주세요.");
       } else {
-        canvas.toBlob(blob => {
+        canvas.toBlob(async blob => {
           setSaving(false);
           if (!blob) { alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요."); return; }
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.download = name;
-          link.href = url;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          setTimeout(() => URL.revokeObjectURL(url), 60000);
-          setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "갤러리(사진 앱)나 파일 앱 → 다운로드 폴더" : "다운로드 폴더"}에 저장됐어요!\n\n바로 안 보이면 10초 뒤 파일 앱을 확인해보세요.`), 300);
+          const file = new File([blob], name, { type: "image/png" });
+          const doDownload = () => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.download = name;
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 60000);
+            setTimeout(() => alert("✅ 다운로드 폴더에 저장됐어요!"), 300);
+          };
+          try {
+            if (navigator.canShare?.({ files: [file] })) {
+              await navigator.share({ files: [file], title: "점운 운세 결과" });
+            } else {
+              doDownload();
+            }
+          } catch (e: any) {
+            if (e?.name !== "AbortError") doDownload();
+          }
         }, "image/png");
       }
     } catch {

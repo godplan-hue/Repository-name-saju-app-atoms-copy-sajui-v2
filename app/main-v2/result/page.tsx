@@ -589,17 +589,33 @@ function V2ResultInner() {
           return Promise.resolve();
         }
         return new Promise<void>(resolve => {
-          canvas.toBlob(blob => {
+          canvas.toBlob(async blob => {
             if (!blob) { resolve(); return; }
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
             const suffix = label ? `_${label}` : (total > 1 ? `_${idx + 1}of${total}` : "");
-            link.download = `점운_${result?.profile?.name ?? "운세"}_${new Date().toLocaleDateString("ko")}${suffix}.png`;
-            link.href = url;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => URL.revokeObjectURL(url), 60000);
+            const filename = `점운_${result?.profile?.name ?? "운세"}_${new Date().toLocaleDateString("ko")}${suffix}.png`;
+            const doDownload = () => {
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.download = filename;
+              link.href = url;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              setTimeout(() => URL.revokeObjectURL(url), 60000);
+            };
+            // 단일 이미지는 공유 시트 사용(Android에서 가장 안정적)
+            if (total === 1 && navigator.canShare) {
+              const file = new File([blob], filename, { type: "image/png" });
+              try {
+                if (navigator.canShare({ files: [file] })) {
+                  await navigator.share({ files: [file], title: "점운 운세 결과" });
+                  resolve(); return;
+                }
+              } catch (e: any) {
+                if (e?.name === "AbortError") { resolve(); return; }
+              }
+            }
+            doDownload();
             resolve();
           }, "image/png");
         });
