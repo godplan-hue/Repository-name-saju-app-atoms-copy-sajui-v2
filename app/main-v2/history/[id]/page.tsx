@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
@@ -150,6 +150,7 @@ export default function HistoryDetail() {
 
   // 읽기(텍스트 음성 읽어주기) — 결과지 화면과 동일한 방식
   const [speaking, setSpeaking] = useState(false);
+  const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
@@ -223,7 +224,7 @@ export default function HistoryDetail() {
           readIdxRef.current = 0;
           window.speechSynthesis.cancel();
           releaseWakeLock();
-          alert("읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+          setTipModal({ text: "읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
         };
         if (idx === chunks.length - 1) {
           utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); releaseWakeLock(); };
@@ -244,7 +245,7 @@ export default function HistoryDetail() {
   };
   const toggleReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      setTipModal({ text: "카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
       return;
     }
     if (speaking) {
@@ -256,8 +257,28 @@ export default function HistoryDetail() {
     const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const tipKey = "v2_hist_tts_tip_shown_date";
     if (isMobileDevice && localStorage.getItem(tipKey) !== new Date().toDateString()) {
-      alert("💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
       localStorage.setItem(tipKey, new Date().toDateString());
+      setTipModal({
+        text: "💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.\n\n확인을 누르면 바로 읽기 시작해요.",
+        onConfirm: () => {
+          if (readChunksRef.current.length === 0) {
+            const ft = (item?.analysis ?? "")
+              .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
+              .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
+              .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
+              .replace(/[（(][一-鿿]+[）)]/g, "")
+              .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
+              .replace(/×/g, " 와 ");
+            if (!ft.trim()) return;
+            readChunksRef.current = ft.split(/(?<=[.!?。\n])\s*/).map((s: string) => s.trim()).filter(Boolean);
+            readIdxRef.current = 0;
+          }
+          requestWakeLock();
+          speakFrom(readChunksRef.current, readIdxRef.current);
+          setSpeaking(true);
+        },
+      });
+      return;
     }
     if (readChunksRef.current.length === 0) {
       try {
@@ -429,6 +450,14 @@ export default function HistoryDetail() {
 
   return (
     <>
+    {tipModal && (
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setTipModal(null)}>
+        <div style={{ background: "white", borderRadius: 20, padding: "28px 24px 20px", maxWidth: 340, width: "100%", boxShadow: "0 8px 40px rgba(0,0,0,0.25)" }} onClick={e => e.stopPropagation()}>
+          <p style={{ fontSize: 15, fontWeight: 900, color: "#333", margin: "0 0 16px", lineHeight: 1.7, whiteSpace: "pre-line" }}>{tipModal.text}</p>
+          <button onClick={() => { const cb = tipModal.onConfirm; setTipModal(null); if (cb) cb(); }} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>확인</button>
+        </div>
+      </div>
+    )}
     <Script
       src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
       strategy="afterInteractive"

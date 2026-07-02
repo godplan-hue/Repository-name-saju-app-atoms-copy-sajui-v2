@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -80,6 +80,7 @@ export default function ShareClient({ id }: { id: string }) {
   const [entry, setEntry] = useState<SharedEntry | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
   const [saving, setSaving] = useState(false);
   const [historySaved, setHistorySaved] = useState(false);
   const [namingQueue, setNamingQueue] = useState<string[]>([]);
@@ -192,7 +193,7 @@ export default function ShareClient({ id }: { id: string }) {
         // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
         // 멈춰야 함 — 안 그러면 "멈추기"를 눌러도 계속 읽히는 것처럼 보임
         window.speechSynthesis.cancel();
-        alert("읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+        setTipModal({ text: "읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
       };
       if (idx === chunks.length - 1) {
         utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
@@ -203,7 +204,7 @@ export default function ShareClient({ id }: { id: string }) {
 
   const toggleReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      setTipModal({ text: "카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
       return;
     }
     if (speaking) {
@@ -211,14 +212,25 @@ export default function ShareClient({ id }: { id: string }) {
       setSpeaking(false);
       return;
     }
-    // 읽기를 시작하기 전에, 화면이 자동으로 꺼지면 끊길 수 있다는 걸 미리 한 번
-    // 안내함(끊긴 뒤에 알려주는 것보다 미리 설정해두게 하는 게 나음). 하루 한 번만
-    // 화면 자동꺼짐 안내는 모바일에서만 의미가 있으므로 PC에서는 띄우지 않음
     const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const ttsTipKey = "share_tts_tip_shown_date";
     if (isMobileDevice && localStorage.getItem(ttsTipKey) !== new Date().toDateString()) {
-      alert("💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
       localStorage.setItem(ttsTipKey, new Date().toDateString());
+      setTipModal({
+        text: "💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.\n\n확인을 누르면 바로 읽기 시작해요.",
+        onConfirm: () => {
+          if (readChunksRef.current.length === 0) {
+            const fullText = (entry?.categories ?? []).map(c => c.text).filter(Boolean).join("\n").replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}]/gu, "");
+            if (!fullText.trim()) return;
+            readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
+            readIdxRef.current = 0;
+          }
+          window.speechSynthesis.cancel();
+          speakFrom(readChunksRef.current, readIdxRef.current);
+          setSpeaking(true);
+        },
+      });
+      return;
     }
     if (readChunksRef.current.length === 0) {
       const fullText = (entry?.categories ?? []).map(c => c.text).filter(Boolean).join("\n")
@@ -272,6 +284,15 @@ export default function ShareClient({ id }: { id: string }) {
   if (!entry) return null;
 
   return (
+    <>
+    {tipModal && (
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setTipModal(null)}>
+        <div style={{ background: "white", borderRadius: 20, padding: "28px 24px 20px", maxWidth: 340, width: "100%", boxShadow: "0 8px 40px rgba(0,0,0,0.25)" }} onClick={e => e.stopPropagation()}>
+          <p style={{ fontSize: 15, fontWeight: 900, color: "#333", margin: "0 0 16px", lineHeight: 1.7, whiteSpace: "pre-line" }}>{tipModal.text}</p>
+          <button onClick={() => { const cb = tipModal.onConfirm; setTipModal(null); if (cb) cb(); }} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>확인</button>
+        </div>
+      </div>
+    )}
     <main ref={pageRef} style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
       {/* 어디로 스크롤하든 항상 누를 수 있게 고정된 읽기 버튼 */}
       <div style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
@@ -582,5 +603,6 @@ export default function ShareClient({ id }: { id: string }) {
       </div>
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive" onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
     </main>
+    </>
   );
 }

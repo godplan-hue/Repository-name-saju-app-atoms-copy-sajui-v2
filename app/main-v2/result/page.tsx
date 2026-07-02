@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { flushSync } from "react-dom";
@@ -296,6 +296,7 @@ function V2ResultInner() {
   const [couponSubmitting, setCouponSubmitting] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [speaking, setSpeaking] = useState(false);
+  const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
@@ -837,7 +838,7 @@ function V2ResultInner() {
         releaseWakeLock();
         // 진짜 에러여도 멈춘 위치(sessionStorage)는 지우지 않음 — 기기 문제로
         // 한 번 끊겼다가 다시 들어와도 그 위치부터 이어서 읽을 수 있게 함
-        alert("읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+        setTipModal({ text: "읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
       };
       if (idx === chunks.length - 1) {
         utter.onend = () => {
@@ -865,9 +866,24 @@ function V2ResultInner() {
     }
   };
 
+  const buildAndSetChunks = () => {
+      // 화면이 꺼지거나 에러로 다시 들어온 경우, 이전에 멈췄던 위치가
+      // sessionStorage에 남아있으면 처음부터 다시 만들지 말고 그 위치부터 이어read
+      try {
+        const saved = localStorage.getItem(ttsProgressKey);
+        if (saved) {
+          const { chunks, idx } = JSON.parse(saved);
+          if (Array.isArray(chunks) && chunks.length > 0 && typeof idx === "number") {
+            readChunksRef.current = chunks;
+            readIdxRef.current = idx;
+          }
+        }
+      } catch {}
+  };
+
   const toggleReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      alert("카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
+      setTipModal({ text: "카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
       return;
     }
     // window.speechSynthesis.speaking은 기기에 따라 실제 상태와 다르게(멈췄는데도
@@ -886,8 +902,23 @@ function V2ResultInner() {
     const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const ttsTipKey = "v2_tts_tip_shown_date";
     if (isMobileDevice && localStorage.getItem(ttsTipKey) !== new Date().toDateString()) {
-      alert("💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
       localStorage.setItem(ttsTipKey, new Date().toDateString());
+      setTipModal({
+        text: "💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.\n\n확인을 누르면 바로 읽기 시작해요.",
+        onConfirm: () => {
+          if (readChunksRef.current.length === 0) {
+            try {
+              const saved = localStorage.getItem(ttsProgressKey);
+              if (saved) { const p = JSON.parse(saved); if (p.chunks?.length) { readChunksRef.current = p.chunks; readIdxRef.current = p.idx ?? 0; } }
+            } catch {}
+          }
+          if (readChunksRef.current.length === 0) { buildAndSetChunks(); }
+          requestWakeLock();
+          speakFrom(readChunksRef.current, readIdxRef.current);
+          setSpeaking(true);
+        },
+      });
+      return;
     }
     if (readChunksRef.current.length === 0) {
       // 화면이 꺼지거나 에러로 다시 들어온 경우, 이전에 멈췄던 위치가
@@ -1011,6 +1042,14 @@ function V2ResultInner() {
         if (kakao && !kakao.isInitialized()) kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
       }}
     />
+    {tipModal && (
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setTipModal(null)}>
+        <div style={{ background: "white", borderRadius: 20, padding: "28px 24px 20px", maxWidth: 340, width: "100%", boxShadow: "0 8px 40px rgba(0,0,0,0.25)" }} onClick={e => e.stopPropagation()}>
+          <p style={{ fontSize: 15, fontWeight: 900, color: "#333", margin: "0 0 16px", lineHeight: 1.7, whiteSpace: "pre-line" }}>{tipModal.text}</p>
+          <button onClick={() => { const cb = tipModal.onConfirm; setTipModal(null); if (cb) cb(); }} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>확인</button>
+        </div>
+      </div>
+    )}
     <main style={{ minHeight: "100vh", backgroundImage: `url('${tier === "package" ? "https://i.pinimg.com/736x/27/8b/de/278bde2d39a789d716ab0a1718413838.jpg" : "https://i.pinimg.com/1200x/ec/80/41/ec8041c9802a98ff6423c34a1ae44f38.jpg"}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
