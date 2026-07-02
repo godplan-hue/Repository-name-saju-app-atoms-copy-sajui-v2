@@ -235,41 +235,29 @@ function PaymentInner() {
         {/* 신규 990원 */}
         <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
           <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>⚡ 신규 990원</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
             {[
-              { id: "sinyeon",         emoji: "🎍", label: "신년운세",     sub: "올해 사주 완벽분석" },
-              { id: "love_detail",     emoji: "💝", label: "연애사주",     sub: "나의 연애 DNA" },
-              { id: "findmatch",       emoji: "🔮", label: "내 사람 찾기", sub: "나에게 맞는 사람" },
-              { id: "marriage_detail", emoji: "💍", label: "결혼사주",     sub: "결혼 타이밍" },
-              { id: "divorce",         emoji: "🌱", label: "이혼운세",     sub: "관계의 끝·새 출발" },
+              { id: "sinyeon",         emoji: "🎍", label: "신년운세",       sub: "올해 사주 완벽분석",  price: 990,  accent: "#fbbf24", bdColor: "rgba(251,191,36,0.35)", bg: "rgba(20,10,40,0.55)" },
+              { id: "love_detail",     emoji: "💝", label: "연애사주",       sub: "나의 연애 DNA",       price: 990,  accent: "#fbbf24", bdColor: "rgba(251,191,36,0.35)", bg: "rgba(20,10,40,0.55)" },
+              { id: "findmatch",       emoji: "🔮", label: "내 사람 찾기",   sub: "나에게 맞는 사람",    price: 990,  accent: "#fbbf24", bdColor: "rgba(251,191,36,0.35)", bg: "rgba(20,10,40,0.55)" },
+              { id: "marriage_detail", emoji: "💍", label: "결혼사주",       sub: "결혼 타이밍",         price: 990,  accent: "#fbbf24", bdColor: "rgba(251,191,36,0.35)", bg: "rgba(20,10,40,0.55)" },
+              { id: "divorce",         emoji: "🌱", label: "이혼운세",       sub: "관계의 끝·새 출발",   price: 990,  accent: "#fbbf24", bdColor: "rgba(251,191,36,0.35)", bg: "rgba(20,10,40,0.55)" },
+              { id: "sinyeon_premium", emoji: "📅", label: "신년+월별 12달", sub: "신년+12달 월별 상세",  price: 4900, accent: "#ef4444", bdColor: "rgba(239,68,68,0.8)",   bg: "rgba(40,5,5,0.75)"   },
             ].map(s => (
               <button key={s.id}
                 onClick={async () => {
-                  const paidPrice = await finalPrice(990);
+                  const paidPrice = await finalPrice(s.price);
                   router.push(`/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}
-                style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
+                style={{ padding: "10px 4px", background: s.bg, backdropFilter: "blur(10px)", border: `1.5px solid ${s.bdColor}`, borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
               >
                 <p style={{ margin: "0 0 3px", fontSize: 20 }}>{s.emoji}</p>
                 <p style={{ margin: "0 0 2px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
                 <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.sub}</p>
-                <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#fbbf24" }}>₩990</p>
+                <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: s.accent }}>₩{s.price.toLocaleString()}</p>
               </button>
             ))}
           </div>
-          <button
-            onClick={async () => {
-              const paidPrice = await finalPrice(4900);
-              router.push(`/payment-complete?special=sinyeon_premium&paid=${paidPrice}`);
-            }}
-            style={{ marginTop: 8, width: "100%", padding: "12px 16px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", color: "white", boxSizing: "border-box" }}
-          >
-            <div style={{ textAlign: "left" }}>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 900 }}>📅 신년+월별 12달</p>
-              <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>신년운세 + 12달 월별 상세 분석</p>
-            </div>
-            <span style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", flexShrink: 0 }}>₩4,900</span>
-          </button>
         </div>
 
         {/* 특별 2900원 */}
