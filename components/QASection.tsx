@@ -29,7 +29,7 @@ const QA_PKGS = [
   { id: "basic",    label: "기본 분석",  price: "₩9,900",  desc: "재물운 + 연애운" },
   { id: "standard", label: "베이직",    price: "₩19,900", desc: "올해 + 재물 + 연애 + 월별" },
   { id: "premium",  label: "프리미엄",  price: "₩24,900", desc: "올해 + 재물 + 연애 + 월별 + 건강" },
-  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "이름+전체사주+궁합포함" },
+  { id: "vip",      label: "VIP 커플팩", price: "₩29,900", desc: "이름+전체사주+궁합포함 · 8개 전부" },
 ];
 
 const FREE_COUNT = 3;

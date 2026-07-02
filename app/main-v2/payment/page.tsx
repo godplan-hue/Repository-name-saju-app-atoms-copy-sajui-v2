@@ -148,7 +148,7 @@ function PaymentInner() {
       features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"],
       count: 8,
       chars: "전문가급 심층 분석",
-      desc: "이름+전체사주+궁합포함"
+      desc: "본인 分析(8개) + 상대방 정보 입력<br/>궁합分析 포함"
     }
   ];
 
@@ -389,8 +389,8 @@ function PaymentInner() {
 
         <div id="packages-section" style={{ maxWidth: 600, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10, marginBottom: 30 }}>
           {packages.map(pkg => {
-            const wlBadge = pkg.id === "basic" ? { prefix: "💰 재물·연애 포함 · ", highlight: "가장 저렴" }
-              : pkg.id === "vip" ? { prefix: "👑 전부 포함 · ", highlight: "최고급" }
+            const wlBadge = pkg.id === "basic" ? { prefix: "💰 재물운·연애운 포함 · ", highlight: "가장 저렴" }
+              : pkg.id === "vip" ? { prefix: "이름+전체사주+궁합포함 · ", highlight: "최고급" }
               : null;
             const isSelected2 = selectedPackage === pkg.name;
             const cardBg2 = isSelected2
