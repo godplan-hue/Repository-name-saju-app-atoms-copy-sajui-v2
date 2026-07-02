@@ -164,14 +164,24 @@ export default function HistoryDetail() {
     wakeLockRef.current = null;
   };
 
-  const itemLoadedRef = useRef(false);
+  // 아이템 로딩: params.id가 변경돼도 절대 redirect 하지 않음
   useEffect(() => {
     if (!params.id) return;
     const hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
     const found = hist.find(h => String(h.id) === decodeURIComponent(String(params.id)));
-    if (found) { itemLoadedRef.current = true; setItem(found); }
-    else if (!itemLoadedRef.current) { router.replace("/main-v2/history"); }
+    if (found) setItem(found);
   }, [params.id]);
+
+  // 진짜 없는 URL 접근 시에만 redirect (1.5초 뒤 item이 여전히 null이면)
+  // 읽기/저장 버튼 클릭 등 정상 인터랙션에서는 item이 이미 로드돼 있으므로 redirect 안 됨
+  const itemSnapshotRef = useRef<any>(null);
+  itemSnapshotRef.current = item;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!itemSnapshotRef.current) router.replace("/main-v2/history");
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     return () => {
