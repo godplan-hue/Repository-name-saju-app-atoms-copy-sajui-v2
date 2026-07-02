@@ -162,7 +162,7 @@ const BANNERS = [
     badge: "🐱 점운",
     badgeBg: G,
     lines: ["점운에 오신 걸 환영합니다", "특별이벤트", "신년운세 ₩990"],
-    lineSizes: [17, 20, 24],
+    lineSizes: [14, 17, 18],
     lineColors: ["#fff700", "#ffffff", "#ff3b3b"],
     overlay: "linear-gradient(135deg, rgba(236,72,153,0.55) 0%, rgba(139,92,246,0.55) 100%)",
     fit: "contain" as const,
