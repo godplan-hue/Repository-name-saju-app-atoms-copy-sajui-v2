@@ -476,23 +476,23 @@ function PaymentInner() {
           </a>
         </div>
 
-        <section style={{ maxWidth: 320, margin: "0 auto 60px", background: "rgba(139,92,246,0.2)", padding: 20, borderRadius: 12 }}>
-          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 900, marginBottom: 40 }}>【왜 {brand?.businessName || "점운"}인가?】</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 24 }}>
+        <section style={{ maxWidth: 320, margin: "0 auto 40px", background: "rgba(139,92,246,0.2)", padding: "12px 10px", borderRadius: 12 }}>
+          <h2 style={{ textAlign: "center", color: "#fbbf24", fontSize: 13, fontWeight: 900, marginBottom: 10 }}>【왜 {brand?.businessName || "점운"}인가?】</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>📄</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>사주 완벽분석</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>990원부터<br/>VIP 커플팩 분석까지</p>
+              <div style={{ fontSize: 20, marginBottom: 4 }}>📄</div>
+              <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 10, marginBottom: 3 }}>완벽분석</p>
+              <p style={{ color: "#ffffff", fontSize: 9, fontWeight: 700, margin: 0 }}>990원부터</p>
             </div>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>💰</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>합리적인 가격</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>990~29,900원</p>
+              <div style={{ fontSize: 20, marginBottom: 4 }}>💰</div>
+              <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 10, marginBottom: 3 }}>합리적 가격</p>
+              <p style={{ color: "#ffffff", fontSize: 9, fontWeight: 700, margin: 0 }}>990~29,900원</p>
             </div>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, marginBottom: 12 }}>⚡</div>
-              <h3 style={{ color: "#fbbf24", fontWeight: 900, marginBottom: 8 }}>즉시 다운로드</h3>
-              <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900 }}>3초 이내 완성</p>
+              <div style={{ fontSize: 20, marginBottom: 4 }}>⚡</div>
+              <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 10, marginBottom: 3 }}>즉시 완성</p>
+              <p style={{ color: "#ffffff", fontSize: 9, fontWeight: 700, margin: 0 }}>3초 이내</p>
             </div>
           </div>
         </section>
