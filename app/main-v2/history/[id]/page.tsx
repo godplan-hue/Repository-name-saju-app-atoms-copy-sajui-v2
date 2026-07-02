@@ -577,13 +577,39 @@ export default function HistoryDetail() {
             </div>
           )}
 
-          {/* 분석 전체 텍스트 — 잘림 없음 */}
-          <div style={{ padding: "0 18px 20px" }}>
-            <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 10 }}>🔮 {item.category} 상세 분석</div>
-            <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.85, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
-              {item.fullAnalysis ?? item.analysis}
-            </p>
-          </div>
+          {/* 분석 — 구조화 카테고리(있으면) 또는 텍스트 */}
+          {item.categories && item.categories.length > 0 ? (
+            <div style={{ padding: "0 18px 20px" }}>
+              {item.categories.map((cat: any, idx: number) => {
+                if (cat.isHeader) {
+                  return (
+                    <div key={idx} style={{ background: cat.color || "#ec4899", borderRadius: 18, padding: "18px 20px", marginBottom: 6, marginTop: idx > 0 ? 24 : 0, boxShadow: `0 4px 18px ${cat.color || "#ec4899"}55` }}>
+                      <p style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 5px" }}>{cat.label}</p>
+                      <p style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontWeight: 600, margin: 0 }}>{cat.text}</p>
+                    </div>
+                  );
+                }
+                return (
+                  <div key={idx} style={{ background: "white", borderRadius: 20, border: `1.5px solid ${cat.color || "#ec4899"}44`, marginBottom: 10 }}>
+                    <div style={{ padding: "12px 16px 8px", display: "flex", alignItems: "center", gap: 7, borderBottom: "1px solid rgba(236,72,153,0.07)" }}>
+                      <span style={{ fontSize: 20 }}>{cat.icon}</span>
+                      <span style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e" }}>{cat.label}</span>
+                    </div>
+                    <div style={{ padding: "12px 16px 16px" }}>
+                      <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all", overflowWrap: "anywhere" }}>{cat.text}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div style={{ padding: "0 18px 20px" }}>
+              <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 10 }}>🔮 {item.category} 상세 분석</div>
+              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.85, margin: 0, whiteSpace: "pre-wrap", wordBreak: "keep-all" }}>
+                {item.fullAnalysis ?? item.analysis}
+              </p>
+            </div>
+          )}
 
         </div>
 

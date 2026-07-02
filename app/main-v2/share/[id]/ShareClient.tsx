@@ -113,6 +113,7 @@ export default function ShareClient({ id }: { id: string }) {
         category: entry.categories[0]?.label ?? "분석결과",
         scores: entry.scores ?? {}, isPaid: true, planType: "special",
         analysis: entry.categories.map(c => `${c.label}\n${c.text}`).join("\n\n"),
+        categories: entry.categories,
         birthYear: entry.birthYear ?? "", luckyColor: entry.luckyColor ?? "",
         luckyNumber: entry.luckyNumber ?? "", luckyDirection: entry.luckyDirection ?? "",
         shareId: id,
