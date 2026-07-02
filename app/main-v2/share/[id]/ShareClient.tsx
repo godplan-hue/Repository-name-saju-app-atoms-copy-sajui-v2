@@ -14,6 +14,7 @@ interface SharedCategory {
   color: string;
   text: string;
   badge?: string;
+  isHeader?: boolean;
 }
 
 interface SharedEntry {
@@ -448,6 +449,14 @@ export default function ShareClient({ id }: { id: string }) {
 
         {/* 카테고리별 카드 — 결과 페이지와 똑같이 아이콘/색으로 구분 */}
         {entry.categories.map((cat, i) => {
+          if (cat.isHeader) {
+            return (
+              <div key={i} style={{ background: cat.color || "#ec4899", borderRadius: 18, padding: "18px 20px", marginBottom: 6, marginTop: i > 0 ? 24 : 0, boxShadow: `0 4px 18px ${cat.color || "#ec4899"}55` }}>
+                <p style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 5px" }}>{cat.label}</p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontWeight: 600, margin: 0 }}>{cat.text}</p>
+              </div>
+            );
+          }
           const isPackageBadge = cat.badge === "📦 패키지";
           return (
           <div key={i} style={isPackageBadge

@@ -437,7 +437,7 @@ function SpecialPageContent() {
     const filledOther = productType === "reunion" ? (otherName ? `${otherName}님` : "그 사람") : "그 사람";
     const filledPet   = productType === "pet_compat" ? (otherName || "반려동물") : "반려동물";
 
-    const categories: { icon: string; label: string; color: string; text: string }[] = displaySections.map((s: Section) => ({
+    const categories: { icon: string; label: string; color: string; text: string; isHeader?: boolean }[] = displaySections.map((s: Section) => ({
       icon: s.emoji,
       label: s.title,
       color: product.color || "#ec4899",
@@ -463,7 +463,7 @@ function SpecialPageContent() {
           if (!ep) continue;
           const eSections = i === 0 ? displaySections : ep.sections;
           // 운세 구분 헤더
-          categories.push({ icon: ep.emoji, label: `${ep.emoji} ${ep.title}`, color: ep.color || "#ec4899", text: ep.subtitle });
+          categories.push({ icon: ep.emoji, label: `${ep.emoji} ${ep.title}`, color: ep.color || "#ec4899", text: ep.subtitle, isHeader: true });
           eSections.forEach((s: Section) => {
             categories.push({ icon: s.emoji, label: s.title, color: ep.color || "#ec4899", text: fill(s.texts[oh], name, filledOther, filledPet) });
           });
