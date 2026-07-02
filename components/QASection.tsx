@@ -54,6 +54,8 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
   const [searchQuery, setSearchQuery] = useState("");
   const [todayFreeCatId, setTodayFreeCatId] = useState<string | null>(null);
   const [showBuyModal, setShowBuyModal] = useState(false);
+  const [awaitOther, setAwaitOther] = useState<{id: string} | null>(null);
+  const [otherInput, setOtherInput] = useState("");
   const answerRef = useRef<HTMLDivElement>(null);
   const buyModalRef = useRef<HTMLDivElement>(null);
 
@@ -523,8 +525,9 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 10 }}>
             {QA_SPECIAL_2900.map(s => (
               <button key={s.id} onClick={() => {
+                if ((s as any).daeun) { setShowBuyModal(false); router.push(`/main-v2/daewoon/pay`); return; }
+                if (s.id === "reunion" || s.id === "pet_compat") { setAwaitOther({ id: s.id }); return; }
                 setShowBuyModal(false);
-                if ((s as any).daeun) { router.push(`/main-v2/daewoon/pay`); return; }
                 router.push(`/payment-complete?special=${s.id}&paid=2900`);
               }}
                 style={{ padding: "9px 5px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
@@ -565,6 +568,42 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
             ))}
           </div>
           <button onClick={() => setShowBuyModal(false)} style={{ width: "100%", padding: 12, background: "none", border: "none", fontWeight: 800, fontSize: 14, color: "#374151", cursor: "pointer" }}>나중에 할게</button>
+        </div>
+      </>
+    )}
+
+    {/* 재회운/반려동물 궁합 이름 입력 */}
+    {awaitOther && (
+      <>
+        <div onClick={() => { setAwaitOther(null); setOtherInput(""); }} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 302 }} />
+        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", padding: "20px 18px 32px", zIndex: 303 }}>
+          <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 16px" }} />
+          <p style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px" }}>
+            {awaitOther.id === "reunion" ? "💔 상대방 이름을 입력해주세요" : "🐾 반려동물 이름을 입력해주세요"}
+          </p>
+          <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 12px" }}>
+            {awaitOther.id === "reunion" ? "예: 홍길동" : "예: 멍멍이, 냥냥이"}
+          </p>
+          <input
+            type="text"
+            value={otherInput}
+            onChange={e => setOtherInput(e.target.value)}
+            placeholder={awaitOther.id === "reunion" ? "상대방 이름" : "반려동물 이름"}
+            style={{ width: "100%", padding: "12px 14px", fontSize: 14, fontWeight: 700, border: "1.5px solid #e9d5ff", borderRadius: 10, outline: "none", background: "#fdf4ff", color: "#1a1a2e", boxSizing: "border-box", marginBottom: 12 }}
+          />
+          <button
+            onClick={() => {
+              if (!otherInput.trim()) return;
+              sessionStorage.setItem("specialOtherName", otherInput.trim());
+              setAwaitOther(null);
+              setOtherInput("");
+              setShowBuyModal(false);
+              router.push(`/payment-complete?special=${awaitOther.id}&paid=2900`);
+            }}
+            style={{ width: "100%", padding: "13px 0", background: otherInput.trim() ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#e5e7eb", color: otherInput.trim() ? "white" : "#9ca3af", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: otherInput.trim() ? "pointer" : "not-allowed" }}
+          >
+            💳 결제하기 · ₩2,900
+          </button>
         </div>
       </>
     )}
