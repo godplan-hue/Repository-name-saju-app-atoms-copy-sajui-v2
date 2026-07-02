@@ -419,10 +419,7 @@ function PaymentInner() {
           })}
         </div>
 
-        <div style={{ maxWidth: 600, margin: "0 auto 40px", textAlign: "center" }}>
-          <p style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 4 }}>【사주 완벽분석】</p>
-          <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900 }}>990원~29,900원</p>
-        </div>
+        
 
         <div style={{ maxWidth: 320, margin: "0 auto", marginBottom: 20, background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 16, borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
           <h3 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 20, letterSpacing: "-0.3px" }}>✨ 포함된 운세</h3>
@@ -438,15 +435,6 @@ function PaymentInner() {
         </div>
 
         <div style={{ maxWidth: 320, margin: "0 auto 40px", textAlign: "center" }}>
-          <p style={{ color: "#ffffff", fontSize: 14, fontWeight: 900, marginBottom: 10 }}>
-            선택된 패키지: <span style={{ color: "#fbbf24", fontWeight: 900 }}>{selectedPackage}</span>
-          </p>
-          <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 10 }}>
-            🎯 {currentCount}개 운세
-          </p>
-          <p style={{ color: "#ffffff", fontSize: 13, fontWeight: 900, marginBottom: 20 }}>
-            📄 {currentPackage?.chars ?? "전문가급 심층 분석"}
-          </p>
           {isPartner ? (
             <div style={{ background: "rgba(251,191,36,0.12)", border: "1.5px solid rgba(251,191,36,0.5)", borderRadius: 12, padding: 16, marginBottom: 12 }}>
               <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 6px 0" }}>📞 {brand?.businessName || "담당자"}에게 직접 문의해주세요</p>
