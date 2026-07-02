@@ -498,37 +498,6 @@ function PaymentCompleteInner() {
                 </div>
               )}
 
-              {/* 할인코드 (3,900원 이상만) */}
-              {Number(paidAmount) >= 3900 && (
-                <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(251,191,36,0.3)" }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#fbbf24", marginBottom: 6 }}>할인코드</label>
-                  {!appliedDiscount ? (
-                    <>
-                      <div style={{ display: "flex", gap: 8 }}>
-                        <input
-                          type="text"
-                          placeholder="할인코드 입력"
-                          value={discountInput}
-                          onChange={e => { setDiscountInput(e.target.value); setDiscountError(""); }}
-                          style={{ flex: 1, padding: 9, borderRadius: 8, border: "1px solid #fbbf24", background: "#fff", color: "#333", fontSize: 14, fontWeight: 700, fontFamily: "inherit" }}
-                        />
-                        <button onClick={applyDiscountCode} style={{ padding: "9px 16px", background: "rgba(251,191,36,0.15)", border: "1px solid #fbbf24", color: "#fbbf24", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}>적용</button>
-                      </div>
-                      {discountError && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "6px 0 0 0" }}>{discountError}</p>}
-                    </>
-                  ) : (
-                    <div style={{ background: "rgba(144,238,144,0.15)", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(144,238,144,0.5)" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                        <span style={{ color: "#90EE90", fontWeight: 900, fontSize: 13 }}>{"✓"} {appliedDiscount.discountPercent}% 할인 적용!</span>
-                        <button onClick={() => { setAppliedDiscount(null); setDiscountInput(""); }} style={{ background: "none", border: "none", color: "#ff6b6b", cursor: "pointer", fontSize: 12, fontWeight: 700 }}>취소</button>
-                      </div>
-                      <span style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700 }}>
-                        {Number(paidAmount).toLocaleString()}원 → {Math.round(Number(paidAmount) * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}원
-                      </span>
-                    </div>
-                  )}
-                </div>
-              )}
 
               {/* 분석 시작 버튼 */}
               <button onClick={handleAnalysis} disabled={isLoading} style={{ width: "100%", padding: 15, background: isLoading ? "rgba(251,191,36,0.5)" : "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: isLoading ? "not-allowed" : "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.35)" }}>
@@ -536,6 +505,37 @@ function PaymentCompleteInner() {
               </button>
             </div>
           )}
+
+
+          {/* 할인코드 — 모든 결제완료 공통 */}
+          <div style={{ marginTop: 14, paddingBottom: 14, borderTop: "1px solid rgba(251,191,36,0.3)", paddingTop: 14 }}>
+            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#fbbf24", marginBottom: 6 }}>🎟 할인코드</label>
+            {!appliedDiscount ? (
+              <>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <input
+                    type="text"
+                    placeholder="할인코드 입력 (3,900원 이상 적용)"
+                    value={discountInput}
+                    onChange={e => { setDiscountInput(e.target.value); setDiscountError(""); }}
+                    style={{ flex: 1, padding: 9, borderRadius: 8, border: "1px solid #fbbf24", background: "#fff", color: "#333", fontSize: 14, fontWeight: 700, fontFamily: "inherit" }}
+                  />
+                  <button onClick={applyDiscountCode} style={{ padding: "9px 16px", background: "rgba(251,191,36,0.15)", border: "1px solid #fbbf24", color: "#fbbf24", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}>적용</button>
+                </div>
+                {discountError && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "6px 0 0 0" }}>{discountError}</p>}
+              </>
+            ) : (
+              <div style={{ background: "rgba(144,238,144,0.15)", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(144,238,144,0.5)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                  <span style={{ color: "#90EE90", fontWeight: 900, fontSize: 13 }}>{"✓"} {appliedDiscount.discountPercent}% 할인 적용!</span>
+                  <button onClick={() => { setAppliedDiscount(null); setDiscountInput(""); }} style={{ background: "none", border: "none", color: "#ff6b6b", cursor: "pointer", fontSize: 12, fontWeight: 700 }}>취소</button>
+                </div>
+                <span style={{ color: "#fbbf24", fontSize: 12, fontWeight: 700 }}>
+                  {Number(paidAmount).toLocaleString()}원 → {Math.round(Number(paidAmount) * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}원
+                </span>
+              </div>
+            )}
+          </div>
 
           <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: 14, background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "#f5f5f5", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12 }}>← 홈으로 돌아가기</button>
           <p style={{ color: "#999999", fontSize: 12, fontWeight: 700, marginTop: 0 }}>이메일로 영수증이 발송되었습니다.</p>
