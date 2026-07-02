@@ -1,10 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng, QACategory } from "@/lib/qa/index";
 
 const FREE_COUNT = 3;
+
+const todayKey = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+};
 
 interface Props {
   name: string;
@@ -18,8 +23,22 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
   const [activeCatId, setActiveCatId] = useState(QA_CATEGORIES[0].id);
   const [openIdx, setOpenIdx] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [todayFreeCatId, setTodayFreeCatId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem(`v2_qa_free_cat_${name}_${birthYear}_${todayKey()}`);
+    setTodayFreeCatId(saved ?? null);
+  }, [name, birthYear]);
+
+  const chooseFreeCategory = (catId: string) => {
+    localStorage.setItem(`v2_qa_free_cat_${name}_${birthYear}_${todayKey()}`, catId);
+    setTodayFreeCatId(catId);
+    setActiveCatId(catId);
+    setOpenIdx(null);
+  };
 
   const cat: QACategory = QA_CATEGORIES.find(c => c.id === activeCatId) ?? QA_CATEGORIES[0];
+  const freeCat = QA_CATEGORIES.find(c => c.id === todayFreeCatId);
 
   const isSearching = searchQuery.trim().length > 0;
 
@@ -259,36 +278,68 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
         </div>
       ) : (
         <>
+          {/* 오늘의 무료 카테고리 안내 */}
+          {!unlocked && (
+            todayFreeCatId === null ? (
+              <div style={{ background: "linear-gradient(135deg, #fce7f3, #ede9fe)", borderRadius: 14, padding: "12px 16px", marginBottom: 12, border: "1.5px solid #ec4899", textAlign: "center" }}>
+                <p style={{ margin: "0 0 3px", fontSize: 13, fontWeight: 900, color: "#be185d" }}>👇 오늘 무료로 볼 카테고리 1개를 골라봐!</p>
+                <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: "#6b7280" }}>선택한 카테고리의 Q1~Q3을 오늘 무료로 볼 수 있어</p>
+              </div>
+            ) : (
+              <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "8px 14px", marginBottom: 10, border: "1.5px solid #86efac", display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 12, fontWeight: 900, color: "#16a34a" }}>✅ 오늘 무료: {freeCat?.emoji} {freeCat?.label}</span>
+                <span style={{ fontSize: 10, color: "#6b7280", fontWeight: 600 }}>· 내일 다시 선택 가능</span>
+              </div>
+            )
+          )}
+
           {/* 카테고리 탭 — 3열 그리드 */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, marginBottom: 16 }}>
-            {QA_CATEGORIES.map(c => (
-              <button
-                key={c.id}
-                onClick={() => { setActiveCatId(c.id); setOpenIdx(null); }}
-                style={{
-                  padding: "8px 4px",
-                  background: activeCatId === c.id
-                    ? "linear-gradient(135deg, #ec4899, #8b5cf6)"
-                    : "white",
-                  color: activeCatId === c.id ? "white" : "#6b7280",
-                  border: activeCatId === c.id ? "none" : "1.5px solid #e5e7eb",
-                  borderRadius: 10,
-                  fontWeight: 800,
-                  fontSize: 12,
-                  cursor: "pointer",
-                  textAlign: "center",
-                  boxShadow: activeCatId === c.id ? "0 4px 12px rgba(236,72,153,0.3)" : "none",
-                }}
-              >
-                {c.emoji} {c.label}
-              </button>
-            ))}
+            {QA_CATEGORIES.map(c => {
+              const isActive = activeCatId === c.id;
+              const isFree = c.id === todayFreeCatId;
+              const isOtherLocked = !unlocked && todayFreeCatId !== null && !isFree;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => {
+                    if (!unlocked && todayFreeCatId === null) {
+                      chooseFreeCategory(c.id);
+                      return;
+                    }
+                    setActiveCatId(c.id);
+                    setOpenIdx(null);
+                  }}
+                  style={{
+                    padding: "8px 4px",
+                    background: isActive
+                      ? "linear-gradient(135deg, #ec4899, #8b5cf6)"
+                      : isFree ? "#f0fdf4"
+                      : isOtherLocked ? "#f9f5ff"
+                      : "white",
+                    color: isActive ? "white" : isFree ? "#16a34a" : isOtherLocked ? "#c4b5fd" : "#6b7280",
+                    border: isActive ? "none" : isFree ? "1.5px solid #86efac" : "1.5px solid #e5e7eb",
+                    borderRadius: 10,
+                    fontWeight: 800,
+                    fontSize: 12,
+                    cursor: "pointer",
+                    textAlign: "center",
+                    boxShadow: isActive ? "0 4px 12px rgba(236,72,153,0.3)" : "none",
+                    position: "relative",
+                  }}
+                >
+                  {c.emoji} {c.label}
+                  {isFree && !isActive && <span style={{ display: "block", fontSize: 9, fontWeight: 900, color: "#16a34a" }}>✅ 무료</span>}
+                  {isOtherLocked && <span style={{ display: "block", fontSize: 9, fontWeight: 900, color: "#c4b5fd" }}>🔒</span>}
+                </button>
+              );
+            })}
           </div>
 
           {/* Q&A 목록 — 4열 그리드, 전체 질문 한눈에 */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 10 }}>
             {cat.items.map((item, idx) => {
-              const isLocked = !unlocked && idx >= FREE_COUNT;
+              const isLocked = !unlocked && (activeCatId !== todayFreeCatId || idx >= FREE_COUNT);
               const key = `${cat.id}-${idx}`;
               const isSelected = openIdx === key;
               return (

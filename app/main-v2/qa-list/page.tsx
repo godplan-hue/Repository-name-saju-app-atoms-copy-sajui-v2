@@ -56,7 +56,7 @@ function QAListContent() {
         <div style={{ flex: 1 }}>
           <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>사주 Q&amp;A</p>
           <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: unlocked ? "#8b5cf6" : "#ef4444", display: "flex", alignItems: "center", gap: 5 }}>
-            {unlocked ? "무제한 열람 가능" : "카테고리별 무료 3개 열람"}
+            {unlocked ? "무제한 열람 가능" : "하루 1카테고리 무료 3개"}
             <span style={{ fontSize: 10, fontWeight: 700, color: "#ef4444" }}>· 결제 시 하루 무제한</span>
           </p>
         </div>
