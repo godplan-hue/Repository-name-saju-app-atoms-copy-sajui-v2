@@ -102,7 +102,7 @@ export default function V2Profile() {
   }, []);
 
   useEffect(() => {
-    // 무료 플로우: 저장된 정보 있으면 확인 폼(다음 한 번), 없으면 5단계 마법사
+    // 무료 플로우: 저장된 정보 있으면 바로 분석, 없으면 5단계 마법사
     const flow = sessionStorage.getItem("v2_profile_flow");
     if (flow === "free") {
       sessionStorage.removeItem("v2_profile_flow");
@@ -114,8 +114,11 @@ export default function V2Profile() {
           const p = JSON.parse(saved);
           const sameName = !loggedInName || p.name === loggedInName;
           if (sameName && p.birthYear && p.gender && p.birthHour) {
-            setForm(prev => ({ ...prev, ...p }));
-            setSavedMode(true);
+            sessionStorage.setItem("v2_profile", JSON.stringify(p));
+            sessionStorage.removeItem("v2_after_payment_goto");
+            sessionStorage.removeItem("specialPaid");
+            sessionStorage.removeItem("specialType");
+            router.replace("/main-v2/analysis");
             return;
           }
         } catch {}
