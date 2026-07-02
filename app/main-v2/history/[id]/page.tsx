@@ -335,7 +335,6 @@ export default function HistoryDetail() {
   const saveImage = async () => {
     if (!cardRef.current || saving) return;
     setSaving(true);
-    if (window.innerWidth < 768) alert("📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요!");
     try {
       const html2canvas = (await import("html2canvas")).default;
       const el = cardRef.current;
@@ -358,19 +357,28 @@ export default function HistoryDetail() {
       el.style.overflow = prevOv;
       el.style.maxHeight = prevMH;
       const name = `점운_${item?.name ?? "운세"}_${item?.category?.replace(/\S+\s/, "") ?? ""}.png`;
-      canvas.toBlob(blob => {
-        if (!blob) return;
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.download = name;
-        link.href = url;
-        link.click();
-        URL.revokeObjectURL(url);
-        setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "사진 앱(갤러리)" : "다운로드 폴더"}에 저장됐어요!`), 0);
-      }, "image/png");
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (isIOS) {
+        const dataUrl = canvas.toDataURL("image/png");
+        setSaving(false);
+        const w = window.open(dataUrl, "_blank");
+        if (w) setTimeout(() => alert("열린 이미지를 길게 눌러 [사진에 추가]를 선택하면 저장돼요!"), 800);
+        else alert("팝업이 차단됐어요. 주소창 위 팝업 허용 버튼을 눌러주세요.");
+      } else {
+        canvas.toBlob(blob => {
+          setSaving(false);
+          if (!blob) { alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요."); return; }
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.download = name;
+          link.href = url;
+          link.click();
+          setTimeout(() => URL.revokeObjectURL(url), 60000);
+          setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "사진 앱(갤러리)" : "다운로드 폴더"}에 저장됐어요!`), 0);
+        }, "image/png");
+      }
     } catch {
       alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요.");
-    } finally {
       setSaving(false);
     }
   };

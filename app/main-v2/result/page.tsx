@@ -254,6 +254,7 @@ function V2ResultInner() {
   const [paid, setPaid] = useState(false);
   const [allAnalyses, setAllAnalyses] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [histSaved, setHistSaved] = useState(false);
   const [changeInterest, setChangeInterest] = useState<string | null>(null);
   const [bannerIdx, setBannerIdx] = useState(0);
 
@@ -538,7 +539,8 @@ function V2ResultInner() {
       const html2canvas = (await import("html2canvas")).default;
       const elements = cardRefs.current.filter(Boolean) as HTMLDivElement[];
       if (elements.length === 0) { alert("저장할 내용이 없습니다."); return; }
-      if (window.innerWidth < 768) {
+      const isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (window.innerWidth < 768 && !isIOSDevice) {
         const downloadCount = tier === "package" && elements.length > 1 ? elements.length - 1 : 1;
         alert(downloadCount > 1
           ? `📥 운세 ${downloadCount}개를 각각 따로 다운로드해야 해요!\n\n확인창이 뜨면 [다운로드]를 누르고, "다운로드 완료"가 뜬 후 다시 [다운로드]를 눌러주세요.\n\n한 번에 여러 번 누르지 말고 하나씩 순서대로 눌러주세요. 총 ${downloadCount}번 누르시면 끝나요.\n\n화면에 다운로드 알림이 고정되어 떠 있어요. 다운로드 안 하려면 [취소] 버튼을 누르면 돼요.`
@@ -576,7 +578,16 @@ function V2ResultInner() {
       const MAX_CANVAS_HEIGHT = 14000; // 브라우저 캔버스 한계보다 여유 있게 안전선을 둠
       const totalH = canvases.reduce((s, c) => s + c.height, 0) + (canvases.length - 1) * 16;
 
+      let iosAlertShown = false;
       const downloadCanvas = (canvas: HTMLCanvasElement, idx: number, total: number, label?: string) => {
+        if (isIOSDevice) {
+          const w = window.open(canvas.toDataURL("image/png"), "_blank");
+          if (!iosAlertShown && w) {
+            iosAlertShown = true;
+            setTimeout(() => alert(`아이폰에서는 열린 이미지를 길게 눌러 [사진에 추가]를 선택하면 저장돼요!${total > 1 ? `\n\n이미지 ${total}개가 각각 새 탭으로 열려요. 각 탭에서 같은 방법으로 저장해주세요.` : ""}`), 800);
+          }
+          return;
+        }
         const link = document.createElement("a");
         const suffix = label ? `_${label}` : (total > 1 ? `_${idx + 1}of${total}` : "");
         link.download = `점운_${result?.profile?.name ?? "운세"}_${new Date().toLocaleDateString("ko")}${suffix}.png`;
@@ -1517,9 +1528,9 @@ function V2ResultInner() {
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={() => router.push("/main-v2/history")}
+              <button onClick={() => { setHistSaved(true); setTimeout(() => setHistSaved(false), 2500); }}
                 style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
-                📥 보관함 저장
+                {histSaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
               </button>
             </div>
             <div style={{ marginBottom: 12 }}>
@@ -1553,9 +1564,9 @@ function V2ResultInner() {
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={() => router.push("/main-v2/history")}
+              <button onClick={() => { setHistSaved(true); setTimeout(() => setHistSaved(false), 2500); }}
                 style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
-                📥 보관함 저장
+                {histSaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
               </button>
             </div>
             <div style={{ marginBottom: 12 }}>
