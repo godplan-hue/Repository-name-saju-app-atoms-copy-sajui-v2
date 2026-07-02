@@ -505,9 +505,9 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5, marginBottom: 10 }}>
             {QA_SPECIAL_990.map(s => (
               <button key={s.id} onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=${s.id}&paid=${s.price}`); }}
-                style={{ padding: "9px 5px", background: s.red ? "#fff5f5" : "#fdf4ff", border: `1.5px solid ${s.red ? "#fca5a5" : "#e9d5ff"}`, borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
+                style={{ padding: "9px 5px", background: s.red ? "rgba(40,5,5,0.9)" : "#fdf4ff", border: `1.5px solid ${s.red ? "rgba(239,68,68,0.8)" : "#e9d5ff"}`, borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
                 <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
-                <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e", wordBreak: "keep-all", lineHeight: 1.2 }}>{s.label}</p>
+                <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: s.red ? "#ffffff" : "#1a1a2e", wordBreak: "keep-all", lineHeight: 1.2 }}>{s.label}</p>
                 <p style={{ margin: 0, fontSize: 10, fontWeight: 900, color: s.red ? "#ef4444" : "#ec4899" }}>₩{s.price.toLocaleString()}</p>
               </button>
             ))}
