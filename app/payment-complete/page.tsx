@@ -514,7 +514,7 @@ function PaymentCompleteInner() {
                 <div style={{ display: "flex", gap: 8 }}>
                   <input
                     type="text"
-                    placeholder="할인코드 입력 (3,900원 이상 적용)"
+                    placeholder="할인코드 입력 (3,900원 사주부터 적용)"
                     value={discountInput}
                     onChange={e => { setDiscountInput(e.target.value); setDiscountError(""); }}
                     style={{ flex: 1, padding: 9, borderRadius: 8, border: "1px solid #fbbf24", background: "#fff", color: "#333", fontSize: 14, fontWeight: 700, fontFamily: "inherit" }}
