@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng, QACategory } from "@/lib/qa/index";
 
@@ -24,11 +24,18 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
   const [openIdx, setOpenIdx] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [todayFreeCatId, setTodayFreeCatId] = useState<string | null>(null);
+  const answerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem(`v2_qa_free_cat_${name}_${birthYear}_${todayKey()}`);
     setTodayFreeCatId(saved ?? null);
   }, [name, birthYear]);
+
+  useEffect(() => {
+    if (openIdx && answerRef.current) {
+      answerRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [openIdx]);
 
   const chooseFreeCategory = (catId: string) => {
     localStorage.setItem(`v2_qa_free_cat_${name}_${birthYear}_${todayKey()}`, catId);
@@ -336,6 +343,34 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
             })}
           </div>
 
+          {/* 선택된 질문 답변 — 카테고리 탭과 질문 그리드 사이 */}
+          {openIdx && openIdx.startsWith(cat.id + "-") && (() => {
+            const idx = Number(openIdx.split("-")[1]);
+            const item = cat.items[idx];
+            if (!item) return null;
+            const answer = fillTemplate(item.answers[ohaeng], name);
+            return (
+              <div ref={answerRef} style={{ background: "white", borderRadius: 14, border: "2px solid #ec4899", overflow: "hidden", marginBottom: 12, boxShadow: "0 4px 20px rgba(236,72,153,0.15)" }}>
+                <div style={{ padding: "12px 16px 10px", background: "linear-gradient(135deg, #fff0f9, #f5f0ff)", borderBottom: "1px solid #fce7f3" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 11, fontWeight: 900, color: "white", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "3px 9px", borderRadius: 20, flexShrink: 0 }}>Q{idx + 1}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{item.question}</span>
+                  </div>
+                </div>
+                <div style={{ padding: "14px 16px" }}>
+                  <div style={{ background: "linear-gradient(135deg, #fff0f9, #ede9fe)", borderRadius: 12, padding: "14px 16px", borderLeft: "3px solid #ec4899" }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: "#374151", lineHeight: 1.8, margin: 0 }}>{answer}</p>
+                    <div style={{ marginTop: 10 }}>
+                      <span style={{ fontSize: 10, color: "white", fontWeight: 800, background: "linear-gradient(135deg, #8b5cf6, #ec4899)", padding: "2px 10px", borderRadius: 20 }}>
+                        {ohaeng}오행 · {name}님 맞춤 답변
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Q&A 목록 — 4열 그리드, 전체 질문 한눈에 */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 10 }}>
             {cat.items.map((item, idx) => {
@@ -385,34 +420,6 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
               );
             })}
           </div>
-
-          {/* 선택된 질문 답변 */}
-          {openIdx && openIdx.startsWith(cat.id + "-") && (() => {
-            const idx = Number(openIdx.split("-")[1]);
-            const item = cat.items[idx];
-            if (!item) return null;
-            const answer = fillTemplate(item.answers[ohaeng], name);
-            return (
-              <div style={{ background: "white", borderRadius: 14, border: "2px solid #ec4899", overflow: "hidden", marginBottom: 10, boxShadow: "0 4px 20px rgba(236,72,153,0.15)" }}>
-                <div style={{ padding: "12px 16px 10px", background: "linear-gradient(135deg, #fff0f9, #f5f0ff)", borderBottom: "1px solid #fce7f3" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 11, fontWeight: 900, color: "white", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "3px 9px", borderRadius: 20, flexShrink: 0 }}>Q{idx + 1}</span>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{item.question}</span>
-                  </div>
-                </div>
-                <div style={{ padding: "14px 16px" }}>
-                  <div style={{ background: "linear-gradient(135deg, #fff0f9, #ede9fe)", borderRadius: 12, padding: "14px 16px", borderLeft: "3px solid #ec4899" }}>
-                    <p style={{ fontSize: 13, fontWeight: 600, color: "#374151", lineHeight: 1.8, margin: 0 }}>{answer}</p>
-                    <div style={{ marginTop: 10 }}>
-                      <span style={{ fontSize: 10, color: "white", fontWeight: 800, background: "linear-gradient(135deg, #8b5cf6, #ec4899)", padding: "2px 10px", borderRadius: 20 }}>
-                        {ohaeng}오행 · {name}님 맞춤 답변
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
 
           {/* 비결제 시 구매 유도 */}
           {!unlocked && (
