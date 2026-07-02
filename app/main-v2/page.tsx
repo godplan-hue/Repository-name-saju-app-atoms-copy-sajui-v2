@@ -301,6 +301,7 @@ const EXTRA_MCFG: Record<string, { emoji: string; title: string; desc: string; p
 function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
   return (
     <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
+      <style>{`@media (min-width: 640px) { .extra-sub { white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis; } }`}</style>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
         <div style={{ flex: 1, height: 1, background: "rgba(124,58,237,0.2)" }} />
         <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#7c3aed,#4c1d95)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(124,58,237,0.4)" }}>✨ 더 많은 운세 · ₩990부터</span>
@@ -314,7 +315,7 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
             <span style={{ position: "absolute", top: 5, left: 5, fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, minWidth: 52, textAlign: "center", display: "inline-block", ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "#15803d", color: "#fff" }) }}>{item.price}</span>
             <div style={{ position: "absolute", bottom: 6, left: 0, right: 0, textAlign: "center", padding: "0 4px" }}>
               <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)", lineHeight: 1.25, whiteSpace: "nowrap", overflow: "hidden" }}>{item.label}</div>
-              <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.72)", textShadow: "0 1px 4px rgba(0,0,0,0.9)", marginTop: 2, whiteSpace: item.sub.includes('\n') ? "pre-line" : "nowrap", overflow: "hidden" }}>{item.sub}</div>
+              <div className="extra-sub" style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.72)", textShadow: "0 1px 4px rgba(0,0,0,0.9)", marginTop: 2, whiteSpace: item.sub.includes('\n') ? "pre-line" : "nowrap", overflow: "hidden" }}>{item.sub}</div>
             </div>
           </div>
         ))}

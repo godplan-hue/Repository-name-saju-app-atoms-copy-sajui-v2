@@ -378,46 +378,46 @@ function PaymentCompleteInner() {
   const isRedirectOnly = !needsForm && redirectTo !== "";
 
   const inp: React.CSSProperties = {
-    width: "100%", padding: 9, borderRadius: 8,
+    width: "100%", padding: 6, borderRadius: 6,
     border: "1px solid #fbbf24", background: "#fff",
-    color: "#333", fontSize: 14, fontWeight: 700,
+    color: "#333", fontSize: 12, fontWeight: 700,
     boxSizing: "border-box", fontFamily: "inherit",
   };
 
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)", backgroundImage: "url('https://i.pinimg.com/736x/39/74/d2/3974d23bcbb31d29d39bbe657914e8f7.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.55)", zIndex: 1, pointerEvents: "none" }} />
-      <div style={{ position: "relative", zIndex: 10, padding: "40px 16px 60px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <div style={{ position: "relative", zIndex: 10, padding: "12px 14px 12px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}>
         <div style={{ maxWidth: 500, margin: "0 auto", width: "100%", textAlign: "center" }}>
 
           {/* 완료 체크마크 */}
-          <div style={{ width: 84, height: 84, borderRadius: "50%", margin: "0 auto 24px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 8px 28px rgba(251,191,36,0.45)" }}>
-            <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+          <div style={{ width: 56, height: 56, borderRadius: "50%", margin: "0 auto 10px", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 8px 28px rgba(251,191,36,0.45)" }}>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
               <path d="M5 13l4 4L19 7" stroke="#1a0f2e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
 
-          <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px,5vw,36px)", fontWeight: 900, marginBottom: 16 }}>결제 완료!</h1>
-          <p style={{ color: "#f5f5f5", fontSize: 16, fontWeight: 700, marginBottom: 24, lineHeight: 1.8 }}>
+          <h1 style={{ color: "#fbbf24", fontSize: "clamp(18px,4vw,26px)", fontWeight: 900, marginBottom: 8 }}>결제 완료!</h1>
+          <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, marginBottom: 10, lineHeight: 1.5 }}>
             <span style={{ color: "#fbbf24", fontWeight: 900 }}>{packageName}</span><br/>
             {isPackage ? "패키지 결제가 완료되었습니다!" : "결제가 완료되었습니다!"}
           </p>
 
           {/* 결제 정보 카드 */}
-          <div style={{ background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 24, borderRadius: 18, marginBottom: 24, boxShadow: "0 8px 32px rgba(0,0,0,0.35)", textAlign: "left" }}>
-            <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 12px 0" }}>📊 결제 정보</p>
+          <div style={{ background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 10, borderRadius: 12, marginBottom: 10, textAlign: "left" }}>
+            <p style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, margin: "0 0 6px 0" }}>📊 결제 정보</p>
             {isPackage && ["기본 분석","기본 분석","베이직","프리미엄","VIP 커플팩"].includes(packageName) ? (
               <>
-                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
-                <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>분석 수준: <span style={{ fontWeight: 900 }}>{CHARS_MAP[pages] ?? "전문가급 심층 분석 포함"}</span></p>
+                <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 4px 0" }}>패키지: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
+                <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 4px 0" }}>분석 수준: <span style={{ fontWeight: 900 }}>{CHARS_MAP[pages] ?? "전문가급 심층 분석 포함"}</span></p>
               </>
             ) : isPackage ? (
-              <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>상품: <span style={{ fontWeight: 900 }}>{packageName.replace(/\+/g, ", ")}</span></p>
+              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 4px 0" }}>상품: <span style={{ fontWeight: 900 }}>{packageName.replace(/\+/g, ", ")}</span></p>
             ) : (
-              <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>상품: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
+              <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 4px 0" }}>상품: <span style={{ fontWeight: 900 }}>{packageName}</span></p>
             )}
-            {paidAmount && <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0" }}>결제 금액: <span style={{ color: "#fbbf24", fontWeight: 900 }}>₩{Number(paidAmount).toLocaleString()}</span></p>}
-            <p style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, margin: 0 }}>상태: <span style={{ color: "#90EE90", fontWeight: 900 }}>완료</span></p>
+            {paidAmount && <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: "0 0 4px 0" }}>결제 금액: <span style={{ color: "#fbbf24", fontWeight: 900 }}>₩{Number(paidAmount).toLocaleString()}</span></p>}
+            <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: 0 }}>상태: <span style={{ color: "#90EE90", fontWeight: 900 }}>완료</span></p>
           </div>
 
           {/* 대운/올해운세/naming — 기존처럼 버튼으로 이동 */}
@@ -429,21 +429,21 @@ function PaymentCompleteInner() {
 
           {/* 사주 정보 입력 폼 — 파란색 (special + package 공통) */}
           {needsForm && (
-            <div style={{ background: "rgba(139,92,246,0.3)", padding: 16, borderRadius: 14, marginBottom: 16, border: "1px solid rgba(251,191,36,0.3)", textAlign: "left" }}>
-              <h3 style={{ color: "#fbbf24", fontSize: 15, fontWeight: 900, margin: "0 0 14px 0" }}>🌟 사주 정보 입력</h3>
+            <div style={{ background: "rgba(139,92,246,0.3)", padding: 10, borderRadius: 10, marginBottom: 10, border: "1px solid rgba(251,191,36,0.3)", textAlign: "left" }}>
+              <h3 style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, margin: "0 0 6px 0" }}>🌟 사주 정보 입력</h3>
 
               {/* ── 본인 정보 ── */}
-              <div style={{ marginBottom: 12, paddingBottom: 12, borderBottom: "2px solid rgba(251,191,36,0.5)" }}>
-                <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 10px 0" }}>본인 정보</p>
+              <div style={{ marginBottom: 6, paddingBottom: 6, borderBottom: "1px solid rgba(251,191,36,0.4)" }}>
+                <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 900, margin: "0 0 4px 0" }}>본인 정보</p>
 
-                <div style={{ marginBottom: 8 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#fbbf24", marginBottom: 5 }}>이름</label>
+                <div style={{ marginBottom: 4 }}>
+                  <label style={{ display: "block", fontSize: 10, fontWeight: 700, color: "#fbbf24", marginBottom: 2 }}>이름</label>
                   <input type="text" placeholder="이름을 입력하세요" value={name} onChange={e => setName(e.target.value)} style={inp} />
                 </div>
 
-                <div style={{ marginBottom: 8 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#fbbf24", marginBottom: 5 }}>생년월일</label>
-                  <input type="number" placeholder="연도 (예: 1990)" value={birthYear} onChange={e => setBirthYear(e.target.value)} min="1900" max={new Date().getFullYear()} style={{ ...inp, marginBottom: 7 }} />
+                <div style={{ marginBottom: 4 }}>
+                  <label style={{ display: "block", fontSize: 10, fontWeight: 700, color: "#fbbf24", marginBottom: 2 }}>생년월일</label>
+                  <input type="number" placeholder="연도 (예: 1990)" value={birthYear} onChange={e => setBirthYear(e.target.value)} min="1900" max={new Date().getFullYear()} style={{ ...inp, marginBottom: 4 }} />
                   <div style={{ display: "flex", gap: "4%" }}>
                     <select value={birthMonth} onChange={e => setBirthMonth(e.target.value)} style={{ ...inp, width: "48%" }}>
                       <option value="">월 선택</option>
@@ -456,16 +456,16 @@ function PaymentCompleteInner() {
                   </div>
                 </div>
 
-                <div>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#fbbf24", marginBottom: 5 }}>태어난 시</label>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 5 }}>
+                <div style={{ marginBottom: 4 }}>
+                  <label style={{ display: "block", fontSize: 10, fontWeight: 700, color: "#fbbf24", marginBottom: 2 }}>태어난 시</label>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 3, marginBottom: 3 }}>
                     {BIRTH_HOURS.map(h => (
-                      <button key={h.value} onClick={() => setBirthHour(h.value)} style={{ padding: "8px 2px", border: birthHour === h.value ? "2px solid #fbbf24" : "1.5px solid #ddd", background: birthHour === h.value ? "#fffbeb" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 10, cursor: "pointer", color: birthHour === h.value ? "#b45309" : "#333", textAlign: "center" }}>
-                        {h.label}<br/><span style={{ fontSize: 8, opacity: 0.65 }}>{h.time}</span>
+                      <button key={h.value} onClick={() => setBirthHour(h.value)} style={{ padding: "4px 1px", border: birthHour === h.value ? "2px solid #fbbf24" : "1.5px solid #ddd", background: birthHour === h.value ? "#fffbeb" : "#fff", borderRadius: 6, fontWeight: 700, fontSize: 9, cursor: "pointer", color: birthHour === h.value ? "#b45309" : "#333", textAlign: "center" }}>
+                        {h.label}<br/><span style={{ fontSize: 7, opacity: 0.65 }}>{h.time}</span>
                       </button>
                     ))}
                   </div>
-                  <button onClick={() => setBirthHour("unknown")} style={{ width: "100%", padding: "8px 0", border: birthHour === "unknown" ? "2px solid #fbbf24" : "1.5px solid #ddd", background: birthHour === "unknown" ? "#fffbeb" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: "pointer", color: birthHour === "unknown" ? "#b45309" : "#333" }}>모름</button>
+                  <button onClick={() => setBirthHour("unknown")} style={{ width: "100%", padding: "4px 0", border: birthHour === "unknown" ? "2px solid #fbbf24" : "1.5px solid #ddd", background: birthHour === "unknown" ? "#fffbeb" : "#fff", borderRadius: 6, fontWeight: 700, fontSize: 10, cursor: "pointer", color: birthHour === "unknown" ? "#b45309" : "#333" }}>모름</button>
                 </div>
               </div>
 
@@ -474,12 +474,12 @@ function PaymentCompleteInner() {
                 <div style={{ marginBottom: 12, paddingBottom: 12, borderBottom: "2px solid rgba(139,92,246,0.4)", background: "rgba(139,92,246,0.15)", padding: 10, borderRadius: 10, marginTop: 4 }}>
                   <p style={{ color: "#c4b5fd", fontSize: 13, fontWeight: 900, margin: "0 0 10px 0" }}>상대방 정보</p>
 
-                  <div style={{ marginBottom: 8 }}>
+                  <div style={{ marginBottom: 4 }}>
                     <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#c4b5fd", marginBottom: 5 }}>상대방 이름</label>
                     <input type="text" placeholder="상대방 이름을 입력하세요" value={partnerName} onChange={e => setPartnerName(e.target.value)} style={{ ...inp, border: "1px solid #c4b5fd" }} />
                   </div>
 
-                  <div style={{ marginBottom: 8 }}>
+                  <div style={{ marginBottom: 4 }}>
                     <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#c4b5fd", marginBottom: 5 }}>상대방 생년월일</label>
                     <input type="number" placeholder="연도 (예: 1990)" value={partnerBirthYear} onChange={e => setPartnerBirthYear(e.target.value)} min="1900" max={new Date().getFullYear()} style={{ ...inp, border: "1px solid #c4b5fd", marginBottom: 7 }} />
                     <div style={{ display: "flex", gap: "4%" }}>
@@ -498,19 +498,19 @@ function PaymentCompleteInner() {
                     <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#c4b5fd", marginBottom: 5 }}>상대방 태어난 시</label>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 5 }}>
                       {BIRTH_HOURS.map(h => (
-                        <button key={h.value} onClick={() => setPartnerBirthHour(h.value)} style={{ padding: "8px 2px", border: partnerBirthHour === h.value ? "2px solid #c4b5fd" : "1.5px solid #ddd", background: partnerBirthHour === h.value ? "#f5f3ff" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 10, cursor: "pointer", color: partnerBirthHour === h.value ? "#6d28d9" : "#333", textAlign: "center" }}>
-                          {h.label}<br/><span style={{ fontSize: 8, opacity: 0.65 }}>{h.time}</span>
+                        <button key={h.value} onClick={() => setPartnerBirthHour(h.value)} style={{ padding: "4px 1px", border: partnerBirthHour === h.value ? "2px solid #c4b5fd" : "1.5px solid #ddd", background: partnerBirthHour === h.value ? "#f5f3ff" : "#fff", borderRadius: 6, fontWeight: 700, fontSize: 9, cursor: "pointer", color: partnerBirthHour === h.value ? "#6d28d9" : "#333", textAlign: "center" }}>
+                          {h.label}<br/><span style={{ fontSize: 7, opacity: 0.65 }}>{h.time}</span>
                         </button>
                       ))}
                     </div>
-                    <button onClick={() => setPartnerBirthHour("unknown")} style={{ width: "100%", padding: "8px 0", border: partnerBirthHour === "unknown" ? "2px solid #c4b5fd" : "1.5px solid #ddd", background: partnerBirthHour === "unknown" ? "#f5f3ff" : "#fff", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: "pointer", color: partnerBirthHour === "unknown" ? "#6d28d9" : "#333" }}>모름</button>
+                    <button onClick={() => setPartnerBirthHour("unknown")} style={{ width: "100%", padding: "4px 0", border: partnerBirthHour === "unknown" ? "2px solid #c4b5fd" : "1.5px solid #ddd", background: partnerBirthHour === "unknown" ? "#f5f3ff" : "#fff", borderRadius: 6, fontWeight: 700, fontSize: 10, cursor: "pointer", color: partnerBirthHour === "unknown" ? "#6d28d9" : "#333" }}>모름</button>
                   </div>
                 </div>
               )}
 
 
               {/* 분석 시작 버튼 */}
-              <button onClick={handleAnalysis} disabled={isLoading} style={{ width: "100%", padding: 15, background: isLoading ? "rgba(251,191,36,0.5)" : "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: isLoading ? "not-allowed" : "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.35)" }}>
+              <button onClick={handleAnalysis} disabled={isLoading} style={{ width: "100%", padding: 10, background: isLoading ? "rgba(251,191,36,0.5)" : "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: isLoading ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(251,191,36,0.3)" }}>
                 {isLoading ? "🔮 분석 중..." : "🔮 분석 시작"}
               </button>
             </div>
@@ -518,8 +518,8 @@ function PaymentCompleteInner() {
 
 
           {/* 할인코드 — 모든 결제완료 공통 */}
-          <div style={{ marginTop: 14, paddingBottom: 14, borderTop: "1px solid rgba(251,191,36,0.3)", paddingTop: 14 }}>
-            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#fbbf24", marginBottom: 6 }}>🎟 할인코드</label>
+          <div style={{ marginTop: 8, paddingBottom: 8, borderTop: "1px solid rgba(251,191,36,0.3)", paddingTop: 8 }}>
+            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#fbbf24", marginBottom: 4 }}>🎟 할인코드</label>
             {!appliedDiscount ? (
               <>
                 <div style={{ display: "flex", gap: 8 }}>
@@ -528,9 +528,9 @@ function PaymentCompleteInner() {
                     placeholder="할인코드 입력 (3,900원 이상 적용)"
                     value={discountInput}
                     onChange={e => { setDiscountInput(e.target.value); setDiscountError(""); }}
-                    style={{ flex: 1, padding: 9, borderRadius: 8, border: "1px solid #fbbf24", background: "#fff", color: "#333", fontSize: 14, fontWeight: 700, fontFamily: "inherit" }}
+                    style={{ flex: 1, padding: 6, borderRadius: 6, border: "1px solid #fbbf24", background: "#fff", color: "#333", fontSize: 12, fontWeight: 700, fontFamily: "inherit" }}
                   />
-                  <button onClick={applyDiscountCode} style={{ padding: "9px 16px", background: "rgba(251,191,36,0.15)", border: "1px solid #fbbf24", color: "#fbbf24", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}>적용</button>
+                  <button onClick={applyDiscountCode} style={{ padding: "6px 12px", background: "rgba(251,191,36,0.15)", border: "1px solid #fbbf24", color: "#fbbf24", borderRadius: 6, fontWeight: 900, fontSize: 12, cursor: "pointer", whiteSpace: "nowrap" }}>적용</button>
                 </div>
                 {discountError && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "6px 0 0 0" }}>{discountError}</p>}
               </>
@@ -547,7 +547,7 @@ function PaymentCompleteInner() {
             )}
           </div>
 
-          <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: 14, background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "#f5f5f5", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 12 }}>← 홈으로 돌아가기</button>
+          <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: 10, background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "#f5f5f5", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", marginBottom: 8 }}>← 홈으로 돌아가기</button>
         </div>
       </div>
     </main>
