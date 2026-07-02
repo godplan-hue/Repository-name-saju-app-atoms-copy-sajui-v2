@@ -50,6 +50,21 @@ function PaymentCompleteInner() {
     const paidParam = searchParams.get("paid") || "";
     if (paidParam) setPaidAmount(paidParam);
 
+    // 결제 완료 시 복냥이 상담창 + Q&A 360개 하루 무제한 해제
+    try {
+      const profileRaw = localStorage.getItem("v2_saved_profile");
+      if (profileRaw) {
+        const profile = JSON.parse(profileRaw);
+        const n = profile.name ?? "";
+        const y = profile.birthYear ?? 0;
+        if (n && y) {
+          const d = new Date();
+          const todayStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+          localStorage.setItem(`v2_qa_unlock_${n}_${y}`, todayStr);
+        }
+      }
+    } catch {}
+
     const isDaeun = searchParams.get("daeun") === "1";
     if (isDaeun) {
       const daeunCount = searchParams.get("daeunCount") || "1";

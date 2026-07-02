@@ -222,11 +222,11 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
           <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, flexShrink: 0 }}>🐱</div>
           <div style={{ flex: 1 }}>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 900, background: "linear-gradient(135deg, #ec4899, #8b5cf6, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "qaSparkle 1.8s ease-in-out infinite" }}>복냥이 사주 상담</p>
-            <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: remaining > 0 || effectiveUnlocked ? "#8b5cf6" : "#ef4444", display: "flex", alignItems: "center", gap: 5 }}>
-              {effectiveUnlocked ? "무제한 질문 가능" : `오늘 남은 질문 ${remaining}회 (매일 무료)`}
-              <span style={{ fontSize: 10, fontWeight: 700, color: "#ef4444" }}>· 결제 시 하루 무제한</span>
+            <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: remaining > 0 || effectiveUnlocked ? "#8b5cf6" : "#ef4444" }}>
+              {effectiveUnlocked ? "무제한 질문 가능 🔓" : `오늘 남은 질문 ${remaining}회 (매일 무료)`}
             </p>
           </div>
+          <button onClick={() => setShowBuyModal(true)} style={{ padding: "6px 11px", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "white", border: "none", borderRadius: 20, fontSize: 10, fontWeight: 900, cursor: "pointer", flexShrink: 0 }}>💳 운세구매</button>
         </div>
 
         {/* 메시지 영역 */}

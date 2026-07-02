@@ -215,8 +215,12 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
         </p>
       </div>
 
-      {/* 구매 유도 배너 — 무료일 때 맨 위에 */}
-      {!unlocked && (
+      {/* 구매 유도 배너 — 항상 표시 (결제 후엔 더 구매 버튼으로) */}
+      {unlocked ? (
+        <div style={{ marginBottom: 14, display: "flex", justifyContent: "flex-end" }}>
+          <button onClick={() => setShowBuyModal(true)} style={{ padding: "7px 16px", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "white", border: "none", borderRadius: 20, fontSize: 11, fontWeight: 900, cursor: "pointer", boxShadow: "0 3px 10px rgba(236,72,153,0.3)" }}>💳 운세 추가 구매</button>
+        </div>
+      ) : (
         <div style={{
           marginBottom: 14,
           padding: "12px 16px",
