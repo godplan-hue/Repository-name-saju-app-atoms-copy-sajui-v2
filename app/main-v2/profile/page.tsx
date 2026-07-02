@@ -115,10 +115,15 @@ export default function V2Profile() {
           const sameName = !loggedInName || p.name === loggedInName;
           if (sameName && p.birthYear && p.gender && p.birthHour) {
             sessionStorage.setItem("v2_profile", JSON.stringify(p));
+            const afterGoto = sessionStorage.getItem("v2_after_payment_goto");
             sessionStorage.removeItem("v2_after_payment_goto");
-            sessionStorage.removeItem("specialPaid");
-            sessionStorage.removeItem("specialType");
-            router.replace("/main-v2/analysis");
+            if (afterGoto === "special") {
+              router.replace("/main-v2/special");
+            } else {
+              sessionStorage.removeItem("specialPaid");
+              sessionStorage.removeItem("specialType");
+              router.replace("/main-v2/analysis");
+            }
             return;
           }
         } catch {}
