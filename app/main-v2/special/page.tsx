@@ -449,15 +449,22 @@ function SpecialPageContent() {
       categories.push({ icon: "📅", label: "월별 흐름 (1~12월)", color: "#7c3aed", text: monthlyText });
     }
 
-    // naming 묶음: 나머지 항목 섹션도 한 페이지에 합치기
+    // naming 묶음: 모든 항목을 색깔 헤더와 함께 한 페이지에 합치기
     let namingSubtitle = product.title;
     try {
       const nq: string[] = JSON.parse(sessionStorage.getItem("v2_naming_queue") || "[]");
       if (nq.length > 1) {
-        for (let i = 1; i < nq.length; i++) {
-          const ep = PRODUCTS[nq[i]];
+        // 전체 재구성 — 첫 항목 포함 각각 색깔 헤더 + 섹션
+        categories.length = 0;
+        const allItems = nq;
+        for (let i = 0; i < allItems.length; i++) {
+          const pType = allItems[i];
+          const ep = i === 0 ? product : PRODUCTS[pType];
           if (!ep) continue;
-          ep.sections.forEach((s: Section) => {
+          const eSections = i === 0 ? displaySections : ep.sections;
+          // 운세 구분 헤더
+          categories.push({ icon: ep.emoji, label: `${ep.emoji} ${ep.title}`, color: ep.color || "#ec4899", text: ep.subtitle });
+          eSections.forEach((s: Section) => {
             categories.push({ icon: s.emoji, label: s.title, color: ep.color || "#ec4899", text: fill(s.texts[oh], name, filledOther, filledPet) });
           });
         }
