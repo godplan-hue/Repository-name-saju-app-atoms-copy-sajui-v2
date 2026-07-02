@@ -356,13 +356,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5, marginBottom: 10 }}>
               {SPECIAL_990.map(s => (
                 <button key={s.id}
-                  onClick={() => {
-                    const SPECIAL_TO_CAT: Record<string, string> = { sinyeon: "🎍 신년운세", love_detail: "💗 연애사주", findmatch: "🔍 내 사람 찾기", marriage_detail: "💍 결혼사주", divorce: "🌧 이혼운세" };
-                    const catLabel = SPECIAL_TO_CAT[s.id];
-                    setShowBuyModal(false);
-                    if (catLabel) { sessionStorage.setItem("v2_paid_cats", JSON.stringify([catLabel])); router.push(`/payment-complete?naming=1&queue=${s.id}&paid=${s.paid}&package=${encodeURIComponent(s.label)}`); }
-                    else { router.push(`/payment-complete?special=${s.id}&paid=${s.paid}`); }
-                  }}
+                  onClick={() => { setShowBuyModal(false); router.push(`/payment-complete?special=${s.id}&paid=${s.paid}`); }}
                   style={{ padding: "9px 5px", background: s.red ? "rgba(40,5,5,0.9)" : "#fdf4ff", border: `1.5px solid ${s.red ? "rgba(239,68,68,0.8)" : "#e9d5ff"}`, borderRadius: 10, cursor: "pointer", textAlign: "center" }}
                 >
                   <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>

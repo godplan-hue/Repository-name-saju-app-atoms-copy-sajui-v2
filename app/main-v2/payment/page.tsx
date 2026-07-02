@@ -218,7 +218,7 @@ function PaymentInner() {
               >
                 <p style={{ margin: "0 0 3px", fontSize: 20 }}>{s.emoji}</p>
                 <p style={{ margin: "0 0 2px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
-                <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.sub}</p>
+                <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3, whiteSpace: s.sub.includes('\n') ? "pre-line" : "normal" }}>{s.sub}</p>
                 <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: s.accent }}>₩{s.price.toLocaleString()}</p>
               </button>
             ))}
@@ -232,7 +232,7 @@ function PaymentInner() {
             {[
               { id: "daeun",      emoji: "🌌", label: "대운(大運)",   sub: "10년 단위 운명 흐름", daeun: true },
               { id: "reunion",    emoji: "💔", label: "재회운",        sub: "다시 만날 수 있을까" },
-              { id: "taegil",     emoji: "📅", label: "택일(擇日)",   sub: "내 사주에 맞는 좋은 날" },
+              { id: "taegil",     emoji: "📅", label: "택일(擇日)",   sub: "내 사주에 맞는\n좋은날" },
               { id: "pet_compat", emoji: "🐾", label: "반려동물 궁합", sub: "나와 우리 아이 궁합" },
             ].map(s => (
               <button key={s.id}
@@ -250,7 +250,7 @@ function PaymentInner() {
               >
                 <p style={{ margin: "0 0 3px", fontSize: 20 }}>{s.emoji}</p>
                 <p style={{ margin: "0 0 2px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
-                <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.sub}</p>
+                <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3, whiteSpace: s.sub.includes('\n') ? "pre-line" : "normal" }}>{s.sub}</p>
                 <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#c4b5fd" }}>₩2,900</p>
               </button>
             ))}

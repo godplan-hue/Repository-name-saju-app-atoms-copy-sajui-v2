@@ -282,7 +282,7 @@ const EXTRA_ITEMS = [
   { id: "findmatch",        label: "내 사람 찾기",     sub: "나에게 맞는 사람",        emoji: "🔍", price: "₩990",   priceNum: 990,  premium: false, img: "https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg", accent: "#9333ea" },
   { id: "marriage_detail",  label: "결혼사주",         sub: "배우자 복·결혼 타이밍",   emoji: "💍", price: "₩990",   priceNum: 990,  premium: false, img: "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg", accent: "#ea580c" },
   { id: "divorce",          label: "이혼운세",         sub: "관계의 끝·새 출발",       emoji: "🌧", price: "₩990",   priceNum: 990,  premium: false, img: "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg", accent: "#64748b" },
-  { id: "taegil",           label: "택일(擇日)",       sub: "내 사주에 맞는 좋은 날",  emoji: "📅", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/1200x/b7/c3/ca/b7c3ca787665a1ec29ea1d2643ddc55a.jpg", accent: "#0284c7" },
+  { id: "taegil",           label: "택일(擇日)",       sub: "내 사주에 맞는\n좋은날",  emoji: "📅", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/1200x/b7/c3/ca/b7c3ca787665a1ec29ea1d2643ddc55a.jpg", accent: "#0284c7" },
   { id: "pet_compat",       label: "반려동물 궁합",    sub: "나와 우리 아이 궁합",     emoji: "🐾", price: "₩2,900", priceNum: 2900, premium: false, img: "https://i.pinimg.com/736x/4f/02/13/4f0213abf6635336a4b3719554766624.jpg", accent: "#f97316" },
 ];
 
@@ -314,7 +314,7 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
             <span style={{ position: "absolute", top: 5, left: 5, fontSize: item.priceNum === 990 ? 9 : 8, fontWeight: 900, padding: item.priceNum === 990 ? "2px 7px" : "2px 5px", borderRadius: 20, ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "#15803d", color: "#fff" }) }}>{item.price}</span>
             <div style={{ position: "absolute", bottom: 6, left: 0, right: 0, textAlign: "center", padding: "0 4px" }}>
               <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)", lineHeight: 1.25, whiteSpace: "nowrap", overflow: "hidden" }}>{item.label}</div>
-              <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.72)", textShadow: "0 1px 4px rgba(0,0,0,0.9)", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden" }}>{item.sub}</div>
+              <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.72)", textShadow: "0 1px 4px rgba(0,0,0,0.9)", marginTop: 2, whiteSpace: item.sub.includes('\n') ? "pre-line" : "nowrap", overflow: "hidden" }}>{item.sub}</div>
             </div>
           </div>
         ))}
