@@ -94,31 +94,9 @@ function PaymentInner() {
       return originalPrice;
     }
   };
-  const SELECT_CATS = [
-    { key: "💰 재물운", icon: "💰" },
-    { key: "💕 연애운", icon: "💕" },
-    { key: "💪 건강운", icon: "💪" },
-    { key: "🎯 성공운", icon: "🎯" },
-    { key: "✨ 총운",   icon: "✨" },
-  ];
-  // Q&A 채팅에서 단품 눌러 들어온 경우 해당 항목만 미리 선택
-  const singleParam = searchParams.get("single");
-  const preselectSingleKey = singleParam ? SELECT_CATS.find(c => c.key.includes(singleParam))?.key ?? null : null;
-  const [selectedCats, setSelectedCats] = useState<string[]>(
-    preselectSingleKey ? [preselectSingleKey] : SELECT_CATS.map(c => c.key)
-  );
   const [isMobile, setIsMobile] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [analysisName, setAnalysisName] = useState("");
-
-  // Q&A에서 단품 눌러 들어온 경우 단품 선택 영역으로 자동 스크롤
-  useEffect(() => {
-    if (preselectSingleKey) {
-      setTimeout(() => {
-        document.getElementById("select-section")?.scrollIntoView({ behavior: "smooth" });
-      }, 600);
-    }
-  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -132,15 +110,6 @@ function PaymentInner() {
       return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
-
-  // "당신의 변화" 카드에서 들어온 경우 990원 선택 섹션으로 자동 스크롤
-  // (페이지 전체 순서는 그대로 유지하고, 이 경로로 온 사람만 헤매지 않게 함)
-  useEffect(() => {
-    if (searchParams.get("scrollTo") === "select") {
-      const el = document.getElementById("select-section");
-      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
-    }
-  }, [searchParams]);
 
   // 재물운/연애운 배너 또는 그리드의 패키지 전용 항목(궁합/이름/전체사주)으로 들어온 경우 —
   // 소개문구 다 안 보고 바로 패키지 카드부터 보이게 스크롤
@@ -308,7 +277,36 @@ function PaymentInner() {
           </div>
         </div>
 
-        <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 16, fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 900 }}>📦 패키지 선택</h2>
+        {/* 심층 분석 3900원 */}
+        {!isPartner && (
+          <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
+            <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>✨ 심층 분석 3,900원</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
+              {[
+                { id: "재물운", emoji: "💰", label: "재물운", catKey: "💰 재물운" },
+                { id: "연애운", emoji: "💕", label: "연애운", catKey: "💕 연애운" },
+                { id: "건강운", emoji: "💪", label: "건강운", catKey: "💪 건강운" },
+                { id: "성공운", emoji: "🎯", label: "성공운", catKey: "🎯 성공운" },
+                { id: "총운",   emoji: "✨", label: "총운",   catKey: "✨ 총운"   },
+              ].map(s => (
+                <button key={s.id}
+                  onClick={async () => {
+                    const paidPrice = await finalPrice(3900);
+                    sessionStorage.setItem("v2_paid_cats", JSON.stringify([s.catKey]));
+                    router.push(`/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=${paidPrice}`);
+                  }}
+                  style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
+                >
+                  <p style={{ margin: "0 0 3px", fontSize: 20 }}>{s.emoji}</p>
+                  <p style={{ margin: "0 0 4px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
+                  <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#fbbf24" }}>₩3,900</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 16, fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 900 }}>📦 패키지 (더 저렴해!)</h2>
 
         {/* 헤더 배너 */}
         <div style={{ maxWidth: 1200, margin: "0 auto 30px", background: "linear-gradient(135deg, rgba(20,10,40,0.6), rgba(74,26,84,0.45))", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 16, padding: "26px 24px", textAlign: "center", boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
@@ -434,66 +432,6 @@ function PaymentInner() {
           </a>
         </div>
 
-        {/* 운세 선택 섹션 — 990원 단품 결제는 파트너 서브도메인에서는 안 보이게 막음
-            (메인 화면 버튼만 막아도 이 페이지에 직접 들어오면 그대로 보였던 구멍) */}
-        {!isPartner && (
-        <div id="select-section" style={{ maxWidth: 1000, margin: "0 auto 40px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: "24px 22px", borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
-          <h2 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 6, letterSpacing: "-0.3px" }}>✨ 어떤 운세를 확인할까요?</h2>
-          <p style={{ fontSize: 13, fontWeight: 700, marginBottom: 16 }}>
-            <span style={{ color: "rgba(255,255,255,0.7)" }}>1개 선택 · </span><span style={{ color: "#ff69b4", fontWeight: 900 }}>₩3,900</span>
-          </p>
-
-          <button
-            onClick={() => setSelectedCats(selectedCats.length === SELECT_CATS.length ? [] : SELECT_CATS.map(c => c.key))}
-            style={{ width: "100%", padding: "11px 16px", marginBottom: 10, background: selectedCats.length === SELECT_CATS.length ? "linear-gradient(135deg, rgba(236,72,153,0.25), rgba(139,92,246,0.25))" : "rgba(255,255,255,0.06)", border: `1.5px solid ${selectedCats.length === SELECT_CATS.length ? "#fbbf24" : "rgba(255,255,255,0.18)"}`, borderRadius: 12, fontWeight: 800, fontSize: 13, color: selectedCats.length === SELECT_CATS.length ? "#fbbf24" : "rgba(255,255,255,0.8)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", transition: "all 0.15s" }}
-          >
-            <span>✨ 전체 선택</span>
-            <span style={{ width: 20, height: 20, borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 12, background: selectedCats.length === SELECT_CATS.length ? "linear-gradient(135deg, #fbbf24, #f59e0b)" : "transparent", border: selectedCats.length === SELECT_CATS.length ? "none" : "1.5px solid rgba(255,255,255,0.3)", color: "#1a1a1a" }}>
-              {selectedCats.length === SELECT_CATS.length ? "✓" : ""}
-            </span>
-          </button>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {SELECT_CATS.map(c => {
-              const on = selectedCats.includes(c.key);
-              return (
-                <button key={c.key}
-                  onClick={() => setSelectedCats(on ? selectedCats.filter(k => k !== c.key) : [...selectedCats, c.key])}
-                  style={{ padding: "13px 16px", border: `1.5px solid ${on ? "#fbbf24" : "rgba(255,255,255,0.15)"}`, borderRadius: 14, background: on ? "linear-gradient(135deg, rgba(236,72,153,0.18), rgba(139,92,246,0.18))" : "rgba(255,255,255,0.05)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", transition: "all 0.15s", boxShadow: on ? "0 4px 14px rgba(251,191,36,0.15)" : "none" }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <span style={{ fontSize: 18 }}>{c.icon}</span>
-                    <div style={{ textAlign: "left" }}>
-                      <span style={{ fontSize: 14, fontWeight: 900, color: on ? "#fbbf24" : "rgba(255,255,255,0.85)" }}>{c.key.replace(/\S+\s/, "")}</span>
-                    </div>
-                  </div>
-                  <span style={{ width: 22, height: 22, borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, background: on ? "linear-gradient(135deg, #fbbf24, #f59e0b)" : "transparent", border: on ? "none" : "1.5px solid rgba(255,255,255,0.3)", color: "#1a1a1a", flexShrink: 0 }}>
-                    {on ? "✓" : ""}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* 운세 보기 버튼 */}
-          <button
-            onClick={async () => {
-              if (selectedCats.length === 0) return;
-              // 결제 후 결과 페이지가 "어떤 카테고리를 결제했는지" 알 수 있도록 반드시 저장해야 함
-              // (이게 없으면 결과 페이지가 기본값으로 5개 전부를 보여주는 버그가 생김)
-              sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
-              const pkgName = selectedCats.map(c => c.replace(/\S+\s/, "")).join("+");
-              const originalPrice = selectedCats.length * 3900;
-              const paidPrice = await finalPrice(originalPrice); // 할인 적용 + 정산 자동 계산/기록
-              router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${selectedCats.length * 30}&paid=${paidPrice}`);
-            }}
-            disabled={selectedCats.length === 0}
-            style={{ width: "100%", marginTop: 18, padding: "15px 0", background: selectedCats.length > 0 ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(255,255,255,0.1)", color: selectedCats.length > 0 ? "#1a0f2e" : "rgba(255,255,255,0.4)", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: selectedCats.length > 0 ? "pointer" : "not-allowed", boxShadow: selectedCats.length > 0 ? "0 6px 22px rgba(251,191,36,0.35)" : "none", letterSpacing: "-0.2px" }}
-          >
-            {selectedCats.length > 0 ? `💎 ${selectedCats.length}개 결제하기 · ₩${(appliedDiscount ? Math.round(selectedCats.length * 3900 * (1 - appliedDiscount.discountPercent / 100)) : selectedCats.length * 3900).toLocaleString()}` : "운세를 선택하세요"}
-          </button>
-        </div>
-        )}
 
 
         {/* 사업자 고지 — 파트너 브랜드(서브도메인)로 들어와도 실제 결제·운영 주체가
