@@ -641,12 +641,17 @@ function V2ResultInner() {
       // 9900원 이상 패키지(카테고리 여러 개)는 합쳐서 하나의 거대한 캔버스를 만들지 않고,
       // 카테고리별로 각각 따로 저장 — 캔버스 크기 한계로 인한 저장 실패를 원천적으로 줄임
       // (요약 카드는 따로 빼지 않고, 각 카테고리 이미지 맨 위에 함께 붙여서 8장 모두에 들어가게 함)
-      if (tier === "package" && canvases.length > 1) {
-        const pkgCats = (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]);
+      if ((tier === "package" || tier === "select") && canvases.length > 1) {
+        const pkgCats = tier === "package"
+          ? (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter((c: PkgCat) => allAnalyses[c.apiKey])
+          : ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key));
         const summary = canvases[0];
         const failedLabels: string[] = [];
         for (const [i, c] of canvases.slice(1).entries()) {
-          const label = pkgCats[i]?.label ?? `사주${i + 1}`;
+          const rawCat = pkgCats[i];
+          const label = tier === "package"
+            ? ((rawCat as PkgCat)?.label ?? `사주${i + 1}`)
+            : (((rawCat as { key: string })?.key ?? "").replace(/^[^\s]+\s/, "") || `사주${i + 1}`);
           try {
             // 요약 카드 + 해당 카테고리 카드를 위아래로 이어붙인 새 캔버스를 만들어 저장.
             // 특정 카테고리(예: 건강운) 내용이 유난히 길면 합친 높이가 브라우저 캔버스
@@ -658,7 +663,7 @@ function V2ResultInner() {
             merged.width = Math.round(Math.max(summary.width, c.width) * scale);
             merged.height = Math.round(rawHeight * scale);
             const ctx = merged.getContext("2d")!;
-            ctx.fillStyle = "#fdf6e3";
+            ctx.fillStyle = tier === "package" ? "#fdf6e3" : "#fdf2f8";
             ctx.fillRect(0, 0, merged.width, merged.height);
             ctx.drawImage(summary, 0, 0, summary.width * scale, summary.height * scale);
             ctx.drawImage(c, 0, (summary.height + 16) * scale, c.width * scale, c.height * scale);
