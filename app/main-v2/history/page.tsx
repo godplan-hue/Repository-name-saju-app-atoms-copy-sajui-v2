@@ -130,7 +130,7 @@ export default function V2History() {
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
-  const [syncName, setSyncName] = useState("");
+  const [syncPhone, setSyncPhone] = useState("");
   const [syncLoading, setSyncLoading] = useState(false);
   const [syncMsg, setSyncMsg] = useState("");
 
@@ -185,49 +185,57 @@ export default function V2History() {
   useEffect(() => {
     const local: Item[] = JSON.parse(localStorage.getItem("v2_history") || "[]").filter((i: Item) => i.isPaid === true);
     setHist(local);
-    // Firebase에서도 불러와 병합 (기기 간 동기화)
+
+    const mergeRemote = (remote: Item[]) => {
+      if (remote.length === 0) return;
+      setHist(prev => {
+        const merged = [...remote];
+        prev.forEach(p => { if (!merged.some(m => m.id === p.id)) merged.push(p); });
+        merged.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        return merged;
+      });
+    };
+
+    // 이름으로 자동 조회
     try {
       const profile = JSON.parse(localStorage.getItem("v2_saved_profile") || "null");
       const name = profile?.name || "";
       if (name) {
         fetch(`/api/v2/history?name=${encodeURIComponent(name)}`)
           .then(r => r.json())
-          .then(data => {
-            const remote: Item[] = (data.items || []).filter((i: Item) => i.isPaid === true);
-            if (remote.length === 0) return;
-            setHist(prev => {
-              const merged = [...remote];
-              prev.forEach(p => { if (!merged.some(m => m.id === p.id)) merged.push(p); });
-              merged.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-              return merged;
-            });
-          })
+          .then(data => { mergeRemote((data.items || []).filter((i: Item) => i.isPaid === true)); })
+          .catch(() => {});
+      }
+    } catch {}
+
+    // 전화번호로 자동 조회
+    try {
+      const phone = localStorage.getItem("v2_saved_phone") || "";
+      if (phone) {
+        fetch(`/api/v2/history?phone=${encodeURIComponent(phone)}`)
+          .then(r => r.json())
+          .then(data => { mergeRemote((data.items || []).filter((i: Item) => i.isPaid === true)); })
           .catch(() => {});
       }
     } catch {}
   }, []);
 
-  const fetchByName = async () => {
-    const name = syncName.trim();
-    if (!name) return;
+  const fetchByPhone = async () => {
+    const phone = syncPhone.trim().replace(/\D/g, "");
+    if (phone.length < 10) return;
     setSyncLoading(true);
     setSyncMsg("");
     try {
-      const res = await fetch(`/api/v2/history?name=${encodeURIComponent(name)}`);
+      const res = await fetch(`/api/v2/history?phone=${encodeURIComponent(phone)}`);
       const data = await res.json();
       const remote: Item[] = (data.items || []).filter((i: Item) => i.isPaid === true);
       if (remote.length === 0) {
-        setSyncMsg(`"${name}" 이름으로 저장된 기록이 없어요`);
+        setSyncMsg("해당 번호로 저장된 기록이 없어요");
       } else {
-        // localStorage에도 병합 저장
         const stored: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
         remote.forEach(item => { if (!stored.some((h: any) => h.id === item.id)) stored.unshift(item as any); });
         localStorage.setItem("v2_history", JSON.stringify(stored.slice(0, 50)));
-        // 이름 프로필 저장 (다음번엔 자동 조회)
-        try {
-          const prev = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-          localStorage.setItem("v2_saved_profile", JSON.stringify({ ...prev, name }));
-        } catch {}
+        localStorage.setItem("v2_saved_phone", phone);
         setHist(prev => {
           const merged = [...remote];
           prev.forEach(p => { if (!merged.some(m => m.id === p.id)) merged.push(p); });
@@ -310,19 +318,20 @@ export default function V2History() {
             {/* 다른 기기에서 구매한 기록 동기화 */}
             <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", marginBottom: 16, textAlign: "left", boxShadow: "0 2px 16px rgba(0,0,0,0.1)" }}>
               <p style={{ fontSize: 14, fontWeight: 900, color: "#ec4899", margin: "0 0 4px" }}>📱 다른 기기에서 구매하셨나요?</p>
-              <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px", lineHeight: 1.5 }}>구매할 때 입력한 이름을 입력하면<br/>이 기기에서도 보관함을 볼 수 있어요</p>
+              <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px", lineHeight: 1.5 }}>결제할 때 입력한 핸드폰번호를 입력하면<br/>이 기기에서도 보관함을 볼 수 있어요</p>
               <div style={{ display: "flex", gap: 8 }}>
                 <input
-                  value={syncName}
-                  onChange={e => setSyncName(e.target.value)}
-                  onKeyDown={e => { if (e.key === "Enter") fetchByName(); }}
-                  placeholder="이름 입력 (예: 홍길동)"
+                  value={syncPhone}
+                  onChange={e => setSyncPhone(e.target.value)}
+                  onKeyDown={e => { if (e.key === "Enter") fetchByPhone(); }}
+                  placeholder="핸드폰번호 (예: 01012345678)"
+                  inputMode="numeric"
                   style={{ flex: 1, padding: "10px 14px", borderRadius: 12, border: "1.5px solid #e5e7eb", fontSize: 14, fontFamily: "inherit", outline: "none" }}
                 />
                 <button
-                  onClick={fetchByName}
-                  disabled={syncLoading || !syncName.trim()}
-                  style={{ padding: "10px 16px", background: syncName.trim() ? G : "#e5e7eb", color: syncName.trim() ? "white" : "#9ca3af", border: "none", borderRadius: 12, fontWeight: 900, fontSize: 13, cursor: syncName.trim() ? "pointer" : "not-allowed", whiteSpace: "nowrap" }}
+                  onClick={fetchByPhone}
+                  disabled={syncLoading || syncPhone.replace(/\D/g, "").length < 10}
+                  style={{ padding: "10px 16px", background: syncPhone.replace(/\D/g, "").length >= 10 ? G : "#e5e7eb", color: syncPhone.replace(/\D/g, "").length >= 10 ? "white" : "#9ca3af", border: "none", borderRadius: 12, fontWeight: 900, fontSize: 13, cursor: syncPhone.replace(/\D/g, "").length >= 10 ? "pointer" : "not-allowed", whiteSpace: "nowrap" }}
                 >
                   {syncLoading ? "⏳" : "🔄 불러오기"}
                 </button>

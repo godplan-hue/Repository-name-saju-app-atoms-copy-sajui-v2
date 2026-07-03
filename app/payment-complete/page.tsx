@@ -352,6 +352,7 @@ function PaymentCompleteInner() {
         const _allAnalyses = result.allAnalyses as Record<string, string> | undefined;
         const _catKeys = _allAnalyses ? Object.keys(_allAnalyses) : [];
         const _cats: string[] = _paidCatsRaw ? JSON.parse(_paidCatsRaw) : _catKeys;
+        const _phone = (() => { try { return sessionStorage.getItem("v2_payment_phone") || localStorage.getItem("v2_saved_phone") || ""; } catch { return ""; } })();
         if (_cats.length > 0 && p.name && result.histId) {
           const _hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
           _cats.forEach((_cat: string, _i: number) => {
@@ -376,7 +377,7 @@ function PaymentCompleteInner() {
               fetch("/api/v2/history", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: p.name, item: _item }),
+                body: JSON.stringify({ name: p.name, phone: _phone, item: _item }),
               }).catch(() => {});
             }
           });

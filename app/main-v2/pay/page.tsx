@@ -58,6 +58,13 @@ function PayInner() {
       });
       const data = await res.json();
       if (data.success) {
+        const cleanMobile = mobile.replace(/\D/g, "");
+        if (cleanMobile) {
+          try {
+            localStorage.setItem("v2_saved_phone", cleanMobile);
+            sessionStorage.setItem("v2_payment_phone", cleanMobile);
+          } catch {}
+        }
         router.push(next);
       } else {
         setError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
@@ -98,35 +105,35 @@ function PayInner() {
 
         <div style={{ marginBottom: 12 }}>
           <label style={lbl}>카드번호</label>
-          <input value={cardNo} onChange={e => setCardNo(formatCardNo(e.target.value))} placeholder="0000 0000 0000 0000" inputMode="numeric" style={inp} />
+          <input value={cardNo} onChange={e => setCardNo(formatCardNo(e.target.value))} placeholder="0000 0000 0000 0000" inputMode="numeric" autoComplete="cc-number" style={inp} />
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }}>
           <div>
             <label style={lbl}>유효기간 월 (MM)</label>
-            <input value={expM} onChange={e => setExpM(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="01" inputMode="numeric" maxLength={2} style={inp} />
+            <input value={expM} onChange={e => setExpM(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="01" inputMode="numeric" maxLength={2} autoComplete="cc-exp-month" style={inp} />
           </div>
           <div>
             <label style={lbl}>유효기간 년 (YY)</label>
-            <input value={expY} onChange={e => setExpY(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="27" inputMode="numeric" maxLength={2} style={inp} />
+            <input value={expY} onChange={e => setExpY(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="27" inputMode="numeric" maxLength={2} autoComplete="cc-exp-year" style={inp} />
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }}>
           <div>
             <label style={lbl}>생년월일 앞 6자리</label>
-            <input value={birth} onChange={e => setBirth(e.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="예: 901225" inputMode="numeric" maxLength={6} style={inp} />
+            <input value={birth} onChange={e => setBirth(e.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="예: 901225" inputMode="numeric" maxLength={6} autoComplete="off" style={inp} />
           </div>
           <div>
             <label style={lbl}>비밀번호 앞 2자리</label>
-            <input type="password" value={pw} onChange={e => setPw(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="••" inputMode="numeric" maxLength={2} style={{ ...inp, fontSize: 20 }} />
+            <input type="password" value={pw} onChange={e => setPw(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="••" inputMode="numeric" maxLength={2} autoComplete="off" style={{ ...inp, fontSize: 20 }} />
           </div>
         </div>
         <div style={{ marginBottom: 12 }}>
           <label style={lbl}>이름 (카드 명의자)</label>
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="홍길동" style={inp} />
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="홍길동" autoComplete="cc-name" style={inp} />
         </div>
         <div style={{ marginBottom: 20 }}>
           <label style={lbl}>핸드폰번호 (선택 — 카카오 결제알림)</label>
-          <input value={mobile} onChange={e => setMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} placeholder="01012345678" inputMode="numeric" style={inp} />
+          <input value={mobile} onChange={e => setMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} placeholder="01012345678" inputMode="numeric" autoComplete="tel" style={inp} />
         </div>
 
         {error && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>⚠️ {error}</p>}
