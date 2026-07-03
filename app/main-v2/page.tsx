@@ -221,7 +221,7 @@ const FORTUNE_CATEGORIES = [
   { id: "yearly",        title: "기본 분석",         sub: "재물운+연애운",       emoji: "🎍", img: "https://i.pinimg.com/1200x/24/32/ee/2432eed06907654905c7949ce4ea350d.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900",     priceBg: "#fbbf24", priceColor: "#1a1a2e" },
   { id: "dream",         title: "꿈해몽",            sub: "출시예정",            emoji: "🌑", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#7c3aed", price: "🌑 꿈해몽",   priceBg: "#fbbf24", priceColor: "#1a0f2e" },
   { id: "love",          title: "연애운",           sub: "운세 5개 묶음",      emoji: "💕", img: "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
-  { id: "naming",        title: "심층 운세 5개 묶음",  sub: "심층 운세 5개 묶음",   emoji: "💫", img: "https://i.pinimg.com/1200x/23/01/49/2301499ea90a65609becd809e3554796.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩990/개",    priceBg: "#16a34a" },
+  { id: "naming",        title: "심층 운세 5개 묶음",  sub: "심층 운세 5개 묶음",   emoji: "💫", img: "https://i.pinimg.com/1200x/23/01/49/2301499ea90a65609becd809e3554796.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩3,900",    priceBg: "#16a34a" },
   { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
   { id: "health",        title: "건강운",           sub: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d" },
   { id: "full",          title: "베이직",            sub: "올해+월별 운세", emoji: "🎯", img: "https://i.pinimg.com/1200x/5a/27/e1/5a27e1d0bf4ea71ee0dfc035f4724e5e.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "베이직",     priceBg: "#2563eb" },
@@ -941,7 +941,7 @@ export default function MainV2() {
           yearly:        { emoji: "🎍", title: "기본 분석",             desc: "재물운 + 연애운 심층 분석",               price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic", priceNum: 9900 },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
-          naming:        { emoji: "💫", title: "심층 5개 운세 묶음", desc: "재물·연애·건강·성공·총운 — 원하는 것만 골라서 · 개당 ₩990", price: "₩990/개", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 990 },
+          naming:        { emoji: "💫", title: "심층 5개 운세 묶음", desc: "재물·연애·건강·성공·총운 5개 묶음 특가", price: "₩3,900", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 3900 },
           full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
         // 추가 상품 모달 처리
@@ -1008,12 +1008,12 @@ export default function MainV2() {
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
                   <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2, whiteSpace: "pre-line" }}>{cfg.desc}</div>
                 </div>
-                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{(showModal === "naming" || showModal === "love") ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 990).toLocaleString()}` : "₩990") : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
+                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{showModal === "love" ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 990).toLocaleString()}` : "₩990") : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
               </div>
               {cfg.features && (
                 <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
                   {cfg.features.map((f, i) => (
-                    showModal === "naming" || showModal === "love" ? (
+                    showModal === "love" ? (
                       <div key={i} onClick={() => setModalSelectedCats(prev => prev.includes(f) ? prev.filter(x => x !== f) : [...prev, f])} style={{ display: "flex", alignItems: "center", gap: 10, color: modalSelectedCats.includes(f) ? "#fff" : "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: 700, lineHeight: 2.2, cursor: "pointer" }}>
                         <span style={{ width: 20, height: 20, border: `2px solid ${modalSelectedCats.includes(f) ? "#a78bfa" : "rgba(255,255,255,0.25)"}`, borderRadius: 5, display: "inline-flex", alignItems: "center", justifyContent: "center", background: modalSelectedCats.includes(f) ? "#7c3aed" : "transparent", flexShrink: 0, fontSize: 12 }}>{modalSelectedCats.includes(f) ? "✓" : ""}</span>
                          <span style={{ display: "inline-block", width: "1.6em", textAlign: "center", flexShrink: 0 }}>{f.split(" ")[0]}</span><span>{f.split(" ").slice(1).join(" ")}</span>
@@ -1045,12 +1045,11 @@ export default function MainV2() {
                     return;
                   }
                   if (showModal === "naming") {
-                    if (modalSelectedCats.length === 0) return;
-                    const totalPaid = modalSelectedCats.length * 990;
-                    sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
-                    const label = modalSelectedCats.length === 1 ? (modalSelectedCats[0].replace(/^\S+\s/, "") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
-                    const _namingNext = `/payment-complete?package=${encodeURIComponent(label)}&pages=${modalSelectedCats.length * 30}&paid=${totalPaid}`;
-                    router.push(`/main-v2/pay?amount=${totalPaid}&next=${encodeURIComponent(_namingNext)}`);
+                    const allCats = ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"];
+                    sessionStorage.setItem("v2_paid_cats", JSON.stringify(allCats));
+                    const _namingNext = `/payment-complete?package=${encodeURIComponent("심층 5개 묶음")}&pages=150&paid=3900`;
+                    router.push(`/main-v2/pay?amount=3900&next=${encodeURIComponent(_namingNext)}`);
+                    return;
                   } else if (cfg.catKeys) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
                     const _catKeysNext = `/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`;
