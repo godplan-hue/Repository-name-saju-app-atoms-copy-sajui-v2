@@ -30,11 +30,14 @@ function PayInner() {
   const [couponLoading, setCouponLoading] = useState(false);
   const [couponMsg, setCouponMsg] = useState("");
   const [couponFree, setCouponFree] = useState(false);
+  const [discountPct, setDiscountPct] = useState(0);
+
+  const displayAmount = discountPct > 0 ? Math.round(amount * (1 - discountPct / 100)) : amount;
 
   const verifyCoupon = async () => {
     const code = couponCode.trim().toUpperCase();
     if (!code) return;
-    setCouponLoading(true); setCouponMsg("");
+    setCouponLoading(true); setCouponMsg(""); setDiscountPct(0); setCouponFree(false);
     try {
       const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(code)}`);
       if (!res.ok) { setCouponMsg("유효하지 않은 코드입니다."); return; }
@@ -42,9 +45,11 @@ function PayInner() {
       if (!data.active) { setCouponMsg("이미 사용된 코드입니다."); return; }
       if (data.discountPercent === 100) {
         setCouponFree(true);
+        setDiscountPct(100);
         setCouponMsg("✅ 100% 무료 쿠폰 적용됐어요!");
       } else {
-        setCouponMsg("이 코드는 결제 완료 후 할인 페이지에서 입력해주세요.");
+        setDiscountPct(data.discountPercent);
+        setCouponMsg(`✅ ${data.discountPercent}% 할인 적용! ₩${Math.round(amount * (1 - data.discountPercent / 100)).toLocaleString()}로 결제됩니다.`);
       }
     } catch { setCouponMsg("코드 확인 중 오류가 발생했습니다."); }
     finally { setCouponLoading(false); }
@@ -85,7 +90,7 @@ function PayInner() {
           expireYear: expY.slice(-2),
           birthday: birth,
           cardPw: pw,
-          amount,
+          amount: displayAmount,
           itemName: "점운 운세",
           userName: name.trim(),
           mobileNumber: mobile.replace(/\D/g, ""),
@@ -93,6 +98,9 @@ function PayInner() {
       });
       const data = await res.json();
       if (data.success) {
+        if (couponCode.trim() && discountPct > 0) {
+          fetch("/api/promo-codes", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: couponCode.trim().toUpperCase() }) }).catch(() => {});
+        }
         const cleanMobile = mobile.replace(/\D/g, "");
         if (cleanMobile) {
           try {
@@ -135,7 +143,10 @@ function PayInner() {
 
         <div style={{ textAlign: "center", marginBottom: 24 }}>
           <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 22, margin: "0 0 4px" }}>💳 카드 결제</p>
-          <p style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 18, margin: 0 }}>₩{amount.toLocaleString()}</p>
+          {discountPct > 0 && !couponFree && (
+            <p style={{ color: "rgba(196,181,253,0.5)", fontWeight: 700, fontSize: 14, margin: 0, textDecoration: "line-through" }}>₩{amount.toLocaleString()}</p>
+          )}
+          <p style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 18, margin: 0 }}>₩{displayAmount.toLocaleString()}</p>
         </div>
 
         {/* 무료 쿠폰 */}
@@ -205,7 +216,7 @@ function PayInner() {
           disabled={loading}
           style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(251,191,36,0.4)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.3)", marginBottom: 8 }}
         >
-          {loading ? "결제 중..." : `💳 ₩${amount.toLocaleString()} 결제하기`}
+          {loading ? "결제 중..." : `💳 ₩${displayAmount.toLocaleString()} 결제하기`}
         </button>
 
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "8px 0 0" }}>SSL 보안 결제 · 페이업㈜ 제공</p>
