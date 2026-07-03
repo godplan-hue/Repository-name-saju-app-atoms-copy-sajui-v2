@@ -150,6 +150,8 @@ export default function HistoryDetail() {
 
   // 읽기(텍스트 음성 읽어주기) — 결과지 화면과 동일한 방식
   const [speaking, setSpeaking] = useState(false);
+  const speakingRef = useRef(false); // setSpeaking은 비동기 — ref로 항상 최신값 즉시 반영
+  const setSpk = (v: boolean) => { speakingRef.current = v; setSpeaking(v); };
   const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
@@ -240,10 +242,11 @@ export default function HistoryDetail() {
         utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
         utter.onerror = (e) => {
           if (e.error === "canceled" || e.error === "interrupted") {
-            if (!restartingRef.current) setSpeaking(false);
+            // restartingRef가 true면 재시작 중 — speaking을 건드리면 안 됨
+            if (!restartingRef.current) setSpk(false);
             return;
           }
-          setSpeaking(false);
+          setSpk(false);
           readChunksRef.current = [];
           readIdxRef.current = 0;
           window.speechSynthesis.cancel();
@@ -251,17 +254,18 @@ export default function HistoryDetail() {
           setTipModal({ text: "읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
         };
         if (idx === chunks.length - 1) {
-          utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); releaseWakeLock(); };
+          utter.onend = () => { setSpk(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); releaseWakeLock(); };
         }
         window.speechSynthesis.speak(utter);
       });
     } catch {
-      setSpeaking(false);
+      setSpk(false);
       releaseWakeLock();
     }
   };
+  // speakingRef.current를 기준으로 판단 — speaking 상태는 비동기라 stale closure 위험이 있음
   resumeAfterHideRef.current = () => {
-    if (speaking && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window) {
+    if (speakingRef.current && readChunksRef.current.length > 0 && typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       requestWakeLock();
       speakFrom(readChunksRef.current, readIdxRef.current);
@@ -273,8 +277,9 @@ export default function HistoryDetail() {
       return;
     }
     if (speaking) {
+      // speakingRef를 즉시 false로 — 화면꺼짐 재개 핸들러가 동시에 와도 재시작 안 함
+      setSpk(false);
       window.speechSynthesis.cancel();
-      setSpeaking(false);
       releaseWakeLock();
       return;
     }
@@ -299,7 +304,7 @@ export default function HistoryDetail() {
           }
           requestWakeLock();
           speakFrom(readChunksRef.current, readIdxRef.current);
-          setSpeaking(true);
+          setSpk(true);
         },
       });
       return;
@@ -328,10 +333,12 @@ export default function HistoryDetail() {
       readChunksRef.current = fullText.split(/(?<=[.!?。\n])\s*/).map((s: string) => s.trim()).filter(Boolean);
       readIdxRef.current = 0;
     }
+    restartingRef.current = true; // cancel 후 오는 onerror가 speaking을 false로 덮어쓰지 못하게
     window.speechSynthesis.cancel();
+    setTimeout(() => { restartingRef.current = false; }, 300);
     requestWakeLock();
     speakFrom(readChunksRef.current, readIdxRef.current);
-    setSpeaking(true);
+    setSpk(true);
   };
 
   // 이어듣기 대신 처음부터 다시 듣고 싶을 때 — 저장된 위치를 무시하고 강제로 0부터 시작
@@ -352,7 +359,7 @@ export default function HistoryDetail() {
     readIdxRef.current = 0;
     requestWakeLock();
     speakFrom(readChunksRef.current, 0);
-    setSpeaking(true);
+    setSpk(true);
     setTimeout(() => { restartingRef.current = false; }, 300);
   };
 
