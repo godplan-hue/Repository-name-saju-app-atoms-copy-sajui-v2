@@ -221,7 +221,7 @@ const FORTUNE_CATEGORIES = [
   { id: "yearly",        title: "기본 분석",         sub: "재물운+연애운",       emoji: "🎍", img: "https://i.pinimg.com/1200x/24/32/ee/2432eed06907654905c7949ce4ea350d.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900",     priceBg: "#fbbf24", priceColor: "#1a1a2e" },
   { id: "dream",         title: "꿈해몽",            sub: "출시예정",            emoji: "🌑", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#7c3aed", price: "🌑 꿈해몽",   priceBg: "#fbbf24", priceColor: "#1a0f2e" },
   { id: "love",          title: "연애운",           sub: "운세 5개 묶음",      emoji: "💕", img: "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg", bg: "linear-gradient(145deg, #fdf2f8, #fbcfe8)", accent: "#be185d", price: "₩990",      priceBg: "#ff0000" },
-  { id: "naming",        title: "심층 운세 5개 묶음",  sub: "심층 운세 5개 묶음",   emoji: "💫", img: "https://i.pinimg.com/1200x/23/01/49/2301499ea90a65609becd809e3554796.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩3,900",     priceBg: "#16a34a" },
+  { id: "naming",        title: "심층 운세 5개 묶음",  sub: "심층 운세 5개 묶음",   emoji: "💫", img: "https://i.pinimg.com/1200x/23/01/49/2301499ea90a65609becd809e3554796.jpg", bg: "linear-gradient(145deg, #ecfeff, #cffafe)", accent: "#0e7490", price: "₩990/개",    priceBg: "#16a34a" },
   { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
   { id: "health",        title: "건강운",           sub: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d" },
   { id: "full",          title: "베이직",            sub: "올해+월별 운세", emoji: "🎯", img: "https://i.pinimg.com/1200x/5a/27/e1/5a27e1d0bf4ea71ee0dfc035f4724e5e.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "베이직",     priceBg: "#2563eb" },
@@ -582,6 +582,7 @@ export default function MainV2() {
   const [showModal, setShowModal] = useState<string | null>(null);
   const [modalSelectedCats, setModalSelectedCats] = useState<string[]>(["💰 재물운"]);
   const [extraOtherInput, setExtraOtherInput] = useState("");
+  const [comingSoon, setComingSoon] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
     const audio = audioRef.current;
@@ -840,7 +841,8 @@ export default function MainV2() {
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
           if (!user) { router.push("/main-v2/login"); return; }
-          if (id === "daewoon") { router.push("/main-v2/daewoon"); return; }
+          if (id === "daewoon") { setComingSoon("대운(大運)"); return; }
+          if (id === "taegil") { setComingSoon("택일(擇日)"); return; }
           setShowModal(id);
         }} />
       )}
@@ -939,7 +941,7 @@ export default function MainV2() {
           yearly:        { emoji: "🎍", title: "기본 분석",             desc: "재물운 + 연애운 심층 분석",               price: "₩9,900",  features: ["💰 재물운", "💕 연애운", "📄 심층 상세 분석"], preselect: "basic", priceNum: 9900 },
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
-          naming:        { emoji: "💫", title: "심층 5개 운세 묶음", desc: "재물·연애·건강·성공·총운 — 5가지 심층 분석을 한 번에 · ₩3,900", price: "₩3,900", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 3900 },
+          naming:        { emoji: "💫", title: "심층 5개 운세 묶음", desc: "재물·연애·건강·성공·총운 — 원하는 것만 골라서 · 개당 ₩990", price: "₩990/개", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 990 },
           full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
         // 추가 상품 모달 처리
@@ -1006,7 +1008,7 @@ export default function MainV2() {
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
                   <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2, whiteSpace: "pre-line" }}>{cfg.desc}</div>
                 </div>
-                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{(showModal === "naming" || showModal === "love") ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * (showModal === "naming" ? 3900 : 990)).toLocaleString()}` : (showModal === "naming" ? "₩3,900" : "₩990")) : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
+                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{(showModal === "naming" || showModal === "love") ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 990).toLocaleString()}` : "₩990") : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
               </div>
               {cfg.features && (
                 <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
@@ -1044,7 +1046,7 @@ export default function MainV2() {
                   }
                   if (showModal === "naming") {
                     if (modalSelectedCats.length === 0) return;
-                    const totalPaid = modalSelectedCats.length * 3900;
+                    const totalPaid = modalSelectedCats.length * 990;
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
                     const label = modalSelectedCats.length === 1 ? (modalSelectedCats[0].replace(/^\S+\s/, "") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
                     const _namingNext = `/payment-complete?package=${encodeURIComponent(label)}&pages=${modalSelectedCats.length * 30}&paid=${totalPaid}`;
@@ -1073,6 +1075,19 @@ export default function MainV2() {
           </div>
         );
       })()}
+
+      {/* ── 출시예정 모달 (대운/택일) ── */}
+      {comingSoon && (
+        <div onClick={() => setComingSoon(null)} style={{ position: "fixed", inset: 0, zIndex: 3000, background: "rgba(0,0,0,0.65)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: "#1a0a3d", border: "1px solid rgba(124,58,237,0.4)", borderRadius: 24, padding: "36px 28px", textAlign: "center", maxWidth: 300, margin: "0 20px", boxShadow: "0 12px 40px rgba(0,0,0,0.5)" }}>
+            <div style={{ fontSize: 56, marginBottom: 14 }}>🚧</div>
+            <h2 style={{ color: "#fbbf24", fontSize: 20, fontWeight: 900, margin: "0 0 10px" }}>{comingSoon}</h2>
+            <div style={{ background: "#dc2626", color: "white", borderRadius: 20, padding: "4px 16px", display: "inline-block", fontSize: 13, fontWeight: 900, marginBottom: 14 }}>출시 예정</div>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, margin: "0 0 22px", lineHeight: 1.7 }}>열심히 만들고 있어요!<br/>조금만 기다려 주세요 🙏</p>
+            <button onClick={() => setComingSoon(null)} style={{ background: "linear-gradient(135deg,#7c3aed,#5b21b6)", color: "white", border: "none", borderRadius: 50, padding: "11px 28px", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
