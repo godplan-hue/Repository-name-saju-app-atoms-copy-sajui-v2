@@ -1148,7 +1148,7 @@ function V2ResultInner() {
         )}
 
         {/* ── 모바일 이용 안내 (크롬 모바일에서만, 카카오톡·PC 제외) ── */}
-        {!isPartner && isMob && !isKakao && (
+        {!isPartner && isMob && (
           <div style={{ background: "rgba(236,72,153,0.06)", border: "1px solid rgba(236,72,153,0.2)", borderRadius: 16, padding: "14px 16px", marginBottom: 14 }}>
             <p style={{ fontSize: 12, fontWeight: 900, color: "#be185d", margin: "0 0 8px" }}>📱 모바일 이용 안내</p>
             <p style={{ fontSize: 11, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`이미지 저장하려면\n결과지 이미지 꾹 누르기 → 이미지 저장 선택\n\n음성으로 듣고 싶다면\n화면 위·아래 읽기 버튼 누르기\n\n링크 공유하기\n주소창 URL 복사 후 카톡·문자·메일로 보내면 다시 볼 수 있어요`}</p>
