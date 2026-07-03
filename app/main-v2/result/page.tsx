@@ -950,6 +950,11 @@ function V2ResultInner() {
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
     const _ua = navigator.userAgent;
+    const _isKakao = /KAKAOTALK/i.test(_ua);
+    if (_isKakao) {
+      setTipModal({ text: "카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
+      return;
+    }
     if (!("speechSynthesis" in window)) return;
     // window.speechSynthesis.speaking은 기기에 따라 실제 상태와 다르게(멈췄는데도
     // true로) 나오는 경우가 있어서, 이 값으로 "정지 vs 이어읽기"를 판단하면 멈추기
@@ -1141,11 +1146,11 @@ function V2ResultInner() {
           </button>
         )}
 
-        {/* ── 모바일 이용 안내 (크롬 모바일에서만, 카카오톡·PC 제외) ── */}
+        {/* ── 모바일 이용 안내 ── */}
         {!isPartner && (
           <div style={{ background: "rgba(236,72,153,0.06)", border: "1px solid rgba(236,72,153,0.2)", borderRadius: 16, padding: "14px 16px", marginBottom: 14 }}>
             <p style={{ fontSize: 12, fontWeight: 900, color: "#be185d", margin: "0 0 8px" }}>📱 모바일 이용 안내</p>
-            <p style={{ fontSize: 11, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`이미지 저장하려면\n결과지 이미지 꾹 누르기 → 이미지 저장 선택\n\n음성으로 듣고 싶다면\n화면 위·아래 읽기 버튼 누르기\n\n링크 공유하기\n주소창 URL 복사 후 카톡·문자·메일로 보내면 다시 볼 수 있어요`}</p>
+            <p style={{ fontSize: 11, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`모바일에서 이미지 저장하려면\n결과지 받고 바로\n밑에 점 3개 누르고\n다른 브라우저로 열기 꼭 눌러야\n한 장에 전체 사주 이미지가 저장된다.\n한 장에 보관함도 전체 사주 저장이 되고\n보관함 읽기 누르면 읽기도 가능하다.\n\n각각 사주별로 따로\n저장하고 싶으면\n모바일에서 바로 보관함 저장 버튼 누르면\n보관함에 각각 운세별로 저장된다.`}</p>
           </div>
         )}
 
