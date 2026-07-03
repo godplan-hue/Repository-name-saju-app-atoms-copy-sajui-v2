@@ -133,6 +133,7 @@ export default function V2History() {
   const [syncPhone, setSyncPhone] = useState("");
   const [syncLoading, setSyncLoading] = useState(false);
   const [syncMsg, setSyncMsg] = useState("");
+  const [showSyncPanel, setShowSyncPanel] = useState(false);
 
   const shareItem = async (item: Item, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -302,12 +303,40 @@ export default function V2History() {
           <span style={{ fontSize: 18 }}>←</span>
           <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
         </button>
-        <button onClick={clear} style={{ padding: "5px 12px", background: "#fff1f2", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>전체 삭제</button>
+        <div style={{ display: "flex", gap: 6 }}>
+          <button onClick={() => { setShowSyncPanel(v => !v); setSyncMsg(""); }} style={{ padding: "5px 12px", background: "#f0fdf4", color: "#059669", border: "1px solid rgba(5,150,105,0.2)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>🔄 기기 동기화</button>
+          <button onClick={clear} style={{ padding: "5px 12px", background: "#fff1f2", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>전체 삭제</button>
+        </div>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "24px 16px 60px" }}>
         <h1 style={{ fontSize: 20, fontWeight: 900, color: "#fff", margin: "0 0 4px", textShadow: "0 1px 6px rgba(0,0,0,0.7)" }}>📂 보관함</h1>
-        <p style={{ fontSize: 13, fontWeight: 700, color: "#fff", margin: "0 0 24px", textShadow: "0 1px 6px rgba(0,0,0,0.7)" }}>내 운세 분석 기록</p>
+        <p style={{ fontSize: 13, fontWeight: 700, color: "#fff", margin: "0 0 12px", textShadow: "0 1px 6px rgba(0,0,0,0.7)" }}>내 운세 분석 기록</p>
+
+        {showSyncPanel && (
+          <div style={{ background: "white", borderRadius: 16, padding: "16px 16px", marginBottom: 16, textAlign: "left", boxShadow: "0 2px 16px rgba(0,0,0,0.15)" }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#059669", margin: "0 0 4px" }}>🔄 다른 기기 기록 불러오기</p>
+            <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 12px", lineHeight: 1.5 }}>결제할 때 입력한 핸드폰번호를 입력하세요</p>
+            <div style={{ display: "flex", gap: 8 }}>
+              <input
+                value={syncPhone}
+                onChange={e => setSyncPhone(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter") fetchByPhone(); }}
+                placeholder="01012345678"
+                inputMode="numeric"
+                style={{ flex: 1, padding: "10px 14px", borderRadius: 12, border: "1.5px solid #e5e7eb", fontSize: 14, fontFamily: "inherit", outline: "none" }}
+              />
+              <button
+                onClick={fetchByPhone}
+                disabled={syncLoading || syncPhone.replace(/\D/g, "").length < 10}
+                style={{ padding: "10px 16px", background: syncPhone.replace(/\D/g, "").length >= 10 ? G : "#e5e7eb", color: syncPhone.replace(/\D/g, "").length >= 10 ? "white" : "#9ca3af", border: "none", borderRadius: 12, fontWeight: 900, fontSize: 13, cursor: syncPhone.replace(/\D/g, "").length >= 10 ? "pointer" : "not-allowed", whiteSpace: "nowrap" }}
+              >
+                {syncLoading ? "⏳" : "불러오기"}
+              </button>
+            </div>
+            {syncMsg && <p style={{ fontSize: 12, color: syncMsg.startsWith("✅") ? "#10b981" : "#ef4444", margin: "10px 0 0", fontWeight: 700 }}>{syncMsg}</p>}
+          </div>
+        )}
 
         {hist.length === 0 ? (
           <div style={{ textAlign: "center", padding: "48px 0 0" }}>
