@@ -382,6 +382,29 @@ function PaymentCompleteInner() {
         }
       } catch {}
 
+      // 일반회원 결제 기록 — 어드민 대시보드에서 확인할 수 있도록 Firebase에 저장
+      try {
+        const _payPhone = (() => { try { return sessionStorage.getItem("v2_payment_phone") || localStorage.getItem("v2_saved_phone") || ""; } catch { return ""; } })();
+        const _payAmt = Number(pricePaid || paidAmount || "0") || 0;
+        if (p.name && _payAmt > 0 && result.histId) {
+          const _payCats = (() => { try { const r = sessionStorage.getItem("v2_paid_cats"); return r ? JSON.parse(r) : []; } catch { return []; } })();
+          fetch("/api/v2/save-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: String(result.histId),
+              date: result.savedAt,
+              name: p.name,
+              phone: _payPhone,
+              amount: _payAmt,
+              package: packageName || p.pkg || "운세",
+              categories: _payCats,
+              plan,
+            }),
+          }).catch(() => {});
+        }
+      } catch {}
+
       const specialT = sessionStorage.getItem("specialType");
       const specialP = sessionStorage.getItem("specialPaid");
       if (specialT && specialP === "1") {
