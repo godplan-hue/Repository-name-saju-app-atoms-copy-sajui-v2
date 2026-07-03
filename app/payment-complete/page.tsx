@@ -636,7 +636,7 @@ function PaymentCompleteInner() {
             <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, fontWeight: 700, margin: 0, lineHeight: 1.7 }}>
               결제한 이 기기에는 자동 저장됩니다.<br/>
               다른 기기(PC ↔ 모바일)에서 보려면<br/>
-              → 보관함에서 결제할 때 입력한 <span style={{ color: "#fbbf24" }}>핸드폰번호</span>를 입력하면 불러올 수 있어요.
+              → 보관함에서 결제할 때 입력한<br/><span style={{ color: "#fbbf24" }}>핸드폰번호</span>를 입력하면 불러올 수 있어요.
             </p>
           </div>
 
