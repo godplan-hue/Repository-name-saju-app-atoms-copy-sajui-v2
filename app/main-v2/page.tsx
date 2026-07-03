@@ -670,8 +670,8 @@ export default function MainV2() {
       {/* 헤더 */}
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.12)", position: "sticky", top: 0, zIndex: 200 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, padding: 0, marginRight: 2 }}>
-            {musicOn ? "🔊" : "🔇"}
+          <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
+            {musicOn ? "🎵 ON" : "🎵"}
           </button>
           {brand?.logoUrl ? (
             <img src={brand.logoUrl} alt={brand.businessName} style={{ width: 20, height: 20, borderRadius: "50%", objectFit: "cover" }} />

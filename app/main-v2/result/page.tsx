@@ -1122,8 +1122,8 @@ function V2ResultInner() {
       {/* 헤더 */}
       <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-          <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, padding: 0 }}>
-            {musicOn ? "🔊" : "🔇"}
+          <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
+            {musicOn ? "🎵 ON" : "🎵"}
           </button>
           <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap" }}>
             <span style={{ fontSize: 18 }}>←</span>
