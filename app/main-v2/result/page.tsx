@@ -259,6 +259,7 @@ function V2ResultInner() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [musicOn, setMusicOn] = useState(false);
   const [isMob, setIsMob] = useState(false);
+  const [isKakao, setIsKakao] = useState(false);
   const toggleMusic = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -279,7 +280,11 @@ function V2ResultInner() {
     const t = setInterval(() => setBannerIdx(i => (i + 1) % BANNER_MSGS.length), 700);
     return () => clearInterval(t);
   }, []);
-  useEffect(() => { setIsMob(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)); }, []);
+  useEffect(() => {
+    const ua = navigator.userAgent;
+    setIsMob(/Mobi|Android|iPhone|iPad|iPod/i.test(ua));
+    setIsKakao(/KAKAOTALK/i.test(ua));
+  }, []);
 
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
@@ -557,11 +562,12 @@ function V2ResultInner() {
       const elements = cardRefs.current.filter(Boolean) as HTMLDivElement[];
       if (elements.length === 0) { alert("저장할 내용이 없습니다."); return; }
       const isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      if (window.innerWidth < 768 && !isIOSDevice) {
-        const downloadCount = tier === "package" && elements.length > 1 ? elements.length - 1 : 1;
-        alert(downloadCount > 1
-          ? `📥 운세 ${downloadCount}개를 각각 따로 다운로드해야 해요!\n\n확인창이 뜨면 [다운로드]를 누르고, "다운로드 완료"가 뜬 후 다시 [다운로드]를 눌러주세요.\n\n한 번에 여러 번 누르지 말고 하나씩 순서대로 눌러주세요. 총 ${downloadCount}번 누르시면 끝나요.\n\n화면에 다운로드 알림이 고정되어 떠 있어요. 다운로드 안 하려면 [취소] 버튼을 누르면 돼요.`
-          : "📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요!");
+      const isKakaoTalk = /KAKAOTALK/i.test(navigator.userAgent);
+      if (isKakaoTalk) {
+        alert("카카오톡에서는 이미지 저장이 안 돼요.\n아래 [링크 복사] 버튼을 눌러 카톡·문자·메일로 공유해주세요.\n보관함에서도 언제든 다시 볼 수 있어요.");
+        savingRef.current = false;
+        setSaving(false);
+        return;
       }
       await document.fonts.ready;
       const isMobile = window.innerWidth < 768;
@@ -1637,8 +1643,8 @@ function V2ResultInner() {
           </>
         )}
 
-        {/* ── 모바일 이용 안내 ── */}
-        {!isPartner && (tier === "select" || tier === "package") && (
+        {/* ── 모바일 이용 안내 (카카오톡 전용) ── */}
+        {!isPartner && isMob && isKakao && (tier === "select" || tier === "package") && (
           <div style={{ background: "rgba(236,72,153,0.06)", border: "1px solid rgba(236,72,153,0.2)", borderRadius: 16, padding: "14px 16px", marginBottom: 14 }}>
             <p style={{ fontSize: 12, fontWeight: 900, color: "#be185d", margin: "0 0 8px" }}>📱 모바일 이용 안내</p>
             <p style={{ fontSize: 11, color: "#4b5563", margin: "0 0 10px", lineHeight: 2, whiteSpace: "pre-line" }}>{`모바일에서 이미지 저장하려면\n결과지 받고 바로\n밑에 점 3개 누르고\n다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장된다.\n보관함도 전체 사주 저장이 되고\n보관함 읽기 누르면 읽기도 가능하다.\n\n단, VIP 커플팩은 용량이 너무 커서 이미지 저장이 안 된다.\n점 3개 옆 링크 복사 눌러서\n카톡, 문자, 메일, 원하는 곳에 붙여넣고 보면 된다.`}</p>
