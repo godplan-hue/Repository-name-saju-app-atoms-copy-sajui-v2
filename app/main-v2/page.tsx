@@ -190,7 +190,7 @@ const BANNERS = [
     overlay: "linear-gradient(135deg, rgba(180,83,9,0.4) 0%, rgba(245,158,11,0.35) 100%)",
     fit: "contain" as const,
     route: "package" as const,
-    modalId: "wealth",
+    modalId: "naming",
   },
   {
     img: "https://i.pinimg.com/736x/8b/bc/25/8bbc258261ea953d149de68672016367.jpg",
