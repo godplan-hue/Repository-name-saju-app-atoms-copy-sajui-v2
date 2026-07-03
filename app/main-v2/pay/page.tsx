@@ -26,6 +26,41 @@ function PayInner() {
   const [mobile, setMobile] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponMsg, setCouponMsg] = useState("");
+  const [couponFree, setCouponFree] = useState(false);
+
+  const verifyCoupon = async () => {
+    const code = couponCode.trim().toUpperCase();
+    if (!code) return;
+    setCouponLoading(true); setCouponMsg("");
+    try {
+      const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(code)}`);
+      if (!res.ok) { setCouponMsg("유효하지 않은 코드입니다."); return; }
+      const data = await res.json();
+      if (!data.active) { setCouponMsg("이미 사용된 코드입니다."); return; }
+      if (data.discountPercent === 100) {
+        setCouponFree(true);
+        setCouponMsg("✅ 100% 무료 쿠폰 적용됐어요!");
+      } else {
+        setCouponMsg("이 코드는 결제 완료 후 할인 페이지에서 입력해주세요.");
+      }
+    } catch { setCouponMsg("코드 확인 중 오류가 발생했습니다."); }
+    finally { setCouponLoading(false); }
+  };
+
+  const payFree = async () => {
+    setLoading(true);
+    try {
+      await fetch("/api/promo-codes", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
+      }).catch(() => {});
+      router.push(next);
+    } finally { setLoading(false); }
+  };
 
   const formatCardNo = (v: string) => {
     const d = v.replace(/\D/g, "").slice(0, 19);
@@ -103,6 +138,33 @@ function PayInner() {
           <p style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 18, margin: 0 }}>₩{amount.toLocaleString()}</p>
         </div>
 
+        {/* 무료 쿠폰 */}
+        <div style={{ marginBottom: 16, padding: "12px 14px", background: "rgba(255,255,255,0.06)", borderRadius: 12, border: "1px solid rgba(251,191,36,0.25)" }}>
+          <label style={{ ...lbl, marginBottom: 8 }}>🎟 무료 쿠폰 코드 (있는 경우만)</label>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input
+              value={couponCode}
+              onChange={e => { setCouponCode(e.target.value); setCouponMsg(""); setCouponFree(false); }}
+              onKeyDown={e => { if (e.key === "Enter") verifyCoupon(); }}
+              placeholder="코드 입력"
+              style={{ ...inp, flex: 1, fontSize: 13 }}
+            />
+            <button onClick={verifyCoupon} disabled={couponLoading || !couponCode.trim()}
+              style={{ padding: "0 14px", background: couponCode.trim() ? "rgba(251,191,36,0.25)" : "rgba(255,255,255,0.05)", color: "#fbbf24", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 10, fontWeight: 900, fontSize: 12, cursor: couponCode.trim() ? "pointer" : "not-allowed", whiteSpace: "nowrap" }}>
+              {couponLoading ? "⏳" : "적용"}
+            </button>
+          </div>
+          {couponMsg && <p style={{ fontSize: 11, fontWeight: 700, margin: "8px 0 0", color: couponFree ? "#4ade80" : "#ff6b6b" }}>{couponMsg}</p>}
+        </div>
+
+        {couponFree && (
+          <button onClick={payFree} disabled={loading}
+            style={{ width: "100%", padding: "15px 0", background: "linear-gradient(135deg,#4ade80,#22c55e)", color: "#052e16", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: "0 6px 22px rgba(74,222,128,0.35)", marginBottom: 8 }}>
+            {loading ? "처리 중..." : "🎁 무료로 시작하기"}
+          </button>
+        )}
+
+        {!couponFree && (<>
         <div style={{ marginBottom: 12 }}>
           <label style={lbl}>카드번호</label>
           <input value={cardNo} onChange={e => setCardNo(formatCardNo(e.target.value))} placeholder="0000 0000 0000 0000" inputMode="numeric" autoComplete="off" style={inp} />
@@ -147,6 +209,7 @@ function PayInner() {
         </button>
 
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "8px 0 0" }}>SSL 보안 결제 · 페이업㈜ 제공</p>
+        </>)}
       </div>
     </main>
   );

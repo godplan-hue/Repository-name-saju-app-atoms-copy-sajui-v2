@@ -2244,7 +2244,7 @@ function limitNameMentions(text: string, name: string, max = 4): string {
   return parts.reduce((acc, part, i) => {
     if (i === 0) return part;
     count++;
-    return acc + (count <= max ? target : "님") + part;
+    return acc + (count <= max ? target : "") + part;
   }, "");
 }
 
