@@ -316,14 +316,6 @@ function V2ResultInner() {
   const [planType, setPlanType] = useState("");
   const [tier, setTier] = useState<"free" | "select" | "package">("free");
   const [pkgName, setPkgName] = useState("");
-  const kakaoGuideShownRef = useRef(false);
-  useEffect(() => {
-    if (!isKakao) return;
-    if (tier !== "select" && tier !== "package") return;
-    if (kakaoGuideShownRef.current) return;
-    kakaoGuideShownRef.current = true;
-    setTipModal({ text: `모바일에서 이미지 저장하려면\n결과지 받고 바로\n밑에 점 3개 누르고\n다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장된다.\n보관함도 전체 사주 저장이 되고\n보관함 읽기 누르면 읽기도 가능하다.\n\n단, VIP 커플팩은 용량이 너무 커서 이미지 저장이 안 된다.\n점 3개 옆 링크 복사 눌러서\n카톡, 문자, 메일, 원하는 곳에 붙여넣고 보면 된다.` });
-  }, [isKakao, tier]);
   const [couponPhone, setCouponPhone] = useState("");
   const [couponSubmitting, setCouponSubmitting] = useState(false);
   const [couponCode, setCouponCode] = useState("");
