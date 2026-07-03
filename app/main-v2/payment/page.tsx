@@ -68,7 +68,7 @@ function PaymentInner() {
       if (!res.ok) { setDiscountError("유효하지 않은 할인코드입니다."); setAppliedDiscount(null); return; }
       const data = await res.json();
       setAppliedDiscount({ code: data.code, discountPercent: data.discountPercent, note: data.note || "", active: data.active });
-      setDiscountError(data.discountPercent === 100 ? "✅ 100% 무료 쿠폰 적용됐어요! 상품을 선택하면 무료로 진행됩니다." : "");
+      setDiscountError("");
     } catch {
       setDiscountError("할인코드 확인 중 오류가 발생했습니다.");
     }
@@ -356,8 +356,8 @@ function PaymentInner() {
             <button onClick={applyDiscountCode} style={{ padding: "9px 16px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a0f2e", fontWeight: 900, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}>적용</button>
           </div>
           {appliedDiscount && (
-            <p style={{ color: appliedDiscount.discountPercent === 100 ? "#4ade80" : "#90EE90", fontSize: 12, fontWeight: 800, marginTop: 6, marginBottom: 0 }}>
-              ✅ {appliedDiscount.discountPercent === 100 ? "100% 무료 쿠폰 적용! 아래 상품을 선택하면 무료로 진행됩니다." : `${appliedDiscount.discountPercent}% 할인 적용됨 — 아래 상품 가격에 자동 반영됩니다.`}
+            <p style={{ color: appliedDiscount.discountPercent === 100 ? "#4ade80" : "#90EE90", fontSize: 12, fontWeight: 800, marginTop: 6, marginBottom: 0, whiteSpace: "pre-line" }}>
+              {appliedDiscount.discountPercent === 100 ? "✅ 100% 무료 쿠폰 적용!\n아래 상품을 선택하면 무료로 진행됩니다." : `✅ ${appliedDiscount.discountPercent}% 할인 적용됨 — 아래 상품 가격에 자동 반영됩니다.`}
             </p>
           )}
           {discountError && (
