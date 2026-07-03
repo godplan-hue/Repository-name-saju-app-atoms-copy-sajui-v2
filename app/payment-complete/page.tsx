@@ -3,7 +3,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 
 const SPECIAL_NAMES: Record<string, string> = {
   sinyeon: "신년운세",
@@ -96,6 +96,7 @@ function PaymentCompleteInner() {
   const [isLoading, setIsLoading] = useState(false);
   const [needsForm, setNeedsForm] = useState(false);
   const [redirectTo, setRedirectTo] = useState(""); // daeun/yearly/naming용
+  const formRef = useRef<HTMLDivElement>(null);
 
   // 할인코드
   const [discountInput, setDiscountInput] = useState("");
@@ -441,6 +442,14 @@ function PaymentCompleteInner() {
     }, effectivePaid);
   };
 
+  useEffect(() => {
+    if (ready && needsForm) {
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300);
+    }
+  }, [ready, needsForm]);
+
   if (!ready) return null;
 
   const isRedirectOnly = !needsForm && redirectTo !== "";
@@ -507,8 +516,8 @@ function PaymentCompleteInner() {
 
           {/* 사주 정보 입력 폼 — 파란색 (special + package 공통) */}
           {needsForm && (
-            <div style={{ background: "rgba(139,92,246,0.3)", padding: 10, borderRadius: 10, marginBottom: 10, border: "1px solid rgba(251,191,36,0.3)", textAlign: "left" }}>
-              <h3 style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, margin: "0 0 6px 0" }}>🌟 사주 정보 입력</h3>
+            <div ref={formRef} style={{ background: "rgba(139,92,246,0.3)", padding: 10, borderRadius: 10, marginBottom: 10, border: "1px solid rgba(251,191,36,0.3)", textAlign: "left" }}>
+              <h3 style={{ color: "#fbbf24", fontSize: 12, fontWeight: 900, margin: "0 0 6px 0" }}>🌟 아래 사주 정보 입력 후 분석 시작!</h3>
 
               {/* ── 본인 정보 ── */}
               <div style={{ marginBottom: 6, paddingBottom: 6, borderBottom: "1px solid rgba(251,191,36,0.4)" }}>

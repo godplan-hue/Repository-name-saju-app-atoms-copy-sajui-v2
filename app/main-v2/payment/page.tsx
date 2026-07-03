@@ -52,12 +52,14 @@ function PaymentInner() {
   const [discountError, setDiscountError] = useState("");
 
   const applyDiscountCode = async () => {
+    const code = discountInput.trim().toUpperCase();
+    if (!code) return;
     try {
-      const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(discountInput)}`);
+      const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(code)}`);
       if (!res.ok) { setDiscountError("유효하지 않은 할인코드입니다."); setAppliedDiscount(null); return; }
       const data = await res.json();
-      setAppliedDiscount(data.code);
-      setDiscountError("");
+      setAppliedDiscount({ code: data.code, discountPercent: data.discountPercent, note: data.note || "", active: data.active });
+      setDiscountError(data.discountPercent === 100 ? "✅ 100% 무료 쿠폰 적용됐어요! 상품을 선택하면 무료로 진행됩니다." : "");
     } catch {
       setDiscountError("할인코드 확인 중 오류가 발생했습니다.");
     }
@@ -79,6 +81,7 @@ function PaymentInner() {
       return originalPrice;
     }
   };
+
 
   const [analysisName, setAnalysisName] = useState("");
   const [awaitOther, setAwaitOther] = useState<{ id: string; label: string } | null>(null);
@@ -108,6 +111,11 @@ function PaymentInner() {
   };
 
   const openPuModal = (price: number, nextUrl: string) => {
+    // 100% 쿠폰으로 0원이 되면 PayUp 건너뛰고 바로 이동
+    if (price === 0) {
+      router.push(nextUrl);
+      return;
+    }
     setPuError("");
     setPuPending({ price, nextUrl });
   };
@@ -318,7 +326,30 @@ function PaymentInner() {
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(194, 65, 12, 0.2)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px" }}>
 
-        <h2 style={{ textAlign: "center", color: "#fbbf24", marginBottom: 16, fontSize: "clamp(18px, 5vw, 26px)", fontWeight: 900 }}>💎 운세 구매</h2>
+        <h2 style={{ textAlign: "center", color: "#fbbf24", marginBottom: 12, fontSize: "clamp(18px, 5vw, 26px)", fontWeight: 900 }}>💎 운세 구매</h2>
+
+        {/* 할인코드 — 상단 고정 (구매 전 미리 입력) */}
+        <div style={{ maxWidth: 480, margin: "0 auto 20px", background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 12, padding: "12px 14px" }}>
+          <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 900, margin: "0 0 8px" }}>🎟️ 할인코드 (있으면 먼저 입력하세요)</p>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input
+              value={discountInput}
+              onChange={e => { setDiscountInput(e.target.value); setAppliedDiscount(null); setDiscountError(""); }}
+              onKeyDown={e => e.key === "Enter" && applyDiscountCode()}
+              placeholder="코드 입력 후 적용 → 상품 선택"
+              style={{ flex: 1, padding: "9px 12px", borderRadius: 10, border: "1px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 13, fontWeight: 700, outline: "none" }}
+            />
+            <button onClick={applyDiscountCode} style={{ padding: "9px 16px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a0f2e", fontWeight: 900, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}>적용</button>
+          </div>
+          {appliedDiscount && (
+            <p style={{ color: appliedDiscount.discountPercent === 100 ? "#4ade80" : "#90EE90", fontSize: 12, fontWeight: 800, marginTop: 6, marginBottom: 0 }}>
+              ✅ {appliedDiscount.discountPercent === 100 ? "100% 무료 쿠폰 적용! 아래 상품을 선택하면 무료로 진행됩니다." : `${appliedDiscount.discountPercent}% 할인 적용됨 — 아래 상품 가격에 자동 반영됩니다.`}
+            </p>
+          )}
+          {discountError && (
+            <p style={{ color: discountError.startsWith("✅") ? "#4ade80" : "#ff6b6b", fontSize: 12, fontWeight: 700, marginTop: 6, marginBottom: 0 }}>{discountError}</p>
+          )}
+        </div>
 
         {/* 신규 990원 */}
         <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
@@ -436,26 +467,6 @@ function PaymentInner() {
             </div>
           </div>
         )}
-
-        {/* 할인코드(일반고객용 — 파트너 사용료와는 무관) */}
-        <div style={{ maxWidth: 480, margin: "0 auto 16px" }}>
-          <div style={{ display: "flex", gap: 8 }}>
-            <input
-              value={discountInput}
-              onChange={e => setDiscountInput(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && applyDiscountCode()}
-              placeholder="🎟️ 할인코드 입력(선택)"
-              style={{ flex: 1, padding: "10px 14px", borderRadius: 10, border: "1px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 13, fontWeight: 700, outline: "none" }}
-            />
-            <button onClick={applyDiscountCode} style={{ padding: "10px 18px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "#1a0f2e", fontWeight: 900, fontSize: 13, cursor: "pointer" }}>적용</button>
-          </div>
-          {appliedDiscount && (
-            <p style={{ color: "#90EE90", fontSize: 12, fontWeight: 800, marginTop: 8, marginBottom: 0 }}>✅ {appliedDiscount.discountPercent}% 할인 적용됨</p>
-          )}
-          {discountError && (
-            <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, marginTop: 8, marginBottom: 0 }}>{discountError}</p>
-          )}
-        </div>
 
         {/* 만세력 신뢰 문구 — 패키지 구매 직전 신뢰 형성용 */}
         <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "rgba(20,10,40,0.5)", backdropFilter: "blur(10px)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 14, padding: "18px 20px", textAlign: "center" }}>
