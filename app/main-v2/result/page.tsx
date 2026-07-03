@@ -1108,7 +1108,7 @@ function V2ResultInner() {
       </div>
     )}
     <main style={{ minHeight: "100vh", backgroundImage: `url('${tier === "package" ? "https://i.pinimg.com/736x/27/8b/de/278bde2d39a789d716ab0a1718413838.jpg" : "https://i.pinimg.com/1200x/ec/80/41/ec8041c9802a98ff6423c34a1ae44f38.jpg"}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      <audio ref={audioRef} src="/bgm.mp3" loop preload="none" />
+      <audio ref={audioRef} src="/bgm.mp3" loop preload="auto" />
 
       {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
       <div style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
