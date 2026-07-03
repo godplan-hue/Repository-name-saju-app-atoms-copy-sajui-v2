@@ -205,13 +205,7 @@ export default function ShareClient({ id }: { id: string }) {
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
     const _ua = navigator.userAgent;
-    const _isKakao = /KAKAOTALK/i.test(_ua);
-    if (_isKakao || !("speechSynthesis" in window)) {
-      setTipModal({ text: _isKakao
-        ? "카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요."
-        : "이 브라우저에서는 음성 읽기가 지원되지 않아요.\nChrome 앱에서 열어주세요." });
-      return;
-    }
+    if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);

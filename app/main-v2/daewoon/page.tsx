@@ -248,13 +248,7 @@ function DaewoonContent() {
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
     const _ua = navigator.userAgent;
-    const _isKakao = /KAKAOTALK/i.test(_ua);
-    if (_isKakao || !("speechSynthesis" in window)) {
-      alert(_isKakao
-        ? "카카오톡 등 앱 안에서는 오른쪽 아래 점 세 개(⋮) → [다른 브라우저로 열기]를 선택한 다음 읽기를 눌러주세요."
-        : "이 브라우저에서는 음성 읽기가 지원되지 않아요. Chrome 앱에서 열어주세요.");
-      return;
-    }
+    if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
