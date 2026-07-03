@@ -497,16 +497,6 @@ function PaymentCompleteInner() {
             <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: 0 }}>상태: <span style={{ color: "#90EE90", fontWeight: 900 }}>완료</span></p>
           </div>
 
-          {/* 보관함 저장 안내 */}
-          <div style={{ background: "rgba(236,72,153,0.12)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 12, padding: "10px 14px", marginBottom: 10, textAlign: "left" }}>
-            <p style={{ color: "#f9a8d4", fontSize: 12, fontWeight: 900, margin: "0 0 4px" }}>📂 보관함 저장 안내</p>
-            <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, fontWeight: 700, margin: 0, lineHeight: 1.7 }}>
-              결제한 이 기기에는 자동 저장됩니다.<br/>
-              다른 기기(PC ↔ 모바일)에서 보려면<br/>
-              → 보관함에서 결제할 때 입력한 <span style={{ color: "#fbbf24" }}>핸드폰번호</span>를 입력하면 불러올 수 있어요.
-            </p>
-          </div>
-
           {/* 대운/올해운세/naming — 기존처럼 버튼으로 이동 */}
           {isRedirectOnly && (
             <>
@@ -616,6 +606,16 @@ function PaymentCompleteInner() {
             </div>
           )}
 
+
+          {/* 보관함 저장 안내 */}
+          <div style={{ background: "rgba(236,72,153,0.12)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 12, padding: "10px 14px", marginBottom: 10, textAlign: "left" }}>
+            <p style={{ color: "#f9a8d4", fontSize: 12, fontWeight: 900, margin: "0 0 4px" }}>📂 보관함 저장 안내</p>
+            <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, fontWeight: 700, margin: 0, lineHeight: 1.7 }}>
+              결제한 이 기기에는 자동 저장됩니다.<br/>
+              다른 기기(PC ↔ 모바일)에서 보려면<br/>
+              → 보관함에서 결제할 때 입력한 <span style={{ color: "#fbbf24" }}>핸드폰번호</span>를 입력하면 불러올 수 있어요.
+            </p>
+          </div>
 
           {/* 할인코드 — 모든 결제완료 공통 */}
           <div style={{ marginTop: 8, paddingBottom: 8, borderTop: "1px solid rgba(251,191,36,0.3)", paddingTop: 8 }}>
