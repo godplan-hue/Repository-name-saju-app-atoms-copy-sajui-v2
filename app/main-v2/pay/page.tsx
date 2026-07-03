@@ -151,7 +151,7 @@ function PayInner() {
 
         {/* 무료 쿠폰 */}
         <div style={{ marginBottom: 16, padding: "12px 14px", background: "rgba(255,255,255,0.06)", borderRadius: 12, border: "1px solid rgba(251,191,36,0.25)" }}>
-          <label style={{ ...lbl, marginBottom: 8 }}>🎟 무료 쿠폰 코드 (있는 경우만)</label>
+          <label style={{ ...lbl, marginBottom: 8 }}>🎟 쿠폰 코드 (무료 · 할인 코드 모두 가능)</label>
           <div style={{ display: "flex", gap: 8 }}>
             <input
               value={couponCode}
