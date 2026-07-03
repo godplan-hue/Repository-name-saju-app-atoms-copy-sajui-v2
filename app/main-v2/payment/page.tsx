@@ -243,7 +243,7 @@ function PaymentInner() {
   const currentCount = currentPackage?.count || 2;
 
   return (
-    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://i.pinimg.com/vwebp/736x/a1/e3/84/a1e3843f7ccba687fbce3b384384a70f.webp')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "scroll", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
+    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://i.pinimg.com/vwebp/736x/bc/82/38/bc823860f9b677cc22e32da94823f148.webp')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "scroll", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
 
       {/* 재회운/반려동물 궁합 이름 입력 오버레이 */}
       {awaitOther && (
@@ -283,7 +283,7 @@ function PaymentInner() {
       {puPending && (
         <>
           <div onClick={closePuModal} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.82)", zIndex: 500 }} />
-          <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 501, background: "linear-gradient(180deg,rgba(26,8,53,0.88),rgba(13,5,32,0.92))", backgroundImage: "url('https://i.pinimg.com/vwebp/736x/bc/82/38/bc823860f9b677cc22e32da94823f148.webp')", backgroundSize: "cover", backgroundPosition: "center", borderRadius: "22px 22px 0 0", padding: "24px 20px 40px", maxWidth: 500, margin: "0 auto", boxShadow: "0 -8px 40px rgba(0,0,0,0.6)", overflowY: "auto", maxHeight: "90vh" }}>
+          <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 501, background: "linear-gradient(180deg,#1a0835,#0d0520)", borderRadius: "22px 22px 0 0", padding: "24px 20px 40px", maxWidth: 500, margin: "0 auto", boxShadow: "0 -8px 40px rgba(0,0,0,0.6)", overflowY: "auto", maxHeight: "90vh" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
               <div>
                 <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 16, margin: 0 }}>💳 카드 결제</p>
