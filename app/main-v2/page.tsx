@@ -592,7 +592,7 @@ export default function MainV2() {
       setMusicOn(false);
     } else {
       audio.volume = 0.35;
-      audio.play().then(() => setMusicOn(true)).catch(() => alert("음악 파일을 찾을 수 없습니다(public/bgm.mp3을 추가해주세요)."));
+      audio.play().then(() => setMusicOn(true)).catch(() => {});
     }
   };
 
