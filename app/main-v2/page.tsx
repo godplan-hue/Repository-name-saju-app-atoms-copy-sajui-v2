@@ -654,7 +654,8 @@ export default function MainV2() {
       goFree(); return;
     } else {
       sessionStorage.setItem("selectedPackage", c.packageName ?? "");
-      router.push(`/payment-complete?package=${encodeURIComponent(c.packageName ?? "")}&pages=${c.pages}`);
+      const _pkgPreselect: Record<string, string> = { "기본 분析": "basic", "베이직": "standard", "프리미엄": "premium", "VIP 커플팩": "vip" };
+      router.push(`/main-v2/payment?preselect=${_pkgPreselect[c.packageName ?? ""] || "basic"}`);
     }
   };
 
@@ -755,7 +756,8 @@ export default function MainV2() {
             const rawPrice = brand?.customPricePinkBundle || "";
             const bundlePrice = rawPrice ? (Number(rawPrice.replace(/[^0-9]/g, "")) || 6900) : 6900;
             sessionStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]));
-            router.push("/payment-complete?package=" + encodeURIComponent("5개심층번들") + "&pages=150&paid=" + bundlePrice);
+            const _bundleNext = `/payment-complete?package=${encodeURIComponent("5개심층번들")}&pages=150&paid=${bundlePrice}`;
+            router.push(`/main-v2/pay?amount=${bundlePrice}&next=${encodeURIComponent(_bundleNext)}`);
           }}
         />
       ) : (
@@ -978,8 +980,11 @@ export default function MainV2() {
                     sessionStorage.setItem("specialOtherName", extraOtherInput.trim());
                   }
                   setExtraOtherInput("");
+                  const _ecModal = showModal;
+                  const _ecPrice = ec.priceNum;
                   setShowModal(null);
-                  router.push(`/payment-complete?special=${showModal}&paid=${ec.priceNum}`);
+                  const _ecNext = `/payment-complete?special=${_ecModal}&paid=${_ecPrice}`;
+                  router.push(`/main-v2/pay?amount=${_ecPrice}&next=${encodeURIComponent(_ecNext)}`);
                 }} style={{ width: "100%", padding: "14px 0", background: (showModal === "reunion" || showModal === "pet_compat") && !extraOtherInput.trim() ? "rgba(124,58,237,0.4)" : "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: (showModal === "reunion" || showModal === "pet_compat") && !extraOtherInput.trim() ? "not-allowed" : "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
                   결제하기
                 </button>
@@ -1033,7 +1038,8 @@ export default function MainV2() {
                     const loveQueue = modalSelectedCats.map(c => LOVE_MAP[c]).filter(Boolean).join(",");
                     const lovePaid = modalSelectedCats.length * 990;
                     const loveLabel = modalSelectedCats.length === 1 ? (modalSelectedCats[0].split(" ").slice(1).join(" ") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
-                    router.push(`/payment-complete?naming=1&queue=${loveQueue}&paid=${lovePaid}&package=${encodeURIComponent(loveLabel)}`);
+                    const _loveNext = `/payment-complete?naming=1&queue=${loveQueue}&paid=${lovePaid}&package=${encodeURIComponent(loveLabel)}`;
+                    router.push(`/main-v2/pay?amount=${lovePaid}&next=${encodeURIComponent(_loveNext)}`);
                     return;
                   }
                   if (showModal === "naming") {
@@ -1041,16 +1047,20 @@ export default function MainV2() {
                     const totalPaid = modalSelectedCats.length * 3900;
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
                     const label = modalSelectedCats.length === 1 ? (modalSelectedCats[0].replace(/^\S+\s/, "") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
-                    router.push(`/payment-complete?package=${encodeURIComponent(label)}&pages=${modalSelectedCats.length * 30}&paid=${totalPaid}`);
+                    const _namingNext = `/payment-complete?package=${encodeURIComponent(label)}&pages=${modalSelectedCats.length * 30}&paid=${totalPaid}`;
+                    router.push(`/main-v2/pay?amount=${totalPaid}&next=${encodeURIComponent(_namingNext)}`);
                   } else if (cfg.catKeys) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
-                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`);
+                    const _catKeysNext = `/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`;
+                    router.push(`/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_catKeysNext)}`);
                   } else if (cfg.catKey) {
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify([cfg.catKey]));
-                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=30&paid=${resolvedPrice}`);
+                    const _catKeyNext = `/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=30&paid=${resolvedPrice}`;
+                    router.push(`/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_catKeyNext)}`);
                   } else if (cfg.priceNum) {
                     sessionStorage.setItem("selectedPackage", cfg.preselect ?? "basic");
-                    router.push(`/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${(cfg.features?.length ?? 3) * 30}&paid=${resolvedPrice}`);
+                    const _pkgNext = `/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${(cfg.features?.length ?? 3) * 30}&paid=${resolvedPrice}`;
+                    router.push(`/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_pkgNext)}`);
                   }
                 }}
                 style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>

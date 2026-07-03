@@ -176,7 +176,7 @@ export default function YearlyPage() {
                 <div style={{ color: "#2563eb", fontSize: 28, fontWeight: 900, marginBottom: 4 }}>₩2,900</div>
                 <p style={{ color: "#9ca3af", fontSize: 11, margin: "0 0 16px", textDecoration: "line-through" }}>₩14,900</p>
                 <button
-                  onClick={() => router.push("/payment-complete?yearly=1&paid=2900")}
+                  onClick={() => router.push(`/main-v2/pay?amount=2900&next=${encodeURIComponent("/payment-complete?yearly=1&paid=2900")}`)}
                   style={{ background: "linear-gradient(135deg, #2563eb, #6366f1)", color: "white", border: "none", borderRadius: 12, padding: "14px 32px", fontSize: 15, fontWeight: 900, cursor: "pointer", width: "100%", boxShadow: "0 4px 20px rgba(37,99,235,0.3)" }}
                 >
                   📅 연도별운세 전체 보기

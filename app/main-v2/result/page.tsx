@@ -1518,7 +1518,7 @@ function V2ResultInner() {
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={() => router.push("/payment-complete?special=sinyeon_premium&paid=4900")}
+              <button onClick={() => router.push(`/main-v2/pay?amount=4900&next=${encodeURIComponent("/payment-complete?special=sinyeon_premium&paid=4900")}`)}
                 style={{ width: "100%", padding: "13px 0", background: "rgba(40,5,5,0.9)", color: "white", border: "1.5px solid rgba(239,68,68,0.8)", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(239,68,68,0.25)" }}>
                 📅 신년+월별 12달 <span style={{ color: "#ef4444" }}>₩4,900</span>
               </button>
