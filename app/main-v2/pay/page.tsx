@@ -105,7 +105,7 @@ function PayInner() {
 
         <div style={{ marginBottom: 12 }}>
           <label style={lbl}>카드번호</label>
-          <input value={cardNo} onChange={e => setCardNo(formatCardNo(e.target.value))} placeholder="0000 0000 0000 0000" inputMode="numeric" autoComplete="cc-number" style={inp} />
+          <input value={cardNo} onChange={e => setCardNo(formatCardNo(e.target.value))} placeholder="0000 0000 0000 0000" inputMode="numeric" autoComplete="off" style={inp} />
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }}>
           <div>
