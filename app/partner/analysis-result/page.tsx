@@ -197,10 +197,10 @@ function PartnerAnalysisResultInner() {
   const handleSaveImage = async () => {
     if (!analysisResults) return;
     setSaving(true);
-    if (window.innerWidth < 768) {
-      alert(cats.length > 1
-        ? `📥 운세 ${cats.length}개를 각각 따로 다운로드해야 해요!\n\n확인창이 뜨면 [다운로드]를 누르고, "다운로드 완료"가 뜬 후 다시 [다운로드]를 눌러주세요.\n\n한 번에 여러 번 누르지 말고 하나씩 순서대로 눌러주세요. 총 ${cats.length}번 누르시면 끝나요.\n\n화면에 다운로드 알림이 고정되어 떠 있어요. 다운로드 안 하려면 [취소] 버튼을 누르면 돼요.`
-        : "📥 잠시 후 '다운로드' 확인창이 뜨면 [다운로드]를 눌러주세요!");
+    if (/KAKAOTALK/i.test(navigator.userAgent)) {
+      alert("카카오톡에서는 이미지 저장이 안 돼요.\n링크 복사 후 카톡·문자·메일로 공유해주세요.");
+      setSaving(false);
+      return;
     }
     try {
       const html2canvas = (await import("html2canvas")).default;
