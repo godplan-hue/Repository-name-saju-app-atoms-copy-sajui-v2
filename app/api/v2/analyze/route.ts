@@ -2235,6 +2235,19 @@ ${name}님, 당신의 2026년은 분명 의미 있고 아름다운 한 해가 �
 오늘 당장 해볼 한 가지: ${pick(["오늘 감사한 일 하나를 떠올리고 그것을 가까운 사람에게 표현해보십시오.", "오늘 하루를 마무리하며 가장 잘한 일 한 가지를 스스로 칭찬해보십시오."])} 오늘도 당신의 모든 날이 빛나기를 바랍니다. ✨🌟`;
 }
 
+function limitNameMentions(text: string, name: string, max = 4): string {
+  if (!name) return text;
+  const target = `${name}님`;
+  const parts = text.split(target);
+  if (parts.length - 1 <= max) return text;
+  let count = 0;
+  return parts.reduce((acc, part, i) => {
+    if (i === 0) return part;
+    count++;
+    return acc + (count <= max ? target : "님") + part;
+  }, "");
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -2306,7 +2319,7 @@ export async function POST(request: NextRequest) {
       const catLabel = category.replace(/\S+\s/, "");
       const catScore = scoreMap[category] ?? scores.total;
       
-      const analysis = getFreeTemplate(name, birth, gender, catLabel, catScore);
+      const analysis = limitNameMentions(getFreeTemplate(name, birth, gender, catLabel, catScore), name);
 
       return NextResponse.json({ scores, analysis, luckyColor, luckyNumber, luckyDirection });
     }
@@ -2317,13 +2330,15 @@ export async function POST(request: NextRequest) {
     for (const cat of ALL_CATS) {
       const catLabel = cat.replace(/\S+\s/, "");
       const catScore = scoreMap[cat] ?? 70;
+      let raw: string;
       if (cat === "🌟 오늘의 운세") {
-        analyses[cat] = getFreeTemplate(name, birth, gender, "오늘의 운세", catScore);
+        raw = getFreeTemplate(name, birth, gender, "오늘의 운세", catScore);
       } else if (isPackagePlan) {
-        analyses[cat] = getPackageTemplate(name, birth, gender, catLabel, catScore, partnerName, partnerBirth, partnerGender, birthHour, partnerBirthHour);
+        raw = getPackageTemplate(name, birth, gender, catLabel, catScore, partnerName, partnerBirth, partnerGender, birthHour, partnerBirthHour);
       } else {
-        analyses[cat] = getPaidTemplate(name, birth, gender, catLabel, catScore, birthHour);
+        raw = getPaidTemplate(name, birth, gender, catLabel, catScore, birthHour);
       }
+      analyses[cat] = limitNameMentions(raw, name);
     }
 
     return NextResponse.json({
