@@ -213,12 +213,12 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
     const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
     const date = r.savedAt ?? new Date().toISOString();
     const cats = paidCats.length > 0 ? paidCats : Object.keys(analyses);
+    const name = r.profile?.name ?? "";
     cats.forEach((cat, i) => {
       const id = `${r.histId}-${i}`;
       if (hist.some((h: any) => h.id === id)) return;
-      hist.unshift({
-        id, date,
-        name: r.profile?.name ?? "",
+      const item = {
+        id, date, name,
         category: cat,
         scores: r.scores ?? {},
         analysis: analyses[cat] ?? "",
@@ -228,7 +228,16 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
         luckyColor: r.luckyColor ?? "",
         luckyNumber: r.luckyNumber ?? "",
         luckyDirection: r.luckyDirection ?? "",
-      });
+      };
+      hist.unshift(item);
+      // Firebase에도 저장 (fire-and-forget, 기기 간 동기화용)
+      if (name) {
+        fetch("/api/v2/history", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, item }),
+        }).catch(() => {});
+      }
     });
     localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
   } catch {}

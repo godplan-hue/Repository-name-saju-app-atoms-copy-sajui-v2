@@ -180,12 +180,47 @@ export default function V2History() {
   };
 
   useEffect(() => {
-    const all: Item[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
-    setHist(all.filter(item => item.isPaid === true));
+    const local: Item[] = JSON.parse(localStorage.getItem("v2_history") || "[]").filter((i: Item) => i.isPaid === true);
+    setHist(local);
+    // Firebase에서도 불러와 병합 (기기 간 동기화)
+    try {
+      const profile = JSON.parse(localStorage.getItem("v2_saved_profile") || "null");
+      const name = profile?.name || "";
+      if (name) {
+        fetch(`/api/v2/history?name=${encodeURIComponent(name)}`)
+          .then(r => r.json())
+          .then(data => {
+            const remote: Item[] = (data.items || []).filter((i: Item) => i.isPaid === true);
+            if (remote.length === 0) return;
+            setHist(prev => {
+              const merged = [...remote];
+              prev.forEach(p => { if (!merged.some(m => m.id === p.id)) merged.push(p); });
+              merged.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+              return merged;
+            });
+          })
+          .catch(() => {});
+      }
+    } catch {}
   }, []);
 
   const clear = () => {
-    if (confirm("보관함을 모두 삭제하시겠습니까?")) { localStorage.removeItem("v2_history"); setHist([]); }
+    if (confirm("보관함을 모두 삭제하시겠습니까?")) {
+      localStorage.removeItem("v2_history");
+      setHist([]);
+      // Firebase에서도 삭제
+      try {
+        const profile = JSON.parse(localStorage.getItem("v2_saved_profile") || "null");
+        const name = profile?.name || "";
+        if (name) {
+          fetch("/api/v2/history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, deleteAll: true }),
+          }).catch(() => {});
+        }
+      } catch {}
+    }
   };
 
   const handlePay = async (cats: string[]) => {

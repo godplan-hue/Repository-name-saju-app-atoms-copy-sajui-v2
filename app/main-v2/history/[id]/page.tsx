@@ -164,22 +164,34 @@ export default function HistoryDetail() {
     wakeLockRef.current = null;
   };
 
-  // 아이템 로딩: params.id가 변경돼도 절대 redirect 하지 않음
+  // 아이템 로딩: localStorage 먼저, 없으면 Firebase에서 조회 (기기 간 동기화)
   useEffect(() => {
     if (!params.id) return;
+    const decodedId = decodeURIComponent(String(params.id));
     const hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
-    const found = hist.find(h => String(h.id) === decodeURIComponent(String(params.id)));
-    if (found) setItem(found);
+    const found = hist.find(h => String(h.id) === decodedId);
+    if (found) { setItem(found); return; }
+    // localStorage에 없으면 Firebase에서 조회
+    try {
+      const profile = JSON.parse(localStorage.getItem("v2_saved_profile") || "null");
+      const name = profile?.name || "";
+      if (name) {
+        fetch(`/api/v2/history?name=${encodeURIComponent(name)}&id=${encodeURIComponent(decodedId)}`)
+          .then(r => r.json())
+          .then(data => { if (data.item) setItem(data.item); })
+          .catch(() => {});
+      }
+    } catch {}
   }, [params.id]);
 
-  // 진짜 없는 URL 접근 시에만 redirect (1.5초 뒤 item이 여전히 null이면)
-  // 읽기/저장 버튼 클릭 등 정상 인터랙션에서는 item이 이미 로드돼 있으므로 redirect 안 됨
+  // 진짜 없는 URL 접근 시에만 redirect (3초 뒤 item이 여전히 null이면)
+  // Firebase 조회 시간 고려해 3초로 설정
   const itemSnapshotRef = useRef<any>(null);
   itemSnapshotRef.current = item;
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!itemSnapshotRef.current) router.replace("/main-v2/history");
-    }, 1500);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
