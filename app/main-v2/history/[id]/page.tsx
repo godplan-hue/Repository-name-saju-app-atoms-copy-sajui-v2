@@ -381,9 +381,11 @@ export default function HistoryDetail() {
       await new Promise(r => setTimeout(r, 80));
       const bg = item?.planType === "package" ? "#eab308" : "#fdf2f8";
       const fullH = el.scrollHeight + 40;
+      const MAX_CANVAS_H = 14000;
+      const scale = fullH * 2 > MAX_CANVAS_H ? Math.max(0.75, MAX_CANVAS_H / fullH) : 2;
       const canvas = await html2canvas(el, {
         backgroundColor: bg,
-        scale: 2,
+        scale,
         useCORS: true,
         logging: false,
         height: fullH,
