@@ -255,9 +255,15 @@ function V2ResultInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  // saving 상태(state)는 갱신이 비동기라 버튼을 빠르게 두 번 누르면 재진입 체크를
-  // 통과해버려 저장이 중복 실행될 수 있음 — ref는 즉시 갱신되므로 이걸로 막음
   const savingRef = useRef(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [musicOn, setMusicOn] = useState(false);
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (musicOn) { audio.pause(); setMusicOn(false); }
+    else { audio.volume = 0.35; audio.play().then(() => setMusicOn(true)).catch(() => {}); }
+  };
 
   const [result, setResult] = useState<any>(null);
   const [paid, setPaid] = useState(false);
@@ -1102,6 +1108,7 @@ function V2ResultInner() {
       </div>
     )}
     <main style={{ minHeight: "100vh", backgroundImage: `url('${tier === "package" ? "https://i.pinimg.com/736x/27/8b/de/278bde2d39a789d716ab0a1718413838.jpg" : "https://i.pinimg.com/1200x/ec/80/41/ec8041c9802a98ff6423c34a1ae44f38.jpg"}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+      <audio ref={audioRef} src="/bgm.mp3" loop preload="none" />
 
       {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
       <div style={{ position: "fixed", right: 16, bottom: 24, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
@@ -1114,10 +1121,15 @@ function V2ResultInner() {
 
       {/* 헤더 */}
       <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-        <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", flexShrink: 0 }}>
-          <span style={{ fontSize: 18 }}>←</span>
-          <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+          <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, padding: 0 }}>
+            {musicOn ? "🔊" : "🔇"}
+          </button>
+          <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap" }}>
+            <span style={{ fontSize: 18 }}>←</span>
+            <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
+          </button>
+        </div>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
           {paid && (
           <button onClick={() => router.push("/main-v2/history")} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
