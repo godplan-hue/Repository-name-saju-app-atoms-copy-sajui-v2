@@ -416,7 +416,8 @@ export default function HistoryDetail() {
       sessionStorage.setItem("v2_paid_cats", JSON.stringify(cats));
       const pkgName = cats.map(c => c.replace(/\S+\s/, "")).join("+");
       const price = cats.length * 990;
-      router.push(`/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${cats.length * 30}&paid=${price}`);
+      const _histIdNext = `/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${cats.length * 30}&paid=${price}`;
+      router.push(`/main-v2/pay?amount=${price}&next=${encodeURIComponent(_histIdNext)}`);
     } finally {
       setPaying(false);
       setShowSelect(false);

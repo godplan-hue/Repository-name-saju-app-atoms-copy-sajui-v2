@@ -87,8 +87,9 @@ export default function Payment() {
       
       const currentPackage = packages.find(p => p.name === selectedPackage);
       const pages = currentPackage?.pages || 30;
-      
-      router.push(`/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${pages}`);
+      const paidPrice = Number((currentPackage?.price || "₩9,900").replace(/[^0-9]/g, "")) || 9900;
+      const _oldPayNext = `/payment-complete?package=${encodeURIComponent(selectedPackage)}&pages=${pages}&paid=${paidPrice}`;
+      router.push(`/main-v2/pay?amount=${paidPrice}&next=${encodeURIComponent(_oldPayNext)}`);
     } catch (error) {
       alert("결제 처리 중 오류가 발생했습니다.");
       console.error(error);
