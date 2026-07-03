@@ -1129,11 +1129,6 @@ function V2ResultInner() {
           <button onClick={() => setShowShareModal(true)} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             📱 공유
           </button>
-          {paid && (
-            <button onClick={saveImage} disabled={saving} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
-              {saving ? "⏳..." : "🖼️ 저장"}
-            </button>
-          )}
         </div>
       </header>
 
@@ -1575,16 +1570,10 @@ function V2ResultInner() {
                 {histSaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
               </button>
             </div>
-            <div style={{ marginBottom: 12 }}>
-              <button onClick={saveImage} disabled={saving}
-                style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(245,158,11,0.3)", opacity: saving ? 0.7 : 1 }}>
-                {saving ? "⏳ 저장 중..." : "🖼️ 이미지 저장"}
-              </button>
-            </div>
           </>
         )}
 
-        {/* ── 패키지(9900~29900): 공유하기 + 유료 결제하기 + 다시 분석 + 보관함 저장 + 이미지 저장 ── */}
+        {/* ── 패키지(9900~29900): 공유하기 + 유료 결제하기 + 다시 분석 + 보관함 저장 ── */}
         {tier === "package" && (
           <>
             <div style={{ marginBottom: 10 }}>
@@ -1611,17 +1600,11 @@ function V2ResultInner() {
                 {histSaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
               </button>
             </div>
-            <div style={{ marginBottom: 12 }}>
-              <button onClick={saveImage} disabled={saving}
-                style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: saving ? "not-allowed" : "pointer", boxShadow: "0 4px 16px rgba(245,158,11,0.3)", opacity: saving ? 0.7 : 1 }}>
-                {saving ? "⏳ 저장 중..." : "🖼️ 이미지 저장"}
-              </button>
-            </div>
           </>
         )}
 
         {/* ── 모바일 이용 안내 (크롬 모바일에서만 표시, 카카오톡·PC 제외) ── */}
-        {!isPartner && isMob && !isKakao && (tier === "select" || tier === "package") && (
+        {!isPartner && isMob && !isKakao && (
           <div style={{ background: "rgba(236,72,153,0.06)", border: "1px solid rgba(236,72,153,0.2)", borderRadius: 16, padding: "14px 16px", marginBottom: 14 }}>
             <p style={{ fontSize: 12, fontWeight: 900, color: "#be185d", margin: "0 0 8px" }}>📱 모바일 이용 안내</p>
             <p style={{ fontSize: 11, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`이미지 저장하려면\n결과지 이미지 꾹 누르기 → 이미지 저장 선택\n\n음성으로 듣고 싶다면\n화면 위·아래 읽기 버튼 누르기\n\n링크 공유하기\n주소창 URL 복사 후 카톡·문자·메일로 보내면 다시 볼 수 있어요`}</p>
