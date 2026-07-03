@@ -380,17 +380,18 @@ export default function HistoryDetail() {
       el.style.maxHeight = "none";
       await new Promise(r => setTimeout(r, 80));
       const bg = item?.planType === "package" ? "#eab308" : "#fdf2f8";
-      const fullH = el.scrollHeight + 40;
+      const contentH = el.scrollHeight;
       const MAX_CANVAS_H = 14000;
-      const scale = fullH * 2 > MAX_CANVAS_H ? Math.max(0.75, MAX_CANVAS_H / fullH) : 2;
+      const scale = contentH * 2 > MAX_CANVAS_H ? Math.max(0.75, MAX_CANVAS_H / contentH) : 2;
       const canvas = await html2canvas(el, {
         backgroundColor: bg,
         scale,
         useCORS: true,
+        allowTaint: true,
         logging: false,
-        height: fullH,
+        height: contentH,
         windowWidth: 480,
-        windowHeight: fullH,
+        windowHeight: contentH,
       });
       el.style.overflow = prevOv;
       el.style.maxHeight = prevMH;

@@ -286,6 +286,7 @@ function V2ResultInner() {
     setIsKakao(/KAKAOTALK/i.test(ua));
   }, []);
 
+
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
   // 공유하기 전에 "생년월일 정보(띠·오행 미리보기)를 같이 보여줄지" 고를 수 있게 함 —
@@ -315,6 +316,14 @@ function V2ResultInner() {
   const [planType, setPlanType] = useState("");
   const [tier, setTier] = useState<"free" | "select" | "package">("free");
   const [pkgName, setPkgName] = useState("");
+  const kakaoGuideShownRef = useRef(false);
+  useEffect(() => {
+    if (!isKakao) return;
+    if (tier !== "select" && tier !== "package") return;
+    if (kakaoGuideShownRef.current) return;
+    kakaoGuideShownRef.current = true;
+    setTipModal({ text: `모바일에서 이미지 저장하려면\n결과지 받고 바로\n밑에 점 3개 누르고\n다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장된다.\n보관함도 전체 사주 저장이 되고\n보관함 읽기 누르면 읽기도 가능하다.\n\n단, VIP 커플팩은 용량이 너무 커서 이미지 저장이 안 된다.\n점 3개 옆 링크 복사 눌러서\n카톡, 문자, 메일, 원하는 곳에 붙여넣고 보면 된다.` });
+  }, [isKakao, tier]);
   const [couponPhone, setCouponPhone] = useState("");
   const [couponSubmitting, setCouponSubmitting] = useState(false);
   const [couponCode, setCouponCode] = useState("");
@@ -1643,8 +1652,8 @@ function V2ResultInner() {
           </>
         )}
 
-        {/* ── 모바일 이용 안내 ── */}
-        {!isPartner && isMob && (tier === "select" || tier === "package") && (
+        {/* ── 모바일 이용 안내 (카카오톡에서만 표시) ── */}
+        {!isPartner && isKakao && (tier === "select" || tier === "package") && (
           <div style={{ background: "rgba(236,72,153,0.06)", border: "1px solid rgba(236,72,153,0.2)", borderRadius: 16, padding: "14px 16px", marginBottom: 14 }}>
             <p style={{ fontSize: 12, fontWeight: 900, color: "#be185d", margin: "0 0 8px" }}>📱 모바일 이용 안내</p>
             <p style={{ fontSize: 11, color: "#4b5563", margin: "0 0 10px", lineHeight: 2, whiteSpace: "pre-line" }}>{`모바일에서 이미지 저장하려면\n결과지 받고 바로\n밑에 점 3개 누르고\n다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장된다.\n보관함도 전체 사주 저장이 되고\n보관함 읽기 누르면 읽기도 가능하다.\n\n단, VIP 커플팩은 용량이 너무 커서 이미지 저장이 안 된다.\n점 3개 옆 링크 복사 눌러서\n카톡, 문자, 메일, 원하는 곳에 붙여넣고 보면 된다.`}</p>
