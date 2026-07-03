@@ -130,6 +130,9 @@ export default function V2History() {
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [syncName, setSyncName] = useState("");
+  const [syncLoading, setSyncLoading] = useState(false);
+  const [syncMsg, setSyncMsg] = useState("");
 
   const shareItem = async (item: Item, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -204,6 +207,42 @@ export default function V2History() {
     } catch {}
   }, []);
 
+  const fetchByName = async () => {
+    const name = syncName.trim();
+    if (!name) return;
+    setSyncLoading(true);
+    setSyncMsg("");
+    try {
+      const res = await fetch(`/api/v2/history?name=${encodeURIComponent(name)}`);
+      const data = await res.json();
+      const remote: Item[] = (data.items || []).filter((i: Item) => i.isPaid === true);
+      if (remote.length === 0) {
+        setSyncMsg(`"${name}" 이름으로 저장된 기록이 없어요`);
+      } else {
+        // localStorage에도 병합 저장
+        const stored: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
+        remote.forEach(item => { if (!stored.some((h: any) => h.id === item.id)) stored.unshift(item as any); });
+        localStorage.setItem("v2_history", JSON.stringify(stored.slice(0, 50)));
+        // 이름 프로필 저장 (다음번엔 자동 조회)
+        try {
+          const prev = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+          localStorage.setItem("v2_saved_profile", JSON.stringify({ ...prev, name }));
+        } catch {}
+        setHist(prev => {
+          const merged = [...remote];
+          prev.forEach(p => { if (!merged.some(m => m.id === p.id)) merged.push(p); });
+          merged.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+          return merged;
+        });
+        setSyncMsg(`✅ ${remote.length}개 기록을 불러왔어요!`);
+      }
+    } catch {
+      setSyncMsg("불러오기 실패. 다시 시도해주세요.");
+    } finally {
+      setSyncLoading(false);
+    }
+  };
+
   const clear = () => {
     if (confirm("보관함을 모두 삭제하시겠습니까?")) {
       localStorage.removeItem("v2_history");
@@ -263,10 +302,34 @@ export default function V2History() {
         <p style={{ fontSize: 13, fontWeight: 700, color: "#fff", margin: "0 0 24px", textShadow: "0 1px 6px rgba(0,0,0,0.7)" }}>내 운세 분석 기록</p>
 
         {hist.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "72px 20px" }}>
-            <div style={{ fontSize: 72, marginBottom: 16 }}>😿</div>
-            <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>분석 기록이 없어요</h2>
-            <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 24px" }}>운세를 분석하면 여기에 저장됩니다</p>
+          <div style={{ textAlign: "center", padding: "48px 0 0" }}>
+            <div style={{ fontSize: 64, marginBottom: 12 }}>😿</div>
+            <h2 style={{ fontSize: 18, fontWeight: 900, color: "#fff", margin: "0 0 6px", textShadow: "0 1px 6px rgba(0,0,0,0.7)" }}>분석 기록이 없어요</h2>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: "0 0 24px", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>운세를 분석하면 여기에 저장됩니다</p>
+
+            {/* 다른 기기에서 구매한 기록 동기화 */}
+            <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", marginBottom: 16, textAlign: "left", boxShadow: "0 2px 16px rgba(0,0,0,0.1)" }}>
+              <p style={{ fontSize: 14, fontWeight: 900, color: "#ec4899", margin: "0 0 4px" }}>📱 다른 기기에서 구매하셨나요?</p>
+              <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px", lineHeight: 1.5 }}>구매할 때 입력한 이름을 입력하면<br/>이 기기에서도 보관함을 볼 수 있어요</p>
+              <div style={{ display: "flex", gap: 8 }}>
+                <input
+                  value={syncName}
+                  onChange={e => setSyncName(e.target.value)}
+                  onKeyDown={e => { if (e.key === "Enter") fetchByName(); }}
+                  placeholder="이름 입력 (예: 홍길동)"
+                  style={{ flex: 1, padding: "10px 14px", borderRadius: 12, border: "1.5px solid #e5e7eb", fontSize: 14, fontFamily: "inherit", outline: "none" }}
+                />
+                <button
+                  onClick={fetchByName}
+                  disabled={syncLoading || !syncName.trim()}
+                  style={{ padding: "10px 16px", background: syncName.trim() ? G : "#e5e7eb", color: syncName.trim() ? "white" : "#9ca3af", border: "none", borderRadius: 12, fontWeight: 900, fontSize: 13, cursor: syncName.trim() ? "pointer" : "not-allowed", whiteSpace: "nowrap" }}
+                >
+                  {syncLoading ? "⏳" : "🔄 불러오기"}
+                </button>
+              </div>
+              {syncMsg && <p style={{ fontSize: 12, color: syncMsg.startsWith("✅") ? "#10b981" : "#ef4444", margin: "10px 0 0", fontWeight: 700 }}>{syncMsg}</p>}
+            </div>
+
             <button onClick={() => router.push("/main-v2/payment")}
               style={{ padding: "13px 32px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
               💎 지금 결제하고 분석하기
