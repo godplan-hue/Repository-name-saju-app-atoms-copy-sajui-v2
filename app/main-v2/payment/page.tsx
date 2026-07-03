@@ -84,6 +84,74 @@ function PaymentInner() {
   const [awaitOther, setAwaitOther] = useState<{ id: string; label: string } | null>(null);
   const [otherInput, setOtherInput] = useState("");
 
+  // PayUp 카드결제 모달 상태
+  const [puPending, setPuPending] = useState<{ price: number; nextUrl: string } | null>(null);
+  const [puCardNo, setPuCardNo] = useState("");
+  const [puExpM, setPuExpM] = useState("");
+  const [puExpY, setPuExpY] = useState("");
+  const [puBirth, setPuBirth] = useState("");
+  const [puPw, setPuPw] = useState("");
+  const [puName, setPuName] = useState("");
+  const [puMobile, setPuMobile] = useState("");
+  const [puLoading, setPuLoading] = useState(false);
+  const [puError, setPuError] = useState("");
+
+  const formatCardNo = (v: string) => {
+    const d = v.replace(/\D/g, "").slice(0, 19);
+    return d.match(/.{1,4}/g)?.join(" ") ?? d;
+  };
+
+  const closePuModal = () => {
+    setPuPending(null);
+    setPuCardNo(""); setPuExpM(""); setPuExpY("");
+    setPuBirth(""); setPuPw(""); setPuName(""); setPuMobile(""); setPuError("");
+  };
+
+  const openPuModal = (price: number, nextUrl: string) => {
+    setPuError("");
+    setPuPending({ price, nextUrl });
+  };
+
+  const payupPay = async () => {
+    if (!puPending) return;
+    const clean = puCardNo.replace(/\s/g, "");
+    if (clean.length < 14) { setPuError("카드번호를 확인해주세요."); return; }
+    if (!puExpM || !puExpY) { setPuError("유효기간을 입력해주세요."); return; }
+    if (puBirth.length !== 6) { setPuError("생년월일 앞 6자리(YYMMDD)를 입력해주세요."); return; }
+    if (puPw.length !== 2) { setPuError("카드 비밀번호 앞 2자리를 입력해주세요."); return; }
+    if (!puName.trim()) { setPuError("이름을 입력해주세요."); return; }
+    setPuLoading(true); setPuError("");
+    try {
+      const res = await fetch("/api/payup/charge", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cardNo: clean,
+          expireMonth: puExpM.padStart(2, "0"),
+          expireYear: puExpY.slice(-2),
+          birthday: puBirth,
+          cardPw: puPw,
+          amount: puPending.price,
+          itemName: "점운 운세",
+          userName: puName.trim(),
+          mobileNumber: puMobile.replace(/\D/g, ""),
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        const url = puPending.nextUrl;
+        closePuModal();
+        router.push(url);
+      } else {
+        setPuError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch {
+      setPuError("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      setPuLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const name = sessionStorage.getItem("analysisName") || "분석 완료";
@@ -171,7 +239,7 @@ function PaymentInner() {
             <input
               value={otherInput}
               onChange={e => setOtherInput(e.target.value)}
-              onKeyDown={e => { if (e.key === "Enter" && otherInput.trim()) { const go = async () => { sessionStorage.setItem("specialOtherName", otherInput.trim()); const paidPrice = await finalPrice(2900); setAwaitOther(null); router.push(`/payment-complete?special=${awaitOther.id}&paid=${paidPrice}`); }; go(); } }}
+              onKeyDown={e => { if (e.key === "Enter" && otherInput.trim()) { const cur = awaitOther!; const go = async () => { sessionStorage.setItem("specialOtherName", otherInput.trim()); const paidPrice = await finalPrice(2900); setAwaitOther(null); openPuModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`); }; go(); } }}
               placeholder={awaitOther.id === "pet_compat" ? "예: 초코" : "예: 홍길동"}
               autoFocus
               style={{ width: "100%", padding: "13px 16px", borderRadius: 12, border: "1.5px solid rgba(251,191,36,0.5)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box", marginBottom: 14 }}
@@ -179,10 +247,11 @@ function PaymentInner() {
             <button
               onClick={async () => {
                 if (!otherInput.trim()) return;
+                const cur = awaitOther!;
                 sessionStorage.setItem("specialOtherName", otherInput.trim());
                 const paidPrice = await finalPrice(2900);
                 setAwaitOther(null);
-                router.push(`/payment-complete?special=${awaitOther.id}&paid=${paidPrice}`);
+                openPuModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`);
               }}
               disabled={!otherInput.trim()}
               style={{ width: "100%", padding: "14px 0", background: otherInput.trim() ? "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)" : "rgba(255,255,255,0.1)", color: otherInput.trim() ? "#1a0f2e" : "rgba(255,255,255,0.4)", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: otherInput.trim() ? "pointer" : "not-allowed" }}
@@ -192,6 +261,60 @@ function PaymentInner() {
           </div>
         </>
       )}
+
+      {/* PayUp 카드결제 모달 */}
+      {puPending && (
+        <>
+          <div onClick={closePuModal} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.82)", zIndex: 500 }} />
+          <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 501, background: "linear-gradient(180deg,#1a0835,#0d0520)", borderRadius: "22px 22px 0 0", padding: "24px 20px 40px", maxWidth: 500, margin: "0 auto", boxShadow: "0 -8px 40px rgba(0,0,0,0.6)", overflowY: "auto", maxHeight: "90vh" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <div>
+                <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 16, margin: 0 }}>💳 카드 결제</p>
+                <p style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 13, margin: "2px 0 0" }}>₩{puPending.price.toLocaleString()}</p>
+              </div>
+              <button onClick={closePuModal} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: 22, cursor: "pointer", padding: "4px 8px" }}>✕</button>
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>카드번호</label>
+              <input value={puCardNo} onChange={e => setPuCardNo(formatCardNo(e.target.value))} placeholder="0000 0000 0000 0000" inputMode="numeric" style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box", letterSpacing: "0.08em" }} />
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+              <div>
+                <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>유효기간 월 (MM)</label>
+                <input value={puExpM} onChange={e => setPuExpM(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="01" inputMode="numeric" maxLength={2} style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
+              </div>
+              <div>
+                <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>유효기간 년 (YY)</label>
+                <input value={puExpY} onChange={e => setPuExpY(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="27" inputMode="numeric" maxLength={2} style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
+              </div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+              <div>
+                <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>생년월일 앞 6자리</label>
+                <input value={puBirth} onChange={e => setPuBirth(e.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="예: 901225" inputMode="numeric" maxLength={6} style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 14, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
+              </div>
+              <div>
+                <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>비밀번호 앞 2자리</label>
+                <input type="password" value={puPw} onChange={e => setPuPw(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="••" inputMode="numeric" maxLength={2} style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 20, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
+              </div>
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>이름 (카드 명의자)</label>
+              <input value={puName} onChange={e => setPuName(e.target.value)} placeholder="홍길동" style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
+            </div>
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>핸드폰번호 (선택 — 카카오 결제알림)</label>
+              <input value={puMobile} onChange={e => setPuMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} placeholder="01012345678" inputMode="numeric" style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
+            </div>
+            {puError && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>⚠️ {puError}</p>}
+            <button onClick={payupPay} disabled={puLoading} style={{ width: "100%", padding: "15px 0", background: puLoading ? "rgba(251,191,36,0.4)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: puLoading ? "not-allowed" : "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.3)" }}>
+              {puLoading ? "결제 중..." : `💳 ₩${puPending.price.toLocaleString()} 결제하기`}
+            </button>
+            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "10px 0 0" }}>SSL 보안 결제 · 페이업㈜ 제공</p>
+          </div>
+        </>
+      )}
+
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(194, 65, 12, 0.2)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px" }}>
 
@@ -212,7 +335,7 @@ function PaymentInner() {
               <button key={s.id}
                 onClick={async () => {
                   const paidPrice = await finalPrice(s.price);
-                  router.push(`/payment-complete?special=${s.id}&paid=${paidPrice}`);
+                  openPuModal(paidPrice, `/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}
                 style={{ padding: "10px 4px", background: s.bg, backdropFilter: "blur(10px)", border: `1.5px solid ${s.bdColor}`, borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
               >
@@ -244,7 +367,7 @@ function PaymentInner() {
                     return;
                   }
                   const paidPrice = await finalPrice(2900);
-                  router.push(`/payment-complete?special=${s.id}&paid=${paidPrice}`);
+                  openPuModal(paidPrice, `/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}
                 style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
               >
@@ -273,7 +396,7 @@ function PaymentInner() {
                   onClick={async () => {
                     const paidPrice = await finalPrice(3900);
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify([s.catKey]));
-                    router.push(`/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=${paidPrice}`);
+                    openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=${paidPrice}`);
                   }}
                   style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
                 >
@@ -300,7 +423,7 @@ function PaymentInner() {
                 <button key={s.id}
                   onClick={async () => {
                     const paidPrice = await finalPrice(s.price);
-                    router.push(`/payment-complete?package=${encodeURIComponent(s.label)}&pages=${s.pages}&paid=${paidPrice}`);
+                    openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=${s.pages}&paid=${paidPrice}`);
                   }}
                   style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
                 >
@@ -374,7 +497,7 @@ function PaymentInner() {
               <div key={pkg.id + "_large"} onClick={async () => {
                 const originalPrice = Number(pkg.price.replace(/[^0-9]/g, ""));
                 const paidPrice = await finalPrice(originalPrice);
-                router.push(`/payment-complete?package=${encodeURIComponent(pkg.name)}&pages=${pkg.pages}&paid=${paidPrice}`);
+                openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(pkg.name)}&pages=${pkg.pages}&paid=${paidPrice}`);
               }} style={{ background: cardBg2, backdropFilter: "blur(10px)", border: wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 12, padding: 12, cursor: "pointer", transition: "all 0.3s", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
                 {wlBadge && (
                   <p style={{ fontSize: 9, fontWeight: 900, margin: "0 0 4px 0", textShadow: "0 1px 3px rgba(0,0,0,0.5)", wordBreak: "keep-all", lineHeight: 1.4 }}>
