@@ -262,10 +262,6 @@ function PaymentCompleteInner() {
   const applyDiscountCode = async () => {
     const code = discountInput.trim().toUpperCase();
     if (!code) return;
-    if (Number(paidAmount) < 3900) {
-      setDiscountError("3,900원 미만 상품은 할인코드를 사용할 수 없습니다.");
-      return;
-    }
     try {
       const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(code)}`);
       if (!res.ok) { setDiscountError("유효하지 않은 코드입니다."); return; }
@@ -620,7 +616,7 @@ function PaymentCompleteInner() {
                 <div style={{ display: "flex", gap: 8 }}>
                   <input
                     type="text"
-                    placeholder="할인코드 입력 (3,900원 이상 구매 시 사용 가능)"
+                    placeholder="할인코드 입력"
                     value={discountInput}
                     onChange={e => { setDiscountInput(e.target.value); setDiscountError(""); }}
                     style={{ flex: 1, padding: 6, borderRadius: 6, border: "1px solid #fbbf24", background: "#fff", color: "#333", fontSize: 12, fontWeight: 700, fontFamily: "inherit" }}

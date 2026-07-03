@@ -9,12 +9,28 @@ interface PromoCode {
   note: string;
   active: boolean;
   usageCount: number;
+  maxUses: number;
+}
+
+const MAX_USES_OPTIONS = [
+  { label: "1회 (1번만)", value: 1 },
+  { label: "3회", value: 3 },
+  { label: "10회", value: 10 },
+  { label: "33회", value: 33 },
+  { label: "무제한", value: -1 },
+];
+
+const DISCOUNT_OPTIONS = [30, 50, 70, 100];
+
+function maxUsesLabel(v: number) {
+  if (v === -1) return "무제한";
+  return `${v}회`;
 }
 
 export default function AdminDiscountCodes() {
   const router = useRouter();
   const [codes, setCodes] = useState<PromoCode[]>([]);
-  const [form, setForm] = useState({ code: "", discountPercent: 10, note: "" });
+  const [form, setForm] = useState({ code: "", discountPercent: 100, note: "", maxUses: 1 });
   const [saving, setSaving] = useState(false);
 
   const loadAll = () => {
@@ -56,7 +72,7 @@ export default function AdminDiscountCodes() {
         body: JSON.stringify(form),
       });
       if (!res.ok) { alert("코드 생성에 실패했습니다."); return; }
-      setForm({ code: "", discountPercent: 10, note: "" });
+      setForm({ code: "", discountPercent: 100, note: "", maxUses: 1 });
       loadAll();
     } finally {
       setSaving(false);
@@ -85,35 +101,110 @@ export default function AdminDiscountCodes() {
           <p style={{ fontSize: "13px", color: "#999", margin: "0 0 24px" }}>원하는 손님에게만 골라서 줄 수 있는 일반고객용 할인코드입니다. (파트너 사용료와는 무관)</p>
 
           {/* 코드 추가 폼 */}
-          <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap", alignItems: "center" }}>
-            <input value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} placeholder="코드(예: FRIEND2026)" style={{ padding: 8, border: "1px solid #ddd", borderRadius: 6, fontSize: 13 }} />
-            <input type="number" value={form.discountPercent} onChange={e => setForm({ ...form, discountPercent: Number(e.target.value) })} placeholder="할인율%" min={1} max={100} style={{ padding: 8, border: "1px solid #ddd", borderRadius: 6, fontSize: 13, width: 90 }} />
-            <input value={form.note} onChange={e => setForm({ ...form, note: e.target.value })} placeholder="메모(누구에게 왜 줬는지)" style={{ padding: 8, border: "1px solid #ddd", borderRadius: 6, fontSize: 13, width: 220 }} />
-            <button onClick={handleAddCode} disabled={saving} style={{ padding: "8px 16px", background: "#667eea", color: "white", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>{saving ? "추가중..." : "+ 코드 추가"}</button>
+          <div style={{ background: "#f9f9f9", border: "1px solid #eee", borderRadius: 10, padding: "20px", marginBottom: 28 }}>
+            <p style={{ fontWeight: 700, fontSize: 14, color: "#333", margin: "0 0 14px" }}>+ 새 코드 추가</p>
+
+            <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap", alignItems: "center" }}>
+              <input
+                value={form.code}
+                onChange={e => setForm({ ...form, code: e.target.value.toUpperCase() })}
+                placeholder="코드 (예: FREE2026)"
+                style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 6, fontSize: 13, minWidth: 160 }}
+              />
+              <input
+                value={form.note}
+                onChange={e => setForm({ ...form, note: e.target.value })}
+                placeholder="메모 (누구에게 왜 줬는지)"
+                style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: 6, fontSize: 13, flex: 1, minWidth: 180 }}
+              />
+            </div>
+
+            {/* 할인율 선택 */}
+            <div style={{ marginBottom: 12 }}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: "#666", margin: "0 0 6px" }}>할인율</p>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {DISCOUNT_OPTIONS.map(pct => (
+                  <button
+                    key={pct}
+                    onClick={() => setForm({ ...form, discountPercent: pct })}
+                    style={{
+                      padding: "6px 16px", borderRadius: 6, border: "none", fontWeight: 700, fontSize: 13, cursor: "pointer",
+                      background: form.discountPercent === pct ? (pct === 100 ? "#22c55e" : "#667eea") : "#e5e7eb",
+                      color: form.discountPercent === pct ? "white" : "#333",
+                    }}
+                  >
+                    {pct === 100 ? "100% 무료" : `${pct}% 할인`}
+                  </button>
+                ))}
+                <input
+                  type="number"
+                  value={form.discountPercent}
+                  onChange={e => setForm({ ...form, discountPercent: Number(e.target.value) })}
+                  min={1} max={100}
+                  style={{ padding: "6px 10px", border: "1px solid #ddd", borderRadius: 6, fontSize: 13, width: 80 }}
+                  placeholder="직접입력%"
+                />
+              </div>
+            </div>
+
+            {/* 사용 횟수 선택 */}
+            <div style={{ marginBottom: 16 }}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: "#666", margin: "0 0 6px" }}>사용 횟수</p>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {MAX_USES_OPTIONS.map(opt => (
+                  <button
+                    key={opt.value}
+                    onClick={() => setForm({ ...form, maxUses: opt.value })}
+                    style={{
+                      padding: "6px 16px", borderRadius: 6, border: "none", fontWeight: 700, fontSize: 13, cursor: "pointer",
+                      background: form.maxUses === opt.value ? "#764ba2" : "#e5e7eb",
+                      color: form.maxUses === opt.value ? "white" : "#333",
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              onClick={handleAddCode}
+              disabled={saving}
+              style={{ padding: "9px 22px", background: saving ? "#ccc" : "#667eea", color: "white", border: "none", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: saving ? "not-allowed" : "pointer" }}
+            >
+              {saving ? "추가중..." : "+ 코드 추가"}
+            </button>
           </div>
 
+          {/* 목록 */}
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
             <thead>
               <tr style={{ borderBottom: "2px solid #ddd" }}>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>코드</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>할인율</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>메모</th>
-                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>사용 횟수</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>사용</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>한도</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>상태</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>관리</th>
               </tr>
             </thead>
             <tbody>
               {codes.length === 0 ? (
-                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 등록된 할인코드가 없습니다.</td></tr>
+                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 등록된 할인코드가 없습니다.</td></tr>
               ) : (
                 codes.map(c => (
                   <tr key={c.code} style={{ borderBottom: "1px solid #eee" }}>
-                    <td style={{ padding: "12px", color: "#666", fontWeight: 700 }}>{c.code}</td>
-                    <td style={{ padding: "12px", color: "#666" }}>{c.discountPercent}%</td>
+                    <td style={{ padding: "12px", color: "#333", fontWeight: 700 }}>{c.code}</td>
+                    <td style={{ padding: "12px", color: c.discountPercent === 100 ? "#16a34a" : "#666", fontWeight: c.discountPercent === 100 ? 700 : 400 }}>{c.discountPercent}%</td>
                     <td style={{ padding: "12px", color: "#666" }}>{c.note || "-"}</td>
-                    <td style={{ padding: "12px", color: "#666" }}>{c.usageCount || 0}</td>
-                    <td style={{ padding: "12px", color: "#666" }}>{c.active ? "활성" : "비활성"}</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{c.usageCount || 0}회</td>
+                    <td style={{ padding: "12px", color: "#666" }}>{maxUsesLabel(c.maxUses ?? 1)}</td>
+                    <td style={{ padding: "12px" }}>
+                      <span style={{ padding: "3px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700, background: c.active ? "#dcfce7" : "#fee2e2", color: c.active ? "#16a34a" : "#dc2626" }}>
+                        {c.active ? "활성" : "소진"}
+                      </span>
+                    </td>
                     <td style={{ padding: "12px" }}>
                       <button onClick={() => handleDeleteCode(c.code)} style={{ padding: "4px 10px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>삭제</button>
                     </td>

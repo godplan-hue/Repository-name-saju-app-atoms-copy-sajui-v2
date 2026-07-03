@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     if (!found || !found.active) {
       return NextResponse.json({ found: false }, { status: 404 });
     }
-    return NextResponse.json({ found: true, code: { code: code.trim().toUpperCase(), ...found } });
+    return NextResponse.json({ found: true, ...found, code: code.trim().toUpperCase() });
   }
 
   const snap = await db.ref("promoCodes").once("value");
@@ -23,12 +23,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { code, discountPercent, note } = await request.json();
+    const { code, discountPercent, note, maxUses } = await request.json();
     if (!code || discountPercent === undefined || discountPercent === null) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
     const key = String(code).trim().toUpperCase();
-    await db.ref(`promoCodes/${key}`).set({ discountPercent, note: note || "", active: true, usageCount: 0 });
+    // maxUses: -1 = 무제한, 1+ = N회 사용 후 비활성화
+    await db.ref(`promoCodes/${key}`).set({ discountPercent, note: note || "", active: true, usageCount: 0, maxUses: maxUses ?? 1 });
     return NextResponse.json({ success: true, code: key });
   } catch (error) {
     console.error("Promo code create error:", error);
@@ -61,8 +62,11 @@ export async function PATCH(request: NextRequest) {
     if (!found || !found.active) {
       return NextResponse.json({ error: "유효하지 않은 코드입니다." }, { status: 404 });
     }
-    // 한 번 쓰이면 자동으로 비활성화 — 같은 코드를 여러 사람이 나눠 쓰는 것을 방지
-    await ref.update({ usageCount: (found.usageCount || 0) + 1, active: false });
+    const newUsageCount = (found.usageCount || 0) + 1;
+    const maxUses = found.maxUses ?? 1;
+    // maxUses === -1: 무제한 (비활성화 안 함), 그 외: N회 사용 시 비활성화
+    const shouldDeactivate = maxUses !== -1 && newUsageCount >= maxUses;
+    await ref.update({ usageCount: newUsageCount, ...(shouldDeactivate ? { active: false } : {}) });
     return NextResponse.json({ success: true, discountPercent: found.discountPercent });
   } catch (error) {
     console.error("Promo code use error:", error);
