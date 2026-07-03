@@ -243,7 +243,7 @@ function PaymentInner() {
   const currentCount = currentPackage?.count || 2;
 
   return (
-    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://i.pinimg.com/vwebp/736x/a1/e3/84/a1e3843f7ccba687fbce3b384384a70f.webp')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "scroll", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
+    <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://i.pinimg.com/vwebp/736x/bc/82/38/bc823860f9b677cc22e32da94823f148.webp')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "scroll", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden" }}>
 
       {/* 재회운/반려동물 궁합 이름 입력 오버레이 */}
       {awaitOther && (
