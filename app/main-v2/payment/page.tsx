@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 interface PromoCode {
@@ -46,6 +46,15 @@ function PaymentInner() {
         .catch(() => {});
     }
   }, []);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [musicOn, setMusicOn] = useState(false);
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (musicOn) { audio.pause(); setMusicOn(false); }
+    else { audio.volume = 0.35; audio.play().then(() => setMusicOn(true)).catch(() => {}); }
+  };
 
   const [discountInput, setDiscountInput] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<PromoCode | null>(null);
@@ -322,6 +331,11 @@ function PaymentInner() {
           </div>
         </>
       )}
+
+      <audio ref={audioRef} src="/bgm.mp3" loop preload="auto" />
+      <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ position: "fixed", top: 14, right: 14, zIndex: 200, background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
+        {musicOn ? "🎵 ON" : "🎵"}
+      </button>
 
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(194, 65, 12, 0.2)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 10, padding: "40px 16px" }}>
