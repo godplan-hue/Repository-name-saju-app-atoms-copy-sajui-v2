@@ -679,8 +679,8 @@ function V2ResultInner() {
             failedLabels.push(label);
           }
         }
-        if (failedLabels.length > 0) alert(`다음 항목은 이미지 저장에 실패했습니다: ${failedLabels.join(", ")}`);
-        else setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "사진 앱(갤러리)" : "다운로드 폴더"}에 저장됐어요!`), 0);
+        if (failedLabels.length > 0 && window.innerWidth < 768) alert(`다음 항목은 이미지 저장에 실패했습니다: ${failedLabels.join(", ")}`);
+        else if (window.innerWidth < 768) setTimeout(() => alert("✅ 사진 앱(갤러리)에 저장됐어요!"), 0);
         return;
       }
 
@@ -744,10 +744,10 @@ function V2ResultInner() {
           await downloadCanvas(merged, gi, groups.length);
         }
       }
-      setTimeout(() => alert(`✅ ${window.innerWidth < 768 ? "사진 앱(갤러리)" : "다운로드 폴더"}에 저장됐어요!`), 0);
+      if (window.innerWidth < 768) setTimeout(() => alert("✅ 사진 앱(갤러리)에 저장됐어요!"), 0);
     } catch (e) {
       console.error("이미지 저장 실패:", e);
-      alert("이미지 저장에 실패했습니다.\n아래 [링크 복사] 버튼을 눌러 카톡·문자·메일로 공유해주세요.");
+      if (window.innerWidth < 768) alert("이미지 저장에 실패했습니다.\n아래 [링크 복사] 버튼을 눌러 카톡·문자·메일로 공유해주세요.");
     } finally {
       savingRef.current = false;
       setSaving(false);
