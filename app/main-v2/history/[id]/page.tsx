@@ -392,16 +392,7 @@ export default function HistoryDetail() {
             setTimeout(() => URL.revokeObjectURL(url), 60000);
             setTimeout(() => alert("✅ 다운로드 폴더에 저장됐어요!"), 300);
           };
-          const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-          try {
-            if (isMobile && navigator.canShare?.({ files: [file] })) {
-              await navigator.share({ files: [file], title: "점운 운세 결과" });
-            } else {
-              doDownload();
-            }
-          } catch (e: any) {
-            if (e?.name !== "AbortError") doDownload();
-          }
+          doDownload();
         }, "image/png");
       }
     } catch {
