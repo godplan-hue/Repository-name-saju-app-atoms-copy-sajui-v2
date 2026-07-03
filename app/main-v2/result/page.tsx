@@ -1134,10 +1134,10 @@ function V2ResultInner() {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
         {/* ── 모바일 이용 안내 ── */}
-        {!isPartner && (
+        {!isPartner && isMob && (
           <div style={{ background: "rgba(236,72,153,0.06)", border: "1px solid rgba(236,72,153,0.2)", borderRadius: 16, padding: "14px 16px", marginBottom: 14 }}>
-            <p style={{ fontSize: 12, fontWeight: 900, color: "#be185d", margin: "0 0 8px" }}>📱 모바일 이용 안내</p>
-            <p style={{ fontSize: 11, color: "#4b5563", margin: "0 0 10px", lineHeight: 2 }}>크롬이나 구글로 바로 접속하셨다면 이미지 저장, 보관함, 읽기 모두 바로 이용 가능해요. 별도 설정 필요 없어요.</p>
+            <p style={{ fontSize: 12, fontWeight: 900, color: "#be185d", margin: "0 0 6px" }}>📱 모바일 이용 안내</p>
+            <p style={{ fontSize: 11, color: "#4b5563", margin: 0, lineHeight: 2 }}>크롬이나 구글로 바로 접속하셨다면 이미지 저장, 보관함, 읽기 모두 바로 이용 가능해요.</p>
           </div>
         )}
 
