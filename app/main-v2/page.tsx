@@ -184,13 +184,13 @@ const BANNERS = [
     img: "https://i.pinimg.com/736x/2d/a5/2b/2da52b98d2ad341ad3b3f33d35dfd98f.jpg",
     badge: "💰 재물운",
     badgeBg: "#b45309",
-    lines: ["돈 들어올 때", "노젓는 비법", "돈복 터지는 시기 확인하기 · ₩3,900"],
+    lines: ["돈 들어올 때", "노젓는 비법", "돈복 터지는 시기 확인하기"],
     lineSizes: [18, 12, 15],
     lineColors: ["#f9a8d4", "#fff700", "#fbbf24"],
     overlay: "linear-gradient(135deg, rgba(180,83,9,0.4) 0%, rgba(245,158,11,0.35) 100%)",
     fit: "contain" as const,
     route: "package" as const,
-    modalId: "naming",
+    modalId: "wealth5",
   },
   {
     img: "https://i.pinimg.com/736x/8b/bc/25/8bbc258261ea953d149de68672016367.jpg",
@@ -732,7 +732,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); setShowModal(id); }} />
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
@@ -942,6 +942,7 @@ export default function MainV2() {
           health:        { emoji: "🍀", title: "프리미엄",            desc: "올해 운세부터 건강운까지 5개 분야",     price: "₩24,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "premium", priceNum: 24900 },
           compatibility: { emoji: "💑", title: "VIP 커플팩",          desc: "본인 분석(8개) + 상대방 정보 입력 + 궁합분석 포함", price: "₩29,900", features: ["✍️ 이름분석", "📅 올해 운세", "💰 재물운", "💕 연애운", "🍀 건강운", "🗓 월별 운세", "💑 궁합 분석", "✨ 전체 사주분석"], preselect: "vip", priceNum: 29900 },
           naming:        { emoji: "💫", title: "심층 5개 운세 묶음", desc: "재물·연애·건강·성공·총운 5개 묶음 특가", price: "₩3,900", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"], priceNum: 3900 },
+          wealth5:       { emoji: "💰", title: "운세 골라담기", desc: "원하는 운세만 골라서 · 개당 ₩3,900", price: "₩3,900/개", features: ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"] },
           full:          { emoji: "🎯", title: "베이직",               desc: "올해 운세 + 재물운 + 연애운 + 월별 운세", price: "₩19,900", features: ["📅 올해 운세", "💰 재물운", "💕 연애운", "🗓 월별 운세", "📄 심층 상세 분석"], preselect: "standard", priceNum: 19900 },
         };
         // 추가 상품 모달 처리
@@ -1008,12 +1009,12 @@ export default function MainV2() {
                   <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>{cfg.title}</div>
                   <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2, whiteSpace: "pre-line" }}>{cfg.desc}</div>
                 </div>
-                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{showModal === "love" ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 990).toLocaleString()}` : "₩990") : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
+                <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>{showModal === "love" ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 990).toLocaleString()}` : "₩990") : showModal === "wealth5" ? (modalSelectedCats.length > 0 ? `₩${(modalSelectedCats.length * 3900).toLocaleString()}` : "₩3,900") : isPartner && cfg.catKey ? (brand?.customPriceBasic || "₩9,900") : cfg.price}</div>
               </div>
               {cfg.features && (
                 <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
                   {cfg.features.map((f, i) => (
-                    showModal === "love" ? (
+                    (showModal === "love" || showModal === "wealth5") ? (
                       <div key={i} onClick={() => setModalSelectedCats(prev => prev.includes(f) ? prev.filter(x => x !== f) : [...prev, f])} style={{ display: "flex", alignItems: "center", gap: 10, color: modalSelectedCats.includes(f) ? "#fff" : "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: 700, lineHeight: 2.2, cursor: "pointer" }}>
                         <span style={{ width: 20, height: 20, border: `2px solid ${modalSelectedCats.includes(f) ? "#a78bfa" : "rgba(255,255,255,0.25)"}`, borderRadius: 5, display: "inline-flex", alignItems: "center", justifyContent: "center", background: modalSelectedCats.includes(f) ? "#7c3aed" : "transparent", flexShrink: 0, fontSize: 12 }}>{modalSelectedCats.includes(f) ? "✓" : ""}</span>
                          <span style={{ display: "inline-block", width: "1.6em", textAlign: "center", flexShrink: 0 }}>{f.split(" ")[0]}</span><span>{f.split(" ").slice(1).join(" ")}</span>
@@ -1042,6 +1043,15 @@ export default function MainV2() {
                     const loveLabel = modalSelectedCats.length === 1 ? (modalSelectedCats[0].split(" ").slice(1).join(" ") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
                     const _loveNext = `/payment-complete?naming=1&queue=${loveQueue}&paid=${lovePaid}&package=${encodeURIComponent(loveLabel)}`;
                     router.push(`/main-v2/pay?amount=${lovePaid}&next=${encodeURIComponent(_loveNext)}`);
+                    return;
+                  }
+                  if (showModal === "wealth5") {
+                    if (modalSelectedCats.length === 0) return;
+                    const w5Paid = modalSelectedCats.length * 3900;
+                    const w5Label = modalSelectedCats.length === 1 ? (modalSelectedCats[0].split(" ").slice(1).join(" ") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
+                    sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
+                    const _w5Next = `/payment-complete?package=${encodeURIComponent(w5Label)}&pages=${modalSelectedCats.length * 30}&paid=${w5Paid}`;
+                    router.push(`/main-v2/pay?amount=${w5Paid}&next=${encodeURIComponent(_w5Next)}`);
                     return;
                   }
                   if (showModal === "naming") {
