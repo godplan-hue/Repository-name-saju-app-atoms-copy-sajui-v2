@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { DREAMS, POPULAR_DREAMS, getAllKeywords } from "@/lib/haemong/data";
 import type { Metadata } from "next";
+import ShareActions from "@/app/haemong/_components/ShareActions";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 
@@ -16,9 +17,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const kw = decodeURIComponent(keyword);
   const d = DREAMS[kw];
   if (!d) return { title: "꿈해몽 | 점운" };
+  const luckEmoji = d.luck === "길몽" ? "✨" : d.luck === "흉몽" ? "⚠️" : "🔮";
   return {
     title: `${kw} 해몽 — ${d.summary} | 점운`,
-    description: `${kw} 꿈의 의미: ${d.summary}. ${d.basicMeaning.slice(0, 80)}`,
+    description: `${luckEmoji} ${d.luck} | ${d.summary}. ${d.basicMeaning.slice(0, 100)}`,
+    openGraph: {
+      title: `${luckEmoji} ${kw} 해몽 — 점운 무료 꿈해몽`,
+      description: `${d.luck} | ${d.summary}. 지금 바로 무료로 해석해보세요.`,
+      images: [
+        {
+          url: "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg",
+          width: 1200,
+          height: 630,
+          alt: `${kw} 해몽`,
+        },
+      ],
+      type: "website",
+    },
   };
 }
 
@@ -40,11 +55,14 @@ export default async function KeywordPage({ params }: Props) {
     <main style={{ minHeight: "100vh", background: "linear-gradient(160deg,#fdf2f8 0%,#ede9fe 100%)", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
 
       {/* 헤더 */}
-      <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.12)", position: "sticky", top: 0, zIndex: 200 }}>
-        <Link href="/haemong" style={{ color: "#8b5cf6", textDecoration: "none", fontSize: 14, fontWeight: 700 }}>← 꿈해몽</Link>
-        <span style={{ color: "#d1d5db", fontSize: 12 }}>›</span>
-        <span style={{ fontSize: 14, color: "#6d28d9", fontWeight: 600 }}>{kw}</span>
-      </header>
+      <div style={{ position: "sticky", top: 0, zIndex: 200 }}>
+        <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.12)" }}>
+          <Link href="/haemong" style={{ color: "#8b5cf6", textDecoration: "none", fontSize: 14, fontWeight: 700 }}>← 꿈해몽</Link>
+          <span style={{ color: "#d1d5db", fontSize: 12 }}>›</span>
+          <span style={{ fontSize: 14, color: "#6d28d9", fontWeight: 600 }}>{kw}</span>
+        </header>
+        <ShareActions keyword={kw} />
+      </div>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 14px 80px" }}>
 
