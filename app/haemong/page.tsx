@@ -95,7 +95,7 @@ export default function HaemongPage() {
               <span style={{ background: i < 3 ? "#dc2626" : "rgba(0,0,0,0.6)", color: "#fff", fontSize: 11, fontWeight: 900, padding: "4px 10px", borderRadius: 20 }}>{item.rank}</span>
             </div>
             <div style={{ position: "absolute", bottom: 32, left: 0, right: 0, textAlign: "center", padding: "0 20px" }}>
-              <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", textShadow: "0 2px 10px rgba(0,0,0,0.8)", marginBottom: 4 }}>{item.kw}</div>
+              <div style={{ fontSize: item.kw.length > 6 ? 17 : item.kw.length > 4 ? 20 : 22, fontWeight: 900, color: "#fff", textShadow: "0 2px 10px rgba(0,0,0,0.8)", marginBottom: 4 }}>{item.kw}</div>
               <div style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", marginBottom: 10 }}>{item.sub}</div>
               <span style={{ background: item.luck === "길몽" ? "#16a34a" : item.luck === "흉몽" ? "#dc2626" : "#7c3aed", color: "#fff", fontSize: 12, fontWeight: 700, padding: "4px 14px", borderRadius: 20 }}>
                 {item.luck === "길몽" ? "✨ " : item.luck === "흉몽" ? "⚠️ " : ""}{item.luck} · 해몽 보기 →
