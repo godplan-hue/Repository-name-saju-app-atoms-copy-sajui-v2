@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 
 // 관리자가 전체 파트너의 고객 보관함을 한 번에 보는 용도.
@@ -51,4 +51,15 @@ export async function GET() {
     .filter((s) => s.count > 0);
 
   return NextResponse.json({ customers: list, monthlySummary, truncated: true, recentPerPartner: RECENT_PER_PARTNER });
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { partnerId, id } = await req.json();
+    if (!partnerId || !id) return NextResponse.json({ ok: false });
+    await db.ref(`partnerArchive/${partnerId}/${id}`).remove();
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ ok: false });
+  }
 }

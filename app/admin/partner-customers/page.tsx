@@ -59,6 +59,30 @@ export default function AdminPartnerCustomers() {
     router.push("/admin/login");
   };
 
+  const handleDeleteTransaction = async (c: PartnerCustomer) => {
+    if (!confirm(`"${c.customerName}" 거래 기록을 삭제할까요?`)) return;
+    await fetch("/api/admin/partner-customers", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ partnerId: c.partnerId, id: c.id }),
+    });
+    setCustomers(prev => prev.filter(x => !(x.partnerId === c.partnerId && x.id === c.id)));
+  };
+
+  const handleDeleteCustomer = async (key: string) => {
+    const toDelete = customers.filter(c => (c.customerPhone || c.customerEmail || c.customerName) === key);
+    if (!confirm(`"${toDelete[0]?.customerName}" 고객의 기록 ${toDelete.length}건을 모두 삭제할까요?`)) return;
+    await Promise.all(toDelete.map(c =>
+      fetch("/api/admin/partner-customers", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ partnerId: c.partnerId, id: c.id }),
+      })
+    ));
+    const delKeys = new Set(toDelete.map(c => `${c.partnerId}-${c.id}`));
+    setCustomers(prev => prev.filter(c => !delKeys.has(`${c.partnerId}-${c.id}`)));
+  };
+
   // 같은 고객이 여러 번 분석을 받으면 "전체 생성 내역"에는 매번 한 줄씩
   // 생기는 게 정상(거래 내역이라서)이지만, "이 사람이 누구다"를 보려면 그걸
   // 전화번호/이메일 기준으로 한 명당 한 줄로 묶어서 따로 보여줄 필요가 있음
@@ -75,7 +99,9 @@ export default function AdminPartnerCustomers() {
     if (new Date(c.createdAt) > new Date(cur.lastAt)) cur.lastAt = c.createdAt;
     byCustomer.set(key, cur);
   });
-  const uniqueCustomers = Array.from(byCustomer.values()).sort((a, b) => new Date(b.lastAt).getTime() - new Date(a.lastAt).getTime());
+  const uniqueCustomers = Array.from(byCustomer.entries())
+    .map(([key, val]) => ({ key, ...val }))
+    .sort((a, b) => new Date(b.lastAt).getTime() - new Date(a.lastAt).getTime());
 
   return (
     <main style={{ minHeight: "100vh", background: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo'", display: "flex" }}>
@@ -139,13 +165,14 @@ export default function AdminPartnerCustomers() {
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>구매 건수</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>총 결제액</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>최근 이용일</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>삭제</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
               ) : uniqueCustomers.length === 0 ? (
-                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 고객 기록이 없습니다.</td></tr>
+                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 고객 기록이 없습니다.</td></tr>
               ) : (
                 uniqueCustomers.map((c, i) => (
                   <tr key={i} style={{ borderBottom: "1px solid #eee" }}>
@@ -160,6 +187,11 @@ export default function AdminPartnerCustomers() {
                     <td style={{ padding: "12px", color: "#666" }}>{c.count}건</td>
                     <td style={{ padding: "12px", color: "#333", fontWeight: 900 }}>₩{c.total.toLocaleString()}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{new Date(c.lastAt).toLocaleString("ko-KR")}</td>
+                    <td style={{ padding: "12px" }}>
+                      <button onClick={() => handleDeleteCustomer(c.key)} style={{ padding: "4px 10px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+                        삭제
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
@@ -178,13 +210,14 @@ export default function AdminPartnerCustomers() {
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>사용료(VAT포함)</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>동의</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>생성일시</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>삭제</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+                <tr><td colSpan={9} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
               ) : customers.length === 0 ? (
-                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 파트너가 생성한 고객 기록이 없습니다.</td></tr>
+                <tr><td colSpan={9} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 파트너가 생성한 고객 기록이 없습니다.</td></tr>
               ) : (
                 customers.map(c => (
                   <tr key={`${c.partnerId}-${c.id}`} style={{ borderBottom: "1px solid #eee" }}>
@@ -196,6 +229,11 @@ export default function AdminPartnerCustomers() {
                     <td style={{ padding: "12px", color: "#333", fontWeight: 700 }}>{c.charge ? `₩${c.charge.totalCharge.toLocaleString()}` : "-"}</td>
                     <td style={{ padding: "12px", color: c.consentGiven ? "#2e7d32" : "#c33" }}>{c.consentGiven ? "✅ 동의함" : "❌ 미확인"}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{new Date(c.createdAt).toLocaleString("ko-KR")}</td>
+                    <td style={{ padding: "12px" }}>
+                      <button onClick={() => handleDeleteTransaction(c)} style={{ padding: "4px 10px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+                        삭제
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
