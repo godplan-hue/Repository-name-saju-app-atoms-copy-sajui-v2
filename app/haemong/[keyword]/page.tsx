@@ -96,23 +96,40 @@ export default async function KeywordPage({ params }: Props) {
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
             <span style={{ fontSize: 18 }}>⭐</span>
             <span style={{ fontWeight: 800, fontSize: 15, color: "#4c1d95" }}>운세별 관점</span>
+            <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: "#fef3c7", color: "#b45309" }}>1개 무료</span>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {d.fortuneAngles.map((f, i) => (
-              <div key={i} style={{ background: "#fafafa", borderRadius: 12, padding: "14px", border: "1px solid #f3e8ff" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>{f.emoji} {f.type}</div>
-                <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{f.content}</div>
-              </div>
-            ))}
-          </div>
-          {/* 블러 CTA — 사주 연결 시 더 보기 */}
-          <div style={{ marginTop: 12, position: "relative", borderRadius: 12, overflow: "hidden" }}>
-            <div style={{ filter: "blur(4px)", padding: "14px", background: "#fdf2f8", borderRadius: 12, fontSize: 13, color: "#6d28d9", lineHeight: 1.7 }}>
-              💰 이 꿈이 내 사주와 만나면 재물운이... 💕 연애운은 올해 어떻게...
+
+          {/* 첫 번째 무료 공개 */}
+          {d.fortuneAngles[0] && (
+            <div style={{ background: "#fafafa", borderRadius: 12, padding: "14px", border: "1px solid #f3e8ff", marginBottom: 10 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>{d.fortuneAngles[0].emoji} {d.fortuneAngles[0].type}</div>
+              <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{d.fortuneAngles[0].content}</div>
             </div>
-            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 12 }}>
-              <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 13, fontWeight: 700, padding: "8px 18px", borderRadius: 20, textDecoration: "none", boxShadow: "0 2px 10px rgba(236,72,153,0.4)" }}>
-                🐱 내 사주로 전체 보기
+          )}
+
+          {/* 나머지 잠금 */}
+          <div style={{ position: "relative", borderRadius: 12, overflow: "hidden" }}>
+            <div style={{ filter: "blur(5px)", userSelect: "none", pointerEvents: "none" }}>
+              {d.fortuneAngles.slice(1).map((f, i) => (
+                <div key={i} style={{ background: "#fafafa", borderRadius: 12, padding: "14px", border: "1px solid #f3e8ff", marginBottom: 8 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>{f.emoji} {f.type}</div>
+                  <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{f.content}</div>
+                </div>
+              ))}
+              {/* 사주 관점 미리보기 (항상 블러) */}
+              <div style={{ background: "#fdf2f8", borderRadius: 12, padding: "14px", border: "1px solid #fce7f3" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>🌟 사주와 결합한 종합 해석</div>
+                <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>이 꿈이 올해 운세와 만나면... 재물·연애·건강 전 분야에 걸쳐...</div>
+              </div>
+            </div>
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.92) 40%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", padding: "20px 16px" }}>
+              <div style={{ textAlign: "center", marginBottom: 12 }}>
+                <div style={{ fontSize: 22, marginBottom: 6 }}>🔐</div>
+                <p style={{ fontSize: 14, fontWeight: 800, color: "#4c1d95", margin: "0 0 4px" }}>운세별 전체 해석 보기</p>
+                <p style={{ fontSize: 12, color: "#6b7280", margin: 0 }}>재물운·연애운·건강운·직업운 전체</p>
+              </div>
+              <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 14, fontWeight: 900, padding: "12px 28px", borderRadius: 24, textDecoration: "none", boxShadow: "0 4px 16px rgba(236,72,153,0.45)", display: "inline-block" }}>
+                🐱 990원으로 전체 보기
               </Link>
             </div>
           </div>

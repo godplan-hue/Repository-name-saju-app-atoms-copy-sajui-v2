@@ -174,7 +174,10 @@ export default function HaemongPage() {
             {DREAM_GRID.map(cat => (
               <div
                 key={cat.id}
-                onClick={() => cat.id === "top" ? undefined : undefined}
+                onClick={() => cat.id === "top"
+                  ? document.getElementById("popular-top20")?.scrollIntoView({ behavior: "smooth" })
+                  : router.push(`/haemong/category/${cat.id}`)
+                }
                 style={{ aspectRatio: "1 / 1", borderRadius: 16, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 14px ${cat.accent}28` }}
               >
                 <img src={cat.img} alt={cat.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
@@ -258,7 +261,7 @@ export default function HaemongPage() {
           return (
             <>
               {/* 1~20위 */}
-              <div style={{ marginTop: 22 }}>
+              <div id="popular-top20" style={{ marginTop: 22 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                   <div style={{ flex: 1, height: 1, background: "rgba(139,92,246,0.2)" }} />
                   <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#dc2626,#7c3aed)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(220,38,38,0.4)" }}>🔥 인기 꿈 TOP 20</span>
