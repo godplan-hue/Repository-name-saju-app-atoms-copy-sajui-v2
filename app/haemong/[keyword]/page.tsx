@@ -8,7 +8,7 @@ const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 type Props = { params: Promise<{ keyword: string }> };
 
 export async function generateStaticParams() {
-  return getAllKeywords().map(k => ({ keyword: encodeURIComponent(k) }));
+  return getAllKeywords().map(k => ({ keyword: k }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
