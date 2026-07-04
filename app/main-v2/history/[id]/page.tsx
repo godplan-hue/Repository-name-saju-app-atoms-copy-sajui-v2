@@ -147,6 +147,9 @@ export default function HistoryDetail() {
   const [saving, setSaving] = useState(false);
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
+  const [isMob, setIsMob] = useState(false);
+  useEffect(() => { setIsMob(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)); }, []);
+  const [showGuideModal, setShowGuideModal] = useState(false);
 
   // 읽기(텍스트 음성 읽어주기) — 결과지 화면과 동일한 방식
   const [speaking, setSpeaking] = useState(false);
@@ -534,6 +537,16 @@ export default function HistoryDetail() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 72px" }}>
 
+        {/* ── 모바일 이용 안내 버튼 ── */}
+        {isMob && (
+          <button
+            onClick={() => setShowGuideModal(true)}
+            style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 14, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
+          >
+            📱 꼭 사용 전에 보세요
+          </button>
+        )}
+
         {/* 이미지 저장 대상 카드 */}
         <div ref={cardRef} style={{ background: "white", borderRadius: 24, overflow: "hidden", border: "1.5px solid rgba(236,72,153,0.1)" }}>
 
@@ -712,6 +725,22 @@ export default function HistoryDetail() {
           onPay={handlePay}
           paying={paying}
         />
+      )}
+
+      {showGuideModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
+          <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "80vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <p style={{ fontSize: 14, fontWeight: 900, color: "#be185d", margin: "0 0 12px" }}>📱 모바일 이용 안내</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 10px", lineHeight: 2 }}>크롬이나 구글로 바로 접속하셨다면 이미지 저장, 보관함, 읽기 모두 바로 이용 가능해요.</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 10px", lineHeight: 2, whiteSpace: "pre-line" }}>{`모바일(카카오톡)에서 이미지 저장하려면\n결과지 받고 바로\n밑에 점 3개 누르고\n다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장돼요.\n보관함도 전체 사주 저장이 돼요.\n보관함 읽기 누르면 읽기도 가능해요.\n\n단, VIP 커플팩은 용량이 너무 커서\n이미지 저장이 안 돼요.\n점 3개 옆 링크 복사 눌러서\n카톡, 문자, 메일, 원하는 곳에\n붙여넣고 보면 돼요.`}</p>
+            <div style={{ borderTop: "1px solid rgba(236,72,153,0.15)", paddingTop: 10, marginBottom: 16 }}>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.9 }}>읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 &gt; 디스플레이 &gt; 화면 자동 꺼짐 시간을 늘리거나, &apos;보고 있는 동안 화면 켜짐&apos; 기능을 켜두면 끊기지 않아요.</p>
+            </div>
+            <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
+              확인
+            </button>
+          </div>
+        </div>
       )}
     </main>
     </>
