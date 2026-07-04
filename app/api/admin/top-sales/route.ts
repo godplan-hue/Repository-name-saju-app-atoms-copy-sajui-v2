@@ -46,3 +46,20 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const adminId = request.headers.get("x-admin-id");
+    if (!adminId) return NextResponse.json({ error: "인증 필요" }, { status: 401 });
+    const { partnerId } = await request.json();
+    if (!partnerId) return NextResponse.json({ ok: false });
+    await Promise.all([
+      db.ref(`partners/${partnerId}`).remove(),
+      db.ref(`partnerStats/${partnerId}`).remove(),
+      db.ref(`partnerArchive/${partnerId}`).remove(),
+    ]);
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ ok: false });
+  }
+}

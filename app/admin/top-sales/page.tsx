@@ -32,6 +32,17 @@ export default function AdminTopSales() {
     localStorage.removeItem("adminName");
     router.push("/admin/login");
   };
+
+  const handleDelete = async (partnerId: string, partnerName: string) => {
+    if (!confirm(`"${partnerName}" 파트너를 완전히 삭제할까요?\n(partners·stats·archive 전체 삭제)`)) return;
+    const adminId = localStorage.getItem("adminId");
+    await fetch("/api/admin/top-sales", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", "x-admin-id": adminId || "" },
+      body: JSON.stringify({ partnerId }),
+    });
+    setTopSales(prev => prev.filter(p => p.partnerId !== partnerId).map((p, i) => ({ ...p, rank: i + 1 })));
+  };
   return (
     <main style={{ minHeight: "100vh", background: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo'", display: "flex" }}>
       <div style={{ width: "250px", background: "linear-gradient(135deg, #667eea, #764ba2)", padding: "30px 20px", color: "white", display: "flex", flexDirection: "column" }}>
@@ -60,13 +71,14 @@ export default function AdminTopSales() {
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>분석 건수</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>매출</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>등급</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>삭제</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
               ) : topSales.length === 0 ? (
-                <tr><td colSpan={5} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 분석 실적이 없습니다.</td></tr>
+                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 분석 실적이 없습니다.</td></tr>
               ) : (
                 topSales.map((p) => (
                   <tr key={p.partnerId} style={{ borderBottom: "1px solid #eee" }}>
@@ -75,6 +87,11 @@ export default function AdminTopSales() {
                     <td style={{ padding: "12px", color: "#666" }}>{p.analysisCount}</td>
                     <td style={{ padding: "12px", color: "#666" }}>₩{p.revenue.toLocaleString()}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{TIER_NAMES[p.tier] || p.tier}</td>
+                    <td style={{ padding: "12px" }}>
+                      <button onClick={() => handleDelete(p.partnerId, p.partnerName)} style={{ padding: "4px 10px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+                        삭제
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
