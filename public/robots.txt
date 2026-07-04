@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /main-v2/history/
+Disallow: /main-v2/payment/
+Disallow: /main-v2/pay/
+
+Sitemap: https://jeomun.com/sitemap.xml
