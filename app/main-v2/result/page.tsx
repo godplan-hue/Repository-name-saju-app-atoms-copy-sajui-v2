@@ -1533,9 +1533,9 @@ function V2ResultInner() {
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={() => router.push("/main-v2?modal=naming")}
+              <button onClick={() => setShowSelect(true)}
                 style={{ width: "100%", padding: "15px 0", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(245,158,11,0.35)" }}>
-                🔮 990원 5묶음 사주
+                💎 운세 골라담기 · 개당 ₩990
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
