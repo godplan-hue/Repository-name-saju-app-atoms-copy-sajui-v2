@@ -3,6 +3,8 @@ import Link from "next/link";
 import { DREAMS, POPULAR_DREAMS, getAllKeywords } from "@/lib/haemong/data";
 import type { Metadata } from "next";
 
+const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
+
 type Props = { params: Promise<{ keyword: string }> };
 
 export async function generateStaticParams() {
@@ -12,169 +14,166 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { keyword } = await params;
   const kw = decodeURIComponent(keyword);
-  const dream = DREAMS[kw];
-  if (!dream) return { title: "꿈해몽 | 점운" };
+  const d = DREAMS[kw];
+  if (!d) return { title: "꿈해몽 | 점운" };
   return {
-    title: `${kw} 해몽 — ${dream.summary} | 점운`,
-    description: `${kw} 꿈의 의미: ${dream.summary}. ${dream.interpretation.slice(0, 80)}`,
+    title: `${kw} 해몽 — ${d.summary} | 점운`,
+    description: `${kw} 꿈의 의미: ${d.summary}. ${d.basicMeaning.slice(0, 80)}`,
   };
 }
 
 export default async function KeywordPage({ params }: Props) {
   const { keyword } = await params;
   const kw = decodeURIComponent(keyword);
-  const dream = DREAMS[kw];
-  if (!dream) notFound();
+  const d = DREAMS[kw];
+  if (!d) notFound();
 
-  const luckColor =
-    dream.luck === "길몽" ? { bg: "#064e3b", text: "#6ee7b7", border: "#059669" } :
-    dream.luck === "흉몽" ? { bg: "#450a0a", text: "#fca5a5", border: "#b91c1c" } :
-    { bg: "#1e1e3a", text: "#a5b4fc", border: "#4338ca" };
+  const luckStyle =
+    d.luck === "길몽" ? { bg: "#f0fdf4", text: "#16a34a", border: "#86efac" } :
+    d.luck === "흉몽" ? { bg: "#fef2f2", text: "#dc2626", border: "#fca5a5" } :
+    { bg: "#f5f3ff", text: "#7c3aed", border: "#c4b5fd" };
 
-  const related = dream.related.filter(r => DREAMS[r]);
+  const related = d.related.filter(r => DREAMS[r]);
   const others = POPULAR_DREAMS.filter(p => p !== kw && DREAMS[p]).slice(0, 6);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0a1a", color: "#e8e0f0", fontFamily: "'Apple SD Gothic Neo', sans-serif" }}>
+    <main style={{ minHeight: "100vh", background: "linear-gradient(160deg,#fdf2f8 0%,#ede9fe 100%)", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
 
-      {/* 상단 헤더 */}
-      <div style={{ background: "#0a0a1a", borderBottom: "1px solid #2a1a4a", padding: "14px 16px", display: "flex", alignItems: "center", gap: 10 }}>
-        <Link href="/haemong" style={{ color: "#8a7aaa", textDecoration: "none", fontSize: 14 }}>← 꿈해몽</Link>
-        <span style={{ color: "#3a2a5a", fontSize: 12 }}>›</span>
-        <span style={{ color: "#c4a8e8", fontSize: 14 }}>{kw}</span>
-      </div>
+      {/* 헤더 */}
+      <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.12)", position: "sticky", top: 0, zIndex: 200 }}>
+        <Link href="/haemong" style={{ color: "#8b5cf6", textDecoration: "none", fontSize: 14, fontWeight: 700 }}>← 꿈해몽</Link>
+        <span style={{ color: "#d1d5db", fontSize: 12 }}>›</span>
+        <span style={{ fontSize: 14, color: "#6d28d9", fontWeight: 600 }}>{kw}</span>
+      </header>
 
-      <div style={{ maxWidth: 480, margin: "0 auto", padding: "24px 16px 80px" }}>
+      <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 14px 80px" }}>
 
-        {/* 메인 카드 */}
-        <div style={{
-          background: "linear-gradient(145deg,#12082a,#1a0e38)",
-          border: "1px solid #3a2060", borderRadius: 20,
-          padding: "28px 20px", marginBottom: 20, textAlign: "center",
-        }}>
-          <div style={{ fontSize: 56, marginBottom: 12 }}>{dream.emoji}</div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: "#d4b8f5", margin: "0 0 8px" }}>{kw}</h1>
-          <div style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 20,
-            background: luckColor.bg, border: `1px solid ${luckColor.border}`,
-            color: luckColor.text, fontSize: 13, fontWeight: 700, marginBottom: 14,
-          }}>
-            {dream.luck}
-          </div>
-          <p style={{ color: "#b8a8d8", fontSize: 15, margin: 0, lineHeight: 1.6, fontWeight: 500 }}>
-            {dream.summary}
-          </p>
+        {/* 히어로 카드 */}
+        <div style={{ background: "#fff", borderRadius: 20, padding: "28px 20px", marginBottom: 14, boxShadow: "0 4px 20px rgba(139,92,246,0.15)", border: "1px solid rgba(236,72,153,0.1)", textAlign: "center" }}>
+          <div style={{ fontSize: 56, marginBottom: 10 }}>{d.emoji}</div>
+          <h1 style={{ fontSize: 26, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "0 0 10px" }}>{kw}</h1>
+          <span style={{ display: "inline-block", padding: "5px 16px", borderRadius: 20, background: luckStyle.bg, border: `1px solid ${luckStyle.border}`, color: luckStyle.text, fontSize: 14, fontWeight: 700, marginBottom: 12 }}>
+            {d.luck === "길몽" ? "✨ " : d.luck === "흉몽" ? "⚠️ " : ""}
+            {d.luck}
+          </span>
+          <p style={{ color: "#6d28d9", fontSize: 15, margin: 0, lineHeight: 1.6, fontWeight: 600 }}>{d.summary}</p>
         </div>
 
         {/* 태그 */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
-          {dream.tags.map(tag => (
-            <span key={tag} style={{
-              padding: "5px 12px", borderRadius: 20,
-              background: "#1a1030", border: "1px solid #3a2060",
-              color: "#a88ce0", fontSize: 12,
-            }}>
-              #{tag}
-            </span>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
+          {d.tags.map(tag => (
+            <span key={tag} style={{ padding: "4px 12px", borderRadius: 20, background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.2)", color: "#6d28d9", fontSize: 12 }}>#{tag}</span>
           ))}
         </div>
 
-        {/* 해몽 해석 */}
-        <div style={{
-          background: "#0f0820", border: "1px solid #2a1a4a",
-          borderRadius: 16, padding: "20px 18px", marginBottom: 20,
-        }}>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#c4a8e8", margin: "0 0 14px" }}>📖 꿈 해석</h2>
-          {dream.interpretation.split("\n\n").map((para, i) => (
-            <p key={i} style={{ color: "#c8b8e0", fontSize: 14, lineHeight: 1.8, margin: i === 0 ? 0 : "12px 0 0" }}>
-              {para}
-            </p>
-          ))}
+        {/* 기본 해석 */}
+        <div style={{ background: "#fff", borderRadius: 16, padding: "18px", marginBottom: 14, boxShadow: "0 2px 12px rgba(139,92,246,0.08)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+            <span style={{ fontSize: 18 }}>📖</span>
+            <span style={{ fontWeight: 800, fontSize: 15, color: "#4c1d95" }}>기본 해석</span>
+          </div>
+          <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.8, margin: 0 }}>{d.basicMeaning}</p>
+        </div>
+
+        {/* 상황별 해석 */}
+        <div style={{ background: "#fff", borderRadius: 16, padding: "18px", marginBottom: 14, boxShadow: "0 2px 12px rgba(139,92,246,0.08)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+            <span style={{ fontSize: 18 }}>🔍</span>
+            <span style={{ fontWeight: 800, fontSize: 15, color: "#4c1d95" }}>상황별 해석</span>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {d.situations.map((s, i) => (
+              <div key={i} style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 12, padding: "14px" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#7c3aed", marginBottom: 6 }}>💭 {s.case}</div>
+                <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{s.meaning}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 운세별 관점 */}
+        <div style={{ background: "#fff", borderRadius: 16, padding: "18px", marginBottom: 14, boxShadow: "0 2px 12px rgba(139,92,246,0.08)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+            <span style={{ fontSize: 18 }}>⭐</span>
+            <span style={{ fontWeight: 800, fontSize: 15, color: "#4c1d95" }}>운세별 관점</span>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {d.fortuneAngles.map((f, i) => (
+              <div key={i} style={{ background: "#fafafa", borderRadius: 12, padding: "14px", border: "1px solid #f3e8ff" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>{f.emoji} {f.type}</div>
+                <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{f.content}</div>
+              </div>
+            ))}
+          </div>
+          {/* 블러 CTA — 사주 연결 시 더 보기 */}
+          <div style={{ marginTop: 12, position: "relative", borderRadius: 12, overflow: "hidden" }}>
+            <div style={{ filter: "blur(4px)", padding: "14px", background: "#fdf2f8", borderRadius: 12, fontSize: 13, color: "#6d28d9", lineHeight: 1.7 }}>
+              💰 이 꿈이 내 사주와 만나면 재물운이... 💕 연애운은 올해 어떻게...
+            </div>
+            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 12 }}>
+              <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 13, fontWeight: 700, padding: "8px 18px", borderRadius: 20, textDecoration: "none", boxShadow: "0 2px 10px rgba(236,72,153,0.4)" }}>
+                🐱 내 사주로 전체 보기
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* 오늘의 조언 */}
+        <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 16, padding: "18px", marginBottom: 14, border: "1px solid rgba(236,72,153,0.2)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+            <span style={{ fontSize: 18 }}>🌟</span>
+            <span style={{ fontWeight: 800, fontSize: 15, color: "#4c1d95" }}>오늘의 조언</span>
+          </div>
+          <p style={{ color: "#6d28d9", fontSize: 14, lineHeight: 1.8, margin: 0, fontWeight: 500 }}>{d.todayAdvice}</p>
+        </div>
+
+        {/* 사주 연결 CTA */}
+        <div onClick={() => {}} style={{ background: "#fff", borderRadius: 16, overflow: "hidden", marginBottom: 14, boxShadow: "0 4px 20px rgba(236,72,153,0.2)", border: "1px solid rgba(236,72,153,0.15)" }}>
+          <div style={{ background: G, padding: "14px 18px", display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontSize: 28 }}>🐱</span>
+            <div>
+              <p style={{ color: "#fff", fontWeight: 800, fontSize: 14, margin: 0 }}>꿈 + 사주로 더 정확하게</p>
+              <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, margin: "2px 0 0" }}>내 사주와 연결하면 꿈의 의미가 더 선명해져요</p>
+            </div>
+          </div>
+          <div style={{ padding: "14px 18px", display: "flex", gap: 10 }}>
+            <Link href="/main-v2" style={{ flex: 1, display: "block", textAlign: "center", padding: "11px 0", borderRadius: 10, background: G, color: "#fff", fontSize: 14, fontWeight: 700, textDecoration: "none" }}>
+              내 사주 보기 →
+            </Link>
+            <Link href="/main-v2" style={{ flex: 1, display: "block", textAlign: "center", padding: "11px 0", borderRadius: 10, background: "#f5f3ff", color: "#7c3aed", fontSize: 14, fontWeight: 700, textDecoration: "none", border: "1px solid #ddd6fe" }}>
+              취업·자소서 →
+            </Link>
+          </div>
         </div>
 
         {/* 관련 꿈 */}
         {related.length > 0 && (
-          <div style={{ marginBottom: 20 }}>
-            <h2 style={{ fontSize: 15, fontWeight: 700, color: "#c4a8e8", margin: "0 0 12px" }}>🔗 관련 꿈</h2>
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {related.map(r => {
-                const d = DREAMS[r];
-                return (
-                  <Link
-                    key={r}
-                    href={`/haemong/${encodeURIComponent(r)}`}
-                    style={{
-                      display: "flex", alignItems: "center", gap: 8,
-                      padding: "10px 14px", borderRadius: 12,
-                      background: "#1a1030", border: "1px solid #3a2060",
-                      textDecoration: "none", color: "#d4b8f5", fontSize: 14,
-                    }}
-                  >
-                    <span>{d.emoji}</span>
-                    <span>{r}</span>
-                  </Link>
-                );
-              })}
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#4c1d95", marginBottom: 10 }}>🔗 관련 꿈</div>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {related.map(r => (
+                <Link key={r} href={`/haemong/${encodeURIComponent(r)}`} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 20, background: "#fff", border: "1px solid rgba(139,92,246,0.2)", textDecoration: "none", color: "#6d28d9", fontSize: 13, fontWeight: 600 }}>
+                  <span>{DREAMS[r].emoji}</span><span>{r}</span>
+                </Link>
+              ))}
             </div>
           </div>
         )}
 
-        {/* 사주 연결 CTA */}
-        <div style={{
-          padding: "22px 18px", borderRadius: 16,
-          background: "linear-gradient(135deg,#2d1b69,#1e1a3a)",
-          border: "1px solid #5b21b6", marginBottom: 20,
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 32 }}>🐱</span>
-            <div style={{ flex: 1 }}>
-              <p style={{ color: "#c4a8e8", fontWeight: 700, fontSize: 14, margin: "0 0 3px" }}>
-                오늘 꿈이 내 사주와 맞닿아 있을 수 있어요
-              </p>
-              <p style={{ color: "#7a6a9a", fontSize: 12, margin: 0 }}>
-                내 사주로 오늘 운세까지 확인해보세요
-              </p>
-            </div>
-          </div>
-          <Link
-            href="/main-v2"
-            style={{
-              display: "block", marginTop: 14, padding: "11px 0", textAlign: "center",
-              borderRadius: 10, background: "linear-gradient(135deg,#7c3aed,#5b21b6)",
-              color: "#fff", fontSize: 14, fontWeight: 700, textDecoration: "none",
-            }}
-          >
-            내 사주 확인하기 →
-          </Link>
-        </div>
-
-        {/* 인기 꿈 목록 */}
+        {/* 다른 인기 꿈 */}
         <div>
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: "#c4a8e8", margin: "0 0 12px" }}>🌙 다른 인기 꿈</h2>
+          <div style={{ fontWeight: 700, fontSize: 14, color: "#4c1d95", marginBottom: 10 }}>🌙 다른 인기 꿈</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {others.map(okw => {
-              const d = DREAMS[okw];
+              const od = DREAMS[okw];
               return (
-                <Link
-                  key={okw}
-                  href={`/haemong/${encodeURIComponent(okw)}`}
-                  style={{
-                    display: "flex", alignItems: "center", gap: 12,
-                    padding: "12px 16px", borderRadius: 12,
-                    background: "#110c22", border: "1px solid #2a1a4a",
-                    textDecoration: "none",
-                  }}
-                >
-                  <span style={{ fontSize: 22 }}>{d.emoji}</span>
+                <Link key={okw} href={`/haemong/${encodeURIComponent(okw)}`} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 12, background: "#fff", border: "1px solid rgba(236,72,153,0.1)", textDecoration: "none", boxShadow: "0 1px 6px rgba(139,92,246,0.08)" }}>
+                  <span style={{ fontSize: 22 }}>{od.emoji}</span>
                   <div style={{ flex: 1 }}>
-                    <span style={{ color: "#d4b8f5", fontWeight: 600, fontSize: 14 }}>{okw}</span>
-                    <span style={{ color: "#6a5a8a", fontSize: 12, marginLeft: 8 }}>{d.summary.slice(0, 16)}…</span>
+                    <span style={{ fontWeight: 700, fontSize: 14, color: "#4c1d95" }}>{okw}</span>
+                    <span style={{ fontSize: 11, color: "#9ca3af", marginLeft: 8 }}>{od.summary.slice(0, 16)}…</span>
                   </div>
-                  <span style={{
-                    padding: "3px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700,
-                    background: d.luck === "길몽" ? "#064e3b" : d.luck === "흉몽" ? "#450a0a" : "#1e1e3a",
-                    color: d.luck === "길몽" ? "#6ee7b7" : d.luck === "흉몽" ? "#fca5a5" : "#a5b4fc",
-                  }}>{d.luck}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: od.luck === "길몽" ? "#f0fdf4" : od.luck === "흉몽" ? "#fef2f2" : "#f5f3ff", color: od.luck === "길몽" ? "#16a34a" : od.luck === "흉몽" ? "#dc2626" : "#7c3aed" }}>{od.luck}</span>
                 </Link>
               );
             })}
@@ -182,6 +181,6 @@ export default async function KeywordPage({ params }: Props) {
         </div>
 
       </div>
-    </div>
+    </main>
   );
 }
