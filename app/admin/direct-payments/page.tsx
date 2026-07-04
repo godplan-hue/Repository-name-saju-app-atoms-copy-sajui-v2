@@ -11,6 +11,9 @@ interface Payment {
   package: string;
   categories: string[];
   plan: string;
+  discountCode?: string;
+  discountPercent?: number;
+  originalAmount?: number;
 }
 
 function fmtDate(iso: string) {
@@ -60,6 +63,17 @@ export default function AdminDirectPayments() {
   const filtered = search.trim()
     ? payments.filter(p => p.name.includes(search) || p.phone.includes(search) || p.package.includes(search))
     : payments;
+
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`"${name}" 결제 기록을 삭제할까요?`)) return;
+    const adminId = localStorage.getItem("adminId");
+    await fetch("/api/admin/direct-payments", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", "x-admin-id": adminId || "" },
+      body: JSON.stringify({ id }),
+    });
+    setPayments(prev => prev.filter(p => p.id !== id));
+  };
 
   return (
     <main style={{ minHeight: "100vh", background: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo', sans-serif", display: "flex" }}>
@@ -116,7 +130,7 @@ export default function AdminDirectPayments() {
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
               <thead>
                 <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
-                  {["결제일시", "이름", "전화번호", "상품", "플랜", "결제금액"].map(h => (
+                  {["결제일시", "이름", "전화번호", "상품", "플랜", "결제금액", "쿠폰", "삭제"].map(h => (
                     <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontWeight: 900, color: "#374151", whiteSpace: "nowrap" }}>{h}</th>
                   ))}
                 </tr>
@@ -133,7 +147,26 @@ export default function AdminDirectPayments() {
                         {p.plan === "package" ? "📦 패키지" : "💎 개별"}
                       </span>
                     </td>
-                    <td style={{ padding: "10px 12px", fontWeight: 900, color: "#059669" }}>₩{p.amount.toLocaleString()}</td>
+                    <td style={{ padding: "10px 12px", fontWeight: 900, color: "#059669" }}>
+                      {p.discountPercent ? (
+                        <span>
+                          <span style={{ textDecoration: "line-through", color: "#9ca3af", fontWeight: 400, fontSize: 11 }}>₩{(p.originalAmount || p.amount).toLocaleString()}</span>
+                          {" "}₩{p.amount.toLocaleString()}
+                        </span>
+                      ) : `₩${p.amount.toLocaleString()}`}
+                    </td>
+                    <td style={{ padding: "10px 12px" }}>
+                      {p.discountCode ? (
+                        <span style={{ fontSize: 11, background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 20, fontWeight: 700 }}>
+                          🎟 {p.discountCode} ({p.discountPercent}%)
+                        </span>
+                      ) : <span style={{ color: "#d1d5db" }}>—</span>}
+                    </td>
+                    <td style={{ padding: "10px 12px" }}>
+                      <button onClick={() => handleDelete(p.id, p.name)} style={{ padding: "4px 10px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+                        삭제
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

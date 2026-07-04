@@ -20,3 +20,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ payments: [], totalRevenue: 0, monthlyRevenue: 0, count: 0 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const adminId = req.headers.get("x-admin-id");
+    if (!adminId) return NextResponse.json({ error: "인증 필요" }, { status: 401 });
+    const { id } = await req.json();
+    if (!id) return NextResponse.json({ ok: false });
+    await db.ref(`v2_direct_payments/${id}`).remove();
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ ok: false });
+  }
+}

@@ -400,6 +400,9 @@ function PaymentCompleteInner() {
               package: packageName || p.pkg || "운세",
               categories: _payCats,
               plan,
+              discountCode: appliedDiscount?.code || "",
+              discountPercent: appliedDiscount?.discountPercent || 0,
+              originalAmount: Number(paidAmount || _payAmt),
             }),
           }).catch(() => {});
         }
