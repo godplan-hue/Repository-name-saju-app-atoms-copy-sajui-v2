@@ -12,7 +12,7 @@ const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const BANNER = [
-  { kw: "돼지꿈",       rank: "🔥 1위", img: "https://i.pinimg.com/vwebp/1200x/f1/a0/eb/f1a0ebaeecf261fe57ea04df84dbee0c.webp", sub: "꿈만 꿔도 재물이 들어온다", luck: "길몽" },
+  { kw: "돼지꿈",       rank: "🔥 1위", img: "https://i.pinimg.com/1200x/19/45/ae/1945aed518878c24a2d57de205cb2aaa.jpg", sub: "꿈만 꿔도 재물이 들어온다", luck: "길몽" },
   { kw: "뱀꿈",         rank: "🔥 2위", img: "https://i.pinimg.com/736x/41/8b/46/418b469c10eea1b164ba228df4c3de8e.jpg", sub: "큰 변화와 재물의 신호",   luck: "길몽" },
   { kw: "용꿈",         rank: "🔥 3위", img: "https://i.pinimg.com/1200x/f9/11/47/f91147ffa1ccd1c892e6d95f05d87391.jpg", sub: "최고의 길몽, 대박 운수",  luck: "길몽" },
   { kw: "이빨빠지는꿈", rank: "4위",    img: "https://i.pinimg.com/736x/99/d1/bd/99d1bdb4c2f94311275b57cf41c634cd.jpg", sub: "건강·가족을 돌아볼 신호", luck: "흉몽" },
