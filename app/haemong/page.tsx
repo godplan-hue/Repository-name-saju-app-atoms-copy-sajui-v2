@@ -15,7 +15,7 @@ const BANNER = [
   { kw: "돼지꿈",       rank: "🔥 1위", img: "https://i.pinimg.com/1200x/19/45/ae/1945aed518878c24a2d57de205cb2aaa.jpg", sub: "꿈만 꿔도 재물이 들어온다", luck: "길몽" },
   { kw: "뱀꿈",         rank: "🔥 2위", img: "https://i.pinimg.com/736x/41/8b/46/418b469c10eea1b164ba228df4c3de8e.jpg", sub: "큰 변화와 재물의 신호",   luck: "길몽" },
   { kw: "용꿈",         rank: "🔥 3위", img: "https://i.pinimg.com/1200x/f9/11/47/f91147ffa1ccd1c892e6d95f05d87391.jpg", sub: "최고의 길몽, 대박 운수",  luck: "길몽" },
-  { kw: "이빨빠지는꿈", rank: "4위",    img: "https://i.pinimg.com/736x/99/d1/bd/99d1bdb4c2f94311275b57cf41c634cd.jpg", sub: "건강·가족을 돌아볼 신호", luck: "흉몽" },
+  { kw: "이빨빠지는꿈", rank: "4위",    img: "https://i.pinimg.com/736x/58/95/da/5895daba41bab2956fd8708dc6a1f514.jpg", sub: "건강·가족을 돌아볼 신호", luck: "흉몽" },
   { kw: "황금꿈",       rank: "5위",    img: "https://i.pinimg.com/736x/49/85/1a/49851abdf36f75ae18cb4dad32c25989.jpg", sub: "황금이 가득, 재물운 폭발", luck: "길몽" },
   { kw: "호랑이꿈",     rank: "6위",    img: "https://i.pinimg.com/736x/e4/99/f8/e499f89b6a79c6ea44ae2093f172225a.jpg", sub: "권위와 성공의 상징",      luck: "길몽" },
 ];
