@@ -42,6 +42,7 @@ export default function RootLayout({
         <meta name="google" content="notranslate" />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="naver-site-verification" content="3d2048299405b51629792c9344b06287da0b184e" />
       </head>
       <body style={{ margin: 0, padding: 0 }}>{children}</body>
       <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-Y2MVHQYPMQ" />
