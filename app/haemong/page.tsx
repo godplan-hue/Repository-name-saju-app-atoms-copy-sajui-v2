@@ -150,7 +150,7 @@ export default function HaemongPage() {
             <div style={{ flex: 1, height: 1, background: "rgba(139,92,246,0.2)" }} />
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
-            {POPULAR_DREAMS.slice(0, 9).map((kw, i) => {
+            {POPULAR_DREAMS.map((kw, i) => {
               const d = DREAMS[kw];
               if (!d) return null;
               const IMGS: Record<string, string> = {
@@ -163,12 +163,29 @@ export default function HaemongPage() {
                 "물꿈":         "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg",
                 "아기꿈":       "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg",
                 "비행꿈":       "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg",
+                "결혼꿈":       "https://i.pinimg.com/736x/49/85/1a/49851abdf36f75ae18cb4dad32c25989.jpg",
+                "호랑이꿈":     "https://i.pinimg.com/736x/43/13/81/4313812df52904f3f58d99e9188d6c5f.jpg",
+                "용꿈":         "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg",
+                "똥꿈":         "https://i.pinimg.com/1200x/f9/11/47/f91147ffa1ccd1c892e6d95f05d87391.jpg",
+                "복권꿈":       "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg",
+                "금꿈":         "https://i.pinimg.com/736x/e4/99/f8/e499f89b6a79c6ea44ae2093f172225a.jpg",
+                "귀신꿈":       "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg",
+                "쫓기는꿈":     "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg",
+                "임신꿈":       "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg",
+                "피꿈":         "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg",
+                "황금꿈":       "https://i.pinimg.com/736x/e4/99/f8/e499f89b6a79c6ea44ae2093f172225a.jpg",
+                "고양이꿈":     "https://i.pinimg.com/736x/7e/3f/b7/7e3fb74ca3f9bd8cf3df7b8fcde0c4cb.jpg",
+                "전연인꿈":     "https://i.pinimg.com/736x/49/85/1a/49851abdf36f75ae18cb4dad32c25989.jpg",
+                "머리카락꿈":   "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg",
+                "싸우는꿈":     "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg",
               };
+              const badge = i === 0 ? "🔥 1위" : i < 3 ? `🔥 ${i + 1}위` : `${i + 1}위`;
+              const badgeBg = i === 0 ? "#dc2626" : i < 3 ? "#7c3aed" : "rgba(0,0,0,0.55)";
               return (
                 <div key={kw} onClick={() => goTo(kw)} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: "0 3px 12px rgba(139,92,246,0.18)" }}>
-                  <img src={IMGS[kw] || d.emoji} alt={kw} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                  <img src={IMGS[kw]} alt={kw} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0) 75%)" }} />
-                  <span style={{ position: "absolute", top: 5, left: 5, background: "#6d28d9", color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 6px", borderRadius: 10 }}>#{i + 1}</span>
+                  <span style={{ position: "absolute", top: 5, left: 5, background: badgeBg, color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 6px", borderRadius: 10, whiteSpace: "nowrap" }}>{badge}</span>
                   <div style={{ position: "absolute", bottom: 6, left: 0, right: 0, textAlign: "center" }}>
                     <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)" }}>{kw}</div>
                     <div style={{ fontSize: 9, color: d.luck === "길몽" ? "#6ee7b7" : d.luck === "흉몽" ? "#fca5a5" : "#c4b5fd", fontWeight: 700, marginTop: 1 }}>{d.luck}</div>
