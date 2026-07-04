@@ -248,7 +248,7 @@ export default function HaemongPage() {
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 75%)" }} />
                 <span style={{ position: "absolute", top: 4, left: 4, background: badgeBg, color: "#fff", fontSize: 8, fontWeight: 900, padding: "2px 5px", borderRadius: 8, whiteSpace: "nowrap" }}>{badge}</span>
                 <div style={{ position: "absolute", bottom: 5, left: 0, right: 0, textAlign: "center" }}>
-                  <div style={{ fontSize: 10, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)" }}>{kw}</div>
+                  <div style={{ fontSize: kw.length > 6 ? 8 : 10, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)", lineHeight: 1.3 }}>{kw}</div>
                   <div style={{ fontSize: 8, color: d.luck === "길몽" ? "#6ee7b7" : d.luck === "흉몽" ? "#fca5a5" : "#c4b5fd", fontWeight: 700, marginTop: 1 }}>{d.luck}</div>
                 </div>
               </div>
