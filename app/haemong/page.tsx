@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   POPULAR_DREAMS,
@@ -10,6 +10,15 @@ import {
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
+
+const BANNER = [
+  { kw: "돼지꿈",       rank: "🔥 1위", img: "https://i.pinimg.com/1200x/a6/30/a7/a630a728391bc4784a814211184b42bb.jpg", sub: "꿈만 꿔도 재물이 들어온다", luck: "길몽" },
+  { kw: "뱀꿈",         rank: "🔥 2위", img: "https://i.pinimg.com/736x/7e/3f/b7/7e3fb74ca3f9bd8cf3df7b8fcde0c4cb.jpg", sub: "큰 변화와 재물의 신호", luck: "길몽" },
+  { kw: "용꿈",         rank: "🔥 3위", img: "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg", sub: "최고의 길몽, 대박 운수", luck: "길몽" },
+  { kw: "이빨빠지는꿈", rank: "4위",    img: "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg", sub: "건강·가족을 돌아볼 신호", luck: "흉몽" },
+  { kw: "황금꿈",       rank: "5위",    img: "https://i.pinimg.com/736x/e4/99/f8/e499f89b6a79c6ea44ae2093f172225a.jpg", sub: "황금이 가득, 재물운 폭발", luck: "길몽" },
+  { kw: "호랑이꿈",     rank: "6위",    img: "https://i.pinimg.com/736x/43/13/81/4313812df52904f3f58d99e9188d6c5f.jpg", sub: "권위와 성공의 상징", luck: "길몽" },
+];
 
 const DREAM_GRID = [
   { id: "animal",    label: "동물꿈",    sub: "뱀·돼지·호랑이",  img: "https://i.pinimg.com/736x/7e/3f/b7/7e3fb74ca3f9bd8cf3df7b8fcde0c4cb.jpg", accent: "#16a34a", price: "길몽대표", priceBg: "#15803d" },
@@ -28,6 +37,12 @@ export default function HaemongPage() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
   const [searched, setSearched] = useState(false);
+  const [slide, setSlide] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setSlide(s => (s + 1) % BANNER.length), 3200);
+    return () => clearInterval(t);
+  }, []);
 
   function handleSearch() {
     if (!query.trim()) return;
@@ -61,16 +76,46 @@ export default function HaemongPage() {
         </button>
       </header>
 
-      <div style={{ maxWidth: 480, margin: "0 auto", padding: "16px 14px 80px" }}>
-
-        {/* 타이틀 */}
-        <div style={{ textAlign: "center", marginBottom: 16, padding: "18px 0 8px" }}>
-          <div style={{ display: "inline-block", background: "rgba(10,0,30,0.48)", backdropFilter: "blur(10px)", borderRadius: 20, padding: "16px 36px" }}>
-            <div style={{ fontSize: 36, marginBottom: 4 }}>🌙</div>
-            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#fff", textShadow: "0 2px 12px rgba(139,92,246,0.8)", margin: "0 0 4px" }}>꿈해몽</h1>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: 0 }}>꿈이 전하는 오늘의 메시지</p>
+      {/* 슬라이딩 배너 */}
+      <div style={{ position: "relative", width: "100%", height: 200, overflow: "hidden" }}>
+        {BANNER.map((item, i) => (
+          <div
+            key={item.kw}
+            onClick={() => goTo(item.kw)}
+            style={{
+              position: "absolute", inset: 0, cursor: "pointer",
+              opacity: i === slide ? 1 : 0,
+              transition: "opacity 0.7s ease",
+              zIndex: i === slide ? 1 : 0,
+            }}
+          >
+            <img src={item.img} alt={item.kw} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.05) 100%)" }} />
+            <div style={{ position: "absolute", top: 14, left: 14 }}>
+              <span style={{ background: i < 3 ? "#dc2626" : "rgba(0,0,0,0.6)", color: "#fff", fontSize: 11, fontWeight: 900, padding: "4px 10px", borderRadius: 20 }}>{item.rank}</span>
+            </div>
+            <div style={{ position: "absolute", bottom: 32, left: 0, right: 0, textAlign: "center", padding: "0 20px" }}>
+              <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", textShadow: "0 2px 10px rgba(0,0,0,0.8)", marginBottom: 4 }}>{item.kw}</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", marginBottom: 10 }}>{item.sub}</div>
+              <span style={{ background: item.luck === "길몽" ? "#16a34a" : item.luck === "흉몽" ? "#dc2626" : "#7c3aed", color: "#fff", fontSize: 12, fontWeight: 700, padding: "4px 14px", borderRadius: 20 }}>
+                {item.luck === "길몽" ? "✨ " : item.luck === "흉몽" ? "⚠️ " : ""}{item.luck} · 해몽 보기 →
+              </span>
+            </div>
           </div>
+        ))}
+        {/* 도트 인디케이터 */}
+        <div style={{ position: "absolute", bottom: 10, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 6, zIndex: 10 }}>
+          {BANNER.map((_, i) => (
+            <button
+              key={i}
+              onClick={e => { e.stopPropagation(); setSlide(i); }}
+              style={{ width: i === slide ? 20 : 7, height: 7, borderRadius: 4, border: "none", background: i === slide ? "#fff" : "rgba(255,255,255,0.45)", cursor: "pointer", transition: "all 0.3s", padding: 0 }}
+            />
+          ))}
         </div>
+      </div>
+
+      <div style={{ maxWidth: 480, margin: "0 auto", padding: "16px 14px 80px" }}>
 
         {/* 검색창 */}
         <div style={{ display: "flex", gap: 8, marginBottom: 20, background: "rgba(255,255,255,0.9)", borderRadius: 14, padding: "6px 6px 6px 14px", boxShadow: "0 2px 12px rgba(139,92,246,0.15)", border: "1px solid rgba(236,72,153,0.2)" }}>
