@@ -13,7 +13,7 @@ const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const BANNER = [
   { kw: "돼지꿈",       rank: "🔥 1위", img: "https://i.pinimg.com/1200x/19/45/ae/1945aed518878c24a2d57de205cb2aaa.jpg", sub: "꿈만 꿔도 재물이 들어온다", luck: "길몽" },
-  { kw: "뱀꿈",         rank: "🔥 2위", img: "https://i.pinimg.com/736x/4d/d0/a5/4dd0a58e78c8195c3ac5829e1244af90.jpg", sub: "큰 변화와 재물의 신호",   luck: "길몽" },
+  { kw: "뱀꿈",         rank: "🔥 2위", img: "https://i.pinimg.com/736x/c2/b3/c9/c2b3c993f2a0fbf3bb0a0e2d72f0d241.jpg", sub: "큰 변화와 재물의 신호",   luck: "길몽" },
   { kw: "용꿈",         rank: "🔥 3위", img: "https://i.pinimg.com/1200x/f9/11/47/f91147ffa1ccd1c892e6d95f05d87391.jpg", sub: "최고의 길몽, 대박 운수",  luck: "길몽" },
   { kw: "이빨빠지는꿈", rank: "4위",    img: "https://i.pinimg.com/736x/96/78/27/967827819a5d61ad07d6c05110f6c1fb.jpg", sub: "건강·가족을 돌아볼 신호", luck: "흉몽" },
   { kw: "황금꿈",       rank: "5위",    img: "https://i.pinimg.com/736x/49/85/1a/49851abdf36f75ae18cb4dad32c25989.jpg", sub: "황금이 가득, 재물운 폭발", luck: "길몽" },
