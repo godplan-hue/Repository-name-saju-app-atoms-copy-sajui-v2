@@ -65,9 +65,11 @@ export default function HaemongPage() {
 
         {/* 타이틀 */}
         <div style={{ textAlign: "center", marginBottom: 16, padding: "18px 0 8px" }}>
-          <div style={{ fontSize: 36, marginBottom: 4 }}>🌙</div>
-          <h1 style={{ fontSize: 22, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "0 0 4px" }}>꿈해몽</h1>
-          <p style={{ fontSize: 13, color: "#9d4edd", margin: 0 }}>꿈이 전하는 오늘의 메시지</p>
+          <div style={{ display: "inline-block", background: "rgba(10,0,30,0.48)", backdropFilter: "blur(10px)", borderRadius: 20, padding: "16px 36px" }}>
+            <div style={{ fontSize: 36, marginBottom: 4 }}>🌙</div>
+            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#fff", textShadow: "0 2px 12px rgba(139,92,246,0.8)", margin: "0 0 4px" }}>꿈해몽</h1>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: 0 }}>꿈이 전하는 오늘의 메시지</p>
+          </div>
         </div>
 
         {/* 검색창 */}
@@ -143,58 +145,99 @@ export default function HaemongPage() {
         </div>
 
         {/* 인기 꿈 리스트 */}
-        <div style={{ marginTop: 22 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-            <div style={{ flex: 1, height: 1, background: "rgba(139,92,246,0.2)" }} />
-            <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#7c3aed,#4c1d95)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(124,58,237,0.4)" }}>🔥 인기 꿈 해몽</span>
-            <div style={{ flex: 1, height: 1, background: "rgba(139,92,246,0.2)" }} />
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
-            {POPULAR_DREAMS.map((kw, i) => {
-              const d = DREAMS[kw];
-              if (!d) return null;
-              const IMGS: Record<string, string> = {
-                "뱀꿈":         "https://i.pinimg.com/736x/7e/3f/b7/7e3fb74ca3f9bd8cf3df7b8fcde0c4cb.jpg",
-                "돼지꿈":       "https://i.pinimg.com/1200x/a6/30/a7/a630a728391bc4784a814211184b42bb.jpg",
-                "이빨빠지는꿈": "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg",
-                "돈꿈":         "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg",
-                "죽은사람꿈":   "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg",
-                "불꿈":         "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg",
-                "물꿈":         "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg",
-                "아기꿈":       "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg",
-                "비행꿈":       "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg",
-                "결혼꿈":       "https://i.pinimg.com/736x/49/85/1a/49851abdf36f75ae18cb4dad32c25989.jpg",
-                "호랑이꿈":     "https://i.pinimg.com/736x/43/13/81/4313812df52904f3f58d99e9188d6c5f.jpg",
-                "용꿈":         "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg",
-                "똥꿈":         "https://i.pinimg.com/1200x/f9/11/47/f91147ffa1ccd1c892e6d95f05d87391.jpg",
-                "복권꿈":       "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg",
-                "금꿈":         "https://i.pinimg.com/736x/e4/99/f8/e499f89b6a79c6ea44ae2093f172225a.jpg",
-                "귀신꿈":       "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg",
-                "쫓기는꿈":     "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg",
-                "임신꿈":       "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg",
-                "피꿈":         "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg",
-                "황금꿈":       "https://i.pinimg.com/736x/e4/99/f8/e499f89b6a79c6ea44ae2093f172225a.jpg",
-                "고양이꿈":     "https://i.pinimg.com/736x/7e/3f/b7/7e3fb74ca3f9bd8cf3df7b8fcde0c4cb.jpg",
-                "전연인꿈":     "https://i.pinimg.com/736x/49/85/1a/49851abdf36f75ae18cb4dad32c25989.jpg",
-                "머리카락꿈":   "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg",
-                "싸우는꿈":     "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg",
-              };
-              const badge = i === 0 ? "🔥 1위" : i < 3 ? `🔥 ${i + 1}위` : `${i + 1}위`;
-              const badgeBg = i === 0 ? "#dc2626" : i < 3 ? "#7c3aed" : "rgba(0,0,0,0.55)";
-              return (
-                <div key={kw} onClick={() => goTo(kw)} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: "0 3px 12px rgba(139,92,246,0.18)" }}>
-                  <img src={IMGS[kw]} alt={kw} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0) 75%)" }} />
-                  <span style={{ position: "absolute", top: 5, left: 5, background: badgeBg, color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 6px", borderRadius: 10, whiteSpace: "nowrap" }}>{badge}</span>
-                  <div style={{ position: "absolute", bottom: 6, left: 0, right: 0, textAlign: "center" }}>
-                    <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)" }}>{kw}</div>
-                    <div style={{ fontSize: 9, color: d.luck === "길몽" ? "#6ee7b7" : d.luck === "흉몽" ? "#fca5a5" : "#c4b5fd", fontWeight: 700, marginTop: 1 }}>{d.luck}</div>
-                  </div>
+        {(() => {
+          const IMGS: Record<string, string> = {
+            "뱀꿈":         "https://i.pinimg.com/736x/7e/3f/b7/7e3fb74ca3f9bd8cf3df7b8fcde0c4cb.jpg",
+            "돼지꿈":       "https://i.pinimg.com/1200x/a6/30/a7/a630a728391bc4784a814211184b42bb.jpg",
+            "이빨빠지는꿈": "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg",
+            "돈꿈":         "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg",
+            "죽은사람꿈":   "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg",
+            "불꿈":         "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg",
+            "물꿈":         "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg",
+            "아기꿈":       "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg",
+            "비행꿈":       "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg",
+            "결혼꿈":       "https://i.pinimg.com/736x/49/85/1a/49851abdf36f75ae18cb4dad32c25989.jpg",
+            "호랑이꿈":     "https://i.pinimg.com/736x/43/13/81/4313812df52904f3f58d99e9188d6c5f.jpg",
+            "용꿈":         "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg",
+            "똥꿈":         "https://i.pinimg.com/1200x/f9/11/47/f91147ffa1ccd1c892e6d95f05d87391.jpg",
+            "복권꿈":       "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg",
+            "금꿈":         "https://i.pinimg.com/736x/e4/99/f8/e499f89b6a79c6ea44ae2093f172225a.jpg",
+            "귀신꿈":       "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg",
+            "쫓기는꿈":     "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg",
+            "임신꿈":       "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg",
+            "피꿈":         "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg",
+            "황금꿈":       "https://i.pinimg.com/736x/e4/99/f8/e499f89b6a79c6ea44ae2093f172225a.jpg",
+            "고양이꿈":     "https://i.pinimg.com/736x/7e/3f/b7/7e3fb74ca3f9bd8cf3df7b8fcde0c4cb.jpg",
+            "전연인꿈":     "https://i.pinimg.com/736x/49/85/1a/49851abdf36f75ae18cb4dad32c25989.jpg",
+            "머리카락꿈":   "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg",
+            "싸우는꿈":     "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg",
+            "개꿈":         "https://i.pinimg.com/736x/7e/3f/b7/7e3fb74ca3f9bd8cf3df7b8fcde0c4cb.jpg",
+            "물고기꿈":     "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg",
+            "소꿈":         "https://i.pinimg.com/1200x/a6/30/a7/a630a728391bc4784a814211184b42bb.jpg",
+            "하늘꿈":       "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg",
+            "집꿈":         "https://i.pinimg.com/1200x/b7/c3/ca/b7c3ca787665a1ec29ea1d2643ddc55a.jpg",
+            "봉황꿈":       "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg",
+            "새꿈":         "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg",
+            "말꿈":         "https://i.pinimg.com/736x/43/13/81/4313812df52904f3f58d99e9188d6c5f.jpg",
+            "토끼꿈":       "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg",
+            "곰꿈":         "https://i.pinimg.com/1200x/a6/30/a7/a630a728391bc4784a814211184b42bb.jpg",
+            "바다꿈":       "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg",
+            "무지개꿈":     "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg",
+            "산꿈":         "https://i.pinimg.com/736x/f0/eb/3f/f0eb3f82c0f66f2eb9547df718242bd3.jpg",
+            "추락꿈":       "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg",
+            "시험꿈":       "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg",
+            "부모꿈":       "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg",
+          };
+
+          function DreamCard({ kw, rank }: { kw: string; rank: number }) {
+            const d = DREAMS[kw];
+            if (!d) return null;
+            const badge = rank === 1 ? "🔥 1위" : rank <= 3 ? `🔥 ${rank}위` : `${rank}위`;
+            const badgeBg = rank === 1 ? "#dc2626" : rank <= 3 ? "#7c3aed" : "rgba(0,0,0,0.55)";
+            return (
+              <div onClick={() => goTo(kw)} style={{ aspectRatio: "1 / 1", borderRadius: 12, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: "0 2px 8px rgba(139,92,246,0.18)" }}>
+                <img src={IMGS[kw]} alt={kw} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 75%)" }} />
+                <span style={{ position: "absolute", top: 4, left: 4, background: badgeBg, color: "#fff", fontSize: 8, fontWeight: 900, padding: "2px 5px", borderRadius: 8, whiteSpace: "nowrap" }}>{badge}</span>
+                <div style={{ position: "absolute", bottom: 5, left: 0, right: 0, textAlign: "center" }}>
+                  <div style={{ fontSize: 10, fontWeight: 900, color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,1)" }}>{kw}</div>
+                  <div style={{ fontSize: 8, color: d.luck === "길몽" ? "#6ee7b7" : d.luck === "흉몽" ? "#fca5a5" : "#c4b5fd", fontWeight: 700, marginTop: 1 }}>{d.luck}</div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
+              </div>
+            );
+          }
+
+          const top20 = POPULAR_DREAMS.slice(0, 20);
+          const next20 = POPULAR_DREAMS.slice(20, 40);
+
+          return (
+            <>
+              {/* 1~20위 */}
+              <div style={{ marginTop: 22 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <div style={{ flex: 1, height: 1, background: "rgba(139,92,246,0.2)" }} />
+                  <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#dc2626,#7c3aed)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(220,38,38,0.4)" }}>🔥 인기 꿈 TOP 20</span>
+                  <div style={{ flex: 1, height: 1, background: "rgba(139,92,246,0.2)" }} />
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 7 }}>
+                  {top20.map((kw, i) => <DreamCard key={kw} kw={kw} rank={i + 1} />)}
+                </div>
+              </div>
+
+              {/* 21~40위 */}
+              <div style={{ marginTop: 20 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <div style={{ flex: 1, height: 1, background: "rgba(139,92,246,0.2)" }} />
+                  <span style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#7c3aed,#4c1d95)", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", boxShadow: "0 2px 10px rgba(124,58,237,0.4)" }}>🌙 꿈 해몽 더보기</span>
+                  <div style={{ flex: 1, height: 1, background: "rgba(139,92,246,0.2)" }} />
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 7 }}>
+                  {next20.map((kw, i) => <DreamCard key={kw} kw={kw} rank={i + 21} />)}
+                </div>
+              </div>
+            </>
+          );
+        })()}
 
         {/* 사주 연결 배너 */}
         <div
