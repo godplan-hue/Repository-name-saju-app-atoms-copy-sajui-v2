@@ -108,4 +108,20 @@
   <url><loc>https://jeomun.com/online-saju</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jeomun.com/saju-calc</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jeomun.com/past-life</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <!-- 배치 4: 점신·사주아이 키워드 공백 보완 -->
+  <url><loc>https://jeomun.com/jeongtong-saju</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/tomorrow-fortune</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/physiognomy</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/psychology-test</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/lucky-number</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/salpuri</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/saju-counseling</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://jeomun.com/birthday-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/simple-couple</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://jeomun.com/star-couple</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/blood-couple</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/celebrity-couple</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/love-destiny</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://jeomun.com/season-fortune</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/birthstone</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
 </urlset>
