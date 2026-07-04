@@ -55,26 +55,11 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-  <url>
-    <loc>https://jeomun.com/saju-990</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://jeomun.com/free-saju</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://jeomun.com/ai-saju</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jeomun.com/cat-saju</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <!-- 배치 2: 핵심 SEO 키워드 랜딩페이지 -->
+  <url><loc>https://jeomun.com/saju-990</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://jeomun.com/free-saju</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://jeomun.com/ai-saju</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/cat-saju</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jeomun.com/couple-saju</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://jeomun.com/today-fortune</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://jeomun.com/newyear-2026</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
@@ -95,4 +80,32 @@
   <url><loc>https://jeomun.com/yearly-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jeomun.com/pet-saju</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jeomun.com/taegil</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <!-- 배치 3: 확장 SEO 키워드 랜딩페이지 -->
+  <url><loc>https://jeomun.com/tojeong</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/tarot</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/saju-paljja</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://jeomun.com/job-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/exam-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/pregnancy-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/free-fortune</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://jeomun.com/weekly-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/monthly-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/blood-fortune</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/star-fortune</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/lotto-fortune</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/business-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/work-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/promotion-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/career-change</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/realestate-fortune</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/child-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/saju-2027</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/dohwasal</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/yeokmasal</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/startup-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/move-fortune</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://jeomun.com/solo-fortune</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/online-saju</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/saju-calc</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jeomun.com/past-life</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>
