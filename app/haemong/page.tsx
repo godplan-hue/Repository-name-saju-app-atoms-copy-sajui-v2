@@ -12,8 +12,8 @@ const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const BANNER = [
-  { kw: "돼지꿈",       rank: "🔥 1위", img: "https://i.pinimg.com/736x/f0/eb/3f/f0eb3f82c0f66f2eb9547df718242bd3.jpg", sub: "꿈만 꿔도 재물이 들어온다", luck: "길몽" },
-  { kw: "뱀꿈",         rank: "🔥 2위", img: "https://i.pinimg.com/736x/43/13/81/4313812df52904f3f58d99e9188d6c5f.jpg", sub: "큰 변화와 재물의 신호",   luck: "길몽" },
+  { kw: "돼지꿈",       rank: "🔥 1위", img: "https://i.pinimg.com/736x/fd/3d/5f/fd3d5f2ae8463d807e0fbc64c0c4fa23.jpg", sub: "꿈만 꿔도 재물이 들어온다", luck: "길몽" },
+  { kw: "뱀꿈",         rank: "🔥 2위", img: "https://i.pinimg.com/736x/56/b7/e2/56b7e22d27704a23f4783bcef24377db.jpg", sub: "큰 변화와 재물의 신호",   luck: "길몽" },
   { kw: "용꿈",         rank: "🔥 3위", img: "https://i.pinimg.com/1200x/f9/11/47/f91147ffa1ccd1c892e6d95f05d87391.jpg", sub: "최고의 길몽, 대박 운수",  luck: "길몽" },
   { kw: "이빨빠지는꿈", rank: "4위",    img: "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg", sub: "건강·가족을 돌아볼 신호", luck: "흉몽" },
   { kw: "황금꿈",       rank: "5위",    img: "https://i.pinimg.com/736x/49/85/1a/49851abdf36f75ae18cb4dad32c25989.jpg", sub: "황금이 가득, 재물운 폭발", luck: "길몽" },
@@ -195,8 +195,8 @@ export default function HaemongPage() {
         {/* 인기 꿈 리스트 */}
         {(() => {
           const IMGS: Record<string, string> = {
-            "돼지꿈":       "https://source.unsplash.com/400x400/?rabbit,gold,wealth",
-            "뱀꿈":         "https://source.unsplash.com/400x400/?rabbit,forest,mystery",
+            "돼지꿈":       "https://i.pinimg.com/736x/fd/3d/5f/fd3d5f2ae8463d807e0fbc64c0c4fa23.jpg",
+            "뱀꿈":         "https://i.pinimg.com/736x/56/b7/e2/56b7e22d27704a23f4783bcef24377db.jpg",
             "이빨빠지는꿈": "https://source.unsplash.com/400x400/?rabbit,white,cozy,soft",
             "돈꿈":         "https://source.unsplash.com/400x400/?rabbit,coins,treasure",
             "죽은사람꿈":   "https://source.unsplash.com/400x400/?rabbit,moon,night,dark",
