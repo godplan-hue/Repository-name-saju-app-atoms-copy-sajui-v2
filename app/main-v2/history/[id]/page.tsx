@@ -488,7 +488,9 @@ export default function HistoryDetail() {
     }
   };
 
-  if (!item) return null;
+  if (!item) return (
+    <main style={{ minHeight: "100vh", background: BG, backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }} />
+  );
 
   const bars = [
     { label: "🌟 오늘의 운세", key: "total",   color: "#f59e0b" },

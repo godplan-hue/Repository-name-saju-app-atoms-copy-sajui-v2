@@ -10,9 +10,11 @@ interface PromoCode {
   active: boolean;
 }
 
+const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
+
 export default function Payment() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<main style={{ minHeight: "100vh", background: BG }} />}>
       <PaymentInner />
     </Suspense>
   );

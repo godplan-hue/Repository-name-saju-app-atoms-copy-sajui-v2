@@ -245,7 +245,7 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
 
 export default function V2Result() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<main style={{ minHeight: "100vh", background: BG }} />}>
       <V2ResultInner />
     </Suspense>
   );
