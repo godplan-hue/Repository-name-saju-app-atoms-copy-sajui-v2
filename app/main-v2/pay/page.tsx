@@ -82,7 +82,8 @@ function PayInner() {
           localStorage.removeItem("referred_by");
         }
       } catch {}
-      router.push(next);
+      const freeNext = next.includes("paid=") ? next.replace(/([?&]paid=)[^&]+/, "$10") : next;
+      router.push(freeNext);
     } finally { setLoading(false); }
   };
 
