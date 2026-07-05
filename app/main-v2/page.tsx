@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
+import FortuneSearch from "@/app/main-v2/_components/FortuneSearch";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -733,6 +734,7 @@ export default function MainV2() {
 
       {/* 슬라이드 배너 */}
       <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
+      <FortuneSearch />
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
