@@ -160,16 +160,13 @@ export default async function KeywordPage({ params }: Props) {
           <div style={{ background: G, padding: "14px 18px", display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 28 }}>🐱</span>
             <div>
-              <p style={{ color: "#fff", fontWeight: 800, fontSize: 14, margin: 0 }}>꿈 + 사주로 더 정확하게</p>
-              <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, margin: "2px 0 0" }}>내 사주와 연결하면 꿈의 의미가 더 선명해져요</p>
+              <p style={{ color: "#fff", fontWeight: 800, fontSize: 14, margin: 0 }}>내 사주도 무료로 볼 수 있어요</p>
+              <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, margin: "2px 0 0" }}>오늘 꾼 꿈 + 내 사주팔자를 연결하면 더 정확해요</p>
             </div>
           </div>
-          <div style={{ padding: "14px 18px", display: "flex", gap: 10 }}>
-            <Link href="/main-v2" style={{ flex: 1, display: "block", textAlign: "center", padding: "11px 0", borderRadius: 10, background: G, color: "#fff", fontSize: 14, fontWeight: 700, textDecoration: "none" }}>
-              내 사주 보기 →
-            </Link>
-            <Link href="/main-v2" style={{ flex: 1, display: "block", textAlign: "center", padding: "11px 0", borderRadius: 10, background: "#f5f3ff", color: "#7c3aed", fontSize: 14, fontWeight: 700, textDecoration: "none", border: "1px solid #ddd6fe" }}>
-              취업·자소서 →
+          <div style={{ padding: "14px 18px" }}>
+            <Link href="/main-v2" style={{ display: "block", textAlign: "center", padding: "13px 0", borderRadius: 12, background: G, color: "#fff", fontSize: 15, fontWeight: 800, textDecoration: "none", boxShadow: "0 4px 14px rgba(236,72,153,0.4)" }}>
+              무료로 사주 보기 →
             </Link>
           </div>
         </div>
