@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
 const MONTHS = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 const MONTH_EMOJI = ["🌱","❄️","🌸","🌿","☀️","🌊","🔥","🌻","🍁","🌙","⭐","🎆"];
@@ -82,6 +83,19 @@ export default function YearlyPage() {
             <div style={{ fontSize: 36, marginBottom: 6 }}>📅</div>
             <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1d4ed8", margin: "0 0 6px" }}>연도별운세</h1>
             <p style={{ color: "#6b7280", fontSize: 13, margin: 0 }}>올해 전체 흐름 + 12개월 로드맵</p>
+          </div>
+        </div>
+
+        {/* 쿠폰 배너 */}
+        <KakaoShareCouponBanner />
+        <div onClick={() => router.push("/share-coupon")} style={{ marginBottom: 16, borderRadius: 16, overflow: "hidden", cursor: "pointer", border: "1.5px solid #fca5a5" }}>
+          <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 16 }}>📸</span>
+            <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>SNS에 글 올리면 990원 쿠폰 5장!</span>
+          </div>
+          <div style={{ background: "#fef2f2", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <p style={{ fontSize: 11, color: "#dc2626", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>소개·추천 글 500자 이상 + 사진 2장<br />쿠폰 5장 + 꿈해몽 24시간 무료 🎁</p>
+            <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 12px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 8 }}>받기 →</span>
           </div>
         </div>
 
