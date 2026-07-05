@@ -64,6 +64,13 @@ export default function SituationsSection({ situations }: Props) {
                   <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{s.meaning}</div>
                 </div>
               ))}
+              {/* 결제 후에도 SNS 공유 배너 표시 */}
+              <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 12, background: "linear-gradient(135deg,#fef2f2,#fee2e2)", border: "1.5px solid #fca5a5", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontSize: 12, color: "#dc2626", fontWeight: 700 }}>📸 SNS에 올리면 990원 쿠폰 5장!</span>
+                <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#dc2626", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>
+                  받기 →
+                </Link>
+              </div>
             </>
           ) : (
             <>
