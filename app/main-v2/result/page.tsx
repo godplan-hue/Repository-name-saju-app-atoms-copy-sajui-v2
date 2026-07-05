@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
+import CouponFunnel from "@/app/main-v2/_components/CouponFunnel";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -1697,6 +1698,9 @@ function V2ResultInner() {
         {profile?.name && profile?.birthYear && (
           <QAChatWidget name={profile.name} birthYear={Number(profile.birthYear)} unlocked={paid} />
         )}
+
+        {/* 쿠폰 퍼널 — 무료 사용자에게만 5초 후 표시 */}
+        {!isPartner && !paid && <CouponFunnel />}
       </div>
 
       {/* ── 운세 선택 모달 ── */}
