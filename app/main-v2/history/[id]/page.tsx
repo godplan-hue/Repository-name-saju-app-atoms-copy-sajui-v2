@@ -550,6 +550,9 @@ export default function HistoryDetail() {
           </button>
         )}
 
+        {/* 카카오 공유 쿠폰 배너 — 상단 */}
+        <KakaoShareCouponBanner />
+
         {/* 이미지 저장 대상 카드 */}
         <div ref={cardRef} style={{ background: "white", borderRadius: 24, overflow: "hidden", border: "1.5px solid rgba(236,72,153,0.1)" }}>
 
@@ -720,8 +723,6 @@ export default function HistoryDetail() {
           </button>
         </div>
 
-        {/* 카카오 공유 쿠폰 배너 */}
-        <KakaoShareCouponBanner />
 
         {/* 꿈해몽 결제 혜택 배너 */}
         <div onClick={() => router.push("/haemong")} style={{ marginTop: 16, borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>

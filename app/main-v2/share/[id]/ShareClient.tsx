@@ -520,6 +520,26 @@ export default function ShareClient({ id }: { id: string }) {
 
         </div>{/* /contentRef */}
 
+        {/* 쿠폰·혜택 배너 — 상단 */}
+        {!entry.businessName && <KakaoShareCouponBanner />}
+        {!entry.businessName && (
+          <div
+            onClick={() => router.push("/share-coupon")}
+            style={{ marginBottom: 10, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 16 }}>📸</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>SNS에 글 올리면 990원 쿠폰 5장!</span>
+            </div>
+            <div style={{ background: "#fef2f2", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 11, color: "#dc2626", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>
+                점운 소개·추천 글 500자 이상 + 사진 2장<br />쿠폰 5장 + 꿈해몽 24시간 무료 🎁
+              </p>
+              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 12px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 8 }}>받기 →</span>
+            </div>
+          </div>
+        )}
+
         {/* 보관함 + 이미지저장 */}
         <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
           {entry.tier !== "free" && (
@@ -571,27 +591,6 @@ export default function ShareClient({ id }: { id: string }) {
           </button>
         )}
 
-        {/* 카카오 공유 쿠폰 배너 */}
-        {!entry.businessName && <KakaoShareCouponBanner />}
-
-        {/* SNS 공유 쿠폰 배너 */}
-        {!entry.businessName && (
-          <div
-            onClick={() => router.push("/share-coupon")}
-            style={{ marginBottom: 10, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
-          >
-            <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 16 }}>📸</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>SNS에 글 올리면 990원 쿠폰 5장!</span>
-            </div>
-            <div style={{ background: "#fef2f2", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 11, color: "#dc2626", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>
-                점운 소개·추천 글 500자 이상 + 사진 2장<br />쿠폰 5장 + 꿈해몽 24시간 무료 🎁
-              </p>
-              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 12px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 8 }}>받기 →</span>
-            </div>
-          </div>
-        )}
 
         {/* 꿈해몽 버튼 */}
         {!entry.businessName && (
