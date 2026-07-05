@@ -25,18 +25,14 @@ export default function LandingForm({ partnerId, ctaText, primary }: { partnerId
     setErr("");
 
     const y = birth.slice(0, 4), m = birth.slice(4, 6), d = birth.slice(6, 8);
+    const birthHour = hour === "모름" ? "" : hour.replace(/\(.*\)/, "").trim();
     try {
-      sessionStorage.setItem("v2_name", name.trim());
-      sessionStorage.setItem("v2_year", y);
-      sessionStorage.setItem("v2_month", m);
-      sessionStorage.setItem("v2_day", d);
-      sessionStorage.setItem("v2_gender", gender);
-      sessionStorage.setItem("v2_hour", hour === "모름" ? "" : hour.replace(/\(.*\)/, "").trim());
-      sessionStorage.setItem("v2_lunar", lunar ? "1" : "0");
+      const profile = { name: name.trim(), birthYear: y, birthMonth: m, birthDay: d, gender, birthHour, isLunar: lunar, phone: "", email: "" };
+      localStorage.setItem("v2_saved_profile", JSON.stringify(profile));
       localStorage.setItem("referred_by", partnerId);
     } catch {}
 
-    router.push(`/main-v2?ref=${partnerId}&prefill=1`);
+    router.push(`/main-v2?ref=${partnerId}`);
   };
 
   const inp = {

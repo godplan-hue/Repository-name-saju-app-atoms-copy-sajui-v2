@@ -549,7 +549,7 @@ function ModalParamReader({ setShowModal, setModalSelectedCats }: { setShowModal
       setShowModal("naming");
     }
     const ref = searchParams.get("ref");
-    if (ref) localStorage.setItem("v2_ref", ref);
+    if (ref) localStorage.setItem("referred_by", ref);
   }, [searchParams]);
   return null;
 }
