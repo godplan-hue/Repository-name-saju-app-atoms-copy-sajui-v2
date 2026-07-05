@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg",
+        url: "https://jeomun.com/og-haemong.jpg",
         width: 1200,
         height: 630,
         alt: "점운 꿈해몽 — 오늘 꾼 꿈 무료 해석",
