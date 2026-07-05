@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
+import QASection from "@/components/QASection";
 import CouponFunnel from "@/app/main-v2/_components/CouponFunnel";
 import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
@@ -1734,6 +1735,11 @@ function V2ResultInner() {
             </div>
             <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
           </div>
+        )}
+
+        {/* 사주 Q&A */}
+        {profile?.name && profile?.birthYear && (
+          <QASection name={profile.name} birthYear={Number(profile.birthYear)} unlocked={paid} onBuyClick={() => setShowSelect(true)} />
         )}
 
         {/* 복냥이 채팅 */}
