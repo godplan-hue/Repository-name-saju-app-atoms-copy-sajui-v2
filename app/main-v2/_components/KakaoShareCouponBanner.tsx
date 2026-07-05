@@ -14,11 +14,12 @@ export default function KakaoShareCouponBanner() {
   const [copied, setCopied] = useState(false);
 
   async function shareKakao() {
-    const text = "🐱 점운 AI 사주풀이 해봤는데 진짜 잘 맞아! 990원이라 부담없어 → jeomun.com";
+    const shareUrl = "https://jeomun.com/main-v2";
+    const text = "🐱 점운 AI 사주풀이 해봤는데 진짜 잘 맞아! 990원이라 부담없어\n👉 나도 무료로 사주보기 →";
     if (typeof navigator !== "undefined" && navigator.share) {
-      try { await navigator.share({ title: "점운 사주", text, url: "https://jeomun.com" }); } catch {}
+      try { await navigator.share({ title: "점운 AI 사주 분석", text, url: shareUrl }); } catch {}
     } else {
-      navigator.clipboard.writeText(text + "\nhttps://jeomun.com").catch(() => {});
+      navigator.clipboard.writeText(text + " " + shareUrl).catch(() => {});
       alert("링크를 복사했어요! 카카오톡에 붙여넣기 해주세요 😊");
     }
     setStep("form");
