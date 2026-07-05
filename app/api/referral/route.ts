@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
     // promoCodes에 저장
     await db.ref(`promoCodes/${coupon}`).set({
       discountPercent: 100,
+      maxAmount: 990,
       note: "추천인보상_990원무료사주쿠폰",
       active: true,
       usageCount: 0,

@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
       for (const code of codes) {
         await db.ref(`promoCodes/${code}`).set({
           discountPercent: 100,
+          maxAmount: 990,
           note: "SNS공유무료쿠폰(990원)",
           active: true,
           usageCount: 0,
@@ -81,6 +82,7 @@ export async function POST(request: NextRequest) {
 
       await db.ref(`promoCodes/${code}`).set({
         discountPercent: 100,
+        maxAmount: 9900,
         note: "SNS공유무료쿠폰(9900원)",
         active: true,
         usageCount: 0,

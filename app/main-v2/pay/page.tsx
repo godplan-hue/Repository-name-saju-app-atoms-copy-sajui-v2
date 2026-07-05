@@ -43,6 +43,10 @@ function PayInner() {
       if (!res.ok) { setCouponMsg("유효하지 않은 코드입니다."); return; }
       const data = await res.json();
       if (!data.active) { setCouponMsg("이미 사용된 코드입니다."); return; }
+      if (data.maxAmount && amount > data.maxAmount) {
+        setCouponMsg(`이 쿠폰은 ₩${data.maxAmount.toLocaleString()} 이하 상품에만 사용 가능해요.`);
+        return;
+      }
       if (data.discountPercent === 100) {
         setCouponFree(true);
         setDiscountPct(100);
