@@ -163,7 +163,7 @@ export default async function KeywordPage({ params }: Props) {
         </div>
 
         {/* 사주 연결 CTA */}
-        <div onClick={() => {}} style={{ background: "#fff", borderRadius: 16, overflow: "hidden", marginBottom: 14, boxShadow: "0 4px 20px rgba(236,72,153,0.2)", border: "1px solid rgba(236,72,153,0.15)" }}>
+        <div style={{ background: "#fff", borderRadius: 16, overflow: "hidden", marginBottom: 14, boxShadow: "0 4px 20px rgba(236,72,153,0.2)", border: "1px solid rgba(236,72,153,0.15)" }}>
           <div style={{ background: G, padding: "14px 18px", display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 28 }}>🐱</span>
             <div>
