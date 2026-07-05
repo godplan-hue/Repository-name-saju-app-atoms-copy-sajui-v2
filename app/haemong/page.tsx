@@ -195,9 +195,9 @@ export default function HaemongPage() {
         {/* 인기 꿈 리스트 */}
         {(() => {
           const IMGS: Record<string, string> = {
-            "돼지꿈":       "https://i.pinimg.com/736x/9d/eb/c6/9debc67c47abbd83176fd6124c73b653.jpg",
-            "뱀꿈":         "https://i.pinimg.com/1200x/1d/a0/0e/1da00ec41373df2c92769cad0e34af0f.jpg",
-            "이빨빠지는꿈": "https://i.pinimg.com/736x/7e/de/6b/7ede6b4bc6aeca47b2ab6697a71b9848.jpg",
+            "돼지꿈":       "https://i.pinimg.com/736x/10/4d/a5/104da5e45959e39ec7bb6144b06b21e1.jpg",
+            "뱀꿈":         "https://i.pinimg.com/736x/72/7b/9d/727b9d0869f4597a4bd67d417d9de9b4.jpg",
+            "이빨빠지는꿈": "https://i.pinimg.com/736x/fe/78/dc/fe78dcb844cf5f8373b59f15b2bf54d8.jpg",
             "돈꿈":         "https://i.pinimg.com/736x/bb/a0/05/bba0053587cb49928fa2fdc7e54f68cc.jpg",
             "죽은사람꿈":   "https://i.pinimg.com/736x/b8/15/9a/b8159ae12fec635a9020bf70cdb408cf.jpg",
             "불꿈":         "https://i.pinimg.com/vwebp/1200x/c6/b3/17/c6b31798b526bcffb34bc5b93b16015c.webp",
