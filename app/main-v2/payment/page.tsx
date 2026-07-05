@@ -425,9 +425,10 @@ function PaymentInner() {
         {/* 특별 2900원 */}
         <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
           <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>💫 특별 2,900원</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
             {[
               { id: "daeun",      emoji: "🌌", label: "대운(大運)",   sub: "10년 단위 운명 흐름", daeun: true },
+              { id: "yearly",     emoji: "☀️", label: "연도별운세",   sub: "올해 흐름 +\n12개월 로드맵", yearly: true },
               { id: "reunion",    emoji: "💔", label: "재회운",        sub: "다시 만날 수 있을까" },
               { id: "taegil",     emoji: "📅", label: "택일(擇日)",   sub: "내 사주에 맞는\n좋은날" },
               { id: "pet_compat", emoji: "🐾", label: "반려동물 궁합", sub: "나와 우리 아이 궁합" },
@@ -435,6 +436,7 @@ function PaymentInner() {
               <button key={s.id}
                 onClick={async () => {
                   if ((s as any).daeun) { router.push(`/main-v2/daewoon/pay`); return; }
+                  if ((s as any).yearly) { router.push(`/main-v2/yearly`); return; }
                   if (s.id === "reunion" || s.id === "pet_compat") {
                     setOtherInput("");
                     setAwaitOther({ id: s.id, label: s.label });
@@ -483,16 +485,44 @@ function PaymentInner() {
           </div>
         )}
 
+        {/* 인기 운세 9900원 */}
+        {!isPartner && (
+          <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
+            <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>🔥 인기 운세 9,900원</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+              {[
+                { id: "wealth9900",  emoji: "💰", label: "재물운",     sub: "재물운 + 연애운 포함" },
+                { id: "yearly9900",  emoji: "☀️", label: "연도별운세", sub: "올해 흐름 + 12개월" },
+                { id: "love9900",    emoji: "💕", label: "연애운",     sub: "재물운 + 연애운 포함" },
+              ].map(s => (
+                <button key={s.id}
+                  onClick={async () => {
+                    if (s.id === "yearly9900") { router.push("/main-v2/yearly"); return; }
+                    const paidPrice = finalPrice(9900);
+                    openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent("기본 분석")}&pages=30&paid=${paidPrice}`);
+                  }}
+                  style={{ padding: "14px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.4)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
+                >
+                  <p style={{ margin: "0 0 3px", fontSize: 22 }}>{s.emoji}</p>
+                  <p style={{ margin: "0 0 3px", fontSize: 11, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
+                  <p style={{ margin: "0 0 5px", fontSize: 8, color: "rgba(255,255,255,0.65)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.sub}</p>
+                  <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#fbbf24" }}>₩9,900</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* 패키지 빠른 선택 (9900원~) */}
         {!isPartner && (
           <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
             <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>📦 패키지 (더 저렴해!)</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
               {[
-                { id: "basic",    emoji: "🐱", label: "기본 분석",  sub: "재물운 + 연애운",        pages: 30,  price: 9900  },
-                { id: "standard", emoji: "🌟", label: "베이직",     sub: "올해+재물+연애+월별",     pages: 75,  price: 19900 },
-                { id: "premium",  emoji: "💎", label: "프리미엄",   sub: "올해+재물+연애+월별+건강", pages: 100, price: 24900 },
-                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)",   pages: 150, price: 29900 },
+                { id: "basic",    emoji: "🐱", label: "기본 분석",  sub: "재물운 + 연애운",        pages: 30,  price: 9900,  badge: "기본" },
+                { id: "standard", emoji: "🌟", label: "베이직",     sub: "올해+재물+연애+월별",     pages: 75,  price: 19900, badge: null },
+                { id: "premium",  emoji: "💎", label: "프리미엄",   sub: "올해+재물+연애+월별+건강", pages: 100, price: 24900, badge: null },
+                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)", pages: 150, price: 29900, badge: null },
               ].map(s => (
                 <button key={s.id}
                   onClick={async () => {
@@ -504,7 +534,7 @@ function PaymentInner() {
                   <p style={{ margin: "0 0 3px", fontSize: 20 }}>{s.emoji}</p>
                   <p style={{ margin: "0 0 2px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
                   <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }} dangerouslySetInnerHTML={{ __html: s.sub }} />
-                  <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#c4b5fd" }}>₩{s.price.toLocaleString()}</p>
+                  <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#c4b5fd" }}>{s.badge ? s.badge : `₩${s.price.toLocaleString()}`}</p>
                 </button>
               ))}
             </div>
