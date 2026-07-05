@@ -1,27 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState } from "react";
 
 interface Props {
   keyword: string;
 }
 
 export default function ShareActions({ keyword }: Props) {
-  const [modal, setModal] = useState<null | "guide" | "saved" | "already">(null);
-  const [isSaved, setIsSaved] = useState(false);
-
-  useEffect(() => {
-    const saved: string[] = JSON.parse(localStorage.getItem("haemong-saved") || "[]");
-    setIsSaved(saved.includes(keyword));
-  }, [keyword]);
-
-  function getUrl() {
-    return typeof window !== "undefined" ? window.location.href : "";
-  }
+  const [modal, setModal] = useState<null | "guide" | "copied">(null);
 
   async function handleShare() {
-    const url = getUrl();
+    const url = typeof window !== "undefined" ? window.location.href : "";
     if (navigator.share) {
       try {
         await navigator.share({
@@ -32,22 +21,9 @@ export default function ShareActions({ keyword }: Props) {
       } catch {}
     } else {
       await navigator.clipboard.writeText(url);
-      setModal("saved");
+      setModal("copied");
       setTimeout(() => setModal(null), 2000);
     }
-  }
-
-  function handleSave() {
-    const existing: string[] = JSON.parse(localStorage.getItem("haemong-saved") || "[]");
-    if (existing.includes(keyword)) {
-      setModal("already");
-      setTimeout(() => setModal(null), 2000);
-      return;
-    }
-    localStorage.setItem("haemong-saved", JSON.stringify([keyword, ...existing]));
-    setIsSaved(true);
-    setModal("saved");
-    setTimeout(() => setModal(null), 2000);
   }
 
   return (
@@ -56,9 +32,7 @@ export default function ShareActions({ keyword }: Props) {
       <div style={{
         display: "flex", gap: 8, padding: "10px 14px", alignItems: "center",
         background: "rgba(255,255,255,0.95)", borderBottom: "1px solid rgba(236,72,153,0.12)",
-        flexWrap: "wrap",
       }}>
-        {/* 꼭 읽어보세요 버튼 */}
         <button
           onClick={() => setModal("guide")}
           style={{
@@ -73,70 +47,32 @@ export default function ShareActions({ keyword }: Props) {
 
         <div style={{ flex: 1 }} />
 
-        {/* 내 보관함 */}
-        <Link href="/haemong/saved" style={{
-          display: "flex", alignItems: "center", gap: 4,
-          background: "#f0fdf4", color: "#16a34a", border: "1px solid #86efac",
-          borderRadius: 20, padding: "7px 12px", fontSize: 12, fontWeight: 700,
-          textDecoration: "none",
-        }}>
-          📂 내 보관함
-        </Link>
-
-        {/* 보관하기 */}
-        <button
-          onClick={handleSave}
-          style={{
-            display: "flex", alignItems: "center", gap: 4,
-            background: isSaved ? "#fdf2f8" : "#f5f3ff",
-            color: isSaved ? "#be185d" : "#7c3aed",
-            border: `1px solid ${isSaved ? "#f9a8d4" : "#ddd6fe"}`,
-            borderRadius: 20, padding: "7px 12px", fontSize: 12, fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
-          {isSaved ? "🔖 보관됨" : "🔖 보관하기"}
-        </button>
-
-        {/* 공유하기 */}
         <button
           onClick={handleShare}
           style={{
             display: "flex", alignItems: "center", gap: 4,
             background: "#FEE500", color: "#1a1a2e", border: "none",
-            borderRadius: 20, padding: "7px 12px", fontSize: 12, fontWeight: 800,
+            borderRadius: 20, padding: "7px 14px", fontSize: 12, fontWeight: 800,
             cursor: "pointer", boxShadow: "0 2px 6px rgba(254,229,0,0.5)",
           }}
         >
-          💬 카카오 공유
+          💬 카카오로 공유하기
         </button>
       </div>
 
-      {/* 보관함 저장 토스트 */}
-      {modal === "saved" && (
+      {/* 링크 복사 토스트 (PC) */}
+      {modal === "copied" && (
         <div style={{
           position: "fixed", top: 70, left: "50%", transform: "translateX(-50%)",
           background: "#16a34a", color: "#fff", padding: "10px 20px",
           borderRadius: 24, fontSize: 13, fontWeight: 700, zIndex: 9999,
           boxShadow: "0 4px 20px rgba(0,0,0,0.3)", whiteSpace: "nowrap",
         }}>
-          ✅ 보관함에 저장됐어요!
+          ✅ 링크가 복사됐어요!
         </div>
       )}
 
-      {/* 이미 보관됨 토스트 */}
-      {modal === "already" && (
-        <div style={{
-          position: "fixed", top: 70, left: "50%", transform: "translateX(-50%)",
-          background: "#6b7280", color: "#fff", padding: "10px 20px",
-          borderRadius: 24, fontSize: 13, fontWeight: 700, zIndex: 9999,
-          boxShadow: "0 4px 20px rgba(0,0,0,0.3)", whiteSpace: "nowrap",
-        }}>
-          이미 보관함에 있어요 🔖
-        </div>
-      )}
-
-      {/* 꼭 읽어보세요 가이드 모달 */}
+      {/* 가이드 모달 */}
       {modal === "guide" && (
         <div
           onClick={() => setModal(null)}
@@ -153,29 +89,17 @@ export default function ShareActions({ keyword }: Props) {
               padding: "24px 20px 40px", maxHeight: "80vh", overflowY: "auto",
             }}
           >
-            {/* 핸들 */}
             <div style={{ width: 40, height: 4, background: "#e5e7eb", borderRadius: 4, margin: "0 auto 20px" }} />
 
             <h2 style={{ fontSize: 17, fontWeight: 900, color: "#1a1a2e", margin: "0 0 20px", textAlign: "center" }}>
               🌙 꿈해몽 활용 가이드
             </h2>
 
-            {/* 보관하는 법 */}
-            <div style={{ background: "#f5f3ff", borderRadius: 16, padding: "16px", marginBottom: 12, border: "1px solid #ddd6fe" }}>
-              <div style={{ fontWeight: 800, fontSize: 14, color: "#6d28d9", marginBottom: 8 }}>🔖 이 해몽 보관하는 법</div>
-              <div style={{ fontSize: 13, color: "#374151", lineHeight: 1.8 }}>
-                1. 상단 <b>[보관하기]</b> 버튼 → 링크가 자동 복사돼요<br />
-                2. 카카오톡 "나에게 보내기"에 붙여넣기<br />
-                3. 또는 메모앱·즐겨찾기에 저장<br />
-                <span style={{ fontSize: 11, color: "#9ca3af" }}>* 꿈해몽 결과는 로그인 없이 URL로 보관됩니다</span>
-              </div>
-            </div>
-
             {/* 카카오 공유 */}
             <div style={{ background: "#fffde7", borderRadius: 16, padding: "16px", marginBottom: 12, border: "1px solid #fde68a" }}>
               <div style={{ fontWeight: 800, fontSize: 14, color: "#92400e", marginBottom: 8 }}>💬 카카오톡으로 공유하는 법</div>
               <div style={{ fontSize: 13, color: "#374151", lineHeight: 1.8 }}>
-                1. 상단 <b>[카카오 공유]</b> 버튼 클릭<br />
+                1. 상단 <b>[카카오로 공유하기]</b> 버튼 클릭<br />
                 2. 모바일에서는 카카오톡 바로 공유 가능<br />
                 3. PC에서는 링크가 복사됨<br />
                 &nbsp;&nbsp;&nbsp;→ 카카오 직접 붙여넣기<br />
@@ -183,7 +107,7 @@ export default function ShareActions({ keyword }: Props) {
               </div>
             </div>
 
-            {/* 카카오에서 읽는 법 */}
+            {/* 카카오에서 더 잘 보는 법 */}
             <div style={{ background: "#f0fdf4", borderRadius: 16, padding: "16px", marginBottom: 20, border: "1px solid #86efac" }}>
               <div style={{ fontWeight: 800, fontSize: 14, color: "#166534", marginBottom: 8 }}>📱 카카오톡 안에서 더 잘 보는 법</div>
               <div style={{ fontSize: 13, color: "#374151", lineHeight: 1.8 }}>
@@ -192,8 +116,11 @@ export default function ShareActions({ keyword }: Props) {
                 <b>더 잘 보려면:</b><br />
                 1. 카카오톡에서 링크 열기<br />
                 2. 우측 하단 <b>[···]</b> (더보기) 클릭<br />
-                3. 점운 사주앱으로 이동하면 꿈 + 내 사주를 함께 분석해 더 정확한 운세를 볼 수 있어요 🐱<br />
-                <span style={{ fontSize: 11, color: "#9ca3af" }}>* jeomun.com — 꿈과 사주팔자를 연결한 AI 운세</span>
+                3. 점운 사주앱으로 이동하면 꿈 +<br />
+                &nbsp;&nbsp;&nbsp;내 사주를 함께 분석해<br />
+                &nbsp;&nbsp;&nbsp;더 정확한 운세를 볼 수 있어요 🐱<br />
+                &nbsp;&nbsp;&nbsp;🔊 결과를 음성으로 읽어드려요<br />
+                <span style={{ fontSize: 13, fontWeight: 800, color: "#374151" }}>* jeomun.com — 꿈과 사주팔자를 연결한 AI 운세</span>
               </div>
             </div>
 
