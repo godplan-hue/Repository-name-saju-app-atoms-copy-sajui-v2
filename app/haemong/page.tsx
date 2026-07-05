@@ -123,7 +123,7 @@ export default function HaemongPage() {
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="꿈 키워드 검색 (예: 뱀, 돼지, 이빨)"
+            placeholder="예) 뱀, 동물, 길몽, 재물, 결혼, 죽음"
             style={{ flex: 1, border: "none", outline: "none", background: "transparent", fontSize: 14, color: "#1a1a2e" }}
           />
           <button
