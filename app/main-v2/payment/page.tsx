@@ -82,13 +82,15 @@ function PaymentInner() {
     return Math.round(originalPrice * (1 - appliedDiscount.discountPercent / 100));
   };
 
-  const consumeCoupon = () => {
+  const consumeCoupon = async () => {
     if (!appliedDiscount) return;
-    fetch("/api/promo-codes", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code: appliedDiscount.code }),
-    }).catch(() => {});
+    try {
+      await fetch("/api/promo-codes", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: appliedDiscount.code }),
+      });
+    } catch {}
   };
 
 
@@ -119,10 +121,10 @@ function PaymentInner() {
     setPuBirth(""); setPuPw(""); setPuName(""); setPuMobile(""); setPuError("");
   };
 
-  const openPuModal = (price: number, nextUrl: string) => {
-    // 100% 쿠폰으로 0원이 되면 쿠폰 소진 후 바로 이동
+  const openPuModal = async (price: number, nextUrl: string) => {
+    // 100% 쿠폰으로 0원이 되면 쿠폰 소진 완료 후 이동 (await 필수 — fire-and-forget시 소진 전 이탈 버그)
     if (price === 0) {
-      consumeCoupon();
+      await consumeCoupon();
       router.push(nextUrl);
       return;
     }
@@ -158,7 +160,6 @@ function PaymentInner() {
       const data = await res.json();
       if (data.success) {
         const url = puPending.nextUrl;
-        consumeCoupon(); // 결제 성공 후 쿠폰 소진
         // 결제 기록 저장 (분석 성공 여부 무관하게 항상 기록)
         const _puPhone = puMobile.replace(/\D/g, "");
         if (puPending.price > 0 && puName.trim()) {
@@ -184,6 +185,7 @@ function PaymentInner() {
             try { localStorage.setItem("v2_saved_phone", _puPhone); sessionStorage.setItem("v2_payment_phone", _puPhone); } catch {}
           }
         }
+        await consumeCoupon();
         closePuModal();
         router.push(url);
       } else {
