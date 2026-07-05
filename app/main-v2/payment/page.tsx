@@ -76,21 +76,19 @@ function PaymentInner() {
     }
   };
 
-  const finalPrice = async (originalPrice: number): Promise<number> => {
+  // 쿠폰 소진은 결제 성공 후에만 — 여기선 로컬 계산만
+  const finalPrice = (originalPrice: number): number => {
     if (!appliedDiscount) return originalPrice;
-    try {
-      const res = await fetch("/api/promo-codes", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: appliedDiscount.code }),
-      });
-      const data = await res.json();
-      if (!data.success) { alert(data.error || "할인코드 적용에 실패했습니다."); return originalPrice; }
-      return Math.round(originalPrice * (1 - data.discountPercent / 100));
-    } catch {
-      alert("할인코드 처리 중 오류가 발생했습니다. 할인 없이 진행합니다.");
-      return originalPrice;
-    }
+    return Math.round(originalPrice * (1 - appliedDiscount.discountPercent / 100));
+  };
+
+  const consumeCoupon = () => {
+    if (!appliedDiscount) return;
+    fetch("/api/promo-codes", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: appliedDiscount.code }),
+    }).catch(() => {});
   };
 
 
@@ -122,8 +120,9 @@ function PaymentInner() {
   };
 
   const openPuModal = (price: number, nextUrl: string) => {
-    // 100% 쿠폰으로 0원이 되면 PayUp 건너뛰고 바로 이동
+    // 100% 쿠폰으로 0원이 되면 쿠폰 소진 후 바로 이동
     if (price === 0) {
+      consumeCoupon();
       router.push(nextUrl);
       return;
     }
@@ -159,6 +158,7 @@ function PaymentInner() {
       const data = await res.json();
       if (data.success) {
         const url = puPending.nextUrl;
+        consumeCoupon(); // 결제 성공 후 쿠폰 소진
         // 결제 기록 저장 (분석 성공 여부 무관하게 항상 기록)
         const _puPhone = puMobile.replace(/\D/g, "");
         if (puPending.price > 0 && puName.trim()) {
@@ -283,7 +283,7 @@ function PaymentInner() {
             <input
               value={otherInput}
               onChange={e => setOtherInput(e.target.value)}
-              onKeyDown={e => { if (e.key === "Enter" && otherInput.trim()) { const cur = awaitOther!; const go = async () => { sessionStorage.setItem("specialOtherName", otherInput.trim()); const paidPrice = await finalPrice(2900); setAwaitOther(null); openPuModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`); }; go(); } }}
+              onKeyDown={e => { if (e.key === "Enter" && otherInput.trim()) { const cur = awaitOther!; sessionStorage.setItem("specialOtherName", otherInput.trim()); const paidPrice = finalPrice(2900); setAwaitOther(null); openPuModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`); } }}
               placeholder={awaitOther.id === "pet_compat" ? "예: 초코" : "예: 홍길동"}
               autoFocus
               style={{ width: "100%", padding: "13px 16px", borderRadius: 12, border: "1.5px solid rgba(251,191,36,0.5)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box", marginBottom: 14 }}
@@ -293,7 +293,7 @@ function PaymentInner() {
                 if (!otherInput.trim()) return;
                 const cur = awaitOther!;
                 sessionStorage.setItem("specialOtherName", otherInput.trim());
-                const paidPrice = await finalPrice(2900);
+                const paidPrice = finalPrice(2900);
                 setAwaitOther(null);
                 openPuModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`);
               }}
@@ -406,7 +406,7 @@ function PaymentInner() {
             ].map(s => (
               <button key={s.id}
                 onClick={async () => {
-                  const paidPrice = await finalPrice(s.price);
+                  const paidPrice = finalPrice(s.price);
                   openPuModal(paidPrice, `/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}
                 style={{ padding: "10px 4px", background: s.bg, backdropFilter: "blur(10px)", border: `1.5px solid ${s.bdColor}`, borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
@@ -438,7 +438,7 @@ function PaymentInner() {
                     setAwaitOther({ id: s.id, label: s.label });
                     return;
                   }
-                  const paidPrice = await finalPrice(2900);
+                  const paidPrice = finalPrice(2900);
                   openPuModal(paidPrice, `/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}
                 style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
@@ -466,7 +466,7 @@ function PaymentInner() {
               ].map(s => (
                 <button key={s.id}
                   onClick={async () => {
-                    const paidPrice = await finalPrice(3900);
+                    const paidPrice = finalPrice(3900);
                     sessionStorage.setItem("v2_paid_cats", JSON.stringify([s.catKey]));
                     openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=${paidPrice}`);
                   }}
@@ -494,7 +494,7 @@ function PaymentInner() {
               ].map(s => (
                 <button key={s.id}
                   onClick={async () => {
-                    const paidPrice = await finalPrice(s.price);
+                    const paidPrice = finalPrice(s.price);
                     openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=${s.pages}&paid=${paidPrice}`);
                   }}
                   style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
@@ -548,7 +548,7 @@ function PaymentInner() {
             return (
               <div key={pkg.id + "_large"} onClick={async () => {
                 const originalPrice = Number(pkg.price.replace(/[^0-9]/g, ""));
-                const paidPrice = await finalPrice(originalPrice);
+                const paidPrice = finalPrice(originalPrice);
                 openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(pkg.name)}&pages=${pkg.pages}&paid=${paidPrice}`);
               }} style={{ background: cardBg2, backdropFilter: "blur(10px)", border: wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 12, padding: 12, cursor: "pointer", transition: "all 0.3s", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
                 {wlBadge && (
