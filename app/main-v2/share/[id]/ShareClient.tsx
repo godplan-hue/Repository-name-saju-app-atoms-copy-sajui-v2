@@ -577,6 +577,25 @@ export default function ShareClient({ id }: { id: string }) {
           </button>
         )}
 
+        {/* SNS 공유 쿠폰 배너 */}
+        {!entry.businessName && (
+          <div
+            onClick={() => router.push("/share-coupon")}
+            style={{ marginBottom: 10, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 16 }}>📸</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>SNS에 글 올리면 990원 쿠폰 5장!</span>
+            </div>
+            <div style={{ background: "#fef2f2", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 11, color: "#dc2626", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>
+                인스타·블로그에 점운 소개 글 올리면<br />친구·가족에게 쿠폰 나눠주기 가능 🎁
+              </p>
+              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 12px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 8 }}>받기 →</span>
+            </div>
+          </div>
+        )}
+
         <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
         </button>
