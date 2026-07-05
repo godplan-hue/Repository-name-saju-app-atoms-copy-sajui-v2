@@ -127,7 +127,10 @@ export default function ShareCouponPage() {
             >
               {loading ? "⏳ 확인 중..." : "🎁 쿠폰 5장 받기"}
             </button>
-            <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>공개 게시글만 인증 가능 · 1인 1회 · 분실 시 재입력으로 확인</p>
+            <p style={{ fontSize: 11, color: "#dc2626", textAlign: "center", margin: "10px 0 0", fontWeight: 600, lineHeight: 1.6 }}>
+              공개 게시글만 인증 가능 · 1인 1회<br />
+              <span style={{ color: "#9ca3af", fontWeight: 400 }}>코드 분실 시 jeomun.com/my-coupon 에서 번호로 재조회 가능</span>
+            </p>
           </div>
         ) : (
           /* 발급 완료 */
