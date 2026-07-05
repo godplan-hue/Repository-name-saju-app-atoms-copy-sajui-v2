@@ -23,6 +23,12 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
 
   useEffect(() => {
     try {
+      // 방금 결제한 경우 (세션에 paid 플래그)
+      if (sessionStorage.getItem("v2_paid") === "1") {
+        setUnlocked(true);
+        return;
+      }
+      // 보관함에 24시간 이내 결제 기록이 있는 경우
       const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
       const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
       const hasRecentPurchase = hist.some((h: { isPaid?: boolean; date?: string }) => {
