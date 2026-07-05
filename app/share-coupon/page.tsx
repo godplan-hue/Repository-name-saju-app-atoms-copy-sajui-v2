@@ -15,10 +15,16 @@ export default function ShareCouponPage() {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
 
+  const SNS_DOMAINS = ["instagram.com", "youtube.com", "youtu.be", "tiktok.com", "blog.naver.com", "naver.com", "twitter.com", "x.com", "facebook.com", "threads.net", "story.kakao.com"];
+  function isValidSnsUrl(url: string) {
+    try { const u = new URL(url.startsWith("http") ? url : "https://" + url); return SNS_DOMAINS.some(d => u.hostname.includes(d)); } catch { return false; }
+  }
+
   async function handleSubmit() {
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setError("전화번호를 정확히 입력해주세요."); return; }
     if (!postUrl.trim()) { setError("게시글 URL을 입력해주세요."); return; }
+    if (!isValidSnsUrl(postUrl.trim())) { setError("인스타그램·블로그·유튜브·틱톡 게시글 URL만 가능해요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/share-coupon", {
@@ -127,9 +133,10 @@ export default function ShareCouponPage() {
             >
               {loading ? "⏳ 확인 중..." : "🎁 쿠폰 5장 받기"}
             </button>
-            <p style={{ fontSize: 11, color: "#dc2626", textAlign: "center", margin: "10px 0 0", fontWeight: 600, lineHeight: 1.6 }}>
-              공개 게시글만 인증 가능 · 1인 1회<br />
-              <span style={{ color: "#9ca3af", fontWeight: 400 }}>코드 분실 시 jeomun.com/my-coupon 에서 번호로 재조회 가능</span>
+            <p style={{ fontSize: 11, color: "#dc2626", textAlign: "center", margin: "10px 0 0", fontWeight: 700, lineHeight: 1.7 }}>
+              ⚠️ 공개 게시글만 인증 가능 · 1인 1회<br />
+              허위 인증 적발 시 쿠폰 즉시 무효 + 해당 번호 영구 이용 제한<br />
+              <span style={{ color: "#9ca3af", fontWeight: 400 }}>코드 분실 시 jeomun.com/my-coupon 에서 번호로 재조회</span>
             </p>
           </div>
         ) : (
