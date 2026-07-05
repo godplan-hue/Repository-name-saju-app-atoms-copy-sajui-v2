@@ -78,35 +78,36 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
       ) : (
         /* 미결제 — 잠금 */
         <>
-          <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", height: 90 }}>
-            <div style={{ filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
-              <div style={{ background: "#fafafa", borderRadius: 12, padding: "12px 14px", border: "1px solid #f3e8ff", marginBottom: 6 }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: "#be185d", marginBottom: 4 }}>
-                  {fortuneAngles[1].emoji} {fortuneAngles[1].type}
-                </div>
-                <div style={{ fontSize: 12, color: "#4b5563", lineHeight: 1.6 }}>
-                  {fortuneAngles[1].content}
-                </div>
+          {/* 잠긴 운세별 카드 목록 */}
+          {fortuneAngles.slice(1).map((fa, i) => (
+            <div key={i} style={{ background: "#fafafa", borderRadius: 12, padding: "12px 14px", border: "1px solid #f3e8ff", marginBottom: 8, display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 3 }}>{fa.emoji} {fa.type}</div>
+                <div style={{ fontSize: 12, color: "#9ca3af" }}>🔐 결제 후 전체 해석 공개</div>
               </div>
+              <span style={{ fontSize: 22, opacity: 0.5 }}>🔒</span>
             </div>
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(255,255,255,0) 30%, rgba(255,255,255,0.97) 75%)" }} />
-          </div>
-          <div style={{ textAlign: "center", padding: "10px 0 4px" }}>
-            <p style={{ fontSize: 13, color: "#374151", fontWeight: 600, margin: "0 0 8px", lineHeight: 1.6, textAlign: "left", background: "#fafafa", borderRadius: 10, padding: "10px 12px", border: "1px solid #f3e8ff" }}>
-              🔐 잠긴 해석 {fortuneAngles.length - 1}개 —{" "}
-              {fortuneAngles.slice(1).map(fa => `${fa.emoji} ${fa.type}`).join(" · ")}
+          ))}
+
+          {/* 구매 CTA */}
+          <div style={{ marginTop: 14, padding: "16px", borderRadius: 14, background: "linear-gradient(135deg,#fdf4ff,#ede9fe)", border: "1.5px solid #c4b5fd", textAlign: "center" }}>
+            <p style={{ fontSize: 14, fontWeight: 900, color: "#4c1d95", margin: "0 0 4px" }}>
+              🐱 사주 결제하면 24시간 전체 공개!
             </p>
-            <p style={{ fontSize: 14, fontWeight: 800, color: "#4c1d95", margin: "0 0 4px" }}>사주 결제 시 24시간 전체 해제</p>
-            <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "0 0 10px" }}>결제 후 꿈해몽 페이지로 다시 오면 잠금 해제돼요</p>
-            <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 14, fontWeight: 900, padding: "12px 28px", borderRadius: 24, textDecoration: "none", boxShadow: "0 4px 16px rgba(236,72,153,0.45)", display: "inline-block" }}>
-              🐱 990원으로 전체 보기
+            <p style={{ fontSize: 12, color: "#6d28d9", margin: "0 0 12px", lineHeight: 1.5 }}>
+              결제 후 꿈해몽으로 돌아오면 바로 잠금 해제돼요
+            </p>
+            <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 15, fontWeight: 900, padding: "13px 32px", borderRadius: 24, textDecoration: "none", boxShadow: "0 4px 16px rgba(236,72,153,0.45)", display: "inline-block" }}>
+              💳 990원으로 전체 보기
             </Link>
-            <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 12, background: "linear-gradient(135deg,#f0fdf4,#dcfce7)", border: "1.5px solid #86efac", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontSize: 12, color: "#15803d", fontWeight: 700 }}>📸 SNS에 올리면 100% 무료</span>
-              <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#16a34a", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>
-                무료로 →
-              </Link>
-            </div>
+          </div>
+
+          {/* SNS 무료 배너 — 빨간색 */}
+          <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 12, background: "linear-gradient(135deg,#fef2f2,#fee2e2)", border: "1.5px solid #fca5a5", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 12, color: "#dc2626", fontWeight: 700 }}>📸 SNS에 올리면 100% 무료</span>
+            <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#dc2626", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>
+              무료로 →
+            </Link>
           </div>
         </>
       )}
