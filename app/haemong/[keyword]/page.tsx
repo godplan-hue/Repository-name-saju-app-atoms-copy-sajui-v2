@@ -3,6 +3,7 @@ import Link from "next/link";
 import { DREAMS, POPULAR_DREAMS, getAllKeywords } from "@/lib/haemong/data";
 import type { Metadata } from "next";
 import ShareActions from "@/app/haemong/_components/ShareActions";
+import FortuneAnglesSection from "@/app/haemong/_components/FortuneAnglesSection";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 
@@ -109,42 +110,7 @@ export default async function KeywordPage({ params }: Props) {
           </div>
         </div>
 
-        {/* 운세별 관점 */}
-        <div style={{ background: "#fff", borderRadius: 16, padding: "18px", marginBottom: 14, boxShadow: "0 2px 12px rgba(139,92,246,0.08)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
-            <span style={{ fontSize: 18 }}>⭐</span>
-            <span style={{ fontWeight: 800, fontSize: 15, color: "#4c1d95" }}>운세별 관점</span>
-            <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: "#fef3c7", color: "#b45309" }}>1개 무료</span>
-          </div>
-
-          {/* 첫 번째 무료 공개 */}
-          {d.fortuneAngles[0] && (
-            <div style={{ background: "#fafafa", borderRadius: 12, padding: "14px", border: "1px solid #f3e8ff", marginBottom: 10 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>{d.fortuneAngles[0].emoji} {d.fortuneAngles[0].type}</div>
-              <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{d.fortuneAngles[0].content}</div>
-            </div>
-          )}
-
-          {/* 나머지 잠금 */}
-          <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", height: 90 }}>
-            <div style={{ filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
-              <div style={{ background: "#fafafa", borderRadius: 12, padding: "12px 14px", border: "1px solid #f3e8ff", marginBottom: 6 }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: "#be185d", marginBottom: 4 }}>💰 재물운 — 연애운 — 건강운 — 🔮 사주 종합해석</div>
-                <div style={{ fontSize: 12, color: "#4b5563", lineHeight: 1.6 }}>이 꿈이 재물에 미치는 영향은... 연애에서 나타나는 신호는... 사주 오행과 결합하면...</div>
-              </div>
-            </div>
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(255,255,255,0) 30%, rgba(255,255,255,0.97) 75%)" }} />
-          </div>
-
-          {/* 잠금 CTA */}
-          <div style={{ textAlign: "center", padding: "10px 0 4px" }}>
-            <p style={{ fontSize: 14, fontWeight: 800, color: "#4c1d95", margin: "0 0 4px" }}>🔐 운세별 전체 해석 보기</p>
-            <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 10px" }}>재물운·연애운·건강운·직업운 전체</p>
-            <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 14, fontWeight: 900, padding: "12px 28px", borderRadius: 24, textDecoration: "none", boxShadow: "0 4px 16px rgba(236,72,153,0.45)", display: "inline-block" }}>
-              🐱 990원으로 전체 보기
-            </Link>
-          </div>
-        </div>
+        <FortuneAnglesSection fortuneAngles={d.fortuneAngles} />
 
         {/* 오늘의 조언 */}
         <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 16, padding: "18px", marginBottom: 14, border: "1px solid rgba(236,72,153,0.2)" }}>
