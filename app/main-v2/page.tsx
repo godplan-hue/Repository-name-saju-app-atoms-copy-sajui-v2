@@ -769,7 +769,7 @@ export default function MainV2() {
             if (!user) { router.push("/main-v2/login"); return; }
             setShowModal(id);
           }
-          else { if (id === "dream") { router.push("/haemong"); return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id); }
+          else { if (id === "dream") { router.push("/haemong"); return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id === "naming" ? "wealth5" : id); }
         }} />
       )}
 
