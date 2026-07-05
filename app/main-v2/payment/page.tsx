@@ -485,33 +485,6 @@ function PaymentInner() {
           </div>
         )}
 
-        {/* 인기 운세 9900원 */}
-        {!isPartner && (
-          <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
-            <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>🔥 인기 운세 9,900원</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
-              {[
-                { id: "wealth9900",  emoji: "💰", label: "재물운",     sub: "재물운 + 연애운 포함" },
-                { id: "yearly9900",  emoji: "☀️", label: "연도별운세", sub: "올해 흐름 + 12개월" },
-                { id: "love9900",    emoji: "💕", label: "연애운",     sub: "재물운 + 연애운 포함" },
-              ].map(s => (
-                <button key={s.id}
-                  onClick={async () => {
-                    if (s.id === "yearly9900") { router.push("/main-v2/yearly"); return; }
-                    const paidPrice = finalPrice(9900);
-                    openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent("기본 분석")}&pages=30&paid=${paidPrice}`);
-                  }}
-                  style={{ padding: "14px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.4)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
-                >
-                  <p style={{ margin: "0 0 3px", fontSize: 22 }}>{s.emoji}</p>
-                  <p style={{ margin: "0 0 3px", fontSize: 11, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
-                  <p style={{ margin: "0 0 5px", fontSize: 8, color: "rgba(255,255,255,0.65)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.sub}</p>
-                  <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#fbbf24" }}>₩9,900</p>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* 패키지 빠른 선택 (9900원~) */}
         {!isPartner && (
