@@ -1623,6 +1623,29 @@ function V2ResultInner() {
           </div>
         )}
 
+        {/* SNS 공유 쿠폰 배너 — 빨간버튼 바로 아래 */}
+        {!isPartner && (
+          <div
+            onClick={() => router.push("/share-coupon")}
+            style={{ margin: "8px 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 18 }}>📸</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>소개·추천 글 올리면 쿠폰 5장 + 꿈해몽 무료!</span>
+            </div>
+            <div style={{ background: "#fef2f2", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 12, color: "#dc2626", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+                500자 이상 + 사진 2장 올리면<br />
+                <strong>쿠폰 5장</strong> + 꿈해몽 24시간 무료 🎁
+              </p>
+              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>받기 →</span>
+            </div>
+          </div>
+        )}
+
+        {/* 카카오 공유 쿠폰 배너 */}
+        {!isPartner && <KakaoShareCouponBanner />}
+
         <button onClick={() => router.push("/main-v2")}
           style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
@@ -1702,29 +1725,6 @@ function V2ResultInner() {
         {profile?.name && profile?.birthYear && (
           <QAChatWidget name={profile.name} birthYear={Number(profile.birthYear)} unlocked={paid} />
         )}
-
-        {/* SNS 공유 쿠폰 배너 — 결제 전후 모두 표시 */}
-        {!isPartner && (
-          <div
-            onClick={() => router.push("/share-coupon")}
-            style={{ margin: "16px 0 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
-          >
-            <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 18 }}>📸</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>소개·추천 글 올리면 쿠폰 5장 + 꿈해몽 무료!</span>
-            </div>
-            <div style={{ background: "#fef2f2", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 12, color: "#dc2626", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-                500자 이상 + 사진 2장 올리면<br />
-                <strong>쿠폰 5장</strong> + 꿈해몽 24시간 무료 🎁
-              </p>
-              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>받기 →</span>
-            </div>
-          </div>
-        )}
-
-        {/* 카카오 공유 990원 쿠폰 배너 — 비파트너 사용자에게 */}
-        {!isPartner && <KakaoShareCouponBanner />}
 
         {/* 택일·대운 크로스셀 배너 */}
         {!isPartner && (
