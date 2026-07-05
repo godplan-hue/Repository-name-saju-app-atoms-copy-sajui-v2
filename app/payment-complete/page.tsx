@@ -155,6 +155,17 @@ function PaymentCompleteInner() {
       }
     } catch {}
 
+    // 택일 — 택일 결과 페이지로 이동
+    const isTaegil = searchParams.get("taegil") === "1";
+    if (isTaegil) {
+      sessionStorage.setItem("taegilPaid", "1");
+      setPackageName("택일");
+      setRedirectTo("/main-v2/taegil");
+      setNeedsForm(false);
+      setReady(true);
+      return;
+    }
+
     // 대운 — 별도 페이지로 이동
     const isDaeun = searchParams.get("daeun") === "1";
     if (isDaeun) {
