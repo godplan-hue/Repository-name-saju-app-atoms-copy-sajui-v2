@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import QAChatWidget from "@/components/QAChatWidget";
+import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -576,6 +577,9 @@ export default function ShareClient({ id }: { id: string }) {
             🌙 꿈해몽 — 오늘 꾼 꿈 해석하기
           </button>
         )}
+
+        {/* 카카오 공유 쿠폰 배너 */}
+        {!entry.businessName && <KakaoShareCouponBanner />}
 
         {/* SNS 공유 쿠폰 배너 */}
         {!entry.businessName && (

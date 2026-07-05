@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Script from "next/script";
+import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_YELLOW = "#eab308";
@@ -718,6 +719,9 @@ export default function HistoryDetail() {
             {speaking ? "⏹ 멈추기" : "🔊 읽기"}
           </button>
         </div>
+
+        {/* 카카오 공유 쿠폰 배너 */}
+        <KakaoShareCouponBanner />
 
         {/* 꿈해몽 결제 혜택 배너 */}
         <div onClick={() => router.push("/haemong")} style={{ marginTop: 16, borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>
