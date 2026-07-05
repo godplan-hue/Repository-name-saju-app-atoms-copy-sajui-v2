@@ -177,7 +177,8 @@ export default function ShareActions({ keyword }: Props) {
               <div style={{ fontSize: 13, color: "#374151", lineHeight: 1.8 }}>
                 1. 상단 <b>[카카오 공유]</b> 버튼 클릭<br />
                 2. 모바일에서는 카카오톡 바로 공유 가능<br />
-                3. PC에서는 링크가 복사됨 → 카카오 직접 붙여넣기<br />
+                3. PC에서는 링크가 복사됨<br />
+                &nbsp;&nbsp;&nbsp;→ 카카오 직접 붙여넣기<br />
                 <span style={{ fontSize: 11, color: "#9ca3af" }}>* 친구에게 오늘 꾼 꿈 해몽 결과를 바로 보낼 수 있어요</span>
               </div>
             </div>
@@ -186,12 +187,13 @@ export default function ShareActions({ keyword }: Props) {
             <div style={{ background: "#f0fdf4", borderRadius: 16, padding: "16px", marginBottom: 20, border: "1px solid #86efac" }}>
               <div style={{ fontWeight: 800, fontSize: 14, color: "#166534", marginBottom: 8 }}>📱 카카오톡 안에서 더 잘 보는 법</div>
               <div style={{ fontSize: 13, color: "#374151", lineHeight: 1.8 }}>
-                카카오 내장 브라우저에서 일부 기능이 제한될 수 있어요.<br /><br />
+                카카오 내장 브라우저에서<br />
+                일부 기능이 제한될 수 있어요.<br /><br />
                 <b>더 잘 보려면:</b><br />
                 1. 카카오톡에서 링크 열기<br />
-                2. 우측 상단 <b>[···]</b> (더보기) 클릭<br />
-                3. <b>"Safari로 열기"</b> 또는 <b>"기본 브라우저로 열기"</b> 선택<br />
-                <span style={{ fontSize: 11, color: "#9ca3af" }}>* 이렇게 하면 결과지가 훨씬 선명하게 보입니다</span>
+                2. 우측 하단 <b>[···]</b> (더보기) 클릭<br />
+                3. 점운 사주앱으로 이동하면 꿈 + 내 사주를 함께 분석해 더 정확한 운세를 볼 수 있어요 🐱<br />
+                <span style={{ fontSize: 11, color: "#9ca3af" }}>* jeomun.com — 꿈과 사주팔자를 연결한 AI 운세</span>
               </div>
             </div>
 
