@@ -10,7 +10,9 @@ export default function ShareActions({ keyword }: Props) {
   const [modal, setModal] = useState<null | "guide" | "copied">(null);
 
   async function handleShare() {
-    const url = typeof window !== "undefined" ? window.location.href : "";
+    const base = typeof window !== "undefined" ? window.location.href.split("?")[0] : "";
+    const myRef = typeof window !== "undefined" ? (localStorage.getItem("my_ref_code") || "") : "";
+    const url = myRef ? `${base}?ref=${myRef}` : base;
     if (navigator.share) {
       try {
         await navigator.share({

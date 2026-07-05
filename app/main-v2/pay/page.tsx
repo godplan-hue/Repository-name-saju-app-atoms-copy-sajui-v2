@@ -64,6 +64,18 @@ function PayInner() {
         body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
       }).catch(() => {});
       sessionStorage.setItem("v2_paid", "1");
+      // 추천인 쿠폰 지급
+      try {
+        const refCode = localStorage.getItem("referred_by");
+        if (refCode) {
+          fetch("/api/referral", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refCode }),
+          }).catch(() => {});
+          localStorage.removeItem("referred_by");
+        }
+      } catch {}
       router.push(next);
     } finally { setLoading(false); }
   };
@@ -109,6 +121,18 @@ function PayInner() {
             sessionStorage.setItem("v2_payment_phone", cleanMobile);
           } catch {}
         }
+        // 추천인 쿠폰 지급
+        try {
+          const refCode = localStorage.getItem("referred_by");
+          if (refCode) {
+            fetch("/api/referral", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ refCode }),
+            }).catch(() => {});
+            localStorage.removeItem("referred_by");
+          }
+        } catch {}
         router.push(next);
       } else {
         setError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
