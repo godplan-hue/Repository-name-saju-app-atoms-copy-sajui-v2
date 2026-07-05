@@ -214,7 +214,7 @@ export default function HaemongPage() {
             "쫓기는꿈":     "https://i.pinimg.com/1200x/89/b7/6b/89b76bf3bd66e09355e408f268757af4.jpg",
             "임신꿈":       "https://i.pinimg.com/1200x/4c/9f/b7/4c9fb72f9a06683d7d6ef50181bd3abd.jpg",
             "피꿈":         "https://i.pinimg.com/1200x/5b/5c/da/5b5cda1161387bf9c71159b12733eba9.jpg",
-            "황금꿈":       "https://i.pinimg.com/736x/67/40/32/674032d381922572c66a3e922ed13021.jpg",
+            "황금꿈":       "https://i.pinimg.com/736x/e4/d2/9c/e4d29c70a0ce3da926d9f86b478bbfbb.jpg",
             "고양이꿈":     "https://i.pinimg.com/736x/47/d5/9a/47d59a4ec29143803fc19a207c68d1f4.jpg",
             "전연인꿈":     "https://i.pinimg.com/1200x/26/c1/42/26c1429feb789b49c1d1fc43610f6449.jpg",
             "머리카락꿈":   "https://i.pinimg.com/736x/0f/54/8f/0f548f9cdf6177cb83fc63b90f6825c0.jpg",
