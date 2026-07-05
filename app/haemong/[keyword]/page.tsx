@@ -99,18 +99,35 @@ export default async function KeywordPage({ params }: Props) {
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
             <span style={{ fontSize: 18 }}>🔍</span>
             <span style={{ fontWeight: 800, fontSize: 15, color: "#4c1d95" }}>상황별 해석</span>
+            <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: "#fef3c7", color: "#b45309" }}>1개 무료</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {d.situations.map((s, i) => (
-              <div key={i} style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 12, padding: "14px" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#7c3aed", marginBottom: 6 }}>💭 {s.case}</div>
-                <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{s.meaning}</div>
+            {/* 첫 번째 상황만 무료 */}
+            {d.situations[0] && (
+              <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 12, padding: "14px" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#7c3aed", marginBottom: 6 }}>💭 {d.situations[0].case}</div>
+                <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{d.situations[0].meaning}</div>
               </div>
-            ))}
+            )}
+            {/* 나머지 상황 잠금 */}
+            {d.situations.length > 1 && (
+              <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", height: 85 }}>
+                <div style={{ filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
+                  <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 12, padding: "14px", marginBottom: 6 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "#7c3aed", marginBottom: 6 }}>💭 {d.situations[1]?.case}</div>
+                    <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{d.situations[1]?.meaning}</div>
+                  </div>
+                </div>
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(255,255,255,0) 20%, rgba(255,255,255,0.97) 65%)" }} />
+                <div style={{ position: "absolute", bottom: 4, left: 0, right: 0, textAlign: "center" }}>
+                  <span style={{ fontSize: 11, fontWeight: 800, color: "#7c3aed" }}>🔐 {d.situations.length - 1}가지 상황 더 있어요 — 결제 후 해제</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        <FortuneAnglesSection fortuneAngles={d.fortuneAngles} />
+        <FortuneAnglesSection fortuneAngles={d.fortuneAngles} keyword={kw} emoji={d.emoji} luck={d.luck} />
 
         {/* 오늘의 조언 */}
         <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 16, padding: "18px", marginBottom: 14, border: "1px solid rgba(236,72,153,0.2)" }}>
