@@ -1147,6 +1147,7 @@ function V2ResultInner() {
         )}
 
         {/* ── 쿠폰·혜택 배너 — 페이지 최상단 ── */}
+        {!isPartner && <KakaoShareCouponBanner />}
         {!isPartner && (
           <div
             onClick={() => router.push("/share-coupon")}
@@ -1165,7 +1166,6 @@ function V2ResultInner() {
             </div>
           </div>
         )}
-        {!isPartner && <KakaoShareCouponBanner />}
         {!isPartner && (
           <div
             onClick={() => router.push("/main-v2/payment")}
