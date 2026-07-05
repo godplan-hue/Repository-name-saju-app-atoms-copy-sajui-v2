@@ -21,15 +21,15 @@ const BANNER = [
 ];
 
 const DREAM_GRID = [
-  { id: "animal",    label: "동물꿈",    sub: "뱀·돼지·호랑이",  img: "https://i.pinimg.com/736x/7e/3f/b7/7e3fb74ca3f9bd8cf3df7b8fcde0c4cb.jpg", accent: "#16a34a", price: "길몽대표", priceBg: "#15803d" },
-  { id: "money",     label: "재물·돈꿈", sub: "돈·금·로또·복권",  img: "https://i.pinimg.com/736x/8c/d5/cb/8cd5cb716cc5ad25ada38aa88306c52d.jpg", accent: "#b45309", price: "황금길몽", priceBg: "#b45309" },
-  { id: "person",    label: "사람꿈",    sub: "가족·연인·귀인",    img: "https://i.pinimg.com/1200x/f1/66/b5/f166b50a65fc824659d395a75037937b.jpg", accent: "#1d4ed8", price: "인연",     priceBg: "#2563eb" },
-  { id: "body",      label: "신체꿈",    sub: "이빨·머리·피",      img: "https://i.pinimg.com/736x/cb/9c/bc/cb9cbc190726bace6f4575ff8648ab5d.jpg", accent: "#7c3aed", price: "건강신호",  priceBg: "#7c3aed" },
-  { id: "nature",    label: "자연꿈",    sub: "물·불·비·하늘",     img: "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg", accent: "#0284c7", price: "자연운",   priceBg: "#0369a1" },
-  { id: "situation", label: "상황꿈",    sub: "비행·결혼·시험",    img: "https://i.pinimg.com/1200x/4c/01/00/4c01008435276aec3d662fff9236c87b.jpg", accent: "#ea580c", price: "행동운",   priceBg: "#c2410c" },
-  { id: "object",    label: "사물꿈",    sub: "집·차·음식",        img: "https://i.pinimg.com/1200x/b7/c3/ca/b7c3ca787665a1ec29ea1d2643ddc55a.jpg", accent: "#6d28d9", price: "일상운",   priceBg: "#5b21b6" },
-  { id: "special",   label: "길몽 모음", sub: "용·봉황·황금",      img: "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg", accent: "#b45309", price: "⭐ 대길",  priceBg: "#ca8a04", priceColor: "#1a1a2e" },
-  { id: "top",       label: "인기 꿈 TOP",sub: "뱀·돼지·똥꿈",    img: "https://i.pinimg.com/1200x/65/75/cc/6575cc48a123141887c0e0d53229e6a6.jpg", accent: "#be185d", price: "🔥 인기",  priceBg: "#be185d" },
+  { id: "animal",    label: "동물꿈",    sub: "뱀·돼지·호랑이",  img: "https://i.pinimg.com/1200x/d7/ca/d8/d7cad8ca5f1337f28d678deee886ff54.jpg", accent: "#16a34a", price: "길몽대표", priceBg: "#15803d" },
+  { id: "money",     label: "재물·돈꿈", sub: "돈·금·로또·복권",  img: "https://i.pinimg.com/736x/36/06/84/3606843225d11707a97beb9b4fc7d9b6.jpg", accent: "#b45309", price: "황금길몽", priceBg: "#b45309" },
+  { id: "person",    label: "사람꿈",    sub: "가족·연인·귀인",    img: "https://i.pinimg.com/736x/77/70/fe/7770fec176a72cccc7b20a36dfc37aa4.jpg", accent: "#1d4ed8", price: "인연",     priceBg: "#2563eb" },
+  { id: "body",      label: "신체꿈",    sub: "이빨·머리·피",      img: "https://i.pinimg.com/1200x/58/f4/81/58f481cad518714eca8378fd8bd1e194.jpg", accent: "#7c3aed", price: "건강신호",  priceBg: "#7c3aed" },
+  { id: "nature",    label: "자연꿈",    sub: "물·불·비·하늘",     img: "https://i.pinimg.com/1200x/34/9f/c7/349fc71f752ed210f1ee6f48b81cc623.jpg", accent: "#0284c7", price: "자연운",   priceBg: "#0369a1" },
+  { id: "situation", label: "상황꿈",    sub: "비행·결혼·시험",    img: "https://i.pinimg.com/736x/fa/6f/32/fa6f32b28637da7da0a60cc23c13e197.jpg", accent: "#ea580c", price: "행동운",   priceBg: "#c2410c" },
+  { id: "object",    label: "사물꿈",    sub: "집·차·음식",        img: "https://i.pinimg.com/736x/06/0f/0e/060f0e83df4f83e18073ce2e559b5d2a.jpg", accent: "#6d28d9", price: "일상운",   priceBg: "#5b21b6" },
+  { id: "special",   label: "길몽 모음", sub: "용·봉황·황금",      img: "https://i.pinimg.com/736x/9d/eb/c6/9debc67c47abbd83176fd6124c73b653.jpg", accent: "#b45309", price: "⭐ 대길",  priceBg: "#ca8a04", priceColor: "#1a1a2e" },
+  { id: "top",       label: "인기 꿈 TOP",sub: "뱀·돼지·똥꿈",    img: "https://i.pinimg.com/1200x/1d/a0/0e/1da00ec41373df2c92769cad0e34af0f.jpg", accent: "#be185d", price: "🔥 인기",  priceBg: "#be185d" },
 ];
 
 export default function HaemongPage() {
