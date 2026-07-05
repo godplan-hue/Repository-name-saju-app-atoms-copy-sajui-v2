@@ -75,9 +75,9 @@ export default function ShareCouponPage() {
             SNS에 올리면 사주 무료 5장!
           </h1>
           <p style={{ fontSize: 13, color: "#6d28d9", lineHeight: 1.7, margin: 0 }}>
-            점운을 소개하는 글을 SNS에 올리면<br />
-            <strong>990원 무료 쿠폰 5장</strong>을 드려요<br />
-            <span style={{ fontSize: 12, color: "#9ca3af" }}>1장은 내가, 4장은 친구·가족에게 선물 🎁</span>
+            점운 소개·추천 글을 SNS에 올리면<br />
+            <strong>990원 쿠폰 5장</strong>을 드려요 🎁<br />
+            <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>+ 꿈해몽 24시간 무료 이용권 포함!</span>
           </p>
         </div>
 
@@ -103,7 +103,8 @@ export default function ShareCouponPage() {
 
         {!result ? (
           <div style={{ background: "#fff", borderRadius: 20, padding: "20px", boxShadow: "0 4px 20px rgba(139,92,246,0.1)" }}>
-            <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 16px" }}>📝 SNS 게시글 URL + 전화번호 입력</p>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 4px" }}>📝 SNS 게시글 URL + 전화번호 입력</p>
+            <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 14px", lineHeight: 1.6 }}>500자 이상 · 사진 2장 이상 · 점운 소개·추천 내용</p>
             <div style={{ marginBottom: 14 }}>
               <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#6d28d9", marginBottom: 6 }}>올린 게시글 URL</label>
               <input
@@ -135,7 +136,7 @@ export default function ShareCouponPage() {
             </button>
             <p style={{ fontSize: 11, color: "#dc2626", textAlign: "center", margin: "10px 0 0", fontWeight: 700, lineHeight: 1.7 }}>
               ⚠️ 공개 게시글만 인증 가능 · 1인 1회<br />
-              허위 인증 적발 시 쿠폰 즉시 무효 + 해당 번호 영구 이용 제한<br />
+              비방·악성 내용 포함 시 쿠폰 즉시 무효 + 해당 번호 영구 이용 제한<br />
               <span style={{ color: "#9ca3af", fontWeight: 400 }}>코드 분실 시 jeomun.com/my-coupon 에서 번호로 재조회</span>
             </p>
           </div>

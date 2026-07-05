@@ -589,7 +589,7 @@ export default function ShareClient({ id }: { id: string }) {
             </div>
             <div style={{ background: "#fef2f2", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <p style={{ fontSize: 11, color: "#dc2626", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>
-                인스타·블로그에 점운 소개 글 올리면<br />친구·가족에게 쿠폰 나눠주기 가능 🎁
+                점운 소개·추천 글 500자 이상 + 사진 2장<br />쿠폰 5장 + 꿈해몽 24시간 무료 🎁
               </p>
               <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 12px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 8 }}>받기 →</span>
             </div>
