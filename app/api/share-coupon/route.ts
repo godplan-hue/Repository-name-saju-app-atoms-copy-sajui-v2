@@ -42,12 +42,10 @@ export async function POST(request: NextRequest) {
 
     const cleanPhone = String(phone).replace(/\D/g, "");
 
-    // 같은 번호 중복 발급 방지 — 기존 코드 반환
-    const existingSnap = await db.ref("share_coupons").orderByChild("phone").equalTo(cleanPhone).limitToFirst(1).once("value");
-    const existing = existingSnap.val();
-    if (existing) {
-      const [, lead] = Object.entries(existing)[0] as [string, { codes?: string[] }];
-      return NextResponse.json({ codes: lead.codes || [] });
+    // 같은 번호 중복 발급 방지 — 전화번호를 키로 직접 읽기
+    const existingSnap = await db.ref(`share_coupons/${cleanPhone}`).once("value");
+    if (existingSnap.exists()) {
+      return NextResponse.json({ codes: existingSnap.val().codes || [] });
     }
 
     // 990원 무료쿠폰 5장 발급
@@ -64,16 +62,16 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // share_coupons: 중복 방지용
-    await db.ref(`share_coupons/${codes[0]}`).set({
+    // 전화번호를 키로 저장 — 중복 발급 원천 차단
+    await db.ref(`share_coupons/${cleanPhone}`).set({
       phone: cleanPhone,
       postUrl,
       codes,
       createdAt: Date.now(),
     });
 
-    // sns_share_coupons: /my-coupon 조회용
-    await db.ref(`sns_share_coupons/${codes[0]}`).set({
+    // sns_share_coupons: /my-coupon 조회용 (전화번호 키)
+    await db.ref(`sns_share_coupons/${cleanPhone}`).set({
       phone: cleanPhone,
       codes,
       note: "SNS 글쓰기 990원 × 5장",

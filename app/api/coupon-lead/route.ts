@@ -15,12 +15,10 @@ export async function POST(request: NextRequest) {
 
     const cleanPhone = String(phone).replace(/\D/g, "");
 
-    // 같은 번호로 이미 발급된 코드 확인
-    const existingSnap = await db.ref("coupon_leads").orderByChild("phone").equalTo(cleanPhone).limitToFirst(1).once("value");
-    const existing = existingSnap.val();
-    if (existing) {
-      const [, lead] = Object.entries(existing)[0] as [string, any];
-      return NextResponse.json({ code: lead.code });
+    // 같은 번호 중복 방지 — 전화번호를 키로 직접 읽기
+    const existingSnap = await db.ref(`coupon_leads/${cleanPhone}`).once("value");
+    if (existingSnap.exists()) {
+      return NextResponse.json({ code: existingSnap.val().code });
     }
 
     // 새 코드 생성 (충돌 방지: 최대 5회 시도)
@@ -32,7 +30,8 @@ export async function POST(request: NextRequest) {
     }
     if (!code) return NextResponse.json({ error: "코드 생성 실패" }, { status: 500 });
 
-    await db.ref(`coupon_leads/${code}`).set({
+    // 전화번호를 키로 저장 — 중복 발급 원천 차단
+    await db.ref(`coupon_leads/${cleanPhone}`).set({
       phone: cleanPhone,
       name: name || "",
       code,
