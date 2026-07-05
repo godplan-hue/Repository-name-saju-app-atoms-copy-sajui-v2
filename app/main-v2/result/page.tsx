@@ -7,6 +7,7 @@ import Script from "next/script";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
 import CouponFunnel from "@/app/main-v2/_components/CouponFunnel";
+import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_PREMIUM = "linear-gradient(135deg, #c026d3, #9333ea)";
@@ -1707,14 +1708,37 @@ function V2ResultInner() {
           >
             <div style={{ background: "linear-gradient(135deg,#16a34a,#15803d)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: 18 }}>📸</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>SNS 공유하면 전체 운세 무료!</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>SNS에 글 올리면 사주 무료!</span>
             </div>
             <div style={{ background: "#f0fdf4", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 12, color: "#15803d", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>
+              <p style={{ fontSize: 12, color: "#15803d", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
                 인스타·블로그·유튜브에 점운 소개 글 올리면<br />
-                <strong>990원 사주 100% 무료 쿠폰</strong> 드려요
+                <strong>9,900원 사주 무료 1장</strong> 또는 <strong>990원 쿠폰 5장</strong> 선택
               </p>
               <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#16a34a", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>받기 →</span>
+            </div>
+          </div>
+        )}
+
+        {/* 카카오 공유 990원 쿠폰 배너 — 비파트너 사용자에게 */}
+        {!isPartner && <KakaoShareCouponBanner />}
+
+        {/* 택일·대운 크로스셀 배너 */}
+        {!isPartner && (
+          <div
+            onClick={() => router.push("/main-v2/payment")}
+            style={{ margin: "12px 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 18 }}>✨</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>신규! 대운·택일 2,900원</span>
+            </div>
+            <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+                <strong>대운(大運)</strong> — 10년 단위 운명의 큰 흐름 분석<br />
+                <strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기
+              </p>
+              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
             </div>
           </div>
         )}
