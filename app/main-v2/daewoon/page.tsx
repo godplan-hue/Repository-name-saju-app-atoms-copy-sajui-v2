@@ -21,25 +21,6 @@ interface DaeunBlock {
 
 export default function DaewoonPage() {
   const router = useRouter();
-
-  // 출시 전 임시 차단
-  return (
-    <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(160deg,#0f0620 0%,#1a0535 40%,#0a0420 100%)", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
-      <div style={{ textAlign: "center", padding: "32px 24px" }}>
-        <div style={{ fontSize: 64, marginBottom: 16 }}>🌌</div>
-        <h1 style={{ color: "#fbbf24", fontSize: 24, fontWeight: 900, margin: "0 0 12px" }}>대운(大運)</h1>
-        <div style={{ background: "#dc2626", color: "white", borderRadius: 20, padding: "4px 18px", display: "inline-block", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>🚧 출시 예정</div>
-        <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, margin: "0 0 28px", lineHeight: 1.8 }}>10년 단위 대운 해설을<br/>열심히 만들고 있어요!<br/>조금만 기다려 주세요 🙏</p>
-        <button onClick={() => router.push("/main-v2")} style={{ background: "linear-gradient(135deg,#7c3aed,#5b21b6)", color: "white", border: "none", borderRadius: 50, padding: "12px 28px", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>← 돌아가기</button>
-      </div>
-    </main>
-  );
-}
-
-// 출시 시 DaewoonPage 본체를 아래 내용으로 교체할 것 (현재 임시 차단 중)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function DaewoonContent() {
-  const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
   const [daeunList, setDaeunList] = useState<DaeunBlock[]>([]);
   const [daeunSu, setDaeunSu] = useState(0);
@@ -94,12 +75,15 @@ function DaewoonContent() {
     setProfile(p);
     const age = new Date().getFullYear() - parseInt(p.birthYear) + 1;
     setCurrentAge(age);
+    const isPaid = sessionStorage.getItem("daeunPaid") === "1";
+    const paidCountVal = parseInt(sessionStorage.getItem("daeunPaidCount") || "0");
+    const paidIndicesVal: number[] = JSON.parse(sessionStorage.getItem("daeunPaidIndices") || "[]");
     sessionStorage.removeItem("daeunPaid");
     sessionStorage.removeItem("daeunPaidCount");
     sessionStorage.removeItem("daeunPaidIndices");
-    const isPaid = false;
-    setPaid(false);
-    setPaidCount(0);
+    setPaid(isPaid);
+    setPaidCount(paidCountVal);
+    if (paidIndicesVal.length > 0) setPaidIndices(paidIndicesVal);
     const birth = `${p.birthYear}-${String(p.birthMonth).padStart(2, "0")}-${String(p.birthDay).padStart(2, "0")}`;
     fetchDaeun(p.name, birth, p.gender || "여", p.birthHour || "unknown", isPaid);
   }, []);
