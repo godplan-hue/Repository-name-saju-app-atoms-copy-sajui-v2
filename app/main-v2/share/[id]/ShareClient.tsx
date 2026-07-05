@@ -571,13 +571,6 @@ export default function ShareClient({ id }: { id: string }) {
           </button>
         )}
 
-        {/* 꿈해몽 버튼 */}
-        {!entry.businessName && (
-          <button onClick={() => router.push("/haemong")} style={{ width: "100%", marginBottom: 10, padding: "14px 0", background: "linear-gradient(135deg,#1a0635,#3b0764)", color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
-            🌙 꿈해몽 — 오늘 꾼 꿈 해석하기
-          </button>
-        )}
-
         {/* 카카오 공유 쿠폰 배너 */}
         {!entry.businessName && <KakaoShareCouponBanner />}
 
@@ -598,6 +591,13 @@ export default function ShareClient({ id }: { id: string }) {
               <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 12px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 8 }}>받기 →</span>
             </div>
           </div>
+        )}
+
+        {/* 꿈해몽 버튼 */}
+        {!entry.businessName && (
+          <button onClick={() => router.push("/haemong")} style={{ width: "100%", marginBottom: 10, padding: "14px 0", background: "linear-gradient(135deg,#1a0635,#3b0764)", color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
+            🌙 꿈해몽 — 오늘 꾼 꿈 무료 해석하기
+          </button>
         )}
 
         <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
