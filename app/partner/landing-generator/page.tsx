@@ -10,6 +10,15 @@ const COLOR_THEMES = [
   { id: "green",  label: "그린·에메",  primary: "#10b981", secondary: "#0d9488", bg: "#ecfdf5" },
 ];
 
+const HERO_IMAGES = [
+  { id: "none",    label: "없음",      url: "" },
+  { id: "stars",   label: "별자리",    url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80" },
+  { id: "moon",    label: "달빛",      url: "https://images.unsplash.com/photo-1446941611757-91d2c3bd3d45?w=800&q=80" },
+  { id: "lotus",   label: "연꽃",      url: "https://images.unsplash.com/photo-1474557157379-8aa74a6ef541?w=800&q=80" },
+  { id: "candle",  label: "촛불",      url: "https://images.unsplash.com/photo-1541643600914-78b084683702?w=800&q=80" },
+  { id: "mystic",  label: "신비",      url: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=800&q=80" },
+];
+
 const DEFAULT_FORM = {
   headline: "나만의 AI 사주 분석",
   subtext: "생년월일만 입력하면 AI가 운세를 분석해드려요. 재물운·연애운·건강운·직업운까지 한 번에 확인하세요.",
@@ -19,6 +28,7 @@ const DEFAULT_FORM = {
   review2: "연애운이 3월에 온다고 했는데 진짜 좋은 사람 만났어요. 완전 신기해요!",
   review3: "사주 처음 봤는데 이렇게 자세히 나오는 줄 몰랐어요. 주변 친구들한테 다 알려줬어요.",
   themeId: "pink",
+  heroImageId: "none",
 };
 
 export default function LandingGenerator() {
@@ -94,6 +104,34 @@ export default function LandingGenerator() {
                 onClick={() => setForm(f => ({ ...f, themeId: t.id }))}
                 style={{ padding: "8px 16px", background: form.themeId === t.id ? `linear-gradient(135deg, ${t.primary}, ${t.secondary})` : "#f3f4f6", color: form.themeId === t.id ? "white" : "#374151", border: "none", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}
               >{t.label}</button>
+            ))}
+          </div>
+        </div>
+
+        {/* 히어로 이미지 */}
+        <div style={{ background: "white", borderRadius: 14, padding: "18px", marginBottom: 16, boxShadow: "0 2px 10px rgba(0,0,0,0.06)" }}>
+          <p style={labelStyle}>상단 배경 이미지</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+            {HERO_IMAGES.map(img => (
+              <button
+                key={img.id}
+                onClick={() => setForm(f => ({ ...f, heroImageId: img.id }))}
+                style={{
+                  padding: 0, border: `2px solid ${form.heroImageId === img.id ? "#8b5cf6" : "#e5e7eb"}`,
+                  borderRadius: 10, overflow: "hidden", cursor: "pointer", background: "none",
+                  position: "relative", aspectRatio: "16/9",
+                }}
+              >
+                {img.url ? (
+                  <img src={img.url} alt={img.label} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                ) : (
+                  <div style={{ width: "100%", height: "100%", background: "#f9fafb", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: "#9ca3af", fontWeight: 700 }}>없음</div>
+                )}
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "rgba(0,0,0,0.45)", color: "white", fontSize: 10, fontWeight: 700, textAlign: "center", padding: "3px 0" }}>{img.label}</div>
+                {form.heroImageId === img.id && (
+                  <div style={{ position: "absolute", top: 4, right: 4, background: "#8b5cf6", color: "white", borderRadius: "50%", width: 18, height: 18, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 900 }}>✓</div>
+                )}
+              </button>
             ))}
           </div>
         </div>

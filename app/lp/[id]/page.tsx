@@ -1,7 +1,7 @@
 import { db } from "@/lib/firebase";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import LandingForm from "./LandingForm";
 
 const COLOR_THEMES: Record<string, { primary: string; secondary: string; bg: string; light: string }> = {
   pink:  { primary: "#ec4899", secondary: "#8b5cf6", bg: "#fdf2f8", light: "rgba(236,72,153,0.1)" },
@@ -33,37 +33,48 @@ export default async function PartnerLandingPage({ params }: { params: { id: str
   if (!data) notFound();
 
   const { businessName, landing, partnerId } = data;
-  const cfg = {
-    headline:  landing?.headline  ?? "나만의 AI 사주 분석",
-    subtext:   landing?.subtext   ?? "생년월일만 입력하면 AI가 운세를 분석해드려요. 재물운·연애운·건강운·직업운까지 한 번에 확인하세요.",
-    ctaText:   landing?.ctaText   ?? "지금 바로 확인하기",
-    badge:     landing?.badge     ?? "AI 사주 전문",
-    review1:   landing?.review1   ?? "정말 신기하게 맞아요! 올해 이직할 것 같다고 했는데 진짜 이직했어요 🙏",
-    review2:   landing?.review2   ?? "연애운이 3월에 온다고 했는데 진짜 좋은 사람 만났어요. 완전 신기해요!",
-    review3:   landing?.review3   ?? "사주 처음 봤는데 이렇게 자세히 나오는 줄 몰랐어요. 주변 친구들한테 다 알려줬어요.",
-    themeId:   landing?.themeId   ?? "pink",
+  const HERO_IMAGE_URLS: Record<string, string> = {
+    stars:  "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80",
+    moon:   "https://images.unsplash.com/photo-1446941611757-91d2c3bd3d45?w=800&q=80",
+    lotus:  "https://images.unsplash.com/photo-1474557157379-8aa74a6ef541?w=800&q=80",
+    candle: "https://images.unsplash.com/photo-1541643600914-78b084683702?w=800&q=80",
+    mystic: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=800&q=80",
   };
 
+  const cfg = {
+    headline:     landing?.headline     ?? "나만의 AI 사주 분석",
+    subtext:      landing?.subtext      ?? "생년월일만 입력하면 AI가 운세를 분석해드려요. 재물운·연애운·건강운·직업운까지 한 번에 확인하세요.",
+    ctaText:      landing?.ctaText      ?? "지금 바로 확인하기",
+    badge:        landing?.badge        ?? "AI 사주 전문",
+    review1:      landing?.review1      ?? "정말 신기하게 맞아요! 올해 이직할 것 같다고 했는데 진짜 이직했어요 🙏",
+    review2:      landing?.review2      ?? "연애운이 3월에 온다고 했는데 진짜 좋은 사람 만났어요. 완전 신기해요!",
+    review3:      landing?.review3      ?? "사주 처음 봤는데 이렇게 자세히 나오는 줄 몰랐어요. 주변 친구들한테 다 알려줬어요.",
+    themeId:      landing?.themeId      ?? "pink",
+    heroImageId:  landing?.heroImageId  ?? "none",
+  };
+  const heroImageUrl = HERO_IMAGE_URLS[cfg.heroImageId] ?? "";
+
   const theme = COLOR_THEMES[cfg.themeId as string] ?? COLOR_THEMES.pink;
-  const ctaHref = `/main-v2?ref=${partnerId}`;
+  // ctaHref는 LandingForm 내부에서 처리
 
   return (
     <main style={{ minHeight: "100vh", background: theme.bg, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", color: "#1f2937" }}>
 
       {/* 히어로 */}
-      <div style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`, padding: "60px 20px 52px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <div style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`, backgroundImage: heroImageUrl ? `linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('${heroImageUrl}')` : undefined, backgroundSize: "cover", backgroundPosition: "center", padding: "60px 20px 52px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: "50%", background: "rgba(255,255,255,0.08)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: -40, left: -40, width: 160, height: 160, borderRadius: "50%", background: "rgba(255,255,255,0.06)", pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 2 }}>
           <span style={{ display: "inline-block", background: "rgba(255,255,255,0.2)", color: "white", fontSize: 12, fontWeight: 900, padding: "4px 14px", borderRadius: 20, marginBottom: 16, border: "1px solid rgba(255,255,255,0.35)" }}>{cfg.badge}</span>
           <p style={{ color: "white", fontSize: 14, fontWeight: 700, margin: "0 0 8px", opacity: 0.9 }}>{businessName}</p>
           <h1 style={{ color: "white", fontSize: "clamp(26px,6vw,40px)", fontWeight: 900, margin: "0 0 14px", lineHeight: 1.25 }}>{cfg.headline}</h1>
-          <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 14, lineHeight: 1.7, margin: "0 0 28px", maxWidth: 400, marginLeft: "auto", marginRight: "auto" }}>{cfg.subtext}</p>
-          <Link href={ctaHref} style={{ display: "inline-block", padding: "15px 36px", background: "white", color: theme.primary, borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none", boxShadow: "0 6px 24px rgba(0,0,0,0.2)" }}>
-            🔮 {cfg.ctaText}
-          </Link>
-          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, marginTop: 10 }}>무료 오늘의 운세로 먼저 체험해보세요</p>
+          <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 14, lineHeight: 1.7, margin: "0 0 0", maxWidth: 400, marginLeft: "auto", marginRight: "auto" }}>{cfg.subtext}</p>
         </div>
+      </div>
+
+      {/* 정보 입력 폼 */}
+      <div style={{ maxWidth: 560, margin: "0 auto", padding: "0 20px", marginTop: -30, position: "relative", zIndex: 10 }}>
+        <LandingForm partnerId={partnerId} ctaText={cfg.ctaText} primary={theme.primary} />
       </div>
 
       {/* 특징 3개 */}
@@ -98,14 +109,9 @@ export default async function PartnerLandingPage({ params }: { params: { id: str
         </div>
       </div>
 
-      {/* 하단 CTA */}
-      <div style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`, margin: "40px 0 0", padding: "44px 20px", textAlign: "center" }}>
-        <p style={{ color: "white", fontSize: 22, fontWeight: 900, margin: "0 0 8px" }}>{cfg.headline}</p>
-        <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 14, margin: "0 0 24px" }}>무료로 먼저 체험하고 마음에 들면 결제하세요</p>
-        <Link href={ctaHref} style={{ display: "inline-block", padding: "15px 44px", background: "white", color: theme.primary, borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
-          🔮 {cfg.ctaText}
-        </Link>
-        <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 24 }}>Powered by 점운</p>
+      {/* 하단 */}
+      <div style={{ background: `linear-gradient(135deg, ${theme.primary}, ${theme.secondary})`, margin: "40px 0 0", padding: "32px 20px", textAlign: "center" }}>
+        <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 11, margin: 0 }}>Powered by 점운</p>
       </div>
     </main>
   );
