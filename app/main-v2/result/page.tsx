@@ -1146,6 +1146,45 @@ function V2ResultInner() {
           </button>
         )}
 
+        {/* ── 쿠폰·혜택 배너 — 페이지 최상단 ── */}
+        {!isPartner && (
+          <div
+            onClick={() => router.push("/share-coupon")}
+            style={{ margin: "0 0 8px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 18 }}>📸</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>소개·추천 글 올리면 쿠폰 5장 + 꿈해몽 무료!</span>
+            </div>
+            <div style={{ background: "#fef2f2", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 12, color: "#dc2626", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+                500자 이상 + 사진 2장 올리면<br />
+                <strong>쿠폰 5장</strong> + 꿈해몽 24시간 무료 🎁
+              </p>
+              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>받기 →</span>
+            </div>
+          </div>
+        )}
+        {!isPartner && <KakaoShareCouponBanner />}
+        {!isPartner && (
+          <div
+            onClick={() => router.push("/main-v2/payment")}
+            style={{ margin: "0 0 14px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 18 }}>✨</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>신규! 대운·택일 2,900원</span>
+            </div>
+            <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+                <strong>대운(大運)</strong> — 10년 단위 운명의 큰 흐름 분석<br />
+                <strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기
+              </p>
+              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
+            </div>
+          </div>
+        )}
+
         {/* ── 사주 Q&A 버튼 ── */}
         {profile?.name && profile?.birthYear && (
           <button
@@ -1615,54 +1654,10 @@ function V2ResultInner() {
           </>
         )}
 
-
         {!isPartner && (
           <div style={{ margin: "16px 0 8px", borderRadius: 16, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "16px 20px", textAlign: "center", cursor: "pointer" }} onClick={() => router.push("/main-v2")}>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "white", letterSpacing: "-0.3px" }}>🔮 AI 사주 990원부터 시작</p>
             <p style={{ margin: "4px 0 0", fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700 }}>지금 바로 내 운세 확인하기 →</p>
-          </div>
-        )}
-
-        {/* SNS 공유 쿠폰 배너 — 빨간버튼 바로 아래 */}
-        {!isPartner && (
-          <div
-            onClick={() => router.push("/share-coupon")}
-            style={{ margin: "8px 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
-          >
-            <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 18 }}>📸</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>소개·추천 글 올리면 쿠폰 5장 + 꿈해몽 무료!</span>
-            </div>
-            <div style={{ background: "#fef2f2", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 12, color: "#dc2626", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-                500자 이상 + 사진 2장 올리면<br />
-                <strong>쿠폰 5장</strong> + 꿈해몽 24시간 무료 🎁
-              </p>
-              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>받기 →</span>
-            </div>
-          </div>
-        )}
-
-        {/* 카카오 공유 쿠폰 배너 */}
-        {!isPartner && <KakaoShareCouponBanner />}
-
-        {/* 대운·택일 크로스셀 배너 */}
-        {!isPartner && (
-          <div
-            onClick={() => router.push("/main-v2/payment")}
-            style={{ margin: "8px 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
-          >
-            <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 18 }}>✨</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>신규! 대운·택일 2,900원</span>
-            </div>
-            <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-                <strong>대운(大運)</strong> — 10년 단위 운명의 큰 흐름 분석<br />
-                <strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기
-              </p>
-              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
-            </div>
           </div>
         )}
 
