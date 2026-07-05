@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import RefTracker from "@/app/_components/RefTracker";
+import RefRewardNotice from "@/app/_components/RefRewardNotice";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -48,6 +49,7 @@ export default function RootLayout({
       </head>
       <body style={{ margin: 0, padding: 0 }}>
         <RefTracker />
+        <RefRewardNotice />
         {children}
       </body>
       <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-Y2MVHQYPMQ" />

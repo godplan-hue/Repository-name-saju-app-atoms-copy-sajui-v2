@@ -103,10 +103,10 @@ export default function ShareCouponPage() {
                       {choice === "B" && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#fff" }} />}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 15, fontWeight: 900, color: "#6d28d9", margin: "0 0 3px" }}>3,900원 무료쿠폰 1장</p>
+                      <p style={{ fontSize: 15, fontWeight: 900, color: "#6d28d9", margin: "0 0 3px" }}>9,900원 무료쿠폰 1장</p>
                       <p style={{ fontSize: 12, color: "#6b7280", margin: 0, lineHeight: 1.5 }}>
-                        패키지 구매(3,900원)에 사용 가능<br />
-                        <span style={{ color: "#7c3aed", fontWeight: 700 }}>4개 운세 한 번에 무료</span>
+                        블로그·유튜브 등 글/영상 작성 시<br />
+                        <span style={{ color: "#7c3aed", fontWeight: 700 }}>재물운·연애운 등 9,900원 운세 무료</span>
                       </p>
                     </div>
                   </div>
@@ -180,9 +180,9 @@ export default function ShareCouponPage() {
                 </div>
               </>
             ) : (
-              /* B: 1장 (3900원) */
+              /* B: 1장 (9900원) */
               <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", border: "2px dashed #ec4899", borderRadius: 16, padding: "20px", marginBottom: 18 }}>
-                <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 6px" }}>3,900원 무료쿠폰</p>
+                <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 6px" }}>9,900원 무료쿠폰</p>
                 <p style={{ fontSize: 30, fontWeight: 900, color: "#be185d", margin: "0 0 6px", letterSpacing: 3 }}>{result.codeA}</p>
                 <button onClick={() => copy(result.codeA!, "A")} style={{ fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 10, border: "1.5px solid #ec4899", background: copiedA ? "#fdf2f8" : "#fff", color: "#be185d", cursor: "pointer" }}>
                   {copiedA ? "✅ 복사됨" : "📋 코드 복사"}
