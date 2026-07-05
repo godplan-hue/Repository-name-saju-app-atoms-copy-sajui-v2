@@ -120,7 +120,7 @@ export default function ShareActions({ keyword }: Props) {
                 &nbsp;&nbsp;&nbsp;내 사주를 함께 분석해<br />
                 &nbsp;&nbsp;&nbsp;더 정확한 운세를 볼 수 있어요 🐱<br />
                 &nbsp;&nbsp;&nbsp;🔊 결과를 음성으로 읽어드려요<br />
-                <span style={{ fontSize: 13, fontWeight: 800, color: "#374151" }}>* jeomun.com — 꿈과 사주팔자를 연결한 AI 운세</span>
+                <span style={{ fontSize: 13, fontWeight: 800, color: "#374151" }}>* 점운(jeomun.com) — <span style={{ color: "#dc2626" }}>990원 사주</span> · AI 꿈해몽</span>
               </div>
             </div>
 
