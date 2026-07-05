@@ -719,6 +719,24 @@ export default function HistoryDetail() {
           </button>
         </div>
 
+        {/* 꿈해몽 결제 혜택 배너 */}
+        <div onClick={() => router.push("/haemong")} style={{ marginTop: 16, borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>
+          <div style={{ background: "#dc2626", padding: "8px 16px" }}>
+            <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🎁 결제 혜택</span>
+          </div>
+          <div style={{ padding: "14px 16px" }}>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", lineHeight: 1.5 }}>
+              🌙 꿈해몽 전체 <span style={{ background: "#dc2626", color: "#fff", borderRadius: 6, padding: "2px 8px", fontSize: 13 }}>무료</span> 이용 가능
+            </p>
+            <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 12px", lineHeight: 1.7 }}>
+              오늘 꾼 꿈이 있으신가요?<br />운세별 전체 해석을 무료로 보실 수 있어요
+            </p>
+            <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "11px 0", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>
+              무료 꿈해몽 보러가기 →
+            </div>
+          </div>
+        </div>
+
       </div>
 
       {showSelect && (
