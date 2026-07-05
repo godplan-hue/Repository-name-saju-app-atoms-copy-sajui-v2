@@ -96,24 +96,11 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
             </div>
           ))}
 
-          {/* 구매 CTA */}
-          <div style={{ marginTop: 14, padding: "16px", borderRadius: 14, background: "linear-gradient(135deg,#fdf4ff,#ede9fe)", border: "1.5px solid #c4b5fd", textAlign: "center" }}>
-            <p style={{ fontSize: 14, fontWeight: 900, color: "#4c1d95", margin: "0 0 4px" }}>
-              🐱 사주 결제하면 24시간 전체 공개!
-            </p>
-            <p style={{ fontSize: 12, color: "#6d28d9", margin: "0 0 12px", lineHeight: 1.5 }}>
-              결제 후 꿈해몽으로 돌아오면 바로 잠금 해제돼요
-            </p>
-            <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 15, fontWeight: 900, padding: "13px 32px", borderRadius: 24, textDecoration: "none", boxShadow: "0 4px 16px rgba(236,72,153,0.45)", display: "inline-block" }}>
-              💳 990원으로 전체 보기
-            </Link>
-          </div>
-
-          {/* SNS 무료 배너 — 빨간색 */}
+          {/* SNS 쿠폰 배너 */}
           <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 12, background: "linear-gradient(135deg,#fef2f2,#fee2e2)", border: "1.5px solid #fca5a5", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontSize: 12, color: "#dc2626", fontWeight: 700 }}>📸 SNS에 올리면 100% 무료</span>
+            <span style={{ fontSize: 12, color: "#dc2626", fontWeight: 700 }}>📸 SNS에 올리면 990원 쿠폰 5장!</span>
             <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#dc2626", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>
-              무료로 →
+              받기 →
             </Link>
           </div>
         </>
