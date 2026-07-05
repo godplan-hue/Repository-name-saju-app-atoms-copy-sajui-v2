@@ -20,10 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const luckEmoji = d.luck === "길몽" ? "✨" : d.luck === "흉몽" ? "⚠️" : "🔮";
   return {
     title: `${kw} 해몽 — ${d.summary} | 점운`,
-    description: `${luckEmoji} ${d.luck} | ${d.summary}. ${d.basicMeaning.slice(0, 100)}`,
+    description: `${luckEmoji} ${d.luck} | ${d.summary.slice(0, 28)}`,
     openGraph: {
       title: `${luckEmoji} ${kw} 해몽 — 점운 무료 꿈해몽`,
-      description: `${d.luck} | ${d.summary}. 지금 바로 무료로 해석해보세요.`,
+      description: `${luckEmoji} ${d.luck} | ${d.summary.slice(0, 28)}`,
       images: [
         {
           url: "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg",
