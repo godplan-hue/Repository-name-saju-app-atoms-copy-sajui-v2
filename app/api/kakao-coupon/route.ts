@@ -15,17 +15,10 @@ export async function POST(request: NextRequest) {
 
     const cleanPhone = String(phone).replace(/\D/g, "");
 
-    // 중복 발급 방지
-    const existingSnap = await db
-      .ref("kakao_share_coupons")
-      .orderByChild("phone")
-      .equalTo(cleanPhone)
-      .limitToFirst(1)
-      .once("value");
-    const existing = existingSnap.val();
-    if (existing) {
-      const [, lead] = Object.entries(existing)[0] as [string, any];
-      return NextResponse.json({ code: lead.code });
+    // 중복 발급 방지 — 전화번호를 키로 직접 읽기 (쿼리보다 안전)
+    const existingSnap = await db.ref(`kakao_share_coupons/${cleanPhone}`).once("value");
+    if (existingSnap.exists()) {
+      return NextResponse.json({ code: existingSnap.val().code });
     }
 
     // 고유 코드 생성
@@ -45,7 +38,8 @@ export async function POST(request: NextRequest) {
       usageCount: 0,
     });
 
-    await db.ref(`kakao_share_coupons/${code}`).set({
+    // 전화번호를 키로 저장 — 같은 번호로 중복 발급 원천 차단
+    await db.ref(`kakao_share_coupons/${cleanPhone}`).set({
       phone: cleanPhone,
       code,
       createdAt: Date.now(),
