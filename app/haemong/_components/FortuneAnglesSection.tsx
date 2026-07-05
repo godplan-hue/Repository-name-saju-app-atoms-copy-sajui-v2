@@ -23,7 +23,13 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
 
   useEffect(() => {
     try {
-      // 방금 결제한 경우 (세션에 paid 플래그)
+      // 결제 직후 저장된 24시간 잠금 해제 타임스탬프
+      const unlockUntil = Number(localStorage.getItem("haemong_unlock_until") || "0");
+      if (unlockUntil > Date.now()) {
+        setUnlocked(true);
+        return;
+      }
+      // 방금 결제한 경우 (같은 탭 세션)
       if (sessionStorage.getItem("v2_paid") === "1") {
         setUnlocked(true);
         return;
