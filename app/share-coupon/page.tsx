@@ -136,7 +136,7 @@ export default function ShareCouponPage() {
             </button>
             <p style={{ fontSize: 11, color: "#dc2626", textAlign: "center", margin: "10px 0 0", fontWeight: 700, lineHeight: 1.7 }}>
               ⚠️ 공개 게시글만 인증 가능 · 1인 1회<br />
-              비방·악성 내용 포함 시 쿠폰 즉시 무효 + 해당 번호 영구 이용 제한<br />
+              비방·악성 내용 포함 시 쿠폰 즉시 무효 +<br />해당 번호 영구 이용 제한<br />
               <span style={{ color: "#9ca3af", fontWeight: 400 }}>코드 분실 시 jeomun.com/my-coupon 에서 번호로 재조회</span>
             </p>
           </div>
