@@ -46,17 +46,17 @@ export async function POST(request: NextRequest) {
     const existingSnap = await db.ref("share_coupons").orderByChild("phone").equalTo(cleanPhone).limitToFirst(1).once("value");
     const existing = existingSnap.val();
     if (existing) {
-      const [, lead] = Object.entries(existing)[0] as [string, { code?: string; codeA?: string; codeB?: string; choice?: string }];
-      if (lead.codeA && lead.codeB) return NextResponse.json({ codeA: lead.codeA, codeB: lead.codeB, choice: lead.choice });
-      return NextResponse.json({ codeA: lead.code, choice: lead.choice || "B" });
+      const [, lead] = Object.entries(existing)[0] as [string, { code?: string; codes?: string[]; choice?: string }];
+      if (lead.codes) return NextResponse.json({ codes: lead.codes, choice: lead.choice });
+      return NextResponse.json({ codes: [lead.code], choice: lead.choice || "B" });
     }
 
     if (choice === "A") {
-      // 990원 무료쿠폰 2장
-      const codeA = await createUniqueCode();
-      const codeB = await createUniqueCode();
+      // 990원 무료쿠폰 5장
+      const codes: string[] = [];
+      for (let i = 0; i < 5; i++) codes.push(await createUniqueCode());
 
-      for (const code of [codeA, codeB]) {
+      for (const code of codes) {
         await db.ref(`promoCodes/${code}`).set({
           discountPercent: 100,
           note: "SNS공유무료쿠폰(990원)",
@@ -65,24 +65,23 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      await db.ref(`share_coupons/${codeA}`).set({
+      await db.ref(`share_coupons/${codes[0]}`).set({
         phone: cleanPhone,
         postUrl,
-        codeA,
-        codeB,
+        codes,
         choice: "A",
         createdAt: Date.now(),
       });
 
-      return NextResponse.json({ codeA, codeB, choice: "A" });
+      return NextResponse.json({ codes, choice: "A" });
 
     } else {
-      // 3,900원 무료쿠폰 1장
+      // 9,900원 무료쿠폰 1장
       const code = await createUniqueCode();
 
       await db.ref(`promoCodes/${code}`).set({
         discountPercent: 100,
-        note: "SNS공유무료쿠폰(3900원)",
+        note: "SNS공유무료쿠폰(9900원)",
         active: true,
         usageCount: 0,
       });
@@ -90,12 +89,12 @@ export async function POST(request: NextRequest) {
       await db.ref(`share_coupons/${code}`).set({
         phone: cleanPhone,
         postUrl,
-        code,
+        codes: [code],
         choice: "B",
         createdAt: Date.now(),
       });
 
-      return NextResponse.json({ codeA: code, choice: "B" });
+      return NextResponse.json({ codes: [code], choice: "B" });
     }
 
   } catch (error) {

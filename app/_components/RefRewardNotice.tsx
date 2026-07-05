@@ -68,10 +68,10 @@ export default function RefRewardNotice() {
       <div style={{ fontSize: 32 }}>🎁</div>
       <div style={{ flex: 1 }}>
         <p style={{ color: "#fff", fontWeight: 900, fontSize: 14, margin: "0 0 3px" }}>
-          쿠폰 {newCount}장 적립됐어요!
+          친구가 결제했어요! 🎉
         </p>
         <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, margin: 0 }}>
-          친구가 결제했어요 — 990원 무료 사주 쿠폰
+          990원 무료 사주 쿠폰 {newCount}장 적립 — 확인하세요!
         </p>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
