@@ -159,6 +159,31 @@ function PaymentInner() {
       const data = await res.json();
       if (data.success) {
         const url = puPending.nextUrl;
+        // 결제 기록 저장 (분석 성공 여부 무관하게 항상 기록)
+        const _puPhone = puMobile.replace(/\D/g, "");
+        if (puPending.price > 0 && puName.trim()) {
+          const _paidParam = new URLSearchParams(url.split("?")[1] || "").get("paid");
+          fetch("/api/v2/save-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: `pu_${Date.now()}`,
+              date: new Date().toISOString(),
+              name: puName.trim(),
+              phone: _puPhone,
+              amount: puPending.price,
+              package: new URLSearchParams(url.split("?")[1] || "").get("package") || "운세",
+              categories: [],
+              plan: "select",
+              discountCode: "",
+              discountPercent: 0,
+              originalAmount: Number(_paidParam || puPending.price),
+            }),
+          }).catch(() => {});
+          if (_puPhone) {
+            try { localStorage.setItem("v2_saved_phone", _puPhone); sessionStorage.setItem("v2_payment_phone", _puPhone); } catch {}
+          }
+        }
         closePuModal();
         router.push(url);
       } else {
