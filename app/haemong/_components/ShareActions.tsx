@@ -1,13 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface Props {
   keyword: string;
 }
 
 export default function ShareActions({ keyword }: Props) {
-  const [modal, setModal] = useState<null | "guide" | "copied">(null);
+  const [modal, setModal] = useState<null | "guide" | "saved" | "already">(null);
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    const saved: string[] = JSON.parse(localStorage.getItem("haemong-saved") || "[]");
+    setIsSaved(saved.includes(keyword));
+  }, [keyword]);
 
   function getUrl() {
     return typeof window !== "undefined" ? window.location.href : "";
@@ -25,15 +32,21 @@ export default function ShareActions({ keyword }: Props) {
       } catch {}
     } else {
       await navigator.clipboard.writeText(url);
-      setModal("copied");
+      setModal("saved");
       setTimeout(() => setModal(null), 2000);
     }
   }
 
-  async function handleSave() {
-    const url = getUrl();
-    await navigator.clipboard.writeText(url);
-    setModal("copied");
+  function handleSave() {
+    const existing: string[] = JSON.parse(localStorage.getItem("haemong-saved") || "[]");
+    if (existing.includes(keyword)) {
+      setModal("already");
+      setTimeout(() => setModal(null), 2000);
+      return;
+    }
+    localStorage.setItem("haemong-saved", JSON.stringify([keyword, ...existing]));
+    setIsSaved(true);
+    setModal("saved");
     setTimeout(() => setModal(null), 2000);
   }
 
@@ -60,17 +73,29 @@ export default function ShareActions({ keyword }: Props) {
 
         <div style={{ flex: 1 }} />
 
+        {/* 내 보관함 */}
+        <Link href="/haemong/saved" style={{
+          display: "flex", alignItems: "center", gap: 4,
+          background: "#f0fdf4", color: "#16a34a", border: "1px solid #86efac",
+          borderRadius: 20, padding: "7px 12px", fontSize: 12, fontWeight: 700,
+          textDecoration: "none",
+        }}>
+          📂 내 보관함
+        </Link>
+
         {/* 보관하기 */}
         <button
           onClick={handleSave}
           style={{
             display: "flex", alignItems: "center", gap: 4,
-            background: "#f5f3ff", color: "#7c3aed", border: "1px solid #ddd6fe",
+            background: isSaved ? "#fdf2f8" : "#f5f3ff",
+            color: isSaved ? "#be185d" : "#7c3aed",
+            border: `1px solid ${isSaved ? "#f9a8d4" : "#ddd6fe"}`,
             borderRadius: 20, padding: "7px 12px", fontSize: 12, fontWeight: 700,
             cursor: "pointer",
           }}
         >
-          🔖 보관하기
+          {isSaved ? "🔖 보관됨" : "🔖 보관하기"}
         </button>
 
         {/* 공유하기 */}
@@ -87,15 +112,27 @@ export default function ShareActions({ keyword }: Props) {
         </button>
       </div>
 
-      {/* URL 복사 완료 토스트 */}
-      {modal === "copied" && (
+      {/* 보관함 저장 토스트 */}
+      {modal === "saved" && (
         <div style={{
           position: "fixed", top: 70, left: "50%", transform: "translateX(-50%)",
-          background: "#1a1a2e", color: "#fff", padding: "10px 20px",
+          background: "#16a34a", color: "#fff", padding: "10px 20px",
           borderRadius: 24, fontSize: 13, fontWeight: 700, zIndex: 9999,
-          boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.3)", whiteSpace: "nowrap",
         }}>
-          ✅ 링크가 복사됐어요! 카카오·메모장에 붙여넣기 하세요
+          ✅ 보관함에 저장됐어요!
+        </div>
+      )}
+
+      {/* 이미 보관됨 토스트 */}
+      {modal === "already" && (
+        <div style={{
+          position: "fixed", top: 70, left: "50%", transform: "translateX(-50%)",
+          background: "#6b7280", color: "#fff", padding: "10px 20px",
+          borderRadius: 24, fontSize: 13, fontWeight: 700, zIndex: 9999,
+          boxShadow: "0 4px 20px rgba(0,0,0,0.3)", whiteSpace: "nowrap",
+        }}>
+          이미 보관함에 있어요 🔖
         </div>
       )}
 
