@@ -125,7 +125,7 @@ export default function ShareCouponPage() {
                       블로그·유튜브·틱톡 글/영상 제작
                     </p>
                     <p style={{ fontSize: 12, color: "#7c3aed", fontWeight: 700, margin: 0 }}>
-                      재물운·연애운·건강운 중 원하는 1개 무료
+                      재물운 + 연애운 기본 패키지 통째로 무료
                     </p>
                   </div>
                 </div>
