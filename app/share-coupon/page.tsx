@@ -10,9 +10,8 @@ export default function ShareCouponPage() {
   const router = useRouter();
   const [postUrl, setPostUrl] = useState("");
   const [phone, setPhone] = useState("");
-  const [choice, setChoice] = useState<"A" | "B">("A");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ codes?: string[]; choice?: string } | null>(null);
+  const [result, setResult] = useState<{ codes?: string[] } | null>(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
 
@@ -25,7 +24,7 @@ export default function ShareCouponPage() {
       const res = await fetch("/api/share-coupon", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: cleanPhone, postUrl: postUrl.trim(), choice }),
+        body: JSON.stringify({ phone: cleanPhone, postUrl: postUrl.trim() }),
       });
       const data = await res.json();
       if (data.codes?.length) {
@@ -46,6 +45,14 @@ export default function ShareCouponPage() {
     setTimeout(() => setCopied(null), 2000);
   }
 
+  async function copyAll() {
+    if (!result?.codes) return;
+    const text = result.codes.join("\n");
+    try { await navigator.clipboard.writeText(text); } catch {}
+    setCopied("ALL");
+    setTimeout(() => setCopied(null), 2000);
+  }
+
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(160deg,#fdf2f8 0%,#ede9fe 100%)", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", padding: "0 0 60px" }}>
 
@@ -59,161 +66,105 @@ export default function ShareCouponPage() {
         <div style={{ textAlign: "center", marginBottom: 20 }}>
           <div style={{ fontSize: 48, marginBottom: 10 }}>📸</div>
           <h1 style={{ fontSize: 22, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "0 0 8px", lineHeight: 1.3 }}>
-            SNS에 올리면 사주 무료!
+            SNS에 올리면 사주 무료 5장!
           </h1>
           <p style={{ fontSize: 13, color: "#6d28d9", lineHeight: 1.7, margin: 0 }}>
-            점운을 소개하는 글/영상을 올리고<br />원하는 쿠폰을 골라가세요
+            점운을 소개하는 글을 SNS에 올리면<br />
+            <strong>990원 무료 쿠폰 5장</strong>을 드려요<br />
+            <span style={{ fontSize: 12, color: "#9ca3af" }}>1장은 내가, 4장은 친구·가족에게 선물 🎁</span>
           </p>
         </div>
 
-        {/* 추천인 적립 안내 배너 */}
-        <div style={{ background: "linear-gradient(135deg,#f0fdf4,#dcfce7)", border: "1.5px solid #86efac", borderRadius: 14, padding: "14px 16px", marginBottom: 20 }}>
-          <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 5px" }}>🔗 추천 링크로도 쿠폰 적립돼요!</p>
-          <p style={{ fontSize: 12, color: "#166534", lineHeight: 1.6, margin: "0 0 8px" }}>
-            내 추천 링크를 공유해서 친구가 결제하면<br />
-            <strong>990원 무료 사주 쿠폰</strong>이 자동 적립돼요.<br />
-            다음에 점운 방문 시 <strong>팝업으로 알려드려요</strong> — 꼭 확인하세요!
-          </p>
-          <Link href="/my-coupons" style={{ fontSize: 12, fontWeight: 800, textDecoration: "none", background: "#16a34a", color: "#fff", padding: "5px 12px", borderRadius: 10, display: "inline-block" }}>
-            내 추천 쿠폰 확인하기 →
-          </Link>
+        {/* 혜택 안내 */}
+        <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", border: "1.5px solid #c4b5fd", borderRadius: 14, padding: "14px 16px", marginBottom: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ textAlign: "center", flex: 1 }}>
+              <p style={{ fontSize: 22, fontWeight: 900, color: "#be185d", margin: "0 0 2px" }}>5장</p>
+              <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>받는 쿠폰 수</p>
+            </div>
+            <div style={{ width: 1, height: 36, background: "#e5e7eb" }} />
+            <div style={{ textAlign: "center", flex: 1 }}>
+              <p style={{ fontSize: 22, fontWeight: 900, color: "#7c3aed", margin: "0 0 2px" }}>990원</p>
+              <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>쿠폰 1장 가치</p>
+            </div>
+            <div style={{ width: 1, height: 36, background: "#e5e7eb" }} />
+            <div style={{ textAlign: "center", flex: 1 }}>
+              <p style={{ fontSize: 22, fontWeight: 900, color: "#16a34a", margin: "0 0 2px" }}>1회</p>
+              <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>전화번호당</p>
+            </div>
+          </div>
         </div>
 
         {!result ? (
-          <>
-            {/* 쿠폰 선택 */}
-            <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 12px" }}>🎁 받을 쿠폰 선택 (둘 중 하나)</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
-
-              {/* 옵션 A */}
-              <div
-                onClick={() => setChoice("A")}
-                style={{ borderRadius: 16, border: `2px solid ${choice === "A" ? "#ec4899" : "#e5e7eb"}`, background: choice === "A" ? "#fdf2f8" : "#fff", padding: "16px", cursor: "pointer" }}
-              >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${choice === "A" ? "#ec4899" : "#d1d5db"}`, background: choice === "A" ? "#ec4899" : "#fff", flexShrink: 0, marginTop: 2, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {choice === "A" && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#fff" }} />}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 15, fontWeight: 900, color: "#be185d", margin: "0 0 4px" }}>
-                      990원 무료쿠폰 <span style={{ background: "#be185d", color: "#fff", fontSize: 13, padding: "2px 8px", borderRadius: 8 }}>5장</span>
-                    </p>
-                    <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 4px", lineHeight: 1.5 }}>
-                      인스타·카카오 등 간단한 후기 공유
-                    </p>
-                    <p style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, margin: 0 }}>
-                      1장은 내가, 4장은 친구·가족에게 선물 🎁
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* 옵션 B */}
-              <div
-                onClick={() => setChoice("B")}
-                style={{ borderRadius: 16, border: `2px solid ${choice === "B" ? "#7c3aed" : "#e5e7eb"}`, background: choice === "B" ? "#f5f3ff" : "#fff", padding: "16px", cursor: "pointer" }}
-              >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${choice === "B" ? "#7c3aed" : "#d1d5db"}`, background: choice === "B" ? "#7c3aed" : "#fff", flexShrink: 0, marginTop: 2, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {choice === "B" && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#fff" }} />}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 15, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>
-                      9,900원 무료쿠폰 <span style={{ background: "#7c3aed", color: "#fff", fontSize: 13, padding: "2px 8px", borderRadius: 8 }}>1장</span>
-                    </p>
-                    <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 4px", lineHeight: 1.5 }}>
-                      블로그·유튜브·틱톡 글/영상 제작
-                    </p>
-                    <p style={{ fontSize: 12, color: "#7c3aed", fontWeight: 700, margin: 0 }}>
-                      재물운 + 연애운 기본 패키지 통째로 무료
-                    </p>
-                  </div>
-                </div>
-              </div>
+          <div style={{ background: "#fff", borderRadius: 20, padding: "20px", boxShadow: "0 4px 20px rgba(139,92,246,0.1)" }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 16px" }}>📝 SNS 게시글 URL + 전화번호 입력</p>
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#6d28d9", marginBottom: 6 }}>올린 게시글 URL</label>
+              <input
+                type="url"
+                value={postUrl}
+                onChange={e => setPostUrl(e.target.value)}
+                placeholder="https://instagram.com/p/... 또는 블로그 URL"
+                style={{ width: "100%", padding: "13px 14px", borderRadius: 12, border: "1.5px solid #e5e7eb", fontSize: 13, outline: "none", boxSizing: "border-box" }}
+              />
+              <p style={{ fontSize: 11, color: "#9ca3af", margin: "5px 0 0" }}>인스타그램 · 네이버 블로그 · 유튜브 · 틱톡 가능</p>
             </div>
-
-            {/* 입력 폼 */}
-            <div style={{ background: "#fff", borderRadius: 20, padding: "20px", boxShadow: "0 4px 20px rgba(139,92,246,0.1)" }}>
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#6d28d9", marginBottom: 6 }}>올린 게시글 URL</label>
-                <input
-                  type="url"
-                  value={postUrl}
-                  onChange={e => setPostUrl(e.target.value)}
-                  placeholder="https://instagram.com/p/... 또는 블로그 URL"
-                  style={{ width: "100%", padding: "13px 14px", borderRadius: 12, border: "1.5px solid #e5e7eb", fontSize: 13, outline: "none", boxSizing: "border-box" }}
-                />
-                <p style={{ fontSize: 11, color: "#9ca3af", margin: "5px 0 0" }}>인스타그램 · 네이버 블로그 · 유튜브 · 틱톡 가능</p>
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#6d28d9", marginBottom: 6 }}>전화번호</label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={e => setPhone(e.target.value)}
-                  placeholder="010-0000-0000"
-                  style={{ width: "100%", padding: "13px 14px", borderRadius: 12, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", boxSizing: "border-box" }}
-                />
-              </div>
-              {error && <p style={{ color: "#dc2626", fontSize: 12, margin: "0 0 12px", fontWeight: 600 }}>{error}</p>}
-              <button
-                onClick={handleSubmit}
-                disabled={loading}
-                style={{ width: "100%", padding: "15px", borderRadius: 14, border: "none", background: G, color: "#fff", fontSize: 15, fontWeight: 900, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, boxShadow: "0 4px 18px rgba(236,72,153,0.4)" }}
-              >
-                {loading ? "⏳ 확인 중..." : "🎁 쿠폰 받기"}
-              </button>
-              <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>공개 게시글만 인증 가능 · 1인 1회</p>
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#6d28d9", marginBottom: 6 }}>전화번호</label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                placeholder="010-0000-0000"
+                style={{ width: "100%", padding: "13px 14px", borderRadius: 12, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+              />
             </div>
-          </>
+            {error && <p style={{ color: "#dc2626", fontSize: 12, margin: "0 0 12px", fontWeight: 600 }}>{error}</p>}
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              style={{ width: "100%", padding: "15px", borderRadius: 14, border: "none", background: G, color: "#fff", fontSize: 15, fontWeight: 900, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, boxShadow: "0 4px 18px rgba(236,72,153,0.4)" }}
+            >
+              {loading ? "⏳ 확인 중..." : "🎁 쿠폰 5장 받기"}
+            </button>
+            <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>공개 게시글만 인증 가능 · 1인 1회 · 분실 시 재입력으로 확인</p>
+          </div>
         ) : (
           /* 발급 완료 */
           <div style={{ background: "#fff", borderRadius: 20, padding: "24px 20px", boxShadow: "0 4px 20px rgba(139,92,246,0.12)" }}>
             <p style={{ fontSize: 20, fontWeight: 900, color: "#16a34a", margin: "0 0 4px", textAlign: "center" }}>✅ 발급 완료!</p>
             <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 20px", textAlign: "center" }}>공유해주셔서 감사해요 🙏</p>
 
-            {result.choice === "A" ? (
-              <>
-                <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 12px" }}>
-                  990원 무료 사주 쿠폰 {result.codes?.length}장 — 결제 시 1장씩 입력
-                </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
-                  {result.codes?.map((code, i) => (
-                    <div key={code} style={{ background: i === 0 ? "#fdf2f8" : "#f5f3ff", border: `1.5px dashed ${i === 0 ? "#ec4899" : "#8b5cf6"}`, borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <div>
-                        <p style={{ fontSize: 10, color: "#9ca3af", margin: "0 0 2px" }}>{i === 0 ? "내 쿠폰" : `선물 쿠폰 ${i}`}</p>
-                        <p style={{ fontSize: 20, fontWeight: 900, color: i === 0 ? "#be185d" : "#6d28d9", margin: 0, letterSpacing: 2 }}>{code}</p>
-                      </div>
-                      <button
-                        onClick={() => copy(code)}
-                        style={{ padding: "6px 12px", borderRadius: 10, border: `1.5px solid ${i === 0 ? "#ec4899" : "#8b5cf6"}`, background: copied === code ? "#fdf2f8" : "#fff", color: i === 0 ? "#be185d" : "#6d28d9", fontSize: 12, fontWeight: 800, cursor: "pointer" }}
-                      >
-                        {copied === code ? "✅" : "복사"}
-                      </button>
-                    </div>
-                  ))}
-                </div>
-                <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 4px", textAlign: "center" }}>
-                  선물 쿠폰은 친구·가족에게 카카오로 보내세요 🎁
-                </p>
-              </>
-            ) : (
-              <>
-                <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 12px" }}>9,900원 무료 사주 쿠폰 1장</p>
-                <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", border: "2px dashed #ec4899", borderRadius: 14, padding: "18px", marginBottom: 16, textAlign: "center" }}>
-                  <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 6px" }}>9,900원 무료쿠폰</p>
-                  <p style={{ fontSize: 28, fontWeight: 900, color: "#be185d", margin: "0 0 8px", letterSpacing: 3 }}>{result.codes?.[0]}</p>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 12px" }}>
+              990원 무료 사주 쿠폰 {result.codes?.length}장 — 결제 시 1장씩 입력
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
+              {result.codes?.map((code, i) => (
+                <div key={code} style={{ background: i === 0 ? "#fdf2f8" : "#f5f3ff", border: `1.5px dashed ${i === 0 ? "#ec4899" : "#8b5cf6"}`, borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div>
+                    <p style={{ fontSize: 10, color: "#9ca3af", margin: "0 0 2px" }}>{i === 0 ? "내 쿠폰" : `선물 쿠폰 ${i}`}</p>
+                    <p style={{ fontSize: 20, fontWeight: 900, color: i === 0 ? "#be185d" : "#6d28d9", margin: 0, letterSpacing: 2 }}>{code}</p>
+                  </div>
                   <button
-                    onClick={() => copy(result.codes![0])}
-                    style={{ padding: "7px 18px", borderRadius: 10, border: "1.5px solid #ec4899", background: copied === result.codes?.[0] ? "#fdf2f8" : "#fff", color: "#be185d", fontSize: 12, fontWeight: 800, cursor: "pointer" }}
+                    onClick={() => copy(code)}
+                    style={{ padding: "6px 12px", borderRadius: 10, border: `1.5px solid ${i === 0 ? "#ec4899" : "#8b5cf6"}`, background: copied === code ? "#fdf2f8" : "#fff", color: i === 0 ? "#be185d" : "#6d28d9", fontSize: 12, fontWeight: 800, cursor: "pointer" }}
                   >
-                    {copied === result.codes?.[0] ? "✅ 복사됨" : "📋 코드 복사"}
+                    {copied === code ? "✅" : "복사"}
                   </button>
                 </div>
-              </>
-            )}
+              ))}
+            </div>
+
+            {/* 전체 복사 */}
+            <button
+              onClick={copyAll}
+              style={{ width: "100%", padding: "11px", borderRadius: 12, border: "1.5px solid #c4b5fd", background: copied === "ALL" ? "#ede9fe" : "#fafafa", color: "#6d28d9", fontSize: 13, fontWeight: 800, cursor: "pointer", marginBottom: 12 }}
+            >
+              {copied === "ALL" ? "✅ 전체 복사됨" : "📋 코드 5개 전체 복사 (카카오로 보내기용)"}
+            </button>
 
             <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px", textAlign: "center", lineHeight: 1.6 }}>
+              선물 쿠폰은 친구·가족에게 카카오로 보내세요 🎁<br />
               결제 화면 → 쿠폰 코드 입력 → 무료로 시작
             </p>
             <button

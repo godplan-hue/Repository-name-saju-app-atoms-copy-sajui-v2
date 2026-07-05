@@ -97,6 +97,7 @@ function PaymentCompleteInner() {
   const [needsForm, setNeedsForm] = useState(false);
   const [redirectTo, setRedirectTo] = useState(""); // daeun/yearly/naming용
   const formRef = useRef<HTMLDivElement>(null);
+  const submittingRef = useRef(false); // 중복 제출 방지
 
   // 할인코드
   const [discountInput, setDiscountInput] = useState("");
@@ -419,14 +420,17 @@ function PaymentCompleteInner() {
       console.error("분석 오류:", error);
       alert("분석 중 오류가 발생했습니다.");
       setIsLoading(false);
+      submittingRef.current = false; // 에러 시 재시도 허용
     }
   };
 
   const handleAnalysis = async () => {
+    if (submittingRef.current) return; // 중복 클릭 차단
     if (!name || !birthYear || !birthMonth || !birthDay) {
       alert("이름과 생년월일을 입력해주세요!");
       return;
     }
+    submittingRef.current = true;
     if (redirectTo && !gender) {
       alert("성별을 선택해주세요!");
       return;

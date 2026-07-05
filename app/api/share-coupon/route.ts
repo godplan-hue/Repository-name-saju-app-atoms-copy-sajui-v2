@@ -34,7 +34,7 @@ function isValidSnsUrl(url: string): boolean {
 
 export async function POST(request: NextRequest) {
   try {
-    const { phone, postUrl, choice } = await request.json();
+    const { phone, postUrl } = await request.json();
     if (!phone) return NextResponse.json({ error: "전화번호를 입력해주세요." }, { status: 400 });
     if (!postUrl || !isValidSnsUrl(postUrl)) {
       return NextResponse.json({ error: "인스타·블로그·유튜브 게시글 URL을 입력해주세요." }, { status: 400 });
@@ -42,62 +42,45 @@ export async function POST(request: NextRequest) {
 
     const cleanPhone = String(phone).replace(/\D/g, "");
 
-    // 같은 번호 중복 발급 방지
+    // 같은 번호 중복 발급 방지 — 기존 코드 반환
     const existingSnap = await db.ref("share_coupons").orderByChild("phone").equalTo(cleanPhone).limitToFirst(1).once("value");
     const existing = existingSnap.val();
     if (existing) {
-      const [, lead] = Object.entries(existing)[0] as [string, { code?: string; codes?: string[]; choice?: string }];
-      if (lead.codes) return NextResponse.json({ codes: lead.codes, choice: lead.choice });
-      return NextResponse.json({ codes: [lead.code], choice: lead.choice || "B" });
+      const [, lead] = Object.entries(existing)[0] as [string, { codes?: string[] }];
+      return NextResponse.json({ codes: lead.codes || [] });
     }
 
-    if (choice === "A") {
-      // 990원 무료쿠폰 5장
-      const codes: string[] = [];
-      for (let i = 0; i < 5; i++) codes.push(await createUniqueCode());
+    // 990원 무료쿠폰 5장 발급
+    const codes: string[] = [];
+    for (let i = 0; i < 5; i++) codes.push(await createUniqueCode());
 
-      for (const code of codes) {
-        await db.ref(`promoCodes/${code}`).set({
-          discountPercent: 100,
-          maxAmount: 990,
-          note: "SNS공유무료쿠폰(990원)",
-          active: true,
-          usageCount: 0,
-        });
-      }
-
-      await db.ref(`share_coupons/${codes[0]}`).set({
-        phone: cleanPhone,
-        postUrl,
-        codes,
-        choice: "A",
-        createdAt: Date.now(),
-      });
-
-      return NextResponse.json({ codes, choice: "A" });
-
-    } else {
-      // 9,900원 무료쿠폰 1장
-      const code = await createUniqueCode();
-
+    for (const code of codes) {
       await db.ref(`promoCodes/${code}`).set({
         discountPercent: 100,
-        maxAmount: 9900,
-        note: "SNS공유무료쿠폰(9900원)",
+        maxAmount: 990,
+        note: "SNS공유무료쿠폰(990원)",
         active: true,
         usageCount: 0,
       });
-
-      await db.ref(`share_coupons/${code}`).set({
-        phone: cleanPhone,
-        postUrl,
-        codes: [code],
-        choice: "B",
-        createdAt: Date.now(),
-      });
-
-      return NextResponse.json({ codes: [code], choice: "B" });
     }
+
+    // share_coupons: 중복 방지용
+    await db.ref(`share_coupons/${codes[0]}`).set({
+      phone: cleanPhone,
+      postUrl,
+      codes,
+      createdAt: Date.now(),
+    });
+
+    // sns_share_coupons: /my-coupon 조회용
+    await db.ref(`sns_share_coupons/${codes[0]}`).set({
+      phone: cleanPhone,
+      codes,
+      note: "SNS 글쓰기 990원 × 5장",
+      createdAt: Date.now(),
+    });
+
+    return NextResponse.json({ codes });
 
   } catch (error) {
     console.error("Share coupon error:", error);
