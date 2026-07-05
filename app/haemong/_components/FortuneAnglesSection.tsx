@@ -89,6 +89,12 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
             <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 14, fontWeight: 900, padding: "12px 28px", borderRadius: 24, textDecoration: "none", boxShadow: "0 4px 16px rgba(236,72,153,0.45)", display: "inline-block" }}>
               🐱 990원으로 전체 보기
             </Link>
+            <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 12, background: "linear-gradient(135deg,#f0fdf4,#dcfce7)", border: "1.5px solid #86efac", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 12, color: "#15803d", fontWeight: 700 }}>📸 SNS에 올리면 100% 무료</span>
+              <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#16a34a", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>
+                무료로 →
+              </Link>
+            </div>
           </div>
         </>
       )}
