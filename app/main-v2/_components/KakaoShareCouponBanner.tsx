@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 
 type Step = "closed" | "share" | "form" | "code";
 
@@ -15,6 +16,27 @@ export default function KakaoShareCouponBanner() {
 
   async function shareKakao() {
     const shareUrl = "https://jeomun.com/main-v2";
+    const kakao = typeof window !== "undefined" ? (window as any).Kakao : null;
+
+    // 카카오 SDK가 준비됐으면 → 페이지 이탈 없는 친구 선택 오버레이
+    if (kakao && kakao.isInitialized && kakao.isInitialized() && kakao.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: "🐱 점운 AI 사주 분석",
+            description: "사주풀이 해봤는데 진짜 잘 맞아! 990원이라 부담없어. 나도 무료로 사주보기 →",
+            imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
+            link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+          },
+          buttons: [{ title: "나도 무료로 사주보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }],
+        });
+        setStep("form");
+        return;
+      } catch {}
+    }
+
+    // 폴백: OS 네이티브 공유 시트 (iOS 등)
     const text = "🐱 점운 AI 사주풀이 해봤는데 진짜 잘 맞아! 990원이라 부담없어\n👉 나도 무료로 사주보기 →";
     if (typeof navigator !== "undefined" && navigator.share) {
       try { await navigator.share({ title: "점운 AI 사주 분석", text, url: shareUrl }); } catch {}
@@ -53,6 +75,12 @@ export default function KakaoShareCouponBanner() {
 
   if (step === "closed") {
     return (
+      <>
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }}
+      />
       <div style={{ margin: "12px 0", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 14px rgba(249,168,37,0.2)", border: "1.5px solid #fde68a" }}>
         <div
           onClick={() => setStep("share")}
@@ -68,6 +96,7 @@ export default function KakaoShareCouponBanner() {
           <span style={{ color: "#fff", fontSize: 13, fontWeight: 900, whiteSpace: "nowrap" }}>받기 →</span>
         </div>
       </div>
+      </>
     );
   }
 
