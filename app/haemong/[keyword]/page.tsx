@@ -126,25 +126,20 @@ export default async function KeywordPage({ params }: Props) {
           )}
 
           {/* 나머지 잠금 */}
-          <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", maxHeight: 120 }}>
-            <div style={{ filter: "blur(4px)", userSelect: "none", pointerEvents: "none" }}>
-              <div style={{ background: "#fafafa", borderRadius: 12, padding: "14px", border: "1px solid #f3e8ff", marginBottom: 8 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>💰 재물운 · 연애운 · 건강운</div>
-                <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>이 꿈이 당신의 재물운에 미치는 영향... 연애에서 나타나는 신호... 건강에서 주의할 점...</div>
-              </div>
-              <div style={{ background: "#fdf2f8", borderRadius: 12, padding: "14px", border: "1px solid #fce7f3" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>🔮 사주와 결합한 종합 해석</div>
-                <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>이 꿈이 올해 운세와 만나면... 재물·연애·건강 전 분야에 걸쳐...</div>
+          <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", height: 90 }}>
+            <div style={{ filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
+              <div style={{ background: "#fafafa", borderRadius: 12, padding: "12px 14px", border: "1px solid #f3e8ff", marginBottom: 6 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#be185d", marginBottom: 4 }}>💰 재물운 — 연애운 — 건강운 — 🔮 사주 종합해석</div>
+                <div style={{ fontSize: 12, color: "#4b5563", lineHeight: 1.6 }}>이 꿈이 재물에 미치는 영향은... 연애에서 나타나는 신호는... 사주 오행과 결합하면...</div>
               </div>
             </div>
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.98) 55%)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(255,255,255,0) 30%, rgba(255,255,255,0.97) 75%)" }} />
           </div>
 
           {/* 잠금 CTA */}
-          <div style={{ textAlign: "center", padding: "14px 0 4px" }}>
-            <div style={{ fontSize: 20, marginBottom: 6 }}>🔐</div>
-            <p style={{ fontSize: 14, fontWeight: 800, color: "#4c1d95", margin: "0 0 4px" }}>운세별 전체 해석 보기</p>
-            <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 12px" }}>재물운·연애운·건강운·직업운 전체</p>
+          <div style={{ textAlign: "center", padding: "10px 0 4px" }}>
+            <p style={{ fontSize: 14, fontWeight: 800, color: "#4c1d95", margin: "0 0 4px" }}>🔐 운세별 전체 해석 보기</p>
+            <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 10px" }}>재물운·연애운·건강운·직업운 전체</p>
             <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 14, fontWeight: 900, padding: "12px 28px", borderRadius: 24, textDecoration: "none", boxShadow: "0 4px 16px rgba(236,72,153,0.45)", display: "inline-block" }}>
               🐱 990원으로 전체 보기
             </Link>
