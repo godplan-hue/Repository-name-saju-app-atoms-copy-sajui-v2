@@ -63,6 +63,7 @@ function PayInner() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
       }).catch(() => {});
+      sessionStorage.setItem("v2_paid", "1");
       router.push(next);
     } finally { setLoading(false); }
   };

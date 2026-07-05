@@ -21,8 +21,12 @@ export default function FortuneAnglesSection({ fortuneAngles }: Props) {
   useEffect(() => {
     try {
       const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
-      const hasPurchase = hist.some((h: { isPaid?: boolean }) => h.isPaid === true);
-      setUnlocked(hasPurchase);
+      const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+      const hasRecentPurchase = hist.some((h: { isPaid?: boolean; date?: string }) => {
+        if (!h.isPaid || !h.date) return false;
+        return new Date(h.date).getTime() > oneDayAgo;
+      });
+      setUnlocked(hasRecentPurchase);
     } catch {}
   }, []);
 
@@ -34,7 +38,7 @@ export default function FortuneAnglesSection({ fortuneAngles }: Props) {
         <span style={{ fontSize: 18 }}>⭐</span>
         <span style={{ fontWeight: 800, fontSize: 15, color: "#4c1d95" }}>운세별 관점</span>
         {unlocked ? (
-          <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: "#f0fdf4", color: "#16a34a" }}>✅ 전체 공개</span>
+          <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: "#f0fdf4", color: "#16a34a" }}>✅ 오늘 전체 공개</span>
         ) : (
           <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: "#fef3c7", color: "#b45309" }}>1개 무료</span>
         )}
@@ -70,7 +74,7 @@ export default function FortuneAnglesSection({ fortuneAngles }: Props) {
           </div>
           <div style={{ textAlign: "center", padding: "10px 0 4px" }}>
             <p style={{ fontSize: 14, fontWeight: 800, color: "#4c1d95", margin: "0 0 4px" }}>🔐 운세별 전체 해석 보기</p>
-            <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 10px" }}>점운 사주앱 이용 중이라면 자동으로 해제돼요</p>
+            <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 10px" }}>오늘 사주 결제 시 24시간 전체 해제</p>
             <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 14, fontWeight: 900, padding: "12px 28px", borderRadius: 24, textDecoration: "none", boxShadow: "0 4px 16px rgba(236,72,153,0.45)", display: "inline-block" }}>
               🐱 무료로 사주 보기
             </Link>
