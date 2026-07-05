@@ -88,8 +88,15 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(255,255,255,0) 30%, rgba(255,255,255,0.97) 75%)" }} />
           </div>
           <div style={{ textAlign: "center", padding: "10px 0 4px" }}>
+            <p style={{ fontSize: 13, color: "#374151", fontWeight: 600, margin: "0 0 8px", lineHeight: 1.6, textAlign: "left", background: "#fafafa", borderRadius: 10, padding: "10px 12px", border: "1px solid #f3e8ff" }}>
+              {luck === "길몽"
+                ? `✨ ${keyword} — 이 행운이 재물·연애·직장에서 각각 어떻게 나타나는지, 사주 오행과 결합하면 언제 현실로 오는지 구체적으로 알 수 있어요`
+                : luck === "흉몽"
+                ? `⚠️ ${keyword} — 어떤 분야에서 조심해야 하는지, 실제로 나쁜 일이 일어나는지 아닌지, 피하는 구체적인 방법까지 알 수 있어요`
+                : `🔮 ${keyword} — 재물·연애·건강 세 방면에서 각각 다른 메시지를 줘요. 내 사주와 연결하면 이 꿈이 나한테 어떤 의미인지 정확히 알 수 있어요`}
+            </p>
             <p style={{ fontSize: 14, fontWeight: 800, color: "#4c1d95", margin: "0 0 4px" }}>🔐 {keyword} 전체 해석 3개 더 보기</p>
-            <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "0 0 10px" }}>오늘 사주 결제 시 24시간 전체 해제 · 더 자세한 내용이 나와요</p>
+            <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "0 0 10px" }}>오늘 사주 결제 시 24시간 전체 해제</p>
             <Link href="/main-v2" style={{ background: G, color: "#fff", fontSize: 14, fontWeight: 900, padding: "12px 28px", borderRadius: 24, textDecoration: "none", boxShadow: "0 4px 16px rgba(236,72,153,0.45)", display: "inline-block" }}>
               🐱 990원으로 전체 보기
             </Link>
