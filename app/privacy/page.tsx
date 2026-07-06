@@ -95,6 +95,17 @@ export default function Privacy() {
             </ul>
           </section>
 
+          {/* 5-1. 개인정보 처리 위탁 */}
+          <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5-1. 개인정보 처리 위탁</h2>
+            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>회사는 원활한 서비스 제공을 위해 아래와 같이 개인정보 처리를 위탁합니다:</p>
+            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20 }}>
+              <li>• 수탁자: 포트원(주)</li>
+              <li>• 위탁 업무: 결제 처리 및 결제 데이터 관리</li>
+              <li>• 보유 기간: 위탁 계약 종료 시까지</li>
+            </ul>
+          </section>
+
           {/* 6. 고객의 권리 */}
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>6. 고객의 권리</h2>
