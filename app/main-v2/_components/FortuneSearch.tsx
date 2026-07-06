@@ -72,7 +72,7 @@ export default function FortuneSearch({ onOpenModal }: Props) {
   return (
     <div style={{ maxWidth: 560, margin: "0 auto", padding: "0 16px 8px" }}>
       <div style={{ background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderRadius: 16, padding: "14px 16px", boxShadow: "0 4px 20px rgba(236,72,153,0.15)", border: "1.5px solid rgba(236,72,153,0.2)" }}>
-        <p style={{ fontSize: 12, fontWeight: 800, color: "#ec4899", margin: "0 0 8px", textAlign: "center" }}>🔍 재물운 · 연애운 · 건강운 · 성공운 검색</p>
+        <p style={{ fontSize: 12, fontWeight: 800, color: "#ec4899", margin: "0 0 8px", textAlign: "center" }}>🔍 재물운 · 연애운 · 건강운 · 성공운 · 총운 검색</p>
         <div style={{ display: "flex", gap: 8 }}>
           <input
             value={query}
