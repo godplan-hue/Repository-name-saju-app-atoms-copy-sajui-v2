@@ -19,6 +19,7 @@ const KEYWORDS: KW[] = [
   { words: ["올해","2026","신년","총운","연간운세"], label: "올해 운세", emoji: "☀️", catKey: "🎍 신년운세" },
   { words: ["성공","목표","도전","커리어","인정","승진"], label: "성공운", emoji: "🎯", catKey: "🎯 성공운" },
   { words: ["사업","창업","동업","매출","가게","매장","장사"], label: "사업운", emoji: "💼", catKey: "🎯 성공운" },
+  { words: ["총운","전체운","종합운","전반적","인생운"], label: "총운", emoji: "✨", catKey: "✨ 총운" },
   { words: ["결혼","배우자","궁합","프러포즈","혼인","신혼"], label: "결혼·궁합", emoji: "💍", directPath: "/main-v2/payment" },
   { words: ["재회","헤어진","전남친","전여친","다시만나","복합"], label: "재회운", emoji: "💔", modalId: "reunion" },
   { words: ["이혼","이별","별거","파경","갈라서"], label: "이혼운세", emoji: "🌱", directPath: "/main-v2/payment" },
