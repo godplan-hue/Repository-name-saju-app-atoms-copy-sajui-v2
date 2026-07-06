@@ -1856,7 +1856,7 @@ function V2ResultInner() {
             <div style={{ borderTop: "1px solid rgba(236,72,153,0.15)", paddingTop: 10, marginBottom: 12 }}>
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.9 }}>읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 &gt; 디스플레이 &gt; 화면 자동 꺼짐 시간을 늘리거나, &apos;보고 있는 동안 화면 켜짐&apos; 기능을 켜두면 끊기지 않아요.</p>
             </div>
-            <p style={{ fontSize: 14, fontWeight: 900, color: "#dc2626", margin: "16px 0 10px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니 꼭 이용하세요!</p>
+            <p style={{ fontSize: 14, fontWeight: 900, color: "#dc2626", margin: "16px 0 10px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니<br />꼭 이용하세요!</p>
             <div style={{ background: "#fef2f2", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
               <p style={{ fontSize: 13, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>
                 📥 보관함 저장<br />
@@ -1878,7 +1878,7 @@ function V2ResultInner() {
       {showPcGuideModal && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowPcGuideModal(false)}>
           <div style={{ background: "white", borderRadius: 20, padding: "24px 22px", maxWidth: 360, width: "100%" }} onClick={e => e.stopPropagation()}>
-            <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니 꼭 이용하세요!</p>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니<br />꼭 이용하세요!</p>
             <div style={{ background: "#fef2f2", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
               <p style={{ fontSize: 13, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>
                 📥 보관함 저장<br />

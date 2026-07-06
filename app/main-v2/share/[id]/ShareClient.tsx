@@ -697,7 +697,7 @@ export default function ShareClient({ id }: { id: string }) {
     {showGuideModal && (
       <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
         <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "80vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
-          <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니 꼭 이용하세요!</p>
+          <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니<br />꼭 이용하세요!</p>
           <div style={{ background: "#fef2f2", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
             <p style={{ fontSize: 13, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>
               📥 보관함 저장<br />

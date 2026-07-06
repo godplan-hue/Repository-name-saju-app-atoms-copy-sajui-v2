@@ -583,7 +583,6 @@ export default function MainV2() {
   const [showModal, setShowModal] = useState<string | null>(null);
   const [modalSelectedCats, setModalSelectedCats] = useState<string[]>(["💰 재물운"]);
   const [extraOtherInput, setExtraOtherInput] = useState("");
-  const [comingSoon, setComingSoon] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
     const audio = audioRef.current;
@@ -846,8 +845,8 @@ export default function MainV2() {
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
           if (!user) { router.push("/main-v2/login"); return; }
-          if (id === "daewoon") { setComingSoon("대운(大運)"); return; }
-          if (id === "taegil") { setComingSoon("택일(擇日)"); return; }
+          if (id === "daewoon") { router.push("/main-v2/daewoon"); return; }
+          if (id === "taegil") { router.push("/main-v2/taegil"); return; }
           setShowModal(id);
         }} />
       )}
@@ -873,6 +872,7 @@ export default function MainV2() {
           <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
           <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
           <p style={{ margin: 0 }}>대표전화 010-2106-2689 · 유선 031-585-7255</p>
+          <p style={{ margin: "2px 0 0", color: "#dc2626", fontWeight: 900 }}>※ 전화 문의는 받지 않습니다. 카카오톡으로 문의해 주세요.</p>
         </div>
         <div style={{ marginBottom: 10 }}>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -1092,18 +1092,6 @@ export default function MainV2() {
         );
       })()}
 
-      {/* ── 출시예정 모달 (대운/택일) ── */}
-      {comingSoon && (
-        <div onClick={() => setComingSoon(null)} style={{ position: "fixed", inset: 0, zIndex: 3000, background: "rgba(0,0,0,0.65)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: "#1a0a3d", border: "1px solid rgba(124,58,237,0.4)", borderRadius: 24, padding: "36px 28px", textAlign: "center", maxWidth: 300, margin: "0 20px", boxShadow: "0 12px 40px rgba(0,0,0,0.5)" }}>
-            <div style={{ fontSize: 56, marginBottom: 14 }}>🚧</div>
-            <h2 style={{ color: "#fbbf24", fontSize: 20, fontWeight: 900, margin: "0 0 10px" }}>{comingSoon}</h2>
-            <div style={{ background: "#dc2626", color: "white", borderRadius: 20, padding: "4px 16px", display: "inline-block", fontSize: 13, fontWeight: 900, marginBottom: 14 }}>출시 예정</div>
-            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, margin: "0 0 22px", lineHeight: 1.7 }}>열심히 만들고 있어요!<br/>조금만 기다려 주세요 🙏</p>
-            <button onClick={() => setComingSoon(null)} style={{ background: "linear-gradient(135deg,#7c3aed,#5b21b6)", color: "white", border: "none", borderRadius: 50, padding: "11px 28px", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
-          </div>
-        </div>
-      )}
     </main>
   );
 }
