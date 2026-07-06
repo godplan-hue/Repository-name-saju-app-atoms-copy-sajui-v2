@@ -1137,15 +1137,13 @@ function V2ResultInner() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* ── 이용 안내 버튼 (모바일/PC 항상 표시) ── */}
-        {!isPartner && (
-          <button
-            onClick={() => isMob ? setShowGuideModal(true) : setShowPcGuideModal(true)}
-            style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 14, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
-          >
-            {isMob ? "📱 꼭 사용 전에 보세요" : "📌 꼭 읽어보세요 — 저장·공유 버튼 안내"}
-          </button>
-        )}
+        {/* ── 이용 안내 버튼 (항상 표시) ── */}
+        <button
+          onClick={() => isMob ? setShowGuideModal(true) : setShowPcGuideModal(true)}
+          style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 14, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
+        >
+          {isMob ? "📱 꼭 사용 전에 보세요" : "📌 꼭 읽어보세요 — 저장·공유 버튼 안내"}
+        </button>
 
 
         {/* ── 쿠폰·혜택 배너 — 페이지 최상단 ── */}
