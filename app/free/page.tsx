@@ -69,7 +69,7 @@ export default function FreePage() {
           <h1 style={{ color: "#fbbf24", fontSize: 22, fontWeight: 900, margin: "0 0 6px" }}>무료 재물운 받기</h1>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: 0, lineHeight: 1.7 }}>
             이름·생년월일·전화번호만 남기면<br />
-            <strong style={{ color: "#ec4899" }}>재물운 요약 + 990원 무료쿠폰</strong> 바로 드려요
+            <strong style={{ color: "#ec4899" }}>재물운 요약 + 운세 무료쿠폰</strong> 바로 드려요
           </p>
         </div>
 
@@ -150,9 +150,9 @@ export default function FreePage() {
 
             {/* 쿠폰 */}
             <div style={{ background: "linear-gradient(135deg,#fef2f2,#fff7ed)", border: "2px dashed #ec4899", borderRadius: 14, padding: "16px", textAlign: "center", marginBottom: 16 }}>
-              <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 4px" }}>990원 무료쿠폰 코드</p>
+              <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 4px" }}>운세 무료쿠폰 코드</p>
               <p style={{ fontSize: 28, fontWeight: 900, color: "#be185d", margin: "0 0 4px", letterSpacing: 3 }}>{result.code}</p>
-              <p style={{ fontSize: 11, color: "#6d28d9", margin: 0, fontWeight: 700 }}>결제 화면에서 입력 → 990원 무료</p>
+              <p style={{ fontSize: 11, color: "#6d28d9", margin: 0, fontWeight: 700 }}>결제 화면에서 입력 → 운세 1개 무료</p>
             </div>
 
             <button
