@@ -162,7 +162,7 @@ function PaymentPartnerInner() {
           <div style={{ border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: 16, marginBottom: 12, textAlign: "center" }}>
             <p style={{ color: "#ffffff", fontSize: 12, fontWeight: 800, margin: "0 0 10px 0", lineHeight: 2 }}>카드 결제를 원하시면<br/>카카오톡으로 연락주세요 😊<br/>결제 링크를 바로 보내드립니다.</p>
             <a
-              href="https://open.kakao.com/o/sEwhSEWg"
+              href="http://pf.kakao.com/_xbwtPX/chat"
               target="_blank"
               rel="noopener noreferrer"
               style={{ display: "inline-block", padding: "10px 24px", background: "#FEE500", color: "#000000", borderRadius: 8, fontWeight: 900, fontSize: 13, textDecoration: "none" }}
