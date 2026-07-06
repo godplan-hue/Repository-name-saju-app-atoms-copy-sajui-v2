@@ -1663,37 +1663,22 @@ function V2ResultInner() {
           🏠 홈으로
         </button>
 
-        {/* ── 꿈해몽 배너 ── */}
-        {!isPartner && paid && (
+        {/* ── 꿈해몽 배너 (항상 표시) ── */}
+        {!isPartner && (
           <div onClick={() => router.push("/haemong")} style={{ margin: "10px 0", borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>
             <div style={{ background: "#dc2626", padding: "8px 16px" }}>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🎁 결제 혜택</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🎁 사주 결제 혜택</span>
             </div>
             <div style={{ padding: "14px 16px" }}>
               <p style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", lineHeight: 1.5 }}>
                 🌙 꿈해몽 전체 <span style={{ background: "#dc2626", color: "#fff", borderRadius: 6, padding: "2px 8px", fontSize: 13 }}>무료</span> 이용 가능
               </p>
               <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 12px", lineHeight: 1.7 }}>
-                오늘 꾼 꿈이 있으신가요?<br />운세별 전체 해석을 무료로 보실 수 있어요
+                오늘 꾼 꿈이 있으신가요?<br />사주 결제하면 꿈해몽 전체 해석 무료로 볼 수 있어요
               </p>
               <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "11px 0", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>
                 무료 꿈해몽 보러가기 →
               </div>
-            </div>
-          </div>
-        )}
-        {!isPartner && !paid && (
-          <div onClick={() => router.push("/haemong")} style={{ margin: "10px 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", background: "#fff", border: "2px solid #7c3aed", boxShadow: "0 4px 16px rgba(124,58,237,0.2)" }}>
-            <div style={{ background: "linear-gradient(135deg,#6d28d9,#7c3aed)", padding: "8px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🌙 꿈해몽</span>
-              <span style={{ background: "#fbbf24", color: "#1a0f2e", fontSize: 11, fontWeight: 900, padding: "2px 8px", borderRadius: 20 }}>사주 결제하면 하루 무료!</span>
-            </div>
-            <div style={{ padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 12, color: "#4c1d95", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-                오늘 꾼 꿈이 있으신가요?<br />
-                사주 결제 후 꿈해몽 전체 해석 <strong>하루 무료</strong>로 볼 수 있어요
-              </p>
-              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "7px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
             </div>
           </div>
         )}
