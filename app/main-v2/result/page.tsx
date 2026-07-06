@@ -1178,24 +1178,6 @@ function V2ResultInner() {
             </div>
           </div>
         )}
-        {!isPartner && (
-          <div
-            onClick={() => router.push("/main-v2/payment")}
-            style={{ margin: "0 0 14px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
-          >
-            <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 18 }}>✨</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>신규! 대운·택일 2,900원</span>
-            </div>
-            <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-                <strong>대운(大運)</strong> — 10년 단위 운명의 큰 흐름 분석<br />
-                <strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기
-              </p>
-              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
-            </div>
-          </div>
-        )}
 
         {/* ── 사주 Q&A 버튼 ── */}
         {profile?.name && profile?.birthYear && (
@@ -1758,6 +1740,26 @@ function V2ResultInner() {
 
         {/* 쿠폰 퍼널 — 무료 사용자에게만 5초 후 표시 */}
         {!isPartner && !paid && <CouponFunnel />}
+
+        {/* ── 대운·택일 배너 — 맨 아래 ── */}
+        {!isPartner && (
+          <div
+            onClick={() => router.push("/main-v2/payment")}
+            style={{ margin: "14px 0 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 18 }}>✨</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>신규! 대운·택일 2,900원</span>
+            </div>
+            <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+                <strong>대운(大運)</strong> — 10년 단위 운명의 큰 흐름 분석<br />
+                <strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기
+              </p>
+              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── 운세 선택 모달 ── */}
