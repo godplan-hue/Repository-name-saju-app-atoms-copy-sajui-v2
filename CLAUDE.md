@@ -155,6 +155,47 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
 - 접근 경로: `/main-v2/daewoon` → 결제 → `/main-v2/daewoon/pay`
 - sessionStorage 키: `daeunPaid`, `daeunPaidCount`, `daeunPaidIndices`
 
+### Q&A 시스템 — ✅ 완성
+- 11개 카테고리 × ~33문항 × 5오행 = 약 1800개 맞춤 답변 (`lib/qa/`)
+- QASection 컴포넌트: `components/QASection.tsx` (카테고리 탭, 검색, 오행 맞춤 답변)
+- QAChatWidget 컴포넌트: `components/QAChatWidget.tsx` (복냥이 채팅 형식)
+- 전용 페이지: `/main-v2/qa-list` (QASection 단독 페이지)
+- 결과지에서 Q&A 버튼/배너 → `/main-v2/qa-list` 이동
+- **⛔ QASection을 결과지에 인라인으로 다시 추가하지 말 것 — 이미 qa-list에 있음**
+
+### 고민별 SEO 랜딩 — ✅ 완성 (10개)
+- `/love`, `/love-destiny`, `/love-saju` (연애)
+- `/marriage` (결혼)
+- `/career`, `/career-change` (직업/이직)
+- `/health-saju` (건강)
+- `/wealth`, `/wealth-saju` (재물)
+- `/reunion` (재회)
+
+### 파트너 랜딩 (`/lp/[id]/`) — ✅ 완성 (2026-07-06)
+- 파트너별 커스텀 랜딩 페이지 (서브도메인 방식)
+- 고객 정보 인테이크 폼 (`LandingForm.tsx`): 이름/생년월일/성별/시간 입력
+- 입력값 → `localStorage.setItem("v2_saved_profile", ...)` 저장 후 `/main-v2?ref=파트너ID` 이동
+- 히어로 이미지 5종 선택 가능 (stars/moon/lotus/candle/mystic)
+- 파트너 랜딩 생성기: `app/partner/landing-generator/page.tsx`
+
+### 메인 고민 검색창 (FortuneSearch) — ✅ 완성 (2026-07-06)
+- 컴포넌트: `app/main-v2/_components/FortuneSearch.tsx`
+- 메인 페이지 BannerSlider 바로 아래에 위치
+- 키워드 매칭 방식 (API 없음), 12개 카테고리
+- 검색 결과 → 각 운세별 결제 페이지로 직접 연결
+  - 재물운/연애운/건강운/성공운/사업운/올해운세 → `/main-v2/pay?amount=3900`
+  - 결혼궁합/이혼운세 → `/main-v2/pay?amount=990`
+  - 재회운/반려동물 → `/main-v2/pay?amount=2900`
+  - 대운 → `/main-v2/daewoon/pay`
+  - 택일 → `/main-v2/taegil`
+
+### localStorage / sessionStorage 키 정리
+- `v2_saved_profile` — 사용자 프로필 JSON (name, birthYear, birthMonth, birthDay, gender, birthHour, isLunar, phone, email)
+- `referred_by` — 파트너 ID (파트너 랜딩 → 메인 이동 시 저장)
+- `v2_paid_cats` — 결제된 운세 카테고리 배열 (예: `["💰 재물운"]`)
+- `daeunPaid`, `daeunPaidCount`, `daeunPaidIndices` — 대운 결제 상태
+- `v2_search_cat` — 검색창에서 선택된 카테고리 키
+
 ### SEO 현황 (2026-07-06 기준)
 - SEO 랜딩페이지: 83개 (`public/sitemap.xml`, 커밋 `742987a`)
 - **구글 서치콘솔**: sitemap.xml 제출 완료 ✅, 81개 URL 인덱싱 진행 중
@@ -172,7 +213,13 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
 | 항목 | 상태 |
 |------|------|
 | 대운 출시 | ✅ 완료 (2026-07-06) |
+| 고민 검색창 (FortuneSearch) | ✅ 완료 (2026-07-06) |
+| 파트너 랜딩 인테이크 폼 | ✅ 완료 (2026-07-06) |
+| 파트너 추천링크 + 수수료 시스템 | 미착수 |
+| 연도별운세 상품 | 확인 필요 (`/main-v2/yearly` 존재 여부) |
 | 택일(擇日) 기능 | 미착수 (SEO 랜딩만 있음: `/taegil`) |
+| 카카오 알림톡 연동 | ⏳ 승인 대기 (심사중, 승인 확인 후 작업) |
+| 3개 앱 연결 (육아/진로/자소서) | ⏳ 스크린샷/URL 받은 후 작업 |
 | Cloudflare 보안 설정 | ✅ 완료 (AI 크롤러 차단, SSL 전체엄격) |
 | SEO 사이트맵 업데이트 | ✅ 완료 (83개, 구글 제출 완료) |
 | 네이버 사이트맵 재제출 | ⚠️ 500 오류로 미완 — 재시도 필요 |
