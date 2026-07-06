@@ -21,7 +21,13 @@ export default function SituationsSection({ situations }: Props) {
     try {
       const unlockUntil = Number(localStorage.getItem("haemong_unlock_until") || "0");
       if (unlockUntil > Date.now()) { setUnlocked(true); return; }
-      setUnlocked(false);
+      const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
+      const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+      const hasRecentPurchase = hist.some((h: { isPaid?: boolean; date?: string }) => {
+        if (!h.isPaid || !h.date) return false;
+        return new Date(h.date).getTime() > oneDayAgo;
+      });
+      setUnlocked(hasRecentPurchase);
     } catch {}
   }, []);
 
