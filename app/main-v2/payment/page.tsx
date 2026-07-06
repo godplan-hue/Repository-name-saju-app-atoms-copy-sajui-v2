@@ -492,10 +492,10 @@ function PaymentInner() {
             <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>📦 패키지 (더 저렴해!)</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
               {[
-                { id: "basic",    emoji: "🐱", label: "기본 분석",  sub: "재물운 + 연애운",        pages: 30,  price: 9900,  badge: "기본" },
-                { id: "standard", emoji: "🌟", label: "베이직",     sub: "올해+재물+연애+월별",     pages: 75,  price: 19900, badge: null },
-                { id: "premium",  emoji: "💎", label: "프리미엄",   sub: "올해+재물+연애+월별+건강", pages: 100, price: 24900, badge: null },
-                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)", pages: 150, price: 29900, badge: null },
+                { id: "basic",    emoji: "🐱", label: "기본 분석",  sub: "재물운 + 연애운",        pages: 30,  price: 9900  },
+                { id: "standard", emoji: "🌟", label: "베이직",     sub: "올해+재물+연애+월별",     pages: 75,  price: 19900 },
+                { id: "premium",  emoji: "💎", label: "프리미엄",   sub: "올해+재물+연애+월별+건강", pages: 100, price: 24900 },
+                { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)", pages: 150, price: 29900 },
               ].map(s => (
                 <button key={s.id}
                   onClick={async () => {
@@ -507,7 +507,7 @@ function PaymentInner() {
                   <p style={{ margin: "0 0 3px", fontSize: 20 }}>{s.emoji}</p>
                   <p style={{ margin: "0 0 2px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
                   <p style={{ margin: "0 0 4px", fontSize: 8, color: "rgba(255,255,255,0.7)", fontWeight: 600, wordBreak: "keep-all", lineHeight: 1.3 }} dangerouslySetInnerHTML={{ __html: s.sub }} />
-                  <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#c4b5fd" }}>{s.badge ? s.badge : `₩${s.price.toLocaleString()}`}</p>
+                  <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#c4b5fd" }}>{`₩${s.price.toLocaleString()}`}</p>
                 </button>
               ))}
             </div>
