@@ -674,10 +674,7 @@ export default function ShareClient({ id }: { id: string }) {
           <div style={{ borderTop: "1px solid rgba(236,72,153,0.15)", paddingTop: 10, marginBottom: 12 }}>
             <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.9 }}>읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 &gt; 디스플레이 &gt; 화면 자동 꺼짐 시간을 늘리거나, &apos;보고 있는 동안 화면 켜짐&apos; 기능을 켜두면 끊기지 않아요.</p>
           </div>
-          <p style={{ fontSize: 12, color: "#4b5563", margin: "12px 0 6px", fontWeight: 700 }}>📌 맨 아래 버튼:</p>
-          <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 16px", lineHeight: 2 }}>
-            📥 보관함 저장 · 📂 보관함 보기 · 🖼 이미지 저장 · 🔊 읽기 · 📤 공유
-          </p>
+          <p style={{ fontSize: 12, color: "#4b5563", margin: "12px 0 10px", lineHeight: 2, whiteSpace: "pre-line" }}>{`📌 맨 아래로 스크롤하면 버튼이 있어요\n📥 보관함에 저장\n📂 저장된 사주 다시 보기\n🖼 이미지로 저장\n🔊 읽기 — 누르면 사주를 소리로 읽어드려요!\n📤 카카오톡으로 공유`}</p>
           <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
             확인
           </button>
