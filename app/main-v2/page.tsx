@@ -872,6 +872,7 @@ export default function MainV2() {
           <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
           <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
           <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
+          <p style={{ margin: 0 }}>대표전화 010-2106-2689</p>
         </div>
         <div style={{ marginBottom: 10 }}>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>

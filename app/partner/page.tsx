@@ -124,6 +124,7 @@ export default function PartnerLanding() {
           <div style={{ color: "#d4c896", fontSize: 12, fontWeight: 700, lineHeight: 1.9, marginBottom: 14, letterSpacing: "0.1px" }}>
             <p style={{ margin: "0 0 2px 0" }}>대표 장문정 · 상호 기획의신</p>
             <p style={{ margin: "0 0 2px 0" }}>사업자등록번호 773-60-00359</p>
+            <p style={{ margin: "0 0 2px 0" }}>대표전화 010-2106-2689</p>
             <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
           </div>
           <div style={{ color: "#e9d5a8", fontSize: 12, fontWeight: 700, lineHeight: 1.8, marginBottom: 14 }}>
