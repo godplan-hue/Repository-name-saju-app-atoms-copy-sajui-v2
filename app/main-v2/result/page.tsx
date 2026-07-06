@@ -1741,7 +1741,7 @@ function V2ResultInner() {
             </div>
             <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-                <strong>대운(大運)</strong> — 10년 단위 운명의 큰 흐름 분석<br />
+                <strong>대운(大運)</strong> — 10년 단위<br />운명의 큰 흐름 분석<br />
                 <strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기
               </p>
               <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>

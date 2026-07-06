@@ -23,25 +23,9 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
 
   useEffect(() => {
     try {
-      // 결제 직후 저장된 24시간 잠금 해제 타임스탬프
       const unlockUntil = Number(localStorage.getItem("haemong_unlock_until") || "0");
-      if (unlockUntil > Date.now()) {
-        setUnlocked(true);
-        return;
-      }
-      // 방금 결제한 경우 (같은 탭 세션)
-      if (sessionStorage.getItem("v2_paid") === "1") {
-        setUnlocked(true);
-        return;
-      }
-      // 보관함에 24시간 이내 결제 기록이 있는 경우
-      const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
-      const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
-      const hasRecentPurchase = hist.some((h: { isPaid?: boolean; date?: string }) => {
-        if (!h.isPaid || !h.date) return false;
-        return new Date(h.date).getTime() > oneDayAgo;
-      });
-      setUnlocked(hasRecentPurchase);
+      if (unlockUntil > Date.now()) { setUnlocked(true); return; }
+      setUnlocked(false);
     } catch {}
   }, []);
 
