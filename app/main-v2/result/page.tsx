@@ -462,6 +462,21 @@ function V2ResultInner() {
           const sp = new URLSearchParams(window.location.search);
           sp.set("sid", data.id);
           router.replace(`${window.location.pathname}?${sp.toString()}`, { scroll: false });
+          // 결제 시 입력한 번호로 영구 결과 링크 SMS 발송
+          try {
+            const phone = sessionStorage.getItem("v2_payment_phone");
+            if (phone) {
+              fetch("/api/v2/send-sms", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  to: phone,
+                  text: `[점운] 사주 분석이 완료됐어요 🔮\n언제든 다시 확인하세요!\nhttps://jeomun.com/main-v2/share/${data.id}`,
+                }),
+              }).catch(() => {});
+              sessionStorage.removeItem("v2_payment_phone");
+            }
+          } catch {}
         }
       } catch {}
     })();
