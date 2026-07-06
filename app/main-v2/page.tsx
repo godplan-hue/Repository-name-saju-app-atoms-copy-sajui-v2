@@ -734,7 +734,10 @@ export default function MainV2() {
 
       {/* 슬라이드 배너 */}
       <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
-      <FortuneSearch />
+      <FortuneSearch onOpenModal={(catKey, modalId) => {
+        if (modalId) { setShowModal(modalId); }
+        else if (catKey) { setModalSelectedCats([catKey]); setShowModal("wealth5"); }
+      }} />
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
