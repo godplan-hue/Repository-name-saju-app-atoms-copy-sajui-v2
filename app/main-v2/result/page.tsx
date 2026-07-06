@@ -263,6 +263,7 @@ function V2ResultInner() {
   const [isMob, setIsMob] = useState(false);
   const [isKakao, setIsKakao] = useState(false);
   const [showGuideModal, setShowGuideModal] = useState(false);
+  const [showPcGuideModal, setShowPcGuideModal] = useState(false);
   const toggleMusic = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -1146,6 +1147,17 @@ function V2ResultInner() {
           </button>
         )}
 
+        {/* ── PC 전용: 저장·공유 안내 버튼 ── */}
+        {!isPartner && !isMob && (
+          <button
+            onClick={() => setShowPcGuideModal(true)}
+            style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 14, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
+          >
+            📌 꼭 읽어보세요 — 저장·공유 버튼 안내
+          </button>
+        )}
+
+
         {/* ── 쿠폰·혜택 배너 — 페이지 최상단 ── */}
         {!isPartner && <KakaoShareCouponBanner />}
         {!isPartner && (
@@ -1594,6 +1606,9 @@ function V2ResultInner() {
           </>
         )}
 
+        {/* ── 저장·공유 버튼 영역 ── */}
+        <div id="action-buttons" />
+
         {/* ── 990원: 공유하기 + 유료 결제하기 + 다시 분석 + 보관함 저장 ── */}
         {tier === "select" && (
           <>
@@ -1836,10 +1851,41 @@ function V2ResultInner() {
             <p style={{ fontSize: 14, fontWeight: 900, color: "#be185d", margin: "0 0 12px" }}>📱 모바일 이용 안내</p>
             <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 10px", lineHeight: 2 }}>크롬이나 구글로 바로 접속하셨다면 이미지 저장, 보관함, 읽기 모두 바로 이용 가능해요.</p>
             <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 10px", lineHeight: 2, whiteSpace: "pre-line" }}>{`모바일(카카오톡)에서 이미지 저장하려면\n결과지 받고 바로\n밑에 점 3개 누르고\n다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장돼요.\n보관함도 전체 사주 저장이 돼요.\n보관함 읽기 누르면 읽기도 가능해요.\n\n단, VIP 커플팩은 용량이 너무 커서\n이미지 저장이 안 돼요.\n점 3개 옆 링크 복사 눌러서\n카톡, 문자, 메일, 원하는 곳에\n붙여넣고 보면 돼요.`}</p>
-            <div style={{ borderTop: "1px solid rgba(236,72,153,0.15)", paddingTop: 10, marginBottom: 16 }}>
+            <div style={{ borderTop: "1px solid rgba(236,72,153,0.15)", paddingTop: 10, marginBottom: 12 }}>
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.9 }}>읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 &gt; 디스플레이 &gt; 화면 자동 꺼짐 시간을 늘리거나, &apos;보고 있는 동안 화면 켜짐&apos; 기능을 켜두면 끊기지 않아요.</p>
             </div>
+            <div style={{ borderTop: "1px solid rgba(220,38,38,0.2)", paddingTop: 10, marginBottom: 16, background: "#fef2f2", borderRadius: 10, padding: "10px 12px" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 6px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니 꼭 이용하세요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2 }}>
+                📥 보관함 저장 · 📂 보관함 보기<br />
+                🖼 이미지 저장 · 🔊 읽기<br />
+                📤 카카오톡으로 공유<br />
+                <span style={{ fontWeight: 700, color: "#dc2626" }}>끝까지 스크롤해서 모두 사용해보세요!</span>
+              </p>
+            </div>
             <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
+              확인
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── PC 저장·공유 안내 모달 ── */}
+      {showPcGuideModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowPcGuideModal(false)}>
+          <div style={{ background: "white", borderRadius: 20, padding: "24px 22px", maxWidth: 360, width: "100%" }} onClick={e => e.stopPropagation()}>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니 꼭 이용하세요!</p>
+            <div style={{ background: "#fef2f2", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>
+                📥 보관함 저장<br />
+                📂 보관함 보기<br />
+                🖼 이미지 저장<br />
+                🔊 읽기<br />
+                📤 카카오톡으로 공유
+              </p>
+            </div>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "#dc2626", margin: "0 0 16px", textAlign: "center" }}>끝까지 스크롤해서 모두 사용해보세요!</p>
+            <button onClick={() => setShowPcGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
               확인
             </button>
           </div>
