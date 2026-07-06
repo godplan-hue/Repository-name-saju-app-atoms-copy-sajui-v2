@@ -45,38 +45,28 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
         {unlocked ? (
           <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: "#f0fdf4", color: "#16a34a" }}>✅ 오늘 전체 공개</span>
         ) : (
-          <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: "#fef3c7", color: "#b45309" }}>1개 무료</span>
+          <span style={{ marginLeft: "auto", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 10, background: "#fef3c7", color: "#b45309" }}>🔒 결제 후 공개</span>
         )}
       </div>
 
-      {/* 첫 번째 — 항상 무료 공개 */}
-      <div style={{ background: "#fafafa", borderRadius: 12, padding: "14px", border: "1px solid #f3e8ff", marginBottom: 10 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>{fortuneAngles[0].emoji} {fortuneAngles[0].type}</div>
-        <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{fortuneAngles[0].content}</div>
-      </div>
-
       {unlocked ? (
-        /* 사주앱 결제자 — 나머지 전체 공개 */
+        /* 사주앱 결제자 — 전체 공개 */
         <>
-          {fortuneAngles.slice(1).map((fa, i) => (
+          {fortuneAngles.map((fa, i) => (
             <div key={i} style={{ background: "#fafafa", borderRadius: 12, padding: "14px", border: "1px solid #f3e8ff", marginBottom: 10 }}>
               <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 6 }}>{fa.emoji} {fa.type}</div>
               <div style={{ fontSize: 13, color: "#4b5563", lineHeight: 1.7 }}>{fa.content}</div>
             </div>
           ))}
-          {/* 결제 후에도 SNS 공유 배너 표시 */}
           <div style={{ marginTop: 4, padding: "10px 14px", borderRadius: 12, background: "linear-gradient(135deg,#fef2f2,#fee2e2)", border: "1.5px solid #fca5a5", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{ fontSize: 12, color: "#dc2626", fontWeight: 700 }}>📸 소개·추천 글 올리면 쿠폰 5장 + 꿈해몽 무료!</span>
-            <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#dc2626", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>
-              받기 →
-            </Link>
+            <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#dc2626", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>받기 →</Link>
           </div>
         </>
       ) : (
-        /* 미결제 — 잠금 */
+        /* 미결제 — 전체 잠금 */
         <>
-          {/* 잠긴 운세별 카드 목록 */}
-          {fortuneAngles.slice(1).map((fa, i) => (
+          {fortuneAngles.map((fa, i) => (
             <div key={i} style={{ background: "#fafafa", borderRadius: 12, padding: "12px 14px", border: "1px solid #f3e8ff", marginBottom: 8, display: "flex", alignItems: "center", gap: 10 }}>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#be185d", marginBottom: 3 }}>{fa.emoji} {fa.type}</div>
@@ -85,13 +75,9 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
               <span style={{ fontSize: 22, opacity: 0.5 }}>🔒</span>
             </div>
           ))}
-
-          {/* SNS 쿠폰 배너 */}
           <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 12, background: "linear-gradient(135deg,#fef2f2,#fee2e2)", border: "1.5px solid #fca5a5", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{ fontSize: 12, color: "#dc2626", fontWeight: 700 }}>📸 소개·추천 글 올리면 쿠폰 5장 + 꿈해몽 무료!</span>
-            <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#dc2626", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>
-              받기 →
-            </Link>
+            <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#dc2626", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>받기 →</Link>
           </div>
         </>
       )}
