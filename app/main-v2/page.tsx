@@ -874,9 +874,10 @@ export default function MainV2() {
           <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
         </div>
         <div style={{ marginBottom: 10 }}>
-          <p style={{ color: "#831843", fontSize: 11, fontWeight: 800, margin: "0 0 3px" }}>📧 info@jeomun.com · 📞 010-4714-2689</p>
-          <p style={{ color: "#a78bfa", fontSize: 10.5, fontWeight: 700, margin: "0 0 8px" }}>전화 상담은 제공하지 않습니다. 문의하기를 이용해주세요.</p>
-          <a href="mailto:info@jeomun.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #ec4899", borderRadius: 20, color: "#ec4899", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>문의하기</a>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "6px 16px", background: "#FEE500", color: "#1a1a1a", borderRadius: 20, textDecoration: "none", fontWeight: 800, fontSize: 11 }}>💬 카카오톡 문의</a>
+            <a href="mailto:info@jeomun.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #ec4899", borderRadius: 20, color: "#ec4899", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>📧 이메일 문의</a>
+          </div>
         </div>
         <div style={{ fontSize: 11, marginBottom: 8 }}>
           <a href="/terms" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>이용약관</a>
