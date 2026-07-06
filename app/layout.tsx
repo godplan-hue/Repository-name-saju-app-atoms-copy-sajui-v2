@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import RefTracker from "@/app/_components/RefTracker";
 import RefRewardNotice from "@/app/_components/RefRewardNotice";
 import "./globals.css";
@@ -51,6 +52,7 @@ export default function RootLayout({
         <RefTracker />
         <RefRewardNotice />
         {children}
+        <Analytics />
       </body>
       <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-Y2MVHQYPMQ" />
       <Script id="ga-init" strategy="afterInteractive">{`
