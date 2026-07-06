@@ -105,7 +105,7 @@ export default function ShareActions({ keyword }: Props) {
                 2. 모바일에서는 카카오톡 바로 공유 가능<br />
                 3. PC에서는 링크가 복사됨<br />
                 &nbsp;&nbsp;&nbsp;→ 카카오 직접 붙여넣기<br />
-                <span style={{ fontSize: 13, fontWeight: 800, color: "#374151" }}>* 친구에게 오늘 꾼 꿈 해몽 결과를 바로 보낼 수 있어요</span>
+                <span style={{ fontSize: 13, fontWeight: 800, color: "#374151" }}>* 친구에게 오늘 꾼 꿈 해몽 결과를<br />바로 보낼 수 있어요</span>
               </div>
             </div>
 
