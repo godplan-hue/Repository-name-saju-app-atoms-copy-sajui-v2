@@ -592,11 +592,24 @@ export default function ShareClient({ id }: { id: string }) {
         )}
 
 
-        {/* 꿈해몽 버튼 */}
+        {/* 꿈해몽 배너 */}
         {!entry.businessName && (
-          <button onClick={() => router.push("/haemong")} style={{ width: "100%", marginBottom: 10, padding: "14px 0", background: "linear-gradient(135deg,#1a0635,#3b0764)", color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 16px rgba(139,92,246,0.3)" }}>
-            🌙 꿈해몽 — 오늘 꾼 꿈 무료 해석하기
-          </button>
+          <div onClick={() => router.push("/haemong")} style={{ margin: "10px 0", borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>
+            <div style={{ background: "#dc2626", padding: "8px 16px" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🎁 사주 결제 혜택</span>
+            </div>
+            <div style={{ padding: "14px 16px" }}>
+              <p style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", lineHeight: 1.5 }}>
+                🌙 꿈해몽 전체 <span style={{ background: "#dc2626", color: "#fff", borderRadius: 6, padding: "2px 8px", fontSize: 13 }}>무료</span> 이용 가능
+              </p>
+              <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 12px", lineHeight: 1.7 }}>
+                오늘 꾼 꿈이 있으신가요?<br />사주 결제하면 꿈해몽 전체 해석 무료로 볼 수 있어요
+              </p>
+              <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "11px 0", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>
+                무료 꿈해몽 보러가기 →
+              </div>
+            </div>
+          </div>
         )}
 
         <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>

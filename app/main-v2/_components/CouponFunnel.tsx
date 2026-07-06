@@ -17,7 +17,7 @@ export default function CouponFunnel() {
 
   useEffect(() => {
     if (dismissed) return;
-    const already = sessionStorage.getItem("coupon_funnel_shown");
+    const already = localStorage.getItem("coupon_funnel_shown");
     if (already) return;
     const t = setTimeout(() => setVisible(true), 5000);
     return () => clearTimeout(t);
@@ -36,7 +36,7 @@ export default function CouponFunnel() {
       const data = await res.json();
       if (data.code) {
         setCode(data.code);
-        sessionStorage.setItem("coupon_funnel_shown", "1");
+        localStorage.setItem("coupon_funnel_shown", "1");
       } else {
         setError("쿠폰 발급에 실패했어요. 다시 시도해주세요.");
       }
@@ -50,7 +50,7 @@ export default function CouponFunnel() {
   function dismiss() {
     setVisible(false);
     setDismissed(true);
-    sessionStorage.setItem("coupon_funnel_shown", "1");
+    localStorage.setItem("coupon_funnel_shown", "1");
   }
 
   if (!visible) return null;
@@ -157,14 +157,17 @@ export default function CouponFunnel() {
                 </div>
 
                 <button
-                  onClick={() => router.push("/main-v2/pay?amount=693&next=/payment-complete%3Fprice%3D693")}
+                  onClick={() => {
+                    try { navigator.clipboard.writeText(code); } catch {}
+                    router.push("/main-v2/payment");
+                  }}
                   style={{
                     width: "100%", padding: "15px", borderRadius: 12, border: "none",
                     background: G, color: "#fff", fontSize: 15, fontWeight: 900,
                     cursor: "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.4)",
                   }}
                 >
-                  🐱 지금 바로 결제하러 가기
+                  📋 코드 복사 후 결제 페이지로 →
                 </button>
                 <button
                   onClick={() => setOpen(false)}
