@@ -3,7 +3,7 @@ import { db } from "@/lib/firebase";
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, phone, email, birthYear, birthMonth, birthDay, gender, birthHour, relationship } = await request.json();
+    const { name, phone, email, birthYear, birthMonth, birthDay, gender, birthHour, relationship, referredBy } = await request.json();
     if (!name || (!phone && !email)) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
       name, phone: phone || "", email: email || "",
       birthYear: birthYear || "", birthMonth: birthMonth || "", birthDay: birthDay || "",
       gender: gender || "", birthHour: birthHour || "", relationship: relationship || "",
+      referredBy: referredBy || "",
       consentGiven: true, createdAt: new Date().toISOString(),
     };
     const ref = await db.ref("consumerCustomers").push(entry);

@@ -12,26 +12,48 @@ const HOURS = [
 export default function LandingForm({ partnerId, ctaText, primary }: { partnerId: string; ctaText: string; primary: string }) {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [birth, setBirth] = useState("");
   const [gender, setGender] = useState<"male" | "female" | "">("");
   const [hour, setHour] = useState("모름");
   const [lunar, setLunar] = useState(false);
   const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name.trim()) { setErr("이름을 입력해주세요."); return; }
+    if (!phone.trim() || phone.replace(/\D/g, "").length < 10) { setErr("전화번호를 입력해주세요."); return; }
     if (birth.length !== 8 || isNaN(Number(birth))) { setErr("생년월일 8자리를 입력해주세요. 예) 19950315"); return; }
     if (!gender) { setErr("성별을 선택해주세요."); return; }
     setErr("");
+    setLoading(true);
 
     const y = birth.slice(0, 4), m = birth.slice(4, 6), d = birth.slice(6, 8);
     const birthHour = hour === "모름" ? "" : hour.replace(/\(.*\)/, "").trim();
+
+    // Firebase DB에 저장 (consumerCustomers)
     try {
-      const profile = { name: name.trim(), birthYear: y, birthMonth: m, birthDay: d, gender, birthHour, isLunar: lunar, phone: "", email: "" };
+      await fetch("/api/v2/customer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          phone: phone.replace(/\D/g, ""),
+          birthYear: y, birthMonth: m, birthDay: d,
+          gender, birthHour,
+          referredBy: partnerId,
+        }),
+      });
+    } catch {}
+
+    // localStorage에도 저장 (메인 앱에서 바로 사용)
+    try {
+      const profile = { name: name.trim(), birthYear: y, birthMonth: m, birthDay: d, gender, birthHour, isLunar: lunar, phone: phone.replace(/\D/g, ""), email: "" };
       localStorage.setItem("v2_saved_profile", JSON.stringify(profile));
       localStorage.setItem("referred_by", partnerId);
     } catch {}
 
+    setLoading(false);
     router.push(`/main-v2?ref=${partnerId}`);
   };
 
@@ -54,6 +76,17 @@ export default function LandingForm({ partnerId, ctaText, primary }: { partnerId
         </div>
 
         <div>
+          <label style={label}>전화번호</label>
+          <input
+            value={phone}
+            onChange={e => setPhone(e.target.value.replace(/[^\d-]/g, ""))}
+            style={inp}
+            placeholder="예) 010-1234-5678"
+            inputMode="tel"
+          />
+        </div>
+
+        <div>
           <label style={label}>생년월일 <span style={{ fontWeight: 400, color: "#9ca3af" }}>(8자리 숫자)</span></label>
           <input
             value={birth}
@@ -63,14 +96,8 @@ export default function LandingForm({ partnerId, ctaText, primary }: { partnerId
             inputMode="numeric"
           />
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
-            <button
-              onClick={() => setLunar(false)}
-              style={{ flex: 1, padding: "8px 0", borderRadius: 8, border: `1.5px solid ${!lunar ? primary : "#e5e7eb"}`, background: !lunar ? `${primary}15` : "white", color: !lunar ? primary : "#9ca3af", fontWeight: 700, fontSize: 13, cursor: "pointer" }}
-            >양력</button>
-            <button
-              onClick={() => setLunar(true)}
-              style={{ flex: 1, padding: "8px 0", borderRadius: 8, border: `1.5px solid ${lunar ? primary : "#e5e7eb"}`, background: lunar ? `${primary}15` : "white", color: lunar ? primary : "#9ca3af", fontWeight: 700, fontSize: 13, cursor: "pointer" }}
-            >음력</button>
+            <button onClick={() => setLunar(false)} style={{ flex: 1, padding: "8px 0", borderRadius: 8, border: `1.5px solid ${!lunar ? primary : "#e5e7eb"}`, background: !lunar ? `${primary}15` : "white", color: !lunar ? primary : "#9ca3af", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>양력</button>
+            <button onClick={() => setLunar(true)} style={{ flex: 1, padding: "8px 0", borderRadius: 8, border: `1.5px solid ${lunar ? primary : "#e5e7eb"}`, background: lunar ? `${primary}15` : "white", color: lunar ? primary : "#9ca3af", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>음력</button>
           </div>
         </div>
 
@@ -97,9 +124,10 @@ export default function LandingForm({ partnerId, ctaText, primary }: { partnerId
 
       <button
         onClick={handleSubmit}
-        style={{ width: "100%", marginTop: 22, padding: "15px 0", background: `linear-gradient(135deg, ${primary}, ${primary}cc)`, color: "white", border: "none", borderRadius: 12, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: `0 4px 16px ${primary}40` }}
+        disabled={loading}
+        style={{ width: "100%", marginTop: 22, padding: "15px 0", background: loading ? "#d1d5db" : `linear-gradient(135deg, ${primary}, ${primary}cc)`, color: "white", border: "none", borderRadius: 12, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : `0 4px 16px ${primary}40` }}
       >
-        🔮 {ctaText}
+        {loading ? "저장 중..." : `🔮 ${ctaText}`}
       </button>
       <p style={{ textAlign: "center", fontSize: 12, color: "#9ca3af", marginTop: 10 }}>무료 오늘의 운세로 먼저 체험해보세요</p>
     </div>
