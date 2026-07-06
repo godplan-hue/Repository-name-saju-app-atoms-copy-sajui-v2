@@ -87,7 +87,7 @@ export default function CouponFunnel() {
           >
             <div>
               <p style={{ color: "#fff", fontWeight: 900, fontSize: 14, margin: 0 }}>🎁 30% 할인쿠폰 무료로 받기</p>
-              <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, margin: "2px 0 0" }}>전화번호만 남기면 바로 발급해드려요</p>
+              <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, margin: "2px 0 0" }}>전화번호만 남기면 바로 발급해드려요 · 전화번호당 1회 제공</p>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ color: "#fff", fontSize: 18, fontWeight: 900 }}>↑</span>
@@ -138,7 +138,7 @@ export default function CouponFunnel() {
                   {loading ? "⏳ 발급 중..." : "쿠폰 받기 →"}
                 </button>
                 <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>
-                  마케팅 수신 동의 · 언제든지 수신거부 가능
+                  마케팅 수신 동의 · 언제든지 수신거부 가능 · 전화번호당 1회 제공
                 </p>
               </>
             ) : (

@@ -661,6 +661,35 @@ export default function ShareClient({ id }: { id: string }) {
           50% { background-position: 100% 50%; }
         }
       `}</style>
+
+        {/* ── 대운·택일 배너 ── */}
+        <div
+          onClick={() => router.push("/main-v2/payment")}
+          style={{ margin: "14px 0 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
+        >
+          <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 18 }}>✨</span>
+            <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>신규! 대운·택일 2,900원</span>
+          </div>
+          <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+              <strong>대운(大運)</strong> — 10년 단위<br />운명의 큰 흐름 분석<br />
+              <strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기
+            </p>
+            <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
+          </div>
+        </div>
+
+        {/* ── 카카오채널 채팅 문의 버튼 ── */}
+        <a
+          href="http://pf.kakao.com/_xbwtPX/chat"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, width: "100%", marginTop: 14, marginBottom: 14, padding: "13px 16px", background: "#FEE500", color: "#1a1a1a", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textDecoration: "none", boxShadow: "0 2px 10px rgba(254,229,0,0.4)" }}
+        >
+          <span style={{ fontSize: 18 }}>💬</span> 궁금한 점 카카오톡으로 문의하기
+        </a>
+
       </div>
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive" onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
     </main>
@@ -668,13 +697,7 @@ export default function ShareClient({ id }: { id: string }) {
     {showGuideModal && (
       <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
         <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "80vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
-          <p style={{ fontSize: 14, fontWeight: 900, color: "#be185d", margin: "0 0 12px" }}>📱 모바일 이용 안내</p>
-          <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 10px", lineHeight: 2 }}>크롬이나 구글로 바로 접속하셨다면 이미지 저장, 보관함, 읽기 모두 바로 이용 가능해요.</p>
-          <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 10px", lineHeight: 2, whiteSpace: "pre-line" }}>{`모바일(카카오톡)에서 이미지 저장하려면\n결과지 받고 바로\n밑에 점 3개 누르고\n다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장돼요.\n보관함도 전체 사주 저장이 돼요.\n보관함 읽기 누르면 읽기도 가능해요.\n\n단, VIP 커플팩은 용량이 너무 커서\n이미지 저장이 안 돼요.\n점 3개 옆 링크 복사 눌러서\n카톡, 문자, 메일, 원하는 곳에\n붙여넣고 보면 돼요.`}</p>
-          <div style={{ borderTop: "1px solid rgba(236,72,153,0.15)", paddingTop: 10, marginBottom: 12 }}>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.9 }}>읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 &gt; 디스플레이 &gt; 화면 자동 꺼짐 시간을 늘리거나, &apos;보고 있는 동안 화면 켜짐&apos; 기능을 켜두면 끊기지 않아요.</p>
-          </div>
-          <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "16px 0 10px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니 꼭 이용하세요!</p>
+          <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 맨 아래에 모든 버튼이 있으니 꼭 이용하세요!</p>
           <div style={{ background: "#fef2f2", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
             <p style={{ fontSize: 13, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>
               📥 보관함 저장<br />

@@ -145,7 +145,7 @@ export default function KakaoShareCouponBanner() {
             >
               {loading ? "⏳ 발급 중..." : "쿠폰 받기 →"}
             </button>
-            <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "8px 0 0" }}>1인 1회 발급 · 코드 분실 시 같은 번호로 다시 확인 가능</p>
+            <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "8px 0 0" }}>전화번호당 1회 제공 · 코드 분실 시 같은 번호로 다시 확인 가능</p>
           </>
         )}
 
