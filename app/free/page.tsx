@@ -58,7 +58,7 @@ export default function FreePage() {
 
   const selectStyle = {
     padding: "12px 10px", borderRadius: 10, border: "1.5px solid #e5e7eb",
-    fontSize: 15, outline: "none", background: "#fff", flex: 1,
+    fontSize: 15, outline: "none", background: "#fff", color: "#111", flex: 1,
   };
 
   return (
