@@ -21,7 +21,6 @@ export default function FreePage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ code: string; teaser: string; alreadyUsed?: boolean } | null>(null);
   const [error, setError] = useState("");
-  const [copied, setCopied] = useState(false);
 
   async function handleSubmit() {
     if (!name.trim()) { setError("이름을 입력해주세요."); return; }
@@ -48,12 +47,15 @@ export default function FreePage() {
     }
   }
 
-  async function copyAndGo() {
-    try { await navigator.clipboard.writeText(result!.code); } catch {}
-    setCopied(true);
-    setTimeout(() => {
-      router.push("/main-v2");
-    }, 800);
+  function goToPay() {
+    try { sessionStorage.setItem("v2_auto_promo", result!.code); } catch {}
+    try {
+      const existing = localStorage.getItem("v2_saved_profile");
+      if (!existing) {
+        localStorage.setItem("v2_saved_profile", JSON.stringify({ name, birthYear, birthMonth, birthDay, gender: "", birthHour: "", isLunar: false }));
+      }
+    } catch {}
+    router.push("/main-v2/pay?amount=3900");
   }
 
   const selectStyle = {
@@ -182,13 +184,13 @@ export default function FreePage() {
             </div>
 
             <button
-              onClick={copyAndGo}
+              onClick={goToPay}
               style={{ width: "100%", padding: "15px", borderRadius: 12, border: "none", background: G, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.4)" }}
             >
-              {copied ? "✅ 복사됨! 이동 중..." : "📋 코드 복사 후 사주보기 →"}
+              🔮 재물운 바로 보기 →
             </button>
             <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>
-              코드 복사 후 앱에서 원하는 운세 결제 시 입력하세요
+              쿠폰이 자동 적용돼요 — 완전 무료!
             </p>
           </div>
         )}

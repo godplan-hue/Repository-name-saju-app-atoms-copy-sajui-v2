@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense, CSSProperties } from "react";
+import { useState, Suspense, CSSProperties, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function PayPage() {
@@ -33,6 +33,22 @@ function PayInner() {
   const [discountPct, setDiscountPct] = useState(0);
 
   const displayAmount = discountPct > 0 ? Math.round(amount * (1 - discountPct / 100)) : amount;
+
+  useEffect(() => {
+    try {
+      const autoPromo = sessionStorage.getItem("v2_auto_promo");
+      if (!autoPromo) return;
+      sessionStorage.removeItem("v2_auto_promo");
+      setCouponCode(autoPromo);
+      fetch(`/api/promo-codes?code=${encodeURIComponent(autoPromo)}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (!data || !data.active) return;
+          if (data.discountPercent === 100) { setCouponFree(true); setDiscountPct(100); setCouponMsg("✅ 무료 쿠폰 자동 적용됐어요!"); }
+          else { setDiscountPct(data.discountPercent); setCouponMsg(`✅ ${data.discountPercent}% 할인 자동 적용!`); }
+        }).catch(() => {});
+    } catch {}
+  }, []);
 
   const verifyCoupon = async () => {
     const code = couponCode.trim().toUpperCase();
