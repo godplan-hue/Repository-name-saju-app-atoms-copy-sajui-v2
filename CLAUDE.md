@@ -138,6 +138,11 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
   - 어드민 결제내역에 0원 무료 결제가 표시되던 문제 수정 (`app/api/admin/direct-payments/route.ts` filter 추가)
   - 결제페이지 "인기 운세 9,900원" 섹션 삭제 (잘못된 가격 표시)
   - 메인 "심층 운세 5개 묶음" 카드 클릭 시 번들 모달 대신 "운세 골라담기" 개별 선택 모달로 수정
+- 버그 수정 완료 (2026-07-07):
+  - 꿈해몽 항상 잠금해제 버그 수정: `payFree`(무료 쿠폰)에서 `haemong_unlock_until` 설정 제거 — 실제 카드 결제(`pay` 함수)만 잠금 해제되도록 수정
+  - 대운 결제 후 결과 사라지는 버그 수정: sessionStorage → localStorage+24시간 만료 방식으로 변경, `/payment-complete`(존재하지 않던 URL) 대신 `/main-v2/daewoon?daeunPaid=1` URL로 결제 결과 전달
+  - 공유 페이지(`ShareClient.tsx`) 정리: 불필요한 버튼(Q&A, 보관함, 꿈해몽 배너 등) 제거, "AI 사주 990원으로 시작하기" → "나도 무료 사주 받아보기", 카카오공유 문구에서 "990원" 제거
+  - 결과지 30% 할인쿠폰에 "1회 신청가" 뱃지 추가
 
 ### 파트너 시스템 (`app/partner/`)
 서브도메인 방식 화이트라벨 (1개 앱·DB·결제로 여러 파트너 운영)
@@ -153,8 +158,8 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
 - 계산 함수 완성 (대운수·순행역행·60갑자·십이운성)
 - 콘텐츠 완성 (십이운성 12단계 × 5섹션, 무료 미리보기/유료 전체해설)
 - API 연동 완성, 결제 흐름 완성, 결과지 출시
-- 접근 경로: `/main-v2/daewoon` → 결제 → `/main-v2/daewoon/pay`
-- sessionStorage 키: `daeunPaid`, `daeunPaidCount`, `daeunPaidIndices`
+- 접근 경로: `/main-v2/daewoon` → 결제 → `/main-v2/daewoon/pay` → 결제 후 `/main-v2/daewoon?daeunPaid=1&daeunCount=N&daeunIndices=...`
+- localStorage 키: `daeunPaid`, `daeunPaidExpiry`(24시간 만료 타임스탬프), `daeunPaidCount`, `daeunPaidIndices`
 
 ### Q&A 시스템 — ✅ 완성
 - 11개 카테고리 × ~33문항 × 5오행 = 약 1800개 맞춤 답변 (`lib/qa/`)
@@ -172,12 +177,20 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
 - `/wealth`, `/wealth-saju` (재물)
 - `/reunion` (재회)
 
-### 파트너 랜딩 (`/lp/[id]/`) — ✅ 완성 (2026-07-06)
+### 파트너 랜딩 (`/lp/[id]/`) — ✅ 풀 업그레이드 (2026-07-07)
 - 파트너별 커스텀 랜딩 페이지 (서브도메인 방식)
-- 고객 정보 인테이크 폼 (`LandingForm.tsx`): 이름/생년월일/성별/시간 입력
-- 입력값 → `localStorage.setItem("v2_saved_profile", ...)` 저장 후 `/main-v2?ref=파트너ID` 이동
-- 히어로 이미지 5종 선택 가능 (stars/moon/lotus/candle/mystic)
-- 파트너 랜딩 생성기: `app/partner/landing-generator/page.tsx`
+- 고객 정보 인테이크 폼 (`LandingForm.tsx`):
+  - 1인 폼: 이름/전화번호/생년월일/성별/시간 → `v2_saved_profile` 저장
+  - 2인 궁합 폼: 나+상대방 각각 정보 → `v2_saved_profile` + `v2_partner_profile` 저장
+- 랜딩 생성기 신기능 (`app/partner/landing-generator/page.tsx`):
+  - 색상 테마 6종 (핑크·보라 / 골드·블랙 / 블루·인디고 / 그린·에메 / 다크·신비 / 레드·열정)
+  - 히어로 이미지 프리셋 6종 + 커스텀 이미지 URL 직접 입력
+  - 1인/2인 폼 유형 선택
+  - 프로모션 배너 문구 (입력 시 상단 빨간 배너)
+  - 상품 최대 3개 선택 노출 (10개 점운 상품 중 선택)
+  - 💎 다이아 전용: 선택 상품별 가격 직접 설정
+- Firebase 랜딩 스키마에 새 필드 추가: `heroImageUrl`, `formType`, `promoText`, `packages[]`
+- API (`/api/partner/landing` GET): tier 함께 반환 (다이아 여부 판별용)
 
 ### 메인 고민 검색창 (FortuneSearch) — ✅ 완성 (2026-07-06)
 - 컴포넌트: `app/main-v2/_components/FortuneSearch.tsx`
@@ -194,7 +207,8 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
 - `v2_saved_profile` — 사용자 프로필 JSON (name, birthYear, birthMonth, birthDay, gender, birthHour, isLunar, phone, email)
 - `referred_by` — 파트너 ID (파트너 랜딩 → 메인 이동 시 저장)
 - `v2_paid_cats` — 결제된 운세 카테고리 배열 (예: `["💰 재물운"]`)
-- `daeunPaid`, `daeunPaidCount`, `daeunPaidIndices` — 대운 결제 상태
+- `daeunPaid`, `daeunPaidExpiry`, `daeunPaidCount`, `daeunPaidIndices` — 대운 결제 상태 (24시간 만료)
+- `v2_partner_profile` — 궁합 상대방 프로필 JSON (2인 폼에서만 사용)
 - `v2_search_cat` — 검색창에서 선택된 카테고리 키
 
 ### SEO 현황 (2026-07-06 기준)
@@ -214,6 +228,7 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
 | 대운 출시 | ✅ 완료 (2026-07-06) |
 | 고민 검색창 (FortuneSearch) | ✅ 완료 (2026-07-06) |
 | 파트너 랜딩 인테이크 폼 | ✅ 완료 (2026-07-06) |
+| 파트너 랜딩 풀 업그레이드 (이미지URL/상품/2인/프로모) | ✅ 완료 (2026-07-07) |
 | 유저 추천링크 시스템 | ✅ 완료 (`/api/referral` — 추천인에게 990원 쿠폰 자동 지급) |
 | 연도별운세 상품 | ✅ 완료 (`/main-v2/yearly` 존재) |
 | 택일(擇日) 기능 | ✅ 완료 (`/taegil` SEO 랜딩 + `/main-v2/taegil` 기능 페이지) |
@@ -232,13 +247,15 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
 
 ### 알림톡 템플릿 내용 (결정됨, 등록 필요)
 ```
-[점운] 결제가 완료됐어요 💳
+[#{파트너명}] 결제가 완료됐어요 💳
 결제금액: #{금액}원
 
 사주 분석이 완료됐어요 🔮
 아래 링크에서 언제든 다시 확인하세요!
 #{링크}
 ```
+- `#{파트너명}` 변수를 넣으면 **템플릿 하나로** 모든 파트너 발송 가능 (점운 직접 고객이면 "점운" 전달)
+- 파트너 고객한테는 파트너 상호, 점운 직접 고객한테는 "점운"으로 발송
 - 솔라피 채널: @jeomun 연동 완료
 - 템플릿 등록 후 카카오 심사 2-3 영업일 → 승인 후 코드 연동
 
