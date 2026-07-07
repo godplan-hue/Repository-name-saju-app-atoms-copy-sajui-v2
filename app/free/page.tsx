@@ -187,11 +187,28 @@ export default function FreePage() {
               onClick={goToPay}
               style={{ width: "100%", padding: "15px", borderRadius: 12, border: "none", background: G, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.4)" }}
             >
-              🔮 재물운 바로 보기 →
+              🔮 쿠폰으로 무료 보기 →
             </button>
-            <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>
+            <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "8px 0 10px" }}>
               쿠폰이 자동 적용돼요 — 완전 무료!
             </p>
+            <div style={{ borderTop: "1px solid #f3f4f6", paddingTop: 12 }}>
+              <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "0 0 8px" }}>또는</p>
+              <button
+                onClick={() => {
+                  try {
+                    const existing = localStorage.getItem("v2_saved_profile");
+                    if (!existing) {
+                      localStorage.setItem("v2_saved_profile", JSON.stringify({ name, birthYear, birthMonth, birthDay, gender: "", birthHour: "", isLunar: false }));
+                    }
+                  } catch {}
+                  router.push("/main-v2/pay?amount=3900&freeCat=1&next=" + encodeURIComponent("/main-v2/result"));
+                }}
+                style={{ width: "100%", padding: "13px", borderRadius: 12, border: "1.5px solid #e5e7eb", background: "#f9fafb", color: "#374151", fontSize: 14, fontWeight: 800, cursor: "pointer" }}
+              >
+                💳 ₩3,900 바로 결제하기
+              </button>
+            </div>
           </div>
         )}
       </div>

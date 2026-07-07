@@ -485,6 +485,38 @@ function V2ResultInner() {
     })();
   }, []);
 
+  // select tier인데 allAnalyses가 비어있으면(payFree API 호출 실패 등)
+  // 자동으로 유료 분석을 재호출해서 재물운 내용을 채워줌
+  useEffect(() => {
+    if (tier !== "select" || Object.keys(allAnalyses).length > 0) return;
+    const profile = result?.profile;
+    if (!profile?.name || !profile?.birthYear) return;
+    const cats = (() => { try { return JSON.parse(sessionStorage.getItem("v2_paid_cats") || "[]"); } catch { return []; } })() as string[];
+    const primaryCat = cats[0] || "💰 재물운";
+    fetch("/api/v2/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: profile.name,
+        birth: `${profile.birthYear}-${profile.birthMonth || "1"}-${profile.birthDay || "1"}`,
+        birthHour: profile.birthHour || "",
+        gender: profile.gender || "",
+        category: primaryCat,
+        planType: "paid",
+      }),
+    })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data?.allAnalyses) return;
+      const existing = (() => { try { return JSON.parse(sessionStorage.getItem("v2_result") || "{}"); } catch { return {}; } })();
+      const newResult = { ...data, category: primaryCat, profile, histId: existing.histId ?? Date.now(), savedAt: existing.savedAt ?? new Date().toISOString() };
+      sessionStorage.setItem("v2_result", JSON.stringify(newResult));
+      setAllAnalyses(data.allAnalyses);
+      setResult((prev: any) => ({ ...prev, ...data }));
+    })
+    .catch(() => {});
+  }, [tier, result]); // allAnalyses 변경 시 재실행 안 되도록 의존성에서 제외
+
   // "당신의 변화" 전체공개를 오늘 처음 보여주는 거라면, 그 사실을 localStorage에
   // 기록 — 렌더링 함수 안에서 직접 쓰지 않고 여기(useEffect)에서만 써야 함
   // 유료 "당신의 변화 — 전체공개" 카드도 무료 쪽과 똑같은 문제가 있었음 —
