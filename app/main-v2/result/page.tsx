@@ -382,13 +382,11 @@ function V2ResultInner() {
   }, []);
 
   useEffect(() => {
+    // sid가 URL에 있으면 세션 여부 관계없이 무조건 공유 페이지로 이동
+    const sid = searchParams.get("sid");
+    if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
     const raw = sessionStorage.getItem("v2_result");
     if (!raw) {
-      // 다른 브라우저로 열어서 임시 저장소(세션)가 비어있는 경우 — 주소에
-      // 공유 id(sid)가 같이 붙어왔다면, 처음부터 다시 분석하지 않고도
-      // 그 결과를 그대로 볼 수 있는 공유 페이지로 대신 보내줌
-      const sid = searchParams.get("sid");
-      if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
       router.replace("/main-v2/analysis");
       return;
     }
