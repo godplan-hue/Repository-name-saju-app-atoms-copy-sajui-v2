@@ -1525,8 +1525,8 @@ function V2ResultInner() {
               </>
             ) : (
               <>
-                <p style={{ fontSize: 14, fontWeight: 900, color: "#92400e", margin: "0 0 4px" }}>🎁 30% 할인 쿠폰 받기</p>
-                <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 12px" }}>연락처만 남기면 바로 쿠폰코드를 드려요!</p>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#92400e", margin: "0 0 4px" }}>🎁 30% 할인 쿠폰 받기 <span style={{ fontSize: 11, fontWeight: 700, color: "#b45309", background: "#fef3c7", borderRadius: 6, padding: "2px 7px", marginLeft: 4 }}>1회 신청가</span></p>
+                <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 12px" }}>연락처만 남기면 바로 쿠폰코드를 드려요! (1인 1회, 중복 불가)</p>
                 <div style={{ display: "flex", gap: 8 }}>
                   <input
                     type="tel"
