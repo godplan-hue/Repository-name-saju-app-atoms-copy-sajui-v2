@@ -159,8 +159,8 @@ export default function TaegilPage() {
     const dateStr = best.length > 0
       ? best.map(r => { const d = new Date(r.date); return `${d.getMonth()+1}/${d.getDate()} ${r.rating}`; }).join(", ")
       : "분석 완료";
-    const text = `📅 택일 분석 — ${profile?.name}님의 ${eventType} 좋은 날\n${dateStr}\n\n점운에서 내 좋은 날 찾기 👇\nhttps://jeomun.com/taegil`;
-    if (navigator.share) { navigator.share({ title: "택일 — 점운", text, url: "https://jeomun.com/taegil" }); }
+    const text = `📅 택일 분석 — ${profile?.name}님의 ${eventType} 좋은 날\n${dateStr}\n\n점운에서 내 좋은 날 찾기 👇\nhttps://jeomun.com/main-v2/taegil`;
+    if (navigator.share) { navigator.share({ title: "택일 — 점운", text, url: "https://jeomun.com/main-v2/taegil" }); }
     else { navigator.clipboard.writeText(text).then(() => alert("링크가 복사됐어요!")); }
   };
 

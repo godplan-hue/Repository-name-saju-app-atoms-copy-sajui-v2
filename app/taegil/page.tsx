@@ -22,7 +22,7 @@ export default function TaegilPage() {
         <p style={{ fontSize: 13, fontWeight: 700, color: "#15803d", margin: "0 0 10px" }}>📅 택일</p>
         <h1 style={{ fontSize: "clamp(26px,5vw,40px)", fontWeight: 900, color: "#1f2937", margin: "0 0 12px", lineHeight: 1.25 }}>결혼·이사·개업<br />좋은 날 골라드려요</h1>
         <p style={{ fontSize: 15, color: "#6b7280", margin: "0 0 28px", lineHeight: 1.7 }}>중요한 날, 내 사주와 맞는 날로<br />AI 택일 분석을 받아보세요</p>
-        <Link href="/main-v2" style={{ display: "inline-block", padding: "14px 36px", background: "linear-gradient(135deg, #22c55e, #15803d)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none", boxShadow: "0 6px 20px rgba(34,197,94,0.35)" }}>
+        <Link href="/main-v2/taegil" style={{ display: "inline-block", padding: "14px 36px", background: "linear-gradient(135deg, #22c55e, #15803d)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none", boxShadow: "0 6px 20px rgba(34,197,94,0.35)" }}>
           📅 택일 분석 받기 — ₩2,900~
         </Link>
         <p style={{ fontSize: 12, color: "#9ca3af", marginTop: 10 }}>즉시 분석 · 맞춤 날짜 · 무료 맛보기</p>
@@ -60,7 +60,7 @@ export default function TaegilPage() {
       <div style={{ background: "linear-gradient(135deg, #22c55e, #15803d)", padding: "40px 20px", textAlign: "center" }}>
         <p style={{ color: "white", fontSize: 22, fontWeight: 900, margin: "0 0 8px" }}>좋은 날 지금 골라보기</p>
         <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 14, margin: "0 0 20px" }}>무료 운세 → 2,900원 택일 분석</p>
-        <Link href="/main-v2" style={{ display: "inline-block", padding: "14px 40px", background: "white", color: "#15803d", borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none" }}>📅 시작하기</Link>
+        <Link href="/main-v2/taegil" style={{ display: "inline-block", padding: "14px 40px", background: "white", color: "#15803d", borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none" }}>📅 시작하기</Link>
       </div>
     </main>
   );

@@ -67,6 +67,21 @@ export async function PATCH(request: NextRequest) {
     // maxUses === -1: 무제한 (비활성화 안 함), 그 외: N회 사용 시 비활성화
     const shouldDeactivate = maxUses !== -1 && newUsageCount >= maxUses;
     await ref.update({ usageCount: newUsageCount, ...(shouldDeactivate ? { active: false } : {}) });
+
+    // FREE* 쿠폰인 경우 free_leads에서 해당 코드를 찾아 used=true로 업데이트
+    if (key.startsWith("FREE")) {
+      const leadsSnap = await db.ref("free_leads").once("value");
+      if (leadsSnap.exists()) {
+        const updates: Record<string, boolean> = {};
+        leadsSnap.forEach(child => {
+          if (child.val()?.code === key) {
+            updates[`free_leads/${child.key}/used`] = true;
+          }
+        });
+        if (Object.keys(updates).length > 0) await db.ref().update(updates);
+      }
+    }
+
     return NextResponse.json({ success: true, discountPercent: found.discountPercent });
   } catch (error) {
     console.error("Promo code use error:", error);
