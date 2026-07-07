@@ -35,7 +35,7 @@ export default function Refund() {
           {/* 2. 환불 가능 조건 */}
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>2. 환불 가능 조건 (7일 이내)</h2>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>다음의 경우 현금 환불 또는 1회 재분석을 선택할 수 있습니다:</p>
+            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 12 }}>다음의 경우 결제수단과 동일한 방법으로 환불 또는 1회 재분석을 선택할 수 있습니다:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 16 }}>
               <li>• 심각한 기술 오류로 인한 분석 실패</li>
               <li>• 명백한 오타 또는 문법 오류</li>
@@ -44,7 +44,7 @@ export default function Refund() {
             </ul>
             <p style={{ color: "#90EE90", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>담당자 검토 후 오류가 확인되면:</p>
             <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
-              <li>• A) 현금 환불 (100%)</li>
+              <li>• A) 결제수단과 동일한 방법으로 환불 (100%)</li>
               <li>• B) 1회 재분석 제공</li>
               <li>• (고객이 선택)</li>
             </ul>
