@@ -100,13 +100,15 @@ export default function TaegilPage() {
     finally { setLoading(false); }
   };
 
+  const taegilPrice = 2900 + Math.max(0, selectedDates.length - 1) * 1000;
+
   const handlePay = () => {
     if (!eventType) { alert("목적을 먼저 선택해주세요!"); return; }
     if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
     sessionStorage.setItem("taegilEventType", eventType);
     sessionStorage.setItem("taegilDates", JSON.stringify(selectedDates));
-    const next = encodeURIComponent("/payment-complete?taegil=1&paid=2900");
-    router.push(`/main-v2/pay?amount=2900&next=${next}`);
+    const next = encodeURIComponent(`/payment-complete?taegil=1&paid=${taegilPrice}`);
+    router.push(`/main-v2/pay?amount=${taegilPrice}&next=${next}`);
   };
 
   const stopTts = () => {
@@ -297,10 +299,15 @@ export default function TaegilPage() {
               <div style={{ background:"linear-gradient(135deg,#f0fdf4,#dcfce7)", border:"2px solid #86efac", borderRadius:16, padding:"20px 16px", textAlign:"center", marginTop:4 }}>
                 <p style={{ margin:"0 0 4px", fontWeight:900, fontSize:18, color:"#15803d" }}>📅 전체 날짜 상세 해설</p>
                 <p style={{ margin:"0 0 6px", fontSize:13, color:"#166534", lineHeight:1.7 }}>선택한 {selectedDates.length}일 모두<br/>왜 좋은지, 무엇을 주의해야 하는지 알 수 있어요</p>
-                <p style={{ margin:"0 0 16px", fontSize:12, color:"#166534" }}>일진 해설 · 시간대 안내 · 주의사항</p>
+                <p style={{ margin:"0 0 4px", fontSize:12, color:"#166534" }}>일진 해설 · 시간대 안내 · 주의사항</p>
+                {selectedDates.length > 1 && (
+                  <p style={{ margin:"0 0 12px", fontSize:11, color:"#15803d", fontWeight:700 }}>
+                    기본 ₩2,900 + 추가 {selectedDates.length - 1}개 × ₩1,000
+                  </p>
+                )}
                 <button onClick={handlePay}
                   style={{ width:"100%", padding:"14px 0", background:"linear-gradient(135deg,#22c55e,#15803d)", color:"white", border:"none", borderRadius:50, fontWeight:900, fontSize:16, cursor:"pointer", boxShadow:"0 6px 20px rgba(34,197,94,0.35)" }}>
-                  📅 전체 해설 보기 — ₩2,900
+                  📅 전체 해설 보기 — ₩{taegilPrice.toLocaleString()}
                 </button>
                 <p style={{ margin:"8px 0 0", fontSize:11, color:"#6b7280" }}>즉시 열람 · SSL 보안 결제</p>
               </div>
