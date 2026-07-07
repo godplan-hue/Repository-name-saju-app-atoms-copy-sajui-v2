@@ -98,6 +98,11 @@ function getYourChangeType(name: string, birthYear: string | number, birthMonth:
   return target[Math.abs(hash + daysSinceEpoch) % target.length];
 }
 
+function withName(text: string, name: string): string {
+  if (!name) return text;
+  return text.replaceAll("당신", name);
+}
+
 // 문장이 길 때 카드 너비에 맞춰 CSS로만 줄바꿈을 맡기면 문장마다 길이가 달라
 // 한쪽에 거의 다 차고 한 단어만 남는 식으로 들쭉날쭉해짐 — 그래서 일정 길이가
 // 넘는 문장은 중간 지점에 가장 가까운 띄어쓰기에서 직접 잘라 두 줄로 강제 분리함
@@ -1408,15 +1413,15 @@ function V2ResultInner() {
                       <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 700, fontStyle: "italic", lineHeight: 1.6, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{i === 0 ? `"${line}` : line}</p>
                     ))}
                   </div>
-                  <p style={{ fontSize: 11, color: "#f59e0b", fontWeight: 900, margin: "0 0 6px" }}>🎯 당신의 변화</p>
+                  <p style={{ fontSize: 11, color: "#f59e0b", fontWeight: 900, margin: "0 0 6px" }}>🎯 {profile.name}님의 변화</p>
                   <div style={{ margin: "0 0 12px" }}>
-                    {yc.hidden1.split("\n").flatMap(splitLong).map((line, i) => (
+                    {withName(yc.hidden1, profile.name).split("\n").flatMap(splitLong).map((line, i) => (
                       <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 600, lineHeight: 1.6, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
                     ))}
                   </div>
                   <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px", filter: "blur(3px)", userSelect: "none", pointerEvents: "none" }}>
                     <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 990원 결제 시 공개</p>
-                    {yc.hidden2.split("\n").flatMap(splitLong).map((line, i) => (
+                    {withName(yc.hidden2, profile.name).split("\n").flatMap(splitLong).map((line, i) => (
                       <p key={i} style={{ fontSize: 13, color: "#1a1a2e", fontWeight: 700, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
                     ))}
                   </div>
@@ -1447,15 +1452,15 @@ function V2ResultInner() {
                     <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 700, fontStyle: "italic", lineHeight: 1.6, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{i === 0 ? `"${line}` : line}</p>
                   ))}
                 </div>
-                <p style={{ fontSize: 11, color: "#f59e0b", fontWeight: 900, margin: "0 0 6px" }}>🎯 당신의 변화</p>
+                <p style={{ fontSize: 11, color: "#f59e0b", fontWeight: 900, margin: "0 0 6px" }}>🎯 {profile.name}님의 변화</p>
                 <div style={{ margin: "0 0 12px" }}>
-                  {yc.hidden1.split("\n").flatMap(splitLong).map((line, i) => (
+                  {withName(yc.hidden1, profile.name).split("\n").flatMap(splitLong).map((line, i) => (
                     <p key={i} style={{ fontSize: 12.5, color: "#374151", fontWeight: 600, lineHeight: 1.6, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
                   ))}
                 </div>
                 <div style={{ background: "rgba(255,215,0,0.12)", borderRadius: 10, padding: "10px 12px" }}>
                   <p style={{ fontSize: 10, color: "#d4af37", fontWeight: 800, margin: "0 0 6px" }}>🔮 구체적인 변화 시점</p>
-                  {yc.hidden2.split("\n").flatMap(splitLong).map((line, i) => (
+                  {withName(yc.hidden2, profile.name).split("\n").flatMap(splitLong).map((line, i) => (
                     <p key={i} style={{ fontSize: 13, color: "#1a1a2e", fontWeight: 700, margin: "0 0 4px", wordBreak: "keep-all", overflowWrap: "break-word" }}>{line}</p>
                   ))}
                 </div>
