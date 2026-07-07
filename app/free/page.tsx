@@ -49,13 +49,20 @@ export default function FreePage() {
 
   function goToPay() {
     try { sessionStorage.setItem("v2_auto_promo", result!.code); } catch {}
+    // 이전 사용자 분석 데이터 완전 초기화 — 다른 사람 결과가 뜨는 버그 방지
     try {
-      const existing = localStorage.getItem("v2_saved_profile");
-      if (!existing) {
-        localStorage.setItem("v2_saved_profile", JSON.stringify({ name, birthYear, birthMonth, birthDay, gender: "", birthHour: "", isLunar: false }));
-      }
+      sessionStorage.removeItem("v2_result");
+      sessionStorage.removeItem("v2_paid");
+      sessionStorage.removeItem("v2_plan");
+      sessionStorage.removeItem("v2_paid_cats");
     } catch {}
-    router.push("/main-v2/pay?amount=3900&freeCat=1&next=" + encodeURIComponent("/main-v2/result"));
+    // /free 폼에 입력한 사람으로 프로필+로그인명 덮어쓰기
+    try {
+      localStorage.setItem("v2_saved_profile", JSON.stringify({ name, birthYear, birthMonth, birthDay, gender: "", birthHour: "", isLunar: false }));
+      localStorage.setItem("v2_user_name", name);
+    } catch {}
+    // 결제 후 /main-v2/profile로 이동 → 성별·시간 추가 입력 → 정확한 분석
+    router.push("/main-v2/pay?amount=3900&freeCat=1&next=" + encodeURIComponent("/main-v2/profile"));
   }
 
   const selectStyle = {

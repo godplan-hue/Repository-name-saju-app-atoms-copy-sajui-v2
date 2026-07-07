@@ -153,6 +153,18 @@ export default function V2Profile() {
           setSavedMode(true);
           return;
         }
+        // 부분 저장 (생년월일은 있지만 성별·시간 없음 — /free 랜딩에서 온 경우)
+        if (sameName && p.birthYear) {
+          setForm(prev => ({
+            ...prev,
+            name: p.name ?? prev.name,
+            birthYear: p.birthYear ?? prev.birthYear,
+            birthMonth: p.birthMonth ?? prev.birthMonth,
+            birthDay: p.birthDay ?? prev.birthDay,
+            phone: p.phone ?? prev.phone,
+          }));
+          return;
+        }
       } catch {}
     }
     if (loggedInName && !["카카오 사용자", "네이버 사용자", "Google 사용자"].includes(loggedInName))
