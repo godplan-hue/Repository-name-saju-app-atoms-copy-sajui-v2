@@ -37,13 +37,12 @@ export default function KakaoShareCouponBanner() {
       } catch {}
     }
 
-    // PC 또는 폴백: 링크 복사 후 form 단계로
+    // PC 또는 폴백: 클립보드에 조용히 복사 후 바로 form 단계로
     const text = "🐱 점운 AI 사주풀이 해봤는데 진짜 잘 맞아! 990원이라 부담없어\n👉 나도 무료로 사주보기 →";
     if (isMobile && typeof navigator !== "undefined" && navigator.share) {
       try { await navigator.share({ title: "점운 AI 사주 분석", text, url: shareUrl }); } catch {}
     } else {
       navigator.clipboard.writeText(text + " " + shareUrl).catch(() => {});
-      alert("링크를 복사했어요! 카카오톡에 붙여넣기 해주세요 😊");
     }
     setStep("form");
   }
