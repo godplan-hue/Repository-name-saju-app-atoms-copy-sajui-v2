@@ -437,6 +437,7 @@ function PaymentInner() {
                 onClick={async () => {
                   if ((s as any).daeun) { router.push(`/main-v2/daewoon/pay`); return; }
                   if ((s as any).yearly) { router.push(`/main-v2/yearly`); return; }
+                  if (s.id === "taegil") { router.push(`/main-v2/taegil`); return; }
                   if (s.id === "reunion" || s.id === "pet_compat") {
                     setOtherInput("");
                     setAwaitOther({ id: s.id, label: s.label });

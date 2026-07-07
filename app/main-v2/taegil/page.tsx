@@ -105,8 +105,8 @@ export default function TaegilPage() {
     if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
     sessionStorage.setItem("taegilEventType", eventType);
     sessionStorage.setItem("taegilDates", JSON.stringify(selectedDates));
-    const next = encodeURIComponent("/payment-complete?taegil=1&paid=990");
-    router.push(`/main-v2/pay?amount=990&next=${next}`);
+    const next = encodeURIComponent("/payment-complete?taegil=1&paid=2900");
+    router.push(`/main-v2/pay?amount=2900&next=${next}`);
   };
 
   const stopTts = () => {
@@ -300,7 +300,7 @@ export default function TaegilPage() {
                 <p style={{ margin:"0 0 16px", fontSize:12, color:"#166534" }}>일진 해설 · 시간대 안내 · 주의사항</p>
                 <button onClick={handlePay}
                   style={{ width:"100%", padding:"14px 0", background:"linear-gradient(135deg,#22c55e,#15803d)", color:"white", border:"none", borderRadius:50, fontWeight:900, fontSize:16, cursor:"pointer", boxShadow:"0 6px 20px rgba(34,197,94,0.35)" }}>
-                  📅 전체 해설 보기 — ₩990
+                  📅 전체 해설 보기 — ₩2,900
                 </button>
                 <p style={{ margin:"8px 0 0", fontSize:11, color:"#6b7280" }}>즉시 열람 · SSL 보안 결제</p>
               </div>
