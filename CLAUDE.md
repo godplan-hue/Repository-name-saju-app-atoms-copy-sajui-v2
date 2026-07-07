@@ -143,6 +143,14 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
   - 대운 결제 후 결과 사라지는 버그 수정: sessionStorage → localStorage+24시간 만료 방식으로 변경, `/payment-complete`(존재하지 않던 URL) 대신 `/main-v2/daewoon?daeunPaid=1` URL로 결제 결과 전달
   - 공유 페이지(`ShareClient.tsx`) 정리: 불필요한 버튼(Q&A, 보관함, 꿈해몽 배너 등) 제거, "AI 사주 990원으로 시작하기" → "나도 무료 사주 받아보기", 카카오공유 문구에서 "990원" 제거
   - 결과지 30% 할인쿠폰에 "1회 신청가" 뱃지 추가
+- 버그 수정·기능 추가 완료 (2026-07-07 야간):
+  - `/free` 랜딩 쿠폰 → 재물운 표시 버그 3종 수정: `payFree`에 `v2_plan:"select"` 누락 추가(`app/main-v2/pay/page.tsx`), `payFree`에서 `planType:"paid"` 유료 분석 API 재호출해 `allAnalyses` 채우기, `free-lead/route.ts` teaser `\n` 줄바꿈, `free/page.tsx` `whiteSpace:"pre-line"` 추가
+  - 결과지 자동 재호출 로직 추가 (`app/main-v2/result/page.tsx`): `tier === "select"` + `allAnalyses` 비어있으면 자동으로 유료 분석 API 재호출 — payFree API 실패해도 결과지에서 재물운이 항상 나오도록 근본 수정
+  - 택일 결제 완료 배너 + 버튼 분기 수정 (`app/main-v2/taegil/page.tsx`): 결제 후 "✅ 결제 완료" 배너, 버튼 텍스트 isPaid 조건 분기
+  - 결과지 쿠폰 위 재물운 요약 카드 추가 (`app/main-v2/result/page.tsx`): 무료 결과지에서 쿠폰 섹션 바로 위에 오행별 맞춤 3줄 미리보기 카드 표시
+  - 택일 유료 해설 대폭 강화 (`app/api/v2/analyze/route.ts`): 12목적 × 4등급 전부 1~2문장 → 4~6문장으로 확장 (시간대·주의사항·팁 포함)
+  - `/free` 페이지 ₩3,900 직결 결제 버튼 추가: 쿠폰 없이 바로 결제 가능한 버튼 추가
+  - **중요 버그 원인 메모**: `payFree` 내 try-catch가 analyze 실패를 삼켜버려 allAnalyses가 비어 있어도 모름 — 결과지 자동 재호출로 해결됨. 향후 payFree 수정 시 이 구조 유지할 것
 
 ### 파트너 시스템 (`app/partner/`)
 서브도메인 방식 화이트라벨 (1개 앱·DB·결제로 여러 파트너 운영)
