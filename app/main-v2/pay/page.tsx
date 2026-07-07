@@ -85,6 +85,39 @@ function PayInner() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
       }).catch(() => {});
+
+      // planType:"free" 분석은 allAnalyses가 없어서 결제 후 결과지에 유료 내용이
+      // 안 보이는 버그를 막기 위해 유료 분석을 새로 호출해 v2_result 갱신
+      try {
+        const rawResult = sessionStorage.getItem("v2_result");
+        const savedProfile = localStorage.getItem("v2_saved_profile");
+        const profile = rawResult ? JSON.parse(rawResult).profile : (savedProfile ? JSON.parse(savedProfile) : null);
+        if (profile?.name && profile?.birthYear) {
+          const cat = isFreeCat ? "💰 재물운" : "💰 재물운";
+          const res = await fetch("/api/v2/analyze", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: profile.name,
+              birth: `${profile.birthYear}-${profile.birthMonth || "1"}-${profile.birthDay || "1"}`,
+              birthHour: profile.birthHour || "",
+              gender: profile.gender || "",
+              category: cat,
+              planType: "paid",
+            }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const existing = rawResult ? JSON.parse(rawResult) : {};
+            sessionStorage.setItem("v2_result", JSON.stringify({
+              ...data, category: cat, profile,
+              histId: existing.histId ?? Date.now(),
+              savedAt: existing.savedAt ?? new Date().toISOString(),
+            }));
+          }
+        }
+      } catch {}
+
       sessionStorage.setItem("v2_paid", "1");
       sessionStorage.setItem("v2_plan", "select");
       if (isFreeCat) {

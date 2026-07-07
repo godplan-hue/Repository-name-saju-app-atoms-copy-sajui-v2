@@ -290,11 +290,17 @@ export default function TaegilPage() {
         </div>
 
         {/* 분석 버튼 */}
-        <button onClick={() => canAnalyze && fetchTaegil(false)} disabled={!canAnalyze}
+        {isPaid && (
+          <div style={{ background:"#dcfce7", border:"2px solid #22c55e", borderRadius:12, padding:"10px 16px", marginBottom:12, display:"flex", alignItems:"center", gap:8 }}>
+            <span style={{ fontSize:18 }}>✅</span>
+            <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 전체 상세 해설이 표시됩니다</span>
+          </div>
+        )}
+        <button onClick={() => canAnalyze && fetchTaegil(isPaid)} disabled={!canAnalyze}
           style={{ width:"100%", padding:"15px 0", marginBottom:16, border:"none", borderRadius:50, fontWeight:900, fontSize:15, cursor: canAnalyze ? "pointer" : "not-allowed",
             background: canAnalyze ? "linear-gradient(135deg,#22c55e,#15803d)" : "#d1d5db",
             color:"white", boxShadow: canAnalyze ? "0 6px 20px rgba(34,197,94,0.35)" : "none" }}>
-          {loading ? "분석 중..." : !eventType ? "목적을 먼저 선택해주세요" : selectedDates.length===0 ? "날짜를 선택해주세요" : "📅 무료 미리보기"}
+          {loading ? "분석 중..." : !eventType ? "목적을 먼저 선택해주세요" : selectedDates.length===0 ? "날짜를 선택해주세요" : isPaid ? "📅 다시 분석하기" : "📅 무료 미리보기"}
         </button>
 
         {/* 결과 */}

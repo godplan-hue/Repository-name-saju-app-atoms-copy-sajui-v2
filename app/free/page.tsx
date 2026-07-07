@@ -170,7 +170,7 @@ export default function FreePage() {
             {/* 재물운 요약 */}
             <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 14, padding: "16px", marginBottom: 16, border: "1.5px solid #e9d5ff" }}>
               <p style={{ fontSize: 12, fontWeight: 800, color: "#7c3aed", margin: "0 0 8px" }}>💰 재물운 요약</p>
-              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.8, margin: 0 }}>{result.teaser}</p>
+              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.8, margin: 0, whiteSpace: "pre-line" }}>{result.teaser}</p>
               <p style={{ fontSize: 11, color: "#9ca3af", margin: "10px 0 0", textAlign: "right" }}>
                 전체 재물운 분석은 앱에서 확인하세요 →
               </p>
