@@ -4,8 +4,9 @@ import { db } from "@/lib/firebase";
 export async function GET(request: NextRequest) {
   const partnerId = request.nextUrl.searchParams.get("partnerId");
   if (!partnerId) return NextResponse.json({ error: "파트너 ID 필요" }, { status: 400 });
-  const snap = await db.ref(`partners/${partnerId}/landing`).once("value");
-  return NextResponse.json({ landing: snap.val() ?? null });
+  const snap = await db.ref(`partners/${partnerId}`).once("value");
+  const partner = snap.val();
+  return NextResponse.json({ landing: partner?.landing ?? null, tier: partner?.tier ?? "free" });
 }
 
 export async function POST(request: NextRequest) {

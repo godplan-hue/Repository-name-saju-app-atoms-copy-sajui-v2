@@ -9,48 +9,77 @@ const HOURS = [
   "신시(15~17시)", "유시(17~19시)", "술시(19~21시)", "해시(21~23시)",
 ];
 
-export default function LandingForm({ partnerId, ctaText, primary }: { partnerId: string; ctaText: string; primary: string }) {
+interface Props {
+  partnerId: string;
+  ctaText: string;
+  primary: string;
+  formType?: string;
+}
+
+interface PersonForm {
+  name: string;
+  birth: string;
+  gender: "male" | "female" | "";
+  hour: string;
+  lunar: boolean;
+}
+
+const emptyPerson = (): PersonForm => ({ name: "", birth: "", gender: "", hour: "모름", lunar: false });
+
+export default function LandingForm({ partnerId, ctaText, primary, formType = "1person" }: Props) {
   const router = useRouter();
-  const [name, setName] = useState("");
+  const is2person = formType === "2person";
+
   const [phone, setPhone] = useState("");
-  const [birth, setBirth] = useState("");
-  const [gender, setGender] = useState<"male" | "female" | "">("");
-  const [hour, setHour] = useState("모름");
-  const [lunar, setLunar] = useState(false);
+  const [p1, setP1] = useState<PersonForm>(emptyPerson());
+  const [p2, setP2] = useState<PersonForm>(emptyPerson());
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const validate = () => {
+    if (!p1.name.trim()) return "이름을 입력해주세요.";
+    if (!phone.trim() || phone.replace(/\D/g, "").length < 10) return "전화번호를 입력해주세요.";
+    if (p1.birth.length !== 8 || isNaN(Number(p1.birth))) return "생년월일 8자리를 입력해주세요. 예) 19950315";
+    if (!p1.gender) return "성별을 선택해주세요.";
+    if (is2person) {
+      if (!p2.name.trim()) return "상대방 이름을 입력해주세요.";
+      if (p2.birth.length !== 8 || isNaN(Number(p2.birth))) return "상대방 생년월일 8자리를 입력해주세요.";
+      if (!p2.gender) return "상대방 성별을 선택해주세요.";
+    }
+    return "";
+  };
+
+  const buildProfile = (p: PersonForm, phoneNum: string, email = "") => ({
+    name: p.name.trim(),
+    birthYear: p.birth.slice(0, 4), birthMonth: p.birth.slice(4, 6), birthDay: p.birth.slice(6, 8),
+    gender: p.gender, birthHour: p.hour === "모름" ? "" : p.hour.replace(/\(.*\)/, "").trim(),
+    isLunar: p.lunar, phone: phoneNum, email,
+  });
+
   const handleSubmit = async () => {
-    if (!name.trim()) { setErr("이름을 입력해주세요."); return; }
-    if (!phone.trim() || phone.replace(/\D/g, "").length < 10) { setErr("전화번호를 입력해주세요."); return; }
-    if (birth.length !== 8 || isNaN(Number(birth))) { setErr("생년월일 8자리를 입력해주세요. 예) 19950315"); return; }
-    if (!gender) { setErr("성별을 선택해주세요."); return; }
+    const validErr = validate();
+    if (validErr) { setErr(validErr); return; }
     setErr("");
     setLoading(true);
 
-    const y = birth.slice(0, 4), m = birth.slice(4, 6), d = birth.slice(6, 8);
-    const birthHour = hour === "모름" ? "" : hour.replace(/\(.*\)/, "").trim();
+    const cleanPhone = phone.replace(/\D/g, "");
+    const profile1 = buildProfile(p1, cleanPhone);
 
-    // Firebase DB에 저장 (consumerCustomers)
     try {
       await fetch("/api/v2/customer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name.trim(),
-          phone: phone.replace(/\D/g, ""),
-          birthYear: y, birthMonth: m, birthDay: d,
-          gender, birthHour,
-          referredBy: partnerId,
-        }),
+        body: JSON.stringify({ ...profile1, referredBy: partnerId }),
       });
     } catch {}
 
-    // localStorage에도 저장 (메인 앱에서 바로 사용)
     try {
-      const profile = { name: name.trim(), birthYear: y, birthMonth: m, birthDay: d, gender, birthHour, isLunar: lunar, phone: phone.replace(/\D/g, ""), email: "" };
-      localStorage.setItem("v2_saved_profile", JSON.stringify(profile));
+      localStorage.setItem("v2_saved_profile", JSON.stringify(profile1));
       localStorage.setItem("referred_by", partnerId);
+      if (is2person) {
+        const profile2 = buildProfile(p2, "");
+        localStorage.setItem("v2_partner_profile", JSON.stringify(profile2));
+      }
     } catch {}
 
     setLoading(false);
@@ -65,66 +94,80 @@ export default function LandingForm({ partnerId, ctaText, primary }: { partnerId
   };
   const label = { fontSize: 13, fontWeight: 700, color: "#374151", marginBottom: 6, display: "block" as const };
 
-  return (
-    <div style={{ background: "white", borderRadius: 20, padding: "28px 22px", boxShadow: "0 8px 32px rgba(0,0,0,0.1)", maxWidth: 480, margin: "0 auto" }}>
-      <p style={{ textAlign: "center", fontWeight: 900, fontSize: 17, color: "#1f2937", margin: "0 0 24px" }}>📋 정보 입력하기</p>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        <div>
-          <label style={label}>이름</label>
-          <input value={name} onChange={e => setName(e.target.value)} style={inp} placeholder="예) 홍길동" maxLength={10} />
-        </div>
-
-        <div>
-          <label style={label}>전화번호</label>
-          <input
-            value={phone}
-            onChange={e => setPhone(e.target.value.replace(/[^\d-]/g, ""))}
-            style={inp}
-            placeholder="예) 010-1234-5678"
-            inputMode="tel"
-          />
-        </div>
-
-        <div>
-          <label style={label}>생년월일 <span style={{ fontWeight: 400, color: "#9ca3af" }}>(8자리 숫자)</span></label>
-          <input
-            value={birth}
-            onChange={e => setBirth(e.target.value.replace(/\D/g, "").slice(0, 8))}
-            style={inp}
-            placeholder="예) 19950315"
-            inputMode="numeric"
-          />
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
-            <button onClick={() => setLunar(false)} style={{ flex: 1, padding: "8px 0", borderRadius: 8, border: `1.5px solid ${!lunar ? primary : "#e5e7eb"}`, background: !lunar ? `${primary}15` : "white", color: !lunar ? primary : "#9ca3af", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>양력</button>
-            <button onClick={() => setLunar(true)} style={{ flex: 1, padding: "8px 0", borderRadius: 8, border: `1.5px solid ${lunar ? primary : "#e5e7eb"}`, background: lunar ? `${primary}15` : "white", color: lunar ? primary : "#9ca3af", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>음력</button>
-          </div>
-        </div>
-
-        <div>
-          <label style={label}>성별</label>
-          <div style={{ display: "flex", gap: 10 }}>
-            {(["male", "female"] as const).map(g => (
-              <button key={g} onClick={() => setGender(g)} style={{ flex: 1, padding: "11px 0", borderRadius: 10, border: `1.5px solid ${gender === g ? primary : "#e5e7eb"}`, background: gender === g ? `${primary}15` : "white", color: gender === g ? primary : "#9ca3af", fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-                {g === "male" ? "🙋‍♂️ 남자" : "🙋‍♀️ 여자"}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <label style={label}>태어난 시간 <span style={{ fontWeight: 400, color: "#9ca3af" }}>(선택)</span></label>
-          <select value={hour} onChange={e => setHour(e.target.value)} style={{ ...inp, appearance: "none" as const, WebkitAppearance: "none" as const, backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 14px center", paddingRight: 36 }}>
-            {HOURS.map(h => <option key={h} value={h}>{h}</option>)}
-          </select>
+  const PersonFields = ({ p, setP, prefix }: { p: PersonForm; setP: (fn: (prev: PersonForm) => PersonForm) => void; prefix: string }) => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div>
+        <label style={label}>{prefix} 이름</label>
+        <input value={p.name} onChange={e => setP(prev => ({ ...prev, name: e.target.value }))} style={inp} placeholder="예) 홍길동" maxLength={10} />
+      </div>
+      <div>
+        <label style={label}>{prefix} 생년월일 <span style={{ fontWeight: 400, color: "#9ca3af" }}>(8자리)</span></label>
+        <input
+          value={p.birth}
+          onChange={e => setP(prev => ({ ...prev, birth: e.target.value.replace(/\D/g, "").slice(0, 8) }))}
+          style={inp} placeholder="예) 19950315" inputMode="numeric"
+        />
+        <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+          <button onClick={() => setP(prev => ({ ...prev, lunar: false }))} style={{ flex: 1, padding: "8px 0", borderRadius: 8, border: `1.5px solid ${!p.lunar ? primary : "#e5e7eb"}`, background: !p.lunar ? `${primary}15` : "white", color: !p.lunar ? primary : "#9ca3af", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>양력</button>
+          <button onClick={() => setP(prev => ({ ...prev, lunar: true }))} style={{ flex: 1, padding: "8px 0", borderRadius: 8, border: `1.5px solid ${p.lunar ? primary : "#e5e7eb"}`, background: p.lunar ? `${primary}15` : "white", color: p.lunar ? primary : "#9ca3af", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>음력</button>
         </div>
       </div>
+      <div>
+        <label style={label}>{prefix} 성별</label>
+        <div style={{ display: "flex", gap: 10 }}>
+          {(["male", "female"] as const).map(g => (
+            <button key={g} onClick={() => setP(prev => ({ ...prev, gender: g }))} style={{ flex: 1, padding: "11px 0", borderRadius: 10, border: `1.5px solid ${p.gender === g ? primary : "#e5e7eb"}`, background: p.gender === g ? `${primary}15` : "white", color: p.gender === g ? primary : "#9ca3af", fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+              {g === "male" ? "🙋‍♂️ 남자" : "🙋‍♀️ 여자"}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <label style={label}>{prefix} 태어난 시간 <span style={{ fontWeight: 400, color: "#9ca3af" }}>(선택)</span></label>
+        <select value={p.hour} onChange={e => setP(prev => ({ ...prev, hour: e.target.value }))} style={{ ...inp, appearance: "none" as const, WebkitAppearance: "none" as const, backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 14px center", paddingRight: 36 }}>
+          {HOURS.map(h => <option key={h} value={h}>{h}</option>)}
+        </select>
+      </div>
+    </div>
+  );
+
+  return (
+    <div id="form-section" style={{ background: "white", borderRadius: 20, padding: "28px 22px", boxShadow: "0 8px 32px rgba(0,0,0,0.1)", maxWidth: 480, margin: "0 auto" }}>
+      <p style={{ textAlign: "center", fontWeight: 900, fontSize: 17, color: "#1f2937", margin: "0 0 24px" }}>
+        {is2person ? "💑 두 분의 정보 입력하기" : "📋 정보 입력하기"}
+      </p>
+
+      {/* 전화번호 (1인 공통) */}
+      <div style={{ marginBottom: 20 }}>
+        <label style={label}>전화번호</label>
+        <input
+          value={phone}
+          onChange={e => setPhone(e.target.value.replace(/[^\d-]/g, ""))}
+          style={inp} placeholder="예) 010-1234-5678" inputMode="tel"
+        />
+      </div>
+
+      {/* 1인 필드 */}
+      {!is2person && <PersonFields p={p1} setP={setP1} prefix="" />}
+
+      {/* 2인 필드 */}
+      {is2person && (
+        <>
+          <div style={{ background: `${primary}08`, border: `1px solid ${primary}30`, borderRadius: 12, padding: "16px 14px", marginBottom: 16 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: primary, margin: "0 0 14px" }}>👤 내 정보</p>
+            <PersonFields p={p1} setP={setP1} prefix="나의" />
+          </div>
+          <div style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 12, padding: "16px 14px", marginBottom: 4 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#374151", margin: "0 0 14px" }}>👤 상대방 정보</p>
+            <PersonFields p={p2} setP={setP2} prefix="상대방" />
+          </div>
+        </>
+      )}
 
       {err && <p style={{ color: "#ef4444", fontSize: 13, marginTop: 12, textAlign: "center" }}>{err}</p>}
 
       <button
-        onClick={handleSubmit}
-        disabled={loading}
+        onClick={handleSubmit} disabled={loading}
         style={{ width: "100%", marginTop: 22, padding: "15px 0", background: loading ? "#d1d5db" : `linear-gradient(135deg, ${primary}, ${primary}cc)`, color: "white", border: "none", borderRadius: 12, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : `0 4px 16px ${primary}40` }}
       >
         {loading ? "저장 중..." : `🔮 ${ctaText}`}
