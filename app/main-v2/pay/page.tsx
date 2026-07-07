@@ -219,6 +219,14 @@ function PayInner() {
             localStorage.removeItem("referred_by");
           }
         } catch {}
+        // 카카오 알림톡 발송
+        if (cleanMobile) {
+          fetch("/api/notify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone: cleanMobile, amount: displayAmount }),
+          }).catch(() => {});
+        }
         router.push(isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next);
       } else {
         setError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
