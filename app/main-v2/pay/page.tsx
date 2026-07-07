@@ -94,8 +94,6 @@ function PayInner() {
           sessionStorage.setItem("v2_paid_cats", JSON.stringify(cats));
         } catch {}
       }
-      // 꿈해몽 24시간 무료 잠금 해제
-      try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
       // 추천인 쿠폰 지급
       try {
         const refCode = localStorage.getItem("referred_by");

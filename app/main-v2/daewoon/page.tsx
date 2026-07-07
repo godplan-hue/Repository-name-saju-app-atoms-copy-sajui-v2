@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
@@ -20,7 +20,12 @@ interface DaeunBlock {
 }
 
 export default function DaewoonPage() {
+  return <Suspense fallback={null}><DaewoonInner /></Suspense>;
+}
+
+function DaewoonInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [profile, setProfile] = useState<any>(null);
   const [daeunList, setDaeunList] = useState<DaeunBlock[]>([]);
   const [daeunSu, setDaeunSu] = useState(0);
@@ -75,12 +80,27 @@ export default function DaewoonPage() {
     setProfile(p);
     const age = new Date().getFullYear() - parseInt(p.birthYear) + 1;
     setCurrentAge(age);
-    const isPaid = sessionStorage.getItem("daeunPaid") === "1";
-    const paidCountVal = parseInt(sessionStorage.getItem("daeunPaidCount") || "0");
-    const paidIndicesVal: number[] = JSON.parse(sessionStorage.getItem("daeunPaidIndices") || "[]");
-    sessionStorage.removeItem("daeunPaid");
-    sessionStorage.removeItem("daeunPaidCount");
-    sessionStorage.removeItem("daeunPaidIndices");
+    // URL 파라미터로 결제 결과 받아서 localStorage에 저장 (24시간 유지)
+    const urlPaid = searchParams.get("daeunPaid") === "1";
+    const urlCount = parseInt(searchParams.get("daeunCount") || "0");
+    const urlIndices: number[] = (() => { try { return JSON.parse(decodeURIComponent(searchParams.get("daeunIndices") || "[]")); } catch { return []; } })();
+    if (urlPaid) {
+      const expiry = Date.now() + 24 * 60 * 60 * 1000;
+      const existing: number[] = (() => { try { return JSON.parse(localStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
+      const merged = Array.from(new Set([...existing, ...urlIndices]));
+      const existingCount = parseInt(localStorage.getItem("daeunPaidCount") || "0");
+      localStorage.setItem("daeunPaid", "1");
+      localStorage.setItem("daeunPaidExpiry", String(expiry));
+      localStorage.setItem("daeunPaidCount", String(existingCount + urlCount));
+      localStorage.setItem("daeunPaidIndices", JSON.stringify(merged));
+      // URL 파라미터 제거 (새로고침 시 중복 저장 방지)
+      router.replace("/main-v2/daewoon");
+    }
+    // localStorage에서 결제 상태 읽기
+    const storedExpiry = parseInt(localStorage.getItem("daeunPaidExpiry") || "0");
+    const isPaid = localStorage.getItem("daeunPaid") === "1" && storedExpiry > Date.now();
+    const paidCountVal = parseInt(localStorage.getItem("daeunPaidCount") || "0");
+    const paidIndicesVal: number[] = (() => { try { return JSON.parse(localStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
     setPaid(isPaid);
     setPaidCount(paidCountVal);
     if (paidIndicesVal.length > 0) setPaidIndices(paidIndicesVal);

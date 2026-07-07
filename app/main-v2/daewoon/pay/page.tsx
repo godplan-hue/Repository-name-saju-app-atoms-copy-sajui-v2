@@ -20,7 +20,7 @@ function DaewoonPayInner() {
   const indices = searchParams.get("indices") || "";
 
   const handleConfirmPay = () => {
-    const _daeunNext = `/payment-complete?daeun=1&paid=${price}&daeunCount=${count}&daeunIndices=${indices}`;
+    const _daeunNext = `/main-v2/daewoon?daeunPaid=1&daeunCount=${count}&daeunIndices=${encodeURIComponent(indices)}`;
     router.push(`/main-v2/pay?amount=${price}&next=${encodeURIComponent(_daeunNext)}`);
   };
 
