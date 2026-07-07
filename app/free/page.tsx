@@ -17,6 +17,7 @@ export default function FreePage() {
   const [birthMonth, setBirthMonth] = useState("1");
   const [birthDay, setBirthDay] = useState("1");
   const [phone, setPhone] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ code: string; teaser: string; alreadyUsed?: boolean } | null>(null);
   const [error, setError] = useState("");
@@ -26,6 +27,7 @@ export default function FreePage() {
     if (!name.trim()) { setError("이름을 입력해주세요."); return; }
     const clean = phone.replace(/\D/g, "");
     if (clean.length < 10) { setError("전화번호를 정확히 입력해주세요."); return; }
+    if (!agreed) { setError("개인정보 수집·마케팅 수신 동의를 체크해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/free-lead", {
@@ -65,11 +67,14 @@ export default function FreePage() {
 
         {/* 헤더 */}
         <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div style={{ display: "inline-block", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "#fff", fontSize: 11, fontWeight: 900, padding: "4px 14px", borderRadius: 50, marginBottom: 10, letterSpacing: 0.5 }}>
+            🔥 선착순 100명 한정
+          </div>
           <div style={{ fontSize: 48, marginBottom: 8 }}>🐱</div>
           <h1 style={{ color: "#fbbf24", fontSize: 22, fontWeight: 900, margin: "0 0 6px" }}>무료 재물운 받기</h1>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: 0, lineHeight: 1.7 }}>
             이름·생년월일·전화번호만 남기면<br />
-            <strong style={{ color: "#ec4899" }}>재물운 요약 + 운세 무료쿠폰</strong> 바로 드려요
+            <strong style={{ color: "#ec4899" }}>재물운 사주 무료쿠폰</strong> 바로 드려요
           </p>
         </div>
 
@@ -116,6 +121,23 @@ export default function FreePage() {
               />
             </div>
 
+            {/* 수신동의 */}
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={e => setAgreed(e.target.checked)}
+                  style={{ marginTop: 2, accentColor: "#ec4899", width: 16, height: 16, flexShrink: 0 }}
+                />
+                <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
+                  <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
+                  점운(<a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed" }}>jeomun.com</a>)이 이름·생년월일·전화번호를 수집하여
+                  운세 정보 및 혜택 안내에 활용하며, <strong>3년간</strong> 보유 후 파기합니다. 언제든지 수신거부 가능합니다.
+                </span>
+              </label>
+            </div>
+
             {error && <p style={{ color: "#dc2626", fontSize: 12, margin: "0 0 10px", textAlign: "center" }}>{error}</p>}
 
             <button
@@ -126,7 +148,10 @@ export default function FreePage() {
               {loading ? "⏳ 발급 중..." : "🔮 무료 재물운 + 쿠폰 받기 →"}
             </button>
             <p style={{ fontSize: 10, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>
-              전화번호당 1회 제공 · 마케팅 수신 동의 · 언제든지 수신거부 가능
+              전화번호당 1회 제공 · 언제든지 수신거부 가능
+            </p>
+            <p style={{ fontSize: 10, color: "#9ca3af", textAlign: "center", margin: "6px 0 0" }}>
+              운영: <a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed", textDecoration: "none" }}>점운 (jeomun.com)</a>
             </p>
           </div>
         ) : (
