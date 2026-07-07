@@ -86,7 +86,6 @@ function PayInner() {
         body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
       }).catch(() => {});
       sessionStorage.setItem("v2_paid", "1");
-      if (isTaegil) sessionStorage.setItem("taegilPaid", "1");
       if (isFreeCat) {
         try {
           const cats = JSON.parse(sessionStorage.getItem("v2_paid_cats") || "[]");
@@ -107,7 +106,7 @@ function PayInner() {
         }
       } catch {}
       const freeNext = next.includes("paid=") ? next.replace(/([?&]paid=)[^&]+/, "$10") : next;
-      router.push(freeNext);
+      router.push(isTaegil ? `${freeNext}${freeNext.includes("?") ? "&" : "?"}taegilPaid=1` : freeNext);
     } finally { setLoading(false); }
   };
 
@@ -186,8 +185,7 @@ function PayInner() {
             localStorage.removeItem("referred_by");
           }
         } catch {}
-        if (isTaegil) sessionStorage.setItem("taegilPaid", "1");
-        router.push(next);
+        router.push(isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next);
       } else {
         setError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
       }

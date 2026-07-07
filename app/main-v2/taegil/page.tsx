@@ -50,7 +50,8 @@ export default function TaegilPage() {
     if (!saved) { router.push("/main-v2"); return; }
     setProfile(JSON.parse(saved));
 
-    const paid = sessionStorage.getItem("taegilPaid") === "1";
+    const urlParams = new URLSearchParams(window.location.search);
+    const paid = urlParams.get("taegilPaid") === "1" || sessionStorage.getItem("taegilPaid") === "1";
     if (paid) {
       sessionStorage.removeItem("taegilPaid");
       setIsPaid(true);
