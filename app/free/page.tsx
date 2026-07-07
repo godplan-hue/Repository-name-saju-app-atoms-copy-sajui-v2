@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)";
@@ -11,7 +10,6 @@ const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
 const YEARS = Array.from({ length: 80 }, (_, i) => 2006 - i);
 
 export default function FreePage() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [birthYear, setBirthYear] = useState("1990");
   const [birthMonth, setBirthMonth] = useState("1");
@@ -47,23 +45,6 @@ export default function FreePage() {
     }
   }
 
-  function goToPay() {
-    try { sessionStorage.setItem("v2_auto_promo", result!.code); } catch {}
-    // 이전 사용자 분석 데이터 완전 초기화 — 다른 사람 결과가 뜨는 버그 방지
-    try {
-      sessionStorage.removeItem("v2_result");
-      sessionStorage.removeItem("v2_paid");
-      sessionStorage.removeItem("v2_plan");
-      sessionStorage.removeItem("v2_paid_cats");
-    } catch {}
-    // /free 폼에 입력한 사람으로 프로필+로그인명 덮어쓰기
-    try {
-      localStorage.setItem("v2_saved_profile", JSON.stringify({ name, birthYear, birthMonth, birthDay, gender: "", birthHour: "", isLunar: false }));
-      localStorage.setItem("v2_user_name", name);
-    } catch {}
-    // 결제 후 /main-v2/profile로 이동 → 성별·시간 추가 입력 → 정확한 분석
-    router.push("/main-v2/pay?amount=3900&freeCat=1&next=" + encodeURIComponent("/main-v2/profile"));
-  }
 
   const selectStyle = {
     padding: "12px 10px", borderRadius: 10, border: "1.5px solid #e5e7eb",
@@ -190,32 +171,15 @@ export default function FreePage() {
               <p style={{ fontSize: 11, color: "#6d28d9", margin: 0, fontWeight: 700 }}>결제 화면에서 입력 → 운세 1개 무료</p>
             </div>
 
-            <button
-              onClick={goToPay}
-              style={{ width: "100%", padding: "15px", borderRadius: 12, border: "none", background: G, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.4)" }}
+            <a
+              href="/main-v2"
+              style={{ display: "block", width: "100%", padding: "15px", borderRadius: 12, border: "none", background: G, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.4)", textAlign: "center", textDecoration: "none", boxSizing: "border-box" }}
             >
-              🔮 쿠폰으로 무료 보기 →
-            </button>
-            <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "8px 0 10px" }}>
-              쿠폰이 자동 적용돼요 — 완전 무료!
+              🔮 점운 앱에서 쿠폰 사용하기 →
+            </a>
+            <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>
+              앱 결제 화면에서 위 쿠폰 코드를 입력하시면 무료로 받으실 수 있어요
             </p>
-            <div style={{ borderTop: "1px solid #f3f4f6", paddingTop: 12 }}>
-              <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "0 0 8px" }}>또는</p>
-              <button
-                onClick={() => {
-                  try {
-                    const existing = localStorage.getItem("v2_saved_profile");
-                    if (!existing) {
-                      localStorage.setItem("v2_saved_profile", JSON.stringify({ name, birthYear, birthMonth, birthDay, gender: "", birthHour: "", isLunar: false }));
-                    }
-                  } catch {}
-                  router.push("/main-v2/pay?amount=3900&freeCat=1&next=" + encodeURIComponent("/main-v2/result"));
-                }}
-                style={{ width: "100%", padding: "13px", borderRadius: 12, border: "1.5px solid #e5e7eb", background: "#f9fafb", color: "#374151", fontSize: 14, fontWeight: 800, cursor: "pointer" }}
-              >
-                💳 ₩3,900 바로 결제하기
-              </button>
-            </div>
           </div>
         )}
       </div>
