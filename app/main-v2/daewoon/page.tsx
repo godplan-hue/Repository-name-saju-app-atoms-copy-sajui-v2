@@ -83,7 +83,15 @@ function DaewoonInner() {
     // URL 파라미터로 결제 결과 받아서 localStorage에 저장 (24시간 유지)
     const urlPaid = searchParams.get("daeunPaid") === "1";
     const urlCount = parseInt(searchParams.get("daeunCount") || "0");
-    const urlIndices: number[] = (() => { try { return JSON.parse(decodeURIComponent(searchParams.get("daeunIndices") || "[]")); } catch { return []; } })();
+    const urlIndices: number[] = (() => {
+      try {
+        const raw = decodeURIComponent(searchParams.get("daeunIndices") || "");
+        if (!raw) return [];
+        // "[0,1]" 형식 또는 "0,1" (쉼표 구분) 모두 처리
+        if (raw.startsWith("[")) return JSON.parse(raw);
+        return raw.split(",").filter(s => s.trim()).map(Number);
+      } catch { return []; }
+    })();
     if (urlPaid) {
       const expiry = Date.now() + 24 * 60 * 60 * 1000;
       const existing: number[] = (() => { try { return JSON.parse(localStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
