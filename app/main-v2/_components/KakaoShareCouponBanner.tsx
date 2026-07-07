@@ -13,6 +13,7 @@ export default function KakaoShareCouponBanner() {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [pcCopied, setPcCopied] = useState(false);
 
   async function shareKakao() {
     const shareUrl = "https://jeomun.com/main-v2";
@@ -37,12 +38,13 @@ export default function KakaoShareCouponBanner() {
       } catch {}
     }
 
-    // PC 또는 폴백: 클립보드에 조용히 복사 후 바로 form 단계로
+    // PC 또는 폴백: 클립보드에 복사 후 안내 표시
     const text = "🐱 점운 AI 사주풀이 해봤는데 진짜 잘 맞아! 990원이라 부담없어\n👉 나도 무료로 사주보기 →";
     if (isMobile && typeof navigator !== "undefined" && navigator.share) {
       try { await navigator.share({ title: "점운 AI 사주 분석", text, url: shareUrl }); } catch {}
     } else {
       navigator.clipboard.writeText(text + " " + shareUrl).catch(() => {});
+      setPcCopied(true);
     }
     setStep("form");
   }
@@ -127,8 +129,10 @@ export default function KakaoShareCouponBanner() {
         {step === "form" && (
           <>
             <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 12px", lineHeight: 1.6 }}>
-              공유해줘서 감사해요! 🎉<br />
-              전화번호 입력하면 <strong>990원 무료 쿠폰</strong> 드려요
+              {pcCopied
+                ? <>📋 <strong>링크가 복사됐어요!</strong><br />카카오톡에 붙여넣기 해서 공유 후 전화번호 입력하면 쿠폰 드려요</>
+                : <>공유해줘서 감사해요! 🎉<br />전화번호 입력하면 <strong>990원 무료 쿠폰</strong> 드려요</>
+              }
             </p>
             <input
               type="tel"
