@@ -1575,7 +1575,7 @@ ${hi ? `도화의 기운이 사방에서 강하게 흘러들고 있습니다. �
 🕰️ 인생의 시계로 짚어보는 결정적 시기
 ━━━━━━━━━━━━━━━━━━━━
 
-사주는 사랑운도 인생의 흐름으로 봅니다. ${age}세인 ${name}님은 지금 ${age < 30 ? "설렘과 탐색이 많은 시기에 서 있습니다. 다양한 인연을 만나며 자신에게 맞는 사랑의 형태를 찾아가는 과정 자체가 의미 있는 시기입니다." : age < 40 ? "관계가 더 진지해지는 시기에 서 있습니다. 함께할 사람을 신중하게 가려보는 동시에, 좋은 인연 앞에서는 용기를 내야 하는 때입니다." : age < 50 ? "안정과 깊이가 중요해지는 시기에 서 있습니다. 화려한 설렘보다 함께 쌓아온 신뢰가 더 큰 의미를 갖는 때입니다." : "성숙하고 너그러운 사랑이 빛나는 시기에 서 있습니다. 곁에 있는 사람의 소중함을 더 깊이 느끼고 표현하는 것이 이 시기 사랑의 핵심입니다."} 특히 ${age < 28 ? "26~28세 사이" : age < 35 ? "32~35세 사이" : age < 45 ? "38~42세 사이" : "지금부터 3년 안"}는 사주에서 인연의 결이 한 번 크게 바뀌는 시점으로 짚히니, 이 구간을 가볍게 흘려보내지 마십시오. 나이는 사랑의 형태를 바꿀 뿐, 사랑의 가능성을 줄이지 않는다는 것이 사주의 가르침입니다.
+${z}띠 ${oh}(${ohH[oh]}) 기운을 타고난 ${name}님의 인연 결은 다른 사람과 다른 방식으로 흐릅니다. 아래에서 그 흐름을 구체적으로 살펴보겠습니다.
 
 ━━━━━━━━━━━━━━━━━━━━
 💔 썸과 진짜 인연을 가르는 사주의 기준
@@ -1745,7 +1745,7 @@ ${oh === "목" ? "목(木) 기운에는 신맛 식품과 녹색 채소가 잘 �
 🌙 인생 시기로 보는 ${name}님의 건강 곡선
 ━━━━━━━━━━━━━━━━━━━━
 
-사주는 건강운도 인생 전체의 흐름으로 봅니다. ${age}세인 ${name}님은 지금 ${age < 30 ? "체력이 가장 왕성한 시기에 서 있습니다. 다만 젊음을 과신해 몸을 혹사하면 30대 이후 큰 빚이 됩니다. 지금부터 만드는 습관이 평생의 자산이 됩니다." : age < 40 ? "체력의 변화를 처음 체감하기 시작하는 시기에 서 있습니다. 예전 같은 회복력을 기대하기보다 새로운 습관을 들이는 것이 중요합니다." : age < 50 ? "건강이 가장 많은 것을 요구하는 시기에 서 있습니다. 일과 건강 사이의 균형이 이 시기 가장 중요한 과제입니다." : age < 60 ? "몸의 신호에 더 세심하게 귀를 기울여야 하는 시기에 서 있습니다. 예방과 관리에 투자하는 것이 가장 현명한 선택입니다." : "쌓아온 건강 습관이 빛을 발하는 시기에 서 있습니다. 무리하지 않으면서도 활동적인 삶을 유지하는 것이 핵심입니다."} 특히 ${age < 33 ? "33세를 넘기기 전" : age < 40 ? "39~40세 사이" : age < 50 ? "48~52세 사이" : age < 60 ? "55~58세 사이" : "지금부터 5년 안"}은 사주에서 몸의 결이 한 번 크게 바뀌는 시점으로 짚히니, 이 구간에는 건강검진과 체력 관리에 평소보다 한 번 더 신경 쓰십시오.
+${oh === "목" || oh === "화" ? `${name}님의 ${oh}(${ohH[oh]}) 기운은 열정적으로 소비되기 쉬운 체질입니다. 쉬어야 할 때 쉬는 것이 건강운을 지키는 핵심 전략입니다.` : oh === "토" ? `${name}님의 토(土) 기운은 습기와 소화 기관에 영향을 받기 쉬운 체질입니다. 규칙적인 식사와 위장 관리가 건강의 핵심입니다.` : oh === "금" ? `${name}님의 금(金) 기운은 호흡기와 피부가 예민하게 반응하는 체질입니다. 건조한 환경과 스트레스 관리에 특히 신경 쓰십시오.` : `${name}님의 수(水) 기운은 신장·방광·관절에 부담이 생기기 쉬운 체질입니다. 충분한 수분 섭취와 체온 유지가 건강의 출발점입니다.`}
 
 ━━━━━━━━━━━━━━━━━━━━
 💎 몸을 대하는 사주의 마음가짐
@@ -2314,7 +2314,7 @@ ${name}님, 당신의 2026년은 분명 의미 있고 아름다운 한 해가 �
 오늘 당장 해볼 한 가지: ${pick(["오늘 감사한 일 하나를 떠올리고 그것을 가까운 사람에게 표현해보십시오.", "오늘 하루를 마무리하며 가장 잘한 일 한 가지를 스스로 칭찬해보십시오."])} 오늘도 당신의 모든 날이 빛나기를 바랍니다. ✨🌟`;
 }
 
-function limitNameMentions(text: string, name: string, max = 4): string {
+function limitNameMentions(text: string, name: string, max = 10): string {
   if (!name) return text;
   const target = `${name}님`;
   const parts = text.split(target);
@@ -2323,8 +2323,38 @@ function limitNameMentions(text: string, name: string, max = 4): string {
   return parts.reduce((acc, part, i) => {
     if (i === 0) return part;
     count++;
-    return acc + (count <= max ? target : "") + part;
+    if (count <= max) return acc + target + part;
+    // 이름 제거 시 뒤따르는 조사도 함께 제거 (문장 잘림 방지)
+    const cleaned = part.replace(/^(이|은|는|가|을|를|의|에서|에게|으로|로|과|와|도|이고|이며|께서|께)/, "");
+    return acc + cleaned;
   }, "");
+}
+
+function personalizeText(text: string, name: string): string {
+  if (!name) return text;
+  return text
+    .replaceAll("당신의", `${name}님의`)
+    .replaceAll("당신은", `${name}님은`)
+    .replaceAll("당신이", `${name}님이`)
+    .replaceAll("당신을", `${name}님을`)
+    .replaceAll("당신에게", `${name}님에게`)
+    .replaceAll("당신만의", `${name}님만의`)
+    .replaceAll("당신과", `${name}님과`)
+    .replaceAll("당신께", `${name}님께`)
+    .replaceAll("당신도", `${name}님도`)
+    .replaceAll("당신 사주", `${name}님 사주`)
+    .replaceAll("당신", `${name}님`);
+}
+
+function reduceRepetition(text: string): string {
+  const alts1 = ["이때", "지금", "현재"];
+  let c1 = 0;
+  const alts2 = ["이때의", "현재의"];
+  let c2 = 0;
+  return text
+    .replace(/이 시기에/g, () => { c1++; return c1 <= 2 ? "이 시기에" : alts1[(c1 - 3) % alts1.length]; })
+    .replace(/이 시기의/g, () => { c2++; return c2 <= 1 ? "이 시기의" : alts2[(c2 - 2) % alts2.length]; })
+    .replace(/이 시기가/g, (_, i, s) => s.slice(0, i).match(/이 시기가/g) ? "이때가" : "이 시기가");
 }
 
 export async function POST(request: NextRequest) {
@@ -2464,7 +2494,7 @@ export async function POST(request: NextRequest) {
       const catLabel = category.replace(/\S+\s/, "");
       const catScore = scoreMap[category] ?? scores.total;
       
-      const analysis = limitNameMentions(getFreeTemplate(name, birth, gender, catLabel, catScore), name);
+      const analysis = reduceRepetition(limitNameMentions(personalizeText(getFreeTemplate(name, birth, gender, catLabel, catScore), name), name));
 
       return NextResponse.json({ scores, analysis, luckyColor, luckyNumber, luckyDirection });
     }
@@ -2483,7 +2513,7 @@ export async function POST(request: NextRequest) {
       } else {
         raw = getPaidTemplate(name, birth, gender, catLabel, catScore, birthHour);
       }
-      analyses[cat] = limitNameMentions(raw, name);
+      analyses[cat] = reduceRepetition(limitNameMentions(personalizeText(raw, name), name));
     }
 
     return NextResponse.json({
@@ -4318,7 +4348,7 @@ ${ohSuccessStrategy}
 🌙 인생 시기로 보는 ${name}님의 성공 곡선
 ❖═══════════════════════════❖
 
-${age}세인 ${name}님은 지금 ${age < 30 ? "성공의 토대를 쌓는 구간에 서 있습니다. 지금의 경험과 실패가 30대 이후 가장 큰 자산이 됩니다." : age < 40 ? "성공이 본격적으로 모습을 드러내는 구간에 서 있습니다. 그동안 쌓아온 것이 결실로 전환되는 시기입니다." : age < 50 ? "성공의 정점을 향해가는 구간에 서 있습니다. 이 시기의 결정이 이후 20년을 좌우합니다." : "쌓아온 성공을 지키고 다음 세대에 전하는 구간에 서 있습니다. 경험을 나누는 것이 새로운 성공의 형태입니다."}
+${oh}(${ohH}) 기운과 ${z}띠의 조합이 만들어내는 ${name}님만의 성공 방식이 있습니다. ${oh === "목" || oh === "화" ? "빠른 실행과 추진력이 가장 큰 무기입니다. 망설임보다 먼저 움직이는 것이 성공으로 이어집니다." : oh === "토" ? "꾸준함과 신뢰가 성공의 뿌리입니다. 단번에 터뜨리기보다 쌓아가는 방식이 더 큰 결실을 만듭니다." : oh === "금" ? "기준이 명확한 것이 강점입니다. 결단력 있게 선택하고 끝까지 밀어붙이는 것이 성공의 열쇠입니다." : "정보력과 통찰이 남다른 것이 강점입니다. 남들이 보지 못하는 흐름을 읽어 앞서 나가는 것이 성공 방식입니다."}
 
 ❖═══════════════════════════❖
 📅 2026년 성공운 월별 타이밍
