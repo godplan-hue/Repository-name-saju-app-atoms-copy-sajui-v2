@@ -52,12 +52,19 @@ export default function TaegilPage() {
     setProfile(JSON.parse(saved));
 
     const urlParams = new URLSearchParams(window.location.search);
-    const paid = urlParams.get("taegilPaid") === "1" || sessionStorage.getItem("taegilPaid") === "1";
-    if (paid) {
+    const urlPaid = urlParams.get("taegilPaid") === "1";
+    const sessPaid = sessionStorage.getItem("taegilPaid") === "1";
+    // localStorage 24시간 결제 상태 확인 (공유/새로고침 후 복구용)
+    const localExpiry = parseInt(localStorage.getItem("taegilPaidExpiry") || "0");
+    const localPaid = localExpiry > Date.now();
+
+    if (urlPaid || sessPaid || localPaid) {
       sessionStorage.removeItem("taegilPaid");
       setIsPaid(true);
-      const et = sessionStorage.getItem("taegilEventType") as EventType;
-      const dt = JSON.parse(sessionStorage.getItem("taegilDates") || "[]") as string[];
+      // sessionStorage 우선, 없으면 localStorage에서 복구
+      const et = (sessionStorage.getItem("taegilEventType") || localStorage.getItem("taegilEventType")) as EventType;
+      const dtStr = sessionStorage.getItem("taegilDates") || localStorage.getItem("taegilDates");
+      const dt = JSON.parse(dtStr || "[]") as string[];
       if (et) setEventType(et);
       if (dt.length > 0) setSelectedDates(dt);
     }
@@ -121,6 +128,10 @@ export default function TaegilPage() {
     if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
     sessionStorage.setItem("taegilEventType", eventType);
     sessionStorage.setItem("taegilDates", JSON.stringify(selectedDates));
+    // localStorage에도 저장 — 공유/새로고침 후에도 24시간 복구 가능
+    localStorage.setItem("taegilEventType", eventType);
+    localStorage.setItem("taegilDates", JSON.stringify(selectedDates));
+    localStorage.setItem("taegilPaidExpiry", String(Date.now() + 24 * 60 * 60 * 1000));
     const next = encodeURIComponent(`/main-v2/taegil`);
     router.push(`/main-v2/pay?amount=${taegilPrice}&taegil=1&next=${next}`);
   };
