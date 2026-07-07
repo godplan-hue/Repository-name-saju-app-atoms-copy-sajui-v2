@@ -17,6 +17,7 @@ function PayInner() {
   const amount = Number(searchParams.get("amount") || "0");
   const next = searchParams.get("next") || "/main-v2";
   const isTaegil = searchParams.get("taegil") === "1";
+  const isFreeCat = searchParams.get("freeCat") === "1";
 
   const [cardNo, setCardNo] = useState("");
   const [expM, setExpM] = useState("");
@@ -86,6 +87,13 @@ function PayInner() {
       }).catch(() => {});
       sessionStorage.setItem("v2_paid", "1");
       if (isTaegil) sessionStorage.setItem("taegilPaid", "1");
+      if (isFreeCat) {
+        try {
+          const cats = JSON.parse(sessionStorage.getItem("v2_paid_cats") || "[]");
+          if (!cats.includes("💰 재물운")) cats.push("💰 재물운");
+          sessionStorage.setItem("v2_paid_cats", JSON.stringify(cats));
+        } catch {}
+      }
       // 꿈해몽 24시간 무료 잠금 해제
       try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
       // 추천인 쿠폰 지급

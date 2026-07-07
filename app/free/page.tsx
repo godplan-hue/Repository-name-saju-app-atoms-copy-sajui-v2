@@ -55,7 +55,7 @@ export default function FreePage() {
         localStorage.setItem("v2_saved_profile", JSON.stringify({ name, birthYear, birthMonth, birthDay, gender: "", birthHour: "", isLunar: false }));
       }
     } catch {}
-    router.push("/main-v2/pay?amount=3900");
+    router.push("/main-v2/pay?amount=3900&freeCat=1&next=" + encodeURIComponent("/main-v2/result"));
   }
 
   const selectStyle = {
