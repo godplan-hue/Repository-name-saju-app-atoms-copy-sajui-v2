@@ -16,6 +16,7 @@ function PayInner() {
   const searchParams = useSearchParams();
   const amount = Number(searchParams.get("amount") || "0");
   const next = searchParams.get("next") || "/main-v2";
+  const isTaegil = searchParams.get("taegil") === "1";
 
   const [cardNo, setCardNo] = useState("");
   const [expM, setExpM] = useState("");
@@ -84,6 +85,7 @@ function PayInner() {
         body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
       }).catch(() => {});
       sessionStorage.setItem("v2_paid", "1");
+      if (isTaegil) sessionStorage.setItem("taegilPaid", "1");
       // 꿈해몽 24시간 무료 잠금 해제
       try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
       // 추천인 쿠폰 지급
@@ -178,6 +180,7 @@ function PayInner() {
             localStorage.removeItem("referred_by");
           }
         } catch {}
+        if (isTaegil) sessionStorage.setItem("taegilPaid", "1");
         router.push(next);
       } else {
         setError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");

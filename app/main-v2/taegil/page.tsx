@@ -119,8 +119,8 @@ export default function TaegilPage() {
     if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
     sessionStorage.setItem("taegilEventType", eventType);
     sessionStorage.setItem("taegilDates", JSON.stringify(selectedDates));
-    const next = encodeURIComponent(`/payment-complete?taegil=1&paid=${taegilPrice}`);
-    router.push(`/main-v2/pay?amount=${taegilPrice}&next=${next}`);
+    const next = encodeURIComponent(`/main-v2/taegil`);
+    router.push(`/main-v2/pay?amount=${taegilPrice}&taegil=1&next=${next}`);
   };
 
   const stopTts = () => {
