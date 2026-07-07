@@ -86,6 +86,7 @@ function PayInner() {
         body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
       }).catch(() => {});
       sessionStorage.setItem("v2_paid", "1");
+      sessionStorage.setItem("v2_plan", "select");
       if (isFreeCat) {
         try {
           const cats = JSON.parse(sessionStorage.getItem("v2_paid_cats") || "[]");
