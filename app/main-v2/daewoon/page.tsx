@@ -377,8 +377,9 @@ function DaewoonInner() {
     const b = selectedBlock;
     const title = `🌌 ${profile?.name}님의 대운 해설`;
     const desc = `${b.ganHanja}${b.jiHanja} (${b.startAge}~${b.endAge}세) · ${b.chapter}`;
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const kakao = (window as any).Kakao;
-    if (kakao && kakao.isInitialized()) {
+    if (isMobile && kakao && kakao.isInitialized()) {
       kakao.Share.sendDefault({
         objectType: "feed",
         content: {
@@ -391,9 +392,8 @@ function DaewoonInner() {
           { title: "나도 대운 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
         ],
       });
-      // Kakao 공유 후 핑크 결과지로 이동
       setTimeout(() => router.push(shareUrl), 300);
-    } else if (navigator.share) {
+    } else if (isMobile && navigator.share) {
       navigator.share({ title, text: `${desc} | 점운 AI사주`, url: shareUrl }).catch(() => {});
       router.push(shareUrl);
     } else {
