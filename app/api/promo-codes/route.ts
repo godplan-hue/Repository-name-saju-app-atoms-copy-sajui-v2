@@ -12,7 +12,11 @@ export async function GET(request: NextRequest) {
     if (!found || !found.active) {
       return NextResponse.json({ found: false }, { status: 404 });
     }
-    return NextResponse.json({ found: true, ...found, code: code.trim().toUpperCase() });
+    // FREE* 쿠폰: maxAmount 미설정 시 기본 3,900원 제한 (고가 상품 무료 방지)
+    const key2 = code.trim().toUpperCase();
+    const result = { found: true, ...found, code: key2 };
+    if (key2.startsWith("FREE") && !found.maxAmount) result.maxAmount = 3900;
+    return NextResponse.json(result);
   }
 
   const snap = await db.ref("promoCodes").once("value");

@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
 
     await db.ref(`promoCodes/${code}`).set({
       discountPercent: 100,
+      maxAmount: 3900,
       note: "무료재물운랜딩",
       active: true,
       usageCount: 0,
