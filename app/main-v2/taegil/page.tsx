@@ -37,6 +37,10 @@ export default function TaegilPage() {
   const [isPaid, setIsPaid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [partnerName, setPartnerName] = useState("");
+  const [partnerBirthYear, setPartnerBirthYear] = useState("");
+  const [partnerBirthMonth, setPartnerBirthMonth] = useState("");
+  const [partnerBirthDay, setPartnerBirthDay] = useState("");
   const resultsRef = useRef<HTMLDivElement>(null);
   const chunksRef = useRef<string[]>([]);
   const chunkIdxRef = useRef(0);
@@ -81,6 +85,9 @@ export default function TaegilPage() {
     setLoading(true);
     try {
       const birth = `${profile.birthYear}-${String(profile.birthMonth).padStart(2,"0")}-${String(profile.birthDay).padStart(2,"0")}`;
+      const partnerBirth = (eventType === "결혼" && partnerBirthYear && partnerBirthMonth && partnerBirthDay)
+        ? `${partnerBirthYear}-${String(partnerBirthMonth).padStart(2,"0")}-${String(partnerBirthDay).padStart(2,"0")}`
+        : null;
       const res = await fetch("/api/v2/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -91,6 +98,8 @@ export default function TaegilPage() {
           category: "택일",
           planType: "taegil",
           eventType, dates: selectedDates, taegilPaid: paid,
+          partnerName: partnerName || null,
+          partnerBirth,
         }),
       });
       const data = await res.json();
@@ -104,6 +113,9 @@ export default function TaegilPage() {
 
   const handlePay = () => {
     if (!eventType) { alert("목적을 먼저 선택해주세요!"); return; }
+    if (eventType === "결혼" && (!partnerName.trim() || !partnerBirthYear || !partnerBirthMonth || !partnerBirthDay)) {
+      alert("결혼 택일은 상대방 정보를 입력해주세요!"); return;
+    }
     if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
     sessionStorage.setItem("taegilEventType", eventType);
     sessionStorage.setItem("taegilDates", JSON.stringify(selectedDates));
@@ -214,10 +226,43 @@ export default function TaegilPage() {
           </div>
         </div>
 
-        {/* Step 2: 날짜 */}
+        {/* Step 2: 결혼 시 상대방 정보 */}
+        {eventType === "결혼" && (
+          <div style={{ background:"white", borderRadius:16, padding:"18px 16px", marginBottom:16, boxShadow:"0 2px 8px rgba(0,0,0,0.06)", border:"2px solid #fce7f3" }}>
+            <p style={{ margin:"0 0 14px", fontWeight:900, fontSize:15, color:"#be185d", display:"flex", alignItems:"center", gap:8 }}>
+              <span style={{ display:"inline-flex", width:24, height:24, borderRadius:"50%", background:"#ec4899", color:"white", fontSize:12, fontWeight:900, alignItems:"center", justifyContent:"center" }}>2</span>
+              💍 상대방 정보를 입력해주세요
+            </p>
+            <p style={{ fontSize:12, color:"#6b7280", margin:"0 0 14px 32px" }}>두 사람 모두에게 좋은 날을 찾아드려요</p>
+            <div style={{ marginBottom:10 }}>
+              <label style={{ fontSize:12, fontWeight:800, color:"#6b7280", display:"block", marginBottom:5 }}>상대방 이름</label>
+              <input type="text" value={partnerName} onChange={e => setPartnerName(e.target.value)} placeholder="홍길동"
+                style={{ width:"100%", padding:"10px 12px", borderRadius:10, border:"1.5px solid #e5e7eb", fontSize:14, outline:"none", boxSizing:"border-box" }} />
+            </div>
+            <div>
+              <label style={{ fontSize:12, fontWeight:800, color:"#6b7280", display:"block", marginBottom:5 }}>상대방 생년월일</label>
+              <div style={{ display:"flex", gap:6 }}>
+                <input type="number" value={partnerBirthYear} onChange={e => setPartnerBirthYear(e.target.value)} placeholder="1990"
+                  style={{ flex:2, padding:"10px 8px", borderRadius:10, border:"1.5px solid #e5e7eb", fontSize:14, outline:"none" }} />
+                <select value={partnerBirthMonth} onChange={e => setPartnerBirthMonth(e.target.value)}
+                  style={{ flex:1, padding:"10px 4px", borderRadius:10, border:"1.5px solid #e5e7eb", fontSize:14, outline:"none" }}>
+                  <option value="">월</option>
+                  {Array.from({length:12},(_,i)=>i+1).map(m=><option key={m} value={m}>{m}월</option>)}
+                </select>
+                <select value={partnerBirthDay} onChange={e => setPartnerBirthDay(e.target.value)}
+                  style={{ flex:1, padding:"10px 4px", borderRadius:10, border:"1.5px solid #e5e7eb", fontSize:14, outline:"none" }}>
+                  <option value="">일</option>
+                  {Array.from({length:31},(_,i)=>i+1).map(d=><option key={d} value={d}>{d}일</option>)}
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Step 3(결혼) or Step 2(기타): 날짜 */}
         <div style={{ background:"white", borderRadius:16, padding:"18px 16px", marginBottom:16, boxShadow:"0 2px 8px rgba(0,0,0,0.06)" }}>
           <p style={{ margin:"0 0 4px", fontWeight:900, fontSize:15, color:"#1f2937", display:"flex", alignItems:"center", gap:8 }}>
-            <span style={{ display:"inline-flex", width:24, height:24, borderRadius:"50%", background:"#22c55e", color:"white", fontSize:12, fontWeight:900, alignItems:"center", justifyContent:"center" }}>2</span>
+            <span style={{ display:"inline-flex", width:24, height:24, borderRadius:"50%", background:"#22c55e", color:"white", fontSize:12, fontWeight:900, alignItems:"center", justifyContent:"center" }}>{eventType === "결혼" ? "3" : "2"}</span>
             후보 날짜를 선택해주세요
           </p>
           <p style={{ margin:"0 0 14px 32px", fontSize:12, color:"#6b7280" }}>최대 10일까지 선택할 수 있어요</p>

@@ -2369,7 +2369,7 @@ export async function POST(request: NextRequest) {
     // 5섹션 해설을 전부 공개함
     // ── 택일(擇日) ────────────────────────────────────────────────────────────────
     if (planType === "taegil") {
-      const { eventType, dates, taegilPaid } = body;
+      const { eventType, dates, taegilPaid, partnerName: pName, partnerBirth } = body;
       if (!Array.isArray(dates) || dates.length === 0) {
         return NextResponse.json({ error: "날짜를 선택해주세요" }, { status: 400 });
       }
@@ -2378,9 +2378,33 @@ export async function POST(request: NextRequest) {
       const userGanIdx = CHEONGAN10.indexOf(userDay.gan);
       const userJiIdx = JIJI12.indexOf(userDay.ji);
 
+      // 결혼 택일 — 상대방 사주도 계산
+      let partnerGanIdx = -1;
+      let partnerJiIdx = -1;
+      if (eventType === "결혼" && partnerBirth) {
+        const [py, pm, pd] = (partnerBirth as string).split("-").map(Number);
+        const partnerDay = getDayPillar(py, pm, pd);
+        partnerGanIdx = CHEONGAN10.indexOf(partnerDay.gan);
+        partnerJiIdx = JIJI12.indexOf(partnerDay.ji);
+      }
+
       const JIJI_HAP: [number, number][] = [[0,1],[2,11],[3,10],[4,9],[5,8],[6,7]];
       const isHap = (a: number, b: number) => JIJI_HAP.some(([x,y]) => (a===x&&b===y)||(a===y&&b===x));
       const SAMHAP: number[][] = [[8,0,4],[2,6,10],[11,3,7],[5,9,1]];
+
+      const calcScore = (ganIdx: number, jiIdx: number, dGanIdx: number, dJiIdx: number) => {
+        let sc = 0;
+        const gd = Math.abs(ganIdx - dGanIdx);
+        if (gd === 5) sc += 3;
+        else if (gd === 6 && ganIdx < 4) sc -= 3;
+        else if (gd === 0) sc += 1;
+        if (isHap(jiIdx, dJiIdx)) sc += 2;
+        else if (Math.abs(jiIdx - dJiIdx) === 6) sc -= 2;
+        const uSam = SAMHAP.findIndex(g => g.includes(jiIdx));
+        const dSam = SAMHAP.findIndex(g => g.includes(dJiIdx));
+        if (uSam !== -1 && uSam === dSam && jiIdx !== dJiIdx) sc += 1;
+        return sc;
+      };
 
       const results = (dates as string[]).map((dateStr: string) => {
         const [dy, dm, dd] = dateStr.split("-").map(Number);
@@ -2388,20 +2412,17 @@ export async function POST(request: NextRequest) {
         const dGanIdx = CHEONGAN10.indexOf(dayP.gan);
         const dJiIdx = JIJI12.indexOf(dayP.ji);
 
-        let sc = 0;
-        const gd = Math.abs(userGanIdx - dGanIdx);
-        if (gd === 5) sc += 3;
-        else if (gd === 6 && userGanIdx < 4) sc -= 3;
-        else if (gd === 0) sc += 1;
-        if (isHap(userJiIdx, dJiIdx)) sc += 2;
-        else if (Math.abs(userJiIdx - dJiIdx) === 6) sc -= 2;
-        const uSam = SAMHAP.findIndex(g => g.includes(userJiIdx));
-        const dSam = SAMHAP.findIndex(g => g.includes(dJiIdx));
-        if (uSam !== -1 && uSam === dSam && userJiIdx !== dJiIdx) sc += 1;
+        let sc = calcScore(userGanIdx, userJiIdx, dGanIdx, dJiIdx);
+
+        // 결혼 택일: 상대방 점수도 합산해서 평균
+        if (eventType === "결혼" && partnerGanIdx >= 0 && partnerJiIdx >= 0) {
+          const partnerSc = calcScore(partnerGanIdx, partnerJiIdx, dGanIdx, dJiIdx);
+          sc = Math.round((sc + partnerSc) / 2);
+        }
 
         const rating: "대길"|"길"|"평"|"흉" = sc >= 4 ? "대길" : sc >= 2 ? "길" : sc >= -1 ? "평" : "흉";
         const dayOfWeek = ["일","월","화","수","목","금","토"][new Date(dy, dm-1, dd).getDay()];
-        const tmpl = getTaegilTemplate(eventType || "기타", rating, name);
+        const tmpl = getTaegilTemplate(eventType || "기타", rating, pName ? `${name}·${pName}` : name);
         return {
           date: dateStr, dayOfWeek,
           iljin: dayP.gan + dayP.ji, iljinHanja: dayP.ganHanja + dayP.jiHanja,
