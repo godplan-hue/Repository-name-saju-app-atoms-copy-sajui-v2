@@ -48,6 +48,7 @@ export default function AdminDashboard() {
     { href: "/admin/partner-customers", label: "📁 파트너 고객 DB" },
     { href: "/admin/customers", label: "👤 일반회원 DB" },
     { href: "/admin/direct-payments", label: "💳 일반회원 결제내역" },
+    { href: "/admin/free-leads", label: "🎁 무료DB" },
     { href: "/admin/discount-codes", label: "🎟️ 할인코드" },
     { href: "/admin/top-sales", label: "⭐ TOP 판매자" },
     { href: "/partner", label: "🏠 파트너 메인" },
