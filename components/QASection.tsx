@@ -237,9 +237,13 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           boxShadow: "0 6px 20px rgba(236,72,153,0.3)",
         }}>
           <div>
-            <p style={{ fontSize: 13, margin: "0 0 1px", fontWeight: 900 }}>🔓 Q&amp;A 전체 + 복냥이 채팅+꿈해몽 전체<br />무제한 하루 가능!</p>
-            <p style={{ fontSize: 10, fontWeight: 700, margin: 0, opacity: 0.9 }}>
-              결제하면 360개 질문 전체 + 복냥이 채팅 무제한 하루 가능!
+            <p style={{ fontSize: 13, margin: "0 0 1px", fontWeight: 900 }}>
+              결제하면<br />
+              🔓 Q&amp;A 전체 (360개 질문)<br />
+              + 복냥이 채팅<br />
+              + 꿈해몽 전체<br />
+              1+1+1 올인원<br />
+              하루 동안 무제한 이용 가능!
             </p>
           </div>
           <button
