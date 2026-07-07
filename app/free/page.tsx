@@ -132,8 +132,9 @@ export default function FreePage() {
                 />
                 <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
                   <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
-                  점운(<a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed" }}>jeomun.com</a>)이 이름·생년월일·전화번호를 수집하여
-                  운세 정보 및 혜택 안내에 활용하며, <strong>3년간</strong> 보유 후 파기합니다. 언제든지 수신거부 가능합니다.
+                  <strong style={{ color: "#ec4899" }}>점운</strong>(<a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed" }}>jeomun.com</a>)이 이름·생년월일·전화번호를 수집하여
+                  운세 정보 및 혜택 안내에 활용하며, <strong>3년간</strong> 보유 후 파기합니다.<br />
+                  언제든지 수신거부 가능합니다.
                 </span>
               </label>
             </div>
