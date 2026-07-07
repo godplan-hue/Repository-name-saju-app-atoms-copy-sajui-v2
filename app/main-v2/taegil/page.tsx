@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 
 type EventType = "이사"|"상견례"|"면접"|"개업"|"결혼"|"수술"|"여행"|"계약"|"시험"|"출산"|"재회연락"|"기타";
 type Rating = "대길"|"길"|"평"|"흉";
@@ -159,9 +160,28 @@ export default function TaegilPage() {
     const dateStr = best.length > 0
       ? best.map(r => { const d = new Date(r.date); return `${d.getMonth()+1}/${d.getDate()} ${r.rating}`; }).join(", ")
       : "분석 완료";
-    const text = `📅 택일 분석 — ${profile?.name}님의 ${eventType} 좋은 날\n${dateStr}\n\n점운에서 내 좋은 날 찾기 👇\nhttps://jeomun.com/main-v2/taegil`;
-    if (navigator.share) { navigator.share({ title: "택일 — 점운", text, url: "https://jeomun.com/main-v2/taegil" }); }
-    else { navigator.clipboard.writeText(text).then(() => alert("링크가 복사됐어요!")); }
+    const shareUrl = "https://jeomun.com/main-v2/taegil";
+    const title = `📅 ${profile?.name}님의 ${eventType} 택일 분석`;
+    const desc = `좋은 날: ${dateStr} | 점운 AI 사주`;
+    const kakao = (window as any).Kakao;
+    if (kakao && kakao.isInitialized()) {
+      kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title, description: desc,
+          imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
+          link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+        },
+        buttons: [
+          { title: "택일 결과 보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
+          { title: "나도 택일 받기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
+        ],
+      });
+    } else if (navigator.share) {
+      navigator.share({ title, text: desc, url: shareUrl });
+    } else {
+      navigator.clipboard.writeText(shareUrl).then(() => alert("링크가 복사됐어요!"));
+    }
   };
 
   const renderCalendar = () => {
@@ -367,6 +387,8 @@ export default function TaegilPage() {
           </div>
         )}
       </div>
+      <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"
+        onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
     </main>
   );
 }
