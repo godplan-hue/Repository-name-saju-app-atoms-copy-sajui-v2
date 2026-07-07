@@ -2,6 +2,16 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+interface Lead {
+  id: string;
+  name: string;
+  phone: string;
+  birthYear: string;
+  code: string;
+  used: boolean;
+  createdAt: number;
+}
+
 interface Payment {
   id: string;
   date: string;
@@ -39,6 +49,8 @@ export default function AdminDirectPayments() {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [tab, setTab] = useState<"payments" | "leads">("payments");
+  const [leads, setLeads] = useState<Lead[]>([]);
 
   useEffect(() => {
     const adminId = localStorage.getItem("adminId");
@@ -52,6 +64,10 @@ export default function AdminDirectPayments() {
         setCount(data.count || 0);
       })
       .finally(() => setLoading(false));
+    fetch("/api/admin/free-leads", { headers: { "x-admin-id": adminId } })
+      .then(r => r.json())
+      .then(data => setLeads(data.leads || []))
+      .catch(() => {});
   }, [router]);
 
   const handleLogout = () => {
@@ -93,6 +109,13 @@ export default function AdminDirectPayments() {
       {/* 본문 */}
       <div style={{ flex: 1, padding: 30, overflowX: "auto" }}>
         <div style={{ background: "white", padding: 30, borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
+          {/* 탭 */}
+          <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
+            <button onClick={() => setTab("payments")} style={{ padding: "10px 20px", borderRadius: 10, border: "none", background: tab === "payments" ? "linear-gradient(135deg,#667eea,#764ba2)" : "#f3f4f6", color: tab === "payments" ? "white" : "#6b7280", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>💳 결제내역</button>
+            <button onClick={() => setTab("leads")} style={{ padding: "10px 20px", borderRadius: 10, border: "none", background: tab === "leads" ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3f4f6", color: tab === "leads" ? "white" : "#6b7280", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>🎁 무료DB ({leads.length}명)</button>
+          </div>
+
+          {tab === "payments" && <>
           <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 6px", color: "#333" }}>💳 일반회원 결제내역</h1>
           <p style={{ fontSize: 13, color: "#888", margin: "0 0 24px" }}>jeomun.com 직접 결제 고객 기록 (파트너 제외)</p>
 
@@ -172,6 +195,45 @@ export default function AdminDirectPayments() {
               </tbody>
             </table>
           )}
+          </>}
+
+          {tab === "leads" && <>
+            <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 6px", color: "#333" }}>🎁 무료DB</h1>
+            <p style={{ fontSize: 13, color: "#888", margin: "0 0 24px" }}>jeomun.com/free 에서 무료 재물운 신청한 고객 목록</p>
+            {leads.length === 0 ? (
+              <p style={{ textAlign: "center", color: "#888", padding: "40px 0" }}>아직 신청 데이터가 없어요.</p>
+            ) : (
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
+                    {["이름", "전화번호", "생년", "쿠폰코드", "사용여부", "신청일"].map(h => (
+                      <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontWeight: 900, color: "#374151" }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {leads.map((lead, i) => (
+                    <tr key={lead.id} style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}>
+                      <td style={{ padding: "10px 12px", fontWeight: 700 }}>{lead.name}</td>
+                      <td style={{ padding: "10px 12px", color: "#374151" }}>{lead.phone}</td>
+                      <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.birthYear}년</td>
+                      <td style={{ padding: "10px 12px" }}>
+                        <span style={{ background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 6, fontWeight: 700, letterSpacing: 1 }}>{lead.code}</span>
+                      </td>
+                      <td style={{ padding: "10px 12px" }}>
+                        <span style={{ background: lead.used ? "#dcfce7" : "#fee2e2", color: lead.used ? "#166534" : "#991b1b", padding: "2px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
+                          {lead.used ? "사용됨" : "미사용"}
+                        </span>
+                      </td>
+                      <td style={{ padding: "10px 12px", color: "#9ca3af", fontSize: 12 }}>
+                        {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString("ko-KR") : "-"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </>}
         </div>
       </div>
     </main>
