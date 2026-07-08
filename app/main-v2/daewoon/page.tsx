@@ -124,29 +124,34 @@ function DaewoonInner() {
     }
   }, [daeunList, currentAge, selectedIdx]);
 
-  // 유료 블록 탭할 때마다 보관함 자동 저장 (selectedIdx가 바뀔 때마다 실행)
+  // 결제 후 잠금해제된 블록 전체를 보관함에 한 번에 자동 저장
   useEffect(() => {
-    if (!paid || selectedIdx < 0 || daeunList.length === 0 || !profile) return;
-    const b = daeunList[selectedIdx];
-    if (!b || !b.mental) return;
+    if (!paid || daeunList.length === 0 || !profile) return;
     const currentBlockIndex = daeunList.findIndex(x => currentAge >= x.startAge && currentAge <= x.endAge);
-    const isLocked = paidIndices.length > 0
-      ? !paidIndices.includes(selectedIdx)
-      : (selectedIdx - currentBlockIndex >= paidCount);
-    if (isLocked) return;
     const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
-    const id = `daeun-${profile.name}-${b.startAge}-${b.endAge}`;
-    if (hist.some((h: any) => h.id === id)) return;
-    hist.unshift({
-      id, date: new Date().toISOString(),
-      name: profile.name,
-      category: `🌌 대운 ${b.ganHanja}${b.jiHanja} (${b.startAge}~${b.endAge}세)`,
-      analysis: buildCategories(b).map(c => `${c.icon} ${c.label}\n${c.text}`).join("\n\n"),
-      isPaid: true, planType: "daeun", birthYear: profile.birthYear ?? "",
+    let changed = false;
+    daeunList.forEach((b, i) => {
+      if (!b.mental) return;
+      const isLocked = paidIndices.length > 0
+        ? !paidIndices.includes(i)
+        : (i - currentBlockIndex >= paidCount);
+      if (isLocked) return;
+      const id = `daeun-${profile.name}-${b.startAge}-${b.endAge}`;
+      if (hist.some((h: any) => h.id === id)) return;
+      hist.unshift({
+        id, date: new Date().toISOString(),
+        name: profile.name,
+        category: `🌌 대운 ${b.ganHanja}${b.jiHanja} (${b.startAge}~${b.endAge}세)`,
+        analysis: buildCategories(b).map(c => `${c.icon} ${c.label}\n${c.text}`).join("\n\n"),
+        isPaid: true, planType: "daeun", birthYear: profile.birthYear ?? "",
+      });
+      changed = true;
     });
-    localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
-    setHistorySaved(true);
-  }, [selectedIdx, paid, daeunList]);
+    if (changed) {
+      localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
+      setHistorySaved(true);
+    }
+  }, [paid, daeunList, paidIndices, paidCount, profile]);
 
   // 대운 블록 바뀌면 TTS 초기화
   useEffect(() => {
