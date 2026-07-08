@@ -1952,7 +1952,7 @@ function V2ResultInner() {
       {/* ── PC 버튼 안내 모달 (버튼 설명만) ── */}
       {showPcGuideModal && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowPcGuideModal(false)}>
-          <div style={{ background: "white", borderRadius: 20, padding: "24px 22px", maxWidth: 360, width: "100%" }} onClick={e => e.stopPropagation()}>
+          <div style={{ background: "white", borderRadius: 20, padding: "24px 22px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
             <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 버튼 안내</p>
             <div style={{ background: "#fef2f2", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
               <p style={{ fontSize: 13, color: "#4b5563", margin: 0, lineHeight: 2.4 }}>
