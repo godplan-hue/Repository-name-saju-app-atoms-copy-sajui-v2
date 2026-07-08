@@ -21,12 +21,22 @@ export default function FreeForm() {
 
     setLoading(true); setError("");
 
-    // 리드 DB 저장 (결과 기다리지 않고 바로 진행)
-    fetch("/api/free-lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name.trim(), phone: clean, email: email.trim() }),
-    }).catch(() => {});
+    // 리드 DB 저장 — 응답 기다려서 중복 차단
+    try {
+      const res = await fetch("/api/free-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), phone: clean, email: email.trim() }),
+      });
+      const data = await res.json();
+      if (data.duplicate) {
+        setError("이 전화번호로 이미 무료 재물운을 받으셨어요. 유료 결제로 더 자세한 분석을 받아보세요.");
+        setLoading(false);
+        return;
+      }
+    } catch {
+      // 네트워크 오류는 무시하고 진행
+    }
 
     // 기본 프로필 sessionStorage 저장 (payment-complete 폼에서 이름 pre-fill용)
     sessionStorage.setItem("v2_saved_profile", JSON.stringify({

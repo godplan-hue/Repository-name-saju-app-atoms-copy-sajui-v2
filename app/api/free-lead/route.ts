@@ -32,7 +32,12 @@ export async function POST(request: NextRequest) {
 
     const cleanPhone = String(phone).replace(/\D/g, "");
 
-    // 중복이어도 저장값 업데이트
+    // 동일 전번 중복 신청 차단
+    const existing = await db.ref(`free_leads/${cleanPhone}`).once("value");
+    if (existing.exists()) {
+      return NextResponse.json({ duplicate: true });
+    }
+
     await db.ref(`free_leads/${cleanPhone}`).set({
       phone: cleanPhone,
       name,
