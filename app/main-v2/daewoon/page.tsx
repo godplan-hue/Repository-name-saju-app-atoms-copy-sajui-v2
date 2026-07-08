@@ -516,8 +516,8 @@ function DaewoonInner() {
 
               {/* 타임라인 */}
               <div style={{ marginBottom: 16 }}>
-                <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 10, padding: "10px 14px", marginBottom: 12, fontSize: 12, color: "rgba(255,255,255,0.75)", lineHeight: 1.7 }}>
-                  💡 <strong style={{ color: "#fbbf24" }}>아래 목록에서 보고싶은 연도 칸을 탭(터치)</strong>하면<br />해당 시기 상세 해설이 바로 아래에 나타나요.<br />여러 개를 구매해도 탭할 때마다 한 개씩 확인해요.
+                <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 10, padding: "10px 14px", marginBottom: 12, fontSize: 12, color: "rgba(255,255,255,0.75)", lineHeight: 1.8 }}>
+                  💡 위 목록에서 연도 칸을 탭(터치)하면<br />해당 시기 상세 해설이 아래에 나타나요.<br />여러 개 구매 시 한 개씩 다 확인하세요.
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {daeunList.map((b, i) => {
@@ -661,8 +661,8 @@ function DaewoonInner() {
                       </div>
 
                       {/* 보관함 자동 저장 안내 */}
-                      <div style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.4)", borderRadius: 10, padding: "8px 12px", marginTop: 10, fontSize: 11, color: "#ff6b6b", lineHeight: 1.6, fontWeight: 700 }}>
-                        📚 결과가 보관함에 자동 저장됐어요. 보관함에서 언제든 다시 볼 수 있어요.
+                      <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 10, padding: "8px 12px", marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.6 }}>
+                        📚 구매한 대운 전체가 보관함에 저장됐어요. 보관함에서 언제든 다시 볼 수 있어요.
                       </div>
 
                       {/* 액션 버튼 3개 */}
