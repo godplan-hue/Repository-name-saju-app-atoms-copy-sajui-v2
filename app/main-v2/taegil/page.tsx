@@ -51,6 +51,24 @@ export default function TaegilPage() {
     return () => { sessionStorage.removeItem("taegilPaid"); };
   }, []);
 
+  // Router Cache가 이전 결제 상태를 복원할 때 sessionStorage와 불일치 방지
+  useEffect(() => {
+    const recheck = () => {
+      const sessPaid = sessionStorage.getItem("taegilPaid") === "1";
+      const urlPaid = new URLSearchParams(window.location.search).get("taegilPaid") === "1";
+      if (!sessPaid && !urlPaid) {
+        setIsPaid(false);
+        setResults([]);
+      }
+    };
+    window.addEventListener("pageshow", recheck);
+    window.addEventListener("focus", recheck);
+    return () => {
+      window.removeEventListener("pageshow", recheck);
+      window.removeEventListener("focus", recheck);
+    };
+  }, []);
+
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
     if (!saved) { router.push("/main-v2"); return; }
@@ -390,19 +408,17 @@ export default function TaegilPage() {
             if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
             fetchTaegil(true);
           } else {
-            if (!eventType) { alert("목적을 먼저 선택해주세요!"); return; }
-            if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
-            fetchTaegil(false);
+            handlePay();
           }
         }}
           style={{ width:"100%", padding:"15px 0", marginBottom:16, border:"none", borderRadius:50, fontWeight:900, fontSize:15, cursor: loading ? "not-allowed" : "pointer",
             background: loading ? "#9ca3af" : "linear-gradient(135deg,#22c55e,#15803d)",
             color:"white", boxShadow: "0 6px 20px rgba(34,197,94,0.35)" }}>
-          {loading ? "⏳ 분석 중..." : isPaid ? "🔄 날짜 바꿔서 다시 분석하기" : "📅 날짜 분석 시작하기"}
+          {loading ? "⏳ 분석 중..." : isPaid ? "🔄 날짜 바꿔서 다시 분석하기" : "📅 날짜 분석하기 — ₩2,900"}
         </button>
 
-        {/* 결과 */}
-        {results.length > 0 && (
+        {/* 결과 — 결제 완료 시에만 표시 */}
+        {results.length > 0 && isPaid && (
           <div ref={resultsRef}>
             <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
               <p style={{ margin:0, fontWeight:900, fontSize:16, color:"#1f2937" }}>📊 분석 결과</p>
@@ -451,20 +467,6 @@ export default function TaegilPage() {
               );
             })}
 
-            {!isPaid && (
-              <div style={{ background:"linear-gradient(135deg,#f0fdf4,#dcfce7)", border:"2px solid #86efac", borderRadius:16, padding:"20px 16px", textAlign:"center", marginTop:4 }}>
-                <p style={{ margin:"0 0 4px", fontWeight:900, fontSize:18, color:"#15803d" }}>📅 전체 날짜 상세 해설</p>
-                <p style={{ margin:"0 0 6px", fontSize:13, color:"#166534", lineHeight:1.7 }}>선택한 {selectedDates.length}일 전체<br/>일진 해설 · 시간대 안내 · 주의사항 · 팁</p>
-                <p style={{ margin:"0 0 12px", fontSize:11, color:"#15803d", fontWeight:700 }}>
-                  날짜 수 관계없이 ₩2,900 고정
-                </p>
-                <button onClick={handlePay}
-                  style={{ width:"100%", padding:"14px 0", background:"linear-gradient(135deg,#22c55e,#15803d)", color:"white", border:"none", borderRadius:50, fontWeight:900, fontSize:16, cursor:"pointer", boxShadow:"0 6px 20px rgba(34,197,94,0.35)" }}>
-                  📅 전체 해설 보기 — ₩{taegilPrice.toLocaleString()}
-                </button>
-                <p style={{ margin:"8px 0 0", fontSize:11, color:"#6b7280" }}>즉시 열람 · SSL 보안 결제</p>
-              </div>
-            )}
           </div>
         )}
       </div>}

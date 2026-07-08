@@ -69,6 +69,26 @@ function DaewoonInner() {
     };
   }, []);
 
+  // Router Cache가 이전 결제 상태를 복원할 때 sessionStorage와 불일치 방지
+  useEffect(() => {
+    const recheck = () => {
+      const sessPaid = sessionStorage.getItem("daeunPaid") === "1";
+      const urlPaid = new URLSearchParams(window.location.search).get("daeunPaid") === "1";
+      if (!sessPaid && !urlPaid) {
+        setPaid(false);
+        setPaidCount(0);
+        setPaidIndices([]);
+        setPurchaseSet(new Set());
+      }
+    };
+    window.addEventListener("pageshow", recheck);
+    window.addEventListener("focus", recheck);
+    return () => {
+      window.removeEventListener("pageshow", recheck);
+      window.removeEventListener("focus", recheck);
+    };
+  }, []);
+
   // 화면 꺼졌다 켜질 때 이어읽기
   useEffect(() => {
     const handleVisibility = () => { if (document.visibilityState === "visible") resumeAfterHideRef.current(); };
