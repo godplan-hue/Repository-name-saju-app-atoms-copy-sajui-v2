@@ -645,9 +645,9 @@ function DaewoonInner() {
                           style={{ flex: 1, padding: "12px 0", background: "rgba(139,92,246,0.3)", border: "1px solid rgba(139,92,246,0.5)", color: "white", borderRadius: 12, fontWeight: 700, fontSize: 13, cursor: saving ? "not-allowed" : "pointer" }}>
                           {saving ? "⏳..." : "🖼️ 이미지 저장"}
                         </button>
-                        <button onClick={() => { saveToHistory(); router.push("/main-v2/history"); }}
+                        <button onClick={() => { saveToHistory(); setHistorySaved(true); }}
                           style={{ flex: 1, padding: "12px 0", background: historySaved ? "rgba(251,191,36,0.15)" : "rgba(255,255,255,0.07)", border: historySaved ? "1px solid rgba(251,191,36,0.4)" : "1px solid rgba(255,255,255,0.12)", color: historySaved ? "#fbbf24" : "rgba(255,255,255,0.6)", borderRadius: 12, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
-                          📚 보관함
+                          {historySaved ? "✅ 저장됨" : "📚 보관함"}
                         </button>
                       </div>
                     </>
