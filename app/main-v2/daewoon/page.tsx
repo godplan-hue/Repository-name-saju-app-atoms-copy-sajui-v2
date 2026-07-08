@@ -131,7 +131,6 @@ function DaewoonInner() {
     const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
     let changed = false;
     daeunList.forEach((b, i) => {
-      if (!b.mental) return;
       const isLocked = paidIndices.length > 0
         ? !paidIndices.includes(i)
         : (i - currentBlockIndex >= paidCount);
