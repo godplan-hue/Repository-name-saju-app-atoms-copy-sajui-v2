@@ -431,7 +431,7 @@ function V2ResultInner() {
       return saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key);
     })();
     if (isPaid) setPaidCats(cats);
-    if (isPaid && Object.keys(analyses).length > 0) {
+    if (isPaid && detectedTier !== "free" && Object.keys(analyses).length > 0) {
       if (isPackage) {
         const pkg = sessionStorage.getItem("selectedPackage") ?? "";
         const pkgCats = PKG_CAT_MAP[pkg] ?? PKG_CAT_MAP["기본 분석"];

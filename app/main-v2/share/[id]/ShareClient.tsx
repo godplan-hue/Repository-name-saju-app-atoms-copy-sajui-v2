@@ -112,6 +112,23 @@ export default function ShareClient({ id }: { id: string }) {
   const pageRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
+  const handleKakaoShare = () => {
+    if (!entry) return;
+    const url = `${window.location.origin}/main-v2/share-kakao/${id}`;
+    const kakao = (window as any).Kakao;
+    if (kakao && !kakao.isInitialized()) { try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {} }
+    const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
+    if (kakaoReady && url) {
+      try {
+        kakao.Share.sendDefault({ objectType: "feed", content: { title: `🔮 ${entry.name}님의 ${entry.categories[0]?.label ?? "사주"} 분석 결과`, description: `총운 ${entry.scores?.total ?? "?"}점! 🔮 AI 사주 점운 jeomun.com`, imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } }] });
+      } catch {
+        navigator.clipboard.writeText(url).catch(() => {});
+      }
+    } else {
+      navigator.clipboard.writeText(url).catch(() => {});
+    }
+  };
+
   const saveToHistory = () => {
     if (!entry || historySaved) return;
     if (entry.tier === "free") return;
@@ -345,6 +362,9 @@ export default function ShareClient({ id }: { id: string }) {
               style={{ width: "100%", padding: "13px 0", background: historySaved ? "#dcfce7" : "white", color: historySaved ? "#15803d" : "#374151", border: `1.5px solid ${historySaved ? "#22c55e" : "#d1d5db"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
               {historySaved ? "✅ 보관함에 저장됨" : "📥 보관함에 저장하기"}
             </button>
+            <button onClick={handleKakaoShare} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+              📤 카카오톡으로 공유
+            </button>
           </div>
         )}
 
@@ -534,27 +554,18 @@ export default function ShareClient({ id }: { id: string }) {
               style={{ width: "100%", padding: "13px 0", background: historySaved ? "#dcfce7" : "white", color: historySaved ? "#15803d" : "#374151", border: `1.5px solid ${historySaved ? "#22c55e" : "#d1d5db"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
               {historySaved ? "✅ 보관함에 저장됨" : "📥 보관함에 저장하기"}
             </button>
+            <button onClick={handleKakaoShare} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+              📤 카카오톡으로 공유
+            </button>
           </div>
         )}
 
-        {/* 공유 */}
-        <button onClick={() => {
-          const url = `${window.location.origin}/main-v2/share-kakao/${id}`;
-          const kakao = (window as any).Kakao;
-          if (kakao && !kakao.isInitialized()) { try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {} }
-          const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
-          if (kakaoReady && url) {
-            try {
-              kakao.Share.sendDefault({ objectType: "feed", content: { title: `🔮 ${entry.name}님의 ${entry.categories[0]?.label ?? "사주"} 분석 결과`, description: `총운 ${entry.scores?.total ?? "?"}점! 🔮 AI 사주 점운 jeomun.com`, imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } }] });
-            } catch {
-              navigator.clipboard.writeText(url).catch(() => {});
-            }
-          } else {
-            navigator.clipboard.writeText(url).catch(() => {});
-          }
-        }} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-          📤 카카오톡으로 공유
-        </button>
+        {/* 공유 (비오너용) */}
+        {!isOwner && (
+          <button onClick={handleKakaoShare} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+            📤 카카오톡으로 공유
+          </button>
+        )}
 
         {!entry.businessName && (
           <button onClick={() => router.push(entry.tier === "taegil" ? "/main-v2/taegil" : "/main-v2")} style={{ width: "100%", marginBottom: 10, padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
