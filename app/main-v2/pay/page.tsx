@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export default function PayPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<div style={{minHeight:"100vh",background:"linear-gradient(160deg,#1a0535,#0a0420)"}}/>}>
       <PayInner />
     </Suspense>
   );
