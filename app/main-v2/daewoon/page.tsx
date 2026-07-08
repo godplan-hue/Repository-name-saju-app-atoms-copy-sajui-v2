@@ -628,8 +628,13 @@ function DaewoonInner() {
                         )}
                       </div>
 
+                      {/* 나가면 사라진다 경고 */}
+                      <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "8px 12px", marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.55)", lineHeight: 1.6, fontWeight: 600 }}>
+                        ⚠️ 이 결과는 현재 탭에서만 유지돼요. 다른 페이지로 이동하거나 탭을 닫으면 사라지니, 보관함에 저장하거나 공유해두세요.
+                      </div>
+
                       {/* 액션 버튼 3개 */}
-                      <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+                      <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
                         <button onClick={shareResult} disabled={sharing}
                           style={{ flex: 1, padding: "12px 0", background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a0f2e", border: "none", borderRadius: 12, fontWeight: 800, fontSize: 13, cursor: sharing ? "not-allowed" : "pointer" }}>
                           {sharing ? "⏳..." : "📤 공유하기"}

@@ -255,6 +255,15 @@ export default function TaegilPage() {
 
       <div style={{ maxWidth:480, margin:"0 auto", padding:"20px 16px 60px" }}>
 
+        {/* 기능 안내 */}
+        {!isPaid && (
+          <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:14 }}>
+            <span style={{ fontSize:12, fontWeight:700, color:"#15803d", background:"#dcfce7", borderRadius:20, padding:"4px 12px", border:"1px solid #86efac" }}>📅 날짜 무제한 검색</span>
+            <span style={{ fontSize:12, fontWeight:700, color:"#1d4ed8", background:"#dbeafe", borderRadius:20, padding:"4px 12px", border:"1px solid #93c5fd" }}>💰 목적별 ₩2,900 고정</span>
+            <span style={{ fontSize:12, fontWeight:700, color:"#7c3aed", background:"#ede9fe", borderRadius:20, padding:"4px 12px", border:"1px solid #c4b5fd" }}>⚡ 즉시 결과 확인</span>
+          </div>
+        )}
+
         {/* Step 1: 목적 */}
         <div style={{ background:"white", borderRadius:16, padding:"18px 16px", marginBottom:16, boxShadow:"0 2px 8px rgba(0,0,0,0.06)" }}>
           <p style={{ margin:"0 0 14px", fontWeight:900, fontSize:15, color:"#1f2937", display:"flex", alignItems:"center", gap:8 }}>
@@ -391,6 +400,13 @@ export default function TaegilPage() {
                 </button>
               </div>
             </div>
+
+            {isPaid && (
+              <div style={{ background:"#fffbeb", border:"1px solid #fde68a", borderRadius:10, padding:"10px 14px", marginBottom:12, fontSize:12, color:"#92400e", fontWeight:700, lineHeight:1.7 }}>
+                ⚠️ 이 결과는 현재 화면에서만 유지돼요.<br/>
+                공유하거나 다른 페이지로 이동하면 결과가 사라지니, 지금 기록해두세요.
+              </div>
+            )}
 
             {results.map(r => {
               const d = new Date(r.date);
