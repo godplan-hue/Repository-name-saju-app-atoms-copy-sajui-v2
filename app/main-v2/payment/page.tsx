@@ -8,6 +8,7 @@ interface PromoCode {
   discountPercent: number;
   note: string;
   active: boolean;
+  maxAmount?: number;
 }
 
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -69,7 +70,7 @@ function PaymentInner() {
       const res = await fetch(`/api/promo-codes?code=${encodeURIComponent(code)}`);
       if (!res.ok) { setDiscountError("유효하지 않은 할인코드입니다."); setAppliedDiscount(null); return; }
       const data = await res.json();
-      setAppliedDiscount({ code: data.code, discountPercent: data.discountPercent, note: data.note || "", active: data.active });
+      setAppliedDiscount({ code: data.code, discountPercent: data.discountPercent, note: data.note || "", active: data.active, maxAmount: data.maxAmount });
       setDiscountError("");
     } catch {
       setDiscountError("할인코드 확인 중 오류가 발생했습니다.");
@@ -79,6 +80,7 @@ function PaymentInner() {
   // 쿠폰 소진은 결제 성공 후에만 — 여기선 로컬 계산만
   const finalPrice = (originalPrice: number): number => {
     if (!appliedDiscount) return originalPrice;
+    if (appliedDiscount.maxAmount && originalPrice > appliedDiscount.maxAmount) return originalPrice;
     return Math.round(originalPrice * (1 - appliedDiscount.discountPercent / 100));
   };
 
