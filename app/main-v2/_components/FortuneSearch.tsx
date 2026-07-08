@@ -25,7 +25,7 @@ const KEYWORDS: KW[] = [
   { words: ["이혼","이별","별거","파경","갈라서"], label: "이혼운세", emoji: "🌱", directPath: "/main-v2/payment" },
   { words: ["반려동물","강아지","고양이","펫","애완"], label: "반려동물 궁합", emoji: "🐾", modalId: "pet_compat" },
   { words: ["이사","날짜","택일","좋은날","길일"], label: "택일", emoji: "📅", directPath: "/main-v2/taegil" },
-  { words: ["대운","10년","십년","큰운","인생운"], label: "대운(大運)", emoji: "🌌", directPath: "/main-v2/daewoon/pay" },
+  { words: ["대운","10년","십년","큰운","인생운"], label: "대운(大運)", emoji: "🌌", directPath: "/main-v2/daewoon" },
 ];
 
 function match(query: string): KW | null {

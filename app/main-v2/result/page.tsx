@@ -1687,18 +1687,6 @@ function V2ResultInner() {
           </>
         )}
 
-        {/* ── 버튼 안내 카드 ── */}
-        <div style={{ background: "rgba(255,255,255,0.92)", border: "1.5px solid rgba(236,72,153,0.18)", borderRadius: 14, padding: "14px 16px", marginBottom: 12 }}>
-          <p style={{ fontSize: 13, fontWeight: 900, color: "#be185d", margin: "0 0 10px" }}>📌 결과지 버튼 안내 — 꼭 확인하세요</p>
-          <div style={{ fontSize: 12, color: "#374151", lineHeight: 2.1 }}>
-            📤 <strong>공유하기</strong> — 카카오톡으로 결과 공유<br />
-            💳 <strong>유료 운세 결제하기</strong> — 추가 운세 구매<br />
-            🔮 <strong>다시 분석</strong> — 새 사주 분석 시작<br />
-            📥 <strong>보관함 저장</strong> — 결과 저장 (언제든 다시 보기)<br />
-            🔊 <strong>읽기</strong> — 오른쪽 아래 고정 버튼으로 사주 내용 읽어주기
-          </div>
-        </div>
-
         {!isPartner && (
           <div style={{ margin: "16px 0 8px", borderRadius: 16, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "16px 20px", textAlign: "center", cursor: "pointer" }} onClick={() => router.push("/main-v2")}>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "white", letterSpacing: "-0.3px" }}>🔮 AI 사주 990원부터 시작</p>
@@ -1776,20 +1764,30 @@ function V2ResultInner() {
 
         {/* ── 대운·택일 배너 — 맨 아래 ── */}
         {!isPartner && (
-          <div
-            onClick={() => router.push("/main-v2/payment")}
-            style={{ margin: "14px 0 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
-          >
-            <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 18 }}>✨</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>신규! 대운·택일 2,900원</span>
+          <div style={{ margin: "14px 0 0", display: "flex", gap: 8 }}>
+            <div
+              onClick={() => router.push("/main-v2/daewoon")}
+              style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
+            >
+              <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🌌 대운(大運)</span>
+              </div>
+              <div style={{ background: "#f5f3ff", padding: "10px 12px", textAlign: "center" }}>
+                <p style={{ fontSize: 11, color: "#5b21b6", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>10년 단위<br />운명의 큰 흐름 분석</p>
+                <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "4px 12px", borderRadius: 20 }}>₩2,900 →</span>
+              </div>
             </div>
-            <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-                <strong>대운(大運)</strong> — 10년 단위<br />운명의 큰 흐름 분석<br />
-                <strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기
-              </p>
-              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
+            <div
+              onClick={() => router.push("/main-v2/taegil")}
+              style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}
+            >
+              <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>📅 택일(擇日)</span>
+              </div>
+              <div style={{ background: "#f0fdf4", padding: "10px 12px", textAlign: "center" }}>
+                <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>내 사주에 맞는<br />좋은 날 찾기</p>
+                <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#22c55e", padding: "4px 12px", borderRadius: 20 }}>₩2,900 →</span>
+              </div>
             </div>
           </div>
         )}

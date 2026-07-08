@@ -372,7 +372,8 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
               {SPECIAL_2900.map(s => (
                 <button key={s.id}
                   onClick={() => {
-                    if ((s as any).daeun) { setShowBuyModal(false); router.push(`/main-v2/daewoon/pay`); return; }
+                    if ((s as any).daeun) { setShowBuyModal(false); router.push(`/main-v2/daewoon`); return; }
+                    if (s.id === "taegil") { setShowBuyModal(false); router.push(`/main-v2/taegil`); return; }
                     if (s.id === "reunion" || s.id === "pet_compat") { setAwaitOther({ id: s.id, label: s.label }); return; }
                     setShowBuyModal(false);
                     router.push(`/main-v2/pay?amount=2900&next=${encodeURIComponent(`/payment-complete?special=${s.id}&paid=2900`)}`);

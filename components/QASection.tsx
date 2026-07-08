@@ -521,7 +521,8 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 10 }}>
             {QA_SPECIAL_2900.map(s => (
               <button key={s.id} onClick={() => {
-                if ((s as any).daeun) { setShowBuyModal(false); router.push(`/main-v2/daewoon/pay`); return; }
+                if ((s as any).daeun) { setShowBuyModal(false); router.push(`/main-v2/daewoon`); return; }
+                if (s.id === "taegil") { setShowBuyModal(false); router.push(`/main-v2/taegil`); return; }
                 if (s.id === "reunion" || s.id === "pet_compat") { setAwaitOther({ id: s.id }); return; }
                 const SPECIAL_TO_CAT: Record<string, string> = { sinyeon: "🎍 신년운세", love_detail: "💗 연애사주", findmatch: "🔍 내 사람 찾기", marriage_detail: "💍 결혼사주", divorce: "🌧 이혼운세" };
                 const catLabel = SPECIAL_TO_CAT[s.id];
