@@ -30,7 +30,7 @@ export default function FreeForm() {
       });
       const data = await res.json();
       if (data.duplicate) {
-        setError("이 전화번호로 이미 무료 재물운을 받으셨어요. 유료 결제로 더 자세한 분석을 받아보세요.");
+        setError("이 전화번호로 이미 무료 재물운을 받으셨어요.\n유료 결제로 더 자세한 분석을 받아보세요.");
         setLoading(false);
         return;
       }
@@ -85,7 +85,7 @@ export default function FreeForm() {
           </span>
         </label>
       </div>
-      {error && <p style={{ color: "#dc2626", fontSize: 12, margin: "0 0 10px", textAlign: "center" }}>{error}</p>}
+      {error && <p style={{ color: "#dc2626", fontSize: 12, margin: "0 0 10px", textAlign: "center", whiteSpace: "pre-line" }}>{error}</p>}
       <button onClick={handleSubmit} disabled={loading}
         style={{ width: "100%", padding: "15px", borderRadius: 12, border: "none", background: G, color: "#fff", fontSize: 16, fontWeight: 900, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, boxShadow: "0 4px 16px rgba(236,72,153,0.4)" }}>
         {loading ? "⏳ 이동 중..." : "🔮 무료 재물운 받기 →"}
