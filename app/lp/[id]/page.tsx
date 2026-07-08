@@ -1,7 +1,8 @@
 import { db } from "@/lib/firebase";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import LandingForm from "./LandingForm";
+
+export const dynamic = "force-dynamic";
 
 const COLOR_THEMES: Record<string, { primary: string; secondary: string; bg: string; light: string }> = {
   pink:  { primary: "#ec4899", secondary: "#8b5cf6", bg: "#fdf2f8", light: "rgba(236,72,153,0.1)" },
@@ -34,14 +35,21 @@ const PRODUCT_MAP: Record<string, { name: string; icon: string; desc: string; pr
 };
 
 async function getLanding(id: string) {
-  const snap = await db.ref(`partners/${id}`).once("value");
-  const partner = snap.val();
-  if (!partner) return null;
-  return {
-    businessName: partner.businessName || partner.name || "사주 상담",
-    landing: partner.landing ?? null,
-    partnerId: id,
-  };
+  try {
+    const snap = await db.ref(`partners/${id}`).once("value");
+    const partner = snap.val();
+    return {
+      businessName: partner?.businessName || partner?.name || "사주 상담",
+      landing: partner?.landing ?? null,
+      partnerId: id,
+    };
+  } catch {
+    return {
+      businessName: "사주 상담",
+      landing: null,
+      partnerId: id,
+    };
+  }
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
