@@ -2314,7 +2314,7 @@ ${name}님의 2026년은 분명 의미 있고 아름다운 한 해가 될 것입
 오늘 당장 해볼 한 가지: ${pick(["오늘 감사한 일 하나를 떠올리고 그것을 가까운 사람에게 표현해보십시오.", "오늘 하루를 마무리하며 가장 잘한 일 한 가지를 스스로 칭찬해보십시오."])} 오늘도 모든 날이 빛나기를 바랍니다. ✨🌟`;
 }
 
-function limitNameMentions(text: string, name: string, max = 30): string {
+function limitNameMentions(text: string, name: string, max = 999): string {
   if (!name) return text;
   const target = `${name}님`;
   const parts = text.split(target);
