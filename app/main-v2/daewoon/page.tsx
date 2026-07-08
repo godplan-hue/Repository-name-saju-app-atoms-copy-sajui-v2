@@ -409,11 +409,25 @@ function DaewoonInner() {
       const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
       const id = `daeun-${profile.name}-${b.startAge}-${b.endAge}`;
       if (!hist.some((h: any) => h.id === id)) {
+        const unseongScoreMap: Record<string, number> = {
+          "제왕": 90, "건록": 88, "장생": 83, "관대": 78, "양": 73, "태": 68,
+          "목욕": 65, "쇠": 62, "병": 55, "묘": 52, "사": 48, "절": 45,
+        };
+        const base = unseongScoreMap[b.unseong] ?? 70;
+        const daeunScores = {
+          total: base,
+          "오늘의운세": Math.min(99, Math.max(40, base + 3)),
+          "재물운": Math.min(99, Math.max(40, base - 2)),
+          "연애운": Math.min(99, Math.max(40, base - 5)),
+          "건강운": Math.min(99, Math.max(40, base + 1)),
+          "성공운": Math.min(99, Math.max(40, base + 4)),
+        };
         hist.unshift({
           id, date: new Date().toISOString(),
           name: profile.name,
           category: `🌌 대운 ${b.ganHanja}${b.jiHanja} (${b.startAge}~${b.endAge}세)`,
           analysis: buildCategories(b).map(c => `${c.icon} ${c.label}\n${c.text}`).join("\n\n"),
+          scores: daeunScores,
           isPaid: true, planType: "daeun", birthYear: profile.birthYear ?? "",
         });
         localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
@@ -632,7 +646,7 @@ function DaewoonInner() {
 
                       {/* 보관함 직접 저장 안내 */}
                       <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 10, padding: "8px 12px", marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.6 }}>
-                        💡 이 화면을 나가면 결과가 사라져요. 아래 [보관함] 버튼을 눌러 저장하면 언제든 다시 볼 수 있어요.
+                        💡 이 화면을 나가면 결과가 사라져요.<br />아래 [보관함] 버튼을 눌러 저장하면 언제든 다시 볼 수 있어요.
                       </div>
 
                       {/* 액션 버튼 3개 */}
