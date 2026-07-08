@@ -103,8 +103,8 @@ function DaewoonInner() {
       sessionStorage.setItem("daeunPaid", "1");
       sessionStorage.setItem("daeunPaidCount", String(existingCount + urlCount));
       sessionStorage.setItem("daeunPaidIndices", JSON.stringify(merged));
-      // URL 파라미터 제거 (새로고침 시 중복 저장 방지)
-      router.replace("/main-v2/daewoon");
+      // URL 파라미터 제거 — router.replace 대신 history API 사용 (리마운트 방지)
+      window.history.replaceState({}, "", "/main-v2/daewoon");
     }
     // sessionStorage에서 결제 상태 읽기 (탭 닫으면 사라짐)
     const isPaid = sessionStorage.getItem("daeunPaid") === "1";
