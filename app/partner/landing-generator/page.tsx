@@ -76,11 +76,16 @@ export default function LandingGenerator() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await fetch("/api/partner/landing", {
+      const res = await fetch("/api/partner/landing", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ partnerId, landing: form }),
       });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(`저장 실패: ${err.error || res.status}\n파트너 ID: ${partnerId}\n다시 로그인 후 시도해주세요.`);
+        return;
+      }
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch { alert("저장 실패. 다시 시도해주세요."); }
@@ -319,6 +324,12 @@ export default function LandingGenerator() {
             style={{ flex: 1, padding: "14px 0", background: "white", color: "#7c3aed", border: "1.5px solid rgba(139,92,246,0.4)", borderRadius: 12, fontWeight: 900, fontSize: 15, cursor: "pointer" }}
           >👁 미리보기</button>
         </div>
+        {partnerId && (
+          <div style={{ marginTop: 12, background: "#f5f3ff", borderRadius: 10, padding: "10px 14px" }}>
+            <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 4px", fontWeight: 700 }}>📎 내 랜딩페이지 주소 (저장 후 공유하세요)</p>
+            <p style={{ fontSize: 12, color: "#6d28d9", fontWeight: 800, margin: 0, wordBreak: "break-all" }}>jeomun.com/lp/{partnerId}</p>
+          </div>
+        )}
       </div>
     </main>
   );
