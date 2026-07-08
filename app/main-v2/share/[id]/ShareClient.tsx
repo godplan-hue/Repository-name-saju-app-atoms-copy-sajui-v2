@@ -663,7 +663,7 @@ export default function ShareClient({ id }: { id: string }) {
 
           <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>🖼 이미지 저장</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`점 세 개(⋮) → 다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장돼요.\n\n단, VIP 커플팩은 용량이 커서 \n이미지 저장이 안 돼요.\n점 세 개 옆 [링크 복사]로 \n카톡·문자·메일로 공유하세요.`}</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`PC 또는 크롬·구글 브라우저에서 저장하면\n8개 운세 전체가 한 번에 저장됩니다.\n\n카카오톡이나 기본 모바일 브라우저에서는\n일부만 저장될 수 있어요.\n점 세 개(⋮) → [다른 브라우저로 열기]\n→ 크롬 선택 후 저장하세요.\n\n또는 점 세 개 옆 [링크 복사]로\n카톡·문자·메일로 공유하세요.`}</p>
           </div>
 
           <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "14px 0 8px" }}>📌 결과지 맨 밑에 버튼을 꼭 확인하세요!</p>
