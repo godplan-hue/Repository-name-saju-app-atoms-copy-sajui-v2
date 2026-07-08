@@ -38,6 +38,7 @@ export default function TaegilPage() {
   const [isPaid, setIsPaid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [customEventType, setCustomEventType] = useState("");
   const [partnerName, setPartnerName] = useState("");
   const [partnerBirthYear, setPartnerBirthYear] = useState("");
   const [partnerBirthMonth, setPartnerBirthMonth] = useState("");
@@ -110,7 +111,8 @@ export default function TaegilPage() {
           gender: profile.gender || "여",
           category: "택일",
           planType: "taegil",
-          eventType, dates: selectedDates, taegilPaid: paid,
+          eventType: eventType === "기타" && customEventType.trim() ? customEventType.trim() : eventType,
+          dates: selectedDates, taegilPaid: paid,
           partnerName: partnerName || null,
           partnerBirth,
         }),
@@ -126,6 +128,7 @@ export default function TaegilPage() {
 
   const handlePay = () => {
     if (!eventType) { alert("목적을 먼저 선택해주세요!"); return; }
+    if (eventType === "기타" && !customEventType.trim()) { alert("어떤 목적인지 입력해주세요!"); return; }
     if (eventType === "결혼" && (!partnerName.trim() || !partnerBirthYear || !partnerBirthMonth || !partnerBirthDay)) {
       alert("결혼 택일은 상대방 정보를 입력해주세요!"); return;
     }
@@ -260,6 +263,21 @@ export default function TaegilPage() {
             ))}
           </div>
         </div>
+
+        {/* 기타 선택 시 직접 입력 */}
+        {eventType === "기타" && (
+          <div style={{ background:"white", borderRadius:16, padding:"18px 16px", marginBottom:16, boxShadow:"0 2px 8px rgba(0,0,0,0.06)", border:"2px solid #d1fae5" }}>
+            <p style={{ margin:"0 0 12px", fontWeight:900, fontSize:15, color:"#065f46" }}>⭐ 어떤 목적의 택일인가요?</p>
+            <input
+              type="text"
+              value={customEventType}
+              onChange={e => setCustomEventType(e.target.value)}
+              placeholder="예: 개인 발표, 중요한 미팅, 이사 후 첫 장사..."
+              maxLength={20}
+              style={{ width:"100%", padding:"12px 14px", borderRadius:10, border:"1.5px solid #6ee7b7", fontSize:14, outline:"none", boxSizing:"border-box", color:"#1f2937" }}
+            />
+          </div>
+        )}
 
         {/* Step 2: 결혼 시 상대방 정보 */}
         {eventType === "결혼" && (
