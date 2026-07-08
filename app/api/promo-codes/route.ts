@@ -68,8 +68,8 @@ export async function PATCH(request: NextRequest) {
     }
     const newUsageCount = (found.usageCount || 0) + 1;
     const maxUses = found.maxUses ?? 1;
-    // maxUses === -1: 무제한, FREE* 쿠폰: 항상 재사용 가능, 그 외: N회 사용 시 비활성화
-    const shouldDeactivate = !key.startsWith("FREE") && maxUses !== -1 && newUsageCount >= maxUses;
+    // maxUses === -1: 무제한, 그 외: N회 사용 시 비활성화 (FREE* 포함)
+    const shouldDeactivate = maxUses !== -1 && newUsageCount >= maxUses;
     await ref.update({ usageCount: newUsageCount, ...(shouldDeactivate ? { active: false } : {}) });
 
     // FREE* 쿠폰인 경우 free_leads에서 해당 코드를 찾아 used=true로 업데이트
