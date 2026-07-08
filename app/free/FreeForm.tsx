@@ -2,16 +2,18 @@
 import { useState } from "react";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
+
+const YEARS = Array.from({ length: 80 }, (_, i) => 2005 - i);
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
-const YEARS = Array.from({ length: 80 }, (_, i) => 2006 - i);
 
 export default function FreeForm() {
   const [name, setName] = useState("");
-  const [birthYear, setBirthYear] = useState("1990");
-  const [birthMonth, setBirthMonth] = useState("1");
-  const [birthDay, setBirthDay] = useState("1");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ code: string; teaser: string; alreadyUsed?: boolean } | null>(null);
@@ -21,13 +23,15 @@ export default function FreeForm() {
     if (!name.trim()) { setError("이름을 입력해주세요."); return; }
     const clean = phone.replace(/\D/g, "");
     if (clean.length < 10) { setError("전화번호를 정확히 입력해주세요."); return; }
+    if (!email.trim() || !email.includes("@")) { setError("이메일을 정확히 입력해주세요."); return; }
+    if (!birthYear) { setError("태어난 연도를 선택해주세요."); return; }
     if (!agreed) { setError("개인정보 수집·마케팅 수신 동의를 체크해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/free-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), phone: clean, birthYear }),
+        body: JSON.stringify({ name: name.trim(), phone: clean, email: email.trim(), birthYear: Number(birthYear) }),
       });
       const data = await res.json();
       if (data.code) {
@@ -42,11 +46,6 @@ export default function FreeForm() {
     }
   }
 
-  const selectStyle: React.CSSProperties = {
-    padding: "12px 10px", borderRadius: 10, border: "1.5px solid #e5e7eb",
-    fontSize: 15, outline: "none", background: "#fff", color: "#111", flex: 1,
-  };
-
   if (!result) {
     return (
       <div style={{ background: "#fff", borderRadius: 20, padding: "24px 20px", boxShadow: "0 8px 40px rgba(0,0,0,0.3)" }}>
@@ -56,23 +55,34 @@ export default function FreeForm() {
             style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
         </div>
         <div style={{ marginBottom: 14 }}>
-          <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>생년월일</label>
-          <div style={{ display: "flex", gap: 6 }}>
-            <select value={birthYear} onChange={e => setBirthYear(e.target.value)} style={selectStyle}>
-              {YEARS.map(y => <option key={y} value={y}>{y}년</option>)}
-            </select>
-            <select value={birthMonth} onChange={e => setBirthMonth(e.target.value)} style={selectStyle}>
-              {MONTHS.map(m => <option key={m} value={m}>{m}월</option>)}
-            </select>
-            <select value={birthDay} onChange={e => setBirthDay(e.target.value)} style={selectStyle}>
-              {DAYS.map(d => <option key={d} value={d}>{d}일</option>)}
-            </select>
-          </div>
-        </div>
-        <div style={{ marginBottom: 18 }}>
           <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>전화번호</label>
           <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="010-0000-0000"
             style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
+        </div>
+        <div style={{ marginBottom: 14 }}>
+          <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>이메일</label>
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="example@email.com"
+            style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
+        </div>
+        <div style={{ marginBottom: 18 }}>
+          <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>생년월일</label>
+          <div style={{ display: "flex", gap: 6 }}>
+            <select value={birthYear} onChange={e => setBirthYear(e.target.value)}
+              style={{ flex: 2, padding: "12px 8px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", background: "#fff" }}>
+              <option value="">년도</option>
+              {YEARS.map(y => <option key={y} value={y}>{y}년</option>)}
+            </select>
+            <select value={birthMonth} onChange={e => setBirthMonth(e.target.value)}
+              style={{ flex: 1, padding: "12px 6px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", background: "#fff" }}>
+              <option value="">월</option>
+              {MONTHS.map(m => <option key={m} value={m}>{m}월</option>)}
+            </select>
+            <select value={birthDay} onChange={e => setBirthDay(e.target.value)}
+              style={{ flex: 1, padding: "12px 6px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", background: "#fff" }}>
+              <option value="">일</option>
+              {DAYS.map(d => <option key={d} value={d}>{d}일</option>)}
+            </select>
+          </div>
         </div>
         <div style={{ marginBottom: 14 }}>
           <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
@@ -80,7 +90,7 @@ export default function FreeForm() {
               style={{ marginTop: 2, accentColor: "#ec4899", width: 16, height: 16, flexShrink: 0 }} />
             <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
               <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
-              <strong style={{ color: "#ec4899" }}>점운</strong>(<a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed" }}>jeomun.com</a>)이 이름·생년월일·전화번호를 수집하여
+              <strong style={{ color: "#ec4899" }}>점운</strong>(<a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed" }}>jeomun.com</a>)이 이름·전화번호·이메일을 수집하여
               운세 정보 및 혜택 안내에 활용하며, <strong>3년간</strong> 보유 후 파기합니다.<br />
               언제든지 수신거부 가능합니다.
             </span>

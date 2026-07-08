@@ -6,6 +6,7 @@ interface Lead {
   id: string;
   name: string;
   phone: string;
+  email?: string;
   birthYear: string;
   code: string;
   used: boolean;
@@ -206,7 +207,7 @@ export default function AdminDirectPayments() {
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                 <thead>
                   <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
-                    {["이름", "전화번호", "생년", "쿠폰코드", "사용여부", "신청일"].map(h => (
+                    {["이름", "전화번호", "이메일", "생년", "쿠폰코드", "사용여부", "신청일"].map(h => (
                       <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontWeight: 900, color: "#374151" }}>{h}</th>
                     ))}
                   </tr>
@@ -216,7 +217,8 @@ export default function AdminDirectPayments() {
                     <tr key={lead.id} style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}>
                       <td style={{ padding: "10px 12px", fontWeight: 700 }}>{lead.name}</td>
                       <td style={{ padding: "10px 12px", color: "#374151" }}>{lead.phone}</td>
-                      <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.birthYear}년</td>
+                      <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.email || "-"}</td>
+                      <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.birthYear ? `${lead.birthYear}년` : "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
                         <span style={{ background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 6, fontWeight: 700, letterSpacing: 1 }}>{lead.code}</span>
                       </td>

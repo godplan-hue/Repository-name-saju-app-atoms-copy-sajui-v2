@@ -27,7 +27,7 @@ function getOhaeng(year: number): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, phone, birthYear } = await request.json();
+    const { name, phone, email, birthYear } = await request.json();
     if (!phone || !name) return NextResponse.json({ error: "이름과 전화번호가 필요합니다." }, { status: 400 });
 
     const cleanPhone = String(phone).replace(/\D/g, "");
@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
     await db.ref(`free_leads/${cleanPhone}`).set({
       phone: cleanPhone,
       name,
+      email: email || "",
       birthYear: birthYear || "",
       code,
       teaser,
