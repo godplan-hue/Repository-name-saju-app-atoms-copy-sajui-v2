@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import KakaoShareCouponBanner from "../../_components/KakaoShareCouponBanner";
+import QAChatWidget from "../../../../components/QAChatWidget";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -581,9 +582,27 @@ export default function ShareClient({ id }: { id: string }) {
               </div>
             </div>
             {entry.name && entry.birthYear && (
-              <button onClick={() => router.push("/main-v2/qa-list")} style={{ width: "100%", marginBottom: 10, padding: "14px 20px", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
-                💬 사주 Q&A 상담하기
-              </button>
+              <>
+                <div onClick={() => router.push("/main-v2/qa-list")} style={{ marginTop: 8, marginBottom: 14, borderRadius: 20, overflow: "hidden", cursor: "pointer", background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)", boxShadow: "0 10px 36px rgba(139,92,246,0.45)", position: "relative", minHeight: 140 }}>
+                  <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(236,72,153,0.18)", filter: "blur(30px)", pointerEvents: "none" }} />
+                  <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(139,92,246,0.2)", filter: "blur(25px)", pointerEvents: "none" }} />
+                  <div style={{ padding: "22px 20px 20px", position: "relative", zIndex: 2 }}>
+                    <span style={{ fontSize: 10, fontWeight: 900, color: "#fbbf24", background: "rgba(251,191,36,0.18)", border: "1px solid rgba(251,191,36,0.4)", padding: "3px 10px", borderRadius: 20, letterSpacing: 0.5 }}>AI 사주 상담</span>
+                    <p style={{ fontSize: 30, fontWeight: 900, color: "#ffffff", margin: "8px 0 2px", lineHeight: 1.15, letterSpacing: -1 }}>무엇이든<br />물어보세요</p>
+                    <p style={{ fontSize: 13, color: "#fbbf24", fontWeight: 800, margin: "0 0 12px", minHeight: 20 }}>💬 &ldquo;{BANNER_MSGS[bannerIdx]}&rdquo;</p>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 20px", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 13, boxShadow: "0 4px 14px rgba(236,72,153,0.5)" }}>사주 상담 →</span>
+                      <span style={{ fontSize: 11, color: "white", fontWeight: 900 }}>매일 무료 3회</span>
+                    </div>
+                  </div>
+                  <div style={{ position: "absolute", right: 10, bottom: 0, zIndex: 2, userSelect: "none", textAlign: "center" }}>
+                    <div style={{ fontSize: 13, marginBottom: 2, animation: "sparkle 1.5s infinite alternate", opacity: 0.9 }}>✨ ⭐ ✨</div>
+                    <div style={{ fontSize: 72, lineHeight: 1 }}>🐱</div>
+                  </div>
+                  <style>{`@keyframes sparkle { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }`}</style>
+                </div>
+                <QAChatWidget name={entry.name} birthYear={Number(entry.birthYear)} unlocked={true} storagePrefix="share_qa" />
+              </>
             )}
             <div onClick={() => router.push("/main-v2/payment")} style={{ margin: "14px 0 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", border: "1.5px solid #c4b5fd" }}>
               <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
@@ -616,6 +635,10 @@ export default function ShareClient({ id }: { id: string }) {
       <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowMobGuideModal(false)}>
         <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
           <p style={{ fontSize: 15, fontWeight: 900, color: "#be185d", margin: "0 0 14px" }}>📱 모바일 이용 안내</p>
+          <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 결과지를 나가면 내용이 모두 사라져요!</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>반드시 <strong>보관함 저장</strong> 또는 <strong>공유하기</strong> 버튼을 눌러 저장해두세요.<br /><span style={{ color: "#dc2626", fontWeight: 700 }}>나가서 내용이 사라진 경우 환불은 불가합니다.</span></p>
+          </div>
 
           <div style={{ background: "#fff7ed", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fed7aa" }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>📲 카카오톡에서 접속하신 경우</p>
@@ -652,6 +675,10 @@ export default function ShareClient({ id }: { id: string }) {
       <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
         <div style={{ background: "white", borderRadius: 20, padding: "24px 22px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
           <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 버튼 안내</p>
+          <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 결과지를 나가면 내용이 모두 사라져요!</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>반드시 <strong>보관함 저장</strong> 또는 <strong>공유하기</strong> 버튼을 눌러 저장해두세요.<br /><span style={{ color: "#dc2626", fontWeight: 700 }}>나가서 내용이 사라진 경우 환불은 불가합니다.</span></p>
+          </div>
           <div style={{ background: "#fef2f2", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
             <p style={{ fontSize: 13, color: "#4b5563", margin: 0, lineHeight: 2.4 }}>
               📤 공유하기 — 카카오톡으로 결과 공유<br />
