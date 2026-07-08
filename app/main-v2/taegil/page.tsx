@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 
-type EventType = "이사"|"상견례"|"면접"|"개업"|"결혼"|"수술"|"여행"|"계약"|"시험"|"출산"|"재회연락"|"기타";
+type EventType = "이사"|"상견례"|"면접"|"개업"|"결혼"|"수술"|"여행"|"계약"|"시험"|"출산"|"재회연락";
 type Rating = "대길"|"길"|"평"|"흉";
 interface TaegilResult {
   date: string; dayOfWeek: string; iljin: string; iljinHanja: string;
@@ -17,7 +17,7 @@ const EVENT_TYPES: { icon: string; label: EventType }[] = [
   { icon: "💍", label: "결혼" }, { icon: "🏥", label: "수술" },
   { icon: "✈️", label: "여행" }, { icon: "📝", label: "계약" },
   { icon: "📚", label: "시험" }, { icon: "👶", label: "출산" },
-  { icon: "💌", label: "재회연락" }, { icon: "⭐", label: "기타" },
+  { icon: "💌", label: "재회연락" },
 ];
 
 const RATING_STYLE: Record<Rating, { bg: string; text: string; border: string }> = {
@@ -38,7 +38,6 @@ export default function TaegilPage() {
   const [isPaid, setIsPaid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [speaking, setSpeaking] = useState(false);
-  const [customEventType, setCustomEventType] = useState("");
   const [partnerName, setPartnerName] = useState("");
   const [partnerBirthYear, setPartnerBirthYear] = useState("");
   const [partnerBirthMonth, setPartnerBirthMonth] = useState("");
@@ -114,7 +113,7 @@ export default function TaegilPage() {
           gender: profile.gender || "여",
           category: "택일",
           planType: "taegil",
-          eventType: eventType === "기타" && customEventType.trim() ? customEventType.trim() : eventType,
+          eventType,
           dates: selectedDates, taegilPaid: paid,
           partnerName: partnerName || null,
           partnerBirth,
@@ -131,7 +130,6 @@ export default function TaegilPage() {
 
   const handlePay = () => {
     if (!eventType) { alert("목적을 먼저 선택해주세요!"); return; }
-    if (eventType === "기타" && !customEventType.trim()) { alert("어떤 목적인지 입력해주세요!"); return; }
     if (eventType === "결혼" && (!partnerName.trim() || !partnerBirthYear || !partnerBirthMonth || !partnerBirthDay)) {
       alert("결혼 택일은 상대방 정보를 입력해주세요!"); return;
     }
@@ -269,21 +267,6 @@ export default function TaegilPage() {
           </div>
         </div>
 
-        {/* 기타 선택 시 직접 입력 */}
-        {eventType === "기타" && (
-          <div style={{ background:"white", borderRadius:16, padding:"18px 16px", marginBottom:16, boxShadow:"0 2px 8px rgba(0,0,0,0.06)", border:"2px solid #d1fae5" }}>
-            <p style={{ margin:"0 0 12px", fontWeight:900, fontSize:15, color:"#065f46" }}>⭐ 어떤 목적의 택일인가요?</p>
-            <input
-              type="text"
-              value={customEventType}
-              onChange={e => setCustomEventType(e.target.value)}
-              placeholder="예: 개인 발표, 중요한 미팅, 이사 후 첫 장사..."
-              maxLength={20}
-              style={{ width:"100%", padding:"12px 14px", borderRadius:10, border:"1.5px solid #6ee7b7", fontSize:14, outline:"none", boxSizing:"border-box", color:"#1f2937" }}
-            />
-          </div>
-        )}
-
         {/* Step 2: 결혼 시 상대방 정보 */}
         {eventType === "결혼" && (
           <div style={{ background:"white", borderRadius:16, padding:"18px 16px", marginBottom:16, boxShadow:"0 2px 8px rgba(0,0,0,0.06)", border:"2px solid #fce7f3" }}>
@@ -353,25 +336,26 @@ export default function TaegilPage() {
               <span style={{ fontSize:18 }}>✅</span>
               <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 전체 해설 표시 중</span>
             </div>
-            <button onClick={() => {
-              localStorage.removeItem("taegilPaidExpiry");
-              localStorage.removeItem("taegilEventType");
-              localStorage.removeItem("taegilDates");
-              setIsPaid(false);
-              setEventType("");
-              setSelectedDates([]);
-              setResults([]);
-              autoFetchedRef.current = false;
-            }} style={{ fontSize:11, fontWeight:700, color:"#15803d", background:"white", border:"1px solid #22c55e", borderRadius:8, padding:"4px 10px", cursor:"pointer" }}>
-              🔄 새 분석
+            <button onClick={() => canAnalyze && fetchTaegil(true)}
+              style={{ fontSize:12, fontWeight:700, color:"#15803d", background:"white", border:"1px solid #22c55e", borderRadius:8, padding:"6px 12px", cursor: canAnalyze ? "pointer" : "not-allowed" }}>
+              🔄 다시 분석하기
             </button>
           </div>
         )}
-        <button onClick={() => canAnalyze && fetchTaegil(isPaid)} disabled={!canAnalyze}
-          style={{ width:"100%", padding:"15px 0", marginBottom:16, border:"none", borderRadius:50, fontWeight:900, fontSize:15, cursor: canAnalyze ? "pointer" : "not-allowed",
-            background: canAnalyze ? "linear-gradient(135deg,#22c55e,#15803d)" : "#d1d5db",
-            color:"white", boxShadow: canAnalyze ? "0 6px 20px rgba(34,197,94,0.35)" : "none" }}>
-          {loading ? "분석 중..." : !eventType ? "목적을 먼저 선택해주세요" : selectedDates.length===0 ? "날짜를 선택해주세요" : isPaid ? "📅 다시 분석하기" : "📅 무료 미리보기"}
+        <button onClick={() => {
+          localStorage.removeItem("taegilPaidExpiry");
+          localStorage.removeItem("taegilEventType");
+          localStorage.removeItem("taegilDates");
+          setIsPaid(false);
+          setEventType("");
+          setSelectedDates([]);
+          setResults([]);
+          autoFetchedRef.current = false;
+        }}
+          style={{ width:"100%", padding:"15px 0", marginBottom:16, border:"none", borderRadius:50, fontWeight:900, fontSize:15, cursor:"pointer",
+            background: "linear-gradient(135deg,#22c55e,#15803d)",
+            color:"white", boxShadow: "0 6px 20px rgba(34,197,94,0.35)" }}>
+          🔄 새로 분석하기
         </button>
 
         {/* 결과 */}
