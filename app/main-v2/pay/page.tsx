@@ -227,6 +227,12 @@ function PayInner() {
             body: JSON.stringify({ phone: cleanMobile, amount: displayAmount }),
           }).catch(() => {});
         }
+        // 결과지 tier 인식용 — 패키지 외 990/2900/3900 결제도 select로 인식되게
+        if (!isTaegil) {
+          sessionStorage.setItem("v2_paid", "1");
+          sessionStorage.setItem("price", String(amount));
+          if (!sessionStorage.getItem("v2_plan")) sessionStorage.setItem("v2_plan", "select");
+        }
         router.push(isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next);
       } else {
         setError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
