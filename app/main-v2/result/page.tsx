@@ -431,17 +431,6 @@ function V2ResultInner() {
       return saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key);
     })();
     if (isPaid) setPaidCats(cats);
-    if (isPaid && detectedTier !== "free" && Object.keys(analyses).length > 0) {
-      if (isPackage) {
-        const pkg = sessionStorage.getItem("selectedPackage") ?? "";
-        const pkgCats = PKG_CAT_MAP[pkg] ?? PKG_CAT_MAP["기본 분석"];
-        const labelAnalyses: Record<string, string> = {};
-        pkgCats.forEach(c => { labelAnalyses[`${c.icon} ${c.label}`] = analyses[c.apiKey] ?? ""; });
-        saveToHistory(r, isPaid, labelAnalyses, pkgCats.map(c => `${c.icon} ${c.label}`), plan);
-      } else {
-        saveToHistory(r, isPaid, analyses, cats, plan);
-      }
-    }
 
     // 결과를 서버에도 자동 저장해서, 브라우저를 바꿔도(예: 카카오톡 인앱
     // 브라우저 한계로 "다른 브라우저로 열기") 다시 분석하지 않고 그대로
@@ -1651,7 +1640,10 @@ function V2ResultInner() {
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={() => { setHistSaved(true); setTimeout(() => setHistSaved(false), 2500); }}
+              <button onClick={() => {
+                saveToHistory(result, paid, allAnalyses, paidCats, planType);
+                setHistSaved(true); setTimeout(() => setHistSaved(false), 2500);
+              }}
                 style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
                 {histSaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
               </button>
@@ -1681,7 +1673,13 @@ function V2ResultInner() {
               </button>
             </div>
             <div style={{ marginBottom: 10 }}>
-              <button onClick={() => { setHistSaved(true); setTimeout(() => setHistSaved(false), 2500); }}
+              <button onClick={() => {
+                const pkgCats2 = PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"];
+                const la: Record<string, string> = {};
+                pkgCats2.forEach(c => { la[`${c.icon} ${c.label}`] = allAnalyses[c.apiKey] ?? ""; });
+                saveToHistory(result, paid, la, pkgCats2.map(c => `${c.icon} ${c.label}`), planType);
+                setHistSaved(true); setTimeout(() => setHistSaved(false), 2500);
+              }}
                 style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
                 {histSaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
               </button>

@@ -124,33 +124,6 @@ function DaewoonInner() {
     }
   }, [daeunList, currentAge, selectedIdx]);
 
-  // 결제 후 잠금해제된 블록 전체를 보관함에 한 번에 자동 저장
-  useEffect(() => {
-    if (!paid || daeunList.length === 0 || !profile) return;
-    const currentBlockIndex = daeunList.findIndex(x => currentAge >= x.startAge && currentAge <= x.endAge);
-    const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
-    let changed = false;
-    daeunList.forEach((b, i) => {
-      const isLocked = paidIndices.length > 0
-        ? !paidIndices.includes(i)
-        : (i - currentBlockIndex >= paidCount);
-      if (isLocked) return;
-      const id = `daeun-${profile.name}-${b.startAge}-${b.endAge}`;
-      if (hist.some((h: any) => h.id === id)) return;
-      hist.unshift({
-        id, date: new Date().toISOString(),
-        name: profile.name,
-        category: `🌌 대운 ${b.ganHanja}${b.jiHanja} (${b.startAge}~${b.endAge}세)`,
-        analysis: buildCategories(b).map(c => `${c.icon} ${c.label}\n${c.text}`).join("\n\n"),
-        isPaid: true, planType: "daeun", birthYear: profile.birthYear ?? "",
-      });
-      changed = true;
-    });
-    if (changed) {
-      localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
-      setHistorySaved(true);
-    }
-  }, [paid, daeunList, paidIndices, paidCount, profile]);
 
   // 대운 블록 바뀌면 TTS 초기화
   useEffect(() => {
@@ -657,9 +630,9 @@ function DaewoonInner() {
                         )}
                       </div>
 
-                      {/* 보관함 자동 저장 안내 */}
+                      {/* 보관함 직접 저장 안내 */}
                       <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 10, padding: "8px 12px", marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.6 }}>
-                        📚 구매한 대운 전체가 보관함에 저장됐어요. 보관함에서 언제든 다시 볼 수 있어요.
+                        💡 이 화면을 나가면 결과가 사라져요. 아래 [보관함] 버튼을 눌러 저장하면 언제든 다시 볼 수 있어요.
                       </div>
 
                       {/* 액션 버튼 3개 */}
