@@ -552,22 +552,12 @@ export default function ShareClient({ id }: { id: string }) {
           </div>
         )}
 
-        {/* 공유 버튼 — 비오너용 */}
-        {!isOwner && (
-          <button onClick={handleKakaoShare} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-            📤 카카오톡으로 공유
-          </button>
-        )}
-
-        {!entry.businessName && (
+        {/* 비오너: 나도 무료 사주 받아보기 버튼만 */}
+        {!isOwner && !entry.businessName && (
           <button onClick={() => router.push(entry.tier === "taegil" ? "/main-v2/taegil" : "/main-v2")} style={{ width: "100%", marginBottom: 10, padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
             {entry.tier === "taegil" ? "📅 나도 택일 받기" : "🔮 나도 무료 사주 받아보기"}
           </button>
         )}
-
-        <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
-          🏠 홈으로
-        </button>
 
       </div>
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive" onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />

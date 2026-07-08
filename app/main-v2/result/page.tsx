@@ -1545,26 +1545,6 @@ function V2ResultInner() {
         )}
 
 
-        {/* ── 무료: 재물운 요약 미리보기 ── */}
-        {tier === "free" && !isPartner && (() => {
-          const ohaengMap: Record<string, string> = {
-            "목": "올해는 새로운 시작과 성장의 기운이 강해요.\n새로운 수입원이 생기거나 기존 수입이 늘어날 가능성이 보여요.\n서두르지 않고 탄탄하게 준비하는 것이 중요해요.",
-            "화": "적극적으로 움직일수록 재물이 따르는 시기예요.\n인맥을 통한 기회가 특히 많고, 투자보다 직접 활동으로 버는 것이 유리해요.\n지금 움직이는 사람이 가져갑니다.",
-            "토": "안정적이고 꾸준한 재물운이 흐르는 시기예요.\n큰 수익보다 작지만 확실한 수입이 쌓이는 흐름이에요.\n저축과 절약이 가장 큰 재물운이에요.",
-            "금": "결단력 있게 움직이면 재물이 따르는 시기예요.\n지나친 욕심은 오히려 손해를 부를 수 있어요.\n선택과 집중이 핵심이에요.",
-            "수": "여러 곳에서 조금씩 들어오는 재물 흐름이에요.\n정보와 지식을 통해 수익을 올리기 좋은 시기예요.\n지출 관리가 가장 중요해요.",
-          };
-          const yr = Number(result?.profile?.birthYear || 0);
-          const rem = yr % 10;
-          const oh = rem===4||rem===5 ? "목" : rem===6||rem===7 ? "화" : rem===8||rem===9 ? "토" : rem===0||rem===1 ? "금" : "수";
-          const teaser = ohaengMap[oh] ?? ohaengMap["금"];
-          return (
-            <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 16, padding: "16px 18px", marginBottom: 12, border: "1.5px solid #e9d5ff" }}>
-              <p style={{ fontSize: 12, fontWeight: 800, color: "#7c3aed", margin: "0 0 8px" }}>💰 재물운 요약</p>
-              <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.8, margin: 0, whiteSpace: "pre-line" }}>{teaser}</p>
-            </div>
-          );
-        })()}
 
         {/* ── 무료: 쿠폰 퍼널 ── */}
         {tier === "free" && !isPartner && (
