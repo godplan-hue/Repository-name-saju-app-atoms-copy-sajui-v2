@@ -20,13 +20,12 @@ export default function KakaoShareCouponBanner() {
     const kakao = typeof window !== "undefined" ? (window as any).Kakao : null;
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    // SDK 로드됐지만 초기화 안 된 경우 초기화 시도
+    // Kakao SDK 초기화 시도
     if (kakao && !kakao.isInitialized?.()) {
       try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {}
     }
 
-    // 모바일에서만 Kakao SDK 사용 (PC에서는 로그인 팝업이 떠서 제외)
-    if (isMobile && kakao && kakao.isInitialized?.() && kakao.Share) {
+    if (kakao && kakao.isInitialized?.() && kakao.Share) {
       try {
         kakao.Share.sendDefault({
           objectType: "feed",
@@ -43,9 +42,9 @@ export default function KakaoShareCouponBanner() {
       } catch {}
     }
 
-    // PC 또는 폴백: 클립보드에 복사 후 안내 표시
+    // 폴백: 클립보드 복사
     const text = "🐱 점운 AI 사주풀이 해봤는데 진짜 잘 맞아! 990원이라 부담없어\n👉 나도 무료로 사주보기 →";
-    if (isMobile && typeof navigator !== "undefined" && navigator.share) {
+    if (typeof navigator !== "undefined" && navigator.share) {
       try { await navigator.share({ title: "점운 AI 사주 분석", text, url: shareUrl }); } catch {}
     } else {
       navigator.clipboard.writeText(text + " " + shareUrl).catch(() => {});

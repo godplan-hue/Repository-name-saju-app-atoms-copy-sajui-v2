@@ -856,8 +856,7 @@ function V2ResultInner() {
     if (kakao && !kakao.isInitialized()) {
       try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {}
     }
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const kakaoReady = isMobile && kakao && kakao.isInitialized() && kakao.Share;
+    const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
     const isPartnerShare = !!brand?.businessName;
     const text = isPartnerShare
       ? `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}`

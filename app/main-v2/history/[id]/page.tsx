@@ -468,8 +468,7 @@ export default function HistoryDetail() {
       if (res.ok) { const data = await res.json(); url = `${window.location.origin}/main-v2/share-kakao/${data.id}`; }
     } catch {}
     const kakao = (window as any).Kakao;
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (isMobile && kakao && kakao.isInitialized()) {
+    if (kakao && kakao.isInitialized()) {
       kakao.Share.sendDefault({
         objectType: "feed",
         content: {
@@ -485,7 +484,7 @@ export default function HistoryDetail() {
       });
     } else {
       const text = `${item.name}님의 ${item.category} 분석 🔮\n총운 ${item.scores?.total}점\n\n📱 나도 무료로! jeomun.com`;
-      if (isMobile && navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
+      if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
       else navigator.clipboard.writeText(`${text}\n${url}`).catch(() => {});
     }
   };

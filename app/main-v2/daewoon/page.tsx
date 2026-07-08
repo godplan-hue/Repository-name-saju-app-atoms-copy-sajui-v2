@@ -377,9 +377,8 @@ function DaewoonInner() {
     const b = selectedBlock;
     const title = `🌌 ${profile?.name}님의 대운 해설`;
     const desc = `${b.ganHanja}${b.jiHanja} (${b.startAge}~${b.endAge}세) · ${b.chapter}`;
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const kakao = (window as any).Kakao;
-    if (isMobile && kakao && kakao.isInitialized()) {
+    if (kakao && kakao.isInitialized()) {
       kakao.Share.sendDefault({
         objectType: "feed",
         content: {
@@ -393,7 +392,7 @@ function DaewoonInner() {
         ],
       });
       setTimeout(() => router.push(shareUrl), 300);
-    } else if (isMobile && navigator.share) {
+    } else if (navigator.share) {
       navigator.share({ title, text: `${desc} | 점운 AI사주`, url: shareUrl }).catch(() => {});
       router.push(shareUrl);
     } else {
