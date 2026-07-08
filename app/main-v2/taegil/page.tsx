@@ -48,6 +48,10 @@ export default function TaegilPage() {
   const autoFetchedRef = useRef(false);
 
   useEffect(() => {
+    return () => { sessionStorage.removeItem("taegilPaid"); };
+  }, []);
+
+  useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
     if (!saved) { router.push("/main-v2"); return; }
     setProfile(JSON.parse(saved));
