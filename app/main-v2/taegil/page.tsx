@@ -367,9 +367,22 @@ export default function TaegilPage() {
 
         {/* 분석 버튼 */}
         {isPaid && (
-          <div style={{ background:"#dcfce7", border:"2px solid #22c55e", borderRadius:12, padding:"10px 16px", marginBottom:12, display:"flex", alignItems:"center", gap:8 }}>
-            <span style={{ fontSize:18 }}>✅</span>
-            <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 날짜를 바꿔서 아래 버튼으로<br/>다시 분석할 수 있어요</span>
+          <div style={{ background:"#dcfce7", border:"2px solid #22c55e", borderRadius:12, padding:"10px 16px", marginBottom:12 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
+              <span style={{ fontSize:18 }}>✅</span>
+              <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 날짜를 바꿔서 아래 버튼으로 다시 분석할 수 있어요</span>
+            </div>
+            <button onClick={() => {
+              sessionStorage.removeItem("taegilPaid");
+              sessionStorage.removeItem("taegilEventType");
+              sessionStorage.removeItem("taegilDates");
+              setIsPaid(false);
+              setResults([]);
+              setSelectedDates([]);
+              setEventType("");
+            }} style={{ width:"100%", padding:"9px 0", border:"1.5px solid #15803d", borderRadius:8, background:"white", color:"#15803d", fontWeight:800, fontSize:13, cursor:"pointer" }}>
+              🔄 다른 목적으로 새로 결제하기
+            </button>
           </div>
         )}
         <button onClick={() => {
@@ -407,7 +420,7 @@ export default function TaegilPage() {
 
             {isPaid && (
               <div style={{ background:"rgba(239,68,68,0.08)", border:"1px solid rgba(239,68,68,0.4)", borderRadius:10, padding:"10px 14px", marginBottom:12, fontSize:12, color:"#ef4444", fontWeight:700, lineHeight:1.8 }}>
-                ⚠️ 이 화면을 벗어나면 결과가 사라져요.<br />지금 바로 공유하거나 캡처해두세요.
+                이 화면을 나가면 결과가 사라져요.<br />위 [공유] 버튼을 눌러 저장하면 언제든 다시 볼 수 있어요.
               </div>
             )}
 

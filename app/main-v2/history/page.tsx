@@ -189,8 +189,14 @@ export default function V2History() {
 
     const mergeRemote = (remote: Item[]) => {
       if (remote.length === 0) return;
+      // 삭제 후에는 삭제 시점 이전 항목은 다시 불러오지 않음
+      const clearedAt = Number(localStorage.getItem("v2_history_cleared_at") || "0");
+      const filtered = clearedAt > 0
+        ? remote.filter(item => new Date(item.date).getTime() > clearedAt)
+        : remote;
+      if (filtered.length === 0) return;
       setHist(prev => {
-        const merged = [...remote];
+        const merged = [...filtered];
         prev.forEach(p => { if (!merged.some(m => m.id === p.id)) merged.push(p); });
         merged.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         return merged;
@@ -255,12 +261,14 @@ export default function V2History() {
   const clear = () => {
     if (confirm("보관함을 모두 삭제하시겠습니까?")) {
       localStorage.removeItem("v2_history");
+      // 삭제 시점 기록 — 이후 Firebase 자동 복구 방지
+      localStorage.setItem("v2_history_cleared_at", Date.now().toString());
       setHist([]);
       // Firebase에서도 삭제 (이름 경로 + 전화번호 경로 모두)
       try {
         const profile = JSON.parse(localStorage.getItem("v2_saved_profile") || "null");
         const name = profile?.name || "";
-        const phone = localStorage.getItem("v2_saved_phone") || "";
+        const phone = (profile?.phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
         if (name) {
           fetch("/api/v2/history", {
             method: "POST",
