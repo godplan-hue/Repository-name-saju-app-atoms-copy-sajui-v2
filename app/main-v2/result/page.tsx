@@ -732,7 +732,7 @@ function V2ResultInner() {
         merged.width = canvases[0].width;
         merged.height = totalH;
         const ctx = merged.getContext("2d")!;
-        ctx.fillStyle = tier !== "free" ? "#f5f3ff" : "#fdf2f8";
+        ctx.fillStyle = tier === "package" ? "#f5f3ff" : "#fdf2f8";
         ctx.fillRect(0, 0, merged.width, merged.height);
         let y = 0;
         for (let i = 0; i < canvases.length; i++) {
@@ -766,12 +766,12 @@ function V2ResultInner() {
           merged.width = group[0].width;
           merged.height = gH;
           const ctx = merged.getContext("2d")!;
-          ctx.fillStyle = tier !== "free" ? "#f5f3ff" : "#fdf2f8";
+          ctx.fillStyle = tier === "package" ? "#f5f3ff" : "#fdf2f8";
           ctx.fillRect(0, 0, merged.width, merged.height);
           let y = 0;
           if (needsHeader) {
             const dpr = window.devicePixelRatio;
-            ctx.fillStyle = tier !== "free" ? "#2c4a73" : "#ec4899";
+            ctx.fillStyle = tier === "package" ? "#2c4a73" : "#ec4899";
             ctx.fillRect(0, 0, merged.width, headerH);
             ctx.fillStyle = "#ffffff";
             ctx.font = `900 ${22 * dpr}px 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
@@ -1138,7 +1138,7 @@ function V2ResultInner() {
         </div>
       </div>
     )}
-    <main style={{ minHeight: "100vh", backgroundImage: `url('${tier !== "free" ? "https://i.pinimg.com/736x/27/8b/de/278bde2d39a789d716ab0a1718413838.jpg" : "https://i.pinimg.com/1200x/ec/80/41/ec8041c9802a98ff6423c34a1ae44f38.jpg"}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+    <main style={{ minHeight: "100vh", backgroundImage: `url('${tier === "package" ? "https://i.pinimg.com/736x/27/8b/de/278bde2d39a789d716ab0a1718413838.jpg" : "https://i.pinimg.com/1200x/ec/80/41/ec8041c9802a98ff6423c34a1ae44f38.jpg"}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
       <audio ref={audioRef} src="/bgm.mp3" loop preload="auto" />
 
       {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
@@ -1223,7 +1223,7 @@ function V2ResultInner() {
           ref={el => { cardRefs.current[0] = el; }}
           style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}
         >
-          <div style={{ background: tier !== "free" ? "#eab308" : G, color: tier !== "free" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
+          <div style={{ background: tier === "package" ? "#eab308" : G, color: tier === "package" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
             <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>{brand?.businessName ? `🐱 ${brand.businessName} · AI 사주 분석` : "🐱 점운 · AI 사주 분석"}</p>
             <div style={{ padding: "14px 20px 24px" }}>
               <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
