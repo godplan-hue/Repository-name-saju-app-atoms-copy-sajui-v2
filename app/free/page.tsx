@@ -16,8 +16,8 @@ export default function FreePage() {
           <div style={{ fontSize: 48, marginBottom: 8 }}>🐱</div>
           <h1 style={{ color: "#fbbf24", fontSize: 22, fontWeight: 900, margin: "0 0 6px" }}>무료 재물운 받기</h1>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, margin: 0, lineHeight: 1.7 }}>
-            이름·생년월일·전화번호만 남기면<br />
-            <strong style={{ color: "#ec4899" }}>재물운 사주 무료쿠폰</strong> 바로 드려요
+            이름·전화번호만 남기면<br />
+            <strong style={{ color: "#ec4899" }}>AI 재물운 사주</strong> 바로 무료로 드려요
           </p>
         </div>
 

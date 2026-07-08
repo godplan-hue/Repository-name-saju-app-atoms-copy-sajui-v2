@@ -1,142 +1,90 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 
-const YEARS = Array.from({ length: 80 }, (_, i) => 2005 - i);
-const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
-const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
-
 export default function FreeForm() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [birthYear, setBirthYear] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthDay, setBirthDay] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ code: string; teaser: string; alreadyUsed?: boolean } | null>(null);
   const [error, setError] = useState("");
 
   async function handleSubmit() {
     if (!name.trim()) { setError("이름을 입력해주세요."); return; }
     const clean = phone.replace(/\D/g, "");
     if (clean.length < 10) { setError("전화번호를 정확히 입력해주세요."); return; }
-    if (!email.trim() || !email.includes("@")) { setError("이메일을 정확히 입력해주세요."); return; }
-    if (!birthYear) { setError("태어난 연도를 선택해주세요."); return; }
-    if (!agreed) { setError("개인정보 수집·마케팅 수신 동의를 체크해주세요."); return; }
-    setLoading(true); setError("");
-    try {
-      const res = await fetch("/api/free-lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), phone: clean, email: email.trim(), birthYear: Number(birthYear) }),
-      });
-      const data = await res.json();
-      if (data.code) {
-        setResult(data);
-      } else {
-        setError(data.error || "오류가 발생했어요. 다시 시도해주세요.");
-      }
-    } catch {
-      setError("오류가 발생했어요. 다시 시도해주세요.");
-    } finally {
-      setLoading(false);
-    }
-  }
+    if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
 
-  if (!result) {
-    return (
-      <div style={{ background: "#fff", borderRadius: 20, padding: "24px 20px", boxShadow: "0 8px 40px rgba(0,0,0,0.3)" }}>
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>이름</label>
-          <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="홍길동"
-            style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
-        </div>
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>전화번호</label>
-          <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="010-0000-0000"
-            style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
-        </div>
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>이메일</label>
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="example@email.com"
-            style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
-        </div>
-        <div style={{ marginBottom: 18 }}>
-          <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>생년월일</label>
-          <div style={{ display: "flex", gap: 6 }}>
-            <select value={birthYear} onChange={e => setBirthYear(e.target.value)}
-              style={{ flex: 2, padding: "12px 8px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", background: "#fff" }}>
-              <option value="">년도</option>
-              {YEARS.map(y => <option key={y} value={y}>{y}년</option>)}
-            </select>
-            <select value={birthMonth} onChange={e => setBirthMonth(e.target.value)}
-              style={{ flex: 1, padding: "12px 6px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", background: "#fff" }}>
-              <option value="">월</option>
-              {MONTHS.map(m => <option key={m} value={m}>{m}월</option>)}
-            </select>
-            <select value={birthDay} onChange={e => setBirthDay(e.target.value)}
-              style={{ flex: 1, padding: "12px 6px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", background: "#fff" }}>
-              <option value="">일</option>
-              {DAYS.map(d => <option key={d} value={d}>{d}일</option>)}
-            </select>
-          </div>
-        </div>
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
-            <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
-              style={{ marginTop: 2, accentColor: "#ec4899", width: 16, height: 16, flexShrink: 0 }} />
-            <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
-              <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
-              <strong style={{ color: "#ec4899" }}>점운</strong>(<a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed" }}>jeomun.com</a>)이 이름·전화번호·이메일을 수집하여
-              운세 정보 및 혜택 안내에 활용하며, <strong>3년간</strong> 보유 후 파기합니다.<br />
-              언제든지 수신거부 가능합니다.
-            </span>
-          </label>
-        </div>
-        {error && <p style={{ color: "#dc2626", fontSize: 12, margin: "0 0 10px", textAlign: "center" }}>{error}</p>}
-        <button onClick={handleSubmit} disabled={loading}
-          style={{ width: "100%", padding: "15px", borderRadius: 12, border: "none", background: G, color: "#fff", fontSize: 16, fontWeight: 900, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, boxShadow: "0 4px 16px rgba(236,72,153,0.4)" }}>
-          {loading ? "⏳ 발급 중..." : "🔮 무료 재물운 + 쿠폰 받기 →"}
-        </button>
-        <p style={{ fontSize: 10, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>
-          전화번호당 1회 제공 · 언제든지 수신거부 가능
-        </p>
-        <p style={{ fontSize: 10, color: "#9ca3af", textAlign: "center", margin: "6px 0 0" }}>
-          운영: <a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed", textDecoration: "none" }}>점운 (jeomun.com)</a>
-        </p>
-      </div>
+    setLoading(true); setError("");
+
+    // 리드 DB 저장 (결과 기다리지 않고 바로 진행)
+    fetch("/api/free-lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: name.trim(), phone: clean, email: email.trim() }),
+    }).catch(() => {});
+
+    // 기본 프로필 sessionStorage 저장 (payment-complete 폼에서 이름 pre-fill용)
+    sessionStorage.setItem("v2_saved_profile", JSON.stringify({
+      name: name.trim(),
+      phone: clean,
+      email: email.trim(),
+    }));
+
+    // payFree() 동작 복제
+    sessionStorage.setItem("v2_paid", "1");
+    sessionStorage.setItem("v2_plan", "select");
+
+    // 재물운 분석 폼으로 이동 (naming=1 → 이름/생년월일/시간/성별 폼 → 결과)
+    router.push(
+      "/payment-complete?naming=1&queue=love_detail&paid=0&package=" +
+      encodeURIComponent("💰 재물운")
     );
   }
 
   return (
     <div style={{ background: "#fff", borderRadius: 20, padding: "24px 20px", boxShadow: "0 8px 40px rgba(0,0,0,0.3)" }}>
-      <p style={{ fontSize: 18, fontWeight: 900, color: "#16a34a", margin: "0 0 4px", textAlign: "center" }}>
-        ✅ {result.alreadyUsed ? "이미 발급된 쿠폰이에요!" : "발급 완료!"}
-      </p>
-      <p style={{ fontSize: 12, color: "#6b7280", textAlign: "center", margin: "0 0 20px" }}>
-        {name}님의 재물운 요약이에요
-      </p>
-      <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", borderRadius: 14, padding: "16px", marginBottom: 16, border: "1.5px solid #e9d5ff" }}>
-        <p style={{ fontSize: 12, fontWeight: 800, color: "#7c3aed", margin: "0 0 8px" }}>💰 재물운 요약</p>
-        <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.8, margin: 0, whiteSpace: "pre-line" }}>{result.teaser}</p>
-        <p style={{ fontSize: 11, color: "#9ca3af", margin: "10px 0 0", textAlign: "right" }}>
-          전체 재물운 분석은 앱에서 확인하세요 →
-        </p>
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>이름</label>
+        <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="홍길동"
+          style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
       </div>
-      <div style={{ background: "linear-gradient(135deg,#fef2f2,#fff7ed)", border: "2px dashed #ec4899", borderRadius: 14, padding: "16px", textAlign: "center", marginBottom: 16 }}>
-        <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 4px" }}>운세 무료쿠폰 코드</p>
-        <p style={{ fontSize: 28, fontWeight: 900, color: "#be185d", margin: "0 0 4px", letterSpacing: 3 }}>{result.code}</p>
-        <p style={{ fontSize: 11, color: "#6d28d9", margin: 0, fontWeight: 700 }}>결제 화면에서 입력 → 운세 1개 무료</p>
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>전화번호</label>
+        <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="010-0000-0000"
+          style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
       </div>
-      <a href="/main-v2"
-        style={{ display: "block", width: "100%", padding: "15px", borderRadius: 12, border: "none", background: G, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.4)", textAlign: "center", textDecoration: "none", boxSizing: "border-box" }}>
-        🔮 점운 앱에서 쿠폰 사용하기 →
-      </a>
-      <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>
-        앱 결제 화면에서 위 쿠폰 코드를 입력하시면 무료로 받으실 수 있어요
+      <div style={{ marginBottom: 18 }}>
+        <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>이메일 <span style={{ fontWeight: 400, color: "#9ca3af" }}>(선택)</span></label>
+        <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="example@email.com"
+          style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
+      </div>
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
+          <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
+            style={{ marginTop: 2, accentColor: "#ec4899", width: 16, height: 16, flexShrink: 0 }} />
+          <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
+            <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
+            <strong style={{ color: "#ec4899" }}>점운</strong>(<a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed" }}>jeomun.com</a>)이 이름·전화번호·이메일을 수집하여
+            운세 정보 및 혜택 안내에 활용하며, <strong>3년간</strong> 보유 후 파기합니다.<br />
+            언제든지 수신거부 가능합니다.
+          </span>
+        </label>
+      </div>
+      {error && <p style={{ color: "#dc2626", fontSize: 12, margin: "0 0 10px", textAlign: "center" }}>{error}</p>}
+      <button onClick={handleSubmit} disabled={loading}
+        style={{ width: "100%", padding: "15px", borderRadius: 12, border: "none", background: G, color: "#fff", fontSize: 16, fontWeight: 900, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, boxShadow: "0 4px 16px rgba(236,72,153,0.4)" }}>
+        {loading ? "⏳ 이동 중..." : "🔮 무료 재물운 받기 →"}
+      </button>
+      <p style={{ fontSize: 10, color: "#9ca3af", textAlign: "center", margin: "10px 0 0" }}>
+        전화번호당 1회 제공 · 언제든지 수신거부 가능
+      </p>
+      <p style={{ fontSize: 10, color: "#9ca3af", textAlign: "center", margin: "6px 0 0" }}>
+        운영: <a href="https://jeomun.com" target="_blank" rel="noreferrer" style={{ color: "#7c3aed", textDecoration: "none" }}>점운 (jeomun.com)</a>
       </p>
     </div>
   );

@@ -27,52 +27,22 @@ function getOhaeng(year: number): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, phone, email, birthYear } = await request.json();
+    const { name, phone, email } = await request.json();
     if (!phone || !name) return NextResponse.json({ error: "이름과 전화번호가 필요합니다." }, { status: 400 });
 
     const cleanPhone = String(phone).replace(/\D/g, "");
 
-    // 중복 방지
-    const existingSnap = await db.ref(`free_leads/${cleanPhone}`).once("value");
-    if (existingSnap.exists()) {
-      const existing = existingSnap.val();
-      return NextResponse.json({ code: existing.code, teaser: existing.teaser, alreadyUsed: true });
-    }
-
-    let code = "";
-    for (let i = 0; i < 5; i++) {
-      const candidate = genCode();
-      const snap = await db.ref(`promoCodes/${candidate}`).once("value");
-      if (!snap.exists()) { code = candidate; break; }
-    }
-    if (!code) return NextResponse.json({ error: "코드 생성 실패" }, { status: 500 });
-
-    const ohaeng = getOhaeng(Number(birthYear) || 1990);
-    const teaser = TEASERS[ohaeng];
-
+    // 중복이어도 저장값 업데이트
     await db.ref(`free_leads/${cleanPhone}`).set({
       phone: cleanPhone,
       name,
       email: email || "",
-      birthYear: birthYear || "",
-      code,
-      teaser,
       createdAt: Date.now(),
-      used: false,
     });
 
-    await db.ref(`promoCodes/${code}`).set({
-      discountPercent: 100,
-      maxAmount: 3900,
-      note: "무료재물운랜딩",
-      active: true,
-      usageCount: 0,
-      maxUsage: 1,
-    });
-
-    return NextResponse.json({ code, teaser });
+    return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Free lead error:", error);
-    return NextResponse.json({ error: "발급 실패" }, { status: 500 });
+    return NextResponse.json({ error: "저장 실패" }, { status: 500 });
   }
 }
