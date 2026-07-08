@@ -49,7 +49,8 @@ export default function MyCouponsPage() {
           <p style={{ fontSize: 14, fontWeight: 900, color: "#4c1d95", margin: "0 0 6px" }}>🔗 내 추천 링크</p>
           <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px", lineHeight: 1.6 }}>
             친구가 이 링크로 들어와서 결제하면<br />
-            <strong style={{ color: "#be185d" }}>990원 무료 사주 쿠폰</strong>이 자동으로 생겨요
+            <strong style={{ color: "#be185d" }}>990원 무료 사주 쿠폰</strong>이 자동으로 생겨요<br />
+            <span style={{ display: "inline-block", marginTop: 6, background: "#fdf2f8", border: "1px solid #f9a8d4", borderRadius: 8, padding: "3px 10px", fontSize: 11, color: "#be185d", fontWeight: 800 }}>🎁 친구 결제 시 한 번 더 지급!</span>
           </p>
           <div style={{ background: "#f5f3ff", borderRadius: 12, padding: "12px 14px", marginBottom: 10, wordBreak: "break-all", fontSize: 12, color: "#6d28d9", fontWeight: 600 }}>
             {shareUrl || "링크 생성 중..."}
