@@ -464,9 +464,6 @@ function V2ResultInner() {
         });
         if (res.ok) {
           const data = await res.json();
-          const sp = new URLSearchParams(window.location.search);
-          sp.set("sid", data.id);
-          router.replace(`${window.location.pathname}?${sp.toString()}`, { scroll: false });
           // 결제 시 입력한 번호로 영구 결과 링크 SMS 발송
           try {
             const phone = sessionStorage.getItem("v2_payment_phone");
