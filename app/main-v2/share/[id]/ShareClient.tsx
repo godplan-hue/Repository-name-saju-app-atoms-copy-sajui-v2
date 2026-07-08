@@ -93,6 +93,7 @@ export default function ShareClient({ id }: { id: string }) {
     }
   }, []);
   const [showGuideModal, setShowGuideModal] = useState(false);
+  const [showMobGuideModal, setShowMobGuideModal] = useState(false);
   const [namingQueue, setNamingQueue] = useState<string[]>([]);
 
   useEffect(() => {
@@ -350,7 +351,7 @@ export default function ShareClient({ id }: { id: string }) {
         {/* 이용 안내 버튼 */}
         {isOwner && (
           <button
-            onClick={() => setTipModal({ text: "📌 꼭 읽어보세요\n\n📤 공유하기 — 카카오톡으로 결과 공유\n💳 유료 운세 결제하기 — 추가 운세 구매\n🔮 다시 분석 — 새 사주 분석 시작\n📥 보관함 저장 — 결과 저장 (언제든 다시 보기)" })}
+            onClick={() => isMob ? setShowMobGuideModal(true) : setShowGuideModal(true)}
             style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 14, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
           >
             📌 꼭 읽어보세요 — 저장·공유 버튼 안내
@@ -609,6 +610,56 @@ export default function ShareClient({ id }: { id: string }) {
       </div>
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive" onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
     </main>
+
+    {/* ── 모바일 이용 안내 모달 ── */}
+    {showMobGuideModal && (
+      <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowMobGuideModal(false)}>
+        <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+          <p style={{ fontSize: 15, fontWeight: 900, color: "#be185d", margin: "0 0 14px" }}>📱 모바일 이용 안내</p>
+
+          <div style={{ background: "#fff7ed", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fed7aa" }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>📲 카카오톡에서 접속하신 경우</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`화면 오른쪽 아래 점 세 개(⋮)를 누르고\n[다른 브라우저로 열기] 선택\n→ 읽어주기 기능 이용 가능해요`}</p>
+          </div>
+
+          <div style={{ background: "#f5f3ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #ddd6fe" }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>🔊 읽어주기 사용 팁</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />점 세 개(⋮) → 다른 브라우저로 열기 후 사용하세요.<br />읽는 중 화면이 꺼지면 끊길 수 있어요.<br />설정 &gt; 디스플레이 &gt; 화면 자동 꺼짐 시간을 늘리거나<br />&apos;보고 있는 동안 화면 켜짐&apos;을 켜두면 끊기지 않아요.</p>
+          </div>
+
+          <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "14px 0 8px" }}>📌 결과지 아래 버튼 안내</p>
+          <div style={{ background: "#fef2f2", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>
+              📤 공유하기 — 카카오톡으로 결과 공유<br />
+              💳 유료 운세 결제하기 — 추가 운세 구매<br />
+              🔮 다시 분석 — 새 사주 분석 시작<br />
+              📥 보관함 저장 — 결과 저장 (언제든 다시 보기)<br />
+              🔊 읽기 — 사주 내용 읽어주기
+            </p>
+          </div>
+          <button onClick={() => setShowMobGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
+        </div>
+      </div>
+    )}
+
+    {/* ── PC 버튼 안내 모달 ── */}
+    {showGuideModal && (
+      <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
+        <div style={{ background: "white", borderRadius: 20, padding: "24px 22px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+          <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 버튼 안내</p>
+          <div style={{ background: "#fef2f2", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
+            <p style={{ fontSize: 13, color: "#4b5563", margin: 0, lineHeight: 2.4 }}>
+              📤 공유하기 — 카카오톡으로 결과 공유<br />
+              💳 유료 운세 결제하기 — 추가 운세 구매<br />
+              🔮 다시 분석 — 새 사주 분석 시작<br />
+              📥 보관함 저장 — 결과 저장 (언제든 다시 보기)<br />
+              🔊 읽기 — 사주 내용 읽어주기
+            </p>
+          </div>
+          <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
+        </div>
+      </div>
+    )}
 
     </>
   );
