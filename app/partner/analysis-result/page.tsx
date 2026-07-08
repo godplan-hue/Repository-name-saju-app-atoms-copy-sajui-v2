@@ -454,7 +454,8 @@ function PartnerAnalysisResultInner() {
           <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 12, padding: "10px 14px", margin: "8px 16px 0", fontSize: 12, color: "#92400e", fontWeight: 700, lineHeight: 1.8 }}>
             💡 무료 플랜은 링크 공유가 지원되지 않아요.<br />
             PC 또는 크롬·구글 브라우저에서 이미지 저장하면 8개 운세 전체가 한 번에 저장됩니다.<br />
-            카카오톡·기본 모바일 브라우저는 일부만 저장될 수 있어요. → 크롬으로 열어서 저장하세요.
+            카카오톡·기본 모바일 브라우저는 일부만 저장될 수 있어요. → 크롬으로 열어서 저장하세요.<br />
+            또는 점 세 개(⋮) 옆 [링크 복사]로 카톡·문자·메일로 공유하세요.
           </div>
         )}
 

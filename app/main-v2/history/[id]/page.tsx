@@ -790,8 +790,16 @@ export default function HistoryDetail() {
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
           <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "80vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
             <p style={{ fontSize: 14, fontWeight: 900, color: "#be185d", margin: "0 0 12px" }}>📱 모바일 이용 안내</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 10px", lineHeight: 2 }}>크롬이나 구글로 바로 접속하셨다면 이미지 저장, 보관함, 읽기 모두 바로 이용 가능해요.</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 10px", lineHeight: 2, whiteSpace: "pre-line" }}>{`모바일(카카오톡)에서 이미지 저장하려면\n결과지 받고 바로\n밑에 점 3개 누르고\n다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장돼요.\n보관함도 전체 사주 저장이 돼요.\n보관함 읽기 누르면 읽기도 가능해요.\n\n단, VIP 커플팩은 용량이 너무 커서\n이미지 저장이 안 돼요.\n점 3개 옆 링크 복사 눌러서\n카톡, 문자, 메일, 원하는 곳에\n붙여넣고 보면 돼요.`}</p>
+            {/* 카카오톡에서 접속 시 */}
+            <div style={{ background: "#fff7ed", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fed7aa" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>📲 카카오톡에서 접속하신 경우</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`화면 오른쪽 아래 점 세 개(⋮)를 누르고\n[다른 브라우저로 열기] 선택\n→ 이미지 저장·읽기 모두 이용 가능해요`}</p>
+            </div>
+            {/* 이미지 저장 */}
+            <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>🖼 이미지 저장</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`PC 또는 크롬·구글 브라우저에서 저장하면\n8개 운세 전체가 한 번에 저장됩니다.\n\n카카오톡이나 기본 모바일 브라우저에서는\n일부만 저장될 수 있어요.\n점 세 개(⋮) → [다른 브라우저로 열기]\n→ 크롬 선택 후 저장하세요.\n\n또는 점 세 개 옆 [링크 복사]로\n카톡·문자·메일로 공유하세요.`}</p>
+            </div>
             <div style={{ borderTop: "1px solid rgba(236,72,153,0.15)", paddingTop: 10, marginBottom: 16 }}>
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.9 }}>읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 &gt; 디스플레이 &gt; 화면 자동 꺼짐 시간을 늘리거나, &apos;보고 있는 동안 화면 켜짐&apos; 기능을 켜두면 끊기지 않아요.</p>
             </div>
