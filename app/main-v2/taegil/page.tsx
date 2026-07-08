@@ -359,19 +359,25 @@ export default function TaegilPage() {
           </div>
         )}
         <button onClick={() => {
-          sessionStorage.removeItem("taegilPaid");
-          sessionStorage.removeItem("taegilEventType");
-          sessionStorage.removeItem("taegilDates");
-          setIsPaid(false);
-          setEventType("");
-          setSelectedDates([]);
-          setResults([]);
-          autoFetchedRef.current = false;
+          if (isPaid) {
+            sessionStorage.removeItem("taegilPaid");
+            sessionStorage.removeItem("taegilEventType");
+            sessionStorage.removeItem("taegilDates");
+            setIsPaid(false);
+            setEventType("");
+            setSelectedDates([]);
+            setResults([]);
+            autoFetchedRef.current = false;
+          } else {
+            if (!eventType) { alert("목적을 먼저 선택해주세요!"); return; }
+            if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
+            fetchTaegil(false);
+          }
         }}
-          style={{ width:"100%", padding:"15px 0", marginBottom:16, border:"none", borderRadius:50, fontWeight:900, fontSize:15, cursor:"pointer",
-            background: "linear-gradient(135deg,#22c55e,#15803d)",
+          style={{ width:"100%", padding:"15px 0", marginBottom:16, border:"none", borderRadius:50, fontWeight:900, fontSize:15, cursor: loading ? "not-allowed" : "pointer",
+            background: loading ? "#9ca3af" : "linear-gradient(135deg,#22c55e,#15803d)",
             color:"white", boxShadow: "0 6px 20px rgba(34,197,94,0.35)" }}>
-          🔄 새로 분석하기
+          {loading ? "⏳ 분석 중..." : isPaid ? "🔄 새로 분석하기" : "📅 날짜 분석 시작하기"}
         </button>
 
         {/* 결과 */}
