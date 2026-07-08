@@ -567,14 +567,14 @@ function PaymentInner() {
                 )}
                 <h3 style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 2px 0" }}>{pkg.name}</h3>
                 <p style={{ color: "#f5f5f5", fontSize: 9, fontWeight: 700, margin: "0 0 6px 0", opacity: 0.85 }}>【심층 상세 분석】</p>
-                {appliedDiscount && !isPartner ? (
+                {(() => { const orig = Number(pkg.price.replace(/[^0-9]/g, "")); const disc = finalPrice(orig); return appliedDiscount && !isPartner && disc < orig ? (
                   <p style={{ margin: "0 0 6px 0" }}>
                     <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 700, textDecoration: "line-through", marginRight: 4 }}>{pkg.price}</span>
-                    <span style={{ color: "#90EE90", fontSize: 16, fontWeight: 900 }}>₩{Math.round(Number(pkg.price.replace(/[^0-9]/g, "")) * (1 - appliedDiscount.discountPercent / 100)).toLocaleString()}</span>
+                    <span style={{ color: "#90EE90", fontSize: 16, fontWeight: 900 }}>₩{disc.toLocaleString()}</span>
                   </p>
                 ) : (
                   <p style={{ color: "#ffffff", fontSize: 16, fontWeight: 900, margin: "0 0 6px 0" }}>{displayPrice2}</p>
-                )}
+                ); })()}
                 <p style={{ color: "#f5f5f5", fontSize: 10, fontWeight: 700, margin: "0 0 6px 0", lineHeight: 1.5, wordBreak: "keep-all" }} dangerouslySetInnerHTML={{ __html: pkg.desc }} />
                 <p style={{ color: "#fbbf24", fontSize: 9, fontWeight: 700, margin: "0 0 3px 0" }}>🎯 {pkg.count}개 운세</p>
                 <p style={{ color: "#ffffff", fontSize: 9, fontWeight: 700, margin: 0 }}>📄 {pkg.chars}</p>
