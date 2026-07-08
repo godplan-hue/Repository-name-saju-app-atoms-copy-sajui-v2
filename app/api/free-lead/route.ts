@@ -38,14 +38,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ duplicate: true });
     }
 
+    // 쿠폰코드 생성 (최대 5회 충돌 방지)
+    let code = "";
+    for (let i = 0; i < 5; i++) {
+      const candidate = genCode();
+      const snap = await db.ref(`promoCodes/${candidate}`).once("value");
+      if (!snap.exists()) { code = candidate; break; }
+    }
+    if (!code) code = genCode();
+
     await db.ref(`free_leads/${cleanPhone}`).set({
       phone: cleanPhone,
       name,
       email: email || "",
+      code,
+      used: false,
       createdAt: Date.now(),
     });
 
-    return NextResponse.json({ ok: true });
+    // promoCodes에 등록해야 결제 시 실제 사용 가능
+    await db.ref(`promoCodes/${code}`).set({
+      discountPercent: 30,
+      note: "무료재물운쿠폰",
+      active: true,
+      usageCount: 0,
+      maxUses: 1,
+    });
+
+    return NextResponse.json({ ok: true, code });
   } catch (error) {
     console.error("Free lead error:", error);
     return NextResponse.json({ error: "저장 실패" }, { status: 500 });
