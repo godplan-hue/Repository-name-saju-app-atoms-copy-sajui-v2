@@ -171,13 +171,31 @@ export default function TaegilPage() {
     speakNext();
   };
 
-  const handleShare = () => {
+  const handleShare = async () => {
     if (!results.length) return;
+    // 결과를 share API에 저장해서 고유 링크 생성
+    const categories = results.map(r => {
+      const d = new Date(r.date + "T00:00:00");
+      return {
+        icon: r.emoji,
+        label: `${d.getMonth()+1}월 ${d.getDate()}일 (${r.dayOfWeek}) ${r.iljin}`,
+        color: r.rating === "대길" ? "#15803d" : r.rating === "길" ? "#1d4ed8" : r.rating === "흉" ? "#dc2626" : "#4b5563",
+        text: `${r.rating} — ${r.title}${r.reason ? "\n" + r.reason : ""}`,
+      };
+    });
+    let shareUrl = `${window.location.origin}/main-v2/taegil`;
+    try {
+      const res = await fetch("/api/v2/share", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: profile?.name, categories, tier: "taegil", birthYear: String(profile?.birthYear ?? ""), subtitle: `${eventType} 택일 분석` }),
+      });
+      if (res.ok) { const data = await res.json(); if (data.id) shareUrl = `${window.location.origin}/main-v2/share/${data.id}`; }
+    } catch {}
     const best = results.filter(r => r.rating === "대길" || r.rating === "길").slice(0, 3);
     const dateStr = best.length > 0
-      ? best.map(r => { const d = new Date(r.date); return `${d.getMonth()+1}/${d.getDate()} ${r.rating}`; }).join(", ")
+      ? best.map(r => { const d = new Date(r.date + "T00:00:00"); return `${d.getMonth()+1}/${d.getDate()} ${r.rating}`; }).join(", ")
       : "분석 완료";
-    const shareUrl = "https://jeomun.com/main-v2/taegil";
     const title = `📅 ${profile?.name}님의 ${eventType} 택일 분석`;
     const desc = `좋은 날: ${dateStr} | 점운 AI 사주`;
     const kakao = (window as any).Kakao;
@@ -191,7 +209,7 @@ export default function TaegilPage() {
         },
         buttons: [
           { title: "택일 결과 보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
-          { title: "나도 택일 받기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
+          { title: "나도 택일 받기", link: { mobileWebUrl: "https://jeomun.com/main-v2/taegil", webUrl: "https://jeomun.com/main-v2/taegil" } },
         ],
       });
     } else if (navigator.share) {
@@ -347,7 +365,7 @@ export default function TaegilPage() {
         {isPaid && (
           <div style={{ background:"#dcfce7", border:"2px solid #22c55e", borderRadius:12, padding:"10px 16px", marginBottom:12, display:"flex", alignItems:"center", gap:8 }}>
             <span style={{ fontSize:18 }}>✅</span>
-            <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 날짜를 바꿔서 아래 버튼으로 다시 분석할 수 있어요</span>
+            <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 날짜를 바꿔서 아래 버튼으로<br/>다시 분석할 수 있어요</span>
           </div>
         )}
         <button onClick={() => {
