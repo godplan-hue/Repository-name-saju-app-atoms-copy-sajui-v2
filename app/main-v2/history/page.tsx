@@ -204,7 +204,7 @@ export default function V2History() {
       if (name) {
         fetch(`/api/v2/history?name=${encodeURIComponent(name)}`)
           .then(r => r.json())
-          .then(data => { mergeRemote((data.items || []).filter((i: Item) => i.isPaid === true)); })
+          .then(data => { mergeRemote((data.items || []).filter((i: Item) => i.isPaid === true && !i.category?.includes("오늘의 운세"))); })
           .catch(() => {});
       }
     } catch {}
@@ -215,7 +215,7 @@ export default function V2History() {
       if (phone) {
         fetch(`/api/v2/history?phone=${encodeURIComponent(phone)}`)
           .then(r => r.json())
-          .then(data => { mergeRemote((data.items || []).filter((i: Item) => i.isPaid === true)); })
+          .then(data => { mergeRemote((data.items || []).filter((i: Item) => i.isPaid === true && !i.category?.includes("오늘의 운세"))); })
           .catch(() => {});
       }
     } catch {}
@@ -256,15 +256,16 @@ export default function V2History() {
     if (confirm("보관함을 모두 삭제하시겠습니까?")) {
       localStorage.removeItem("v2_history");
       setHist([]);
-      // Firebase에서도 삭제
+      // Firebase에서도 삭제 (이름 경로 + 전화번호 경로 모두)
       try {
         const profile = JSON.parse(localStorage.getItem("v2_saved_profile") || "null");
         const name = profile?.name || "";
+        const phone = localStorage.getItem("v2_saved_phone") || "";
         if (name) {
           fetch("/api/v2/history", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, deleteAll: true }),
+            body: JSON.stringify({ name, phone, deleteAll: true }),
           }).catch(() => {});
         }
       } catch {}

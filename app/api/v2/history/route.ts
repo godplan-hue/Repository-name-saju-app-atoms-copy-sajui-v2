@@ -50,6 +50,9 @@ export async function POST(req: NextRequest) {
     if (!name) return NextResponse.json({ ok: false });
     if (deleteAll) {
       await db.ref(`v2_history/${safeKey(name)}`).remove();
+      if (phone) {
+        await db.ref(`v2_history_phone/${safePhone(phone)}`).remove();
+      }
       return NextResponse.json({ ok: true });
     }
     if (!item?.id) return NextResponse.json({ ok: false });
