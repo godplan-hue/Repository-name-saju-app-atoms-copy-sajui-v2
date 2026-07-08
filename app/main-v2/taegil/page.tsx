@@ -46,6 +46,7 @@ export default function TaegilPage() {
   const resultsRef = useRef<HTMLDivElement>(null);
   const chunksRef = useRef<string[]>([]);
   const chunkIdxRef = useRef(0);
+  const autoFetchedRef = useRef(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
@@ -76,12 +77,14 @@ export default function TaegilPage() {
   }, []);
 
   useEffect(() => {
-    if (isPaid && eventType && selectedDates.length > 0 && profile) {
+    if (isPaid && eventType && selectedDates.length > 0 && profile && !autoFetchedRef.current) {
+      autoFetchedRef.current = true;
       fetchTaegil(true);
     }
   }, [isPaid, eventType, selectedDates, profile]);
 
   const toggleDate = (dateStr: string) => {
+    if (isPaid) return; // 결제 후 날짜 변경 불가
     setSelectedDates(prev => {
       if (prev.includes(dateStr)) return prev.filter(d => d !== dateStr);
       if (prev.length >= 10) return prev;
@@ -253,11 +256,13 @@ export default function TaegilPage() {
           </p>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:8 }}>
             {EVENT_TYPES.map(({ icon, label }) => (
-              <button key={label} onClick={() => setEventType(label)}
+              <button key={label} onClick={() => !isPaid && setEventType(label)}
                 style={{ padding:"8px 4px", border: eventType===label ? "2px solid #22c55e" : "1.5px solid #e5e7eb",
                   background: eventType===label ? "#dcfce7" : "white", borderRadius:10,
                   fontSize:11, fontWeight:700, color: eventType===label ? "#15803d" : "#374151",
-                  cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
+                  cursor: isPaid ? "default" : "pointer",
+                  opacity: isPaid && eventType !== label ? 0.4 : 1,
+                  display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
                 <span style={{ fontSize:20 }}>{icon}</span>{label}
               </button>
             ))}
@@ -343,9 +348,23 @@ export default function TaegilPage() {
 
         {/* 분석 버튼 */}
         {isPaid && (
-          <div style={{ background:"#dcfce7", border:"2px solid #22c55e", borderRadius:12, padding:"10px 16px", marginBottom:12, display:"flex", alignItems:"center", gap:8 }}>
-            <span style={{ fontSize:18 }}>✅</span>
-            <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 전체 상세 해설이 표시됩니다</span>
+          <div style={{ background:"#dcfce7", border:"2px solid #22c55e", borderRadius:12, padding:"10px 16px", marginBottom:12, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+              <span style={{ fontSize:18 }}>✅</span>
+              <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 전체 해설 표시 중</span>
+            </div>
+            <button onClick={() => {
+              localStorage.removeItem("taegilPaidExpiry");
+              localStorage.removeItem("taegilEventType");
+              localStorage.removeItem("taegilDates");
+              setIsPaid(false);
+              setEventType("");
+              setSelectedDates([]);
+              setResults([]);
+              autoFetchedRef.current = false;
+            }} style={{ fontSize:11, fontWeight:700, color:"#15803d", background:"white", border:"1px solid #22c55e", borderRadius:8, padding:"4px 10px", cursor:"pointer" }}>
+              🔄 새 분석
+            </button>
           </div>
         )}
         <button onClick={() => canAnalyze && fetchTaegil(isPaid)} disabled={!canAnalyze}
