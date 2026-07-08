@@ -12,6 +12,11 @@ export async function GET(request: NextRequest) {
     if (!found || !found.active) {
       return NextResponse.json({ found: false }, { status: 404 });
     }
+    // 사용 횟수 초과 시 만료 처리 (maxUsage/maxUses 둘 다 지원)
+    const maxUses = found.maxUses ?? found.maxUsage ?? -1;
+    if (maxUses !== -1 && (found.usageCount || 0) >= maxUses) {
+      return NextResponse.json({ found: false }, { status: 404 });
+    }
     // FREE* 쿠폰: maxAmount 미설정 시 기본 3,900원 제한 (고가 상품 무료 방지)
     const key2 = code.trim().toUpperCase();
     const result = { found: true, ...found, code: key2 };
@@ -67,7 +72,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "유효하지 않은 코드입니다." }, { status: 404 });
     }
     const newUsageCount = (found.usageCount || 0) + 1;
-    const maxUses = found.maxUses ?? 1;
+    const maxUses = found.maxUses ?? found.maxUsage ?? 1;
     // maxUses === -1: 무제한, 그 외: N회 사용 시 비활성화 (FREE* 포함)
     const shouldDeactivate = maxUses !== -1 && newUsageCount >= maxUses;
     await ref.update({ usageCount: newUsageCount, ...(shouldDeactivate ? { active: false } : {}) });
