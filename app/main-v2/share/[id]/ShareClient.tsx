@@ -349,21 +349,17 @@ export default function ShareClient({ id }: { id: string }) {
         {/* 결제 후 오너 전용 버튼 — 상단 */}
         {isOwner && (
           <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
-            <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={() => router.push("/main-v2/payment")} style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 14px rgba(236,72,153,0.3)" }}>
-                💳 유료 운세 결제하기
-              </button>
-              <button onClick={() => router.push("/main-v2")} style={{ flex: 1, padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
-                🔮 다시 분석
-              </button>
-            </div>
-            <button
-              onClick={() => { saveToHistory(); setHistorySaved(true); }}
-              style={{ width: "100%", padding: "13px 0", background: historySaved ? "#dcfce7" : "white", color: historySaved ? "#15803d" : "#374151", border: `1.5px solid ${historySaved ? "#22c55e" : "#d1d5db"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-              {historySaved ? "✅ 보관함에 저장됨" : "📥 보관함에 저장하기"}
+            <button onClick={handleKakaoShare} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
+              📤 공유하기
             </button>
-            <button onClick={handleKakaoShare} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-              📤 카카오톡으로 공유
+            <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+              💳 유료 운세 결제하기
+            </button>
+            <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
+              🔮 다시 분석
+            </button>
+            <button onClick={() => { saveToHistory(); setHistorySaved(true); }} style={{ width: "100%", padding: "13px 0", background: historySaved ? "#dcfce7" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#15803d" : "#4338ca", border: `1.5px solid ${historySaved ? "#22c55e" : "rgba(99,102,241,0.35)"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
+              {historySaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
             </button>
           </div>
         )}
@@ -538,29 +534,25 @@ export default function ShareClient({ id }: { id: string }) {
 
         </div>{/* /contentRef */}
 
-        {/* 결제 후 오너 전용 버튼 */}
+        {/* 결제 후 오너 전용 버튼 — 하단 */}
         {isOwner && (
           <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 12 }}>
-            <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={() => router.push("/main-v2/payment")} style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 14px rgba(236,72,153,0.3)" }}>
-                💳 유료 운세 결제하기
-              </button>
-              <button onClick={() => router.push("/main-v2")} style={{ flex: 1, padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
-                🔮 다시 분석
-              </button>
-            </div>
-            <button
-              onClick={() => { saveToHistory(); setHistorySaved(true); }}
-              style={{ width: "100%", padding: "13px 0", background: historySaved ? "#dcfce7" : "white", color: historySaved ? "#15803d" : "#374151", border: `1.5px solid ${historySaved ? "#22c55e" : "#d1d5db"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-              {historySaved ? "✅ 보관함에 저장됨" : "📥 보관함에 저장하기"}
+            <button onClick={handleKakaoShare} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
+              📤 공유하기
             </button>
-            <button onClick={handleKakaoShare} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
-              📤 카카오톡으로 공유
+            <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+              💳 유료 운세 결제하기
+            </button>
+            <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
+              🔮 다시 분석
+            </button>
+            <button onClick={() => { saveToHistory(); setHistorySaved(true); }} style={{ width: "100%", padding: "13px 0", background: historySaved ? "#dcfce7" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#15803d" : "#4338ca", border: `1.5px solid ${historySaved ? "#22c55e" : "rgba(99,102,241,0.35)"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
+              {historySaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
             </button>
           </div>
         )}
 
-        {/* 공유 (비오너용) */}
+        {/* 공유 버튼 — 비오너용 */}
         {!isOwner && (
           <button onClick={handleKakaoShare} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
             📤 카카오톡으로 공유

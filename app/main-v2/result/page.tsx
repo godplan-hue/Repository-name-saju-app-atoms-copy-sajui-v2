@@ -1189,36 +1189,6 @@ function V2ResultInner() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* ── 유료 결과 상단 버튼 (select/package) ── */}
-        {(tier === "select" || tier === "package") && (
-          <>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => setShowShareModal(true)}
-                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
-                📤 카카오톡으로 공유
-              </button>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => router.push("/main-v2/payment")}
-                style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-                💳 유료 운세 결제하기
-              </button>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
-                style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
-                🔮 다시 분석
-              </button>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <button onClick={() => { setHistSaved(true); setTimeout(() => setHistSaved(false), 2500); }}
-                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
-                {histSaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
-              </button>
-            </div>
-          </>
-        )}
-
         {/* ── 이용 안내 버튼 (항상 표시) ── */}
         <button
           onClick={() => isMob ? setShowGuideModal(true) : setShowPcGuideModal(true)}
