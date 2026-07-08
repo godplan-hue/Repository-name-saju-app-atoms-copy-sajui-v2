@@ -42,10 +42,23 @@ export async function POST(request: NextRequest) {
 
     const cleanPhone = String(phone).replace(/\D/g, "");
 
-    // 같은 번호 중복 발급 방지 — 전화번호를 키로 직접 읽기
+    // 같은 번호 중복 방지 (share_coupons 기본 체크)
     const existingSnap = await db.ref(`share_coupons/${cleanPhone}`).once("value");
     if (existingSnap.exists()) {
-      return NextResponse.json({ codes: existingSnap.val().codes || [] });
+      return NextResponse.json({ error: "이미 발급된 번호입니다. 번호당 1회만 발급 가능해요." }, { status: 400 });
+    }
+
+    // 백업 중복 체크 (sns_share_coupons)
+    const backupSnap = await db.ref(`sns_share_coupons/${cleanPhone}`).once("value");
+    if (backupSnap.exists()) {
+      return NextResponse.json({ error: "이미 발급된 번호입니다. 번호당 1회만 발급 가능해요." }, { status: 400 });
+    }
+
+    // 같은 URL 중복 방지 (다른 번호로 동일 게시글 재사용 차단)
+    const urlKey = Buffer.from(postUrl).toString("base64").replace(/[^a-zA-Z0-9]/g, "").slice(0, 60);
+    const urlSnap = await db.ref(`share_coupon_urls/${urlKey}`).once("value");
+    if (urlSnap.exists()) {
+      return NextResponse.json({ error: "이미 등록된 게시글 URL입니다. 새 게시글을 올려주세요." }, { status: 400 });
     }
 
     // 990원 무료쿠폰 5장 발급
@@ -59,8 +72,12 @@ export async function POST(request: NextRequest) {
         note: "SNS공유무료쿠폰(990원)",
         active: true,
         usageCount: 0,
+        maxUses: 1,
       });
     }
+
+    // URL 기록 저장 (중복 방지용)
+    await db.ref(`share_coupon_urls/${urlKey}`).set({ phone: cleanPhone, postUrl, createdAt: Date.now() });
 
     // 전화번호를 키로 저장 — 중복 발급 원천 차단
     await db.ref(`share_coupons/${cleanPhone}`).set({
