@@ -124,6 +124,35 @@ function DaewoonInner() {
     }
   }, [daeunList, currentAge, selectedIdx]);
 
+  // 결제 완료 후 모든 구매 블록 자동 보관함 저장
+  useEffect(() => {
+    if (!paid || daeunList.length === 0 || !profile) return;
+    const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
+    let changed = false;
+    daeunList.forEach((b, i) => {
+      const locked = paidIndices.length > 0
+        ? !paidIndices.includes(i)
+        : (i - (daeunList.findIndex(x => currentAge >= x.startAge && currentAge <= x.endAge)) >= paidCount);
+      if (!locked && b.mental) {
+        const id = `daeun-${profile.name}-${b.startAge}-${b.endAge}`;
+        if (!hist.some((h: any) => h.id === id)) {
+          hist.unshift({
+            id, date: new Date().toISOString(),
+            name: profile.name,
+            category: `🌌 대운 ${b.ganHanja}${b.jiHanja} (${b.startAge}~${b.endAge}세)`,
+            analysis: buildCategories(b).map(c => `${c.icon} ${c.label}\n${c.text}`).join("\n\n"),
+            isPaid: true, planType: "daeun", birthYear: profile.birthYear ?? "",
+          });
+          changed = true;
+        }
+      }
+    });
+    if (changed) {
+      localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
+      setHistorySaved(true);
+    }
+  }, [paid, daeunList, profile, paidIndices, paidCount]);
+
   // 대운 블록 바뀌면 TTS 초기화
   useEffect(() => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
@@ -631,9 +660,9 @@ function DaewoonInner() {
                         )}
                       </div>
 
-                      {/* 나가면 사라진다 경고 */}
+                      {/* 보관함 자동 저장 안내 */}
                       <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "8px 12px", marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.55)", lineHeight: 1.6, fontWeight: 600 }}>
-                        ⚠️ 이 화면을 벗어나면 결과가 사라져요. 지금 바로 보관함에 저장하거나 공유해두세요.
+                        📚 결과가 보관함에 자동 저장됐어요. 보관함에서 언제든 다시 볼 수 있어요.
                       </div>
 
                       {/* 액션 버튼 3개 */}
