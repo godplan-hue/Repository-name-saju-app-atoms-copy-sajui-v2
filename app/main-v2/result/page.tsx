@@ -712,7 +712,7 @@ function V2ResultInner() {
             merged.width = Math.round(Math.max(summary.width, c.width) * scale);
             merged.height = Math.round(rawHeight * scale);
             const ctx = merged.getContext("2d")!;
-            ctx.fillStyle = "#fdf6e3";
+            ctx.fillStyle = tier === "package" ? "#fdf6e3" : "#fdf2f8";
             ctx.fillRect(0, 0, merged.width, merged.height);
             ctx.drawImage(summary, 0, 0, summary.width * scale, summary.height * scale);
             ctx.drawImage(c, 0, (summary.height + 16) * scale, c.width * scale, c.height * scale);
@@ -1257,8 +1257,8 @@ function V2ResultInner() {
             ))}
           </div>
 
-          {/* ── 무료/990원: 사주팔자 맛보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
-          {(tier === "free" || tier === "select") && profile?.birthYear && (() => {
+          {/* ── 무료: 사주팔자 맛보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
+          {tier === "free" && profile?.birthYear && (() => {
             const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
             const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
             const ohEmoji: Record<string,string> = { "목":"🌳","화":"🔥","토":"⛰️","금":"⚪","수":"💧" };
@@ -1284,8 +1284,8 @@ function V2ResultInner() {
             );
           })()}
 
-          {/* ── 패키지 전용: 사주팔자 한눈에 보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
-          {tier === "package" && profile?.birthYear && (() => {
+          {/* ── 유료(select/package): 사주팔자 한눈에 보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
+          {tier !== "free" && profile?.birthYear && (() => {
             const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
             const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
             const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
@@ -1314,8 +1314,8 @@ function V2ResultInner() {
               "내일은 한 주를 준비하는 마음가짐이 중요한 흐름입니다.",
             ];
             return (
-              <div style={{ margin: "0 12px 12px", background: "#fdf6e3", borderRadius: 16, overflow: "hidden", border: "1.5px solid rgba(217,180,80,0.45)" }}>
-                <div style={{ background: G_PREMIUM, color: "white", padding: "10px 16px", fontSize: 13, fontWeight: 900 }}>🪬 {profile?.name}님의 사주팔자 한눈에 보기</div>
+              <div style={{ margin: "0 12px 12px", background: tier === "package" ? "#fdf6e3" : "#fdf2f8", borderRadius: 16, overflow: "hidden", border: tier === "package" ? "1.5px solid rgba(217,180,80,0.45)" : "1.5px solid rgba(236,72,153,0.2)" }}>
+                <div style={{ background: tier === "package" ? G_PREMIUM : G, color: "white", padding: "10px 16px", fontSize: 13, fontWeight: 900 }}>🪬 {profile?.name}님의 사주팔자 한눈에 보기</div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, padding: "14px 16px" }}>
                   <div style={{ background: BG, borderRadius: 12, padding: "10px 6px", textAlign: "center" }}>
                     <div style={{ fontSize: 18, marginBottom: 3 }}>🐉</div>
