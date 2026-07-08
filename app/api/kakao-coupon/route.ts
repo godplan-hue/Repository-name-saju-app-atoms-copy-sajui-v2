@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     // 중복 발급 방지 — 전화번호를 키로 직접 읽기 (쿼리보다 안전)
     const existingSnap = await db.ref(`kakao_share_coupons/${cleanPhone}`).once("value");
     if (existingSnap.exists()) {
-      return NextResponse.json({ code: existingSnap.val().code });
+      return NextResponse.json({ error: "이미 발급된 번호입니다. 번호당 1회만 발급 가능해요." }, { status: 400 });
     }
 
     // 고유 코드 생성
@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
       note: "카카오공유무료쿠폰",
       active: true,
       usageCount: 0,
+      maxUses: 1,
     });
 
     // 전화번호를 키로 저장 — 같은 번호로 중복 발급 원천 차단
