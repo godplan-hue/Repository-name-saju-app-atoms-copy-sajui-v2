@@ -174,9 +174,8 @@ export default function TaegilPage() {
     const shareUrl = "https://jeomun.com/main-v2/taegil";
     const title = `📅 ${profile?.name}님의 ${eventType} 택일 분석`;
     const desc = `좋은 날: ${dateStr} | 점운 AI 사주`;
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const kakao = (window as any).Kakao;
-    if (isMobile && kakao && kakao.isInitialized()) {
+    if (kakao && kakao.isInitialized()) {
       kakao.Share.sendDefault({
         objectType: "feed",
         content: {
@@ -189,7 +188,7 @@ export default function TaegilPage() {
           { title: "나도 택일 받기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
         ],
       });
-    } else if (isMobile && navigator.share) {
+    } else if (navigator.share) {
       navigator.share({ title, text: desc, url: shareUrl });
     } else {
       navigator.clipboard.writeText(shareUrl).then(() => alert("링크가 복사됐어요! 카카오톡에 붙여넣기 하세요."));
