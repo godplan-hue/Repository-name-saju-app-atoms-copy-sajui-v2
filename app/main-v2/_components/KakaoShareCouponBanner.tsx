@@ -114,9 +114,12 @@ export default function KakaoShareCouponBanner() {
 
             {step === "share" && (
               <>
-                <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 16px", lineHeight: 1.6 }}>
+                <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 10px", lineHeight: 1.6 }}>
                   먼저 친구한테 공유하면 → 쿠폰 코드 발급해드려요!<br />
                   <strong>990원 사주 1개 무료</strong>로 결제 가능해요
+                </p>
+                <p style={{ fontSize: 11, margin: "0 0 12px", lineHeight: 1.5 }}>
+                  <span style={{ display: "inline-block", background: "#fdf2f8", border: "1px solid #f9a8d4", borderRadius: 8, padding: "3px 10px", color: "#be185d", fontWeight: 800 }}>🎁 친구 결제 시 990원 쿠폰 한 번 더 지급!</span>
                 </p>
                 <button
                   onClick={shareKakao}
