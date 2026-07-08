@@ -93,22 +93,20 @@ function DaewoonInner() {
       } catch { return []; }
     })();
     if (urlPaid) {
-      const expiry = Date.now() + 24 * 60 * 60 * 1000;
-      const existing: number[] = (() => { try { return JSON.parse(localStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
+      // 결제 성공 시 sessionStorage에 저장 (탭 닫으면 자동 초기화 → 재결제 필요)
+      const existing: number[] = (() => { try { return JSON.parse(sessionStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
       const merged = Array.from(new Set([...existing, ...urlIndices]));
-      const existingCount = parseInt(localStorage.getItem("daeunPaidCount") || "0");
-      localStorage.setItem("daeunPaid", "1");
-      localStorage.setItem("daeunPaidExpiry", String(expiry));
-      localStorage.setItem("daeunPaidCount", String(existingCount + urlCount));
-      localStorage.setItem("daeunPaidIndices", JSON.stringify(merged));
+      const existingCount = parseInt(sessionStorage.getItem("daeunPaidCount") || "0");
+      sessionStorage.setItem("daeunPaid", "1");
+      sessionStorage.setItem("daeunPaidCount", String(existingCount + urlCount));
+      sessionStorage.setItem("daeunPaidIndices", JSON.stringify(merged));
       // URL 파라미터 제거 (새로고침 시 중복 저장 방지)
       router.replace("/main-v2/daewoon");
     }
-    // localStorage에서 결제 상태 읽기
-    const storedExpiry = parseInt(localStorage.getItem("daeunPaidExpiry") || "0");
-    const isPaid = localStorage.getItem("daeunPaid") === "1" && storedExpiry > Date.now();
-    const paidCountVal = parseInt(localStorage.getItem("daeunPaidCount") || "0");
-    const paidIndicesVal: number[] = (() => { try { return JSON.parse(localStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
+    // sessionStorage에서 결제 상태 읽기 (탭 닫으면 사라짐)
+    const isPaid = sessionStorage.getItem("daeunPaid") === "1";
+    const paidCountVal = parseInt(sessionStorage.getItem("daeunPaidCount") || "0");
+    const paidIndicesVal: number[] = (() => { try { return JSON.parse(sessionStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
     setPaid(isPaid);
     setPaidCount(paidCountVal);
     if (paidIndicesVal.length > 0) setPaidIndices(paidIndicesVal);
