@@ -566,14 +566,19 @@ export default function HistoryDetail() {
               <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
               <h1 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 4px" }}>{item.name}님의 {item.category?.replace(/\S+\s/, "")}</h1>
               <div style={{ fontSize: 12, opacity: 0.75 }}>{fmtDate(item.date)}</div>
-              <div style={{ display: "flex", justifyContent: "center", margin: "10px 0 2px" }}>
-                <ScoreCircle score={item.scores?.total ?? 0} size={120} dark={item.planType === "package"} />
-              </div>
-              <div style={{ fontSize: 11, opacity: 0.8 }}>총운 점수</div>
+              {item.planType !== "daeun" && (
+                <>
+                  <div style={{ display: "flex", justifyContent: "center", margin: "10px 0 2px" }}>
+                    <ScoreCircle score={item.scores?.total ?? 0} size={120} dark={item.planType === "package"} />
+                  </div>
+                  <div style={{ fontSize: 11, opacity: 0.8 }}>총운 점수</div>
+                </>
+              )}
             </div>
           </div>
 
           {/* 분야별 점수 */}
+          {item.planType !== "daeun" && (
           <div style={{ padding: "20px 18px 16px" }}>
             <div style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", marginBottom: 14 }}>📊 분야별 운세 점수</div>
             {bars.map(b => (
@@ -581,6 +586,7 @@ export default function HistoryDetail() {
                 score={item.scores?.[b.key] ?? 0} color={b.color} />
             ))}
           </div>
+          )}
 
           {/* 사주팔자 카드 + 오늘의 한마디 */}
           {item.birthYear && (() => {

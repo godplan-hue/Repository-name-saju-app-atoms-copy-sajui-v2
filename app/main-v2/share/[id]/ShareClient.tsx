@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
+import KakaoShareCouponBanner from "../../_components/KakaoShareCouponBanner";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -346,22 +347,32 @@ export default function ShareClient({ id }: { id: string }) {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* 결제 후 오너 전용 버튼 — 상단 */}
+        {/* 이용 안내 버튼 */}
         {isOwner && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
-            <button onClick={handleKakaoShare} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
-              📤 공유하기
-            </button>
-            <button onClick={() => router.push("/main-v2/payment")} style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-              💳 유료 운세 결제하기
-            </button>
-            <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
-              🔮 다시 분석
-            </button>
-            <button onClick={() => { saveToHistory(); setHistorySaved(true); }} style={{ width: "100%", padding: "13px 0", background: historySaved ? "#dcfce7" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#15803d" : "#4338ca", border: `1.5px solid ${historySaved ? "#22c55e" : "rgba(99,102,241,0.35)"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
-              {historySaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
-            </button>
+          <button
+            onClick={() => setTipModal({ text: "📌 꼭 읽어보세요\n\n📤 공유하기 — 카카오톡으로 결과 공유\n💳 유료 운세 결제하기 — 추가 운세 구매\n🔮 다시 분석 — 새 사주 분석 시작\n📥 보관함 저장 — 결과 저장 (언제든 다시 보기)" })}
+            style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 14, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
+          >
+            📌 꼭 읽어보세요 — 저장·공유 버튼 안내
+          </button>
+        )}
+        {isOwner && !entry.businessName && <KakaoShareCouponBanner />}
+        {isOwner && !entry.businessName && (
+          <div onClick={() => router.push("/share-coupon")} style={{ margin: "0 0 8px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}>
+            <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 18 }}>📸</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>소개·추천 글 올리면 쿠폰 5장 + 꿈해몽 무료!</span>
+            </div>
+            <div style={{ background: "#fef2f2", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 12, color: "#dc2626", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>500자 이상 + 사진 2장 올리면<br /><strong>쿠폰 5장</strong> + 꿈해몽 24시간 무료 🎁</p>
+              <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>받기 →</span>
+            </div>
           </div>
+        )}
+        {isOwner && entry.name && entry.birthYear && (
+          <button onClick={() => router.push("/main-v2/qa-list")} style={{ width: "100%", padding: "14px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+            💬 사주 Q&A — 무엇이든 물어보세요
+          </button>
         )}
 
         {/* 분석 내용 캡처 영역 — 이미지 저장 시 이 범위만 캡처 */}
@@ -550,6 +561,42 @@ export default function ShareClient({ id }: { id: string }) {
               {historySaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
             </button>
           </div>
+        )}
+
+        {/* 오너 전용 하단 배너 */}
+        {isOwner && !entry.businessName && (
+          <>
+            <div style={{ margin: "16px 0 8px", borderRadius: 16, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "16px 20px", textAlign: "center", cursor: "pointer" }} onClick={() => router.push("/main-v2")}>
+              <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "white" }}>🔮 AI 사주 990원부터 시작</p>
+              <p style={{ margin: "4px 0 0", fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700 }}>지금 바로 내 운세 확인하기 →</p>
+            </div>
+            <button onClick={() => router.push("/main-v2")} style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>🏠 홈으로</button>
+            <div onClick={() => router.push("/haemong")} style={{ margin: "10px 0", borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden" }}>
+              <div style={{ background: "#dc2626", padding: "8px 16px" }}><span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🎁 사주 결제 혜택</span></div>
+              <div style={{ padding: "14px 16px" }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px" }}>🌙 꿈해몽 전체 <span style={{ background: "#dc2626", color: "#fff", borderRadius: 6, padding: "2px 8px", fontSize: 13 }}>무료</span> 이용 가능</p>
+                <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 12px", lineHeight: 1.7 }}>오늘 꾼 꿈이 있으신가요?<br />사주 결제하면 꿈해몽 전체 해석 무료로 볼 수 있어요</p>
+                <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "11px 0", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>무료 꿈해몽 보러가기 →</div>
+              </div>
+            </div>
+            {entry.name && entry.birthYear && (
+              <button onClick={() => router.push("/main-v2/qa-list")} style={{ width: "100%", marginBottom: 10, padding: "14px 20px", background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+                💬 사주 Q&A 상담하기
+              </button>
+            )}
+            <div onClick={() => router.push("/main-v2/payment")} style={{ margin: "14px 0 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", border: "1.5px solid #c4b5fd" }}>
+              <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 18 }}>✨</span><span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>신규! 대운·택일 2,900원</span>
+              </div>
+              <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}><strong>대운(大運)</strong> — 10년 단위<br />운명의 큰 흐름 분석<br /><strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기</p>
+                <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
+              </div>
+            </div>
+            <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, width: "100%", marginTop: 14, padding: "13px 16px", background: "#FEE500", color: "#1a1a1a", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textDecoration: "none" }}>
+              <span style={{ fontSize: 18 }}>💬</span> 궁금한 점 카카오톡으로 문의하기
+            </a>
+          </>
         )}
 
         {/* 비오너: 나도 무료 사주 받아보기 버튼만 */}
