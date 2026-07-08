@@ -83,7 +83,14 @@ export default function ShareClient({ id }: { id: string }) {
   const [saving, setSaving] = useState(false);
   const [historySaved, setHistorySaved] = useState(false);
   const [isMob, setIsMob] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   useEffect(() => { setIsMob(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)); }, []);
+  useEffect(() => {
+    if (sessionStorage.getItem("share_just_paid") === "1") {
+      sessionStorage.removeItem("share_just_paid");
+      setIsOwner(true);
+    }
+  }, []);
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [namingQueue, setNamingQueue] = useState<string[]>([]);
 
@@ -492,6 +499,25 @@ export default function ShareClient({ id }: { id: string }) {
         })}
 
         </div>{/* /contentRef */}
+
+        {/* 결제 후 오너 전용 버튼 */}
+        {isOwner && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 12 }}>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={() => router.push("/main-v2/payment")} style={{ flex: 1, padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 14px rgba(236,72,153,0.3)" }}>
+                💳 유료 운세 결제하기
+              </button>
+              <button onClick={() => router.push("/main-v2")} style={{ flex: 1, padding: "13px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
+                🔮 다시 분석
+              </button>
+            </div>
+            <button
+              onClick={() => { saveToHistory(); setHistorySaved(true); }}
+              style={{ width: "100%", padding: "13px 0", background: historySaved ? "#dcfce7" : "white", color: historySaved ? "#15803d" : "#374151", border: `1.5px solid ${historySaved ? "#22c55e" : "#d1d5db"}`, borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+              {historySaved ? "✅ 보관함에 저장됨" : "📥 보관함에 저장하기"}
+            </button>
+          </div>
+        )}
 
         {/* 공유 */}
         <button onClick={() => {

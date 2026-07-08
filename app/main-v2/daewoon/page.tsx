@@ -421,13 +421,11 @@ function DaewoonInner() {
           { title: "나도 대운 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
         ],
       });
-      setTimeout(() => router.push(shareUrl), 300);
     } else if (navigator.share) {
       navigator.share({ title, text: `${desc} | 점운 AI사주`, url: shareUrl }).catch(() => {});
-      router.push(shareUrl);
     } else {
       try { await navigator.clipboard.writeText(shareUrl); } catch {}
-      router.push(shareUrl);
+      alert("공유 링크가 복사됐어요!\n" + shareUrl);
     }
   };
 

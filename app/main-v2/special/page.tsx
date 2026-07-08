@@ -508,6 +508,7 @@ function SpecialPageContent() {
         if (data.id) {
           sessionStorage.removeItem("specialPaid");
           sessionStorage.removeItem("specialType");
+          sessionStorage.setItem("share_just_paid", "1");
           router.replace(`/main-v2/share/${data.id}`);
         } else {
           router.replace("/main-v2");
