@@ -152,8 +152,7 @@ function DaewoonInner() {
   const handlePay = () => {
     const indices = Array.from(purchaseSet);
     if (indices.length === 0) return;
-    // 이미 구매한 대운이 있으면 추가분만 ₩1,000씩 (2개=₩3,900 번들 가격 일관성 유지)
-    const price = paidCount > 0 ? indices.length * 1000 : 2900 + (indices.length - 1) * 1000;
+    const price = 2900 + (indices.length - 1) * 1000;
     // 결제 전 단계: 가격 확인 페이지로 이동 (payment-complete는 결제 후 확인용)
     const params = new URLSearchParams({
       daeun: "1",
@@ -657,9 +656,9 @@ function DaewoonInner() {
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                     <div>
                       <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 2px" }}>🌌 선택된 대운 {purchaseSet.size}개</p>
-                      <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, margin: 0 }}>{paidCount > 0 ? `추가 ${purchaseSet.size}개 × ₩1,000` : `기본 ₩2,900${purchaseSet.size > 1 ? ` + 추가 ${purchaseSet.size - 1}개 × ₩1,000` : ""}`}</p>
+                      <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, margin: 0 }}>{`기본 ₩2,900${purchaseSet.size > 1 ? ` + 추가 ${purchaseSet.size - 1}개 × ₩1,000` : ""}`}</p>
                     </div>
-                    <p style={{ color: "#fbbf24", fontSize: 22, fontWeight: 900, margin: 0 }}>₩{(paidCount > 0 ? purchaseSet.size * 1000 : 2900 + (purchaseSet.size - 1) * 1000).toLocaleString()}</p>
+                    <p style={{ color: "#fbbf24", fontSize: 22, fontWeight: 900, margin: 0 }}>₩{(2900 + (purchaseSet.size - 1) * 1000).toLocaleString()}</p>
                   </div>
                   <button onClick={handlePay}
                     style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a0f2e", border: "none", borderRadius: 12, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 20px rgba(251,191,36,0.35)" }}>

@@ -60,6 +60,10 @@ export default function TaegilPage() {
 
     if (urlPaid || sessPaid || localPaid) {
       sessionStorage.removeItem("taegilPaid");
+      // 실제 결제 성공(urlPaid)일 때만 localStorage에 24시간 만료 저장
+      if (urlPaid) {
+        localStorage.setItem("taegilPaidExpiry", String(Date.now() + 24 * 60 * 60 * 1000));
+      }
       setIsPaid(true);
       // sessionStorage 우선, 없으면 localStorage에서 복구
       const et = (sessionStorage.getItem("taegilEventType") || localStorage.getItem("taegilEventType")) as EventType;
@@ -128,10 +132,9 @@ export default function TaegilPage() {
     if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
     sessionStorage.setItem("taegilEventType", eventType);
     sessionStorage.setItem("taegilDates", JSON.stringify(selectedDates));
-    // localStorage에도 저장 — 공유/새로고침 후에도 24시간 복구 가능
+    // localStorage에 목적/날짜만 저장 (결제 완료 여부는 결제 성공 후에만 저장)
     localStorage.setItem("taegilEventType", eventType);
     localStorage.setItem("taegilDates", JSON.stringify(selectedDates));
-    localStorage.setItem("taegilPaidExpiry", String(Date.now() + 24 * 60 * 60 * 1000));
     const next = encodeURIComponent(`/main-v2/taegil`);
     router.push(`/main-v2/pay?amount=${taegilPrice}&taegil=1&next=${next}`);
   };
