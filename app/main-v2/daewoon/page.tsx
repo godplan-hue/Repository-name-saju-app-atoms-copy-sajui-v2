@@ -58,11 +58,14 @@ function DaewoonInner() {
     wakeLockRef.current = null;
   };
 
-  // 페이지 벗어날 때 TTS 정지
+  // 페이지 벗어날 때 TTS 정지 + 결제 상태 초기화 (재방문 시 재결제 필요)
   useEffect(() => {
     return () => {
       if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
       releaseWakeLock();
+      sessionStorage.removeItem("daeunPaid");
+      sessionStorage.removeItem("daeunPaidCount");
+      sessionStorage.removeItem("daeunPaidIndices");
     };
   }, []);
 
@@ -630,7 +633,7 @@ function DaewoonInner() {
 
                       {/* 나가면 사라진다 경고 */}
                       <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "8px 12px", marginTop: 10, fontSize: 11, color: "rgba(255,255,255,0.55)", lineHeight: 1.6, fontWeight: 600 }}>
-                        ⚠️ 이 결과는 현재 탭에서만 유지돼요. 다른 페이지로 이동하거나 탭을 닫으면 사라지니, 보관함에 저장하거나 공유해두세요.
+                        ⚠️ 이 화면을 벗어나면 결과가 사라져요. 지금 바로 보관함에 저장하거나 공유해두세요.
                       </div>
 
                       {/* 액션 버튼 3개 */}

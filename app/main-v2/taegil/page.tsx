@@ -403,8 +403,7 @@ export default function TaegilPage() {
 
             {isPaid && (
               <div style={{ background:"#fffbeb", border:"1px solid #fde68a", borderRadius:10, padding:"10px 14px", marginBottom:12, fontSize:12, color:"#92400e", fontWeight:700, lineHeight:1.7 }}>
-                ⚠️ 이 결과는 현재 화면에서만 유지돼요.<br/>
-                공유하거나 다른 페이지로 이동하면 결과가 사라지니, 지금 기록해두세요.
+                ⚠️ 이 화면을 벗어나면 결과가 사라져요. 지금 바로 공유하거나 캡처해두세요.
               </div>
             )}
 
