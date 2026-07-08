@@ -55,20 +55,15 @@ export default function TaegilPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const urlPaid = urlParams.get("taegilPaid") === "1";
     const sessPaid = sessionStorage.getItem("taegilPaid") === "1";
-    // localStorage 24시간 결제 상태 확인 (공유/새로고침 후 복구용)
-    const localExpiry = parseInt(localStorage.getItem("taegilPaidExpiry") || "0");
-    const localPaid = localExpiry > Date.now();
 
-    if (urlPaid || sessPaid || localPaid) {
-      sessionStorage.removeItem("taegilPaid");
-      // 실제 결제 성공(urlPaid)일 때만 localStorage에 24시간 만료 저장
+    if (urlPaid || sessPaid) {
+      // sessionStorage에만 저장 (탭 닫거나 나가면 초기화 → 재결제 필요)
       if (urlPaid) {
-        localStorage.setItem("taegilPaidExpiry", String(Date.now() + 24 * 60 * 60 * 1000));
+        sessionStorage.setItem("taegilPaid", "1");
       }
       setIsPaid(true);
-      // sessionStorage 우선, 없으면 localStorage에서 복구
-      const et = (sessionStorage.getItem("taegilEventType") || localStorage.getItem("taegilEventType")) as EventType;
-      const dtStr = sessionStorage.getItem("taegilDates") || localStorage.getItem("taegilDates");
+      const et = sessionStorage.getItem("taegilEventType") as EventType;
+      const dtStr = sessionStorage.getItem("taegilDates");
       const dt = JSON.parse(dtStr || "[]") as string[];
       if (et) setEventType(et);
       if (dt.length > 0) setSelectedDates(dt);
@@ -145,9 +140,6 @@ export default function TaegilPage() {
     if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
     sessionStorage.setItem("taegilEventType", eventType);
     sessionStorage.setItem("taegilDates", JSON.stringify(selectedDates));
-    // localStorage에 목적/날짜만 저장 (결제 완료 여부는 결제 성공 후에만 저장)
-    localStorage.setItem("taegilEventType", eventType);
-    localStorage.setItem("taegilDates", JSON.stringify(selectedDates));
     const next = encodeURIComponent(`/main-v2/taegil`);
     router.push(`/main-v2/pay?amount=${taegilPrice}&taegil=1&next=${next}`);
   };
@@ -367,9 +359,9 @@ export default function TaegilPage() {
           </div>
         )}
         <button onClick={() => {
-          localStorage.removeItem("taegilPaidExpiry");
-          localStorage.removeItem("taegilEventType");
-          localStorage.removeItem("taegilDates");
+          sessionStorage.removeItem("taegilPaid");
+          sessionStorage.removeItem("taegilEventType");
+          sessionStorage.removeItem("taegilDates");
           setIsPaid(false);
           setEventType("");
           setSelectedDates([]);
@@ -400,8 +392,8 @@ export default function TaegilPage() {
             </div>
 
             {isPaid && (
-              <div style={{ background:"#fffbeb", border:"1px solid #fde68a", borderRadius:10, padding:"10px 14px", marginBottom:12, fontSize:12, color:"#92400e", fontWeight:700, lineHeight:1.7 }}>
-                ⚠️ 이 화면을 벗어나면 결과가 사라져요. 지금 바로 공유하거나 캡처해두세요.
+              <div style={{ background:"rgba(239,68,68,0.08)", border:"1px solid rgba(239,68,68,0.4)", borderRadius:10, padding:"10px 14px", marginBottom:12, fontSize:12, color:"#ef4444", fontWeight:700, lineHeight:1.8 }}>
+                ⚠️ 이 화면을 벗어나면 결과가 사라져요.<br />지금 바로 공유하거나 캡처해두세요.
               </div>
             )}
 

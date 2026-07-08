@@ -219,7 +219,9 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
   try {
     const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
     const date = r.savedAt ?? new Date().toISOString();
-    const cats = paidCats.length > 0 ? paidCats : Object.keys(analyses);
+    const allCats = paidCats.length > 0 ? paidCats : Object.keys(analyses);
+    // 무료 오늘의 운세는 보관함에 저장하지 않음
+    const cats = allCats.filter(c => !c.includes("오늘의 운세"));
     const name = r.profile?.name ?? "";
     cats.forEach((cat, i) => {
       const id = `${r.histId}-${i}`;
