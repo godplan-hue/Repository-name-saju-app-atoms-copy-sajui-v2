@@ -745,20 +745,24 @@ export default function HistoryDetail() {
         </div>
 
         {/* ── 대운·택일 배너 ── */}
-        <div
-          onClick={() => router.push("/main-v2/payment")}
-          style={{ margin: "14px 0 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
-        >
-          <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 18 }}>✨</span>
-            <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>신규! 대운·택일 2,900원</span>
+        <div style={{ margin: "14px 0 0", display: "flex", gap: 8 }}>
+          <div onClick={() => router.push("/main-v2/daewoon")} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}>
+            <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🌌 대운(大運)</span>
+            </div>
+            <div style={{ background: "#f5f3ff", padding: "10px 12px", textAlign: "center" }}>
+              <p style={{ fontSize: 11, color: "#5b21b6", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>10년 단위<br />운명의 큰 흐름 분析</p>
+              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "4px 12px", borderRadius: 20 }}>₩2,900 →</span>
+            </div>
           </div>
-          <div style={{ background: "#f5f3ff", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <p style={{ fontSize: 12, color: "#5b21b6", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-              <strong>대운(大運)</strong> — 10년 단위<br />운명의 큰 흐름 분석<br />
-              <strong>택일(擇日)</strong> — 내 사주에 맞는 좋은 날 찾기
-            </p>
-            <span style={{ fontSize: 13, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>보기 →</span>
+          <div onClick={() => router.push("/main-v2/taegil")} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}>
+            <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>📅 택일(擇日)</span>
+            </div>
+            <div style={{ background: "#f0fdf4", padding: "10px 12px", textAlign: "center" }}>
+              <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>내 사주에 맞는<br />좋은 날 찾기</p>
+              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#22c55e", padding: "4px 12px", borderRadius: 20 }}>₩2,900 →</span>
+            </div>
           </div>
         </div>
 
