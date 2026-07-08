@@ -237,23 +237,21 @@ export default function TaegilPage() {
 
   const canAnalyze = !!eventType && selectedDates.length > 0 && !loading;
 
-  if (!profile) return null;
-
   return (
     <main style={{ minHeight:"100vh", background:"#f0fdf4", fontFamily:"'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
-      {/* 헤더 */}
+      {/* 헤더 — 항상 즉시 렌더링 (LCP 개선) */}
       <div style={{ background:"linear-gradient(135deg,#22c55e,#15803d)", padding:"16px 20px 24px", color:"white" }}>
         <button onClick={() => router.push("/main-v2")} style={{ background:"none", border:"none", color:"rgba(255,255,255,0.8)", fontSize:14, cursor:"pointer", padding:0, marginBottom:12 }}>← 홈으로</button>
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>
           <div style={{ width:44, height:44, borderRadius:"50%", background:"rgba(255,255,255,0.2)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>📅</div>
           <div>
             <h1 style={{ margin:0, fontSize:20, fontWeight:900 }}>택일(擇日)</h1>
-            <p style={{ margin:0, fontSize:13, opacity:0.85 }}>{profile.name}님의 좋은 날 분석</p>
+            <p style={{ margin:0, fontSize:13, opacity:0.85 }}>{profile ? `${profile.name}님의 좋은 날 분석` : "좋은 날 분석"}</p>
           </div>
         </div>
       </div>
 
-      <div style={{ maxWidth:480, margin:"0 auto", padding:"20px 16px 60px" }}>
+      {profile && <div style={{ maxWidth:480, margin:"0 auto", padding:"20px 16px 60px" }}>
 
         {/* 기능 안내 */}
         {!isPaid && (
@@ -450,7 +448,7 @@ export default function TaegilPage() {
             )}
           </div>
         )}
-      </div>
+      </div>}
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"
         onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
     </main>
