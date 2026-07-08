@@ -517,7 +517,7 @@ function DaewoonInner() {
               {/* 타임라인 */}
               <div style={{ marginBottom: 16 }}>
                 <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 10, padding: "10px 14px", marginBottom: 12, fontSize: 12, color: "rgba(255,255,255,0.75)", lineHeight: 1.8 }}>
-                  💡 아래 목록에서 연도 칸을 탭(터치)하면<br />해당 시기 상세 해설이 아래에 나타나요.<br />여러 개 구매 시 한 개씩 다 확인하세요.
+                  결과지 확인은 아래 목록에서 연도 칸을 탭(터치)하면<br />해당 시기 상세 해설이 아래에 나타나요.<br />여러 개 구매 시 한 개씩 다 확인하세요.
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {daeunList.map((b, i) => {
