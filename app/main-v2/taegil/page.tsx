@@ -78,14 +78,12 @@ export default function TaegilPage() {
   }, [isPaid, eventType, selectedDates, profile]);
 
   const toggleDate = (dateStr: string) => {
-    if (isPaid) return;
     setSelectedDates(prev =>
       prev.includes(dateStr) ? prev.filter(d => d !== dateStr) : [...prev, dateStr]
     );
   };
 
   const selectAllMonth = () => {
-    if (isPaid) return;
     const daysInMonth = new Date(calYear, calMonth, 0).getDate();
     const all: string[] = [];
     for (let d = 1; d <= daysInMonth; d++) {
@@ -347,27 +345,15 @@ export default function TaegilPage() {
 
         {/* 분석 버튼 */}
         {isPaid && (
-          <div style={{ background:"#dcfce7", border:"2px solid #22c55e", borderRadius:12, padding:"10px 16px", marginBottom:12, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-              <span style={{ fontSize:18 }}>✅</span>
-              <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 전체 해설 표시 중</span>
-            </div>
-            <button onClick={() => canAnalyze && fetchTaegil(true)}
-              style={{ fontSize:12, fontWeight:700, color:"#15803d", background:"white", border:"1px solid #22c55e", borderRadius:8, padding:"6px 12px", cursor: canAnalyze ? "pointer" : "not-allowed" }}>
-              🔄 다시 분석하기
-            </button>
+          <div style={{ background:"#dcfce7", border:"2px solid #22c55e", borderRadius:12, padding:"10px 16px", marginBottom:12, display:"flex", alignItems:"center", gap:8 }}>
+            <span style={{ fontSize:18 }}>✅</span>
+            <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 날짜를 바꿔서 아래 버튼으로 다시 분석할 수 있어요</span>
           </div>
         )}
         <button onClick={() => {
           if (isPaid) {
-            sessionStorage.removeItem("taegilPaid");
-            sessionStorage.removeItem("taegilEventType");
-            sessionStorage.removeItem("taegilDates");
-            setIsPaid(false);
-            setEventType("");
-            setSelectedDates([]);
-            setResults([]);
-            autoFetchedRef.current = false;
+            if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
+            fetchTaegil(true);
           } else {
             if (!eventType) { alert("목적을 먼저 선택해주세요!"); return; }
             if (selectedDates.length === 0) { alert("날짜를 선택해주세요!"); return; }
@@ -377,7 +363,7 @@ export default function TaegilPage() {
           style={{ width:"100%", padding:"15px 0", marginBottom:16, border:"none", borderRadius:50, fontWeight:900, fontSize:15, cursor: loading ? "not-allowed" : "pointer",
             background: loading ? "#9ca3af" : "linear-gradient(135deg,#22c55e,#15803d)",
             color:"white", boxShadow: "0 6px 20px rgba(34,197,94,0.35)" }}>
-          {loading ? "⏳ 분석 중..." : isPaid ? "🔄 새로 분석하기" : "📅 날짜 분석 시작하기"}
+          {loading ? "⏳ 분석 중..." : isPaid ? "🔄 날짜 바꿔서 다시 분석하기" : "📅 날짜 분석 시작하기"}
         </button>
 
         {/* 결과 */}
