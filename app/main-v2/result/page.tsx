@@ -1618,73 +1618,48 @@ function V2ResultInner() {
         {/* ── 저장·공유 버튼 영역 ── */}
         <div id="action-buttons" />
 
-        {/* ── 990원: 공유하기 + 유료 결제하기 + 다시 분석 + 보관함 저장 ── */}
+        {/* ── 990원: 공유하기 + 유료 운세 + 다시 분析 + 보관함 저장 (2열 그리드) ── */}
         {tier === "select" && (
-          <>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => setShowShareModal(true)}
-                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
-                📤 공유하기
-              </button>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => router.push("/main-v2/payment")}
-                style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-                💳 유료 운세 결제하기
-              </button>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
-                style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
-                🔮 다시 분석
-              </button>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => {
-                saveToHistory(result, paid, allAnalyses, paidCats, planType);
-                setHistSaved(true); setTimeout(() => setHistSaved(false), 2500);
-              }}
-                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
-                {histSaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
-              </button>
-            </div>
-          </>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+            <button onClick={() => setShowShareModal(true)}
+              style={{ padding: "12px 4px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
+              📤 공유하기
+            </button>
+            <button onClick={() => router.push("/main-v2/payment")}
+              style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+              💳 유료 운세
+            </button>
+            <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
+              style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
+              🔮 다시 분析
+            </button>
+            <button onClick={() => { saveToHistory(result, paid, allAnalyses, paidCats, planType); setHistSaved(true); setTimeout(() => setHistSaved(false), 2500); }}
+              style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
+              {histSaved ? "✅ 저장됨!" : "📥 보관함 저장"}
+            </button>
+          </div>
         )}
 
         {/* ── 패키지(9900~29900): 공유하기 + 유료 결제하기 + 다시 분석 + 보관함 저장 ── */}
         {tier === "package" && (
-          <>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => setShowShareModal(true)}
-                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
-                📤 공유하기
-              </button>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => router.push("/main-v2/payment")}
-                style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-                💳 유료 운세 결제하기
-              </button>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
-                style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
-                🔮 다시 분석
-              </button>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              <button onClick={() => {
-                const pkgCats2 = PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"];
-                const la: Record<string, string> = {};
-                pkgCats2.forEach(c => { la[`${c.icon} ${c.label}`] = allAnalyses[c.apiKey] ?? ""; });
-                saveToHistory(result, paid, la, pkgCats2.map(c => `${c.icon} ${c.label}`), planType);
-                setHistSaved(true); setTimeout(() => setHistSaved(false), 2500);
-              }}
-                style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
-                {histSaved ? "✅ 보관함에 저장됨!" : "📥 보관함 저장"}
-              </button>
-            </div>
-          </>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
+            <button onClick={() => setShowShareModal(true)}
+              style={{ padding: "12px 4px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
+              📤 공유하기
+            </button>
+            <button onClick={() => router.push("/main-v2/payment")}
+              style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+              💳 유료 운세
+            </button>
+            <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
+              style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
+              🔮 다시 분析
+            </button>
+            <button onClick={() => { const pkgCats2 = PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분析"]; const la: Record<string, string> = {}; pkgCats2.forEach(c => { la[`${c.icon} ${c.label}`] = allAnalyses[c.apiKey] ?? ""; }); saveToHistory(result, paid, la, pkgCats2.map(c => `${c.icon} ${c.label}`), planType); setHistSaved(true); setTimeout(() => setHistSaved(false), 2500); }}
+              style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
+              {histSaved ? "✅ 저장됨!" : "📥 보관함 저장"}
+            </button>
+          </div>
         )}
 
         {!isPartner && (

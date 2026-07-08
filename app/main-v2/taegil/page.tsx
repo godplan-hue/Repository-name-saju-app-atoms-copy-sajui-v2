@@ -370,7 +370,7 @@ export default function TaegilPage() {
           <div style={{ background:"#dcfce7", border:"2px solid #22c55e", borderRadius:12, padding:"10px 16px", marginBottom:12 }}>
             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
               <span style={{ fontSize:18 }}>✅</span>
-              <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 — 날짜를 바꿔서 아래 버튼으로 다시 분석할 수 있어요</span>
+              <span style={{ fontSize:13, fontWeight:900, color:"#15803d" }}>결제 완료 —<br />날짜를 바꿔서 아래 버튼으로 다시 분석할 수 있어요</span>
             </div>
             <button onClick={() => {
               sessionStorage.removeItem("taegilPaid");
