@@ -355,45 +355,6 @@ function PaymentCompleteInner() {
       const _tk = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,"0")}-${String(_d.getDate()).padStart(2,"0")}`;
       localStorage.setItem(`v2_qa_unlock_${p.name}_${p.birthYear}`, _tk);
 
-      // 보관함 저장 — result 페이지를 거치지 않아도 저장되도록 여기서도 저장
-      try {
-        const _paidCatsRaw = sessionStorage.getItem("v2_paid_cats");
-        const _allAnalyses = result.allAnalyses as Record<string, string> | undefined;
-        const _catKeys = _allAnalyses ? Object.keys(_allAnalyses) : [];
-        const _cats: string[] = _paidCatsRaw ? JSON.parse(_paidCatsRaw) : _catKeys;
-        const _phone = (() => { try { return sessionStorage.getItem("v2_payment_phone") || localStorage.getItem("v2_saved_phone") || ""; } catch { return ""; } })();
-        if (_cats.length > 0 && p.name && result.histId) {
-          const _hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
-          _cats.forEach((_cat: string, _i: number) => {
-            const _itemId = `${result.histId}-${_i}`;
-            if (_hist.some((h: any) => h.id === _itemId)) return;
-            const _item = {
-              id: _itemId,
-              date: result.savedAt,
-              name: p.name,
-              category: _cat,
-              scores: result.scores ?? {},
-              analysis: (_allAnalyses ?? {})[_cat] ?? "",
-              isPaid: true,
-              planType: plan,
-              birthYear: p.birthYear ?? "",
-              luckyColor: result.luckyColor ?? "",
-              luckyNumber: result.luckyNumber ?? "",
-              luckyDirection: result.luckyDirection ?? "",
-            };
-            _hist.unshift(_item);
-            if (p.name) {
-              fetch("/api/v2/history", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: p.name, phone: _phone, item: _item }),
-              }).catch(() => {});
-            }
-          });
-          localStorage.setItem("v2_history", JSON.stringify(_hist.slice(0, 50)));
-        }
-      } catch {}
-
       // 일반회원 결제 기록 — 어드민 대시보드에서 확인할 수 있도록 Firebase에 저장
       try {
         const _payPhone = (() => { try { return sessionStorage.getItem("v2_payment_phone") || localStorage.getItem("v2_saved_phone") || ""; } catch { return ""; } })();
