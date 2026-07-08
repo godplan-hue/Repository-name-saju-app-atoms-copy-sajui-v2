@@ -712,7 +712,7 @@ function V2ResultInner() {
             merged.width = Math.round(Math.max(summary.width, c.width) * scale);
             merged.height = Math.round(rawHeight * scale);
             const ctx = merged.getContext("2d")!;
-            ctx.fillStyle = tier === "package" ? "#fdf6e3" : "#fdf2f8";
+            ctx.fillStyle = "#fdf6e3";
             ctx.fillRect(0, 0, merged.width, merged.height);
             ctx.drawImage(summary, 0, 0, summary.width * scale, summary.height * scale);
             ctx.drawImage(c, 0, (summary.height + 16) * scale, c.width * scale, c.height * scale);
@@ -732,7 +732,7 @@ function V2ResultInner() {
         merged.width = canvases[0].width;
         merged.height = totalH;
         const ctx = merged.getContext("2d")!;
-        ctx.fillStyle = tier === "package" ? "#f5f3ff" : "#fdf2f8";
+        ctx.fillStyle = tier !== "free" ? "#f5f3ff" : "#fdf2f8";
         ctx.fillRect(0, 0, merged.width, merged.height);
         let y = 0;
         for (let i = 0; i < canvases.length; i++) {
@@ -766,12 +766,12 @@ function V2ResultInner() {
           merged.width = group[0].width;
           merged.height = gH;
           const ctx = merged.getContext("2d")!;
-          ctx.fillStyle = tier === "package" ? "#f5f3ff" : "#fdf2f8";
+          ctx.fillStyle = tier !== "free" ? "#f5f3ff" : "#fdf2f8";
           ctx.fillRect(0, 0, merged.width, merged.height);
           let y = 0;
           if (needsHeader) {
             const dpr = window.devicePixelRatio;
-            ctx.fillStyle = tier === "package" ? "#2c4a73" : "#ec4899";
+            ctx.fillStyle = tier !== "free" ? "#2c4a73" : "#ec4899";
             ctx.fillRect(0, 0, merged.width, headerH);
             ctx.fillStyle = "#ffffff";
             ctx.font = `900 ${22 * dpr}px 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif`;
@@ -1138,7 +1138,7 @@ function V2ResultInner() {
         </div>
       </div>
     )}
-    <main style={{ minHeight: "100vh", backgroundImage: `url('${tier === "package" ? "https://i.pinimg.com/736x/27/8b/de/278bde2d39a789d716ab0a1718413838.jpg" : "https://i.pinimg.com/1200x/ec/80/41/ec8041c9802a98ff6423c34a1ae44f38.jpg"}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+    <main style={{ minHeight: "100vh", backgroundImage: `url('${tier !== "free" ? "https://i.pinimg.com/736x/27/8b/de/278bde2d39a789d716ab0a1718413838.jpg" : "https://i.pinimg.com/1200x/ec/80/41/ec8041c9802a98ff6423c34a1ae44f38.jpg"}'), ${BG}`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
       <audio ref={audioRef} src="/bgm.mp3" loop preload="auto" />
 
       {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
@@ -1223,7 +1223,7 @@ function V2ResultInner() {
           ref={el => { cardRefs.current[0] = el; }}
           style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(236,72,153,0.1)", marginBottom: 12, overflow: "hidden" }}
         >
-          <div style={{ background: tier === "package" ? "#eab308" : G, color: tier === "package" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
+          <div style={{ background: tier !== "free" ? "#eab308" : G, color: tier !== "free" ? "#3a2a00" : "white", textAlign: "center", borderRadius: "22px 22px 0 0" }}>
             <p style={{ fontSize: 15, fontWeight: 900, margin: 0, padding: "10px 20px 0", letterSpacing: "-0.3px" }}>{brand?.businessName ? `🐱 ${brand.businessName} · AI 사주 분석` : "🐱 점운 · AI 사주 분석"}</p>
             <div style={{ padding: "14px 20px 24px" }}>
               <div style={{ fontSize: 28, marginBottom: 4 }}>🔮</div>
@@ -1257,8 +1257,8 @@ function V2ResultInner() {
             ))}
           </div>
 
-          {/* ── 무료/990원: 사주팔자 맛보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
-          {(tier === "free" || tier === "select") && profile?.birthYear && (() => {
+          {/* ── 무료: 사주팔자 맛보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
+          {tier === "free" && profile?.birthYear && (() => {
             const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
             const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
             const ohEmoji: Record<string,string> = { "목":"🌳","화":"🔥","토":"⛰️","금":"⚪","수":"💧" };
@@ -1284,8 +1284,8 @@ function V2ResultInner() {
             );
           })()}
 
-          {/* ── 패키지 전용: 사주팔자 한눈에 보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
-          {tier === "package" && profile?.birthYear && (() => {
+          {/* ── 유료 전체(select/package): 사주팔자 한눈에 보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
+          {tier !== "free" && profile?.birthYear && (() => {
             const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
             const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
             const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
