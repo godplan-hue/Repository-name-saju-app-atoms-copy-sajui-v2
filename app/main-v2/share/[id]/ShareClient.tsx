@@ -498,15 +498,16 @@ export default function ShareClient({ id }: { id: string }) {
           const url = `${window.location.origin}/main-v2/share-kakao/${id}`;
           const kakao = (window as any).Kakao;
           if (kakao && !kakao.isInitialized()) { try { kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); } catch {} }
-          const kakaoReady = kakao && kakao.isInitialized() && kakao.Share;
+          const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+          const kakaoReady = isMobile && kakao && kakao.isInitialized() && kakao.Share;
           if (kakaoReady && url) {
             try {
               kakao.Share.sendDefault({ objectType: "feed", content: { title: `🔮 ${entry.name}님의 ${entry.categories[0]?.label ?? "사주"} 분석 결과`, description: `총운 ${entry.scores?.total ?? "?"}점! 🔮 AI 사주 점운 jeomun.com`, imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } }] });
             } catch {
-              navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
+              navigator.clipboard.writeText(url).catch(() => {});
             }
           } else {
-            navigator.clipboard.writeText(url).then(() => alert("✅ 링크가 복사되었습니다!"));
+            navigator.clipboard.writeText(url).catch(() => {});
           }
         }} style={{ width: "100%", marginBottom: 10, padding: "13px 0", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
           📤 카카오톡으로 공유
