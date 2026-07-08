@@ -416,11 +416,10 @@ function DaewoonInner() {
         const base = unseongScoreMap[b.unseong] ?? 70;
         const daeunScores = {
           total: base,
-          "오늘의운세": Math.min(99, Math.max(40, base + 3)),
-          "재물운": Math.min(99, Math.max(40, base - 2)),
-          "연애운": Math.min(99, Math.max(40, base - 5)),
-          "건강운": Math.min(99, Math.max(40, base + 1)),
-          "성공운": Math.min(99, Math.max(40, base + 4)),
+          wealth:  Math.min(99, Math.max(40, base - 2)),
+          love:    Math.min(99, Math.max(40, base - 5)),
+          health:  Math.min(99, Math.max(40, base + 1)),
+          success: Math.min(99, Math.max(40, base + 4)),
         };
         hist.unshift({
           id, date: new Date().toISOString(),

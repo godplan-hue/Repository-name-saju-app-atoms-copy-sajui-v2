@@ -1687,6 +1687,18 @@ function V2ResultInner() {
           </>
         )}
 
+        {/* ── 버튼 안내 카드 ── */}
+        <div style={{ background: "rgba(255,255,255,0.92)", border: "1.5px solid rgba(236,72,153,0.18)", borderRadius: 14, padding: "14px 16px", marginBottom: 12 }}>
+          <p style={{ fontSize: 13, fontWeight: 900, color: "#be185d", margin: "0 0 10px" }}>📌 결과지 버튼 안내 — 꼭 확인하세요</p>
+          <div style={{ fontSize: 12, color: "#374151", lineHeight: 2.1 }}>
+            📤 <strong>공유하기</strong> — 카카오톡으로 결과 공유<br />
+            💳 <strong>유료 운세 결제하기</strong> — 추가 운세 구매<br />
+            🔮 <strong>다시 분석</strong> — 새 사주 분석 시작<br />
+            📥 <strong>보관함 저장</strong> — 결과 저장 (언제든 다시 보기)<br />
+            🔊 <strong>읽기</strong> — 오른쪽 아래 고정 버튼으로 사주 내용 읽어주기
+          </div>
+        </div>
+
         {!isPartner && (
           <div style={{ margin: "16px 0 8px", borderRadius: 16, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "16px 20px", textAlign: "center", cursor: "pointer" }} onClick={() => router.push("/main-v2")}>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "white", letterSpacing: "-0.3px" }}>🔮 AI 사주 990원부터 시작</p>
