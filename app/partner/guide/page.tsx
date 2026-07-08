@@ -66,6 +66,7 @@ export default function PartnerGuide() {
                 <li>• 다이아: 연회비 ₩1,980,000 / 무제한 / 사용료 70% 할인 / 나만의 독립 사주앱 브랜드 운영</li>
               </ul>
               <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 12, marginBottom: 4 }}>※ "사용료 할인"은 분석 1건당 정가에서 등급별로 할인된 가격만 내면 된다는 뜻입니다(예: 다이아는 정가의 30%만 부가세 포함하여 지불).</p>
+              <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 0, marginBottom: 4 }}>※ 운영 중 발생하는 버그 수정·기술 지원 비용(시중 월 30만원 상당)은 별도 청구 없이 연회비에 포함됩니다.</p>
               {!isFreeTier && (
                 <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, marginTop: 0, marginBottom: 0 }}>※ 유료 등급은 이 사용료 할인·한도뿐 아니라 공유 기능까지 함께 제공됩니다(자세한 내용은 5번 참고).</p>
               )}
