@@ -624,7 +624,12 @@ export default function ShareClient({ id }: { id: string }) {
 
           <div style={{ background: "#f5f3ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #ddd6fe" }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>🔊 읽어주기 사용 팁</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />점 세 개(⋮) → 다른 브라우저로 열기 후 사용하세요.<br />읽는 중 화면이 꺼지면 끊길 수 있어요.<br />설정 &gt; 디스플레이 &gt; 화면 자동 꺼짐 시간을 늘리거나<br />&apos;보고 있는 동안 화면 켜짐&apos;을 켜두면 끊기지 않아요.</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`카카오톡 안에서는 읽기 기능이 작동 안 해요.\n점 세 개(⋮) \n→ 다른 브라우저로 열기 후 사용하세요.\n읽는 중 화면이 꺼지면 끊길 수 있어요.\n설정 > 디스플레이 > 화면 자동 꺼짐 \n시간을 늘리거나\n'보고 있는 동안 화면 켜짐'을 켜두면 \n끊기지 않아요.`}</p>
+          </div>
+
+          <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>🖼 이미지 저장</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`점 세 개(⋮) → 다른 앱으로 공유 → 크롬 선택\n한 장에 전체 사주 이미지가 저장돼요.\n\n단, VIP 커플팩은 용량이 커서 \n이미지 저장이 안 돼요.\n점 세 개 옆 [링크 복사]로 \n카톡·문자·메일로 공유하세요.`}</p>
           </div>
 
           <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "14px 0 8px" }}>📌 결과지 아래 버튼 안내</p>
