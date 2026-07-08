@@ -188,7 +188,7 @@ export default function TaegilPage() {
         },
         buttons: [
           { title: "택일 결과 보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
-          { title: "나도 택일 받기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
+          { title: "나도 택일 받기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
         ],
       });
     } else if (navigator.share) {
