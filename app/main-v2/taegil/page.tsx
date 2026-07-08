@@ -83,12 +83,21 @@ export default function TaegilPage() {
   }, [isPaid, eventType, selectedDates, profile]);
 
   const toggleDate = (dateStr: string) => {
-    if (isPaid) return; // 결제 후 날짜 변경 불가
-    setSelectedDates(prev => {
-      if (prev.includes(dateStr)) return prev.filter(d => d !== dateStr);
-      if (prev.length >= 10) return prev;
-      return [...prev, dateStr];
-    });
+    if (isPaid) return;
+    setSelectedDates(prev =>
+      prev.includes(dateStr) ? prev.filter(d => d !== dateStr) : [...prev, dateStr]
+    );
+  };
+
+  const selectAllMonth = () => {
+    if (isPaid) return;
+    const daysInMonth = new Date(calYear, calMonth, 0).getDate();
+    const all: string[] = [];
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = `${calYear}-${String(calMonth).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+      if (!isPast(calYear, calMonth, d)) all.push(dateStr);
+    }
+    setSelectedDates(all);
   };
 
   const isPast = (y: number, m: number, d: number) => {
@@ -126,7 +135,7 @@ export default function TaegilPage() {
     finally { setLoading(false); }
   };
 
-  const taegilPrice = 2900 + Math.max(0, selectedDates.length - 1) * 1000;
+  const taegilPrice = 2900; // 날짜 수에 관계없이 고정 ₩2,900
 
   const handlePay = () => {
     if (!eventType) { alert("목적을 먼저 선택해주세요!"); return; }
@@ -302,11 +311,19 @@ export default function TaegilPage() {
 
         {/* Step 3(결혼) or Step 2(기타): 날짜 */}
         <div style={{ background:"white", borderRadius:16, padding:"18px 16px", marginBottom:16, boxShadow:"0 2px 8px rgba(0,0,0,0.06)" }}>
-          <p style={{ margin:"0 0 4px", fontWeight:900, fontSize:15, color:"#1f2937", display:"flex", alignItems:"center", gap:8 }}>
-            <span style={{ display:"inline-flex", width:24, height:24, borderRadius:"50%", background:"#22c55e", color:"white", fontSize:12, fontWeight:900, alignItems:"center", justifyContent:"center" }}>{eventType === "결혼" ? "3" : "2"}</span>
-            후보 날짜를 선택해주세요
-          </p>
-          <p style={{ margin:"0 0 14px 32px", fontSize:12, color:"#6b7280" }}>최대 10일까지 선택할 수 있어요</p>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:4 }}>
+            <p style={{ margin:0, fontWeight:900, fontSize:15, color:"#1f2937", display:"flex", alignItems:"center", gap:8 }}>
+              <span style={{ display:"inline-flex", width:24, height:24, borderRadius:"50%", background:"#22c55e", color:"white", fontSize:12, fontWeight:900, alignItems:"center", justifyContent:"center" }}>{eventType === "결혼" ? "3" : "2"}</span>
+              후보 날짜를 선택해주세요
+            </p>
+            {!isPaid && (
+              <button onClick={selectedDates.length > 0 ? () => setSelectedDates([]) : selectAllMonth}
+                style={{ fontSize:11, fontWeight:700, color:"#15803d", background:"#dcfce7", border:"1px solid #86efac", borderRadius:8, padding:"4px 10px", cursor:"pointer" }}>
+                {selectedDates.length > 0 ? "전체 해제" : "이달 전체 선택"}
+              </button>
+            )}
+          </div>
+          <p style={{ margin:"0 0 14px 32px", fontSize:12, color:"#6b7280" }}>날짜를 무제한 선택할 수 있어요 · ₩2,900 고정</p>
           {/* 월 이동 */}
           <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:16, marginBottom:12 }}>
             <button onClick={() => { if (calMonth===1) { setCalMonth(12); setCalYear(y=>y-1); } else setCalMonth(m=>m-1); }}
@@ -326,7 +343,7 @@ export default function TaegilPage() {
           <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:4 }}>
             {renderCalendar()}
           </div>
-          <p style={{ textAlign:"center", fontSize:12, color:"#6b7280", margin:"12px 0 0", fontWeight:700 }}>{selectedDates.length}/10 선택됨</p>
+          <p style={{ textAlign:"center", fontSize:12, color:"#6b7280", margin:"12px 0 0", fontWeight:700 }}>{selectedDates.length}일 선택됨</p>
         </div>
 
         {/* 분석 버튼 */}
@@ -405,13 +422,10 @@ export default function TaegilPage() {
             {!isPaid && (
               <div style={{ background:"linear-gradient(135deg,#f0fdf4,#dcfce7)", border:"2px solid #86efac", borderRadius:16, padding:"20px 16px", textAlign:"center", marginTop:4 }}>
                 <p style={{ margin:"0 0 4px", fontWeight:900, fontSize:18, color:"#15803d" }}>📅 전체 날짜 상세 해설</p>
-                <p style={{ margin:"0 0 6px", fontSize:13, color:"#166534", lineHeight:1.7 }}>선택한 {selectedDates.length}일 모두<br/>왜 좋은지, 무엇을 주의해야 하는지 알 수 있어요</p>
-                <p style={{ margin:"0 0 4px", fontSize:12, color:"#166534" }}>일진 해설 · 시간대 안내 · 주의사항</p>
-                {selectedDates.length > 1 && (
-                  <p style={{ margin:"0 0 12px", fontSize:11, color:"#15803d", fontWeight:700 }}>
-                    기본 ₩2,900 + 추가 {selectedDates.length - 1}개 × ₩1,000
-                  </p>
-                )}
+                <p style={{ margin:"0 0 6px", fontSize:13, color:"#166534", lineHeight:1.7 }}>선택한 {selectedDates.length}일 전체<br/>일진 해설 · 시간대 안내 · 주의사항 · 팁</p>
+                <p style={{ margin:"0 0 12px", fontSize:11, color:"#15803d", fontWeight:700 }}>
+                  날짜 수 관계없이 ₩2,900 고정
+                </p>
                 <button onClick={handlePay}
                   style={{ width:"100%", padding:"14px 0", background:"linear-gradient(135deg,#22c55e,#15803d)", color:"white", border:"none", borderRadius:50, fontWeight:900, fontSize:16, cursor:"pointer", boxShadow:"0 6px 20px rgba(34,197,94,0.35)" }}>
                   📅 전체 해설 보기 — ₩{taegilPrice.toLocaleString()}
