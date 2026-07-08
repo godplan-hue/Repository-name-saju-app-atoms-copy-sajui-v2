@@ -1257,8 +1257,8 @@ function V2ResultInner() {
             ))}
           </div>
 
-          {/* ── 무료: 사주팔자 맛보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
-          {tier === "free" && profile?.birthYear && (() => {
+          {/* ── 무료/990원: 사주팔자 맛보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
+          {(tier === "free" || tier === "select") && profile?.birthYear && (() => {
             const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
             const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
             const ohEmoji: Record<string,string> = { "목":"🌳","화":"🔥","토":"⛰️","금":"⚪","수":"💧" };
@@ -1284,8 +1284,8 @@ function V2ResultInner() {
             );
           })()}
 
-          {/* ── 유료 전체(select/package): 사주팔자 한눈에 보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
-          {tier !== "free" && profile?.birthYear && (() => {
+          {/* ── 패키지 전용: 사주팔자 한눈에 보기 (이미지 저장에 포함되도록 summary 카드 안에 위치) ── */}
+          {tier === "package" && profile?.birthYear && (() => {
             const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
             const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
             const ganList = ["갑","을","병","정","무","기","경","신","임","계"];
