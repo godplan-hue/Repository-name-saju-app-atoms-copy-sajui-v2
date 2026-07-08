@@ -220,12 +220,14 @@ export default function AdminDirectPayments() {
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.email || "-"}</td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.birthYear ? `${lead.birthYear}년` : "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
-                        <span style={{ background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 6, fontWeight: 700, letterSpacing: 1 }}>{lead.code}</span>
+                        {lead.code
+                          ? <span style={{ background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 6, fontWeight: 700, letterSpacing: 1 }}>{lead.code}</span>
+                          : <span style={{ color: "#d1d5db" }}>—</span>}
                       </td>
                       <td style={{ padding: "10px 12px" }}>
-                        <span style={{ background: lead.used ? "#dcfce7" : "#fee2e2", color: lead.used ? "#166534" : "#991b1b", padding: "2px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
-                          {lead.used ? "사용됨" : "미사용"}
-                        </span>
+                        {lead.code
+                          ? <span style={{ background: lead.used ? "#dcfce7" : "#fee2e2", color: lead.used ? "#166534" : "#991b1b", padding: "2px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>{lead.used ? "사용됨" : "미사용"}</span>
+                          : <span style={{ color: "#d1d5db" }}>—</span>}
                       </td>
                       <td style={{ padding: "10px 12px", color: "#9ca3af", fontSize: 12 }}>
                         {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString("ko-KR") : "-"}

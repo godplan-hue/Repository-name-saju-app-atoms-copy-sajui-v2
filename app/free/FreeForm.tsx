@@ -35,14 +35,14 @@ export default function FreeForm() {
       email: email.trim(),
     }));
 
-    // payFree() 동작 복제
+    // 재물운 결제 완료 플로우 (naming=1 아님 — 재물운 개별 분석)
     sessionStorage.setItem("v2_paid", "1");
     sessionStorage.setItem("v2_plan", "select");
+    sessionStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운"]));
 
-    // 재물운 분석 폼으로 이동 (naming=1 → 이름/생년월일/시간/성별 폼 → 결과)
+    // 일반 재물운 플로우: 이름/생년월일 폼 → 분석 → result/page.tsx
     router.push(
-      "/payment-complete?naming=1&queue=love_detail&paid=0&package=" +
-      encodeURIComponent("💰 재물운")
+      "/payment-complete?package=" + encodeURIComponent("💰 재물운") + "&paid=0"
     );
   }
 
