@@ -154,7 +154,7 @@ export default function JigunResultPage() {
 
             {/* 주의사항 */}
             <div style={{ background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.2)", borderRadius: 12, padding: "10px 12px", marginBottom: 10 }}>
-              <p style={{ fontSize: 11, color: "rgba(234,179,8,0.85)", margin: 0 }}>⚠️ 함정 주의: {d.trap}</p>
+              <p style={{ fontSize: 11, color: "rgba(234,179,8,0.85)", margin: 0, whiteSpace: "pre-line" }}>⚠️ 함정 주의: {d.trap}</p>
             </div>
 
             <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", margin: 0 }}>📅 예상 타임라인: {d.timeline}</p>
