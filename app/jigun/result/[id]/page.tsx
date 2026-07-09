@@ -68,7 +68,7 @@ export default function JigunResultPage() {
   const ohInfo = oh ? OH_DATA[oh] : null;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#030014", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", color: "white" }}>
+    <div style={{ minHeight: "100vh", background: "#030014", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", color: "white", wordBreak: "keep-all" }}>
       <div style={{ position: "fixed", inset: 0, pointerEvents: "none", background: "radial-gradient(ellipse 85% 55% at 50% -8%,rgba(124,58,237,0.14),transparent 55%)" }} />
 
       <div style={{ position: "relative", zIndex: 10, maxWidth: 520, margin: "0 auto", padding: "0 20px 48px" }}>
