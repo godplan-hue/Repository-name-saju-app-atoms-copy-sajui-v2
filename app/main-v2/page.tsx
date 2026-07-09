@@ -811,7 +811,7 @@ export default function MainV2() {
               </div>
             </a>
             <a href="/momcare" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative" }}>
-              <img src="https://i.pinimg.com/736x/85/49/1d/85491d66cfef5efe4b6382c8665c5d4b.jpg" alt="맘케어" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img src="https://i.pinimg.com/736x/ac/41/34/ac4134d338bc8fab68537a589fecb08b.jpg" alt="맘케어" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "8px 10px" }}>
                 <p style={{ fontSize: 12, fontWeight: 900, color: "white", margin: "0 0 1px" }}>👶 맘케어</p>
