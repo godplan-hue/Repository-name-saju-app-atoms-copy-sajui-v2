@@ -233,7 +233,7 @@ function PayInner() {
         if (!isTaegil) {
           localStorage.setItem("v2_paid", "1");
           localStorage.setItem("price", String(amount));
-          if (!localStorage.getItem("v2_plan")) localStorage.setItem("v2_plan", "select");
+          localStorage.setItem("v2_plan", "select");
         }
         router.push(isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next);
       } else {
