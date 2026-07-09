@@ -134,8 +134,8 @@ export default function ResumePage() {
               <p style={{fontSize:22, fontWeight:900, color:"#fde68a", margin:"0 0 4px"}}>9,900원</p>
               <p style={{fontSize:10, color:"#6b7280", margin:"0 0 10px"}}>한 번 써보고 싶을 때</p>
               <div style={{borderTop:"1px solid #374151", paddingTop:8, textAlign:"left"}}>
-                {["AI 합격 가능성 점수 (최고 96점)","직무별 합격 전략","자소서 핵심 키워드 3개","면접 예상 질문 3개","🔮 사주 총운 티저"].map(t=>(
-                  <p key={t} style={{fontSize:10, color:"#d1d5db", margin:"0 0 3px"}}>✅ {t}</p>
+                {["AI 합격 가능성 점수 분석\n(최고 96점)","직무별 합격 전략","자소서 핵심 키워드 3개","면접 예상 질문 3개","🔮 사주 총운 티저"].map(t=>(
+                  <p key={t} style={{fontSize:10, color:"#d1d5db", margin:"0 0 3px", whiteSpace:"pre-line"}}>✅ {t}</p>
                 ))}
                 {["기업별 인재상 분석","오행 강점 분석","결과 보관·재열람","사주 전체+대운+택일"].map(t=>(
                   <p key={t} style={{fontSize:10, color:"#4b5563", margin:"0 0 3px"}}>✗ {t}</p>
