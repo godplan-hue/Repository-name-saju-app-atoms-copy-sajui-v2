@@ -1,7 +1,37 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Check, FileX, Flame, HelpCircle, RotateCcw } from "lucide-react";
+
+// 간단한 결정론적 합격운 점수 계산 (사주 천간 기반 티저)
+function calcHireScore(year: number, month: number, day: number): { score: number; comment: string; emoji: string } {
+  // 천간 (연도 기반)
+  const gan = ["갑","을","병","정","무","기","경","신","임","계"];
+  const ganIdx = (year - 4) % 10;
+  const ganChar = gan[Math.abs(ganIdx)];
+  // 지지 (연도 기반)
+  const ji = ["자","축","인","묘","진","사","오","미","신","유","술","해"];
+  const jiIdx = (year - 4) % 12;
+
+  // 월별 가중치 (봄=취업 시즌 강)
+  const monthBonus = [6, 8, 10, 9, 7, 5, 4, 5, 9, 10, 8, 6][month - 1] ?? 7;
+  // 일자별 변동
+  const dayVariance = (day % 7) * 2;
+  // 천간별 특성
+  const ganBonus: { [k: string]: number } = { 갑: 8, 을: 6, 병: 9, 정: 7, 무: 5, 기: 6, 경: 8, 신: 7, 임: 9, 계: 6 };
+  const base = 55 + (ganBonus[ganChar] ?? 7) + monthBonus + dayVariance;
+  const score = Math.min(97, Math.max(42, base));
+
+  const comments: { min: number; comment: string; emoji: string }[] = [
+    { min: 80, comment: "올해 취업운이 매우 강합니다. 적극적으로 도전하세요!", emoji: "🔥" },
+    { min: 70, comment: "올해 안에 좋은 결과를 볼 수 있는 흐름입니다.", emoji: "✨" },
+    { min: 60, comment: "준비가 충분하다면 충분히 합격 가능한 운세입니다.", emoji: "📈" },
+    { min: 0, comment: "지금 당장보다는 실력을 쌓는 시기입니다. 하지만 자소서 품질로 운을 뒤집을 수 있어요!", emoji: "🛡️" },
+  ];
+  const c = comments.find(x => score >= x.min)!;
+  return { score, comment: c.comment, emoji: c.emoji };
+}
 
 const glassCard =
   "rounded-2xl border border-white/10 bg-white/5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] backdrop-blur-sm transition-all duration-300";
@@ -16,6 +46,18 @@ const faqItems = [
 export default function ResumePage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState("07:00:00:00");
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
+  const [hireResult, setHireResult] = useState<{ score: number; comment: string; emoji: string } | null>(null);
+
+  function calcScore() {
+    const y = parseInt(birthYear); const m = parseInt(birthMonth); const d = parseInt(birthDay);
+    if (!y || !m || !d || y < 1950 || y > 2010 || m < 1 || m > 12 || d < 1 || d > 31) {
+      alert("생년월일을 올바르게 입력해주세요 (예: 1998 / 3 / 15)"); return;
+    }
+    setHireResult(calcHireScore(y, m, d));
+  }
 
   useEffect(() => {
     const calc = () => {
@@ -62,6 +104,77 @@ export default function ResumePage() {
             <p>탈잉 2년 연속 1위 강사 제작</p>
             <p>크몽 상위 2% 프라임 전문가 검증</p>
             <p>수천 건의 합격 자소서로 학습한 AI</p>
+          </div>
+        </section>
+
+        {/* 🔮 합격운 사주 점수 계산기 */}
+        <section className="mb-10">
+          <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-br from-[#1a1a2e] to-[#2d1b69] p-6 md:p-8">
+            <div className="text-center mb-6">
+              <span className="inline-block bg-purple-600/60 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-3">🔮 무료 티저 — 합격운 사주 점수</span>
+              <h2 className="text-xl font-bold text-white mb-2">올해 내 취업·합격 운세는 몇 점?</h2>
+              <p className="text-sm text-gray-400">생년월일로 보는 2026년 취업운 점수</p>
+            </div>
+
+            {!hireResult ? (
+              <div>
+                <div className="flex gap-2 mb-4">
+                  <input
+                    value={birthYear} onChange={e => setBirthYear(e.target.value)}
+                    placeholder="출생년도 (예: 1998)" maxLength={4}
+                    className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400"
+                  />
+                </div>
+                <div className="flex gap-2 mb-5">
+                  <input
+                    value={birthMonth} onChange={e => setBirthMonth(e.target.value)}
+                    placeholder="월 (예: 3)" maxLength={2}
+                    className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400"
+                  />
+                  <input
+                    value={birthDay} onChange={e => setBirthDay(e.target.value)}
+                    placeholder="일 (예: 15)" maxLength={2}
+                    className="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400"
+                  />
+                </div>
+                <button
+                  onClick={calcScore}
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold py-3.5 rounded-xl text-base hover:opacity-90 transition"
+                >
+                  2026년 취업운 점수 보기
+                </button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <div className="text-5xl mb-3">{hireResult.emoji}</div>
+                <div className="relative mx-auto mb-4" style={{ width: 140, height: 140 }}>
+                  <svg viewBox="0 0 140 140" className="w-full h-full -rotate-90">
+                    <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="12" />
+                    <circle cx="70" cy="70" r="58" fill="none" stroke="url(#grad)" strokeWidth="12"
+                      strokeDasharray={`${(hireResult.score / 100) * 364} 364`} strokeLinecap="round" />
+                    <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#7c3aed"/><stop offset="100%" stopColor="#ec4899"/></linearGradient></defs>
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-4xl font-black text-white">{hireResult.score}</span>
+                    <span className="text-xs text-gray-400">/ 100점</span>
+                  </div>
+                </div>
+                <p className="text-white font-bold text-lg mb-1">2026년 취업운 <span className="text-purple-400">{hireResult.score}점</span></p>
+                <p className="text-gray-300 text-sm mb-6 leading-relaxed">{hireResult.comment}</p>
+                <div className="rounded-xl bg-white/8 border border-white/15 p-4 mb-4 text-left">
+                  <p className="text-xs text-yellow-400 font-bold mb-1">⚡ 이 점수는 사주 티저입니다</p>
+                  <p className="text-xs text-gray-400 leading-relaxed">자소서 분석 점수와 달리, 이건 2026년 운의 흐름을 보여주는 거예요. 사주 원국(오행, 일주, 대운)까지 보면 정확한 타이밍과 직종을 알 수 있어요.</p>
+                </div>
+                <div className="flex gap-3 justify-center flex-wrap">
+                  <Link href="/main-v2" className="inline-block bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-6 py-3 rounded-full no-underline">
+                    정확한 취업운 사주 보기 →
+                  </Link>
+                  <button onClick={() => setHireResult(null)} className="bg-transparent border border-white/20 text-gray-400 text-sm font-bold px-5 py-3 rounded-full cursor-pointer">
+                    다시 계산
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
@@ -211,6 +324,46 @@ export default function ResumePage() {
                 )}
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* 🔮 사주/꿈해몽 연결 — 취준생의 마음속 궁금증 */}
+        <section className="py-8">
+          <div className="rounded-2xl bg-gradient-to-br from-[#1a1a2e] to-[#2d1b69] border border-white/10 p-8">
+            <div className="text-center mb-7">
+              <span className="inline-block bg-purple-600/80 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-3">점운 × 합격서 연계</span>
+              <h2 className="text-xl font-bold text-white mb-2">자소서 쓰다가 이런 생각 드셨죠?</h2>
+              <p className="text-sm text-gray-400">취준생들이 가장 많이 찾는 사주·꿈해몽 질문</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {/* 올해 합격 사주 */}
+              <div className="bg-white/8 border border-white/15 rounded-xl p-6">
+                <div className="text-3xl mb-3">🎯</div>
+                <h3 className="font-bold text-white mb-2">올해 취업이 될까요?</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">올해 직업운·성공운이 어떤지 사주로 확인해보세요. 지금 이직해야 할 타이밍인지, 더 준비해야 할 시기인지 알 수 있어요.</p>
+                <a href="/main-v2" className="inline-block bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-bold px-5 py-2.5 rounded-full no-underline">
+                  취업운 사주 보러가기 →
+                </a>
+              </div>
+              {/* 합격 꿈 꿈해몽 */}
+              <div className="bg-white/8 border border-white/15 rounded-xl p-6">
+                <div className="text-3xl mb-3">🌙</div>
+                <h3 className="font-bold text-white mb-2">어젯밤 꿈이 합격 꿈?</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">시험장 꿈, 합격 발표 꿈, 하늘을 나는 꿈 — 취업을 앞두고 꾸는 꿈들이 무슨 의미인지 꿈해몽 AI가 풀어드려요.</p>
+                <a href="/haemong" className="inline-block bg-white/15 border border-white/30 text-white text-xs font-bold px-5 py-2.5 rounded-full no-underline">
+                  합격 꿈해몽 풀기 →
+                </a>
+              </div>
+              {/* 내 적성 직업 */}
+              <div className="bg-white/8 border border-white/15 rounded-xl p-6">
+                <div className="text-3xl mb-3">💼</div>
+                <h3 className="font-bold text-white mb-2">내 사주에 맞는 직업은?</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">사주 오행으로 보는 천직(天職). 내가 타고난 재능과 가장 잘 맞는 직업군이 따로 있어요. 방향을 잃었다면 사주로 먼저 확인해보세요.</p>
+                <a href="/main-v2" className="inline-block bg-white/15 border border-white/30 text-white text-xs font-bold px-5 py-2.5 rounded-full no-underline">
+                  직업운 사주 보러가기 →
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
