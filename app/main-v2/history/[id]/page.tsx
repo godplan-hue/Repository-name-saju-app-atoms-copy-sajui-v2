@@ -430,7 +430,7 @@ export default function HistoryDetail() {
     setPaying(true);
     try {
       // 일반 결제 흐름(메인 990원 선택)과 똑같이 결제완료 확인 화면을 거치게 함
-      sessionStorage.setItem("v2_paid_cats", JSON.stringify(cats));
+      localStorage.setItem("v2_paid_cats", JSON.stringify(cats));
       const pkgName = cats.map(c => c.replace(/\S+\s/, "")).join("+");
       const price = cats.length * 990;
       const _histIdNext = `/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${cats.length * 30}&paid=${price}`;

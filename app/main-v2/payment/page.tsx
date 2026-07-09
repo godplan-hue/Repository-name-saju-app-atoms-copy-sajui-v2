@@ -474,7 +474,7 @@ function PaymentInner() {
                 <button key={s.id}
                   onClick={async () => {
                     const paidPrice = finalPrice(3900);
-                    sessionStorage.setItem("v2_paid_cats", JSON.stringify([s.catKey]));
+                    localStorage.setItem("v2_paid_cats", JSON.stringify([s.catKey]));
                     openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=${paidPrice}`);
                   }}
                   style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}

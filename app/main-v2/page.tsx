@@ -751,7 +751,7 @@ export default function MainV2() {
                     localStorage.removeItem("v2_login_session_id");
                     localStorage.removeItem("v2_profile_shown_session");
                     sessionStorage.removeItem("v2_profile");
-                    sessionStorage.removeItem("v2_result");
+                    localStorage.removeItem("v2_result");
                     setUser(null);
                   }}
                   style={{ padding: "6px 12px", background: "#f3e8ff", color: "#7c3aed", border: "1px solid rgba(124,58,237,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
@@ -847,7 +847,7 @@ export default function MainV2() {
           onBundle={() => {
             const rawPrice = brand?.customPricePinkBundle || "";
             const bundlePrice = rawPrice ? (Number(rawPrice.replace(/[^0-9]/g, "")) || 6900) : 6900;
-            sessionStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]));
+            localStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]));
             const _bundleNext = `/payment-complete?package=${encodeURIComponent("5개심층번들")}&pages=150&paid=${bundlePrice}`;
             router.push(`/main-v2/pay?amount=${bundlePrice}&next=${encodeURIComponent(_bundleNext)}`);
           }}
@@ -1148,23 +1148,23 @@ export default function MainV2() {
                     if (modalSelectedCats.length === 0) return;
                     const w5Paid = modalSelectedCats.length * 3900;
                     const w5Label = modalSelectedCats.length === 1 ? (modalSelectedCats[0].split(" ").slice(1).join(" ") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
-                    sessionStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
+                    localStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
                     const _w5Next = `/payment-complete?package=${encodeURIComponent(w5Label)}&pages=${modalSelectedCats.length * 30}&paid=${w5Paid}`;
                     router.push(`/main-v2/pay?amount=${w5Paid}&next=${encodeURIComponent(_w5Next)}`);
                     return;
                   }
                   if (showModal === "naming") {
                     const allCats = ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"];
-                    sessionStorage.setItem("v2_paid_cats", JSON.stringify(allCats));
+                    localStorage.setItem("v2_paid_cats", JSON.stringify(allCats));
                     const _namingNext = `/payment-complete?package=${encodeURIComponent("심층 5개 묶음")}&pages=150&paid=3900`;
                     router.push(`/main-v2/pay?amount=3900&next=${encodeURIComponent(_namingNext)}`);
                     return;
                   } else if (cfg.catKeys) {
-                    sessionStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
+                    localStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
                     const _catKeysNext = `/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`;
                     router.push(`/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_catKeysNext)}`);
                   } else if (cfg.catKey) {
-                    sessionStorage.setItem("v2_paid_cats", JSON.stringify([cfg.catKey]));
+                    localStorage.setItem("v2_paid_cats", JSON.stringify([cfg.catKey]));
                     const _catKeyNext = `/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=30&paid=${resolvedPrice}`;
                     router.push(`/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_catKeyNext)}`);
                   } else if (cfg.priceNum) {

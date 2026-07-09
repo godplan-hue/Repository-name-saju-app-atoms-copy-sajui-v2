@@ -68,10 +68,10 @@ export default function V2Analysis() {
 
   const startAnalysis = async () => {
     if (!selOpt) { alert("옵션을 선택해주세요"); return; }
-    sessionStorage.removeItem("v2_paid");
-    sessionStorage.removeItem("v2_paid_cats");
-    sessionStorage.removeItem("v2_plan");
-    sessionStorage.removeItem("price");
+    localStorage.removeItem("v2_paid");
+    localStorage.removeItem("v2_paid_cats");
+    localStorage.removeItem("v2_plan");
+    localStorage.removeItem("price");
     sessionStorage.removeItem("selectedPackage");
     setPhase("loading");
     try {
@@ -92,7 +92,7 @@ export default function V2Analysis() {
       if (!res.ok) throw new Error("API error");
       const data = await res.json();
       const result = { ...data, category: selCat, followUp: selOpt, profile };
-      sessionStorage.setItem("v2_result", JSON.stringify(result));
+      localStorage.setItem("v2_result", JSON.stringify(result));
       router.push("/main-v2/result");
     } catch {
       alert("분석 중 오류가 발생했습니다. 다시 시도해주세요.");

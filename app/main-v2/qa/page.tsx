@@ -116,7 +116,7 @@ export default function QAPage() {
   }, [showModal]);
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("v2_result");
+    const raw = localStorage.getItem("v2_result");
     let n = "", y = 0;
     if (raw) {
       const r = JSON.parse(raw);
@@ -128,7 +128,7 @@ export default function QAPage() {
     setBirthYear(y);
     const oh = getOhaeng(y);
     setOhaeng(oh);
-    const plan = sessionStorage.getItem("v2_plan") ?? "";
+    const plan = localStorage.getItem("v2_plan") ?? "";
     const paidSession = plan === "select" || plan === "package";
     const lsUnlock = localStorage.getItem(`v2_qa_unlock_${n}_${y}`);
     const paidToday = lsUnlock === todayKey();
