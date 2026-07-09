@@ -17,9 +17,31 @@ export default function PartnerPolicy() {
           <p style={{ color: "#999999", fontSize: 12 }}>시행일: 2026년 5월 16일 | 최종 수정일: 2026년 5월 16일</p>
         </div>
 
+        {/* 부업 안내 카드 */}
+        <div style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(236,72,153,0.2))", border: "2px solid rgba(124,58,237,0.6)", borderRadius: 16, padding: "28px 24px", marginBottom: 28 }}>
+          <div style={{ display: "inline-block", background: "#dc2626", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 11, fontWeight: 700, marginBottom: 14 }}>🔥 부업으로 시작하는 분들께</div>
+          <h2 style={{ color: "white", fontSize: 18, fontWeight: 900, margin: "0 0 12px", lineHeight: 1.4 }}>돈 한 푼 안 들이고<br />AI 사주 부업을 시작하는 법</h2>
+          <ul style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: 600, lineHeight: 2, marginLeft: 4, marginBottom: 16, listStyle: "none", padding: 0 }}>
+            <li>✅ <strong>무료 파트너 등록</strong> → 가입비 0원, 즉시 시작</li>
+            <li>✅ 고객 생년월일 입력 → AI가 결과지 자동 생성</li>
+            <li>✅ 결과지 링크를 카카오·인스타·블로그에 공유</li>
+            <li>✅ 고객이 결과지를 열람하면 분석 1건 사용료만 납부</li>
+            <li>✅ 고객에게 받는 판매 가격은 <strong>파트너가 자유롭게 설정</strong></li>
+          </ul>
+          <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 12, padding: "14px 16px", fontSize: 12, color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: 16 }}>
+            <strong style={{ color: "#fbbf24" }}>📌 예시</strong><br />
+            분석 1건 사용료: 2,000원 (무료 등급 30% 할인 기준)<br />
+            고객에게 받는 가격: 10,000원~30,000원 (본인이 결정)<br />
+            → 1건당 8,000~28,000원 수익
+          </div>
+          <a href="/partner/apply" style={{ display: "inline-block", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", borderRadius: 20, padding: "12px 28px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>
+            무료로 파트너 시작하기 →
+          </a>
+        </div>
+
         {/* 내용 */}
         <div style={{ background: "rgba(108,64,200,0.15)", padding: 30, borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)" }}>
-          
+
           {/* 1. 파트너란 */}
           <section style={{ marginBottom: 30 }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>1. 파트너란?</h2>
@@ -58,8 +80,15 @@ export default function PartnerPolicy() {
 
           {/* 5. 결과지 발송 방식 */}
           <section style={{ marginBottom: 30, paddingTop: 20, borderTop: "1px solid rgba(139,92,246,0.3)" }}>
-            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 결과지 발송 방식</h2>
-            <p style={{ color: "#f5f5f5", fontSize: 14, fontWeight: 700, lineHeight: 1.8, marginBottom: 0 }}>결과지 상호명 표시 등 운영에 필요한 자세한 안내는 파트너 로그인 후 "운영 가이드"에서 확인하실 수 있습니다.</p>
+            <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>5. 결과지 공유 및 발송 방식</h2>
+            <ul style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 1.8, marginLeft: 20, marginBottom: 12 }}>
+              <li>• 파트너 대시보드에서 고객 분석 생성 → 결과지 고유 링크 자동 발급</li>
+              <li>• 해당 링크를 카카오톡·문자·인스타 DM·이메일로 고객에게 전송</li>
+              <li>• 고객은 링크를 열면 바로 결과지를 확인 (로그인 불필요)</li>
+              <li>• <strong style={{ color: "#fbbf24" }}>무료 등급도 공유 링크 생성·발송 완전 가능</strong> — 등급 제한 없음</li>
+              <li>• 결과지에 파트너 상호명이 자동 표시됨 (내 브랜드로 발송)</li>
+            </ul>
+            <p style={{ color: "#cbb6ff", fontSize: 12, fontWeight: 600, margin: 0 }}>상호명 설정, 운영 가이드 등 자세한 안내는 파트너 로그인 후 "운영 가이드"에서 확인하실 수 있습니다.</p>
           </section>
 
           {/* 6. 파트너 회비 환불정책 */}
