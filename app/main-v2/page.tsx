@@ -786,40 +786,6 @@ export default function MainV2() {
       }} />
 
       {/* 연결 앱 3개 배너 */}
-      {!isPartner && (
-        <div style={{ padding: "10px 14px 4px", maxWidth: 480, margin: "0 auto" }}>
-          <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 700, marginBottom: 8 }}>✨ 점운 연결 서비스 — 모두 무료</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {/* 맘케어 */}
-            <a href="/momcare" style={{ display: "flex", alignItems: "center", gap: 14, background: "linear-gradient(135deg, #fde8d8, #fce7f3)", borderRadius: 16, padding: "14px 16px", textDecoration: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.07)" }}>
-              <span style={{ fontSize: 32, flexShrink: 0 }}>👶</span>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 2px" }}>맘케어 — AI 육아 앱</p>
-                <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>성장 캘린더 · 수유 기록 · 태몽 꿈해몽 연결</p>
-              </div>
-              <span style={{ fontSize: 14, color: "#f97316", fontWeight: 900 }}>→</span>
-            </a>
-            {/* 합격자소서 */}
-            <a href="/resume" style={{ display: "flex", alignItems: "center", gap: 14, background: "linear-gradient(135deg, #ede9fe, #dbeafe)", borderRadius: 16, padding: "14px 16px", textDecoration: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.07)" }}>
-              <span style={{ fontSize: 32, flexShrink: 0 }}>📄</span>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 2px" }}>합격자소서 — AI 취업 전략</p>
-                <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>합격 가능성 점수 · 직무별 전략 · 면접 질문 무료</p>
-              </div>
-              <span style={{ fontSize: 14, color: "#7c3aed", fontWeight: 900 }}>→</span>
-            </a>
-            {/* 진로·부업 */}
-            <a href="/jigun" style={{ display: "flex", alignItems: "center", gap: 14, background: "linear-gradient(135deg, #0f172a, #1e1b4b)", borderRadius: 16, padding: "14px 16px", textDecoration: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.07)" }}>
-              <span style={{ fontSize: 32, flexShrink: 0 }}>💼</span>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 13, fontWeight: 900, color: "white", margin: "0 0 2px" }}>직운 — 나에게 맞는 부업 찾기</p>
-                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", margin: 0 }}>8문항 퀴즈 → 부업 TOP 3 + 오행 천직 무료</p>
-              </div>
-              <span style={{ fontSize: 14, color: "#a78bfa", fontWeight: 900 }}>→</span>
-            </a>
-          </div>
-        </div>
-      )}
 
       {/* 전체 운세 바로가기 */}
       {!isPartner && (
