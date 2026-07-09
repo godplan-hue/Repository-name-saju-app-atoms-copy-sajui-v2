@@ -36,9 +36,9 @@ const EXERCISES = [
 ];
 
 const REVIEWS = [
-  { text: "아기의 생후 몇 주차별 기록을 자세히 보여주는 앱을 아직 못 찾았어요. 알려주시면 정말 감사하겠습니다!", stars: 5, date: "2026년 1월 25일" },
-  { text: "정말 감사합니다! 이 앱은 저에게 가장 중요한 육아 앱이에요.", stars: 5, date: "2026년 2월 10일" },
-  { text: "우리 아기의 성장 발달 단계가 모두 완벽하게 일치해요. 다음 주에 어떤 변화가 있을지 알 수 있어서 정말 좋아요.", stars: 5, date: "2026년 2월 15일" },
+  { text: "아기의 생후 및 주차별 기록을\n이렇게 자세히 보여주는 앱은\n아직 찾지 못했어요.\n정말 감사하겠습니다!", stars: 5, date: "2026년 1월 25일" },
+  { text: "정말 감사합니다!\n이 앱은 저에게\n가장 중요한 육아 앱이에요.", stars: 5, date: "2026년 2월 10일" },
+  { text: "우리 아기의 성장 발달 단계가\n모두 완벽하게 일치해요.\n다음 주에 어떤 변화가 있을지\n알 수 있어서 정말 좋아요.", stars: 5, date: "2026년 2월 15일" },
 ];
 
 const FAQ_ITEMS = [
@@ -194,7 +194,7 @@ export default function MomcarePage() {
             {REVIEWS.map((r, i) => (
               <div key={i} style={{ background: "#f0f9ff", border: `1px solid ${BORDER}`, borderRadius: 14, padding: "16px", textAlign: "left" }}>
                 <div style={{ display: "flex", gap: 1, marginBottom: 8 }}>{"★★★★★".split("").map((s, j) => <span key={j} style={{ color: "#fbbf24", fontSize: 12 }}>{s}</span>)}</div>
-                <p style={{ fontSize: 12, color: MID, margin: "0 0 8px", lineHeight: 1.6, wordBreak: "keep-all" }}>{r.text}</p>
+                <p style={{ fontSize: 12, color: MID, margin: "0 0 8px", lineHeight: 1.6, wordBreak: "keep-all", whiteSpace: "pre-line" }}>{r.text}</p>
                 <p style={{ fontSize: 10, color: LIGHT, margin: 0 }}>{r.date}</p>
               </div>
             ))}
