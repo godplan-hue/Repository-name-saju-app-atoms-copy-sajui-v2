@@ -3,17 +3,27 @@
 import { useState } from "react";
 import Link from "next/link";
 
+const TEAL = "#0284c7";
+const TEAL2 = "#0891b2";
+const TEAL_GRAD = `linear-gradient(135deg, ${TEAL}, ${TEAL2})`;
+const DARK = "#0c2340";
+const MID = "#475569";
+const LIGHT = "#94a3b8";
+const BG = "linear-gradient(180deg, #f0f9ff 0%, #dbeafe 50%, #f0f9ff 100%)";
+const CARD = "rgba(255,255,255,0.85)";
+const BORDER = "rgba(2,132,199,0.18)";
+
 const FEATURES = [
-  { icon: "📅", title: "성장 위기 캘린더", desc: "소아과 전문의와 함께 자녀의 생리·운동·언어 발달 과정(생후 156주)을 미리 알려드립니다.", href: "/momcare/growth-calendar", color: "#dbeafe" },
-  { icon: "🍼", title: "일일 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 시간순으로 기록하고 생활 패턴을 파악하세요.", href: "/momcare/daily-tracker", color: "#fce7f3" },
-  { icon: "📏", title: "성장 일기", desc: "키, 몸무게, 머리둘레를 기록하고 WHO 기준 백분위수로 아이의 성장을 추적하세요.", href: "/momcare/growth-diary", color: "#d1fae5" },
-  { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음마 — 아기의 소중한 첫 순간들을 카테고리별로 기록하세요.", href: "/momcare/memory-journal", color: "#fef3c7" },
+  { icon: "📅", title: "성장 위기 캘린더", desc: "소아과 전문의와 함께 자녀의 생리·운동·언어 발달 과정(생후 156주)을 미리 알려드립니다.", href: "/momcare/growth-calendar" },
+  { icon: "🍼", title: "일일 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 시간순으로 기록하고 생활 패턴을 파악하세요.", href: "/momcare/daily-tracker" },
+  { icon: "📏", title: "성장 일기", desc: "키, 몸무게, 머리둘레를 기록하고 WHO 기준 백분위수로 아이의 성장을 추적하세요.", href: "/momcare/growth-diary" },
+  { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음마 — 아기의 소중한 첫 순간들을 카테고리별로 기록하세요.", href: "/momcare/memory-journal" },
 ];
 
 const NEW_FEATURES = [
-  { icon: "📔", title: "육아 일기", desc: "오늘 하루 아이와의 특별한 순간을 일기로 남겨요. 기분·날씨·태그로 기록하고 나중에 아이와 함께 읽어보세요.", href: "/momcare/baby-diary", color: "#ede9fe" },
-  { icon: "💌", title: "타임캡슐 편지", desc: "지금의 감정을 미래의 아이에게 편지로 남겨요. '3살 때 열어봐', '결혼할 때 열어봐' — 잠겨있다가 그날 자동으로 열립니다.", href: "/momcare/time-capsule", color: "#fef9c3" },
-  { icon: "🗣️", title: "아기 말 사전", desc: '\"마마\"=엄마, \"뚜뚜\"=자동차 — 아기만의 귀여운 언어를 사전으로 기록해요. 나중에 보면 정말 보물이 될 거예요.', href: "/momcare/baby-words", color: "#dcfce7" },
+  { icon: "📔", title: "육아 일기", desc: "오늘 하루 아이와의 특별한 순간을 일기로 남겨요. 기분·날씨·태그로 기록하고 나중에 아이와 함께 읽어보세요.", href: "/momcare/baby-diary" },
+  { icon: "💌", title: "타임캡슐 편지", desc: "지금의 감정을 미래의 아이에게 편지로 남겨요. '3살 때 열어봐', '결혼할 때 열어봐' — 잠겨있다가 그날 자동으로 열립니다.", href: "/momcare/time-capsule" },
+  { icon: "🗣️", title: "아기 말 사전", desc: '"마마"=엄마, "뚜뚜"=자동차 — 아기만의 귀여운 언어를 사전으로 기록해요. 나중에 보면 정말 보물이 될 거예요.', href: "/momcare/baby-words" },
 ];
 
 const EXERCISES = [
@@ -34,7 +44,7 @@ const REVIEWS = [
 const FAQ_ITEMS = [
   { q: "성장 위기란 무엇인가요?", a: "출생부터 3세까지 아이는 여러 번의 성장 및 발달 위기를 겪습니다. 이는 신경계와 뇌가 발달하고 아이가 새로운 능력을 보이기 시작하는 자연스러운 과정입니다. 이 시기에 아이는 보채거나 잠을 잘 못 잘 수도 있어요. 맘케어가 이 시기를 미리 알려드립니다." },
   { q: "앱 정보를 신뢰할 수 있는 이유는 무엇인가요?", a: "앱에 있는 모든 글, 설명, 발달 운동은 현직 소아과 의사들과 협력하여 제작되었습니다. AI가 근거 기반 의학 데이터를 바탕으로 아이의 성장을 분석합니다." },
-  { q: "무료로 사용할 수 있나요?", a: "네! 기본 기능(월 10건 기록)은 무료로 이용하실 수 있습니다. PRO 플랜으로 업그레이드하시면 무제한 기록, 고급 분석, 우선 지원 등 모든 기능을 이용하실 수 있습니다." },
+  { q: "무료로 사용할 수 있나요?", a: "네! 기본 기능은 무료로 이용하실 수 있습니다. PRO 플랜으로 업그레이드하시면 고급 분석, 우선 지원 등 모든 기능을 이용하실 수 있습니다." },
   { q: "아이가 여러 명이어도 사용할 수 있나요?", a: "네! 아이를 여러 명 등록하여 각각의 성장 기록을 따로 관리하실 수 있습니다. 형제자매 비교 기능도 제공됩니다." },
   { q: "WHO 성장 기준과 어떻게 비교하나요?", a: "세계보건기구(WHO)의 공식 성장 기준 데이터를 기반으로 아이의 키, 몸무게, 머리둘레를 백분위수로 비교해 드립니다. 또래 평균과의 차이를 한눈에 확인할 수 있습니다." },
 ];
@@ -43,42 +53,42 @@ export default function MomcarePage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #0a0614 0%, #110820 50%, #1a0a2e 100%)", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", color: "white" }}>
+    <div style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", color: DARK }}>
 
       {/* 네비게이션 */}
-      <nav style={{ background: "rgba(10,6,20,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 50 }}>
-        <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: "#f9a8d4", textDecoration: "none" }}>맘케어</Link>
+      <nav style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${BORDER}`, padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 50 }}>
+        <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: TEAL, textDecoration: "none" }}>맘케어</Link>
         <div style={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-          <Link href="/momcare/growth-calendar" style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", textDecoration: "none", padding: "5px 7px" }}>캘린더</Link>
-          <Link href="/momcare/daily-tracker" style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", textDecoration: "none", padding: "5px 7px" }}>트래커</Link>
-          <Link href="/momcare/growth-diary" style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", textDecoration: "none", padding: "5px 7px" }}>성장일기</Link>
-          <Link href="/momcare/baby-diary" style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", textDecoration: "none", padding: "5px 7px" }}>육아일기</Link>
-          <Link href="/momcare/time-capsule" style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", textDecoration: "none", padding: "5px 7px" }}>타임캡슐</Link>
-          <Link href="/momcare/baby-words" style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", textDecoration: "none", padding: "5px 7px" }}>말사전</Link>
+          <Link href="/momcare/growth-calendar" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>캘린더</Link>
+          <Link href="/momcare/daily-tracker" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>트래커</Link>
+          <Link href="/momcare/growth-diary" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>성장일기</Link>
+          <Link href="/momcare/baby-diary" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>육아일기</Link>
+          <Link href="/momcare/time-capsule" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>타임캡슐</Link>
+          <Link href="/momcare/baby-words" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>말사전</Link>
         </div>
       </nav>
 
       {/* 히어로 */}
-      <div style={{ background: "linear-gradient(135deg, rgba(190,24,93,0.25) 0%, rgba(126,34,206,0.2) 50%, rgba(10,6,20,0) 100%)", padding: "60px 24px 52px", textAlign: "center" }}>
-        <div style={{ display: "inline-block", background: "linear-gradient(135deg, #be185d, #9333ea)", color: "white", borderRadius: 20, padding: "4px 16px", fontSize: 12, fontWeight: 700, marginBottom: 12 }}>
+      <div style={{ background: "linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(8,145,178,0.06) 50%, rgba(240,249,255,0) 100%)", padding: "60px 24px 52px", textAlign: "center" }}>
+        <div style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "4px 16px", fontSize: 12, fontWeight: 700, marginBottom: 12 }}>
           출생부터 3세까지 AI 육아 동반자
         </div>
-        <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 16, letterSpacing: "0.02em" }}>
+        <p style={{ fontSize: 11, color: LIGHT, marginBottom: 16, letterSpacing: "0.02em" }}>
           탈잉 2년 연속 1위 강사 제작 · 크몽 상위 2% 프라임 전문가 검증
         </p>
-        <h1 style={{ fontSize: "clamp(28px, 5vw, 46px)", fontWeight: 900, lineHeight: 1.2, marginBottom: 16, color: "white", wordBreak: "keep-all" }}>
+        <h1 style={{ fontSize: "clamp(28px, 5vw, 46px)", fontWeight: 900, lineHeight: 1.2, marginBottom: 16, color: DARK, wordBreak: "keep-all" }}>
           부모가 만든,<br />
-          <span style={{ color: "#f9a8d4" }}>소아과 전문의</span>가 함께하는<br />
+          <span style={{ color: TEAL }}>소아과 전문의</span>가 함께하는<br />
           AI 육아 앱
         </h1>
-        <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 32px", wordBreak: "keep-all" }}>
+        <p style={{ fontSize: 15, color: MID, lineHeight: 1.7, maxWidth: 440, margin: "0 auto 32px", wordBreak: "keep-all" }}>
           성장일기, 수유·수면 기록부터 발달 단계까지,<br />우리 아이의 모든 순간을 기록하세요
         </p>
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
-          <Link href="/momcare/daily-tracker" style={{ background: "linear-gradient(135deg, #be185d, #9333ea)", color: "white", borderRadius: 28, padding: "14px 28px", fontSize: 15, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(190,24,93,0.4)" }}>
+          <Link href="/momcare/daily-tracker" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "14px 28px", fontSize: 15, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>
             무료로 시작하기
           </Link>
-          <Link href="/momcare/growth-calendar" style={{ background: "rgba(255,255,255,0.08)", color: "#f9a8d4", border: "1.5px solid rgba(249,168,212,0.4)", borderRadius: 28, padding: "12px 24px", fontSize: 15, fontWeight: 700, textDecoration: "none" }}>
+          <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "12px 24px", fontSize: 15, fontWeight: 700, textDecoration: "none" }}>
             성장 캘린더 보기
           </Link>
         </div>
@@ -94,9 +104,9 @@ export default function MomcarePage() {
         </button>
         <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
           {[{ label: "앱스토어", score: "4.9" }, { label: "구글플레이", score: "4.8" }, { label: "가족", score: "200만+" }].map(b => (
-            <div key={b.label} style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "8px 16px", fontSize: 13 }}>
-              <span style={{ color: "rgba(255,255,255,0.5)" }}>{b.label} </span>
-              <strong style={{ color: "#f9a8d4" }}>{b.score}</strong>
+            <div key={b.label} style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 12, padding: "8px 16px", fontSize: 13 }}>
+              <span style={{ color: LIGHT }}>{b.label} </span>
+              <strong style={{ color: TEAL }}>{b.score}</strong>
             </div>
           ))}
         </div>
@@ -104,74 +114,65 @@ export default function MomcarePage() {
 
       {/* 4가지 핵심 기능 */}
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "56px 24px 0" }}>
-        <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 900, marginBottom: 8 }}>함께 성장해요. <span style={{ color: "#f9a8d4" }}>매 순간마다.</span></h2>
-        <p style={{ textAlign: "center", fontSize: 14, color: "rgba(255,255,255,0.45)", marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 4가지 핵심 기능</p>
+        <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 900, marginBottom: 8, color: DARK }}>함께 성장해요. <span style={{ color: TEAL }}>매 순간마다.</span></h2>
+        <p style={{ textAlign: "center", fontSize: 14, color: LIGHT, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 4가지 핵심 기능</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 16 }}>
           {FEATURES.map((f) => (
-            <Link key={f.href} href={f.href} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 20, padding: "28px 24px", textDecoration: "none", color: "white", display: "block", boxShadow: "0 4px 20px rgba(0,0,0,0.3)" }}>
+            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: "28px 24px", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.1)" }}>
               <div style={{ fontSize: 40, marginBottom: 12 }}>{f.icon}</div>
-              <h3 style={{ fontSize: 18, fontWeight: 900, color: "white", margin: "0 0 8px", wordBreak: "keep-all" }}>{f.title}</h3>
-              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", margin: "0 0 16px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
-              <span style={{ fontSize: 13, fontWeight: 700, color: "#f9a8d4" }}>지금 사용하기 →</span>
+              <h3 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 8px", wordBreak: "keep-all" }}>{f.title}</h3>
+              <p style={{ fontSize: 13, color: MID, margin: "0 0 16px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
+              <span style={{ fontSize: 13, fontWeight: 700, color: TEAL }}>지금 사용하기 →</span>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* ✨ 신규 바이럴 기능 3종 */}
+      {/* 신규 바이럴 기능 3종 */}
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-          <span style={{ background: "linear-gradient(135deg, #9333ea, #be185d)", color: "white", borderRadius: 20, padding: "3px 12px", fontSize: 11, fontWeight: 700 }}>NEW</span>
-          <h2 style={{ fontSize: 20, fontWeight: 900, margin: 0 }}>기억이 되는 육아 <span style={{ color: "#c084fc" }}>바이럴 기능</span></h2>
+          <span style={{ background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "3px 12px", fontSize: 11, fontWeight: 700 }}>NEW</span>
+          <h2 style={{ fontSize: 20, fontWeight: 900, margin: 0, color: DARK }}>기억이 되는 육아 <span style={{ color: TEAL }}>바이럴 기능</span></h2>
         </div>
-        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: 20 }}>지금 SNS에서 가장 많이 공유되는 육아 기록 기능들이에요</p>
+        <p style={{ fontSize: 13, color: LIGHT, marginBottom: 20 }}>지금 SNS에서 가장 많이 공유되는 육아 기록 기능들이에요</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
           {NEW_FEATURES.map((f) => (
-            <Link key={f.href} href={f.href} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 20, padding: "24px 20px", textDecoration: "none", color: "white", display: "block", boxShadow: "0 4px 20px rgba(0,0,0,0.25)" }}>
+            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: "24px 20px", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.08)" }}>
               <div style={{ fontSize: 36, marginBottom: 10 }}>{f.icon}</div>
-              <h3 style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px", wordBreak: "keep-all" }}>{f.title}</h3>
-              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#c084fc" }}>지금 기록하기 →</span>
+              <h3 style={{ fontSize: 16, fontWeight: 900, color: DARK, margin: "0 0 6px", wordBreak: "keep-all" }}>{f.title}</h3>
+              <p style={{ fontSize: 12, color: MID, margin: "0 0 12px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
+              <span style={{ fontSize: 12, fontWeight: 700, color: TEAL }}>지금 기록하기 →</span>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* 🔮 점운 앱 연결 — 엄마들의 마음속 궁금증 */}
+      {/* 점운 앱 연결 */}
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
-        <div style={{ background: "linear-gradient(135deg, #1a1a2e 0%, #2d1b69 100%)", borderRadius: 24, padding: "40px 28px", color: "white" }}>
+        <div style={{ background: "linear-gradient(135deg, #0c2340 0%, #0d3b6e 100%)", borderRadius: 24, padding: "40px 28px", color: "white" }}>
           <div style={{ textAlign: "center", marginBottom: 28 }}>
             <span style={{ background: "rgba(255,255,255,0.15)", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 11, fontWeight: 700 }}>점운 × 맘케어 연결</span>
             <h2 style={{ fontSize: 20, fontWeight: 900, margin: "12px 0 6px" }}>아이를 키우다 보면 이런 생각 드시죠?</h2>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", margin: 0 }}>엄마들이 가장 많이 찾는 사주·꿈해몽 질문들</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
-            {/* 태몽 → 꿈해몽 */}
             <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "14px 12px", border: "1px solid rgba(255,255,255,0.12)", display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: 24, marginBottom: 6 }}>🌙</div>
               <h3 style={{ fontSize: 12, fontWeight: 800, margin: "0 0 6px", wordBreak: "keep-all" }}>태몽인지 궁금해요</h3>
               <p style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.5, flex: 1, wordBreak: "keep-all" }}>꿈해몽 AI가 태몽 여부를 풀어드려요</p>
-              <Link href="/haemong" style={{ display: "block", textAlign: "center", background: "rgba(255,255,255,0.12)", color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)" }}>
-                태몽 풀기 →
-              </Link>
+              <Link href="/haemong" style={{ display: "block", textAlign: "center", background: "rgba(255,255,255,0.12)", color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)" }}>태몽 풀기 →</Link>
             </div>
-            {/* 아이 건강운/성장운 → 사주 */}
             <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "14px 12px", border: "1px solid rgba(255,255,255,0.12)", display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: 24, marginBottom: 6 }}>🔮</div>
               <h3 style={{ fontSize: 12, fontWeight: 800, margin: "0 0 6px", wordBreak: "keep-all" }}>아이 재능·건강운</h3>
               <p style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.5, flex: 1, wordBreak: "keep-all" }}>생년월일로 재능·건강운 무료 분석</p>
-              <Link href="/main-v2" style={{ display: "block", textAlign: "center", background: "linear-gradient(135deg, #be185d, #9333ea)", color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>
-                무료로 보기 →
-              </Link>
+              <Link href="/main-v2" style={{ display: "block", textAlign: "center", background: TEAL_GRAD, color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>무료로 보기 →</Link>
             </div>
-            {/* 육아 스트레스 → 엄마 사주 */}
             <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "14px 12px", border: "1px solid rgba(255,255,255,0.12)", display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: 24, marginBottom: 6 }}>🌸</div>
               <h3 style={{ fontSize: 12, fontWeight: 800, margin: "0 0 6px", wordBreak: "keep-all" }}>엄마 운세 점검</h3>
               <p style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.5, flex: 1, wordBreak: "keep-all" }}>올해 재물·연애·건강운 확인</p>
-              <Link href="/main-v2" style={{ display: "block", textAlign: "center", background: "rgba(255,255,255,0.12)", color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)" }}>
-                내 사주 보기 →
-              </Link>
+              <Link href="/main-v2" style={{ display: "block", textAlign: "center", background: "rgba(255,255,255,0.12)", color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)" }}>내 사주 보기 →</Link>
             </div>
           </div>
           <div style={{ textAlign: "center", marginTop: 20, fontSize: 11, color: "rgba(255,255,255,0.35)" }}>
@@ -182,44 +183,44 @@ export default function MomcarePage() {
 
       {/* 발달 운동 */}
       <div style={{ maxWidth: 800, margin: "56px auto 0", padding: "0 24px" }}>
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "40px 24px" }}>
+        <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: "40px 24px", boxShadow: "0 4px 24px rgba(2,132,199,0.1)" }}>
           <div style={{ textAlign: "center", marginBottom: 28 }}>
-            <div style={{ display: "inline-block", background: "linear-gradient(135deg, #be185d, #9333ea)", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 12, fontWeight: 700, marginBottom: 12 }}>250가지 이상의 발달 운동</div>
-            <h2 style={{ fontSize: 22, fontWeight: 900, color: "white", margin: "0 0 6px" }}>경이로운 발달 운동</h2>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", margin: 0 }}>이들의 처방은 하루에 20분도 채 걸리지 않습니다</p>
+            <div style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 12, fontWeight: 700, marginBottom: 12 }}>250가지 이상의 발달 운동</div>
+            <h2 style={{ fontSize: 22, fontWeight: 900, color: DARK, margin: "0 0 6px" }}>경이로운 발달 운동</h2>
+            <p style={{ fontSize: 13, color: LIGHT, margin: 0 }}>이들의 처방은 하루에 20분도 채 걸리지 않습니다</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
             {EXERCISES.map((ex) => (
-              <div key={ex.title} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "20px 16px" }}>
+              <div key={ex.title} style={{ background: "#f0f9ff", border: `1px solid ${BORDER}`, borderRadius: 14, padding: "20px 16px" }}>
                 <div style={{ fontSize: 32, marginBottom: 4 }}>{ex.emoji}</div>
-                <div style={{ fontSize: 11, color: "#f9a8d4", fontWeight: 700, marginBottom: 6 }}>{ex.age}</div>
-                <h4 style={{ fontSize: 13, fontWeight: 800, color: "white", margin: "0 0 6px", wordBreak: "keep-all" }}>{ex.title}</h4>
-                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.6, wordBreak: "keep-all" }}>{ex.desc}</p>
+                <div style={{ fontSize: 11, color: TEAL, fontWeight: 700, marginBottom: 6 }}>{ex.age}</div>
+                <h4 style={{ fontSize: 13, fontWeight: 800, color: DARK, margin: "0 0 6px", wordBreak: "keep-all" }}>{ex.title}</h4>
+                <p style={{ fontSize: 11, color: MID, margin: 0, lineHeight: 1.6, wordBreak: "keep-all" }}>{ex.desc}</p>
               </div>
             ))}
           </div>
           <div style={{ textAlign: "center", marginTop: 20 }}>
-            <Link href="/momcare/growth-calendar" style={{ background: "linear-gradient(135deg, #be185d, #9333ea)", color: "white", border: "none", borderRadius: 24, padding: "12px 28px", fontSize: 14, fontWeight: 700, textDecoration: "none", display: "inline-block" }}>
+            <Link href="/momcare/growth-calendar" style={{ background: TEAL_GRAD, color: "white", border: "none", borderRadius: 24, padding: "12px 28px", fontSize: 14, fontWeight: 700, textDecoration: "none", display: "inline-block" }}>
               앱에서 더 많은 운동 확인하세요
             </Link>
           </div>
         </div>
       </div>
 
-      {/* 200만 가족 + 리뷰 */}
+      {/* 리뷰 */}
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "40px 24px", textAlign: "center" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 900, color: "white", margin: "0 0 16px" }}>200만 가족이 함께하는</h2>
+        <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: "40px 24px", textAlign: "center", boxShadow: "0 4px 24px rgba(2,132,199,0.08)" }}>
+          <h2 style={{ fontSize: 22, fontWeight: 900, color: DARK, margin: "0 0 16px" }}>200만 가족이 함께하는</h2>
           <div style={{ display: "flex", justifyContent: "center", gap: 32, marginBottom: 24 }}>
-            <div><p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", margin: "0 0 2px" }}>앱스토어 평점</p><p style={{ fontSize: 24, fontWeight: 900, color: "#f9a8d4", margin: 0 }}>4.9★</p></div>
-            <div><p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", margin: "0 0 2px" }}>구글플레이</p><p style={{ fontSize: 24, fontWeight: 900, color: "#f9a8d4", margin: 0 }}>4.8★</p></div>
+            <div><p style={{ fontSize: 12, color: LIGHT, margin: "0 0 2px" }}>앱스토어 평점</p><p style={{ fontSize: 24, fontWeight: 900, color: TEAL, margin: 0 }}>4.9★</p></div>
+            <div><p style={{ fontSize: 12, color: LIGHT, margin: "0 0 2px" }}>구글플레이</p><p style={{ fontSize: 24, fontWeight: 900, color: TEAL, margin: 0 }}>4.8★</p></div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
             {REVIEWS.map((r, i) => (
-              <div key={i} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "16px", textAlign: "left" }}>
+              <div key={i} style={{ background: "#f0f9ff", border: `1px solid ${BORDER}`, borderRadius: 14, padding: "16px", textAlign: "left" }}>
                 <div style={{ display: "flex", gap: 1, marginBottom: 8 }}>{"★★★★★".split("").map((s, j) => <span key={j} style={{ color: "#fbbf24", fontSize: 12 }}>{s}</span>)}</div>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", margin: "0 0 8px", lineHeight: 1.6, wordBreak: "keep-all" }}>{r.text}</p>
-                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", margin: 0 }}>{r.date}</p>
+                <p style={{ fontSize: 12, color: MID, margin: "0 0 8px", lineHeight: 1.6, wordBreak: "keep-all" }}>{r.text}</p>
+                <p style={{ fontSize: 10, color: LIGHT, margin: 0 }}>{r.date}</p>
               </div>
             ))}
           </div>
@@ -228,32 +229,32 @@ export default function MomcarePage() {
 
       {/* 요금제 */}
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
-        <h2 style={{ textAlign: "center", fontSize: 22, fontWeight: 900, marginBottom: 6, color: "white" }}>요금제</h2>
-        <p style={{ textAlign: "center", fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: 20 }}>처음 7일은 모든 기능 무료 체험</p>
+        <h2 style={{ textAlign: "center", fontSize: 22, fontWeight: 900, marginBottom: 6, color: DARK }}>요금제</h2>
+        <p style={{ textAlign: "center", fontSize: 13, color: LIGHT, marginBottom: 20 }}>처음 7일은 모든 기능 무료 체험</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
-          <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "24px 20px" }}>
-            <p style={{ fontWeight: 900, fontSize: 18, color: "white", margin: "0 0 6px" }}>무료</p>
-            <p style={{ fontSize: 28, fontWeight: 900, color: "rgba(255,255,255,0.5)", margin: "0 0 12px" }}>₩0</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 2 }}>
-              <li>✅ 월 10건 기록 제한</li>
-              <li>✅ 기본 기능 제공</li>
+          <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: "24px 20px" }}>
+            <p style={{ fontWeight: 900, fontSize: 18, color: DARK, margin: "0 0 6px" }}>무료</p>
+            <p style={{ fontSize: 28, fontWeight: 900, color: LIGHT, margin: "0 0 12px" }}>₩0</p>
+            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", fontSize: 13, color: MID, lineHeight: 2 }}>
+              <li>✅ 기본 기록 기능</li>
               <li>✅ 성장 캘린더 보기</li>
+              <li>✅ 발달 운동 일부</li>
             </ul>
-            <Link href="/momcare/daily-tracker" style={{ display: "block", background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)", textAlign: "center", padding: "10px", borderRadius: 10, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>무료 시작</Link>
+            <Link href="/momcare/daily-tracker" style={{ display: "block", background: "#f0f9ff", color: TEAL, textAlign: "center", padding: "10px", borderRadius: 10, fontSize: 13, fontWeight: 700, textDecoration: "none", border: `1px solid ${BORDER}` }}>무료 시작</Link>
           </div>
-          <div style={{ background: "linear-gradient(135deg, #be185d 0%, #7c3aed 100%)", borderRadius: 16, padding: "24px 20px", boxShadow: "0 4px 24px rgba(190,24,93,0.35)" }}>
+          <div style={{ background: TEAL_GRAD, borderRadius: 16, padding: "24px 20px", boxShadow: "0 4px 24px rgba(2,132,199,0.35)" }}>
             <div style={{ display: "inline-block", background: "rgba(255,255,255,0.25)", color: "white", borderRadius: 10, padding: "2px 10px", fontSize: 11, fontWeight: 700, marginBottom: 8 }}>추천</div>
             <p style={{ fontWeight: 900, fontSize: 18, color: "white", margin: "0 0 6px" }}>PRO</p>
             <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: "0 0 4px" }}>₩9,900<span style={{ fontSize: 13, fontWeight: 400 }}>/월</span></p>
-            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", margin: "0 0 12px" }}>연간 결제 시 30% 할인 (₩83,160/년)</p>
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", margin: "0 0 12px" }}>연간 결제 시 30% 할인</p>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", fontSize: 13, color: "rgba(255,255,255,0.9)", lineHeight: 2 }}>
-              <li>✅ 무제한 기록</li>
+              <li>✅ 모든 기록 기능</li>
               <li>✅ 고급 분석 & 차트</li>
               <li>✅ WHO 백분위수 비교</li>
-              <li>✅ 무제한 발달 운동</li>
+              <li>✅ 전체 발달 운동</li>
               <li>✅ 우선 지원</li>
             </ul>
-            <button onClick={() => alert("결제 시스템 준비 중입니다! 곧 오픈됩니다.")} style={{ display: "block", width: "100%", background: "white", color: "#be185d", border: "none", padding: "10px", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>PRO 시작하기</button>
+            <button onClick={() => alert("결제 시스템 준비 중입니다! 곧 오픈됩니다.")} style={{ display: "block", width: "100%", background: "white", color: TEAL, border: "none", padding: "10px", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>PRO 시작하기</button>
           </div>
         </div>
       </div>
@@ -261,19 +262,19 @@ export default function MomcarePage() {
       {/* FAQ */}
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: 20 }}>
-          <div style={{ display: "inline-block", color: "#f9a8d4", fontSize: 12, fontWeight: 700, marginBottom: 6 }}>자주 묻는 질문</div>
-          <h2 style={{ fontSize: 22, fontWeight: 900, margin: 0, color: "white" }}>궁금한 점이 있으신가요?</h2>
+          <div style={{ display: "inline-block", color: TEAL, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>자주 묻는 질문</div>
+          <h2 style={{ fontSize: 22, fontWeight: 900, margin: 0, color: DARK }}>궁금한 점이 있으신가요?</h2>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {FAQ_ITEMS.map((item, idx) => (
-            <div key={idx} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, overflow: "hidden" }}>
-              <button onClick={() => setOpenFAQ(openFAQ === idx ? null : idx)} style={{ width: "100%", padding: "16px 20px", textAlign: "left", background: "none", border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 14, fontWeight: 700, color: "white", wordBreak: "keep-all" }}>
+            <div key={idx} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 14, overflow: "hidden" }}>
+              <button onClick={() => setOpenFAQ(openFAQ === idx ? null : idx)} style={{ width: "100%", padding: "16px 20px", textAlign: "left", background: "none", border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 14, fontWeight: 700, color: DARK, wordBreak: "keep-all" }}>
                 <span>{item.q}</span>
-                <span style={{ color: "#f9a8d4", fontSize: 20, flexShrink: 0, marginLeft: 8 }}>{openFAQ === idx ? "−" : "+"}</span>
+                <span style={{ color: TEAL, fontSize: 20, flexShrink: 0, marginLeft: 8 }}>{openFAQ === idx ? "−" : "+"}</span>
               </button>
               {openFAQ === idx && (
-                <div style={{ padding: "0 20px 16px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-                  <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", margin: "12px 0 0", lineHeight: 1.7, wordBreak: "keep-all" }}>{item.a}</p>
+                <div style={{ padding: "0 20px 16px", borderTop: `1px solid ${BORDER}` }}>
+                  <p style={{ fontSize: 13, color: MID, margin: "12px 0 0", lineHeight: 1.7, wordBreak: "keep-all" }}>{item.a}</p>
                 </div>
               )}
             </div>
@@ -283,33 +284,33 @@ export default function MomcarePage() {
 
       {/* CTA */}
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
-        <div style={{ background: "linear-gradient(135deg, rgba(190,24,93,0.3), rgba(124,58,237,0.3))", border: "1px solid rgba(249,168,212,0.2)", borderRadius: 20, padding: "40px 24px", textAlign: "center" }}>
+        <div style={{ background: TEAL_GRAD, borderRadius: 20, padding: "40px 24px", textAlign: "center", boxShadow: "0 8px 32px rgba(2,132,199,0.3)" }}>
           <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>지금 바로 맘케어를 시작하세요</h2>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", margin: "0 0 24px" }}>무료로 시작하세요. 안전합니다.</p>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: "0 0 24px" }}>무료로 시작하세요. 안전합니다.</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <button onClick={() => alert("앱스토어 출시 준비 중입니다!")} style={{ background: "white", color: "#be185d", border: "none", borderRadius: 12, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>App Store 다운로드</button>
-            <button onClick={() => alert("구글플레이 출시 준비 중입니다!")} style={{ background: "linear-gradient(135deg, #be185d, #9333ea)", color: "white", border: "none", borderRadius: 12, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Google Play 다운로드</button>
+            <button onClick={() => alert("앱스토어 출시 준비 중입니다!")} style={{ background: "white", color: TEAL, border: "none", borderRadius: 12, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>App Store 다운로드</button>
+            <button onClick={() => alert("구글플레이 출시 준비 중입니다!")} style={{ background: "rgba(255,255,255,0.2)", color: "white", border: "2px solid rgba(255,255,255,0.5)", borderRadius: 12, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Google Play 다운로드</button>
           </div>
         </div>
       </div>
 
       {/* 푸터 */}
-      <div style={{ background: "rgba(0,0,0,0.4)", borderTop: "1px solid rgba(255,255,255,0.06)", margin: "40px 0 0", padding: "32px 24px" }}>
+      <div style={{ background: "#f0f9ff", borderTop: `1px solid ${BORDER}`, margin: "40px 0 0", padding: "32px 24px" }}>
         <div style={{ maxWidth: 800, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16 }}>
           <div>
-            <p style={{ fontSize: 18, fontWeight: 900, color: "#f9a8d4", margin: "0 0 4px" }}>맘케어</p>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0 }}>함께 성장해 나가요. 모든 성장 과정과 함께.</p>
+            <p style={{ fontSize: 18, fontWeight: 900, color: TEAL, margin: "0 0 4px" }}>맘케어</p>
+            <p style={{ fontSize: 13, color: LIGHT, margin: 0 }}>함께 성장해 나가요. 모든 성장 과정과 함께.</p>
           </div>
           <div style={{ textAlign: "right" }}>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: "0 0 4px" }}>momcare@gmail.com</p>
+            <p style={{ fontSize: 13, color: LIGHT, margin: "0 0 4px" }}>momcare@gmail.com</p>
             <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 8 }}>
-              <Link href="/momcare/privacy" style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>개인정보처리방침</Link>
-              <Link href="/momcare/terms" style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>이용약관</Link>
+              <Link href="/momcare/privacy" style={{ fontSize: 12, color: LIGHT, textDecoration: "none" }}>개인정보처리방침</Link>
+              <Link href="/momcare/terms" style={{ fontSize: 12, color: LIGHT, textDecoration: "none" }}>이용약관</Link>
             </div>
           </div>
         </div>
-        <div style={{ maxWidth: 800, margin: "20px auto 0", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 16, textAlign: "center" }}>
-          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", margin: 0 }}>© 2026 MomCare. All rights reserved. | Powered by 점운</p>
+        <div style={{ maxWidth: 800, margin: "20px auto 0", borderTop: `1px solid ${BORDER}`, paddingTop: 16, textAlign: "center" }}>
+          <p style={{ fontSize: 11, color: LIGHT, margin: 0 }}>© 2026 MomCare. All rights reserved. | Powered by 점운</p>
         </div>
       </div>
 
