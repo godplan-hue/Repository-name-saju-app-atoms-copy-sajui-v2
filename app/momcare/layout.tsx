@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://i.pinimg.com/736x/85/49/1d/85491d66cfef5efe4b6382c8665c5d4b.jpg",
+        url: "https://i.pinimg.com/736x/60/67/72/60677278d2e085a017b31af4be6b9b3a.jpg",
         width: 1200,
         height: 630,
         alt: "점운 맘케어 — AI 육아 도우미",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "👶 점운 맘케어 — AI 육아 도우미",
     description: "성장 위기 캘린더부터 육아 일기까지, 맞춤 육아 앱",
-    images: ["https://i.pinimg.com/736x/85/49/1d/85491d66cfef5efe4b6382c8665c5d4b.jpg"],
+    images: ["https://i.pinimg.com/736x/60/67/72/60677278d2e085a017b31af4be6b9b3a.jpg"],
   },
 };
 
