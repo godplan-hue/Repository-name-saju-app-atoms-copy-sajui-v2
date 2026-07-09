@@ -478,14 +478,13 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         }}
       >
         {(b as any).appBanner ? (
-          <div style={{ position: "absolute", inset: 0, background: (b as any).bgImg ? "#000" : (b as any).bg, display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px 22px" }}>
+          <div style={{ position: "absolute", inset: 0, background: (b as any).bgImg ? "#000" : (b as any).bg, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "16px 22px 24px" }}>
             {(b as any).bgImg && <img src={(b as any).bgImg} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 1 }} />}
-            {(b as any).bgImg && <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.48)" }} />}
+            {(b as any).bgImg && <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.1) 100%)" }} />}
             <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column" }}>
-            <span style={{ display: "inline-block", background: (b as any).badgeBg, color: "white", fontSize: 12, fontWeight: 900, padding: "5px 14px", borderRadius: 20, marginBottom: 18, alignSelf: "flex-start" }}>{(b as any).badge}</span>
-            <div style={{ fontSize: 48, marginBottom: 10 }}>{(b as any).icon}</div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", margin: "0 0 5px", fontWeight: 600 }}>{(b as any).tagline}</p>
-            <p style={{ fontSize: 19, fontWeight: 900, color: "white", margin: "0 0 20px", lineHeight: 1.45, whiteSpace: "pre-line", wordBreak: "keep-all" }}>{(b as any).desc}</p>
+            <span style={{ display: "inline-block", background: (b as any).badgeBg, color: "white", fontSize: 12, fontWeight: 900, padding: "5px 14px", borderRadius: 20, marginBottom: 10, alignSelf: "flex-start" }}>{(b as any).badge}</span>
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", margin: "0 0 4px", fontWeight: 600 }}>{(b as any).tagline}</p>
+            <p style={{ fontSize: 18, fontWeight: 900, color: "white", margin: "0 0 14px", lineHeight: 1.4, whiteSpace: "pre-line", wordBreak: "keep-all" }}>{(b as any).desc}</p>
             <span style={{ alignSelf: "flex-start", background: (b as any).ctaColor, color: "#1a1a2e", fontSize: 13, fontWeight: 900, padding: "9px 20px", borderRadius: 20, boxShadow: `0 3px 12px rgba(0,0,0,0.3)` }}>{(b as any).cta}</span>
             </div>
           </div>
