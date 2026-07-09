@@ -225,22 +225,19 @@ export default function ResumePage() {
         </div>
 
         {/* 자소서 쓰다가 이런 생각 */}
-        <div style={{background:"linear-gradient(135deg,#1a1a2e,#2d1b69)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:16, padding:"18px 16px", marginBottom:20}}>
-          <p style={{fontSize:11, color:"#a78bfa", fontWeight:700, margin:"0 0 6px", textAlign:"center"}}>점운 × 합격서 연계</p>
-          <p style={{fontSize:14, fontWeight:900, color:"white", margin:"0 0 4px", textAlign:"center"}}>자소서 쓰다가 이런 생각 드셨죠?</p>
-          <p style={{fontSize:11, color:"#6b7280", textAlign:"center", margin:"0 0 14px"}}>취준생들이 가장 많이 찾는 사주·꿈해몽 질문</p>
-          <div style={{display:"flex", flexDirection:"column", gap:10}}>
+        <div style={{marginBottom:20}}>
+          <p style={{fontSize:13, fontWeight:900, color:"white", margin:"0 0 10px", textAlign:"center"}}>자소서 쓰다가 이런 생각 드셨죠?</p>
+          <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:8}}>
             {[
-              {icon:"🎯", title:"올해 취업이 될까요?", desc:"올해 직업운·성공운이 어떤지 사주로 확인해보세요. 지금 이직해야 할 타이밍인지, 더 준비해야 할 시기인지 알 수 있어요.", btn:"취업운 사주 보러가기 →", href:"/main-v2", btnBg:"linear-gradient(135deg,#7c3aed,#ec4899)"},
-              {icon:"🌙", title:"어젯밤 꿈이 합격 꿈?", desc:"시험장 꿈, 합격 발표 꿈, 하늘을 나는 꿈 — 취업을 앞두고 꾸는 꿈들이 무슨 의미인지 꿈해몽 AI가 풀어드려요.", btn:"합격 꿈해몽 풀기 →", href:"/haemong", btnBg:"rgba(255,255,255,0.15)"},
-              {icon:"💼", title:"내 사주에 맞는 직업은?", desc:"사주 오행으로 보는 천직(天職). 내가 타고난 재능과 가장 잘 맞는 직업군이 따로 있어요. 방향을 잃었다면 사주로 먼저 확인해보세요.", btn:"직업운 사주 보러가기 →", href:"/main-v2", btnBg:"rgba(255,255,255,0.15)"},
-            ].map(({icon,title,desc,btn,href,btnBg})=>(
-              <div key={title} style={{background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"14px 14px"}}>
-                <span style={{fontSize:28}}>{icon}</span>
-                <p style={{fontSize:13, fontWeight:700, color:"white", margin:"8px 0 6px"}}>{title}</p>
-                <p style={{fontSize:11, color:"#9ca3af", lineHeight:1.6, margin:"0 0 12px"}}>{desc}</p>
-                <Link href={href} style={{display:"inline-block", background:btnBg, border:"1px solid rgba(255,255,255,0.2)", color:"white", fontSize:11, fontWeight:700, padding:"8px 16px", borderRadius:20, textDecoration:"none"}}>{btn}</Link>
-              </div>
+              {icon:"🎯", title:"올해 취업될까?", sub:"취업운 사주 →", href:"/main-v2"},
+              {icon:"🌙", title:"합격 꿈 꿨어?", sub:"꿈해몽 풀기 →", href:"/haemong"},
+              {icon:"💼", title:"내 천직은?", sub:"직업운 보기 →", href:"/main-v2"},
+            ].map(({icon,title,sub,href})=>(
+              <Link key={title} href={href} style={{display:"block", background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"12px 10px", textDecoration:"none", textAlign:"center"}}>
+                <span style={{fontSize:22}}>{icon}</span>
+                <p style={{fontSize:11, fontWeight:700, color:"white", margin:"6px 0 4px", lineHeight:1.3}}>{title}</p>
+                <p style={{fontSize:10, color:"#a78bfa", margin:0}}>{sub}</p>
+              </Link>
             ))}
           </div>
         </div>
