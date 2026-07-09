@@ -802,7 +802,7 @@ export default function MainV2() {
       {!isPartner && (
         <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
-            <a href="/jigun" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative" }}>
+            <a href="/jigun" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "1/1", textDecoration: "none", position: "relative" }}>
               <img src="https://i.pinimg.com/1200x/58/f4/4d/58f44db77813cefefa3e5385f8c89113.jpg" alt="직운" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "8px 10px" }}>
@@ -810,7 +810,7 @@ export default function MainV2() {
                 <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", margin: 0 }}>부업 TOP 3 무료</p>
               </div>
             </a>
-            <a href="/momcare" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative" }}>
+            <a href="/momcare" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "1/1", textDecoration: "none", position: "relative" }}>
               <img src="https://i.pinimg.com/736x/51/ce/d7/51ced7bac1ca130cfed3fc2487981148.jpg" alt="맘케어" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "8px 10px" }}>
@@ -818,7 +818,7 @@ export default function MainV2() {
                 <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", margin: 0 }}>AI 육아 무료</p>
               </div>
             </a>
-            <a href="/resume" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative" }}>
+            <a href="/resume" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "1/1", textDecoration: "none", position: "relative" }}>
               <img src="https://i.pinimg.com/vwebp/1200x/f1/76/f2/f176f28342fd9a3f935617633fed37f3.webp" alt="점운 합격" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "8px 10px" }}>
