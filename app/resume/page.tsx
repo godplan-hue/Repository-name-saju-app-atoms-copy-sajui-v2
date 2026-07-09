@@ -91,14 +91,14 @@ export default function ResumePage() {
         <div className="pt-6 pb-2 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-purple-600/80 px-4 py-2 text-xs font-bold text-white">
             <Flame className="size-3.5 text-yellow-300" />
-            합격서 — AI 자소서 분석
+            🎯 점운 합격 — 사주 합격 분석
           </span>
         </div>
 
         {/* 히어로 */}
         <section className="py-14 text-center">
-          <div className="mx-auto mb-8 overflow-hidden rounded-2xl" style={{ maxWidth: 380 }}>
-            <img src="https://i.pinimg.com/736x/20/db/31/20db31650b5845cb55f9606bf6c2e711.jpg" alt="점운 합격" style={{ width: "100%", height: 220, objectFit: "cover", display: "block" }} />
+          <div className="mx-auto mb-6 overflow-hidden rounded-2xl" style={{ maxWidth: 320 }}>
+            <img src="https://i.pinimg.com/736x/20/db/31/20db31650b5845cb55f9606bf6c2e711.jpg" alt="점운 합격" style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }} />
           </div>
           <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4 text-white">합격 자소서</h1>
           <p className="text-lg text-gray-300 leading-relaxed mb-2">생년월일 + 직무 입력으로</p>
@@ -285,10 +285,10 @@ export default function ResumePage() {
           <h2 className="text-2xl font-bold text-white mb-5">당신이 받게 될 것</h2>
           <ul className="grid gap-3 sm:grid-cols-2">
             {[
-              { label: "AI 자소서 분석 + 점수 명시", tone: "purple" },
-              { label: "기업별 맞춤 수정안 제시", tone: "pink" },
-              { label: "면접 예상 질문 자동 생성", tone: "blue" },
-              { label: "합격 사례 비교 분석", tone: "purple" },
+              { label: "합격 가능성 점수 분석 (최고 96점)", tone: "purple" },
+              { label: "직무별 맞춤 합격 전략", tone: "blue" },
+              { label: "핵심 키워드 3개 제시", tone: "purple" },
+              { label: "면접 예상 질문 3개", tone: "blue" },
             ].map(({ label, tone }) => (
               <li key={label} className={`${glassCard} flex items-center gap-4 p-5`}>
                 <span className={`flex size-8 shrink-0 items-center justify-center rounded-lg border ${
