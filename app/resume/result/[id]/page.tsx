@@ -133,12 +133,20 @@ export default function ResumeResultPage() {
           </div>
         </div>
 
+        {/* 택일 연결 */}
+        <div className="rounded-2xl bg-gradient-to-br from-[#0f2027] to-[#1a3a1a] border border-green-500/30 p-6 mb-4">
+          <h2 className="text-sm font-black text-green-400 mb-2">📅 면접·지원서 제출 최적 날짜는?</h2>
+          <p className="text-xs text-gray-400 leading-relaxed mb-4">사주 택일로 합격 에너지가 강한 날짜를 고르면 같은 스펙도 더 유리합니다. 면접 날짜, 원서 제출일을 사주로 골라보세요.</p>
+          <Link href="/main-v2/taegil" className="inline-block bg-green-600 text-white text-xs font-bold px-5 py-2.5 rounded-full no-underline">합격 택일 날짜 보기 →</Link>
+        </div>
+
         {/* 사주 연결 */}
         <div className="rounded-2xl bg-gradient-to-br from-[#1a1a2e] to-[#2d1b69] border border-purple-500/30 p-6 mb-4">
           <h2 className="text-sm font-black text-purple-400 mb-2">🔮 사주로 더 깊이 확인하기</h2>
           <p className="text-xs text-gray-400 leading-relaxed mb-4">합격 점수는 티저예요. 사주 직업운·대운으로 보면 "올해가 진짜 취업 타이밍인지", "내 천직이 뭔지" 훨씬 정확하게 알 수 있어요.</p>
           <div className="flex gap-3 flex-wrap">
             <Link href="/main-v2" className="inline-block bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-bold px-5 py-2.5 rounded-full no-underline">직업운 사주 보기 →</Link>
+            <Link href="/main-v2/daewoon" className="inline-block bg-white/10 border border-white/20 text-white text-xs font-bold px-5 py-2.5 rounded-full no-underline">나의 대운 확인 →</Link>
             <Link href="/haemong" className="inline-block bg-white/10 border border-white/20 text-white text-xs font-bold px-5 py-2.5 rounded-full no-underline">합격 꿈해몽 →</Link>
           </div>
         </div>
