@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80",
+        url: "https://i.pinimg.com/736x/8d/a1/5b/8da15bc3c1f172395976e379ded6c558.jpg",
         width: 1200,
         height: 630,
         alt: "직운 — 나에게 딱 맞는 부업 찾기",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "💼 직운 — 나에게 딱 맞는 부업 찾기",
     description: "8가지 질문으로 나에게 딱 맞는 부업 TOP 3를 추천드려요",
-    images: ["https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80"],
+    images: ["https://i.pinimg.com/736x/8d/a1/5b/8da15bc3c1f172395976e379ded6c558.jpg"],
   },
 };
 
