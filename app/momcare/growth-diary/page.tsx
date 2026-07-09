@@ -127,11 +127,11 @@ export default function GrowthDiaryPage() {
                 const barPct = (val / max) * 100;
                 return (
                   <div key={m.id} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <span style={{ fontSize: 11, color: "#9ca3af", width: 80, flexShrink: 0 }}>{m.date}</span>
+                    <span style={{ fontSize: 11, color: "#6b7280", width: 80, flexShrink: 0 }}>{m.date}</span>
                     <div style={{ flex: 1, background: "#f3f4f6", borderRadius: 6, height: 20, overflow: "hidden" }}>
                       <div style={{ width: `${barPct}%`, height: "100%", background: "#3b82f6", borderRadius: 6, transition: "width 0.3s" }} />
                     </div>
-                    <span style={{ fontSize: 13, fontWeight: 700, width: 60, textAlign: "right", flexShrink: 0 }}>{val}{unit}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, width: 60, textAlign: "right", flexShrink: 0, color: "#1a1a2e" }}>{val}{unit}</span>
                   </div>
                 );
               })}
@@ -141,12 +141,12 @@ export default function GrowthDiaryPage() {
 
         {/* 기록 테이블 */}
         <div style={{ background: "white", borderRadius: 18, padding: "20px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 14px" }}>전체 기록</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 14px", color: "#111" }}>전체 기록</h3>
           {measurements.length === 0 ? (
             <p style={{ textAlign: "center", color: "#9ca3af", fontSize: 13, padding: "20px 0" }}>아직 기록이 없습니다. 첫 측정값을 입력해보세요!</p>
           ) : (
             <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13, color: "#1a1a2e" }}>
                 <thead><tr style={{ background: "#f9fafb" }}>
                   <th style={{ padding: "8px 10px", textAlign: "left", color: "#6b7280", fontWeight: 700 }}>날짜</th>
                   <th style={{ padding: "8px 10px", textAlign: "center", color: "#6b7280", fontWeight: 700 }}>몸무게</th>
@@ -157,10 +157,10 @@ export default function GrowthDiaryPage() {
                 <tbody>
                   {measurements.map(m => (
                     <tr key={m.id} style={{ borderTop: "1px solid #f3f4f6" }}>
-                      <td style={{ padding: "10px 10px" }}>{m.date}</td>
-                      <td style={{ padding: "10px", textAlign: "center" }}>{m.weight ? `${m.weight}kg` : "—"}</td>
-                      <td style={{ padding: "10px", textAlign: "center" }}>{m.height ? `${m.height}cm` : "—"}</td>
-                      <td style={{ padding: "10px", textAlign: "center" }}>{m.head ? `${m.head}cm` : "—"}</td>
+                      <td style={{ padding: "10px 10px", color: "#1a1a2e" }}>{m.date}</td>
+                      <td style={{ padding: "10px", textAlign: "center", color: "#1a1a2e" }}>{m.weight ? `${m.weight}kg` : "—"}</td>
+                      <td style={{ padding: "10px", textAlign: "center", color: "#1a1a2e" }}>{m.height ? `${m.height}cm` : "—"}</td>
+                      <td style={{ padding: "10px", textAlign: "center", color: "#1a1a2e" }}>{m.head ? `${m.head}cm` : "—"}</td>
                       <td style={{ padding: "10px 4px", textAlign: "center" }}>
                         <button onClick={() => save(measurements.filter(x => x.id !== m.id))} style={{ background: "none", border: "none", color: "#fca5a5", cursor: "pointer", fontSize: 16 }}>×</button>
                       </td>
