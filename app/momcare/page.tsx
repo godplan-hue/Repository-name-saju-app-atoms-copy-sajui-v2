@@ -21,9 +21,9 @@ const FEATURES = [
 ];
 
 const NEW_FEATURES = [
-  { icon: "📔", title: "육아 일기", desc: "오늘 하루 아이와의 특별한 순간을 일기로 남겨요. 기분·날씨·태그로 기록하고 나중에 아이와 함께 읽어보세요.", href: "/momcare/baby-diary" },
-  { icon: "💌", title: "타임캡슐 편지", desc: "지금의 감정을 미래의 아이에게 편지로 남겨요. '3살 때 열어봐', '결혼할 때 열어봐' — 잠겨있다가 그날 자동으로 열립니다.", href: "/momcare/time-capsule" },
-  { icon: "🗣️", title: "아기 말 사전", desc: '"마마"=엄마, "뚜뚜"=자동차 — 아기만의 귀여운 언어를 사전으로 기록해요. 나중에 보면 정말 보물이 될 거예요.', href: "/momcare/baby-words" },
+  { icon: "📔", title: "육아 일기", desc: "오늘 하루 아이와의 특별한 순간을 일기로 남겨요. 기분·날씨·태그로 기록하고 나중에 아이와 함께 읽어보세요.", href: "/momcare/baby-diary", img: "https://i.pinimg.com/736x/92/81/1b/92811b586cea69385bf90def243a2b6c.jpg" },
+  { icon: "💌", title: "타임캡슐 편지", desc: "지금의 감정을 미래의 아이에게 편지로 남겨요. '3살 때 열어봐', '결혼할 때 열어봐' — 잠겨있다가 그날 자동으로 열립니다.", href: "/momcare/time-capsule", img: "https://i.pinimg.com/736x/4d/aa/bb/4daabb706e85ac294e67d9e5c4b6b0b4.jpg" },
+  { icon: "🗣️", title: "아기 말 사전", desc: '"마마"=엄마, "뚜뚜"=자동차 — 아기만의 귀여운 언어를 사전으로 기록해요. 나중에 보면 정말 보물이 될 거예요.', href: "/momcare/baby-words", img: "https://i.pinimg.com/1200x/e4/d8/33/e4d83359db708f8f6d22d0b0a7cf1b0d.jpg" },
 ];
 
 const EXERCISES = [
@@ -137,11 +137,14 @@ export default function MomcarePage() {
         <p style={{ fontSize: 13, color: LIGHT, marginBottom: 20 }}>지금 SNS에서 가장 많이 공유되는 육아 기록 기능들이에요</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
           {NEW_FEATURES.map((f) => (
-            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: "24px 20px", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.08)" }}>
-              <div style={{ fontSize: 36, marginBottom: 10 }}>{f.icon}</div>
-              <h3 style={{ fontSize: 16, fontWeight: 900, color: DARK, margin: "0 0 6px", wordBreak: "keep-all" }}>{f.title}</h3>
-              <p style={{ fontSize: 12, color: MID, margin: "0 0 12px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
-              <span style={{ fontSize: 12, fontWeight: 700, color: TEAL }}>지금 기록하기 →</span>
+            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.08)" }}>
+              <img src={f.img} alt={f.title} style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }} />
+              <div style={{ padding: "18px 20px 20px" }}>
+                <div style={{ fontSize: 28, marginBottom: 8 }}>{f.icon}</div>
+                <h3 style={{ fontSize: 16, fontWeight: 900, color: DARK, margin: "0 0 6px", wordBreak: "keep-all" }}>{f.title}</h3>
+                <p style={{ fontSize: 12, color: MID, margin: "0 0 12px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
+                <span style={{ fontSize: 12, fontWeight: 700, color: TEAL }}>지금 기록하기 →</span>
+              </div>
             </Link>
           ))}
         </div>
