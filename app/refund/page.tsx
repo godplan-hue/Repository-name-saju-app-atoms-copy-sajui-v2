@@ -29,7 +29,7 @@ export default function Refund() {
           <section style={{ marginBottom: 30, padding: 16, background: "rgba(139,92,246,0.15)", borderRadius: 8, border: "1px solid rgba(139,92,246,0.4)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>서비스별 결제 안내</h2>
             <div style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 2 }}>
-              <p style={{ margin: "0 0 6px" }}>🔮 <span style={{ color: "#fbbf24" }}>점운 사주</span> — 유료 (990원 / 3,900원 / 9,900원~)</p>
+              <p style={{ margin: "0 0 6px" }}>🔮 <span style={{ color: "#fbbf24" }}>점운 사주</span> — 유료 (990원 / 2,900원 / 3,900원 / 4,900원 / 9,900원~)</p>
               <p style={{ margin: "0 0 6px" }}>🌙 <span style={{ color: "#a78bfa" }}>점운 꿈해몽</span> — <span style={{ color: "#4ade80" }}>사주 결제 시 무료 제공</span> (별도 결제 없음)</p>
               <p style={{ margin: "0 0 6px" }}>💼 <span style={{ color: "#60a5fa" }}>점운 직운 (직업·부업)</span> — <span style={{ color: "#4ade80" }}>무료 서비스</span> (결제 없음)</p>
               <p style={{ margin: "0 0 6px" }}>👶 <span style={{ color: "#f472b6" }}>점운 맘케어</span> — <span style={{ color: "#4ade80" }}>사주 결제 시 무료 제공</span> (별도 결제 없음)</p>
