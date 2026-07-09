@@ -1396,6 +1396,8 @@ function getGenericPaidTemplate(name: string, score: number, G: string, category
     return `🔮 ${name}님의 재물운을 봅니다 — ${score}점
 
 ${getDramaCard(name, oh, score, "재물", "viral")}
+${getRankCard(score, oh, "재물")}
+${getOhangTypeCard(oh, "재물")}
 
 ${zPersona}
 사주를 펼쳐보니, ${z}띠 ${ohH[oh]}(${oh}) 기운을 타고난 ${name}님의 재물 길이 보입니다. ${oh === "목" || oh === "화" ? "기회를 보면 먼저 움직이는 추진력이 당신의 재물줄을 트는 힘입니다." : oh === "토" ? "꾸준함과 신뢰가 당신의 재물을 천천히, 그러나 단단하게 쌓아 올립니다." : oh === "금" ? "명확한 기준과 결단력이 당신의 재물 흐름을 가르는 칼이 됩니다." : "통찰과 정보력이 남들보다 한발 먼저 재물의 길을 열어줍니다."}
@@ -1561,6 +1563,8 @@ ${getPersonalProfile(year, month, fe ? "여" : "남", seed, day, birthHour)}
     return `🔮 ${name}님의 연애운을 봅니다 — ${score}점
 
 ${getDramaCard(name, oh, score, "연애", "viral")}
+${getRankCard(score, oh, "연애")}
+${getOhangTypeCard(oh, "연애")}
 
 ${zPersona}
 ${fe ? "섬세하고 따뜻한 감성이" : "묵직하고 진심 어린 태도가"} ${z}띠 특유의 ${zTrait[z]}과 어우러져, ${oh === "화" ? "뜨겁고 표현이 풍부한" : oh === "수" ? "깊고 이해심 있는" : oh === "토" ? "안정적이고 믿음직한" : oh === "금" ? "진지하고 한결같은" : "천천히 그러나 변하지 않는"} 사랑의 결을 만들고 있는 것이 사주에 보입니다.
@@ -1698,6 +1702,8 @@ ${name}님의 사랑 이야기는 아직 진행 중입니다. ${score}점의 연
     return `🔮 ${name}님의 건강운을 봅니다 — ${score}점
 
 ${getDramaCard(name, oh, score, "건강", "viral")}
+${getRankCard(score, oh, "건강")}
+${getOhangTypeCard(oh, "건강")}
 
 ${zPersona}
 사주에서 당신의 몸은 ${oh === "목" ? "간과 눈, 근육·관절" : oh === "화" ? "심장과 혈관" : oh === "토" ? "비장과 소화기" : oh === "금" ? "폐와 호흡기" : "신장과 뼈·관절"} 쪽이 특히 민감하게 반응하는 체질로 보입니다. 건강은 그 무엇보다 소중한 자산이며, 모든 성공과 행복의 기반이 된다는 것을 사주는 늘 일러줍니다.
@@ -1811,6 +1817,8 @@ ${name}님, 건강한 몸과 마음이 가장 소중한 재산입니다. ${score
     return `🔮 ${name}님의 성공운을 봅니다 — ${score}점
 
 ${getDramaCard(name, oh, score, "성공", "viral")}
+${getRankCard(score, oh, "성공")}
+${getOhangTypeCard(oh, "성공")}
 
 ${zPersona}
 ${z}띠의 ${zTrait[z]}이 ${oh === "목" || oh === "화" ? "확장과 도전" : oh === "토" ? "신뢰와 지속" : oh === "금" ? "결단과 완성" : "전략과 통찰"}을 통해 성공의 길을 열어주는 것이 사주에 보입니다.
@@ -2741,6 +2749,113 @@ ${genre} · ${oh}오행 · ${score}점
 현재 ${episodeNum}화 / 16화 — ${episodeDesc}`;
 }
 
+function getOhangTypeCard(oh: string, catKey: string): string {
+  const types: Record<string, { mbti: string; vibe: string; strength: string; weakness: string }> = {
+    "목": { mbti: "ENTJ · ENFJ · ENTP", vibe: "성장·개척·도전형 — 새로운 판을 먼저 만드는 스타일", strength: "시작하는 힘, 확장 본능, 리더십", weakness: "끈기 부족, 새로움에만 반응" },
+    "화": { mbti: "ENFP · ESFP · ESFJ", vibe: "열정·표현·관계형 — 감정을 숨기지 않고 앞에 나서는 스타일", strength: "설득력, 존재감, 공감 능력", weakness: "감정 기복, 과열, 지속성 약함" },
+    "토": { mbti: "ISTJ · ISFJ · ESTJ", vibe: "안정·신뢰·지속형 — 꾸준히 자리를 지키며 쌓아가는 스타일", strength: "끈기, 신뢰감, 실용성", weakness: "변화 저항, 융통성 부족" },
+    "금": { mbti: "INTJ · ENTJ · ESTJ", vibe: "원칙·결단·완성형 — 기준이 명확하고 과감하게 결정하는 스타일", strength: "결단력, 완성도, 원칙 수호", weakness: "완벽주의, 유연성 부족" },
+    "수": { mbti: "INTP · INFJ · INTJ", vibe: "통찰·분석·깊이형 — 남들이 보지 못하는 것을 먼저 읽는 스타일", strength: "통찰력, 전략적 사고, 직관", weakness: "과잉 분석, 행동력 약함" },
+  };
+  const t = types[oh] ?? types["목"];
+  return `🔮 오행으로 알아보는 ${catKey}운 기질 유형 (MBTI와 공명)
+${oh}오행 에너지 → ${t.vibe}
+MBTI로 치면: ${t.mbti} 스타일과 가장 많이 닮아있어요
+강점: ${t.strength} / 주의: ${t.weakness}`;
+}
+
+function getRankCard(score: number, oh: string, catKey: string): string {
+  const rankPct = Math.max(5, Math.round((110 - score) * 0.8 + 5));
+  const emoji = score >= 75 ? "🏆" : score >= 60 ? "📈" : "💪";
+  const comment = score >= 75
+    ? "지금이 치고 나갈 타이밍입니다"
+    : score >= 60
+    ? "꾸준히 하면 상위권 진입이 가능합니다"
+    : "지금은 준비 시간 — 다음 상승기가 반드시 옵니다";
+  return `${emoji} ${oh}오행 ${catKey}운 오늘의 기운 지수
+전체 사주 분포 기준 — 상위 ${rankPct}%
+${comment}`;
+}
+
+function getPastLifeCard(oh: string, z: string): string {
+  const jobMap: Record<string, Record<string, string>> = {
+    "목": {
+      "쥐": "탁월한 기억력으로 왕실 문서를 관리하던 사관(史官)",
+      "소": "황무지를 일궈 마을을 세운 개척 농장주",
+      "호랑이": "새 영토를 먼저 탐험한 선발대 장수",
+      "토끼": "학문을 전파하고 후학을 키운 유학자",
+      "용": "왕에게 미래를 아뢴 천문관리",
+      "뱀": "방대한 의학 지식을 쌓은 어의(御醫)",
+      "말": "각지를 돌며 소식을 전한 전령",
+      "양": "미적 감각으로 궁궐을 꾸민 화원(畵員)",
+      "원숭이": "여러 나라 말을 구사한 통역 외교관",
+      "닭": "정교한 솜씨로 명기(名器)를 만든 도자기 장인",
+      "개": "주인을 끝까지 따른 무관(武官)",
+      "돼지": "풍요로운 창고를 관리한 봉사 관리",
+    },
+    "화": {
+      "쥐": "도성 시장에서 상인들을 이끈 거상",
+      "소": "백성에게 설법한 고승(高僧)",
+      "호랑이": "전장에서 앞장선 호위 장수",
+      "토끼": "왕실 연회를 기획한 기예인",
+      "용": "신화를 퍼뜨린 부족의 무당",
+      "뱀": "비밀 외교를 이끈 조정 참모",
+      "말": "민심을 달래는 악사",
+      "양": "미를 표현한 시인(詩人)",
+      "원숭이": "재담으로 왕을 웃긴 광대",
+      "닭": "새벽을 열어 사람들을 깨운 사원 종지기",
+      "개": "의를 지킨 의병 대장",
+      "돼지": "마을 축제를 이끈 토속신 사제",
+    },
+    "토": {
+      "쥐": "곡물 창고를 관리한 왕실 재무관",
+      "소": "소를 수십 마리 기른 마을 대장로",
+      "호랑이": "영토를 지킨 성(城) 수비 대장",
+      "토끼": "평화 협상을 이끈 외교 대신",
+      "용": "국가 기반을 설계한 건국 재상",
+      "뱀": "지혜로운 조언을 아낌없이 준 국사(國師)",
+      "말": "넓은 평원을 관할한 지방 수령",
+      "양": "마을 공동체를 하나로 묶은 축제 주관자",
+      "원숭이": "다양한 자원을 관리한 국가 행정관",
+      "닭": "기록을 완성도 있게 남긴 실록 편찬관",
+      "개": "가문을 지킨 충직한 집사",
+      "돼지": "부자지만 나눔을 실천한 마을 부호",
+    },
+    "금": {
+      "쥐": "세밀한 증거를 분석한 법관",
+      "소": "한 길만 50년 판 명장인(名匠人)",
+      "호랑이": "정의를 집행한 포도대장",
+      "토끼": "원칙을 지킨 어사",
+      "용": "나라의 법 체계를 세운 법전 편찬자",
+      "뱀": "치밀한 정보로 적을 꺾은 책략가",
+      "말": "기마대를 이끈 기병 대장",
+      "양": "섬세한 금속공예로 이름을 남긴 장인",
+      "원숭이": "계약을 중재한 상업 공증인",
+      "닭": "정밀한 무기를 제작한 군기 장인",
+      "개": "주군의 명예를 목숨으로 지킨 무사",
+      "돼지": "엄격한 기준으로 품질을 지킨 시장 감독관",
+    },
+    "수": {
+      "쥐": "쥐처럼 모은 정보로 천하를 예측한 점술가",
+      "소": "평생 관찰한 별을 기록한 천문학자",
+      "호랑이": "미지의 땅을 탐험한 지리학자",
+      "토끼": "사람의 마음을 꿰뚫어 본 명의(名醫)",
+      "용": "신에게 비를 부른 우사(雨師)",
+      "뱀": "독과 약초를 연구한 연금술사",
+      "말": "먼 땅의 지식을 가져온 실크로드 상인",
+      "양": "꿈과 환상을 해석한 해몽가",
+      "원숭이": "여러 언어로 지식을 수집한 학자",
+      "닭": "새벽마다 미래를 예언한 무녀",
+      "개": "주인의 비밀을 끝까지 지킨 충직한 측근",
+      "돼지": "깊은 산속에서 도를 닦은 선인(仙人)",
+    },
+  };
+  const job = jobMap[oh]?.[z] ?? "깊은 지혜를 품고 살았던 이름 없는 현자";
+  return `🔮 사주로 보는 나의 전생
+${oh}오행 × ${z}띠 → 전생에 ${job}였을 가능성이 높습니다
+지금의 강점과 집착, 두려움이 이 전생 업(業)에서 왔을 수 있어요`;
+}
+
 // ── 패키지 전용 고품질 템플릿 (예언형) ──
 export function getPackageTemplate(name: string, birth: string, gender: string, category: string, score: number, partnerName?: string, partnerBirth?: string, partnerGender?: string, birthHour?: string, partnerBirthHour?: string): string {
   const [y, m, d] = birth.split("-").map(Number);
@@ -3080,6 +3195,9 @@ ${name}님, 이 한 해는 사주가 당신에게 건네는 편지입니다. 이
     return `📜 ${name}님의 재물 사주 — 심층 비기 (${score}점)
 
 ${getDramaCard(name, oh, score, "재물", "premium")}
+${getRankCard(score, oh, "재물")}
+${getOhangTypeCard(oh, "재물")}
+${getPastLifeCard(oh, z)}
 
 ${z}띠 × ${ohH}(${oh}) × ${seasonTrait} 재물 지도를 펼칩니다.
 ${z}띠의 재물은 ${zMoney[z] ?? "내면의 힘에서 옵니다"}.
@@ -3305,6 +3423,9 @@ ${pick(["지금 이 시간 당신의 재물 근육을 단단하게 만들어두�
     return `📜 ${name}님의 인연 사주 — 심층 비기 (${score}점)
 
 ${getDramaCard(name, oh, score, "연애", "premium")}
+${getRankCard(score, oh, "연애")}
+${getOhangTypeCard(oh, "연애")}
+${getPastLifeCard(oh, z)}
 
 ${z}띠 × ${ohH}(${oh}) × ${seasonTrait} 인연 지도를 읽어드립니다.
 ${loveStyle}.
@@ -3463,6 +3584,9 @@ ${pick(["그 인연이 올 때 당신이 최고의 상태이길 바랍니다.", 
     return `📜 ${name}님의 몸 사주 — 심층 비기 (${score}점)
 
 ${getDramaCard(name, oh, score, "건강", "premium")}
+${getRankCard(score, oh, "건강")}
+${getOhangTypeCard(oh, "건강")}
+${getPastLifeCard(oh, z)}
 
 ${z}띠 × ${ohH}(${oh}) × ${seasonTrait} 건강 지도를 펼칩니다.
 
@@ -4447,6 +4571,9 @@ ${pick(["비로소 진짜 궁합이 완성됩니다.", "그렇게 두 사람만�
     return `📜 ${name}님의 성공운을 심층으로 봅니다 — ${score}점
 
 ${getDramaCard(name, oh, score, "성공", "premium")}
+${getRankCard(score, oh, "성공")}
+${getOhangTypeCard(oh, "성공")}
+${getPastLifeCard(oh, z)}
 
 ${z}띠 × ${ohH}(${oh}) × ${seasonTrait} ${name}님의 성공 지도를 펼칩니다.
 ${zSuccess[z] ?? "당신만의 방식으로 성공을 만들어가는 힘이 사주에 보입니다."}
