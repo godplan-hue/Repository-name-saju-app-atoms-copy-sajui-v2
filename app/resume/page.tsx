@@ -186,7 +186,18 @@ export default function ResumePage() {
           >
             🎯 무료로 합격 가능성 분석받기
           </Link>
-          <p className="text-xs text-gray-500 mt-2">생년월일 + 직무 입력 → 맞춤 전략 즉시 출력</p>
+          <p className="text-xs text-gray-500 mt-2 mb-4">생년월일 + 직무 입력 → 맞춤 전략 즉시 출력</p>
+          <button
+            onClick={() => {
+              const url = "https://jeomun.com/resume";
+              if (navigator.share) navigator.share({ title: "🎯 점운 합격 — 합격 가능성 분석", text: "사주로 취업·합격 가능성을 분석해봤어요! 친구도 해봐요", url });
+              else navigator.clipboard?.writeText(url).then(() => alert("링크가 복사됐어요! 친구에게 공유해보세요 😊"));
+            }}
+            className="inline-block bg-gradient-to-r from-yellow-400 to-amber-400 text-black text-sm font-black px-8 py-3 rounded-full shadow-lg cursor-pointer border-0"
+            style={{ boxShadow: "0 4px 20px rgba(251,191,36,0.45)" }}
+          >
+            📤 친구에게 공유하기
+          </button>
         </section>
 
         {/* 가격 카드 */}
