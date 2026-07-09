@@ -125,7 +125,7 @@ export default function GrowthCalendarPage() {
           <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px" }}>소아과 전문의와 함께 생후 156주까지의 발달 과정을 알려드립니다</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {CRISIS_WEEKS.map(c => (
-              <button key={c.week} onClick={() => setSelectedCrisis(c === selectedCrisis ? null : c)} style={{ background: c.week === currentWeek ? "#fde8d8" : "#f9fafb", border: c.week === currentWeek ? "2px solid #f97316" : "1px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <button key={c.week} onClick={() => setSelectedCrisis(c === selectedCrisis ? null : c)} style={{ background: c.week === currentWeek ? "#fde8d8" : c.color + "55", border: c.week === currentWeek ? "2px solid #f97316" : `1.5px solid ${c.color}`, borderRadius: 12, padding: "14px 16px", cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
                   <span style={{ fontSize: 13, fontWeight: 800, color: "#1a1a2e" }}>{c.week}주차 — {c.name}</span>
                   {c.week === currentWeek && <span style={{ marginLeft: 8, background: "#f97316", color: "white", borderRadius: 8, padding: "2px 8px", fontSize: 11 }}>현재</span>}
