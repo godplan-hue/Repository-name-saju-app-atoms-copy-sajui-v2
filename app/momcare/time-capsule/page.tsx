@@ -174,8 +174,8 @@ export default function TimeCapsulePage() {
             </div>
           </div>
 
-          <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="편지 제목 (선택)" style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 16px", fontSize: 16, fontWeight: 700, outline: "none", background: "white", boxSizing: "border-box", marginBottom: 12 }} />
-          <textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} placeholder="아이에게 전하고 싶은 말을 자유롭게 써보세요.\n\n지금 이 순간의 감정, 아이가 보여주는 작은 변화들, 그리고 앞으로의 바람들..." rows={14} style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 15, lineHeight: 1.8, outline: "none", resize: "none", background: "white", boxSizing: "border-box" }} />
+          <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="편지 제목 (선택)" style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 16px", fontSize: 16, fontWeight: 700, outline: "none", background: "white", color: "#1a1a2e", boxSizing: "border-box", marginBottom: 12 }} />
+          <textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} placeholder={"아이에게 전하고 싶은 말을 자유롭게 써보세요.\n\n지금 이 순간의 감정, 아이가 보여주는 작은 변화들, 그리고 앞으로의 바람들..."} rows={14} style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 15, lineHeight: 1.8, outline: "none", resize: "none", background: "white", color: "#1a1a2e", boxSizing: "border-box" }} />
         </div>
       </div>
     );

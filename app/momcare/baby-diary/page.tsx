@@ -107,8 +107,8 @@ export default function BabyDiaryPage() {
         <div style={{ maxWidth: 640, margin: "0 auto", padding: "24px 20px" }}>
           {/* 날짜 + 날씨 */}
           <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
-            <input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} style={{ flex: 1, border: "1px solid #e5e7eb", borderRadius: 10, padding: "10px 12px", fontSize: 14, outline: "none", background: "white", minWidth: 140 }} />
-            <select value={form.weather} onChange={e => setForm(f => ({ ...f, weather: e.target.value }))} style={{ border: "1px solid #e5e7eb", borderRadius: 10, padding: "10px 12px", fontSize: 14, outline: "none", background: "white" }}>
+            <input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} style={{ flex: 1, border: "1px solid #e5e7eb", borderRadius: 10, padding: "10px 12px", fontSize: 14, outline: "none", background: "white", color: "#1a1a2e", minWidth: 140 }} />
+            <select value={form.weather} onChange={e => setForm(f => ({ ...f, weather: e.target.value }))} style={{ border: "1px solid #e5e7eb", borderRadius: 10, padding: "10px 12px", fontSize: 14, outline: "none", background: "white", color: "#1a1a2e" }}>
               {WEATHERS.map(w => <option key={w} value={w}>{w}</option>)}
             </select>
           </div>
@@ -127,10 +127,10 @@ export default function BabyDiaryPage() {
           </div>
 
           {/* 제목 */}
-          <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="제목을 입력하세요 (비워두면 날짜로 자동 저장)" style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 16px", fontSize: 16, fontWeight: 700, outline: "none", background: "white", boxSizing: "border-box", marginBottom: 12 }} />
+          <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="제목을 입력하세요 (비워두면 날짜로 자동 저장)" style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 16px", fontSize: 16, fontWeight: 700, outline: "none", background: "white", color: "#1a1a2e", boxSizing: "border-box", marginBottom: 12 }} />
 
           {/* 본문 */}
-          <textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} placeholder={`오늘 ${form.weather} 날씨였어요.\n\n아기와 어떤 하루를 보냈나요? 자유롭게 기록해보세요.\n\n예: 오늘 처음으로 아기가 엄마 눈을 바라보며 웃었어요. 그 눈빛이 너무 예뻐서 눈물이 날 것 같았어요...`} rows={12} style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 15, lineHeight: 1.8, outline: "none", resize: "none", background: "white", boxSizing: "border-box", marginBottom: 14 }} />
+          <textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} placeholder={`오늘 ${form.weather} 날씨였어요.\n\n아기와 어떤 하루를 보냈나요? 자유롭게 기록해보세요.\n\n예: 오늘 처음으로 아기가 엄마 눈을 바라보며 웃었어요. 그 눈빛이 너무 예뻐서 눈물이 날 것 같았어요...`} rows={12} style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 15, lineHeight: 1.8, outline: "none", resize: "none", background: "white", color: "#1a1a2e", boxSizing: "border-box", marginBottom: 14 }} />
 
           {/* 태그 */}
           <div style={{ background: "white", borderRadius: 14, padding: "16px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
@@ -157,7 +157,7 @@ export default function BabyDiaryPage() {
 
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "24px 20px" }}>
         {/* 검색 */}
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="일기 검색..." style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 16px", fontSize: 14, outline: "none", background: "white", boxSizing: "border-box", marginBottom: 20 }} />
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="일기 검색..." style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 16px", fontSize: 14, outline: "none", background: "white", color: "#1a1a2e", boxSizing: "border-box", marginBottom: 20 }} />
 
         {/* 통계 */}
         {entries.length > 0 && (
