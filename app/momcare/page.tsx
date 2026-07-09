@@ -14,10 +14,10 @@ const CARD = "rgba(255,255,255,0.85)";
 const BORDER = "rgba(2,132,199,0.18)";
 
 const FEATURES = [
-  { icon: "📅", title: "성장 위기 캘린더", desc: "소아과 전문의와 함께 자녀의 생리·운동·언어 발달 과정(생후 156주)을 미리 알려드립니다.", href: "/momcare/growth-calendar" },
-  { icon: "🍼", title: "일일 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 시간순으로 기록하고 생활 패턴을 파악하세요.", href: "/momcare/daily-tracker" },
-  { icon: "📏", title: "성장 일기", desc: "키, 몸무게, 머리둘레를 기록하고 WHO 기준 백분위수로 아이의 성장을 추적하세요.", href: "/momcare/growth-diary" },
-  { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음마 — 아기의 소중한 첫 순간들을 카테고리별로 기록하세요.", href: "/momcare/memory-journal" },
+  { icon: "📅", title: "성장 위기 캘린더", desc: "소아과 전문의와 함께 자녀의 생리·운동·언어 발달 과정(생후 156주)을 미리 알려드립니다.", href: "/momcare/growth-calendar", img: "https://i.pinimg.com/1200x/cf/52/39/cf52396e452e1736fefb71afa511701d.jpg" },
+  { icon: "🍼", title: "일일 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 시간순으로 기록하고 생활 패턴을 파악하세요.", href: "/momcare/daily-tracker", img: "" },
+  { icon: "📏", title: "성장 일기", desc: "키, 몸무게, 머리둘레를 기록하고 WHO 기준 백분위수로 아이의 성장을 추적하세요.", href: "/momcare/growth-diary", img: "" },
+  { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음마 — 아기의 소중한 첫 순간들을 카테고리별로 기록하세요.", href: "/momcare/memory-journal", img: "" },
 ];
 
 const NEW_FEATURES = [
@@ -69,46 +69,59 @@ export default function MomcarePage() {
       </nav>
 
       {/* 히어로 */}
-      <div style={{ background: "linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(8,145,178,0.06) 50%, rgba(240,249,255,0) 100%)", padding: "60px 24px 52px", textAlign: "center" }}>
-        <div style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "4px 16px", fontSize: 12, fontWeight: 700, marginBottom: 12 }}>
-          출생부터 3세까지 AI 육아 동반자
-        </div>
-        <p style={{ fontSize: 11, color: LIGHT, marginBottom: 16, letterSpacing: "0.02em" }}>
-          탈잉 2년 연속 1위 강사 제작 · 크몽 상위 2% 프라임 전문가 검증
-        </p>
-        <h1 style={{ fontSize: "clamp(28px, 5vw, 46px)", fontWeight: 900, lineHeight: 1.2, marginBottom: 16, color: DARK, wordBreak: "keep-all" }}>
-          부모가 만든,<br />
-          <span style={{ color: TEAL }}>소아과 전문의</span>가 함께하는<br />
-          AI 육아 앱
-        </h1>
-        <p style={{ fontSize: 15, color: MID, lineHeight: 1.7, maxWidth: 440, margin: "0 auto 32px", wordBreak: "keep-all" }}>
-          성장일기, 수유·수면 기록부터 발달 단계까지,<br />우리 아이의 모든 순간을 기록하세요
-        </p>
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
-          <Link href="/momcare/daily-tracker" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "14px 28px", fontSize: 15, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>
-            무료로 시작하기
-          </Link>
-          <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "12px 24px", fontSize: 15, fontWeight: 700, textDecoration: "none" }}>
-            성장 캘린더 보기
-          </Link>
-        </div>
-        <button
-          onClick={() => {
-            const url = "https://jeomun.com/momcare";
-            if (navigator.share) navigator.share({ title: "👶 점운 맘케어 — AI 육아 앱", text: "아이 성장 기록부터 타임캡슐 편지까지! 육아 앱 써봤는데 진짜 좋아요", url });
-            else navigator.clipboard?.writeText(url).then(() => alert("링크가 복사됐어요! 친구 엄마에게 공유해보세요 😊"));
-          }}
-          style={{ background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a1a00", border: "none", borderRadius: 28, padding: "13px 32px", fontSize: 14, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 20px rgba(251,191,36,0.45)", marginBottom: 32 }}
-        >
-          📤 친구에게 공유하기
-        </button>
-        <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-          {[{ label: "앱스토어", score: "4.9" }, { label: "구글플레이", score: "4.8" }, { label: "가족", score: "200만+" }].map(b => (
-            <div key={b.label} style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 12, padding: "8px 16px", fontSize: 13 }}>
-              <span style={{ color: LIGHT }}>{b.label} </span>
-              <strong style={{ color: TEAL }}>{b.score}</strong>
+      <div style={{ background: "linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(8,145,178,0.06) 50%, rgba(240,249,255,0) 100%)", padding: "48px 24px 40px" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", display: "flex", alignItems: "center", gap: 32, flexWrap: "wrap" }}>
+          {/* 텍스트 */}
+          <div style={{ flex: 1, minWidth: 260 }}>
+            <div style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "4px 16px", fontSize: 12, fontWeight: 700, marginBottom: 12 }}>
+              출생부터 3세까지 AI 육아 동반자
             </div>
-          ))}
+            <p style={{ fontSize: 11, color: LIGHT, marginBottom: 14, letterSpacing: "0.02em" }}>
+              탈잉 2년 연속 1위 강사 제작 · 크몽 상위 2% 프라임 전문가 검증
+            </p>
+            <h1 style={{ fontSize: "clamp(26px, 4vw, 42px)", fontWeight: 900, lineHeight: 1.2, marginBottom: 14, color: DARK, wordBreak: "keep-all" }}>
+              부모가 만든,<br />
+              <span style={{ color: TEAL }}>소아과 전문의</span>가 함께하는<br />
+              AI 육아 앱
+            </h1>
+            <p style={{ fontSize: 14, color: MID, lineHeight: 1.7, marginBottom: 24, wordBreak: "keep-all" }}>
+              성장일기, 수유·수면 기록부터 발달 단계까지,<br />우리 아이의 모든 순간을 기록하세요
+            </p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
+              <Link href="/momcare/daily-tracker" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "13px 24px", fontSize: 14, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>
+                무료로 시작하기
+              </Link>
+              <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "11px 20px", fontSize: 14, fontWeight: 700, textDecoration: "none" }}>
+                성장 캘린더 보기
+              </Link>
+            </div>
+            <button
+              onClick={() => {
+                const url = "https://jeomun.com/momcare";
+                if (navigator.share) navigator.share({ title: "👶 점운 맘케어 — AI 육아 앱", text: "아이 성장 기록부터 타임캡슐 편지까지! 육아 앱 써봤는데 진짜 좋아요", url });
+                else navigator.clipboard?.writeText(url).then(() => alert("링크가 복사됐어요! 친구 엄마에게 공유해보세요 😊"));
+              }}
+              style={{ background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a1a00", border: "none", borderRadius: 28, padding: "12px 28px", fontSize: 13, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 20px rgba(251,191,36,0.45)" }}
+            >
+              📤 친구에게 공유하기
+            </button>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 18 }}>
+              {[{ label: "앱스토어", score: "4.9" }, { label: "구글플레이", score: "4.8" }, { label: "가족", score: "200만+" }].map(b => (
+                <div key={b.label} style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 12, padding: "6px 14px", fontSize: 12 }}>
+                  <span style={{ color: LIGHT }}>{b.label} </span>
+                  <strong style={{ color: TEAL }}>{b.score}</strong>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* 히어로 이미지 */}
+          <div style={{ flexShrink: 0 }}>
+            <img
+              src="https://i.pinimg.com/vwebp/1200x/50/73/a5/5073a503cb18b1cd3459fba8e402c389.webp"
+              alt="맘케어 육아 앱"
+              style={{ width: 300, height: 360, objectFit: "cover", borderRadius: 24, boxShadow: "0 12px 40px rgba(2,132,199,0.2)", display: "block" }}
+            />
+          </div>
         </div>
       </div>
 
@@ -118,11 +131,14 @@ export default function MomcarePage() {
         <p style={{ textAlign: "center", fontSize: 14, color: LIGHT, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 4가지 핵심 기능</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 16 }}>
           {FEATURES.map((f) => (
-            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, padding: "28px 24px", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.1)" }}>
-              <div style={{ fontSize: 40, marginBottom: 12 }}>{f.icon}</div>
-              <h3 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 8px", wordBreak: "keep-all" }}>{f.title}</h3>
-              <p style={{ fontSize: 13, color: MID, margin: "0 0 16px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
-              <span style={{ fontSize: 13, fontWeight: 700, color: TEAL }}>지금 사용하기 →</span>
+            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.1)" }}>
+              {f.img ? <img src={f.img} alt={f.title} style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }} /> : null}
+              <div style={{ padding: f.img ? "20px 24px 24px" : "28px 24px" }}>
+                <div style={{ fontSize: 40, marginBottom: 12 }}>{f.icon}</div>
+                <h3 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 8px", wordBreak: "keep-all" }}>{f.title}</h3>
+                <p style={{ fontSize: 13, color: MID, margin: "0 0 16px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
+                <span style={{ fontSize: 13, fontWeight: 700, color: TEAL }}>지금 사용하기 →</span>
+              </div>
             </Link>
           ))}
         </div>
