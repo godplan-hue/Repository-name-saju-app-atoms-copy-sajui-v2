@@ -110,7 +110,7 @@ export default function ResumePage() {
         </div>
 
         {/* 메인 CTA */}
-        <Link href="/resume/start" style={{display:"block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:15, fontWeight:900, padding:"16px", borderRadius:16, textDecoration:"none", textAlign:"center", marginBottom:6}}>
+        <Link href="/resume/start" style={{display:"block", background:"white", color:"#1a0a3d", fontSize:15, fontWeight:900, padding:"16px", borderRadius:16, textDecoration:"none", textAlign:"center", marginBottom:6}}>
           🎯 무료로 합격 가능성 분석받기
         </Link>
         <p style={{fontSize:11, color:"#6b7280", textAlign:"center", margin:"0 0 10px"}}>생년월일 + 직무 입력 → 맞춤 전략 즉시 출력</p>
