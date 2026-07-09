@@ -1,28 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Check, FileX, Flame, HelpCircle, RotateCcw } from "lucide-react";
 
-// 간단한 결정론적 합격운 점수 계산 (사주 천간 기반 티저)
 function calcHireScore(year: number, month: number, day: number): { score: number; comment: string; emoji: string } {
-  // 천간 (연도 기반)
   const gan = ["갑","을","병","정","무","기","경","신","임","계"];
   const ganIdx = (year - 4) % 10;
   const ganChar = gan[Math.abs(ganIdx)];
-  // 지지 (연도 기반)
-  const ji = ["자","축","인","묘","진","사","오","미","신","유","술","해"];
-  const jiIdx = (year - 4) % 12;
-
-  // 월별 가중치 (봄=취업 시즌 강)
   const monthBonus = [6, 8, 10, 9, 7, 5, 4, 5, 9, 10, 8, 6][month - 1] ?? 7;
-  // 일자별 변동
   const dayVariance = (day % 7) * 2;
-  // 천간별 특성
   const ganBonus: { [k: string]: number } = { 갑: 8, 을: 6, 병: 9, 정: 7, 무: 5, 기: 6, 경: 8, 신: 7, 임: 9, 계: 6 };
   const base = 55 + (ganBonus[ganChar] ?? 7) + monthBonus + dayVariance;
   const score = Math.min(97, Math.max(42, base));
-
   const comments: { min: number; comment: string; emoji: string }[] = [
     { min: 80, comment: "올해 취업운이 매우 강합니다. 적극적으로 도전하세요!", emoji: "🔥" },
     { min: 70, comment: "올해 안에 좋은 결과를 볼 수 있는 흐름입니다.", emoji: "✨" },
@@ -44,7 +34,6 @@ const faqItems = [
 
 export default function ResumePage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
-  const [timeLeft, setTimeLeft] = useState("07:00:00:00");
   const [birthYear, setBirthYear] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthDay, setBirthDay] = useState("");
@@ -58,36 +47,14 @@ export default function ResumePage() {
     setHireResult(calcHireScore(y, m, d));
   }
 
-  useEffect(() => {
-    const calc = () => {
-      const now = new Date();
-      const end = new Date("2026-07-31T23:59:59+09:00");
-      const diff = end.getTime() - now.getTime();
-      if (diff > 0) {
-        const d = Math.floor(diff / 86400000);
-        const h = Math.floor((diff % 86400000) / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
-        setTimeLeft(`${String(d).padStart(2,"0")}:${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`);
-      } else {
-        setTimeLeft("00:00:00:00");
-      }
-    };
-    calc();
-    const id = setInterval(calc, 1000);
-    return () => clearInterval(id);
-  }, []);
-
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#030014] text-[#F5F5F5] antialiased">
-      {/* 배경 */}
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_-8%,rgba(124,58,237,0.14),transparent_55%)]" />
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_70%_45%_at_80%_60%,rgba(59,130,246,0.08),transparent_50%)]" />
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_60%_40%_at_15%_75%,rgba(236,72,153,0.07),transparent_50%)]" />
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
 
-        {/* 뱃지 */}
         <div className="pt-6 pb-2 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-purple-600/80 px-4 py-2 text-xs font-bold text-white">
             <Flame className="size-3.5 text-yellow-300" />
@@ -95,7 +62,6 @@ export default function ResumePage() {
           </span>
         </div>
 
-        {/* 히어로 */}
         <section className="py-14 text-center">
           <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4 text-white">합격 자소서</h1>
           <p className="text-lg text-gray-300 leading-relaxed mb-2">생년월일 + 직무 입력으로</p>
@@ -106,7 +72,6 @@ export default function ResumePage() {
           </div>
         </section>
 
-        {/* 🔮 합격운 사주 점수 계산기 */}
         <section className="mb-10">
           <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-br from-[#1a1a2e] to-[#2d1b69] p-6 md:p-8">
             <div className="text-center mb-6">
@@ -177,7 +142,6 @@ export default function ResumePage() {
           </div>
         </section>
 
-        {/* 무료 분석 시작 CTA */}
         <section className="mb-6 text-center">
           <Link
             href="/resume/start"
@@ -201,20 +165,16 @@ export default function ResumePage() {
 
         {/* 가격 카드 */}
         <section className="mb-10">
-          <div className="bg-gradient-to-r from-red-600 to-pink-600 rounded-xl p-6 md:p-8">
-            <p className="text-center text-lg font-bold mb-2">유료 심층 분석 — 사주 서비스 포함</p>
-            <div className="bg-black/50 rounded-lg p-3 mb-6 border border-yellow-400 text-center">
-              <p className="text-yellow-300 font-bold text-sm">🎁 5회 풀코스에 사주 전체 서비스까지 — 따로 사면 훨씬 비싸요</p>
+          <div className="rounded-2xl border border-white/10 bg-[#1a1a2e] p-6 md:p-8">
+            <p className="text-center text-lg font-bold text-white mb-2">유료 심층 분석 — 사주 서비스 포함</p>
+            <div className="bg-white/5 rounded-lg p-3 mb-6 border border-purple-400/30 text-center">
+              <p className="text-purple-300 font-bold text-sm">🎁 5회 풀코스에 사주 전체 서비스까지 — 따로 사면 훨씬 비싸요</p>
             </div>
-            <p className="text-center text-white font-bold mb-1">⏰ 얼리버드 특가 — 정식 오픈 전 한정 (7/31 마감)</p>
-            <div className="text-center mb-5 font-mono text-yellow-300 text-2xl font-bold">{timeLeft}</div>
 
             <div className="grid md:grid-cols-2 gap-4 mb-4">
-              {/* 1회 단품 */}
               <div className="bg-gray-800 rounded-lg p-5 text-center border border-gray-600">
                 <p className="font-bold text-white mb-1">1회 분석</p>
-                <p className="text-xs text-yellow-400 font-bold mb-1">입문 · 합격률 최고 96점</p>
-                <p className="text-gray-500 text-sm line-through">원가: 20,000원</p>
+                <p className="text-xs text-yellow-400 font-bold mb-3">입문 · 합격률 최고 96점</p>
                 <p className="text-3xl font-black text-yellow-300 my-2">9,900원</p>
                 <p className="text-xs text-gray-400 mb-4">한 번 써보고 싶을 때</p>
                 <div className="text-left text-xs text-gray-300 space-y-1 border-t border-gray-700 pt-3">
@@ -230,14 +190,12 @@ export default function ResumePage() {
                 <button onClick={() => alert("결제 시스템 준비 중입니다. 곧 오픈됩니다!")} className="w-full mt-4 bg-gray-600 text-white font-black py-3 rounded-lg text-sm cursor-pointer border-none">결제하기</button>
               </div>
 
-              {/* 5회 풀코스 — 추천 */}
               <div className="bg-yellow-400 rounded-lg p-5 text-center border-4 border-yellow-300">
                 <div className="inline-block bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full mb-2">🔥 이걸 선택하세요</div>
                 <p className="font-bold text-black mb-1">5회 풀코스</p>
-                <p className="text-xs text-gray-700 font-bold mb-1">모든 기능 · 합격률 최고 98점</p>
-                <p className="text-gray-600 text-sm line-through">원가: 99,000원</p>
+                <p className="text-xs text-gray-700 font-bold mb-3">모든 기능 · 합격률 최고 98점</p>
                 <p className="text-3xl font-black text-red-600 my-2">29,900원</p>
-                <p className="text-xs text-gray-700 mb-4">회당 5,980원 · 70% 할인</p>
+                <p className="text-xs text-gray-700 mb-4">회당 5,980원</p>
                 <div className="text-left text-xs text-gray-700 space-y-1 border-t border-yellow-500 pt-3">
                   {[
                     "AI 합격 가능성 점수 (최고 98점) × 5회",
@@ -258,7 +216,6 @@ export default function ResumePage() {
           </div>
         </section>
 
-        {/* 문제 공감 */}
         <section className="py-8">
           <h2 className="text-center text-2xl font-bold text-white mb-6">혹시 이런 고민 있으신가요?</h2>
           <div className="grid md:grid-cols-3 gap-4">
@@ -277,7 +234,6 @@ export default function ResumePage() {
           </div>
         </section>
 
-        {/* 혜택 */}
         <section className="py-8">
           <h2 className="text-2xl font-bold text-white mb-5">당신이 받게 될 것</h2>
           <ul className="grid gap-3 sm:grid-cols-2">
@@ -300,7 +256,6 @@ export default function ResumePage() {
           </ul>
         </section>
 
-        {/* FAQ */}
         <section className="py-8">
           <p className="text-lg font-bold text-red-400 mb-4">자주 묻는 질문</p>
           <div className="space-y-2">
@@ -323,7 +278,6 @@ export default function ResumePage() {
           </div>
         </section>
 
-        {/* 🔮 사주/꿈해몽 연결 — 취준생의 마음속 궁금증 */}
         <section className="py-8">
           <div className="rounded-2xl bg-gradient-to-br from-[#1a1a2e] to-[#2d1b69] border border-white/10 p-8">
             <div className="text-center mb-7">
@@ -332,7 +286,6 @@ export default function ResumePage() {
               <p className="text-sm text-gray-400">취준생들이 가장 많이 찾는 사주·꿈해몽 질문</p>
             </div>
             <div className="grid md:grid-cols-3 gap-4">
-              {/* 올해 합격 사주 */}
               <div className="bg-white/8 border border-white/15 rounded-xl p-6">
                 <div className="text-3xl mb-3">🎯</div>
                 <h3 className="font-bold text-white mb-2">올해 취업이 될까요?</h3>
@@ -341,7 +294,6 @@ export default function ResumePage() {
                   취업운 사주 보러가기 →
                 </a>
               </div>
-              {/* 합격 꿈 꿈해몽 */}
               <div className="bg-white/8 border border-white/15 rounded-xl p-6">
                 <div className="text-3xl mb-3">🌙</div>
                 <h3 className="font-bold text-white mb-2">어젯밤 꿈이 합격 꿈?</h3>
@@ -350,7 +302,6 @@ export default function ResumePage() {
                   합격 꿈해몽 풀기 →
                 </a>
               </div>
-              {/* 내 적성 직업 */}
               <div className="bg-white/8 border border-white/15 rounded-xl p-6">
                 <div className="text-3xl mb-3">💼</div>
                 <h3 className="font-bold text-white mb-2">내 사주에 맞는 직업은?</h3>
@@ -363,7 +314,6 @@ export default function ResumePage() {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="py-8">
           <div className={`${glassCard} px-6 py-10 text-center`}>
             <h2 className="text-2xl font-bold text-white mb-2">지금 바로 자소서 분석 받기</h2>
@@ -372,19 +322,12 @@ export default function ResumePage() {
               onClick={() => alert("서비스 준비 중입니다. 곧 오픈됩니다!")}
               className="w-full max-w-sm bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4 rounded-full text-base font-bold text-white shadow-lg shadow-purple-900/30 hover:from-purple-400 hover:to-pink-400 transition-all"
             >
-              지금 시작하기 — 특가 할인 받기
+              지금 분석 시작하기
             </button>
             <p className="mt-3 text-xs text-gray-500">생년월일 + 직무 입력 → 맞춤 분석 즉시 출력</p>
           </div>
         </section>
 
-        {/* 타이머 */}
-        <div className="text-center py-6 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl mb-6">
-          <p className="font-bold text-white">할인 기간 남은 시간</p>
-          <p className="text-4xl font-bold mt-2 font-mono text-white">{timeLeft}</p>
-        </div>
-
-        {/* 환불 */}
         <div className="text-center pb-12 text-gray-400">
           <p className="font-semibold">✅ 24시간 100% 환불 보장</p>
           <p className="text-xs mt-1 text-gray-500">(1회 이용 후 환불 불가)</p>

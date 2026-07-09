@@ -117,7 +117,7 @@ export default function MomcarePage() {
           {/* 히어로 이미지 */}
           <div style={{ flexShrink: 0 }}>
             <img
-              src="https://i.pinimg.com/736x/9f/39/80/9f3980b0b4f8636c0ac5f4fc28558669.jpg"
+              src="https://i.pinimg.com/736x/60/67/72/60677278d2e085a017b31af4be6b9b3a.jpg"
               alt="맘케어 육아 앱"
               style={{ width: 300, height: 360, objectFit: "cover", borderRadius: 24, boxShadow: "0 12px 40px rgba(2,132,199,0.2)", display: "block" }}
             />
