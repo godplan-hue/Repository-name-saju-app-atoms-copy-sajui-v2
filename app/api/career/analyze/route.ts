@@ -106,9 +106,7 @@ export async function POST(req: NextRequest) {
     };
 
     const id = `${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
-    if (birthYear) {
-      await db.ref(`career_analyses/${id}`).set(result);
-    }
+    await db.ref(`career_analyses/${id}`).set(result);
 
     return NextResponse.json({ id, result });
   } catch (e) {
