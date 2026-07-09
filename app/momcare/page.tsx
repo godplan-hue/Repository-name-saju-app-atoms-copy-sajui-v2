@@ -331,24 +331,30 @@ export default function MomcarePage() {
       </div>
 
       {/* 푸터 */}
-      <div style={{ background: "#f0f9ff", borderTop: `1px solid ${BORDER}`, margin: "40px 0 0", padding: "32px 24px" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16 }}>
-          <div>
-            <p style={{ fontSize: 18, fontWeight: 900, color: TEAL, margin: "0 0 4px" }}>맘케어</p>
-            <p style={{ fontSize: 13, color: LIGHT, margin: 0 }}>함께 성장해 나가요. 모든 성장 과정과 함께.</p>
+      <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
+        <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#f9fafb", border: "1px solid #e5e7eb" }}>
+          <p style={{ color: "#0284c7", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 맘케어 · Powered by 점운</p>
+          <div style={{ color: "#0369a1", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
+            <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
+            <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
+            <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
+            <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
+            <p style={{ margin: 0 }}>대표전화 010-2106-2689 · 유선 031-585-7255</p>
+            <p style={{ margin: "2px 0 0", color: "#dc2626", fontWeight: 900 }}>※ 전화 문의는 받지 않습니다. 카카오톡으로 문의해 주세요.</p>
           </div>
-          <div style={{ textAlign: "right" }}>
-            <p style={{ fontSize: 13, color: LIGHT, margin: "0 0 4px" }}>momcare@gmail.com</p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 8 }}>
-              <Link href="/momcare/privacy" style={{ fontSize: 12, color: LIGHT, textDecoration: "none" }}>개인정보처리방침</Link>
-              <Link href="/momcare/terms" style={{ fontSize: 12, color: LIGHT, textDecoration: "none" }}>이용약관</Link>
-            </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", marginBottom: 10 }}>
+            <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "6px 16px", background: "#FEE500", color: "#1a1a1a", borderRadius: 20, textDecoration: "none", fontWeight: 800, fontSize: 11 }}>💬 카카오톡 문의</a>
+            <a href="mailto:info@jeomun.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #0284c7", borderRadius: 20, color: "#0284c7", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>📧 이메일 문의</a>
+          </div>
+          <div style={{ fontSize: 11 }}>
+            <a href="/terms" style={{ color: "#0284c7", textDecoration: "none", fontWeight: 600 }}>이용약관</a>
+            <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
+            <a href="/privacy" style={{ color: "#0284c7", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
+            <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
+            <a href="/refund" style={{ color: "#0284c7", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
           </div>
         </div>
-        <div style={{ maxWidth: 800, margin: "20px auto 0", borderTop: `1px solid ${BORDER}`, paddingTop: 16, textAlign: "center" }}>
-          <p style={{ fontSize: 11, color: LIGHT, margin: 0 }}>© 2026 MomCare. All rights reserved. | Powered by 점운</p>
-        </div>
-      </div>
+      </footer>
 
     </div>
   );
