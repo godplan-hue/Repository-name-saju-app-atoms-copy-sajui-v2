@@ -135,6 +135,39 @@ export default function CareerAIPage() {
               </div>
             </div>
 
+            {/* 🔥 파트너 부업 — 0원 투자 */}
+            <div style={{ background: "linear-gradient(135deg, #0f172a, #1e1b4b)", border: "2px solid rgba(124,58,237,0.5)", borderRadius: 22, padding: "28px 22px", marginBottom: 28 }}>
+              <div style={{ display: "inline-block", background: "#dc2626", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 11, fontWeight: 700, marginBottom: 12 }}>🔥 지금 가장 빠른 부업</div>
+              <h2 style={{ fontSize: 20, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3 }}>
+                <span style={{ color: "#a78bfa" }}>돈 한 푼 안 들이고</span><br />부업 시작하는 법
+              </h2>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", margin: "0 0 20px", lineHeight: 1.8 }}>
+                재고 없음 · 초기 투자 0원 · 결제·분석·고객관리 전부 자동<br />
+                <strong style={{ color: "white" }}>내 카카오·인스타·블로그</strong>로 AI 사주 서비스를 홍보하고<br />수익만 가져가는 구조
+              </p>
+              <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 16, padding: "18px 16px", marginBottom: 18 }}>
+                <div style={{ display: "grid", gap: 10 }}>
+                  {[
+                    { icon: "✅", text: "가입비 없음 — 무료로 파트너 등록" },
+                    { icon: "✅", text: "내 브랜드 이름으로 AI 사주 서비스 운영" },
+                    { icon: "✅", text: "결제·사주분석·고객관리 — 점운 시스템이 자동 처리" },
+                    { icon: "✅", text: "SNS·카카오·블로그에 링크만 공유하면 끝" },
+                    { icon: "✅", text: "월 10만~100만원 실질 수익 가능" },
+                  ].map(item => (
+                    <div key={item.text} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13, color: "rgba(255,255,255,0.8)" }}>
+                      <span>{item.icon}</span><span>{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", margin: "0 0 14px" }}>
+                실제로 탈잉 강사·블로거·인플루언서들이 부업으로 운영 중인 방식입니다
+              </p>
+              <Link href="/partner" style={{ display: "inline-block", background: "linear-gradient(135deg, #7c3aed, #ec4899)", color: "white", borderRadius: 22, padding: "13px 28px", fontSize: 14, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(124,58,237,0.4)" }}>
+                점운 파트너 무료 신청하기 →
+              </Link>
+            </div>
+
             {/* 전체 부업 목록 */}
             <h2 style={{ fontSize: 17, fontWeight: 900, marginBottom: 14 }}>10가지 추천 부업 유형</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -210,6 +243,16 @@ export default function CareerAIPage() {
                 </div>
               </div>
             ))}
+
+            {/* 파트너 부업 카드 */}
+            <div style={{ background: "linear-gradient(135deg, #0f172a, #1e1b4b)", border: "2px solid rgba(124,58,237,0.5)", borderRadius: 20, padding: "22px 20px", marginBottom: 14 }}>
+              <div style={{ display: "inline-block", background: "#dc2626", color: "white", borderRadius: 20, padding: "3px 12px", fontSize: 11, fontWeight: 700, marginBottom: 10 }}>🔥 이것도 강력 추천</div>
+              <h3 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 6px" }}>돈 한 푼 안 들이고 부업 시작</h3>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 14px", lineHeight: 1.7 }}>점운 파트너가 되면 내 SNS·카카오로 AI 사주 서비스를 판매하고 수익을 가져갑니다. 재고 없음 · 투자 0원 · 시스템 자동화</p>
+              <Link href="/partner" style={{ display: "inline-block", background: "linear-gradient(135deg, #7c3aed, #ec4899)", color: "white", borderRadius: 20, padding: "10px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+                파트너 무료 신청 →
+              </Link>
+            </div>
 
             {/* 사주 연결 */}
             <div style={{ background: "linear-gradient(135deg, #1a1a2e, #2d1b69)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 22, padding: "28px 22px", marginBottom: 20 }}>
