@@ -206,11 +206,17 @@ export default function MomcarePage() {
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
         <div style={{ background: TEAL_GRAD, borderRadius: 20, padding: "32px 24px", textAlign: "center", boxShadow: "0 4px 24px rgba(2,132,199,0.25)" }}>
           <div style={{ fontSize: 36, marginBottom: 8 }}>🎁</div>
-          <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>전체 무료</h2>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.9)", margin: "0 0 20px" }}>모든 기능을 로그인 없이 무료로 이용하세요</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 20 }}>
-            {["📅 성장 위기 캘린더", "🍼 일일 트래커", "📏 성장 일기", "📔 육아 일기", "💌 타임캡슐", "🗣️ 말 사전"].map(item => (
-              <div key={item} style={{ background: "rgba(255,255,255,0.15)", borderRadius: 12, padding: "10px 8px", fontSize: 12, color: "white", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
+          <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>무료 기능</h2>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.9)", margin: "0 0 14px" }}>로그인 없이 바로 사용하세요</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
+            {["📅 성장 위기 캘린더", "🍼 일일 트래커"].map(item => (
+              <div key={item} style={{ background: "rgba(255,255,255,0.2)", borderRadius: 12, padding: "10px 8px", fontSize: 12, color: "white", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
+            ))}
+          </div>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", margin: "0 0 10px", fontWeight: 700 }}>🔒 990원 사주 결제 시 30일 무료</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 20 }}>
+            {["📏 성장 일기", "📔 육아 일기", "💌 타임캡슐", "🗣️ 말 사전"].map(item => (
+              <div key={item} style={{ background: "rgba(0,0,0,0.15)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
             ))}
           </div>
           <Link href="/momcare/daily-tracker" style={{ display: "inline-block", background: "white", color: TEAL, borderRadius: 24, padding: "12px 32px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>
