@@ -218,6 +218,7 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/jigun",
     bg: "linear-gradient(135deg,#1e1b4b 0%,#4c1d95 55%,#1e1b4b 100%)",
+    bgImg: "https://i.pinimg.com/1200x/58/f4/4d/58f44db77813cefefa3e5385f8c89113.jpg",
     badge: "💼 직운 — 무료",
     badgeBg: "#7c3aed",
     icon: "💼",
@@ -231,6 +232,7 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/momcare",
     bg: "linear-gradient(135deg,#431407 0%,#c2410c 45%,#9a3412 100%)",
+    bgImg: "https://i.pinimg.com/736x/51/ce/d7/51ced7bac1ca130cfed3fc2487981148.jpg",
     badge: "👶 맘케어 — 무료",
     badgeBg: "#f97316",
     icon: "👶",
@@ -244,6 +246,7 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/resume",
     bg: "linear-gradient(135deg,#0f172a 0%,#1e40af 50%,#1e3a5f 100%)",
+    bgImg: "https://i.pinimg.com/vwebp/1200x/f1/76/f2/f176f28342fd9a3f935617633fed37f3.webp",
     badge: "🎯 점운 합격 — 무료",
     badgeBg: "#6366f1",
     icon: "🎯",
@@ -476,11 +479,14 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
       >
         {(b as any).appBanner ? (
           <div style={{ position: "absolute", inset: 0, background: (b as any).bg, display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px 22px" }}>
+            {(b as any).bgImg && <img src={(b as any).bgImg} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.35 }} />}
+            <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column" }}>
             <span style={{ display: "inline-block", background: (b as any).badgeBg, color: "white", fontSize: 12, fontWeight: 900, padding: "5px 14px", borderRadius: 20, marginBottom: 18, alignSelf: "flex-start" }}>{(b as any).badge}</span>
             <div style={{ fontSize: 48, marginBottom: 10 }}>{(b as any).icon}</div>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", margin: "0 0 5px", fontWeight: 600 }}>{(b as any).tagline}</p>
             <p style={{ fontSize: 19, fontWeight: 900, color: "white", margin: "0 0 20px", lineHeight: 1.45, whiteSpace: "pre-line", wordBreak: "keep-all" }}>{(b as any).desc}</p>
             <span style={{ alignSelf: "flex-start", background: (b as any).ctaColor, color: "#1a1a2e", fontSize: 13, fontWeight: 900, padding: "9px 20px", borderRadius: 20, boxShadow: `0 3px 12px rgba(0,0,0,0.3)` }}>{(b as any).cta}</span>
+            </div>
           </div>
         ) : (b as any).chatBanner ? (
           /* 반짝이는 배경 + 무엇이든 물어보세요 텍스트 */
