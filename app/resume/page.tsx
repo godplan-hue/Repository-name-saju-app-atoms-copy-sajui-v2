@@ -152,7 +152,7 @@ export default function ResumePage() {
               <p style={{fontSize:10, color:"#374151", margin:"0 0 10px"}}>회당 5,980원</p>
               <div style={{borderTop:"1px solid rgba(0,0,0,0.15)", paddingTop:8, textAlign:"left"}}>
                 {[
-                  "AI 합격 가능성 점수 (최고 98점) × 5회",
+                  "AI 합격 가능성 점수\n(최고 98점) × 5회",
                   "직무별 맞춤 합격 전략 × 5회",
                   "자소서 핵심 키워드 5개 × 5회",
                   "기업별 인재상 분석 × 5회",
@@ -163,7 +163,7 @@ export default function ResumePage() {
                   "📈 나의 대운(나이대 흐름)",
                   "📅 합격 택일 날짜 1개",
                 ].map(t=>(
-                  <p key={t} style={{fontSize:10, color:"#111", margin:"0 0 3px"}}>✅ {t}</p>
+                  <p key={t} style={{fontSize:10, color:"#111", margin:"0 0 3px", whiteSpace:"pre-line"}}>✅ {t}</p>
                 ))}
               </div>
               <button onClick={()=>alert("결제 시스템 준비 중입니다. 곧 오픈됩니다!")} style={{width:"100%", marginTop:10, background:"#dc2626", color:"white", border:"none", borderRadius:10, padding:"10px 0", fontSize:12, fontWeight:900, cursor:"pointer"}}>풀코스 결제하기</button>
