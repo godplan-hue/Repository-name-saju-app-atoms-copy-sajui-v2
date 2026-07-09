@@ -803,7 +803,7 @@ export default function MainV2() {
         <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
             <a href="/jigun" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative" }}>
-              <img src="https://i.pinimg.com/1200x/f8/bd/26/f8bd265155bf84b6478f9331a3b6c3ee.jpg" alt="직운" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img src="https://i.pinimg.com/1200x/58/f4/4d/58f44db77813cefefa3e5385f8c89113.jpg" alt="직운" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "8px 10px" }}>
                 <p style={{ fontSize: 12, fontWeight: 900, color: "white", margin: "0 0 1px" }}>💼 직운</p>
