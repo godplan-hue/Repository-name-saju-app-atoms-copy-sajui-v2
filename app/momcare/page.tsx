@@ -14,10 +14,10 @@ const CARD = "rgba(255,255,255,0.85)";
 const BORDER = "rgba(2,132,199,0.18)";
 
 const FEATURES = [
-  { icon: "📅", title: "성장 위기 캘린더", desc: "출생부터 156주까지 매주 상세한 발달 정보와 스킬 체크리스트를 제공합니다.", href: "/momcare/growth-calendar", img: "", badge: "무료", badgeColor: "#10b981" },
-  { icon: "🍼", title: "수면·수유·기저귀 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 실시간으로 기록하고 일별 요약을 확인하세요.", href: "/momcare/daily-tracker", img: "", badge: "무료", badgeColor: "#10b981" },
-  { icon: "📏", title: "성장 일기: 키, 몸무게, 둘레", desc: "아이의 성장 지표를 기록하고 WHO 표준과 비교하여 성장 상태를 확인하세요.", href: "/momcare/growth-diary", img: "", badge: "유료", badgeColor: "#f97316" },
-  { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음 — 아이의 소중한 순간들을 기록하고 공유하세요.", href: "/momcare/memory-journal", img: "", badge: "유료", badgeColor: "#f97316" },
+  { icon: "📅", title: "성장 위기 캘린더", desc: "출생부터 156주까지 매주 상세한 발달 정보와 스킬 체크리스트를 제공합니다.", href: "/momcare/growth-calendar", img: "https://i.pinimg.com/1200x/72/a2/be/72a2be97c46c03caa9365fdf83a3bad8.jpg", badge: "무료", badgeColor: "#10b981" },
+  { icon: "🍼", title: "수면·수유·기저귀 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 실시간으로 기록하고 일별 요약을 확인하세요.", href: "/momcare/daily-tracker", img: "https://i.pinimg.com/736x/92/ba/35/92ba357d9adb66bdd748ab26a1dcba84.jpg", badge: "무료", badgeColor: "#10b981" },
+  { icon: "📏", title: "성장 일기: 키, 몸무게, 둘레", desc: "아이의 성장 지표를 기록하고 WHO 표준과 비교하여 성장 상태를 확인하세요.", href: "/momcare/growth-diary", img: "https://i.pinimg.com/1200x/a6/ed/26/a6ed26f98086d16a87f0915b06877a6e.jpg", badge: "유료", badgeColor: "#f97316" },
+  { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음 — 아이의 소중한 순간들을 기록하고 공유하세요.", href: "/momcare/memory-journal", img: "https://i.pinimg.com/1200x/7b/d2/37/7bd237d913e168a76275fdbbef7f4387.jpg", badge: "유료", badgeColor: "#f97316" },
 ];
 
 const NEW_FEATURES = [
