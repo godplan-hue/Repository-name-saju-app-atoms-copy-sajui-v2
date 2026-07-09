@@ -94,7 +94,7 @@ export default function MomcarePage() {
       {/* 4가지 핵심 기능 — 캐러셀 */}
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "56px 24px 0" }}>
         <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 900, marginBottom: 8, color: DARK }}>함께 성장해요. <span style={{ color: TEAL }}>매 순간마다.</span></h2>
-        <p style={{ textAlign: "center", fontSize: 14, color: LIGHT, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 4가지 핵심 기능</p>
+        <p style={{ textAlign: "center", fontSize: 14, color: "#f97316", fontWeight: 700, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 4가지 핵심 기능</p>
 
         {/* 캐러셀 카드 */}
         <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 24, overflow: "hidden", boxShadow: "0 4px 24px rgba(2,132,199,0.12)" }}>
@@ -158,12 +158,15 @@ export default function MomcarePage() {
           <span style={{ background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "3px 12px", fontSize: 11, fontWeight: 700 }}>NEW</span>
           <h2 style={{ fontSize: 20, fontWeight: 900, margin: 0, color: DARK }}>기억이 되는 육아 <span style={{ color: TEAL }}>바이럴 기능</span></h2>
         </div>
-        <p style={{ fontSize: 13, color: LIGHT, marginBottom: 20 }}>지금 SNS에서 가장 많이 공유되는 육아 기록 기능들이에요</p>
+        <p style={{ fontSize: 13, color: "#f97316", fontWeight: 700, marginBottom: 20 }}>지금 SNS에서 가장 많이 공유되는 육아 기록 기능들이에요</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
           {NEW_FEATURES.map((f) => (
             <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.08)" }}>
               <div style={{ padding: "16px 14px 16px" }}>
-                <div style={{ fontSize: 24, marginBottom: 8 }}>{f.icon}</div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+                  <div style={{ fontSize: 24 }}>{f.icon}</div>
+                  <span style={{ background: "#f97316", color: "white", borderRadius: 20, padding: "2px 8px", fontSize: 10, fontWeight: 700 }}>🔒 유료</span>
+                </div>
                 <h3 style={{ fontSize: 14, fontWeight: 900, color: DARK, margin: "0 0 6px", wordBreak: "keep-all" }}>{f.title}</h3>
                 <p style={{ fontSize: 11, color: MID, margin: "0 0 10px", lineHeight: 1.5, wordBreak: "keep-all" }}>{f.desc}</p>
                 <span style={{ fontSize: 11, fontWeight: 700, color: TEAL }}>기록하기 →</span>
@@ -213,7 +216,7 @@ export default function MomcarePage() {
           <div style={{ textAlign: "center", marginBottom: 28 }}>
             <div style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 12, fontWeight: 700, marginBottom: 12 }}>250가지 이상의 발달 운동</div>
             <h2 style={{ fontSize: 22, fontWeight: 900, color: DARK, margin: "0 0 6px" }}>경이로운 발달 운동</h2>
-            <p style={{ fontSize: 13, color: LIGHT, margin: 0 }}>이들의 처방은 하루에 20분도 채 걸리지 않습니다</p>
+            <p style={{ fontSize: 13, color: "#f97316", fontWeight: 700, margin: 0 }}>이들의 처방은 하루에 20분도 채 걸리지 않습니다</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
             {EXERCISES.map((ex) => (
