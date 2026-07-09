@@ -261,7 +261,7 @@ export default function ResumePage() {
 
       {/* 푸터 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
-        <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#f5f3ff", border: "1.5px solid #c4b5fd" }}>
+        <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#ede9fe", border: "2px solid #a78bfa" }}>
           <p style={{ color: "#6d28d9", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 합격 · AI 동양 운세 분석</p>
           <div style={{ color: "#5b21b6", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
             <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
