@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const TEAL = "#0284c7";
@@ -14,10 +14,10 @@ const CARD = "rgba(255,255,255,0.85)";
 const BORDER = "rgba(2,132,199,0.18)";
 
 const FEATURES = [
-  { icon: "📅", title: "성장 위기 캘린더", desc: "소아과 전문의와 함께 자녀의 생리·운동·언어 발달 과정(생후 156주)을 미리 알려드립니다.", href: "/momcare/growth-calendar", img: "" },
-  { icon: "🍼", title: "일일 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 시간순으로 기록하고 생활 패턴을 파악하세요.", href: "/momcare/daily-tracker", img: "" },
-  { icon: "📏", title: "성장 일기", desc: "키, 몸무게, 머리둘레를 기록하고 WHO 기준 백분위수로 아이의 성장을 추적하세요.", href: "/momcare/growth-diary", img: "" },
-  { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음마 — 아기의 소중한 첫 순간들을 카테고리별로 기록하세요.", href: "/momcare/memory-journal", img: "" },
+  { icon: "📅", title: "성장 위기 캘린더", desc: "출생부터 156주까지 매주 상세한 발달 정보와 스킬 체크리스트를 제공합니다.", href: "/momcare/growth-calendar", img: "", badge: "무료", badgeColor: "#10b981" },
+  { icon: "🍼", title: "수면·수유·기저귀 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 실시간으로 기록하고 일별 요약을 확인하세요.", href: "/momcare/daily-tracker", img: "", badge: "무료", badgeColor: "#10b981" },
+  { icon: "📏", title: "성장 일기: 키, 몸무게, 둘레", desc: "아이의 성장 지표를 기록하고 WHO 표준과 비교하여 성장 상태를 확인하세요.", href: "/momcare/growth-diary", img: "", badge: "유료", badgeColor: "#f97316" },
+  { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음 — 아이의 소중한 순간들을 기록하고 공유하세요.", href: "/momcare/memory-journal", img: "", badge: "유료", badgeColor: "#f97316" },
 ];
 
 const NEW_FEATURES = [
@@ -51,6 +51,14 @@ const FAQ_ITEMS = [
 
 export default function MomcarePage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [featureIdx, setFeatureIdx] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(true);
+
+  useEffect(() => {
+    if (!autoPlay) return;
+    const t = setInterval(() => setFeatureIdx(i => (i + 1) % FEATURES.length), 4000);
+    return () => clearInterval(t);
+  }, [autoPlay]);
 
   return (
     <div style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", color: DARK }}>
@@ -83,21 +91,64 @@ export default function MomcarePage() {
         </div>
       </div>
 
-      {/* 4가지 핵심 기능 */}
+      {/* 4가지 핵심 기능 — 캐러셀 */}
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "56px 24px 0" }}>
         <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 900, marginBottom: 8, color: DARK }}>함께 성장해요. <span style={{ color: TEAL }}>매 순간마다.</span></h2>
         <p style={{ textAlign: "center", fontSize: 14, color: LIGHT, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 4가지 핵심 기능</p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12 }}>
-          {FEATURES.map((f) => (
-            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.1)" }}>
-              <div style={{ padding: "16px 14px" }}>
-                <div style={{ fontSize: 28, marginBottom: 8 }}>{f.icon}</div>
-                <h3 style={{ fontSize: 14, fontWeight: 900, color: DARK, margin: "0 0 6px", wordBreak: "keep-all" }}>{f.title}</h3>
-                <p style={{ fontSize: 11, color: MID, margin: "0 0 10px", lineHeight: 1.5, wordBreak: "keep-all" }}>{f.desc}</p>
-                <span style={{ fontSize: 11, fontWeight: 700, color: TEAL }}>사용하기 →</span>
+
+        {/* 캐러셀 카드 */}
+        <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 24, overflow: "hidden", boxShadow: "0 4px 24px rgba(2,132,199,0.12)" }}>
+          <div style={{ display: "flex", alignItems: "stretch", minHeight: 280 }}>
+            {/* 왼쪽: 이미지 */}
+            <div style={{ width: "42%", flexShrink: 0, position: "relative", background: "#e0f2fe", minHeight: 240 }}>
+              {FEATURES[featureIdx].img ? (
+                <img
+                  src={FEATURES[featureIdx].img}
+                  alt={FEATURES[featureIdx].title}
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              ) : (
+                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: `linear-gradient(135deg, #e0f2fe, #bae6fd)`, gap: 8 }}>
+                  <div style={{ fontSize: 56 }}>{FEATURES[featureIdx].icon}</div>
+                  <div style={{ fontSize: 11, color: "#0284c7", fontWeight: 700 }}>이미지 준비 중</div>
+                </div>
+              )}
+            </div>
+
+            {/* 오른쪽: 텍스트 */}
+            <div style={{ flex: 1, padding: "28px 24px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                <span style={{ fontSize: 13, color: TEAL, fontWeight: 700 }}>{featureIdx + 1} / {FEATURES.length}</span>
+                <span style={{ background: FEATURES[featureIdx].badgeColor, color: "white", borderRadius: 20, padding: "2px 10px", fontSize: 11, fontWeight: 700 }}>{FEATURES[featureIdx].badge}</span>
               </div>
-            </Link>
-          ))}
+              <h3 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 10px", wordBreak: "keep-all", lineHeight: 1.3 }}>{FEATURES[featureIdx].title}</h3>
+              <p style={{ fontSize: 13, color: MID, margin: "0 0 20px", lineHeight: 1.7, wordBreak: "keep-all" }}>{FEATURES[featureIdx].desc}</p>
+              <Link href={FEATURES[featureIdx].href} style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none", alignSelf: "flex-start" }}>
+                지금 사용하기 →
+              </Link>
+            </div>
+          </div>
+
+          {/* 하단: 이전/다음 + 점 */}
+          <div style={{ background: "#f0f9ff", borderTop: `1px solid ${BORDER}`, padding: "12px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <button
+              onClick={() => { setAutoPlay(false); setFeatureIdx(i => (i - 1 + FEATURES.length) % FEATURES.length); }}
+              style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 20, width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 16, color: TEAL }}
+            >‹</button>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              {FEATURES.map((_, i) => (
+                <div
+                  key={i}
+                  onClick={() => { setAutoPlay(false); setFeatureIdx(i); }}
+                  style={{ width: i === featureIdx ? 28 : 8, height: 8, borderRadius: 4, background: i === featureIdx ? TEAL : "#bae6fd", cursor: "pointer", transition: "all 0.3s ease" }}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() => { setAutoPlay(false); setFeatureIdx(i => (i + 1) % FEATURES.length); }}
+              style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 20, width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 16, color: TEAL }}
+            >›</button>
+          </div>
         </div>
       </div>
 
