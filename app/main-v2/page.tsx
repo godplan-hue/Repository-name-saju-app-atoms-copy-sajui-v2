@@ -232,7 +232,7 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/momcare",
     bg: "linear-gradient(135deg,#431407 0%,#c2410c 45%,#9a3412 100%)",
-    bgImg: "https://i.pinimg.com/736x/9f/39/80/9f3980b0b4f8636c0ac5f4fc28558669.jpg",
+    bgImg: "https://i.pinimg.com/1200x/94/6e/61/946e617d29e6525dfabb02e7c97209e4.jpg",
     badge: "👶 맘케어 — 무료",
     badgeBg: "#f97316",
     icon: "👶",
