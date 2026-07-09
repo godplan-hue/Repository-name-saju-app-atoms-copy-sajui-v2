@@ -819,7 +819,7 @@ export default function MainV2() {
               </div>
             </a>
             <a href="/resume" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative" }}>
-              <img src="https://i.pinimg.com/736x/ad/4f/81/ad4f818060ce83163cf71e9574538c68.jpg" alt="점운 합격" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img src="https://i.pinimg.com/vwebp/1200x/f1/76/f2/f176f28342fd9a3f935617633fed37f3.webp" alt="점운 합격" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "8px 10px" }}>
                 <p style={{ fontSize: 12, fontWeight: 900, color: "white", margin: "0 0 1px" }}>🎯 점운 합격</p>
