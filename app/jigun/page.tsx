@@ -140,6 +140,7 @@ export default function JigunPage() {
   const [birthYear, setBirthYear] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   const qIdx = step - 1;
 
@@ -337,15 +338,28 @@ export default function JigunPage() {
 
             {err && <p style={{ color: "#ef4444", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{err}</p>}
 
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 16, cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={e => setAgreed(e.target.checked)}
+                style={{ marginTop: 2, accentColor: "#7c3aed", width: 16, height: 16, flexShrink: 0 }}
+              />
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
+                <strong style={{ color: "rgba(255,255,255,0.75)" }}>[필수] 개인정보 수집·이용 동의</strong><br />
+                수집 항목: 이름(선택), 출생연도 / 목적: 부업 추천 서비스 제공 / 보관 기간: 3년 후 파기
+              </span>
+            </label>
+
             <button
               onClick={submit}
-              disabled={loading}
-              style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 20, padding: "16px", fontSize: 17, fontWeight: 900, cursor: loading ? "default" : "pointer", opacity: loading ? 0.7 : 1, marginBottom: 12 }}
+              disabled={loading || !agreed}
+              style={{ width: "100%", background: agreed ? "linear-gradient(135deg,#7c3aed,#ec4899)" : "rgba(255,255,255,0.1)", color: "white", border: "none", borderRadius: 20, padding: "16px", fontSize: 17, fontWeight: 900, cursor: (loading || !agreed) ? "default" : "pointer", opacity: (loading || !agreed) ? 0.5 : 1, marginBottom: 12, transition: "all 0.2s" }}
             >
               {loading ? "분석 중..." : "결과 확인하기 →"}
             </button>
             <p style={{ textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.3)" }}>
-              이름·출생연도는 분석에만 사용되며 외부 제공되지 않습니다
+              수집된 정보는 서비스 제공 외 목적으로 사용되지 않습니다
             </p>
           </div>
         )}

@@ -15,6 +15,7 @@ export default function ResumeStartPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -106,11 +107,24 @@ export default function ResumeStartPage() {
 
           {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
-          <button onClick={submit} disabled={loading} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-4 rounded-xl text-lg mt-2 disabled:opacity-50 transition-opacity">
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={e => setAgreed(e.target.checked)}
+              className="mt-0.5 w-4 h-4 shrink-0 accent-purple-500"
+            />
+            <span className="text-xs text-gray-400 leading-relaxed">
+              <strong className="text-gray-300">[필수] 개인정보 수집·이용 동의</strong><br />
+              수집 항목: 이름, 생년월일, 전화번호(선택) / 목적: 합격 전략 분석 서비스 제공 / 보관 기간: 3년 후 파기
+            </span>
+          </label>
+
+          <button onClick={submit} disabled={loading || !agreed} className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-4 rounded-xl text-lg mt-2 disabled:opacity-50 transition-opacity">
             {loading ? "분석 중..." : "합격 가능성 분석하기 →"}
           </button>
 
-          <p className="text-center text-xs text-gray-500">분석 결과는 보관되어 나중에 다시 열람 가능합니다</p>
+          <p className="text-center text-xs text-gray-500">수집된 정보는 서비스 제공 외 목적으로 사용되지 않습니다</p>
         </div>
       </div>
     </div>
