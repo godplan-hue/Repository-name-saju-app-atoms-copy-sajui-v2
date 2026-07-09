@@ -19,9 +19,9 @@ function calcHireScore(y: number, m: number, d: number) {
 }
 
 const FAQ = [
-  { q: "합격 점수가 정말 96점까지 나와?", a: "네, 생년월일 기반 사주 분석으로 44~97점 사이의 점수가 나옵니다. 직무·기업규모·생년월일 조합에 따라 달라져요." },
-  { q: "기업별로 다르게 분석해줘?", a: "기업규모(대기업·중견·스타트업·공기업 등)와 회사명을 입력하면 그에 맞는 합격 전략을 제시해드려요." },
-  { q: "환불이 되나?", a: "결제 후 24시간 이내 미사용 시 100% 환불 가능합니다. 결과지 열람 후에는 환불이 어려워요." },
+  { q: "합격 점수가 정말 96점까지 나와?", a: "생년월일 기반 사주 분석으로 44~97점 범위에서 나옵니다.\n직무·기업규모·생년월일 조합에 따라 달라져요." },
+  { q: "기업별로 다르게 분석해줘?", a: "기업규모(대기업·중견·스타트업·공기업)와\n회사명 입력 시 맞춤 전략을 제시해요." },
+  { q: "환불이 되나?", a: "결제 후 24시간 이내 미사용 시 100% 환불 가능합니다.\n결과지 열람 후에는 환불이 어려워요." },
 ];
 
 const S = {
@@ -217,7 +217,7 @@ export default function ResumePage() {
               </button>
               {openFAQ===idx&&(
                 <div style={{padding:"10px 14px", background:"#1f2937", borderTop:"1px solid #374151"}}>
-                  <p style={{fontSize:12, color:"#9ca3af", margin:0, lineHeight:1.6}}>{item.a}</p>
+                  <p style={{fontSize:12, color:"#9ca3af", margin:0, lineHeight:1.6, whiteSpace:"pre-line"}}>{item.a}</p>
                 </div>
               )}
             </div>
