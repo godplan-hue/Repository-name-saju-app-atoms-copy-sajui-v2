@@ -15,8 +15,8 @@ const BORDER = "rgba(2,132,199,0.18)";
 
 const FEATURES = [
   { icon: "📅", title: "성장 위기 캘린더", desc: "소아과 전문의와 함께 자녀의 생리·운동·언어 발달 과정(생후 156주)을 미리 알려드립니다.", href: "/momcare/growth-calendar", img: "https://i.pinimg.com/1200x/cf/52/39/cf52396e452e1736fefb71afa511701d.jpg" },
-  { icon: "🍼", title: "일일 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 시간순으로 기록하고 생활 패턴을 파악하세요.", href: "/momcare/daily-tracker", img: "" },
-  { icon: "📏", title: "성장 일기", desc: "키, 몸무게, 머리둘레를 기록하고 WHO 기준 백분위수로 아이의 성장을 추적하세요.", href: "/momcare/growth-diary", img: "" },
+  { icon: "🍼", title: "일일 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 시간순으로 기록하고 생활 패턴을 파악하세요.", href: "/momcare/daily-tracker", img: "https://i.pinimg.com/736x/76/11/35/7611357b6f520db638743208d1dd7c36.jpg" },
+  { icon: "📏", title: "성장 일기", desc: "키, 몸무게, 머리둘레를 기록하고 WHO 기준 백분위수로 아이의 성장을 추적하세요.", href: "/momcare/growth-diary", img: "https://i.pinimg.com/736x/f4/3e/d3/f43ed3640797ba838f6ee4df56e7c1de.jpg" },
   { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음마 — 아기의 소중한 첫 순간들을 카테고리별로 기록하세요.", href: "/momcare/memory-journal", img: "" },
 ];
 
