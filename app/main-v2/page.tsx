@@ -218,7 +218,7 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/jigun",
     bg: "linear-gradient(135deg,#064e3b 0%,#065f46 50%,#047857 100%)",
-    bgImg: "https://i.pinimg.com/736x/58/f4/4d/58f44db77813cefefa3e5385f8c89113.jpg",
+    bgImg: "https://i.pinimg.com/736x/d2/bb/fc/d2bbfc237cf31aa0ac32e4f1fe9934d3.jpg",
     badge: "💼 직운 — 무료",
     badgeBg: "#059669",
     icon: "💼",
