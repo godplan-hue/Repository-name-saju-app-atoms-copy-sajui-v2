@@ -129,15 +129,14 @@ export default function MomcarePage() {
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "56px 24px 0" }}>
         <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 900, marginBottom: 8, color: DARK }}>함께 성장해요. <span style={{ color: TEAL }}>매 순간마다.</span></h2>
         <p style={{ textAlign: "center", fontSize: 14, color: LIGHT, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 4가지 핵심 기능</p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12 }}>
           {FEATURES.map((f) => (
-            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.1)" }}>
-              {f.img ? <img src={f.img} alt={f.title} style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }} /> : null}
-              <div style={{ padding: f.img ? "20px 24px 24px" : "28px 24px" }}>
-                <div style={{ fontSize: 40, marginBottom: 12 }}>{f.icon}</div>
-                <h3 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 8px", wordBreak: "keep-all" }}>{f.title}</h3>
-                <p style={{ fontSize: 13, color: MID, margin: "0 0 16px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
-                <span style={{ fontSize: 13, fontWeight: 700, color: TEAL }}>지금 사용하기 →</span>
+            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.1)" }}>
+              <div style={{ padding: "16px 14px" }}>
+                <div style={{ fontSize: 28, marginBottom: 8 }}>{f.icon}</div>
+                <h3 style={{ fontSize: 14, fontWeight: 900, color: DARK, margin: "0 0 6px", wordBreak: "keep-all" }}>{f.title}</h3>
+                <p style={{ fontSize: 11, color: MID, margin: "0 0 10px", lineHeight: 1.5, wordBreak: "keep-all" }}>{f.desc}</p>
+                <span style={{ fontSize: 11, fontWeight: 700, color: TEAL }}>사용하기 →</span>
               </div>
             </Link>
           ))}
@@ -151,15 +150,14 @@ export default function MomcarePage() {
           <h2 style={{ fontSize: 20, fontWeight: 900, margin: 0, color: DARK }}>기억이 되는 육아 <span style={{ color: TEAL }}>바이럴 기능</span></h2>
         </div>
         <p style={{ fontSize: 13, color: LIGHT, marginBottom: 20 }}>지금 SNS에서 가장 많이 공유되는 육아 기록 기능들이에요</p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12 }}>
           {NEW_FEATURES.map((f) => (
-            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 20, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.08)" }}>
-              <img src={f.img} alt={f.title} style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }} />
-              <div style={{ padding: "18px 20px 20px" }}>
-                <div style={{ fontSize: 28, marginBottom: 8 }}>{f.icon}</div>
-                <h3 style={{ fontSize: 16, fontWeight: 900, color: DARK, margin: "0 0 6px", wordBreak: "keep-all" }}>{f.title}</h3>
-                <p style={{ fontSize: 12, color: MID, margin: "0 0 12px", lineHeight: 1.6, wordBreak: "keep-all" }}>{f.desc}</p>
-                <span style={{ fontSize: 12, fontWeight: 700, color: TEAL }}>지금 기록하기 →</span>
+            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.08)" }}>
+              <div style={{ padding: "16px 14px 16px" }}>
+                <div style={{ fontSize: 24, marginBottom: 8 }}>{f.icon}</div>
+                <h3 style={{ fontSize: 14, fontWeight: 900, color: DARK, margin: "0 0 6px", wordBreak: "keep-all" }}>{f.title}</h3>
+                <p style={{ fontSize: 11, color: MID, margin: "0 0 10px", lineHeight: 1.5, wordBreak: "keep-all" }}>{f.desc}</p>
+                <span style={{ fontSize: 11, fontWeight: 700, color: TEAL }}>기록하기 →</span>
               </div>
             </Link>
           ))}

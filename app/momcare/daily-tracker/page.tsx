@@ -95,13 +95,20 @@ export default function DailyTrackerPage() {
         <div style={{ background: "white", borderRadius: 18, padding: "24px 20px", marginBottom: 20, boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
           {tab === "sleep" && (
             <div style={{ textAlign: "center" }}>
-              <h3 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 8px" }}>수면 타이머</h3>
-              <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 24px" }}>시작 버튼을 눌러 수면 시간을 기록하세요</p>
+              <h3 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 8px", color: "#1a1a2e" }}>수면 타이머</h3>
+              <div style={{ background: "#f0f9ff", borderRadius: 10, padding: "10px 14px", marginBottom: 20, textAlign: "left" }}>
+                <p style={{ margin: 0, fontSize: 12, color: "#374151", lineHeight: 1.7 }}>
+                  🌙 <strong>잠들기 전 ▶ 누르기</strong><br />
+                  ☀️ <strong>일어나면 ⏹ 누르기</strong> → 수면 시간 자동 저장
+                </p>
+              </div>
               <div style={{ fontSize: 56, fontWeight: 900, fontFamily: "monospace", color: "#1a1a2e", margin: "0 0 24px" }}>{fmtSec(sleepSec)}</div>
               <button onClick={toggleSleep} style={{ width: 80, height: 80, borderRadius: "50%", background: sleepRunning ? "#fca5a5" : "#10b981", color: "white", border: "none", fontSize: 28, cursor: "pointer", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
-                {sleepRunning ? "⏸" : "▶"}
+                {sleepRunning ? "⏹" : "▶"}
               </button>
-              {sleepRunning && <p style={{ marginTop: 12, fontSize: 12, color: "#f97316", fontWeight: 700 }}>수면 중... 멈추면 자동 저장됩니다</p>}
+              <p style={{ marginTop: 12, fontSize: 12, fontWeight: 700, color: sleepRunning ? "#f97316" : "#9ca3af" }}>
+                {sleepRunning ? "수면 중... ⏹ 누르면 자동 저장됩니다" : "▶ 눌러서 시작"}
+              </p>
             </div>
           )}
 
@@ -188,7 +195,7 @@ export default function DailyTrackerPage() {
               {todayLogs.map(log => (
                 <div key={log.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 12px", background: "#f9fafb", borderRadius: 10 }}>
                   <div>
-                    <span style={{ fontSize: 13, fontWeight: 700 }}>{log.label}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{log.label}</span>
                     <span style={{ fontSize: 12, color: "#6b7280", marginLeft: 8 }}>{log.detail}</span>
                   </div>
                   <span style={{ fontSize: 12, color: "#9ca3af" }}>{log.time}</span>
