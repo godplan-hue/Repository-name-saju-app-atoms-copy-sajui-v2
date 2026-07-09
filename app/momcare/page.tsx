@@ -44,7 +44,7 @@ const REVIEWS = [
 const FAQ_ITEMS = [
   { q: "성장 위기란 무엇인가요?", a: "출생부터 3세까지 아이는 여러 번의 성장 및 발달 위기를 겪습니다. 이는 신경계와 뇌가 발달하고 아이가 새로운 능력을 보이기 시작하는 자연스러운 과정입니다. 이 시기에 아이는 보채거나 잠을 잘 못 잘 수도 있어요. 맘케어가 이 시기를 미리 알려드립니다." },
   { q: "앱 정보를 신뢰할 수 있는 이유는 무엇인가요?", a: "앱에 있는 모든 글, 설명, 발달 운동은 현직 소아과 의사들과 협력하여 제작되었습니다. AI가 근거 기반 의학 데이터를 바탕으로 아이의 성장을 분석합니다." },
-  { q: "무료로 사용할 수 있나요?", a: "네! 기본 기능은 무료로 이용하실 수 있습니다. PRO 플랜으로 업그레이드하시면 고급 분석, 우선 지원 등 모든 기능을 이용하실 수 있습니다." },
+  { q: "무료로 사용할 수 있나요?", a: "네! 맘케어의 모든 기능은 완전 무료입니다. 성장 위기 캘린더, 일일 트래커, 성장 일기, 육아 일기, 타임캡슐 편지, 아기 말 사전까지 — 로그인 없이 바로 사용하실 수 있어요." },
   { q: "아이가 여러 명이어도 사용할 수 있나요?", a: "네! 아이를 여러 명 등록하여 각각의 성장 기록을 따로 관리하실 수 있습니다. 형제자매 비교 기능도 제공됩니다." },
   { q: "WHO 성장 기준과 어떻게 비교하나요?", a: "세계보건기구(WHO)의 공식 성장 기준 데이터를 기반으로 아이의 키, 몸무게, 머리둘레를 백분위수로 비교해 드립니다. 또래 평균과의 차이를 한눈에 확인할 수 있습니다." },
 ];
@@ -246,33 +246,18 @@ export default function MomcarePage() {
 
       {/* 요금제 */}
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
-        <h2 style={{ textAlign: "center", fontSize: 22, fontWeight: 900, marginBottom: 6, color: DARK }}>요금제</h2>
-        <p style={{ textAlign: "center", fontSize: 13, color: LIGHT, marginBottom: 20 }}>처음 7일은 모든 기능 무료 체험</p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
-          <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, padding: "24px 20px" }}>
-            <p style={{ fontWeight: 900, fontSize: 18, color: DARK, margin: "0 0 6px" }}>무료</p>
-            <p style={{ fontSize: 28, fontWeight: 900, color: LIGHT, margin: "0 0 12px" }}>₩0</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", fontSize: 13, color: MID, lineHeight: 2 }}>
-              <li>✅ 기본 기록 기능</li>
-              <li>✅ 성장 캘린더 보기</li>
-              <li>✅ 발달 운동 일부</li>
-            </ul>
-            <Link href="/momcare/daily-tracker" style={{ display: "block", background: "#f0f9ff", color: TEAL, textAlign: "center", padding: "10px", borderRadius: 10, fontSize: 13, fontWeight: 700, textDecoration: "none", border: `1px solid ${BORDER}` }}>무료 시작</Link>
+        <div style={{ background: TEAL_GRAD, borderRadius: 20, padding: "32px 24px", textAlign: "center", boxShadow: "0 4px 24px rgba(2,132,199,0.25)" }}>
+          <div style={{ fontSize: 36, marginBottom: 8 }}>🎁</div>
+          <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>전체 무료</h2>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.9)", margin: "0 0 20px" }}>모든 기능을 로그인 없이 무료로 이용하세요</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 20 }}>
+            {["📅 성장 위기 캘린더", "🍼 일일 트래커", "📏 성장 일기", "📔 육아 일기", "💌 타임캡슐", "🗣️ 말 사전"].map(item => (
+              <div key={item} style={{ background: "rgba(255,255,255,0.15)", borderRadius: 12, padding: "10px 8px", fontSize: 12, color: "white", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
+            ))}
           </div>
-          <div style={{ background: TEAL_GRAD, borderRadius: 16, padding: "24px 20px", boxShadow: "0 4px 24px rgba(2,132,199,0.35)" }}>
-            <div style={{ display: "inline-block", background: "rgba(255,255,255,0.25)", color: "white", borderRadius: 10, padding: "2px 10px", fontSize: 11, fontWeight: 700, marginBottom: 8 }}>추천</div>
-            <p style={{ fontWeight: 900, fontSize: 18, color: "white", margin: "0 0 6px" }}>PRO</p>
-            <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: "0 0 4px" }}>₩9,900<span style={{ fontSize: 13, fontWeight: 400 }}>/월</span></p>
-            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", margin: "0 0 12px" }}>연간 결제 시 30% 할인</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", fontSize: 13, color: "rgba(255,255,255,0.9)", lineHeight: 2 }}>
-              <li>✅ 모든 기록 기능</li>
-              <li>✅ 고급 분석 & 차트</li>
-              <li>✅ WHO 백분위수 비교</li>
-              <li>✅ 전체 발달 운동</li>
-              <li>✅ 우선 지원</li>
-            </ul>
-            <button onClick={() => alert("결제 시스템 준비 중입니다! 곧 오픈됩니다.")} style={{ display: "block", width: "100%", background: "white", color: TEAL, border: "none", padding: "10px", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>PRO 시작하기</button>
-          </div>
+          <Link href="/momcare/daily-tracker" style={{ display: "inline-block", background: "white", color: TEAL, borderRadius: 24, padding: "12px 32px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>
+            지금 무료로 시작하기 →
+          </Link>
         </div>
       </div>
 
