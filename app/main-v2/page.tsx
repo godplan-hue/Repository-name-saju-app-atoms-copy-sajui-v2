@@ -818,11 +818,12 @@ export default function MainV2() {
                 <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", margin: 0 }}>AI 육아 무료</p>
               </div>
             </a>
-            <a href="/resume" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative", background: "linear-gradient(160deg, #1e1b4b 0%, #3730a3 50%, #6366f1 100%)" }}>
-              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 10 }}>
-                <span style={{ fontSize: 34, marginBottom: 6 }}>🎯</span>
-                <p style={{ fontSize: 12, fontWeight: 900, color: "white", margin: "0 0 2px", textAlign: "center" }}>점운 합격</p>
-                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.75)", margin: 0, textAlign: "center" }}>합격 분석 무료</p>
+            <a href="/resume" style={{ display: "block", borderRadius: 14, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative" }}>
+              <img src="https://i.pinimg.com/1200x/cf/bd/c8/cfbdc8b7d43bb843457e484eb635e22d.jpg" alt="점운 합격" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
+              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "8px 10px" }}>
+                <p style={{ fontSize: 12, fontWeight: 900, color: "white", margin: "0 0 1px" }}>🎯 점운 합격</p>
+                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", margin: 0 }}>합격 분석 무료</p>
               </div>
             </a>
           </div>
