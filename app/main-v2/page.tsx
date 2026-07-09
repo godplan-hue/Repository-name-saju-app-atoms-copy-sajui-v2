@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -326,10 +326,10 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
 }
 
 const PARTNER_PKG_LIST = [
-  { id: "yearly",        title: "기본 분析",  sub: "재물운 + 연애운",      priceFallback: "₩9,900",  customKey: "customPriceBasic",    img: "https://i.pinimg.com/1200x/24/32/ee/2432eed06907654905c7949ce4ea350d.jpg" },
+  { id: "yearly",        title: "기본 분석",  sub: "재물운 + 연애운",      priceFallback: "₩9,900",  customKey: "customPriceBasic",    img: "https://i.pinimg.com/1200x/24/32/ee/2432eed06907654905c7949ce4ea350d.jpg" },
   { id: "full",          title: "베이직",      sub: "4개 분야 심층",        priceFallback: "₩19,900", customKey: "customPriceStandard", img: "https://i.pinimg.com/1200x/5a/27/e1/5a27e1d0bf4ea71ee0dfc035f4724e5e.jpg" },
   { id: "health",        title: "프리미엄",    sub: "5개 분야 + 월별",      priceFallback: "₩24,900", customKey: "customPricePremium",  img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg" },
-  { id: "compatibility", title: "VIP 커플팩", sub: "커플 궁합 완전분析",    priceFallback: "₩29,900", customKey: "customPriceVip",      img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg" },
+  { id: "compatibility", title: "VIP 커플팩", sub: "커플 궁합 완전분석",    priceFallback: "₩29,900", customKey: "customPriceVip",      img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg" },
 ];
 
 function PartnerFortuneGrid({ brand, onPick, onBundle }: {
@@ -368,7 +368,7 @@ function PartnerFortuneGrid({ brand, onPick, onBundle }: {
       <div style={{ background: "linear-gradient(135deg, #fff0f6, #fce7f3)", borderRadius: 14, padding: "12px 14px", border: "2px solid #ffa0c5" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 900, color: "#c44569" }}>💗 심층 분析 5개 묶음</div>
+            <div style={{ fontSize: 13, fontWeight: 900, color: "#c44569" }}>💗 심층 분석 5개 묶음</div>
             <div style={{ fontSize: 10, color: "#888", marginTop: 2 }}>5개 전부 한 번에 — 묶음 특가</div>
           </div>
           <div style={{ fontSize: 20, fontWeight: 900, color: "#c44569" }}>{bundleDisplayPrice}</div>
@@ -655,7 +655,7 @@ export default function MainV2() {
       goFree(); return;
     } else {
       sessionStorage.setItem("selectedPackage", c.packageName ?? "");
-      const _pkgPreselect: Record<string, string> = { "기본 분析": "basic", "베이직": "standard", "프리미엄": "premium", "VIP 커플팩": "vip" };
+      const _pkgPreselect: Record<string, string> = { "기본 분석": "basic", "베이직": "standard", "프리미엄": "premium", "VIP 커플팩": "vip" };
       router.push(`/main-v2/payment?preselect=${_pkgPreselect[c.packageName ?? ""] || "basic"}`);
     }
   };

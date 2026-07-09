@@ -65,7 +65,6 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
 export default async function PartnerLandingPage({ params }: { params: { id: string } }) {
   const data = await getLanding(params.id);
-  if (!data) notFound();
 
   const { businessName, landing, partnerId } = data;
 
