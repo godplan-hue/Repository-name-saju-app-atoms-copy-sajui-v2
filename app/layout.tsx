@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 const SITE_TITLE = "🔮 점운 - AI 사주 분석";
 const SITE_DESC = "AI가 정밀하게 읽어내는 사주 분석, 점운에서 무료로 받아보세요";
-const SITE_IMAGE = "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg";
+const SITE_IMAGE = "https://i.pinimg.com/736x/26/c9/d4/26c9d45aeee6b66a58002ba7fc4e8388.jpg";
 
 export const metadata: Metadata = {
   title: SITE_TITLE,
