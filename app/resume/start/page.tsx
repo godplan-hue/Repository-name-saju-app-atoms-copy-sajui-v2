@@ -38,10 +38,9 @@ export default function ResumeStartPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#030014] text-[#F5F5F5] antialiased" style={{ fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_-8%,rgba(124,58,237,0.14),transparent_55%)]" />
+    <div style={{ minHeight:"100vh", overflowX:"hidden", background:"#030014", color:"#F5F5F5", fontFamily:"'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
 
-      <div className="relative z-10 mx-auto max-w-lg px-4 py-10">
+      <div style={{ maxWidth:480, margin:"0 auto", padding:"40px 16px" }}>
         <Link href="/resume" className="text-purple-400 text-sm mb-6 inline-block">← 합격자소서로</Link>
 
         <div className="text-center mb-8">
