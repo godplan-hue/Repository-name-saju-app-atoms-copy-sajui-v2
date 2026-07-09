@@ -89,7 +89,7 @@ function PayInner() {
       // planType:"free" 분석은 allAnalyses가 없어서 결제 후 결과지에 유료 내용이
       // 안 보이는 버그를 막기 위해 유료 분석을 새로 호출해 v2_result 갱신
       try {
-        const rawResult = sessionStorage.getItem("v2_result");
+        const rawResult = localStorage.getItem("v2_result");
         const savedProfile = localStorage.getItem("v2_saved_profile");
         const profile = rawResult ? JSON.parse(rawResult).profile : (savedProfile ? JSON.parse(savedProfile) : null);
         if (profile?.name && profile?.birthYear) {
@@ -109,7 +109,7 @@ function PayInner() {
           if (res.ok) {
             const data = await res.json();
             const existing = rawResult ? JSON.parse(rawResult) : {};
-            sessionStorage.setItem("v2_result", JSON.stringify({
+            localStorage.setItem("v2_result", JSON.stringify({
               ...data, category: cat, profile,
               histId: existing.histId ?? Date.now(),
               savedAt: existing.savedAt ?? new Date().toISOString(),
@@ -118,13 +118,13 @@ function PayInner() {
         }
       } catch {}
 
-      sessionStorage.setItem("v2_paid", "1");
-      sessionStorage.setItem("v2_plan", "select");
+      localStorage.setItem("v2_paid", "1");
+      localStorage.setItem("v2_plan", "select");
       if (isFreeCat) {
         try {
-          const cats = JSON.parse(sessionStorage.getItem("v2_paid_cats") || "[]");
+          const cats = JSON.parse(localStorage.getItem("v2_paid_cats") || "[]");
           if (!cats.includes("💰 재물운")) cats.push("💰 재물운");
-          sessionStorage.setItem("v2_paid_cats", JSON.stringify(cats));
+          localStorage.setItem("v2_paid_cats", JSON.stringify(cats));
         } catch {}
       }
       // 추천인 쿠폰 지급
@@ -231,9 +231,9 @@ function PayInner() {
         }
         // 결과지 tier 인식용 — 패키지 외 990/2900/3900 결제도 select로 인식되게
         if (!isTaegil) {
-          sessionStorage.setItem("v2_paid", "1");
-          sessionStorage.setItem("price", String(amount));
-          if (!sessionStorage.getItem("v2_plan")) sessionStorage.setItem("v2_plan", "select");
+          localStorage.setItem("v2_paid", "1");
+          localStorage.setItem("price", String(amount));
+          if (!localStorage.getItem("v2_plan")) localStorage.setItem("v2_plan", "select");
         }
         router.push(isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next);
       } else {

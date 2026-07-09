@@ -392,7 +392,7 @@ function V2ResultInner() {
     // sid가 URL에 있으면 세션 여부 관계없이 무조건 공유 페이지로 이동
     const sid = searchParams.get("sid");
     if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
-    const raw = sessionStorage.getItem("v2_result");
+    const raw = localStorage.getItem("v2_result");
     if (!raw) {
       router.replace("/main-v2/analysis");
       return;
@@ -401,17 +401,17 @@ function V2ResultInner() {
     if (!r.histId) {
       r.histId = Date.now();
       r.savedAt = new Date().toISOString();
-      sessionStorage.setItem("v2_result", JSON.stringify(r));
+      localStorage.setItem("v2_result", JSON.stringify(r));
     }
     setResult(r);
 
-    const price = sessionStorage.getItem("price") ?? "";
+    const price = localStorage.getItem("price") ?? "";
     const PKG_PRICES_SET = ["9900", "19900", "24900", "29900"];
     const isPackage = PKG_PRICES_SET.includes(price);
     const isSelect = price === "990";
-    const v2Paid = sessionStorage.getItem("v2_paid") === "1";
+    const v2Paid = localStorage.getItem("v2_paid") === "1";
     const isPaid = isPackage || isSelect || v2Paid;
-    const rawPlan = sessionStorage.getItem("v2_plan") ?? "";
+    const rawPlan = localStorage.getItem("v2_plan") ?? "";
     const plan = isPackage ? "package" : isSelect ? "select" : (v2Paid ? rawPlan : "");
     const detectedTier: "free" | "select" | "package" = plan === "package" ? "package" : plan === "select" ? "select" : "free";
 
@@ -427,7 +427,7 @@ function V2ResultInner() {
         const pkg = sessionStorage.getItem("selectedPackage") ?? "";
         return (PKG_CAT_MAP[pkg] ?? PKG_CAT_MAP["기본 분석"]).map(c => c.apiKey);
       }
-      const saved = sessionStorage.getItem("v2_paid_cats");
+      const saved = localStorage.getItem("v2_paid_cats");
       return saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key);
     })();
     if (isPaid) setPaidCats(cats);
@@ -479,7 +479,7 @@ function V2ResultInner() {
     if (tier !== "select" || Object.keys(allAnalyses).length > 0) return;
     const profile = result?.profile;
     if (!profile?.name || !profile?.birthYear) return;
-    const cats = (() => { try { return JSON.parse(sessionStorage.getItem("v2_paid_cats") || "[]"); } catch { return []; } })() as string[];
+    const cats = (() => { try { return JSON.parse(localStorage.getItem("v2_paid_cats") || "[]"); } catch { return []; } })() as string[];
     const primaryCat = cats[0] || "💰 재물운";
     fetch("/api/v2/analyze", {
       method: "POST",
@@ -496,9 +496,9 @@ function V2ResultInner() {
     .then(r => r.ok ? r.json() : null)
     .then(data => {
       if (!data?.allAnalyses) return;
-      const existing = (() => { try { return JSON.parse(sessionStorage.getItem("v2_result") || "{}"); } catch { return {}; } })();
+      const existing = (() => { try { return JSON.parse(localStorage.getItem("v2_result") || "{}"); } catch { return {}; } })();
       const newResult = { ...data, category: primaryCat, profile, histId: existing.histId ?? Date.now(), savedAt: existing.savedAt ?? new Date().toISOString() };
-      sessionStorage.setItem("v2_result", JSON.stringify(newResult));
+      localStorage.setItem("v2_result", JSON.stringify(newResult));
       setAllAnalyses(data.allAnalyses);
       setResult((prev: any) => ({ ...prev, ...data }));
     })
@@ -545,8 +545,8 @@ function V2ResultInner() {
 
   const goToPay = () => {
     if (selectedCats.length === 0) return;
-    sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
-    sessionStorage.setItem("v2_plan", "select");
+    localStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
+    localStorage.setItem("v2_plan", "select");
     setShowSelect(false);
     router.push("/main-v2/payment");
   };
@@ -576,12 +576,12 @@ function V2ResultInner() {
           const histId = result?.histId ?? Date.now();
           const savedAt = result?.savedAt ?? new Date().toISOString();
           const newResult = { ...data, category, profile, histId, savedAt };
-          sessionStorage.setItem("v2_result", JSON.stringify(newResult));
+          localStorage.setItem("v2_result", JSON.stringify(newResult));
         }
       }
-      sessionStorage.setItem("v2_paid", "1");
-      sessionStorage.setItem("v2_plan", selPlan);
-      sessionStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
+      localStorage.setItem("v2_paid", "1");
+      localStorage.setItem("v2_plan", selPlan);
+      localStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
       if (profile?.name && profile?.birthYear) {
         const _d = new Date();
         const _tk = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,"0")}-${String(_d.getDate()).padStart(2,"0")}`;
@@ -1209,7 +1209,7 @@ function V2ResultInner() {
         {profile?.name && profile?.birthYear && (
           <button
             onClick={() => {
-              sessionStorage.setItem("v2_plan", paid ? "select" : "free");
+              localStorage.setItem("v2_plan", paid ? "select" : "free");
               router.push("/main-v2/qa-list");
             }}
             style={{ width: "100%", padding: "14px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}
@@ -1621,7 +1621,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
+            <button onClick={() => { localStorage.removeItem("v2_paid"); localStorage.removeItem("v2_paid_cats"); localStorage.removeItem("price"); router.push("/main-v2/payment"); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
               🔮 다시 분석
             </button>
@@ -1643,7 +1643,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { sessionStorage.removeItem("v2_paid"); sessionStorage.removeItem("v2_paid_cats"); sessionStorage.removeItem("price"); router.push("/main-v2/payment"); }}
+            <button onClick={() => { localStorage.removeItem("v2_paid"); localStorage.removeItem("v2_paid_cats"); localStorage.removeItem("price"); router.push("/main-v2/payment"); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
               🔮 다시 분석
             </button>
