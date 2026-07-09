@@ -10,6 +10,12 @@ const FEATURES = [
   { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음마 — 아기의 소중한 첫 순간들을 카테고리별로 기록하세요.", href: "/momcare/memory-journal", color: "#fef3c7" },
 ];
 
+const NEW_FEATURES = [
+  { icon: "📔", title: "육아 일기", desc: "오늘 하루 아이와의 특별한 순간을 일기로 남겨요. 기분·날씨·태그로 기록하고 나중에 아이와 함께 읽어보세요.", href: "/momcare/baby-diary", color: "#ede9fe" },
+  { icon: "💌", title: "타임캡슐 편지", desc: "지금의 감정을 미래의 아이에게 편지로 남겨요. '3살 때 열어봐', '결혼할 때 열어봐' — 잠겨있다가 그날 자동으로 열립니다.", href: "/momcare/time-capsule", color: "#fef9c3" },
+  { icon: "🗣️", title: "아기 말 사전", desc: '\"마마\"=엄마, \"뚜뚜\"=자동차 — 아기만의 귀여운 언어를 사전으로 기록해요. 나중에 보면 정말 보물이 될 거예요.', href: "/momcare/baby-words", color: "#dcfce7" },
+];
+
 const EXERCISES = [
   { emoji: "🛁", title: "욕조에서 목욕하기", age: "0~7 달", desc: "목욕 시간은 아이에게 새로운 정서적 경험을 선사하는 중요한 의식입니다." },
   { emoji: "👣", title: '발에 있는 "숫자 8" 모양', age: "0~7 달", desc: "엄지손가락으로 숫자 8 모양을 그려 부드럽게 눌러주세요. 4~6회 반복합니다." },
@@ -42,11 +48,13 @@ export default function MomcarePage() {
       {/* 네비게이션 */}
       <nav style={{ background: "white", borderBottom: "1px solid #e5e7eb", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 50 }}>
         <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: "#f97316", textDecoration: "none" }}>맘케어</Link>
-        <div style={{ display: "flex", gap: 8 }}>
-          <Link href="/momcare/growth-calendar" style={{ fontSize: 12, color: "#6b7280", textDecoration: "none", padding: "6px 10px" }}>캘린더</Link>
-          <Link href="/momcare/daily-tracker" style={{ fontSize: 12, color: "#6b7280", textDecoration: "none", padding: "6px 10px" }}>트래커</Link>
-          <Link href="/momcare/growth-diary" style={{ fontSize: 12, color: "#6b7280", textDecoration: "none", padding: "6px 10px" }}>성장일기</Link>
-          <Link href="/momcare/memory-journal" style={{ fontSize: 12, color: "#6b7280", textDecoration: "none", padding: "6px 10px" }}>추억저널</Link>
+        <div style={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+          <Link href="/momcare/growth-calendar" style={{ fontSize: 11, color: "#6b7280", textDecoration: "none", padding: "5px 7px" }}>캘린더</Link>
+          <Link href="/momcare/daily-tracker" style={{ fontSize: 11, color: "#6b7280", textDecoration: "none", padding: "5px 7px" }}>트래커</Link>
+          <Link href="/momcare/growth-diary" style={{ fontSize: 11, color: "#6b7280", textDecoration: "none", padding: "5px 7px" }}>성장일기</Link>
+          <Link href="/momcare/baby-diary" style={{ fontSize: 11, color: "#6b7280", textDecoration: "none", padding: "5px 7px" }}>육아일기</Link>
+          <Link href="/momcare/time-capsule" style={{ fontSize: 11, color: "#6b7280", textDecoration: "none", padding: "5px 7px" }}>타임캡슐</Link>
+          <Link href="/momcare/baby-words" style={{ fontSize: 11, color: "#6b7280", textDecoration: "none", padding: "5px 7px" }}>말사전</Link>
         </div>
       </nav>
 
@@ -94,6 +102,68 @@ export default function MomcarePage() {
               <span style={{ fontSize: 13, fontWeight: 700, color: "#f97316" }}>지금 사용하기 →</span>
             </Link>
           ))}
+        </div>
+      </div>
+
+      {/* ✨ 신규 바이럴 기능 3종 */}
+      <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+          <span style={{ background: "#7c3aed", color: "white", borderRadius: 20, padding: "3px 12px", fontSize: 11, fontWeight: 700 }}>NEW</span>
+          <h2 style={{ fontSize: 20, fontWeight: 900, margin: 0 }}>기억이 되는 육아 <span style={{ color: "#7c3aed" }}>바이럴 기능</span></h2>
+        </div>
+        <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 20 }}>지금 SNS에서 가장 많이 공유되는 육아 기록 기능들이에요</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
+          {NEW_FEATURES.map((f) => (
+            <Link key={f.href} href={f.href} style={{ background: f.color, borderRadius: 20, padding: "24px 20px", textDecoration: "none", color: "inherit", display: "block", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
+              <div style={{ fontSize: 36, marginBottom: 10 }}>{f.icon}</div>
+              <h3 style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px" }}>{f.title}</h3>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: "0 0 12px", lineHeight: 1.6 }}>{f.desc}</p>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>지금 기록하기 →</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* 🔮 점운 앱 연결 — 엄마들의 마음속 궁금증 */}
+      <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
+        <div style={{ background: "linear-gradient(135deg, #1a1a2e 0%, #2d1b69 100%)", borderRadius: 24, padding: "40px 28px", color: "white" }}>
+          <div style={{ textAlign: "center", marginBottom: 28 }}>
+            <span style={{ background: "rgba(255,255,255,0.15)", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 11, fontWeight: 700 }}>점운 × 맘케어 연결</span>
+            <h2 style={{ fontSize: 20, fontWeight: 900, margin: "12px 0 6px" }}>아이를 키우다 보면 이런 생각 드시죠?</h2>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", margin: 0 }}>엄마들이 가장 많이 찾는 사주·꿈해몽 질문들</p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 }}>
+            {/* 태몽 → 꿈해몽 */}
+            <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 18, padding: "22px 20px", border: "1px solid rgba(255,255,255,0.15)" }}>
+              <div style={{ fontSize: 32, marginBottom: 8 }}>🌙</div>
+              <h3 style={{ fontSize: 15, fontWeight: 800, margin: "0 0 8px" }}>어젯밤 꿈, 태몽일까요?</h3>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", margin: "0 0 16px", lineHeight: 1.7 }}>임신 중 꾼 꿈, 아기가 태어난 후 꾼 꿈 — 태몽인지 아닌지 꿈해몽 AI가 풀어드려요. 비룡, 물고기, 아기 꿈의 의미가 궁금하다면?</p>
+              <Link href="/haemong" style={{ display: "inline-block", background: "rgba(255,255,255,0.15)", color: "white", borderRadius: 20, padding: "9px 20px", fontSize: 12, fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.3)" }}>
+                꿈해몽 앱에서 태몽 풀기 →
+              </Link>
+            </div>
+            {/* 아이 건강운/성장운 → 사주 */}
+            <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 18, padding: "22px 20px", border: "1px solid rgba(255,255,255,0.15)" }}>
+              <div style={{ fontSize: 32, marginBottom: 8 }}>🔮</div>
+              <h3 style={{ fontSize: 15, fontWeight: 800, margin: "0 0 8px" }}>우리 아이, 건강하게 클까요?</h3>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", margin: "0 0 16px", lineHeight: 1.7 }}>아이의 생년월일로 보는 건강운·성공운·재능운. 어떤 재능을 타고났는지, 어느 분야에서 빛날지 사주 AI가 알려드려요.</p>
+              <Link href="/main-v2" style={{ display: "inline-block", background: "linear-gradient(135deg, #ec4899, #f97316)", color: "white", borderRadius: 20, padding: "9px 20px", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
+                아이 사주 무료로 보기 →
+              </Link>
+            </div>
+            {/* 육아 스트레스 → 엄마 사주 */}
+            <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 18, padding: "22px 20px", border: "1px solid rgba(255,255,255,0.15)" }}>
+              <div style={{ fontSize: 32, marginBottom: 8 }}>🌸</div>
+              <h3 style={{ fontSize: 15, fontWeight: 800, margin: "0 0 8px" }}>나도 나만의 시간이 필요해요</h3>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", margin: "0 0 16px", lineHeight: 1.7 }}>육아로 지쳐있는 엄마, 지금 나의 운세는 어떨까요? 올해 재물운·연애운·건강운을 사주로 확인해 내 에너지를 점검해보세요.</p>
+              <Link href="/main-v2" style={{ display: "inline-block", background: "rgba(255,255,255,0.15)", color: "white", borderRadius: 20, padding: "9px 20px", fontSize: 12, fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.3)" }}>
+                내 사주 무료로 보기 →
+              </Link>
+            </div>
+          </div>
+          <div style={{ textAlign: "center", marginTop: 20, fontSize: 11, color: "rgba(255,255,255,0.35)" }}>
+            점운(jeomun.com) — 대한민국 AI 사주 플랫폼 × 맘케어 공식 연계 서비스
+          </div>
         </div>
       </div>
 
