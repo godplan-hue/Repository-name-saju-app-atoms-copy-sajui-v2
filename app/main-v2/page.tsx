@@ -778,6 +778,36 @@ export default function MainV2() {
         </div>
       </section>
 
+      {/* 3개 앱 이미지 카드 */}
+      {!isPartner && (
+        <div style={{ padding: "14px 14px 0", maxWidth: 480, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+            <a href="/jigun" style={{ display: "block", borderRadius: 16, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative" }}>
+              <img src="https://i.pinimg.com/1200x/f8/bd/26/f8bd265155bf84b6478f9331a3b6c3ee.jpg" alt="직운" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
+              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "10px 10px" }}>
+                <p style={{ fontSize: 12, fontWeight: 900, color: "white", margin: "0 0 1px" }}>💼 직운</p>
+                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", margin: 0 }}>부업 TOP 3 무료</p>
+              </div>
+            </a>
+            <a href="/momcare" style={{ display: "block", borderRadius: 16, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative", background: "linear-gradient(160deg, #831843 0%, #be185d 50%, #f43f5e 100%)" }}>
+              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 10 }}>
+                <span style={{ fontSize: 36, marginBottom: 6 }}>👶</span>
+                <p style={{ fontSize: 13, fontWeight: 900, color: "white", margin: "0 0 4px", textAlign: "center" }}>맘케어</p>
+                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", margin: 0, textAlign: "center" }}>AI 육아 앱 무료</p>
+              </div>
+            </a>
+            <a href="/resume" style={{ display: "block", borderRadius: 16, overflow: "hidden", aspectRatio: "3/4", textDecoration: "none", position: "relative", background: "linear-gradient(160deg, #1e1b4b 0%, #3730a3 50%, #6366f1 100%)" }}>
+              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 10 }}>
+                <span style={{ fontSize: 36, marginBottom: 6 }}>🎯</span>
+                <p style={{ fontSize: 13, fontWeight: 900, color: "white", margin: "0 0 4px", textAlign: "center" }}>점운 합격</p>
+                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", margin: 0, textAlign: "center" }}>합격 분석 무료</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* 슬라이드 배너 */}
       <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
       <FortuneSearch onOpenModal={(catKey, modalId) => {
