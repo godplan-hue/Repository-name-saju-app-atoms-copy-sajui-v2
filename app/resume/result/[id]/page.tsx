@@ -50,7 +50,7 @@ export default function ResumeResultPage() {
   const ohE = ohEmoji[result.oh] ?? "✨";
 
   return (
-    <div className="relative min-h-screen bg-[#030014] text-[#F5F5F5] antialiased" style={{ fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
+    <div className="relative min-h-screen bg-[#030014] text-[#F5F5F5] antialiased" style={{ fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", wordBreak: "keep-all" }}>
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_-8%,rgba(124,58,237,0.14),transparent_55%)]" />
 
       <div className="relative z-10 max-w-lg mx-auto px-4 py-8">

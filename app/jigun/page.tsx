@@ -222,10 +222,23 @@ export default function JigunPage() {
 
             <button
               onClick={() => setStep(1)}
-              style={{ background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 28, padding: "16px 44px", fontSize: 17, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 24px rgba(124,58,237,0.4)", marginBottom: 36 }}
+              style={{ background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 28, padding: "16px 44px", fontSize: 17, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 24px rgba(124,58,237,0.4)", marginBottom: 14 }}
             >
               지금 바로 찾아보기 →
             </button>
+
+            <div style={{ marginBottom: 36 }}>
+              <button
+                onClick={() => {
+                  const url = "https://jeomun.com/jigun";
+                  if (navigator.share) navigator.share({ title: "💼 나에게 맞는 부업 찾기 — 직운", text: "8가지 질문으로 나에게 딱 맞는 부업 TOP 3를 찾아봤어요!", url });
+                  else navigator.clipboard?.writeText(url).then(() => alert("링크가 복사됐어요! 친구에게 공유해보세요 😊"));
+                }}
+                style={{ background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a1a00", border: "none", borderRadius: 28, padding: "13px 36px", fontSize: 15, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 20px rgba(251,191,36,0.45)" }}
+              >
+                📤 친구에게 공유하기
+              </button>
+            </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: 32 }}>
               {[
