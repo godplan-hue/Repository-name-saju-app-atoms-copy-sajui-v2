@@ -18,6 +18,12 @@ export default function BabyWordsPage() {
   const [form, setForm] = useState({ babyWord: "", realWord: "", date: new Date().toISOString().slice(0,10), story: "", age: "" });
   const [showForm, setShowForm] = useState(false);
   const [search, setSearch] = useState("");
+  const [unlocked, setUnlocked] = useState(true);
+
+  useEffect(() => {
+    const exp = localStorage.getItem("momcare_unlock_until");
+    if (!exp || Number(exp) <= Date.now()) setUnlocked(false);
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem("momcare_words");
@@ -54,6 +60,18 @@ export default function BabyWordsPage() {
     if (navigator.share) { navigator.share({ title: "우리 아기 말 사전", text }); }
     else { navigator.clipboard?.writeText(text).then(() => alert("클립보드에 복사됐어요!")); }
   }
+
+  if (!unlocked) return (
+    <div style={{ minHeight: "100vh", background: "#f0f7ff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
+      <div style={{ background: "white", borderRadius: 24, padding: "40px 28px", textAlign: "center", maxWidth: 340, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
+        <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>사주 분석 후 30일 무료</h2>
+        <p style={{ fontSize: 14, color: "#6b7280", margin: "0 0 24px", lineHeight: 1.6 }}>점운에서 사주를 보면<br />맘케어 전체 기능을 30일 무료로 이용해요</p>
+        <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 14, padding: "14px", fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>점운 사주 보러 가기 →</Link>
+        <Link href="/momcare" style={{ display: "block", fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>← 맘케어 홈으로</Link>
+      </div>
+    </div>
+  );
 
   return (
     <div style={{ minHeight: "100vh", background: "#f0f7ff", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>

@@ -478,8 +478,9 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         }}
       >
         {(b as any).appBanner ? (
-          <div style={{ position: "absolute", inset: 0, background: (b as any).bg, display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px 22px" }}>
-            {(b as any).bgImg && <img src={(b as any).bgImg} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.35 }} />}
+          <div style={{ position: "absolute", inset: 0, background: (b as any).bgImg ? "#000" : (b as any).bg, display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px 22px" }}>
+            {(b as any).bgImg && <img src={(b as any).bgImg} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 1 }} />}
+            {(b as any).bgImg && <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.48)" }} />}
             <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column" }}>
             <span style={{ display: "inline-block", background: (b as any).badgeBg, color: "white", fontSize: 12, fontWeight: 900, padding: "5px 14px", borderRadius: 20, marginBottom: 18, alignSelf: "flex-start" }}>{(b as any).badge}</span>
             <div style={{ fontSize: 48, marginBottom: 10 }}>{(b as any).icon}</div>

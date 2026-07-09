@@ -187,6 +187,8 @@ function PayInner() {
         }
         // 꿈해몽 24시간 무료 잠금 해제
         try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
+        // 맘케어 30일 무료 잠금 해제 (금액 무관, 모든 사주 결제 시)
+        try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
         // 결제 기록 Firebase 저장 (어드민 결제내역에 표시)
         if (displayAmount > 0 && name.trim()) {
           fetch("/api/v2/save-payment", {
