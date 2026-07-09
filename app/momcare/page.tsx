@@ -332,9 +332,9 @@ export default function MomcarePage() {
 
       {/* 푸터 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
-        <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#f9fafb", border: "1px solid #e5e7eb" }}>
-          <p style={{ color: "#0284c7", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 맘케어 · Powered by 점운</p>
-          <div style={{ color: "#0369a1", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
+        <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#fff0f6", border: "1.5px solid #fbb6ce" }}>
+          <p style={{ color: "#be185d", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 맘케어 · Powered by 점운</p>
+          <div style={{ color: "#9d174d", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
             <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
             <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
             <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
@@ -344,14 +344,14 @@ export default function MomcarePage() {
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", marginBottom: 10 }}>
             <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "6px 16px", background: "#FEE500", color: "#1a1a1a", borderRadius: 20, textDecoration: "none", fontWeight: 800, fontSize: 11 }}>💬 카카오톡 문의</a>
-            <a href="mailto:info@jeomun.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #0284c7", borderRadius: 20, color: "#0284c7", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>📧 이메일 문의</a>
+            <a href="mailto:info@jeomun.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #f472b6", borderRadius: 20, color: "#be185d", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>📧 이메일 문의</a>
           </div>
           <div style={{ fontSize: 11 }}>
-            <a href="/terms" style={{ color: "#0284c7", textDecoration: "none", fontWeight: 600 }}>이용약관</a>
-            <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
-            <a href="/privacy" style={{ color: "#0284c7", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
-            <span style={{ color: "#e5e7eb", margin: "0 8px" }}>|</span>
-            <a href="/refund" style={{ color: "#0284c7", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
+            <a href="/terms" style={{ color: "#be185d", textDecoration: "none", fontWeight: 600 }}>이용약관</a>
+            <span style={{ color: "#fbb6ce", margin: "0 8px" }}>|</span>
+            <a href="/privacy" style={{ color: "#be185d", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
+            <span style={{ color: "#fbb6ce", margin: "0 8px" }}>|</span>
+            <a href="/refund" style={{ color: "#be185d", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
           </div>
         </div>
       </footer>
