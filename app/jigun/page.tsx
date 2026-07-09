@@ -207,9 +207,6 @@ export default function JigunPage() {
         {/* ── INTRO ── */}
         {step === 0 && (
           <div style={{ textAlign: "center" }}>
-            <div style={{ borderRadius: 20, overflow: "hidden", marginBottom: 20, maxWidth: 340, margin: "0 auto 20px" }}>
-              <img src="https://i.pinimg.com/736x/26/c9/d4/26c9d45aeee6b66a58002ba7fc4e8388.jpg" alt="직운" style={{ width: "100%", height: 200, objectFit: "cover", display: "block" }} />
-            </div>
             <div style={{ fontSize: 64, marginBottom: 16 }}>💼</div>
             <div style={{ display: "inline-block", background: "rgba(124,58,237,0.25)", border: "1px solid rgba(124,58,237,0.4)", color: "#a78bfa", borderRadius: 20, padding: "5px 16px", fontSize: 12, fontWeight: 700, marginBottom: 16 }}>
               직운 — 직업 × 운세

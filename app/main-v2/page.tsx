@@ -246,7 +246,7 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/resume",
     bg: "linear-gradient(135deg,#0f172a 0%,#1e40af 50%,#1e3a5f 100%)",
-    bgImg: "https://i.pinimg.com/vwebp/1200x/f1/76/f2/f176f28342fd9a3f935617633fed37f3.webp",
+    bgImg: "https://i.pinimg.com/736x/20/db/31/20db31650b5845cb55f9606bf6c2e711.jpg",
     badge: "🎯 점운 합격 — 무료",
     badgeBg: "#6366f1",
     icon: "🎯",

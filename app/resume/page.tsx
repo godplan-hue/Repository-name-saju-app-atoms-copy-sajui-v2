@@ -97,9 +97,6 @@ export default function ResumePage() {
 
         {/* 히어로 */}
         <section className="py-14 text-center">
-          <div className="mx-auto mb-6 overflow-hidden rounded-2xl" style={{ maxWidth: 320 }}>
-            <img src="https://i.pinimg.com/736x/20/db/31/20db31650b5845cb55f9606bf6c2e711.jpg" alt="점운 합격" style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }} />
-          </div>
           <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4 text-white">합격 자소서</h1>
           <p className="text-lg text-gray-300 leading-relaxed mb-2">생년월일 + 직무 입력으로</p>
           <p className="text-lg font-bold text-yellow-400">사주 기반 합격 가능성을<br />5초 만에 분석해드립니다</p>
