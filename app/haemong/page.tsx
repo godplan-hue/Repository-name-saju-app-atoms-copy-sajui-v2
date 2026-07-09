@@ -117,6 +117,11 @@ export default function HaemongPage() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "16px 14px 80px" }}>
 
+        {/* 크몽·탈잉 신뢰 문구 */}
+        <p style={{ textAlign: "center", fontSize: 11, color: "rgba(100,60,120,0.55)", marginBottom: 14, letterSpacing: "0.02em" }}>
+          탈잉 2년 연속 1위 강사 제작 · 크몽 상위 2% 프라임 전문가 검증
+        </p>
+
         {/* 검색창 */}
         <div style={{ display: "flex", gap: 8, marginBottom: 20, background: "rgba(255,255,255,0.9)", borderRadius: 14, padding: "6px 6px 6px 14px", boxShadow: "0 2px 12px rgba(139,92,246,0.15)", border: "1px solid rgba(236,72,153,0.2)" }}>
           <input

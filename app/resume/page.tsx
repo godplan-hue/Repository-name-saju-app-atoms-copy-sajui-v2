@@ -37,10 +37,9 @@ const glassCard =
   "rounded-2xl border border-white/10 bg-white/5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] backdrop-blur-sm transition-all duration-300";
 
 const faqItems = [
-  { q: "합격서 1회 분석하면 정말 96점이 나와?", a: "네, 실제 AI 분석으로 0-100점 사이의 점수를 받습니다. 1회는 기본 분석(85점), 5회는 심화 분석(94점), 15회는 극강 분석(96점)입니다." },
-  { q: "기업별로 다르게 분석해줘?", a: "네! 삼성, LG, SK, 현대, 카카오, 네이버 등 기업별 인재상을 분석하고 맞춤형 수정안을 제시합니다." },
-  { q: "환불이 되나?", a: "네, 24시간 100% 환불 보장됩니다. 다만 1회 이용 후에는 환불이 불가능합니다." },
-  { q: "구독이 자동 갱신되나?", a: "네, 월 구독과 연 구독은 자동 갱신됩니다. 언제든 취소할 수 있습니다." },
+  { q: "합격 점수가 정말 96점까지 나와?", a: "네, 생년월일 기반 사주 분석으로 44~97점 사이의 점수가 나옵니다. 직무·기업규모·생년월일 조합에 따라 달라져요." },
+  { q: "기업별로 다르게 분석해줘?", a: "기업규모(대기업·중견·스타트업·공기업 등)와 회사명을 입력하면 그에 맞는 합격 전략을 제시해드려요." },
+  { q: "환불이 되나?", a: "결제 후 24시간 이내 미사용 시 100% 환불 가능합니다. 결과지 열람 후에는 환불이 어려워요." },
 ];
 
 export default function ResumePage() {
@@ -62,8 +61,7 @@ export default function ResumePage() {
   useEffect(() => {
     const calc = () => {
       const now = new Date();
-      const days = Math.floor(now.getTime() / 86400000);
-      const end = new Date((Math.floor(days / 7) * 7 + 7) * 86400000);
+      const end = new Date("2026-07-31T23:59:59+09:00");
       const diff = end.getTime() - now.getTime();
       if (diff > 0) {
         const d = Math.floor(diff / 86400000);
@@ -71,6 +69,8 @@ export default function ResumePage() {
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
         setTimeLeft(`${String(d).padStart(2,"0")}:${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`);
+      } else {
+        setTimeLeft("00:00:00:00");
       }
     };
     calc();
@@ -98,12 +98,11 @@ export default function ResumePage() {
         {/* 히어로 */}
         <section className="py-14 text-center">
           <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4 text-white">합격 자소서</h1>
-          <p className="text-lg text-gray-300 leading-relaxed mb-2">자소서 붙여넣으면<br />AI가 5초 만에 분석하고</p>
-          <p className="text-lg font-bold text-yellow-400">합격 가능성을 높이는<br />맞춤 수정안까지 제시합니다</p>
+          <p className="text-lg text-gray-300 leading-relaxed mb-2">생년월일 + 직무 입력으로</p>
+          <p className="text-lg font-bold text-yellow-400">사주 기반 합격 가능성을<br />5초 만에 분석해드립니다</p>
           <div className="mt-8 space-y-1 text-gray-400 text-sm">
             <p>탈잉 2년 연속 1위 강사 제작</p>
             <p>크몽 상위 2% 프라임 전문가 검증</p>
-            <p>수천 건의 합격 자소서로 학습한 AI</p>
           </div>
         </section>
 
@@ -207,7 +206,7 @@ export default function ResumePage() {
             <div className="bg-black/50 rounded-lg p-3 mb-6 border border-yellow-400 text-center">
               <p className="text-yellow-300 font-bold text-sm">🎁 5회 풀코스에 사주 전체 서비스까지 — 따로 사면 훨씬 비싸요</p>
             </div>
-            <p className="text-center text-white font-bold mb-1">특가 기한: 7일</p>
+            <p className="text-center text-white font-bold mb-1">⏰ 얼리버드 특가 — 정식 오픈 전 한정 (7/31 마감)</p>
             <div className="text-center mb-5 font-mono text-yellow-300 text-2xl font-bold">{timeLeft}</div>
 
             <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -375,7 +374,7 @@ export default function ResumePage() {
             >
               지금 시작하기 — 특가 할인 받기
             </button>
-            <p className="mt-3 text-xs text-gray-500">오늘만 무료 1회 제공 · 이후 유료 전환</p>
+            <p className="mt-3 text-xs text-gray-500">생년월일 + 직무 입력 → 맞춤 분석 즉시 출력</p>
           </div>
         </section>
 

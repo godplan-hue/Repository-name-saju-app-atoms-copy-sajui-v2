@@ -60,9 +60,12 @@ export default function MomcarePage() {
 
       {/* 히어로 */}
       <div style={{ background: "linear-gradient(135deg, rgba(190,24,93,0.25) 0%, rgba(126,34,206,0.2) 50%, rgba(10,6,20,0) 100%)", padding: "60px 24px 52px", textAlign: "center" }}>
-        <div style={{ display: "inline-block", background: "linear-gradient(135deg, #be185d, #9333ea)", color: "white", borderRadius: 20, padding: "4px 16px", fontSize: 12, fontWeight: 700, marginBottom: 20 }}>
+        <div style={{ display: "inline-block", background: "linear-gradient(135deg, #be185d, #9333ea)", color: "white", borderRadius: 20, padding: "4px 16px", fontSize: 12, fontWeight: 700, marginBottom: 12 }}>
           출생부터 3세까지 AI 육아 동반자
         </div>
+        <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginBottom: 16, letterSpacing: "0.02em" }}>
+          탈잉 2년 연속 1위 강사 제작 · 크몽 상위 2% 프라임 전문가 검증
+        </p>
         <h1 style={{ fontSize: "clamp(28px, 5vw, 46px)", fontWeight: 900, lineHeight: 1.2, marginBottom: 16, color: "white", wordBreak: "keep-all" }}>
           부모가 만든,<br />
           <span style={{ color: "#f9a8d4" }}>소아과 전문의</span>가 함께하는<br />

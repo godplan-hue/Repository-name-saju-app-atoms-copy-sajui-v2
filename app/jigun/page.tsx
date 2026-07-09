@@ -211,6 +211,9 @@ export default function JigunPage() {
             <div style={{ display: "inline-block", background: "rgba(124,58,237,0.25)", border: "1px solid rgba(124,58,237,0.4)", color: "#a78bfa", borderRadius: 20, padding: "5px 16px", fontSize: 12, fontWeight: 700, marginBottom: 16 }}>
               직운 — 직업 × 운세
             </div>
+            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginBottom: 14, letterSpacing: "0.02em" }}>
+              탈잉 2년 연속 1위 강사 제작 · 크몽 상위 2% 프라임 전문가 검증
+            </p>
             <h1 style={{ fontSize: 28, fontWeight: 900, lineHeight: 1.35, marginBottom: 12 }}>
               나에게 딱 맞는<br /><span style={{ color: "#a78bfa" }}>부업이 따로 있습니다</span>
             </h1>
