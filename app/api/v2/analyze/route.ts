@@ -2388,10 +2388,10 @@ function getDramaCard(name: string, oh: string, score: number, catKey: "재물" 
   const genre = genres[oh] ?? "인생극";
   if (style === "premium") {
     return `╔══════════════════════════════╗
-${name}님의 2026 ${catKey}운 드라마
+${name}님의 ${catKey}운 드라마
   "${title}"
   ${genre} · ${oh}오행 · ${score}점
-  ${episodeNum}화 / 16화
+  ${episodeNum}화와 16화
   ${episodeDesc}
 ╚══════════════════════════════╝`;
   }
@@ -2400,13 +2400,13 @@ ${name}님의 2026 ${catKey}운 드라마
 내 ${catKey}운 드라마 제목은?
   "${title}"
   ${genre} · ${oh}오행 · ${score}점
-  지금 ${episodeNum}화 / 16화
+  지금 ${episodeNum}화와 16화
   → ${episodeDesc}
 ╚══════════════════════════════╝`;
   }
   return `내 ${catKey}운 드라마 제목은?
 "${title}" (${oh}오행 × ${score}점)
-현재 ${episodeNum}화 / 16화 — ${episodeDesc}`;
+현재 ${episodeNum}화와 16화 — ${episodeDesc}`;
 }
 
 function getOhangTypeCard(oh: string, _catKey: string): string {

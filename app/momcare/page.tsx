@@ -264,7 +264,7 @@ export default function MomcarePage() {
               <div key={item} style={{ background: "rgba(255,255,255,0.2)", borderRadius: 12, padding: "10px 8px", fontSize: 12, color: "white", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
             ))}
           </div>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", margin: "0 0 10px", fontWeight: 700 }}>🔒 990원 사주 결제 시 30일 무료</p>
+          <p style={{ fontSize: 13, color: "#ff5555", margin: "0 0 10px", fontWeight: 900 }}>🔒 990원 사주 결제 시 30일 무료</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 20 }}>
             {["📏 성장 일기", "📔 육아 일기", "💌 타임캡슐", "🗣️ 말 사전"].map(item => (
               <div key={item} style={{ background: "rgba(0,0,0,0.15)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>

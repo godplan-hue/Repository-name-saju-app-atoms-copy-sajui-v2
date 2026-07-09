@@ -193,14 +193,14 @@ export default function ResumePage() {
           <p style={{fontSize:15, fontWeight:900, color:"white", margin:"0 0 12px"}}>당신이 받게 될 것</p>
           <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
             {[
-              {label:"합격 가능성 점수 분석 (최고 96점)", color:"#a78bfa"},
+              {label:"합격 가능성 점수 분석\n(최고 96점)", color:"#a78bfa"},
               {label:"직무별 맞춤 합격 전략", color:"#93c5fd"},
               {label:"핵심 키워드 3개 제시", color:"#a78bfa"},
               {label:"면접 예상 질문 3개", color:"#93c5fd"},
             ].map(({label,color})=>(
               <div key={label} style={{...S.card, padding:"12px 14px", display:"flex", alignItems:"flex-start", gap:8}}>
                 <span style={{color, fontSize:16, flexShrink:0, marginTop:1}}>✅</span>
-                <p style={{fontSize:12, fontWeight:600, color:"#f5f5f5", margin:0, lineHeight:1.4}}>{label}</p>
+                <p style={{fontSize:12, fontWeight:600, color:"#f5f5f5", margin:0, lineHeight:1.4, whiteSpace:"pre-line"}}>{label}</p>
               </div>
             ))}
           </div>

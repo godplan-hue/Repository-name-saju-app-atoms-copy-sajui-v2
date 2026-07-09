@@ -95,22 +95,28 @@ export default function GrowthCalendarPage() {
 
         {/* 현재 위기 상세 */}
         {(currentCrisis || selectedCrisis) && (
-          <div style={{ background: "#fef3c7", borderRadius: 18, padding: "20px", marginBottom: 20, boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
+          <div style={{ background: "#fff7e6", borderRadius: 18, padding: "20px", marginBottom: 20, boxShadow: "0 2px 12px rgba(0,0,0,0.1)", border: "2px solid #f97316" }}>
             {(() => {
               const c = selectedCrisis || currentCrisis!;
               return (
                 <>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                    <h3 style={{ margin: 0, fontSize: 16, fontWeight: 900 }}>{c.week}주차 — {c.name}</h3>
-                    {selectedCrisis && <button onClick={() => setSelectedCrisis(null)} style={{ border: "none", background: "none", fontSize: 18, cursor: "pointer", color: "#9ca3af" }}>×</button>}
+                    <h3 style={{ margin: 0, fontSize: 17, fontWeight: 900, color: "#111111" }}>{c.week}주차 — {c.name}</h3>
+                    {selectedCrisis && <button onClick={() => setSelectedCrisis(null)} style={{ border: "none", background: "none", fontSize: 18, cursor: "pointer", color: "#6b7280" }}>×</button>}
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
-                    <div><p style={{ fontSize: 12, fontWeight: 700, color: "#f97316", margin: "0 0 6px" }}>이 시기 증상</p>{c.symptoms.map(s => <p key={s} style={{ fontSize: 12, color: "#374151", margin: "0 0 3px" }}>• {s}</p>)}</div>
-                    <div><p style={{ fontSize: 12, fontWeight: 700, color: "#10b981", margin: "0 0 6px" }}>발달하는 능력</p>{c.skills.map(s => <p key={s} style={{ fontSize: 12, color: "#374151", margin: "0 0 3px" }}>✓ {s}</p>)}</div>
+                    <div>
+                      <p style={{ fontSize: 13, fontWeight: 900, color: "#111111", margin: "0 0 6px" }}>이 시기 증상</p>
+                      {c.symptoms.map(s => <p key={s} style={{ fontSize: 12, color: "#111111", margin: "0 0 4px", fontWeight: 600 }}>• {s}</p>)}
+                    </div>
+                    <div>
+                      <p style={{ fontSize: 13, fontWeight: 900, color: "#111111", margin: "0 0 6px" }}>발달하는 능력</p>
+                      {c.skills.map(s => <p key={s} style={{ fontSize: 12, color: "#111111", margin: "0 0 4px", fontWeight: 600 }}>✓ {s}</p>)}
+                    </div>
                   </div>
-                  <div style={{ background: "white", borderRadius: 10, padding: "10px 14px" }}>
-                    <p style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", margin: "0 0 4px" }}>부모 팁</p>
-                    <p style={{ fontSize: 13, color: "#1a1a2e", margin: 0 }}>{c.tips}</p>
+                  <div style={{ background: "white", borderRadius: 10, padding: "12px 14px" }}>
+                    <p style={{ fontSize: 13, fontWeight: 900, color: "#111111", margin: "0 0 4px" }}>부모 팁</p>
+                    <p style={{ fontSize: 13, color: "#111111", margin: 0, fontWeight: 600, lineHeight: 1.6 }}>{c.tips}</p>
                   </div>
                 </>
               );
@@ -124,14 +130,14 @@ export default function GrowthCalendarPage() {
           <p style={{ fontSize: 12, color: "#374151", margin: "0 0 14px" }}>소아과 전문의와 함께 생후 156주까지의 발달 과정을 알려드립니다</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {CRISIS_WEEKS.map(c => (
-              <button key={c.week} onClick={() => setSelectedCrisis(c === selectedCrisis ? null : c)} style={{ background: c.week === currentWeek ? "#fde8d8" : c.color + "55", border: c.week === currentWeek ? "2px solid #f97316" : `1.5px solid ${c.color}`, borderRadius: 12, padding: "14px 16px", cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <button key={c.week} onClick={() => setSelectedCrisis(c === selectedCrisis ? null : c)} style={{ background: c.week === currentWeek ? "#fde8d8" : "white", border: c.week === currentWeek ? "2px solid #f97316" : `2px solid ${c.color}`, borderRadius: 12, padding: "14px 16px", cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center", borderLeft: `5px solid ${c.color}` }}>
                 <div>
-                  <span style={{ fontSize: 13, fontWeight: 800, color: "#1a1a2e" }}>{c.week}주차 — {c.name}</span>
+                  <span style={{ fontSize: 14, fontWeight: 900, color: "#111111" }}>{c.week}주차 — {c.name}</span>
                   {c.week === currentWeek && <span style={{ marginLeft: 8, background: "#f97316", color: "white", borderRadius: 8, padding: "2px 8px", fontSize: 11 }}>현재</span>}
-                  {nextCrisis?.week === c.week && currentWeek > 0 && c.week !== currentWeek && <span style={{ marginLeft: 8, background: "#fbbf24", color: "white", borderRadius: 8, padding: "2px 8px", fontSize: 11 }}>다음</span>}
-                  <p style={{ margin: "4px 0 0", fontSize: 12, color: "#6b7280" }}>{c.symptoms[0]}</p>
+                  {nextCrisis?.week === c.week && currentWeek > 0 && c.week !== currentWeek && <span style={{ marginLeft: 8, background: "#fbbf24", color: "#111", borderRadius: 8, padding: "2px 8px", fontSize: 11 }}>다음</span>}
+                  <p style={{ margin: "4px 0 0", fontSize: 12, color: "#374151", fontWeight: 600 }}>{c.symptoms[0]}</p>
                 </div>
-                <span style={{ color: "#d1d5db", fontSize: 16 }}>›</span>
+                <span style={{ color: "#9ca3af", fontSize: 18, fontWeight: 700 }}>›</span>
               </button>
             ))}
           </div>
