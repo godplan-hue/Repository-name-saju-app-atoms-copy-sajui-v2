@@ -1395,7 +1395,7 @@ function getGenericPaidTemplate(name: string, score: number, G: string, category
   if (category === "재물운") {
     return `🔮 ${name}님의 재물운을 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "재물", "standard")}
+${getDramaCard(name, oh, score, "재물", "viral")}
 
 ${zPersona}
 사주를 펼쳐보니, ${z}띠 ${ohH[oh]}(${oh}) 기운을 타고난 ${name}님의 재물 길이 보입니다. ${oh === "목" || oh === "화" ? "기회를 보면 먼저 움직이는 추진력이 당신의 재물줄을 트는 힘입니다." : oh === "토" ? "꾸준함과 신뢰가 당신의 재물을 천천히, 그러나 단단하게 쌓아 올립니다." : oh === "금" ? "명확한 기준과 결단력이 당신의 재물 흐름을 가르는 칼이 됩니다." : "통찰과 정보력이 남들보다 한발 먼저 재물의 길을 열어줍니다."}
@@ -1560,7 +1560,7 @@ ${getPersonalProfile(year, month, fe ? "여" : "남", seed, day, birthHour)}
   if (category === "연애운") {
     return `🔮 ${name}님의 연애운을 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "연애", "standard")}
+${getDramaCard(name, oh, score, "연애", "viral")}
 
 ${zPersona}
 ${fe ? "섬세하고 따뜻한 감성이" : "묵직하고 진심 어린 태도가"} ${z}띠 특유의 ${zTrait[z]}과 어우러져, ${oh === "화" ? "뜨겁고 표현이 풍부한" : oh === "수" ? "깊고 이해심 있는" : oh === "토" ? "안정적이고 믿음직한" : oh === "금" ? "진지하고 한결같은" : "천천히 그러나 변하지 않는"} 사랑의 결을 만들고 있는 것이 사주에 보입니다.
@@ -1697,7 +1697,7 @@ ${name}님의 사랑 이야기는 아직 진행 중입니다. ${score}점의 연
   if (category === "건강운") {
     return `🔮 ${name}님의 건강운을 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "건강", "standard")}
+${getDramaCard(name, oh, score, "건강", "viral")}
 
 ${zPersona}
 사주에서 당신의 몸은 ${oh === "목" ? "간과 눈, 근육·관절" : oh === "화" ? "심장과 혈관" : oh === "토" ? "비장과 소화기" : oh === "금" ? "폐와 호흡기" : "신장과 뼈·관절"} 쪽이 특히 민감하게 반응하는 체질로 보입니다. 건강은 그 무엇보다 소중한 자산이며, 모든 성공과 행복의 기반이 된다는 것을 사주는 늘 일러줍니다.
@@ -1810,7 +1810,7 @@ ${name}님, 건강한 몸과 마음이 가장 소중한 재산입니다. ${score
   if (category === "성공운") {
     return `🔮 ${name}님의 성공운을 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "성공", "standard")}
+${getDramaCard(name, oh, score, "성공", "viral")}
 
 ${zPersona}
 ${z}띠의 ${zTrait[z]}이 ${oh === "목" || oh === "화" ? "확장과 도전" : oh === "토" ? "신뢰와 지속" : oh === "금" ? "결단과 완성" : "전략과 통찰"}을 통해 성공의 길을 열어주는 것이 사주에 보입니다.
@@ -2729,15 +2729,15 @@ function getDramaCard(name: string, oh: string, score: number, catKey: "재물" 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
   }
   if (style === "viral") {
-    return `📺 나의 2026년을 드라마로 표현하면?
+    return `📺 내 ${catKey}운 드라마 제목이 뭐게?
 
 ✨ "${title}"
 
-장르: ${genre} | ${score}점 | ${episodeNum}화/16화
-${episodeDesc}`;
+${genre} · ${oh}오행 · ${score}점
+지금 ${episodeNum}화 / 16화 — ${episodeDesc}`;
   }
-  return `🎬 ${catKey}운을 드라마로 보면?
-제목: "${title}" (${oh}오행 × ${score}점)
+  return `🎬 내 ${catKey}운 드라마 제목은?
+"${title}" (${oh}오행 × ${score}점)
 현재 ${episodeNum}화 / 16화 — ${episodeDesc}`;
 }
 
