@@ -178,85 +178,51 @@ export default function ResumePage() {
           </div>
         </section>
 
+        {/* 무료 분석 시작 CTA */}
+        <section className="mb-6 text-center">
+          <Link
+            href="/resume/start"
+            className="inline-block w-full max-w-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white text-lg font-black py-5 rounded-2xl shadow-lg shadow-purple-900/30 no-underline"
+          >
+            🎯 무료로 합격 가능성 분석받기
+          </Link>
+          <p className="text-xs text-gray-500 mt-2">생년월일 + 직무 입력 → 맞춤 전략 즉시 출력</p>
+        </section>
+
         {/* 가격 카드 */}
         <section className="mb-10">
           <div className="bg-gradient-to-r from-red-600 to-pink-600 rounded-xl p-6 md:p-8">
-            <p className="text-center text-lg font-bold mb-3">특가 기한: 7일</p>
-            <div className="bg-black/50 rounded-lg p-3 mb-6 border border-blue-400 text-center">
-              <p className="text-blue-400 font-bold text-sm">이 비결을 아는 사람은 지금 이 순간에도 합격하고 있습니다</p>
+            <p className="text-center text-lg font-bold mb-2">유료 심층 분석 — 사주 서비스 포함</p>
+            <div className="bg-black/50 rounded-lg p-3 mb-6 border border-yellow-400 text-center">
+              <p className="text-yellow-300 font-bold text-sm">🎁 자소서 분석 + 사주 직업운 세트 — 따로 사면 더 비싸요</p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-4 mb-8">
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
               {/* 1회 */}
               <div className="bg-red-700 rounded-lg p-5 text-center">
-                <p className="font-bold text-white mb-1">1회 분석</p>
-                <p className="text-xs text-gray-200 mb-3">합격률 85점</p>
-                <p className="text-gray-300 text-sm line-through">원가: 20,000원</p>
-                <p className="text-3xl font-bold text-yellow-300 my-1">14,900원</p>
-                <p className="text-xs text-gray-200 mb-3">(25% 할인)</p>
+                <p className="font-bold text-white mb-1">1회 심층 분석</p>
+                <p className="text-xs text-gray-200 mb-3">+ 사주 직업운 1회 포함</p>
+                <p className="text-gray-300 text-sm line-through">원가: 15,000원</p>
+                <p className="text-4xl font-black text-yellow-300 my-2">4,900원</p>
+                <p className="text-xs text-gray-200 mb-4">(67% 할인 · 커피 한 잔 가격)</p>
                 <div className="text-left text-xs text-gray-200 space-y-1 border-t border-red-600 pt-3">
-                  {["AI 자소서 분석","점수 명시 (85점)","Before/After 비교","피드백 3가지","기업별 인재상 분석","표절/GPT 탐지","최적화 팁 3개","면접 질문 3개"].map(t=><p key={t}>✅ {t}</p>)}
+                  {["AI 합격 가능성 점수 (0-100)","직무별 맞춤 합격 전략","자소서 핵심 키워드 5개","면접 예상 질문 3개","오행으로 보는 나의 강점","사주 직업운 분석 (점운앱)"].map(t=><p key={t}>✅ {t}</p>)}
                 </div>
+                <button onClick={() => alert("결제 시스템 준비 중입니다. 곧 오픈됩니다!")} className="w-full mt-4 bg-yellow-400 text-black font-black py-3 rounded-lg text-sm cursor-pointer border-none">지금 결제하기</button>
               </div>
 
               {/* 5회 — 추천 */}
-              <div className="bg-yellow-400 rounded-lg p-5 text-center border-4 border-yellow-500">
-                <p className="font-bold text-black mb-1">5회 분석</p>
-                <p className="text-xs text-gray-700 mb-3">합격률 94점</p>
-                <p className="text-gray-600 text-sm line-through">원가: 100,000원</p>
-                <p className="text-3xl font-bold text-red-600 my-1">39,900원</p>
-                <p className="text-xs text-gray-700 mb-3">(60% 할인)</p>
+              <div className="bg-yellow-400 rounded-lg p-5 text-center border-4 border-yellow-300">
+                <div className="inline-block bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full mb-2">🔥 가장 많이 선택</div>
+                <p className="font-bold text-black mb-1">5회 패키지</p>
+                <p className="text-xs text-gray-700 mb-3">+ 사주 3종 세트 포함</p>
+                <p className="text-gray-600 text-sm line-through">원가: 50,000원</p>
+                <p className="text-4xl font-black text-red-600 my-2">19,900원</p>
+                <p className="text-xs text-gray-700 mb-4">(60% 할인 · 회당 3,980원)</p>
                 <div className="text-left text-xs text-gray-700 space-y-1 border-t border-yellow-500 pt-3">
-                  {["AI 자소서 분석","점수 명시 (94점)","Before/After 비교","피드백 3가지","기업별 인재상 분석","표절/GPT 탐지","최적화 팁 5개","면접 질문 5개","합격 사례 5개"].map(t=><p key={t}>✅ {t}</p>)}
+                  {["1회 기능 전부 × 5회","각 회사별 다른 전략 적용","합격 자소서 패턴 학습","사주 직업운+재물운+대운 세트","결과 무기한 보관 및 재열람"].map(t=><p key={t}>✅ {t}</p>)}
                 </div>
-              </div>
-
-              {/* 15회 */}
-              <div className="bg-gray-900 rounded-lg p-5 text-center">
-                <p className="font-bold text-white mb-1">15회 분석</p>
-                <p className="text-xs text-yellow-400 font-bold mb-1">★ 제일 저렴 ★</p>
-                <p className="text-xs text-gray-300 mb-2">합격률 96점</p>
-                <p className="text-gray-400 text-sm line-through">원가: 330,000원</p>
-                <p className="text-3xl font-bold text-red-500 my-1">99,000원</p>
-                <p className="text-xs text-gray-400 mb-3">(70% 할인)</p>
-                <div className="text-left text-xs text-gray-300 space-y-1 border-t border-gray-700 pt-3">
-                  {["AI 자소서 분석","점수 명시 (96점)","Before/After 비교","피드백 무제한","기업별 인재상 분석","표절/GPT 탐지","최적화 팁 무제한","면접 질문 무제한","합격 사례 무제한","경쟁 자소서 분석 무제한"].map(t=><p key={t}>✅ {t}</p>)}
-                </div>
-              </div>
-            </div>
-
-            {/* 구독 플랜 */}
-            <div className="border-t border-white/20 pt-6">
-              <p className="text-center text-lg font-bold text-yellow-300 mb-4">구독 플랜</p>
-              <div className="grid md:grid-cols-3 gap-3">
-                <div className="bg-black/30 p-4 rounded-lg">
-                  <p className="font-semibold text-white text-base mb-1">월 구독</p>
-                  <p className="text-gray-400 text-xs line-through">원가: 월 60,000원</p>
-                  <p className="text-yellow-300 font-bold text-xl mt-1">39,900원/월</p>
-                  <p className="text-xs text-red-400 mt-1 mb-3">(33% 할인)</p>
-                  <div className="text-xs text-gray-300 space-y-1 border-t border-gray-700 pt-3">
-                    {["무제한 자소서 분석","점수 명시 (95점+)","기업별 인재상 분석","피드백 5가지"].map(t=><p key={t}>✅ {t}</p>)}
-                  </div>
-                </div>
-                <div className="bg-black/30 p-4 rounded-lg border-2 border-red-500">
-                  <p className="font-semibold text-white text-base mb-1">연 구독 <span className="text-red-400 text-xs">추천</span></p>
-                  <p className="text-gray-400 text-xs line-through">원가: 720,000원</p>
-                  <p className="text-red-400 font-bold text-xl mt-1">287,000원/년</p>
-                  <p className="text-xs text-red-400 mt-1 mb-3">(60% 할인)</p>
-                  <div className="text-xs text-yellow-200 space-y-1 border-t border-red-500 pt-3">
-                    {["무제한 자소서 분석","점수 명시 (96점+)","피드백 무제한","경쟁 자소서 분석 무제한"].map(t=><p key={t}>✅ {t}</p>)}
-                  </div>
-                </div>
-                <div className="bg-black/30 p-4 rounded-lg border-2 border-yellow-500">
-                  <p className="font-semibold text-red-400 text-base mb-1">평생 구독</p>
-                  <p className="text-green-400 text-xs font-bold mb-2">★★ 강력추천 VIP ★★</p>
-                  <p className="text-gray-400 text-xs line-through">원가: 1,000,000원</p>
-                  <p className="text-yellow-300 font-bold text-xl mt-1">499,000원</p>
-                  <p className="text-xs text-red-400 mt-1 mb-3">(50% 할인)</p>
-                  <div className="text-xs text-gray-300 space-y-1 border-t border-gray-700 pt-3">
-                    {["무제한 자소서 분석","점수 명시 (98점)","모든 기능 무제한"].map(t=><p key={t}>✅ {t}</p>)}
-                  </div>
-                </div>
+                <button onClick={() => alert("결제 시스템 준비 중입니다. 곧 오픈됩니다!")} className="w-full mt-4 bg-red-600 text-white font-black py-3 rounded-lg text-sm cursor-pointer border-none">지금 결제하기</button>
               </div>
             </div>
           </div>
