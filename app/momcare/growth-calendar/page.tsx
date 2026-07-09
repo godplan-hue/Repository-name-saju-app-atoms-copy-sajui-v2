@@ -70,7 +70,7 @@ export default function GrowthCalendarPage() {
 
         {/* 아기 정보 */}
         <div style={{ background: "white", borderRadius: 18, padding: "24px 20px", marginBottom: 20, boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
-          <h2 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 16px" }}>아기 정보 입력</h2>
+          <h2 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 16px", color: "#111" }}>아기 정보 입력</h2>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 140 }}>
               <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>아기 이름</label>
@@ -121,8 +121,8 @@ export default function GrowthCalendarPage() {
 
         {/* 성장 위기 목록 */}
         <div style={{ background: "white", borderRadius: 18, padding: "20px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
-          <h3 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 16px" }}>성장 위기 전체 일정</h3>
-          <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px" }}>소아과 전문의와 함께 생후 156주까지의 발달 과정을 알려드립니다</p>
+          <h3 style={{ fontSize: 16, fontWeight: 900, margin: "0 0 16px", color: "#111" }}>성장 위기 전체 일정</h3>
+          <p style={{ fontSize: 12, color: "#374151", margin: "0 0 14px" }}>소아과 전문의와 함께 생후 156주까지의 발달 과정을 알려드립니다</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {CRISIS_WEEKS.map(c => (
               <button key={c.week} onClick={() => setSelectedCrisis(c === selectedCrisis ? null : c)} style={{ background: c.week === currentWeek ? "#fde8d8" : c.color + "55", border: c.week === currentWeek ? "2px solid #f97316" : `1.5px solid ${c.color}`, borderRadius: 12, padding: "14px 16px", cursor: "pointer", textAlign: "left", display: "flex", justifyContent: "space-between", alignItems: "center" }}>

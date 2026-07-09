@@ -14,16 +14,16 @@ const CARD = "rgba(255,255,255,0.85)";
 const BORDER = "rgba(2,132,199,0.18)";
 
 const FEATURES = [
-  { icon: "📅", title: "성장 위기 캘린더", desc: "소아과 전문의와 함께 자녀의 생리·운동·언어 발달 과정(생후 156주)을 미리 알려드립니다.", href: "/momcare/growth-calendar", img: "https://i.pinimg.com/1200x/cf/52/39/cf52396e452e1736fefb71afa511701d.jpg" },
-  { icon: "🍼", title: "일일 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 시간순으로 기록하고 생활 패턴을 파악하세요.", href: "/momcare/daily-tracker", img: "https://i.pinimg.com/736x/76/11/35/7611357b6f520db638743208d1dd7c36.jpg" },
-  { icon: "📏", title: "성장 일기", desc: "키, 몸무게, 머리둘레를 기록하고 WHO 기준 백분위수로 아이의 성장을 추적하세요.", href: "/momcare/growth-diary", img: "https://i.pinimg.com/736x/f4/3e/d3/f43ed3640797ba838f6ee4df56e7c1de.jpg" },
+  { icon: "📅", title: "성장 위기 캘린더", desc: "소아과 전문의와 함께 자녀의 생리·운동·언어 발달 과정(생후 156주)을 미리 알려드립니다.", href: "/momcare/growth-calendar", img: "" },
+  { icon: "🍼", title: "일일 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 시간순으로 기록하고 생활 패턴을 파악하세요.", href: "/momcare/daily-tracker", img: "" },
+  { icon: "📏", title: "성장 일기", desc: "키, 몸무게, 머리둘레를 기록하고 WHO 기준 백분위수로 아이의 성장을 추적하세요.", href: "/momcare/growth-diary", img: "" },
   { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음마 — 아기의 소중한 첫 순간들을 카테고리별로 기록하세요.", href: "/momcare/memory-journal", img: "" },
 ];
 
 const NEW_FEATURES = [
-  { icon: "📔", title: "육아 일기", desc: "오늘 하루 아이와의 특별한 순간을 일기로 남겨요. 기분·날씨·태그로 기록하고 나중에 아이와 함께 읽어보세요.", href: "/momcare/baby-diary", img: "https://i.pinimg.com/736x/92/81/1b/92811b586cea69385bf90def243a2b6c.jpg" },
-  { icon: "💌", title: "타임캡슐 편지", desc: "지금의 감정을 미래의 아이에게 편지로 남겨요. '3살 때 열어봐', '결혼할 때 열어봐' — 잠겨있다가 그날 자동으로 열립니다.", href: "/momcare/time-capsule", img: "https://i.pinimg.com/736x/4d/aa/bb/4daabb706e85ac294e67d9e5c4b6b0b4.jpg" },
-  { icon: "🗣️", title: "아기 말 사전", desc: '"마마"=엄마, "뚜뚜"=자동차 — 아기만의 귀여운 언어를 사전으로 기록해요. 나중에 보면 정말 보물이 될 거예요.', href: "/momcare/baby-words", img: "https://i.pinimg.com/1200x/e4/d8/33/e4d83359db708f8f6d22d0b0a7cf1b0d.jpg" },
+  { icon: "📔", title: "육아 일기", desc: "오늘 하루 아이와의 특별한 순간을 일기로 남겨요. 기분·날씨·태그로 기록하고 나중에 아이와 함께 읽어보세요.", href: "/momcare/baby-diary", img: "" },
+  { icon: "💌", title: "타임캡슐 편지", desc: "지금의 감정을 미래의 아이에게 편지로 남겨요. '3살 때 열어봐', '결혼할 때 열어봐' — 잠겨있다가 그날 자동으로 열립니다.", href: "/momcare/time-capsule", img: "" },
+  { icon: "🗣️", title: "아기 말 사전", desc: '"마마"=엄마, "뚜뚜"=자동차 — 아기만의 귀여운 언어를 사전으로 기록해요. 나중에 보면 정말 보물이 될 거예요.', href: "/momcare/baby-words", img: "" },
 ];
 
 const EXERCISES = [
