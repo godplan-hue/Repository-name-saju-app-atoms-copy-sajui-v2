@@ -214,6 +214,45 @@ const BANNERS = [
     chatBanner: true,
     route: "free" as const,
   },
+  {
+    appBanner: true,
+    directUrl: "/jigun",
+    bg: "linear-gradient(135deg,#1e1b4b 0%,#4c1d95 55%,#1e1b4b 100%)",
+    badge: "💼 직운 — 무료",
+    badgeBg: "#7c3aed",
+    icon: "💼",
+    tagline: "이직·부업 고민 중이라면?",
+    desc: "8문항 → 부업 TOP 3 + 사주 천직",
+    cta: "무료로 찾아보기 →",
+    ctaColor: "#c4b5fd",
+    route: "free" as const,
+  },
+  {
+    appBanner: true,
+    directUrl: "/momcare",
+    bg: "linear-gradient(135deg,#431407 0%,#c2410c 45%,#9a3412 100%)",
+    badge: "👶 맘케어 — 무료",
+    badgeBg: "#f97316",
+    icon: "👶",
+    tagline: "우리 아이 성장 기록 앱",
+    desc: "성장 캘린더 · 육아일기\n타임캡슐 편지까지",
+    cta: "무료로 시작하기 →",
+    ctaColor: "#fdba74",
+    route: "free" as const,
+  },
+  {
+    appBanner: true,
+    directUrl: "/resume",
+    bg: "linear-gradient(135deg,#0f172a 0%,#1e40af 50%,#1e3a5f 100%)",
+    badge: "🎯 점운 합격 — 무료",
+    badgeBg: "#6366f1",
+    icon: "🎯",
+    tagline: "취업·합격 가능성을 사주로",
+    desc: "직무별 전략 + 면접 질문\n합격 점수 무료 분석",
+    cta: "무료 분석받기 →",
+    ctaColor: "#93c5fd",
+    route: "free" as const,
+  },
 ];
 
 const FORTUNE_CATEGORIES = [
@@ -435,7 +474,15 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
           startXRef.current = null;
         }}
       >
-        {(b as any).chatBanner ? (
+        {(b as any).appBanner ? (
+          <div style={{ position: "absolute", inset: 0, background: (b as any).bg, display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px 22px" }}>
+            <span style={{ display: "inline-block", background: (b as any).badgeBg, color: "white", fontSize: 12, fontWeight: 900, padding: "5px 14px", borderRadius: 20, marginBottom: 18, alignSelf: "flex-start" }}>{(b as any).badge}</span>
+            <div style={{ fontSize: 48, marginBottom: 10 }}>{(b as any).icon}</div>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", margin: "0 0 5px", fontWeight: 600 }}>{(b as any).tagline}</p>
+            <p style={{ fontSize: 19, fontWeight: 900, color: "white", margin: "0 0 20px", lineHeight: 1.45, whiteSpace: "pre-line", wordBreak: "keep-all" }}>{(b as any).desc}</p>
+            <span style={{ alignSelf: "flex-start", background: (b as any).ctaColor, color: "#1a1a2e", fontSize: 13, fontWeight: 900, padding: "9px 20px", borderRadius: 20, boxShadow: `0 3px 12px rgba(0,0,0,0.3)` }}>{(b as any).cta}</span>
+          </div>
+        ) : (b as any).chatBanner ? (
           /* 반짝이는 배경 + 무엇이든 물어보세요 텍스트 */
           <div style={{ position: "absolute", inset: 0 }}>
             <img src="https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
@@ -762,11 +809,11 @@ export default function MainV2() {
               <span style={{ fontSize: 14, color: "#7c3aed", fontWeight: 900 }}>→</span>
             </a>
             {/* 진로·부업 */}
-            <a href="/career-ai" style={{ display: "flex", alignItems: "center", gap: 14, background: "linear-gradient(135deg, #0f172a, #1e1b4b)", borderRadius: 16, padding: "14px 16px", textDecoration: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.07)" }}>
+            <a href="/jigun" style={{ display: "flex", alignItems: "center", gap: 14, background: "linear-gradient(135deg, #0f172a, #1e1b4b)", borderRadius: 16, padding: "14px 16px", textDecoration: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.07)" }}>
               <span style={{ fontSize: 32, flexShrink: 0 }}>💼</span>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 13, fontWeight: 900, color: "white", margin: "0 0 2px" }}>진로·부업 추천 — 맞춤 분석</p>
-                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", margin: 0 }}>4문항 퀴즈 → 나에게 맞는 부업 TOP3 무료</p>
+                <p style={{ fontSize: 13, fontWeight: 900, color: "white", margin: "0 0 2px" }}>직운 — 나에게 맞는 부업 찾기</p>
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", margin: 0 }}>8문항 퀴즈 → 부업 TOP 3 + 오행 천직 무료</p>
               </div>
               <span style={{ fontSize: 14, color: "#a78bfa", fontWeight: 900 }}>→</span>
             </a>

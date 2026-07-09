@@ -71,7 +71,7 @@ export default function MomcarePage() {
         <p style={{ fontSize: 15, color: "#6b7280", lineHeight: 1.7, maxWidth: 440, margin: "0 auto 32px" }}>
           성장일기, 수유·수면 기록부터 발달 단계까지,<br />우리 아이의 모든 순간을 기록하세요
         </p>
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 32 }}>
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
           <Link href="/momcare/daily-tracker" style={{ background: "#f97316", color: "white", borderRadius: 28, padding: "14px 28px", fontSize: 15, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 16px rgba(249,115,22,0.3)" }}>
             무료로 시작하기
           </Link>
@@ -79,6 +79,16 @@ export default function MomcarePage() {
             성장 캘린더 보기
           </Link>
         </div>
+        <button
+          onClick={() => {
+            const url = "https://jeomun.com/momcare";
+            if (navigator.share) navigator.share({ title: "👶 점운 맘케어 — AI 육아 앱", text: "아이 성장 기록부터 타임캡슐 편지까지! 육아 앱 써봤는데 진짜 좋아요", url });
+            else navigator.clipboard?.writeText(url).then(() => alert("링크가 복사됐어요! 친구 엄마에게 공유해보세요 😊"));
+          }}
+          style={{ background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a1a00", border: "none", borderRadius: 28, padding: "13px 32px", fontSize: 14, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 20px rgba(251,191,36,0.45)", marginBottom: 32 }}
+        >
+          📤 친구에게 공유하기
+        </button>
         <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
           {[{ label: "앱스토어", score: "4.9" }, { label: "구글플레이", score: "4.8" }, { label: "가족", score: "200만+" }].map(b => (
             <div key={b.label} style={{ background: "white", borderRadius: 12, padding: "8px 16px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", fontSize: 13 }}>
