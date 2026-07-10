@@ -26,13 +26,13 @@ export default function PartnerPolicy() {
             <li>✅ <strong>무료 파트너 등록</strong> → 가입비 0원, 즉시 시작</li>
             <li>✅ 고객 생년월일 입력 → AI가 결과지 자동 생성</li>
             <li>✅ 결과지 링크를 카카오·인스타·블로그에 공유</li>
-            <li>✅ 고객이 결과지를 열람하면 분석 1건 사용료만 납부</li>
-            <li>✅ 고객에게 받는 판매 가격은 <strong>파트너가 자유롭게 설정</strong></li>
+            <li>✅ 고객이 결과지를 열람하면<br/>분석 1건 사용료만 납부</li>
+            <li>✅ 고객에게 받는 판매 가격은<br/><strong>파트너가 자유롭게 설정</strong></li>
           </ul>
           <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 12, padding: "14px 16px", fontSize: 12, color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: 16 }}>
             <strong style={{ color: "#fbbf24" }}>📌 예시</strong><br />
-            분석 1건 사용료: 2,000원 (무료 등급 30% 할인 기준)<br />
-            고객에게 받는 가격: 10,000원~30,000원 (본인이 결정)<br />
+            분석 1건 사용료: 2,000원<br />(무료 등급 30% 할인 기준)<br />
+            고객에게 받는 가격: 10,000원~30,000원<br />(본인이 결정)<br />
             → 1건당 8,000~28,000원 수익
           </div>
           <a href="/partner/apply" style={{ display: "inline-block", background: "linear-gradient(135deg, #fbbf24, #f59e0b)", color: "black", borderRadius: 20, padding: "12px 28px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>

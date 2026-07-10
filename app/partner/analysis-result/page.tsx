@@ -439,11 +439,9 @@ function PartnerAnalysisResultInner() {
             {partnerTier !== "free" && (
               <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "7px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 800, fontSize: 12, cursor: "pointer" }}>↺ 처음부터 듣기</button>
             )}
-            {partnerTier !== "free" && (
-              <button onClick={handleShare} disabled={sharing} style={{ padding: "7px 11px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: sharing ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
-                {sharing ? "⏳..." : "📤 공유"}
-              </button>
-            )}
+            <button onClick={handleShare} disabled={sharing} style={{ padding: "7px 11px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: sharing ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
+              {sharing ? "⏳..." : "📤 공유"}
+            </button>
             <button onClick={handleSaveImage} disabled={saving} style={{ padding: "7px 11px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: saving ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
               {saving ? "⏳..." : "🖼️ 이미지저장"}
             </button>
@@ -452,10 +450,9 @@ function PartnerAnalysisResultInner() {
 
         {partnerTier === "free" && (
           <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 12, padding: "10px 14px", margin: "8px 16px 0", fontSize: 12, color: "#92400e", fontWeight: 700, lineHeight: 1.8 }}>
-            💡 무료 플랜은 링크 공유가 지원되지 않아요.<br />
-            PC 또는 크롬·구글 브라우저에서 이미지 저장하면 8개 운세 전체가 한 번에 저장됩니다.<br />
-            카카오톡·기본 모바일 브라우저는 일부만 저장될 수 있어요. → 크롬으로 열어서 저장하세요.<br />
-            또는 점 세 개(⋮) 옆 [링크 복사]로 카톡·문자·메일로 공유하세요.
+            📤 <strong>공유 버튼</strong>을 눌러 고객에게 결과지 링크를 카카오톡·문자·메일로 보내세요.<br />
+            이미지 저장은 PC 또는 크롬·구글 브라우저에서 하면 8개 운세 전체가 한 번에 저장됩니다.<br />
+            카카오톡·기본 모바일 브라우저는 일부만 저장될 수 있어요. → 크롬으로 열어서 저장하세요.
           </div>
         )}
 
