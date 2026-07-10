@@ -44,9 +44,10 @@ export default function ResumeStartPage() {
         <Link href="/resume" className="text-purple-400 text-sm mb-6 inline-block">← 합격자소서로</Link>
 
         <div className="text-center mb-8">
-          <span className="inline-block bg-purple-600/80 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">무료 분석</span>
+          <span className="inline-block bg-purple-600/80 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">🎯 AI 합격 전략 분석</span>
           <h1 className="text-3xl font-black text-white mb-2">합격 가능성 분석</h1>
           <p className="text-gray-400 text-sm">생년월일 + 직무 정보로 AI가 맞춤 합격 전략을 분석해드려요</p>
+          <p className="text-xs mt-2" style={{color:"#a78bfa"}}>점수 무료 · 전략·키워드·면접질문은 결제 후 공개</p>
         </div>
 
         <div className="space-y-4">

@@ -110,10 +110,11 @@ export default function ResumePage() {
         </div>
 
         {/* 메인 CTA */}
-        <Link href="/resume/start" style={{display:"block", background:"white", color:"#1a0a3d", fontSize:15, fontWeight:900, padding:"16px", borderRadius:16, textDecoration:"none", textAlign:"center", marginBottom:6}}>
-          🎯 무료로 합격 가능성 분석받기
+        <Link href="/resume/start" style={{display:"block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:15, fontWeight:900, padding:"16px", borderRadius:16, textDecoration:"none", textAlign:"center", marginBottom:6}}>
+          🎯 합격 전략 분석 시작하기 →
         </Link>
-        <p style={{fontSize:11, color:"#6b7280", textAlign:"center", margin:"0 0 10px"}}>생년월일 + 직무 입력 → 맞춤 전략 즉시 출력</p>
+        <p style={{fontSize:11, color:"#6b7280", textAlign:"center", margin:"0 0 4px"}}>생년월일 + 직무 입력 → 결제 후 전체 분석 공개</p>
+        <p style={{fontSize:10, color:"#4b5563", textAlign:"center", margin:"0 0 10px"}}>※ 점수는 무료 · 전략·키워드·면접질문은 유료 공개</p>
         <div style={{textAlign:"center", marginBottom:20}}>
           <button onClick={()=>{const u="https://jeomun.com/resume";if(navigator.share)navigator.share({title:"🎯 점운 합격",text:"사주로 취업 합격 가능성 분석해봤어요!",url:u});else navigator.clipboard?.writeText(u).then(()=>alert("링크 복사됐어요!"));}} style={{background:"linear-gradient(135deg,#fbbf24,#f59e0b)", color:"#111", border:"none", borderRadius:20, padding:"11px 28px", fontSize:13, fontWeight:900, cursor:"pointer"}}>
             📤 친구에게 공유하기
@@ -244,12 +245,12 @@ export default function ResumePage() {
 
         {/* 최종 CTA */}
         <div style={{...S.card, padding:"24px 16px", textAlign:"center", marginBottom:16}}>
-          <p style={{fontSize:16, fontWeight:900, color:"white", margin:"0 0 6px"}}>지금 바로 자소서 분석 받기</p>
-          <p style={{fontSize:12, color:"#6b7280", margin:"0 0 16px"}}>결제 후 즉시 분석 · 5초 완성 · 24시간 환불 보장</p>
+          <p style={{fontSize:16, fontWeight:900, color:"white", margin:"0 0 6px"}}>지금 바로 합격 전략 분석 받기</p>
+          <p style={{fontSize:12, color:"#6b7280", margin:"0 0 4px"}}>결제 후 즉시 분석 · 5초 완성 · 24시간 환불 보장</p>
+          <p style={{fontSize:11, color:"#4b5563", margin:"0 0 14px"}}>점수 무료 · 전략·키워드·면접질문은 결제 후 공개</p>
           <Link href="/resume/start" style={{display:"block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:14, fontWeight:900, padding:"15px", borderRadius:14, textDecoration:"none"}}>
-            지금 분석 시작하기
+            합격 전략 분석 시작하기 →
           </Link>
-          <p style={{fontSize:11, color:"#4b5563", margin:"10px 0 0"}}>생년월일 + 직무 입력 → 맞춤 분석 즉시 출력</p>
         </div>
 
         <div style={{textAlign:"center", paddingBottom:12}}>
