@@ -138,55 +138,35 @@ export default function ResumePage() {
           </button>
         </div>
 
-        {/* 가격 카드 */}
-        <div style={{...S.card, padding:"18px 16px", marginBottom:20}}>
-          <p style={{fontSize:14, fontWeight:900, color:"white", margin:"0 0 8px", textAlign:"center"}}>유료 심층 분석 — 사주 서비스 포함</p>
-          <div style={{background:"rgba(124,58,237,0.15)", border:"1px solid rgba(124,58,237,0.35)", borderRadius:10, padding:"10px 14px", marginBottom:14, textAlign:"center"}}>
-            <p style={{fontSize:12, color:"#c4b5fd", fontWeight:700, margin:0}}>🎁 5회 풀코스에 사주 전체 서비스까지 — 따로 사면 훨씬 비싸요</p>
+        {/* 가격 카드 — 단일 플랜 */}
+        <div style={{background:"linear-gradient(135deg,#1a1a2e,#2d1b69)", border:"2px solid rgba(124,58,237,0.5)", borderRadius:20, padding:"24px 18px", marginBottom:20}}>
+          <div style={{textAlign:"center", marginBottom:18}}>
+            <span style={{display:"inline-block", background:"#dc2626", color:"white", fontSize:11, fontWeight:900, padding:"4px 16px", borderRadius:20, marginBottom:10}}>🔥 AI 합격 전략 분석</span>
+            <p style={{fontSize:32, fontWeight:900, color:"#fde68a", margin:"0 0 4px"}}>9,900원</p>
+            <p style={{fontSize:12, color:"#9ca3af", margin:0}}>결제 후 바로 분석 · 24시간 환불 보장</p>
           </div>
-          <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:10}}>
-            {/* 1회 */}
-            <div style={{background:"#1f2937", borderRadius:14, padding:"14px 12px", textAlign:"center", border:"1px solid #374151"}}>
-              <p style={{fontSize:13, fontWeight:900, color:"white", margin:"0 0 2px"}}>1회 분석</p>
-              <p style={{fontSize:10, color:"#fbbf24", fontWeight:700, margin:"0 0 6px"}}>최고 96점</p>
-              <p style={{fontSize:22, fontWeight:900, color:"#fde68a", margin:"0 0 4px"}}>9,900원</p>
-              <p style={{fontSize:10, color:"#6b7280", margin:"0 0 10px"}}>한 번 써보고 싶을 때</p>
-              <div style={{borderTop:"1px solid #374151", paddingTop:8, textAlign:"left"}}>
-                {["AI 합격 가능성 점수 분석\n(최고 96점)","직무별 합격 전략","자소서 핵심 키워드 3개","면접 예상 질문 3개","🔮 사주 총운 티저"].map(t=>(
-                  <p key={t} style={{fontSize:10, color:"#d1d5db", margin:"0 0 3px", whiteSpace:"pre-line"}}>✅ {t}</p>
-                ))}
-                {["기업별 인재상 분석","오행 강점 분석","결과 보관·재열람","사주 전체+대운+택일"].map(t=>(
-                  <p key={t} style={{fontSize:10, color:"#4b5563", margin:"0 0 3px"}}>✗ {t}</p>
-                ))}
+          <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8px 16px", marginBottom:20}}>
+            {[
+              ["✅","AI 합격 점수 (최고 98점)"],
+              ["✅","직무별 맞춤 합격 전략"],
+              ["✅","핵심 키워드 5개"],
+              ["✅","기업별 인재상 분석"],
+              ["✅","면접 예상 질문 5개"],
+              ["✅","오행 기질 강점 분석"],
+              ["✅","결과 보관·재열람"],
+              ["✅","🔮 사주 직업운+재물운"],
+              ["✅","📈 나의 대운 흐름"],
+              ["✅","📅 합격 택일 날짜"],
+            ].map(([icon,t])=>(
+              <div key={t} style={{display:"flex", alignItems:"flex-start", gap:6}}>
+                <span style={{color:"#4ade80", flexShrink:0, fontSize:12, lineHeight:"18px"}}>{icon}</span>
+                <span style={{fontSize:12, color:"#d1d5db", lineHeight:1.5}}>{t}</span>
               </div>
-              <button onClick={()=>alert("결제 시스템 준비 중입니다. 곧 오픈됩니다!")} style={{width:"100%", marginTop:10, background:"#374151", color:"white", border:"none", borderRadius:10, padding:"10px 0", fontSize:12, fontWeight:700, cursor:"pointer"}}>결제하기</button>
-            </div>
-            {/* 5회 */}
-            <div style={{background:"#fbbf24", border:"2px solid #f59e0b", borderRadius:14, padding:"14px 12px", textAlign:"center"}}>
-              <span style={{display:"inline-block", background:"#dc2626", color:"white", fontSize:9, fontWeight:900, padding:"3px 10px", borderRadius:20, marginBottom:4}}>🔥 이걸 선택하세요</span>
-              <p style={{fontSize:13, fontWeight:900, color:"#111", margin:"0 0 2px"}}>5회 풀코스</p>
-              <p style={{fontSize:10, color:"#374151", fontWeight:700, margin:"0 0 6px"}}>최고 98점</p>
-              <p style={{fontSize:22, fontWeight:900, color:"#dc2626", margin:"0 0 4px"}}>29,900원</p>
-              <p style={{fontSize:10, color:"#374151", margin:"0 0 10px"}}>회당 5,980원</p>
-              <div style={{borderTop:"1px solid rgba(0,0,0,0.15)", paddingTop:8, textAlign:"left"}}>
-                {[
-                  "AI 합격 가능성 점수\n(최고 98점) × 5회",
-                  "직무별 맞춤 합격 전략 × 5회",
-                  "자소서 핵심 키워드 5개 × 5회",
-                  "기업별 인재상 분석 × 5회",
-                  "면접 예상 질문 5개 × 5회",
-                  "오행으로 보는 나의 강점",
-                  "결과 보관 · 언제든 재열람",
-                  "🔮 사주 총운+직업운+재물운",
-                  "📈 나의 대운(나이대 흐름)",
-                  "📅 합격 택일 날짜 1개",
-                ].map(t=>(
-                  <p key={t} style={{fontSize:10, color:"#111", margin:"0 0 3px", whiteSpace:"pre-line"}}>✅ {t}</p>
-                ))}
-              </div>
-              <button onClick={()=>alert("결제 시스템 준비 중입니다. 곧 오픈됩니다!")} style={{width:"100%", marginTop:10, background:"#dc2626", color:"white", border:"none", borderRadius:10, padding:"10px 0", fontSize:12, fontWeight:900, cursor:"pointer"}}>풀코스 결제하기</button>
-            </div>
+            ))}
           </div>
+          <Link href="/resume/pay" style={{display:"block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:16, fontWeight:900, padding:"16px", borderRadius:14, textDecoration:"none", textAlign:"center"}}>
+            합격 전략 분석 시작하기 →
+          </Link>
         </div>
 
         {/* 혹시 이런 고민 */}
