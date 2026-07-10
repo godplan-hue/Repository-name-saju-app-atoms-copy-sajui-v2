@@ -284,9 +284,15 @@ export default function MomcarePage() {
             ))}
           </div>
           <p style={{ fontSize: 13, color: "#fbbf24", margin: "0 0 10px", fontWeight: 900 }}>🔒 990원 사주 결제 시 30일 무료</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 10 }}>
             {["📏 성장 일기", "📔 육아 일기", "💌 타임캡슐", "🗣️ 말 사전"].map(item => (
               <div key={item} style={{ background: "rgba(0,0,0,0.15)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
+            ))}
+          </div>
+          <p style={{ fontSize: 12, color: "#fbbf24", margin: "0 0 8px", fontWeight: 800 }}>🎁 결제하면 하루 무료도!</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 20 }}>
+            {["🌙 꿈해몽", "🐱 복냥이상담", "❓ 360개 질문"].map(item => (
+              <div key={item} style={{ background: "rgba(255,255,255,0.15)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
             ))}
           </div>
           <Link href="/momcare/daily-tracker" style={{ display: "inline-block", background: "white", color: TEAL, borderRadius: 24, padding: "12px 32px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>

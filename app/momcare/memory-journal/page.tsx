@@ -44,8 +44,11 @@ export default function MemoryJournalPage() {
         <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
         <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>사주 분석 후 30일 무료</h2>
         <p style={{ fontSize: 14, color: "#6b7280", margin: "0 0 14px", lineHeight: 1.6 }}>점운에서 사주를 보면<br />맘케어 전체 기능을 30일 무료로 이용해요</p>
-        <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 10, padding: "10px 14px", marginBottom: 20, fontSize: 13, color: "#c2410c", fontWeight: 700, lineHeight: 1.5 }}>
+        <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 10, padding: "10px 14px", marginBottom: 10, fontSize: 13, color: "#c2410c", fontWeight: 700, lineHeight: 1.5 }}>
           💡 990원 사주 결제 시<br />육아일기·타임캡슐·말사전 30일 무료!
+        </div>
+        <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 10, padding: "10px 14px", marginBottom: 20, fontSize: 12, color: "#166534", fontWeight: 700, lineHeight: 1.8 }}>
+          🎁 결제하면 하루 무료도 드려요!<br />🌙 꿈해몽 · 🐱 복냥이상담 · ❓ 360개 질문
         </div>
         <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 14, padding: "14px", fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>점운 사주 보러 가기 →</Link>
         <Link href="/momcare" style={{ display: "block", fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>← 맘케어 홈으로</Link>
