@@ -387,7 +387,7 @@ function PaymentCompleteInner() {
       try {
         const allA: Record<string, string> = data.allAnalyses ?? {};
         const shareCats = Object.entries(allA)
-          .filter(([, v]) => v && v.trim())
+          .filter(([k, v]) => v && v.trim() && k !== "🌟 오늘의 운세")
           .map(([k, v]) => ({
             icon: k.split(" ")[0] ?? "✨",
             label: k.split(" ").slice(1).join(" ") || k,

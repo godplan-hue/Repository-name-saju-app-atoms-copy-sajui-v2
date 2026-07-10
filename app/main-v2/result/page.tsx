@@ -1020,13 +1020,12 @@ function V2ResultInner() {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const isKakao = /KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent);
     if (isKakao) {
-      // shareId: 이 페이지 마운트 후 비동기로 세팅됨 / sidFromUrlRef: payment-complete가 URL에 미리 심어준 값
       const shareUrlId = shareId || sidFromUrlRef.current;
-      if (shareUrlId) {
-        window.location.href = `/main-v2/share/${shareUrlId}`;
-      } else {
-        alert("카카오톡 브라우저에서는 읽기 기능을 사용할 수 없어요.\n위의 '공유' 버튼을 눌러 링크를 복사한 뒤, 다른 브라우저에서 열어주세요.");
-      }
+      setTipModal({
+        text: shareUrlId
+          ? "카카오톡 안에서는 읽기 기능이 작동하지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택해주세요.\n\n외부 브라우저에서 🔊 읽기 버튼을 누르면\n읽어주기가 작동해요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n설정 > 화면 자동 꺼짐 시간을 늘리거나\n'보고 있는 동안 화면 켜짐'을 켜두세요."
+          : "카카오톡 안에서는 읽기 기능이 작동하지 않아요.\n\n위의 공유 버튼으로 링크를 복사한 뒤\n다른 브라우저(Chrome·Safari)에서 열어주세요.\n외부 브라우저에서 🔊 읽기를 누르면 작동해요.",
+      });
       return;
     }
     if (speaking) {
