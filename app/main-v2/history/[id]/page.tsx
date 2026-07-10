@@ -289,7 +289,7 @@ export default function HistoryDetail() {
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
     if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡 안에서는 읽기 기능이 작동하지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택해주세요.\n\n외부 브라우저에서 🔊 읽기 버튼을 누르면\n읽어주기가 작동해요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n설정 > 화면 자동 꺼짐 시간을 늘리거나\n'보고 있는 동안 화면 켜짐'을 켜두세요." });
+      setTipModal({ text: "카카오톡 안에서는 읽기 기능이 작동하지 않아요.\n\n보관함 읽기는 처음 사주를 보셨던 브라우저(크롬·삼성인터넷·사파리 등)에서만 작동해요.\n\n그 브라우저를 직접 열고 jeomun.com → 보관함에 들어오면 🔊 읽기가 작동해요." });
       return;
     }
     if (!("speechSynthesis" in window)) return;
