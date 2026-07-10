@@ -56,6 +56,11 @@ export default function V2Analysis() {
   useEffect(() => {
     const p = sessionStorage.getItem("v2_profile");
     if (!p) { router.replace("/main-v2/profile"); return; }
+    // 유료 결제 결과가 이미 있으면 결과지로 바로 이동 — 실수로 이 화면에 와도 유료 결과가 지워지지 않음
+    if (localStorage.getItem("v2_paid") === "1" && localStorage.getItem("v2_result")) {
+      router.replace("/main-v2/result");
+      return;
+    }
     setProfile(JSON.parse(p));
   }, []);
 
