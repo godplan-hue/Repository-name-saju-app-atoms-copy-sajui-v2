@@ -29,6 +29,14 @@ export default function JigunResultPage() {
   const [result, setResult] = useState<Result | null>(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  const [isUnlocked, setIsUnlocked] = useState(false);
+
+  useEffect(() => {
+    try {
+      const until = localStorage.getItem("jigun_unlock_until");
+      if (until && Date.now() < parseInt(until)) setIsUnlocked(true);
+    } catch {}
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -110,56 +118,78 @@ export default function JigunResultPage() {
         )}
 
         {/* 부업 TOP 3 */}
-        {result.details.map((d, i) => (
-          <div key={i} style={{ background: RANK_BG[i], border: `2px solid ${RANK_BORDER[i]}`, borderRadius: 22, padding: "24px 20px", marginBottom: 14 }}>
-            {/* 헤더 */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
-              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                <span style={{ fontSize: 36 }}>{d.icon}</span>
-                <div>
-                  <div style={{ fontSize: 11, color: "#a78bfa", fontWeight: 700, marginBottom: 2 }}>{RANK_BADGE[i]}</div>
-                  <h2 style={{ fontSize: 16, fontWeight: 900, margin: 0 }}>{d.title}</h2>
+        {result.details.map((d, i) => {
+          const isLocked = !isUnlocked && i > 0;
+          return (
+            <div key={i} style={{ position: "relative", marginBottom: 14 }}>
+              <div style={{
+                background: RANK_BG[i], border: `2px solid ${RANK_BORDER[i]}`, borderRadius: 22, padding: "24px 20px",
+                filter: isLocked ? "blur(4px)" : "none",
+                userSelect: isLocked ? "none" : "auto",
+                pointerEvents: isLocked ? "none" : "auto",
+              }}>
+                {/* 헤더 */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+                  <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                    <span style={{ fontSize: 36 }}>{d.icon}</span>
+                    <div>
+                      <div style={{ fontSize: 11, color: "#a78bfa", fontWeight: 700, marginBottom: 2 }}>{RANK_BADGE[i]}</div>
+                      <h2 style={{ fontSize: 16, fontWeight: 900, margin: 0 }}>{d.title}</h2>
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right", flexShrink: 0 }}>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: "#22c55e" }}>{d.income}</div>
+                  </div>
                 </div>
-              </div>
-              <div style={{ textAlign: "right", flexShrink: 0 }}>
-                <div style={{ fontSize: 13, fontWeight: 900, color: "#22c55e" }}>{d.income}</div>
-              </div>
-            </div>
 
-            {/* 왜 맞는지 */}
-            <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 14px", marginBottom: 14 }}>
-              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.75, margin: 0 }}>{d.why}</p>
-            </div>
-
-            {/* 시작 방법 */}
-            <div style={{ marginBottom: 14 }}>
-              <p style={{ fontSize: 12, fontWeight: 700, color: "#a78bfa", margin: "0 0 8px" }}>🚀 지금 당장 시작하는 3단계</p>
-              {d.howToStart.slice(0, 3).map((s, j) => (
-                <div key={j} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 8 }}>
-                  <span style={{ background: "rgba(124,58,237,0.5)", color: "white", borderRadius: 6, padding: "2px 7px", fontSize: 11, fontWeight: 900, minWidth: 20, textAlign: "center", flexShrink: 0 }}>{j + 1}</span>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", margin: 0, lineHeight: 1.65 }}>{s}</p>
+                {/* 왜 맞는지 */}
+                <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 14px", marginBottom: 14 }}>
+                  <p style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.75, margin: 0 }}>{d.why}</p>
                 </div>
-              ))}
-            </div>
 
-            {/* 플랫폼 */}
-            <div style={{ marginBottom: 12 }}>
-              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", margin: "0 0 6px", fontWeight: 700 }}>주요 플랫폼</p>
-              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                {d.platforms.map(p => (
-                  <span key={p} style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.65)", borderRadius: 10, padding: "3px 10px", fontSize: 11 }}>{p}</span>
-                ))}
+                {/* 시작 방법 */}
+                <div style={{ marginBottom: 14 }}>
+                  <p style={{ fontSize: 12, fontWeight: 700, color: "#a78bfa", margin: "0 0 8px" }}>🚀 지금 당장 시작하는 3단계</p>
+                  {d.howToStart.slice(0, 3).map((s, j) => (
+                    <div key={j} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 8 }}>
+                      <span style={{ background: "rgba(124,58,237,0.5)", color: "white", borderRadius: 6, padding: "2px 7px", fontSize: 11, fontWeight: 900, minWidth: 20, textAlign: "center", flexShrink: 0 }}>{j + 1}</span>
+                      <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", margin: 0, lineHeight: 1.65 }}>{s}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* 플랫폼 */}
+                <div style={{ marginBottom: 12 }}>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", margin: "0 0 6px", fontWeight: 700 }}>주요 플랫폼</p>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    {d.platforms.map(p => (
+                      <span key={p} style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.65)", borderRadius: 10, padding: "3px 10px", fontSize: 11 }}>{p}</span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 주의사항 */}
+                <div style={{ background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.2)", borderRadius: 12, padding: "10px 12px", marginBottom: 10 }}>
+                  <p style={{ fontSize: 11, color: "rgba(234,179,8,0.85)", margin: 0, whiteSpace: "pre-line" }}>⚠️ 함정 주의: {d.trap}</p>
+                </div>
+
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", margin: 0 }}>📅 예상 타임라인: {d.timeline}</p>
               </div>
-            </div>
 
-            {/* 주의사항 */}
-            <div style={{ background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.2)", borderRadius: 12, padding: "10px 12px", marginBottom: 10 }}>
-              <p style={{ fontSize: 11, color: "rgba(234,179,8,0.85)", margin: 0, whiteSpace: "pre-line" }}>⚠️ 함정 주의: {d.trap}</p>
+              {/* 잠금 오버레이 */}
+              {isLocked && (
+                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", borderRadius: 22, background: "rgba(3,0,20,0.7)", backdropFilter: "blur(2px)" }}>
+                  <div style={{ fontSize: 32, marginBottom: 10 }}>🔒</div>
+                  <p style={{ fontSize: 14, fontWeight: 900, color: "white", margin: "0 0 4px", textAlign: "center" }}>{RANK_BADGE[i]} 잠금</p>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 14px", textAlign: "center" }}>사주 990원 결제 시 무료로 열려요</p>
+                  <Link href="/main-v2" style={{ background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 20, padding: "10px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+                    990원으로 TOP 3 전체 보기 →
+                  </Link>
+                </div>
+              )}
             </div>
-
-            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", margin: 0 }}>📅 예상 타임라인: {d.timeline}</p>
-          </div>
-        ))}
+          );
+        })}
 
         {/* 파트너 카드 */}
         <div style={{ background: "linear-gradient(135deg,#0f172a,#1e1b4b)", border: "2px solid rgba(124,58,237,0.5)", borderRadius: 22, padding: "24px 20px", marginBottom: 14 }}>

@@ -25,6 +25,14 @@ export default function ResumeResultPage() {
   const [result, setResult] = useState<Result | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isUnlocked, setIsUnlocked] = useState(false);
+
+  useEffect(() => {
+    try {
+      const until = localStorage.getItem("resume_unlock_until");
+      if (until && Date.now() < parseInt(until)) setIsUnlocked(true);
+    } catch {}
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -75,7 +83,7 @@ export default function ResumeResultPage() {
           <button onClick={share} style={{background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.2)", color:"white", fontSize:12, fontWeight:700, padding:"8px 16px", borderRadius:20, cursor:"pointer"}}>공유하기 📤</button>
         </div>
 
-        {/* 점수 카드 */}
+        {/* 점수 카드 — 항상 공개 (무료 티저) */}
         <div style={{background:"linear-gradient(135deg,#1a1a2e,#2d1b69)", border:"1px solid rgba(124,58,237,0.3)", borderRadius:20, padding:"24px 20px", marginBottom:14, textAlign:"center"}}>
           <p style={{fontSize:12, color:"#9ca3af", margin:"0 0 4px"}}>{result.name}님의 합격 가능성 분석</p>
           <p style={{fontSize:11, color:"#6b7280", margin:"0 0 20px"}}>{result.field} · {result.companySize}{result.company ? ` · ${result.company}` : ""}</p>
@@ -98,47 +106,68 @@ export default function ResumeResultPage() {
           <p style={{fontSize:13, color:"#9ca3af", margin:0, lineHeight:1.6}}>{scoreDesc}</p>
         </div>
 
-        {/* 오행 기질 */}
-        <div style={S.card}>
-          <div style={{display:"flex", gap:12, alignItems:"center", marginBottom:10}}>
-            <span style={{fontSize:30}}>{ohE}</span>
-            <div>
-              <p style={{fontSize:12, fontWeight:700, color:ohC, margin:"0 0 2px"}}>오행 {result.oh} — {result.trait}</p>
-              <p style={{fontSize:11, color:"#6b7280", margin:0}}>{result.ohKeyword}</p>
-            </div>
+        {/* 잠금 안내 (미결제 시) */}
+        {!isUnlocked && (
+          <div style={{background:"linear-gradient(135deg,#2d1b69,#1a0535)", border:"2px solid rgba(124,58,237,0.6)", borderRadius:20, padding:"24px 20px", marginBottom:14, textAlign:"center"}}>
+            <div style={{fontSize:36, marginBottom:10}}>🔒</div>
+            <p style={{fontSize:16, fontWeight:900, color:"white", margin:"0 0 8px"}}>전체 합격 전략 분석</p>
+            <p style={{fontSize:13, color:"rgba(255,255,255,0.65)", lineHeight:1.75, margin:"0 0 6px"}}>
+              오행 기질 · 직무 키워드 TOP 5 · 기업 규모별 전략<br />
+              면접 예상 질문 TOP 3 · 합격 에너지 분석
+            </p>
+            <p style={{fontSize:12, color:"#a78bfa", margin:"0 0 18px"}}>결제 후 바로 열람 가능합니다</p>
+            <Link href="/resume" style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", borderRadius:22, padding:"13px 28px", fontSize:14, fontWeight:900, textDecoration:"none"}}>
+              ₩9,900으로 전체 분석 보기 →
+            </Link>
           </div>
-          <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{result.ohAdvice}</p>
-        </div>
+        )}
 
-        {/* 직무 핵심 키워드 */}
-        <div style={S.card}>
-          <p style={{fontSize:13, fontWeight:900, color:"#a78bfa", margin:"0 0 12px"}}>🎯 {result.field} 직무 합격 키워드 TOP 5</p>
-          <div style={{display:"flex", flexWrap:"wrap", gap:6, marginBottom:12}}>
-            {result.fieldKeywords.map((k:string, i:number) => (
-              <span key={i} style={{background:"rgba(124,58,237,0.25)", border:"1px solid rgba(124,58,237,0.4)", color:"#c4b5fd", fontSize:11, padding:"5px 12px", borderRadius:20, fontWeight:700}}>{k}</span>
-            ))}
-          </div>
-          <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{result.fieldStrategy}</p>
-        </div>
-
-        {/* 기업 규모별 전략 */}
-        <div style={S.card}>
-          <p style={{fontSize:13, fontWeight:900, color:"#fbbf24", margin:"0 0 10px"}}>🏢 {result.companySize} 합격 전략</p>
-          <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{result.sizeStrategy}</p>
-        </div>
-
-        {/* 면접 예상 질문 */}
-        <div style={S.card}>
-          <p style={{fontSize:13, fontWeight:900, color:"#4ade80", margin:"0 0 12px"}}>💬 면접 예상 질문 TOP 3</p>
-          <div style={{display:"flex", flexDirection:"column", gap:12}}>
-            {result.interview.map((q:string, i:number) => (
-              <div key={i} style={{display:"flex", gap:10}}>
-                <span style={{color:"#4ade80", fontWeight:900, fontSize:13, flexShrink:0}}>Q{i+1}.</span>
-                <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{q}</p>
+        {/* 분석 카드들 — 결제 후 공개 */}
+        {isUnlocked && (
+          <>
+            {/* 오행 기질 */}
+            <div style={S.card}>
+              <div style={{display:"flex", gap:12, alignItems:"center", marginBottom:10}}>
+                <span style={{fontSize:30}}>{ohE}</span>
+                <div>
+                  <p style={{fontSize:12, fontWeight:700, color:ohC, margin:"0 0 2px"}}>오행 {result.oh} — {result.trait}</p>
+                  <p style={{fontSize:11, color:"#6b7280", margin:0}}>{result.ohKeyword}</p>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
+              <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{result.ohAdvice}</p>
+            </div>
+
+            {/* 직무 핵심 키워드 */}
+            <div style={S.card}>
+              <p style={{fontSize:13, fontWeight:900, color:"#a78bfa", margin:"0 0 12px"}}>🎯 {result.field} 직무 합격 키워드 TOP 5</p>
+              <div style={{display:"flex", flexWrap:"wrap", gap:6, marginBottom:12}}>
+                {result.fieldKeywords.map((k:string, i:number) => (
+                  <span key={i} style={{background:"rgba(124,58,237,0.25)", border:"1px solid rgba(124,58,237,0.4)", color:"#c4b5fd", fontSize:11, padding:"5px 12px", borderRadius:20, fontWeight:700}}>{k}</span>
+                ))}
+              </div>
+              <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{result.fieldStrategy}</p>
+            </div>
+
+            {/* 기업 규모별 전략 */}
+            <div style={S.card}>
+              <p style={{fontSize:13, fontWeight:900, color:"#fbbf24", margin:"0 0 10px"}}>🏢 {result.companySize} 합격 전략</p>
+              <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{result.sizeStrategy}</p>
+            </div>
+
+            {/* 면접 예상 질문 */}
+            <div style={S.card}>
+              <p style={{fontSize:13, fontWeight:900, color:"#4ade80", margin:"0 0 12px"}}>💬 면접 예상 질문 TOP 3</p>
+              <div style={{display:"flex", flexDirection:"column", gap:12}}>
+                {result.interview.map((q:string, i:number) => (
+                  <div key={i} style={{display:"flex", gap:10}}>
+                    <span style={{color:"#4ade80", fontWeight:900, fontSize:13, flexShrink:0}}>Q{i+1}.</span>
+                    <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{q}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
 
         {/* 택일 연결 */}
         <div style={{background:"linear-gradient(135deg,#0f2027,#1a3a1a)", border:"1px solid rgba(74,222,128,0.3)", borderRadius:18, padding:"20px 18px", marginBottom:14}}>
