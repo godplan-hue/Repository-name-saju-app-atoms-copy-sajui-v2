@@ -57,8 +57,20 @@ export default function V2Analysis() {
     // v2_paid와 v2_result 둘 다 있을 때만 결과지로 이동
     // v2_result 없이 v2_paid만 있으면 result→analysis 무한루프 발생
     if (localStorage.getItem("v2_paid") === "1" && localStorage.getItem("v2_result")) {
-      router.replace("/main-v2/result");
-      return;
+      // 현재 입력한 이름과 저장된 결과의 이름이 다른 사람이면 이전 결제 데이터 초기화
+      const savedProfile = (() => { try { return JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); } catch { return {}; } })();
+      const existingResult = (() => { try { return JSON.parse(localStorage.getItem("v2_result") || "{}"); } catch { return {}; } })();
+      const nameMatch = !savedProfile.name || !existingResult.profile?.name || savedProfile.name === existingResult.profile.name;
+      if (!nameMatch) {
+        localStorage.removeItem("v2_paid");
+        localStorage.removeItem("v2_result");
+        localStorage.removeItem("v2_plan");
+        localStorage.removeItem("price");
+        localStorage.removeItem("v2_paid_cats");
+      } else {
+        router.replace("/main-v2/result");
+        return;
+      }
     }
     let p = sessionStorage.getItem("v2_profile");
     if (!p) {

@@ -394,9 +394,13 @@ function V2ResultInner() {
     if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
     const raw = localStorage.getItem("v2_result");
     if (!raw) {
-      // v2_result 없을 때 analysis로 보내면 v2_paid=1이 남아있는 경우 무한루프 발생
-      // — 메인으로 보내서 루프를 끊음
-      router.replace("/main-v2");
+      // v2_paid가 남아있으면 analysis → result 무한루프 발생 — 먼저 제거 후 analysis로 이동
+      if (localStorage.getItem("v2_paid") === "1") {
+        localStorage.removeItem("v2_paid");
+        localStorage.removeItem("v2_plan");
+        localStorage.removeItem("price");
+      }
+      router.replace("/main-v2/analysis");
       return;
     }
     const r = JSON.parse(raw);
