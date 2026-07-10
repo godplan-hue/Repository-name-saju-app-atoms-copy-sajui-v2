@@ -148,15 +148,11 @@ export default function ResumePage() {
           <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8px 16px", marginBottom:20}}>
             {[
               "AI 합격 점수 분석",
-              "직무별 맞춤 전략",
+              "직무별 맞춤 합격 전략",
               "핵심 키워드 5개",
               "기업별 인재상 분석",
               "면접 예상 질문 5개",
-              "오행 기질 강점",
-              "결과 보관·재열람",
-              "🔮 사주 직업운 연결",
-              "📈 대운 흐름 연결",
-              "📅 합격 택일 연결",
+              "오행 기질 강점 분석",
             ].map(t=>(
               <div key={t} style={{display:"flex", alignItems:"flex-start", gap:6}}>
                 <span style={{color:"#4ade80", flexShrink:0, fontSize:12}}>✅</span>
