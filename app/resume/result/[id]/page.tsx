@@ -29,10 +29,10 @@ export default function ResumeResultPage() {
 
   useEffect(() => {
     if (!id) return;
-    // 사주 실결제(price > 0) 또는 합격자소서 전용 결제 시 잠금 해제
-    const sajuPaid = localStorage.getItem("v2_paid") === "1" && Number(localStorage.getItem("price") || 0) > 0;
-    if (sajuPaid) setIsUnlocked(true);
-    // ?paid=1 파라미터로 방금 결제 완료됐을 때도 열어줌
+    // 사주 결제 후 24시간 이내에만 잠금 해제 (resume_unlock_until 기간 체크)
+    const resumeUntil = Number(localStorage.getItem("resume_unlock_until") || 0);
+    if (resumeUntil > Date.now()) setIsUnlocked(true);
+    // ?paid=1 파라미터 — 합격자소서 전용 결제 직후 리다이렉트 시
     if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("paid") === "1") {
       setIsUnlocked(true);
     }
@@ -41,7 +41,6 @@ export default function ResumeResultPage() {
       .then(d => {
         if (d.result) {
           setResult(d.result);
-          if (d.result.paid === true) setIsUnlocked(true);
         } else {
           setError("결과를 찾을 수 없어요.");
         }

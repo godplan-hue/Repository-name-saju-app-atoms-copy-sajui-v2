@@ -75,16 +75,11 @@ function PayInner() {
             }),
           }).catch(() => {});
         }
+        // 24시간 잠금 해제 (꿈해몽과 동일한 방식)
+        localStorage.setItem("resume_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000));
         if (id) {
-          // 기존 결과 잠금해제 흐름 (결과지에서 결제)
-          await fetch("/api/resume/analyze", {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id }),
-          });
           router.push(`/resume/result/${id}?paid=1`);
         } else {
-          // 선결제 흐름 (랜딩에서 먼저 결제)
           localStorage.setItem("resume_paid_token", "1");
           router.push("/resume/start");
         }

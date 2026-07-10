@@ -33,10 +33,9 @@ export default function JigunResultPage() {
 
   useEffect(() => {
     if (!id) return;
-    // 사주 실결제(price > 0) 또는 Firebase paid:true 시 잠금 해제
-    // 무료쿠폰(payFree)은 price를 설정하지 않으므로 제외됨
-    const sajuPaid = localStorage.getItem("v2_paid") === "1" && Number(localStorage.getItem("price") || 0) > 0;
-    if (sajuPaid) setIsUnlocked(true);
+    // 사주 결제 후 24시간 이내에만 잠금 해제 (jigun_unlock_until 기간 체크)
+    const jigunUntil = Number(localStorage.getItem("jigun_unlock_until") || 0);
+    if (jigunUntil > Date.now()) setIsUnlocked(true);
 
     fetch(`/api/career/analyze?id=${id}`)
       .then(r => r.json())
