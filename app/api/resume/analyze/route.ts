@@ -150,7 +150,22 @@ export async function GET(req: NextRequest) {
     if (!id) return NextResponse.json({ error: "id 필요" }, { status: 400 });
     const snap = await db.ref(`resume_analyses/${id}`).get();
     if (!snap.exists()) return NextResponse.json({ error: "결과 없음" }, { status: 404 });
-    return NextResponse.json({ result: snap.val() });
+    const data = snap.val();
+    // 미결제 시 분석 내용을 서버에서 제외 — 클라이언트 조작으로 우회 불가
+    if (!data.paid) {
+      return NextResponse.json({
+        result: {
+          name: data.name,
+          field: data.field,
+          companySize: data.companySize,
+          company: data.company || "",
+          oh: data.oh,
+          score: data.score,
+          paid: false,
+        }
+      });
+    }
+    return NextResponse.json({ result: data });
   } catch (e) {
     return NextResponse.json({ error: "조회 실패" }, { status: 500 });
   }
