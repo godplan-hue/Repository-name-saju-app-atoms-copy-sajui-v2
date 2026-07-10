@@ -72,7 +72,11 @@ export default function V2Analysis() {
         return;
       }
     }
-    setProfile(JSON.parse(p));
+    try {
+      setProfile(JSON.parse(p));
+    } catch {
+      router.replace("/main-v2/profile");
+    }
   }, []);
 
   useEffect(() => {
@@ -116,7 +120,11 @@ export default function V2Analysis() {
     }
   };
 
-  if (!profile) return null;
+  if (!profile) return (
+    <main style={{ minHeight: "100vh", background: "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <p style={{ color: "#8b5cf6", fontWeight: 700, fontSize: 16 }}>🔮 로딩 중...</p>
+    </main>
+  );
   const fuData = FU[selCat];
 
   return (
