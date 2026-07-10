@@ -7,9 +7,10 @@ interface Lead {
   name: string;
   phone: string;
   email?: string;
-  birthYear: string;
-  code: string;
-  used: boolean;
+  birthYear?: string;
+  source?: string;
+  code?: string;
+  used?: boolean;
   createdAt: number;
 }
 
@@ -52,6 +53,7 @@ export default function AdminDirectPayments() {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"payments" | "leads">("payments");
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume">("all");
 
   useEffect(() => {
     const adminId = localStorage.getItem("adminId");
@@ -200,24 +202,51 @@ export default function AdminDirectPayments() {
 
           {tab === "leads" && <>
             <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 6px", color: "#333" }}>🎁 무료DB</h1>
-            <p style={{ fontSize: 13, color: "#888", margin: "0 0 24px" }}>jeomun.com/free 에서 무료 재물운 신청한 고객 목록</p>
+            <p style={{ fontSize: 13, color: "#888", margin: "0 0 16px" }}>재물운무료 · 직운 · 합격자소서 전체 무료 신청 고객 목록</p>
+            {/* 소스별 필터 */}
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
+              {([
+                { key: "all",    label: "전체",       emoji: "📋", activeBg: "#374151", inactiveBg: "#f3f4f6", activeText: "white", inactiveText: "#374151" },
+                { key: "free",   label: "재물운무료",  emoji: "🎁", activeBg: "#f59e0b", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#92400e" },
+                { key: "jigun",  label: "직운무료",   emoji: "💼", activeBg: "#7c3aed", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#6d28d9" },
+                { key: "resume", label: "합격자소서",  emoji: "📄", activeBg: "#2563eb", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#1d4ed8" },
+              ] as { key: "all"|"free"|"jigun"|"resume"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
+                const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.source ?? "free") === f.key).length;
+                const active = sourceFilter === f.key;
+                return (
+                  <button key={f.key} onClick={() => setSourceFilter(f.key)}
+                    style={{ padding: "8px 16px", background: active ? f.activeBg : f.inactiveBg, color: active ? f.activeText : f.inactiveText, border: "none", borderRadius: 20, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
+                    {f.emoji} {f.label} ({cnt}명)
+                  </button>
+                );
+              })}
+            </div>
             {leads.length === 0 ? (
               <p style={{ textAlign: "center", color: "#888", padding: "40px 0" }}>아직 신청 데이터가 없어요.</p>
             ) : (
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                 <thead>
                   <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
-                    {["이름", "전화번호", "이메일", "생년", "쿠폰코드", "사용여부", "신청일"].map(h => (
+                    {["이름", "전화번호", "이메일", "출처", "생년", "쿠폰코드", "사용여부", "신청일"].map(h => (
                       <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontWeight: 900, color: "#374151" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {leads.map((lead, i) => (
+                  {leads.filter(l => sourceFilter === "all" || (l.source ?? "free") === sourceFilter).map((lead, i) => (
                     <tr key={lead.id} style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}>
                       <td style={{ padding: "10px 12px", fontWeight: 700 }}>{lead.name}</td>
-                      <td style={{ padding: "10px 12px", color: "#374151" }}>{lead.phone}</td>
+                      <td style={{ padding: "10px 12px", color: "#374151" }}>{lead.phone || "-"}</td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.email || "-"}</td>
+                      <td style={{ padding: "10px 12px" }}>
+                        <span style={{
+                          background: lead.source === "jigun" ? "#ede9fe" : lead.source === "resume" ? "#dbeafe" : "#fef3c7",
+                          color: lead.source === "jigun" ? "#6d28d9" : lead.source === "resume" ? "#1d4ed8" : "#92400e",
+                          padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700
+                        }}>
+                          {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : "🎁재물운"}
+                        </span>
+                      </td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.birthYear ? `${lead.birthYear}년` : "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
                         {lead.code
