@@ -288,11 +288,11 @@ export default function HistoryDetail() {
   };
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
-    if (!("speechSynthesis" in window)) return;
     if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
-      alert("카카오톡 브라우저에서는 읽기 기능이 지원되지 않아요.\n우측 상단 ··· → '외부 브라우저로 열기'를 눌러주세요.");
+      setTipModal({ text: "카카오톡 안에서는 읽기 기능이 작동하지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택해주세요.\n\n외부 브라우저에서 🔊 읽기 버튼을 누르면\n읽어주기가 작동해요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n설정 > 화면 자동 꺼짐 시간을 늘리거나\n'보고 있는 동안 화면 켜짐'을 켜두세요." });
       return;
     }
+    if (!("speechSynthesis" in window)) return;
     if (speaking) {
       // speakingRef를 즉시 false로 — 화면꺼짐 재개 핸들러가 동시에 와도 재시작 안 함
       setSpk(false);

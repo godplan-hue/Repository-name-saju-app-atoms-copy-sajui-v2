@@ -1017,7 +1017,7 @@ function V2ResultInner() {
   };
 
   const toggleReadAloud = () => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    if (typeof window === "undefined") return;
     const isKakao = /KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent);
     if (isKakao) {
       const shareUrlId = shareId || sidFromUrlRef.current;
@@ -1028,6 +1028,7 @@ function V2ResultInner() {
       });
       return;
     }
+    if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
