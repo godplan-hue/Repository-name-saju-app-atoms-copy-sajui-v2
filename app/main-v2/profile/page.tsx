@@ -186,6 +186,12 @@ export default function V2Profile() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     }).catch(() => {});
+    // 유료 결제 결과가 이미 있으면 분석을 새로 돌리지 않고 결과지로 바로 이동
+    // (실수로 프로필 폼이 다시 열려도 유료 결과가 사라지지 않음)
+    if (localStorage.getItem("v2_paid") === "1" && localStorage.getItem("v2_result")) {
+      router.push("/main-v2/result");
+      return;
+    }
     // 무료 플로우: 이전 결제 잔여 플래그 전부 제거 후 analysis로 강제 이동
     if (isFreeFlow) {
       sessionStorage.removeItem("v2_after_payment_goto");

@@ -54,13 +54,14 @@ export default function V2Analysis() {
   }, []);
 
   useEffect(() => {
-    const p = sessionStorage.getItem("v2_profile");
-    if (!p) { router.replace("/main-v2/profile"); return; }
-    // 유료 결제 결과가 이미 있으면 결과지로 바로 이동 — 실수로 이 화면에 와도 유료 결과가 지워지지 않음
+    // v2_paid 체크를 sessionStorage 체크보다 먼저 — iOS가 sessionStorage를 비워도
+    // 유료 결과가 있으면 분석 화면을 완전히 건너뜀(이전 버전은 순서가 반대라 효과 없었음)
     if (localStorage.getItem("v2_paid") === "1" && localStorage.getItem("v2_result")) {
       router.replace("/main-v2/result");
       return;
     }
+    const p = sessionStorage.getItem("v2_profile");
+    if (!p) { router.replace("/main-v2/profile"); return; }
     setProfile(JSON.parse(p));
   }, []);
 
