@@ -88,7 +88,7 @@ const sizeStrategy: Record<string, string> = {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, birthYear, birthMonth, birthDay, field, companySize, company, keywords, phone } = body;
+    const { name, birthYear, birthMonth, birthDay, field, companySize, company, keywords, phone, email } = body;
 
     const year = parseInt(birthYear); const month = parseInt(birthMonth); const day = parseInt(birthDay);
     if (!year || !month || !day || !name || !field || !companySize) {
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
 
     const result = {
       name, birthYear, birthMonth, birthDay, field, companySize,
-      company: company || "", keywords: keywords || "", phone: phone || "",
+      company: company || "", keywords: keywords || "", phone: phone || "", email: email || "",
       oh, score,
       trait: ohData.trait,
       ohKeyword: ohData.keyword,
@@ -128,7 +128,7 @@ export async function POST(req: NextRequest) {
           await db.ref(`free_leads/${cleanPhone}`).set({
             phone: cleanPhone,
             name,
-            email: "",
+            email: email || "",
             source: "resume",
             createdAt: Date.now(),
           });

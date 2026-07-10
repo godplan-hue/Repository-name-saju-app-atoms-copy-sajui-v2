@@ -767,6 +767,13 @@ export default function MainV2() {
         </div>
       </header>
 
+      {/* 탈잉·크몽 신뢰 띠 */}
+      {!isPartner && (
+        <div style={{ textAlign: "center", padding: "7px 16px", background: "linear-gradient(90deg, #fdf2f8, #ede9fe, #fdf2f8)", borderBottom: "1px solid rgba(236,72,153,0.12)" }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임 강사가 만든 앱</span>
+        </div>
+      )}
+
       {/* 헤드라인 */}
       <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
         <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", color: "#9f1239", textShadow: "1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff, 1.5px 1.5px 0 #fff, -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 0 0 2px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>

@@ -49,6 +49,12 @@ const FAQ_ITEMS = [
   { q: "WHO 성장 기준과 어떻게 비교하나요?", a: "세계보건기구(WHO)의\n공식 성장 기준 데이터를 기반으로\n아이의 키, 몸무게, 머리둘레를\n백분위수로 비교해 드립니다.\n또래 평균과의 차이를\n한눈에 확인할 수 있습니다." },
 ];
 
+function shareApp() {
+  const data = { title: "맘케어 — AI 육아 앱", text: "소아과 전문의가 함께하는 AI 육아 앱 맘케어를 추천합니다 👶", url: "https://jeomun.com/momcare" };
+  if (typeof navigator !== "undefined" && navigator.share) { navigator.share(data).catch(() => {}); }
+  else if (typeof navigator !== "undefined" && navigator.clipboard) { navigator.clipboard.writeText(data.url).then(() => alert("링크가 복사됐어요!")); }
+}
+
 export default function MomcarePage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [featureIdx, setFeatureIdx] = useState(0);
@@ -76,6 +82,11 @@ export default function MomcarePage() {
         </div>
       </nav>
 
+      {/* 탈잉·크몽 신뢰 띠 */}
+      <div style={{ textAlign: "center", padding: "7px 16px", background: "linear-gradient(90deg, #e0f2fe, #f0f9ff, #e0f2fe)", borderBottom: "1px solid rgba(2,132,199,0.15)" }}>
+        <span style={{ fontSize: 12, fontWeight: 700, color: "#0369a1" }}>🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임 강사가 만든 앱</span>
+      </div>
+
       {/* 히어로 */}
       <div style={{ background: "linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(8,145,178,0.06) 50%, rgba(240,249,255,0) 100%)" }}>
         <div style={{ maxWidth: 800, margin: "0 auto", padding: "40px 24px 36px", display: "flex", alignItems: "center", gap: 28, flexWrap: "wrap" }}>
@@ -93,6 +104,7 @@ export default function MomcarePage() {
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <Link href="/momcare/daily-tracker" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "12px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>무료로 시작하기</Link>
               <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>성장 캘린더 →</Link>
+              <button onClick={shareApp} style={{ background: "white", color: "#64748b", border: "1.5px solid rgba(100,116,139,0.25)", borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>🔗 공유하기</button>
             </div>
           </div>
           {/* 엄마 이미지 */}

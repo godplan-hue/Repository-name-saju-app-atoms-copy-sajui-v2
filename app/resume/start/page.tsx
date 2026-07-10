@@ -11,7 +11,7 @@ export default function ResumeStartPage() {
   const router = useRouter();
   const [form, setForm] = useState({
     name: "", birthYear: "", birthMonth: "", birthDay: "",
-    field: "", companySize: "", company: "", keywords: "", phone: "",
+    field: "", companySize: "", company: "", keywords: "", phone: "", email: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -104,6 +104,12 @@ export default function ResumeStartPage() {
             <input value={form.phone} onChange={e => set("phone", e.target.value)} placeholder="010-0000-0000" className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
           </div>
 
+          {/* 이메일 (선택) */}
+          <div>
+            <label className="text-xs text-gray-400 font-bold block mb-1">이메일 (선택 — 합격 전략 뉴스레터 수신)</label>
+            <input value={form.email} onChange={e => set("email", e.target.value)} placeholder="example@email.com" type="email" className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
+          </div>
+
           {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
           <label className="flex items-start gap-3 cursor-pointer">
@@ -115,7 +121,7 @@ export default function ResumeStartPage() {
             />
             <span className="text-xs text-gray-400 leading-relaxed">
               <strong className="text-gray-300">[필수] 개인정보 수집·이용 동의</strong><br />
-              수집 항목: 이름, 생년월일, 전화번호(선택) / 목적: 합격 전략 분석 서비스 제공 / 보관 기간: 3년 후 파기
+              수집 항목: 이름, 생년월일, 전화번호·이메일(선택) / 목적: 합격 전략 분석 서비스 제공 / 보관 기간: 3년 후 파기
             </span>
           </label>
 
