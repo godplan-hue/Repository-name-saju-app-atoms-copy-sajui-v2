@@ -17,8 +17,8 @@ export default function PortoneTestPage() {
         storeId: STORE_ID,
         channelKey: CHANNEL_KEY,
         paymentId,
-        orderName: "점운 사주 분석 (990원)",
-        totalAmount: 990,
+        orderName: "점운 사주 분석 (테스트)",
+        totalAmount: 1000,
         currency: "KRW",
         payMethod: "CARD",
         customer: {
@@ -58,7 +58,7 @@ export default function PortoneTestPage() {
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid #e0e0e0", paddingTop: 12, marginTop: 4 }}>
             <span style={{ color: "#333", fontSize: 16, fontWeight: 700 }}>결제금액</span>
-            <span style={{ color: "#e91e8c", fontSize: 20, fontWeight: 800 }}>₩990</span>
+            <span style={{ color: "#e91e8c", fontSize: 20, fontWeight: 800 }}>₩1,000</span>
           </div>
         </div>
 
