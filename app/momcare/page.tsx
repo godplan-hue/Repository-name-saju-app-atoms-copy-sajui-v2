@@ -77,8 +77,8 @@ export default function MomcarePage() {
       </nav>
 
       {/* 히어로 */}
-      <div style={{ background: "linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(8,145,178,0.06) 50%, rgba(240,249,255,0) 100%)", padding: "40px 24px 36px" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", display: "flex", alignItems: "center", gap: 28, flexWrap: "wrap" }}>
+      <div style={{ background: "linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(8,145,178,0.06) 50%, rgba(240,249,255,0) 100%)" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", padding: "40px 24px 36px", display: "flex", alignItems: "center", gap: 28, flexWrap: "wrap" }}>
           {/* 텍스트 */}
           <div style={{ flex: 1, minWidth: 240 }}>
             <span style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "3px 14px", fontSize: 11, fontWeight: 700, marginBottom: 12 }}>👶 맘케어 — 무료</span>
@@ -332,9 +332,9 @@ export default function MomcarePage() {
 
       {/* 푸터 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
-        <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#ede9fe", border: "2px solid #a78bfa" }}>
-          <p style={{ color: "#6d28d9", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 맘케어 · Powered by 점운</p>
-          <div style={{ color: "#5b21b6", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
+        <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#e0f2fe", border: "2px solid #7dd3fc" }}>
+          <p style={{ color: "#0369a1", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 맘케어 · Powered by 점운</p>
+          <div style={{ color: "#0284c7", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
             <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
             <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
             <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
@@ -344,14 +344,14 @@ export default function MomcarePage() {
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", marginBottom: 10 }}>
             <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "6px 16px", background: "#FEE500", color: "#1a1a1a", borderRadius: 20, textDecoration: "none", fontWeight: 800, fontSize: 11 }}>💬 카카오톡 문의</a>
-            <a href="mailto:info@jeomun.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #a78bfa", borderRadius: 20, color: "#6d28d9", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>📧 이메일 문의</a>
+            <a href="mailto:info@jeomun.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1.5px solid #7dd3fc", borderRadius: 20, color: "#0369a1", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>📧 이메일 문의</a>
           </div>
           <div style={{ fontSize: 11 }}>
-            <a href="/terms" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>이용약관</a>
-            <span style={{ color: "#c4b5fd", margin: "0 8px" }}>|</span>
-            <a href="/privacy" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
-            <span style={{ color: "#c4b5fd", margin: "0 8px" }}>|</span>
-            <a href="/refund" style={{ color: "#6d28d9", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
+            <a href="/terms" style={{ color: "#0369a1", textDecoration: "none", fontWeight: 600 }}>이용약관</a>
+            <span style={{ color: "#7dd3fc", margin: "0 8px" }}>|</span>
+            <a href="/privacy" style={{ color: "#0369a1", textDecoration: "none", fontWeight: 600 }}>개인정보처리방침</a>
+            <span style={{ color: "#7dd3fc", margin: "0 8px" }}>|</span>
+            <a href="/refund" style={{ color: "#0369a1", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
           </div>
         </div>
       </footer>
