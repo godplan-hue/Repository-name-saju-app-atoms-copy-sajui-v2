@@ -120,9 +120,6 @@ function PayInner() {
 
       localStorage.setItem("v2_paid", "1");
       localStorage.setItem("v2_plan", "select");
-      try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
-      try { localStorage.setItem("jigun_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
-      try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
       if (isFreeCat) {
         try {
           const cats = JSON.parse(localStorage.getItem("v2_paid_cats") || "[]");
