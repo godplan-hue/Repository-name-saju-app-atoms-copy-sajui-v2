@@ -1023,13 +1023,21 @@ function V2ResultInner() {
       } catch {}
     }
     if (readChunksRef.current.length === 0) {
-      // 화면에 실제로 보이는 내용만 정확히 읽게 함 — allAnalyses 안에는 "오늘의
-      // 운세"(미리보기용, 결제 화면엔 안 보임) 항목도 같이 섞여있어서, 그걸 그대로
-      // 다 읽으면 결제한 진짜 내용 대신 "오늘의 운세"만 계속 읽히는 문제가 있었음
+      // 결제 상태를 버튼 누르는 시점에 localStorage에서 직접 재확인 —
+      // tier state는 마운트 시점에 계산돼서 stale할 수 있음(v2_plan 누락 시 free로 잘못 계산됨)
+      const _livePaid = localStorage.getItem("v2_paid") === "1";
+      const _livePlan = localStorage.getItem("v2_plan") ?? "";
+      const _liveTier: "free" | "select" | "package" = !_livePaid ? "free"
+        : _livePlan === "package" ? "package"
+        : _livePlan === "select" ? "select"
+        : tier !== "free" ? tier : "free";
+      const _liveAnalyses: Record<string, string> = Object.keys(allAnalyses).length > 0
+        ? allAnalyses
+        : (() => { try { return (JSON.parse(localStorage.getItem("v2_result") || "{}") as any).allAnalyses ?? {}; } catch { return {}; } })();
       const visibleTexts =
-        tier === "free" ? [freeAnalysis]
-        : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
-        : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
+        _liveTier === "free" ? [freeAnalysis]
+        : _liveTier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => _liveAnalyses[c.key])
+        : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => _liveAnalyses[c.apiKey]).map(c => _liveAnalyses[c.apiKey]);
 
       // "당신의 변화" 카드도 화면에 실제로 보이는 만큼만 읽음 — 무료에서 아직
       // 결제 안 한 상태면 블러 처리된 hidden2(990원 결제 시 공개)는 절대 읽지
@@ -1040,7 +1048,7 @@ function V2ResultInner() {
         const todayKey = new Date().toDateString();
         const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${todayKey}`;
         const savedInterestToday = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
-        if (tier === "free") {
+        if (_liveTier === "free") {
           const directInterest = changeInterest ?? (savedInterestToday && interestOptions.includes(savedInterestToday) ? savedInterestToday : null);
           if (freeConsumedSnapshot !== true && directInterest) {
             const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest);
@@ -1084,16 +1092,25 @@ function V2ResultInner() {
     restartingRef.current = true;
     window.speechSynthesis.cancel();
     clearTtsProgress();
+    const _livePaid2 = localStorage.getItem("v2_paid") === "1";
+    const _livePlan2 = localStorage.getItem("v2_plan") ?? "";
+    const _liveTier2: "free" | "select" | "package" = !_livePaid2 ? "free"
+      : _livePlan2 === "package" ? "package"
+      : _livePlan2 === "select" ? "select"
+      : tier !== "free" ? tier : "free";
+    const _liveAnalyses2: Record<string, string> = Object.keys(allAnalyses).length > 0
+      ? allAnalyses
+      : (() => { try { return (JSON.parse(localStorage.getItem("v2_result") || "{}") as any).allAnalyses ?? {}; } catch { return {}; } })();
     const visibleTexts =
-      tier === "free" ? [freeAnalysis]
-      : tier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => allAnalyses[c.key])
-      : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => allAnalyses[c.apiKey]).map(c => allAnalyses[c.apiKey]);
+      _liveTier2 === "free" ? [freeAnalysis]
+      : _liveTier2 === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => _liveAnalyses2[c.key])
+      : (PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]).filter(c => _liveAnalyses2[c.apiKey]).map(c => _liveAnalyses2[c.apiKey]);
     if (!isPartner && profile?.name && profile?.birthYear) {
       const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
       const todayKey = new Date().toDateString();
       const interestKey = `v2_change_interest_${profile.name}_${profile.birthYear}_${Number(profile.birthMonth)}_${Number(profile.birthDay)}_${todayKey}`;
       const savedInterestToday = localStorage.getItem(interestKey);
-      if (tier === "free") {
+      if (_liveTier2 === "free") {
         const directInterest = changeInterest ?? (savedInterestToday && interestOptions.includes(savedInterestToday) ? savedInterestToday : null);
         if (freeConsumedSnapshot !== true && directInterest) {
           const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, directInterest);

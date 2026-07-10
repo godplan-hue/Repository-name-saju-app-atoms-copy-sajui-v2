@@ -104,7 +104,7 @@ export default function MomcarePage() {
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <Link href="/momcare/daily-tracker" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "12px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>무료로 시작하기</Link>
               <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>성장 캘린더 →</Link>
-              <button onClick={shareApp} style={{ background: "white", color: "#64748b", border: "1.5px solid rgba(100,116,139,0.25)", borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>🔗 공유하기</button>
+              <button onClick={shareApp} style={{ background: "#f3e8ff", color: "#7c3aed", border: "1.5px solid rgba(124,58,237,0.3)", borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>🔗 공유하기</button>
             </div>
           </div>
           {/* 엄마 이미지 */}

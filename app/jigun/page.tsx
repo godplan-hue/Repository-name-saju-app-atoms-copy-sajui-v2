@@ -387,7 +387,7 @@ export default function JigunPage() {
               />
               <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
                 <strong style={{ color: "rgba(255,255,255,0.75)" }}>[필수] 개인정보 수집·이용 동의</strong><br />
-                수집 항목: 이름(선택), 출생연도, 전화번호(선택), 이메일(선택) / 목적: 부업 추천 서비스 제공 / 보관 기간: 3년 후 파기
+                수집 항목: 이름(선택), 출생연도, 전화번호(선택), 이메일(선택) /<br />목적: 부업 추천 서비스 제공 / 보관 기간: 3년 후 파기
               </span>
             </label>
 
@@ -406,8 +406,8 @@ export default function JigunPage() {
 
       </div>
 
-      {/* 푸터 */}
-      <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
+      {/* 푸터 — 인트로 화면에서만 표시 */}
+      {step === 0 && <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
         <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "rgba(167,139,250,0.18)", border: "1.5px solid rgba(167,139,250,0.4)" }}>
           <p style={{ color: "#c4b5fd", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 · AI 동양 운세 분석</p>
           <div style={{ color: "#ddd6fe", fontSize: 10.5, fontWeight: 600, lineHeight: 1.8, marginBottom: 12 }}>
@@ -430,7 +430,7 @@ export default function JigunPage() {
             <a href="/refund" style={{ color: "#c4b5fd", textDecoration: "none", fontWeight: 600 }}>환불정책</a>
           </div>
         </div>
-      </footer>
+      </footer>}
     </div>
   );
 }
