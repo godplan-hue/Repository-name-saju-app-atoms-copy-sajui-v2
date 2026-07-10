@@ -991,6 +991,11 @@ function V2ResultInner() {
 
   const toggleReadAloud = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    const isKakao = /KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent);
+    if (isKakao) {
+      alert("카카오톡 브라우저에서는 읽기 기능이 지원되지 않아요.\n우측 상단 ··· → '외부 브라우저로 열기'를 눌러주세요.");
+      return;
+    }
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);

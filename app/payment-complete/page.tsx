@@ -345,11 +345,11 @@ function PaymentCompleteInner() {
       const result = { ...data, profile, histId: Date.now(), savedAt: new Date().toISOString() };
       const price = plan === "select" ? (pricePaid || paidAmount || "990") : (PKG_PRICE_MAP[p.pkg] ?? "9900");
 
-      sessionStorage.setItem("v2_result", JSON.stringify(result));
-      sessionStorage.setItem("v2_paid", "1");
-      sessionStorage.setItem("v2_plan", plan);
+      localStorage.setItem("v2_result", JSON.stringify(result));
+      localStorage.setItem("v2_paid", "1");
+      localStorage.setItem("v2_plan", plan);
       sessionStorage.setItem("selectedPackage", p.pkg);
-      sessionStorage.setItem("price", price);
+      localStorage.setItem("price", price);
 
       const _d = new Date();
       const _tk = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,"0")}-${String(_d.getDate()).padStart(2,"0")}`;

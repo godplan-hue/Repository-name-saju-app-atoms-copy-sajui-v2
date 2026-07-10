@@ -277,8 +277,11 @@ export default function HistoryDetail() {
   };
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
-    const _ua = navigator.userAgent;
     if (!("speechSynthesis" in window)) return;
+    if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
+      alert("카카오톡 브라우저에서는 읽기 기능이 지원되지 않아요.\n우측 상단 ··· → '외부 브라우저로 열기'를 눌러주세요.");
+      return;
+    }
     if (speaking) {
       // speakingRef를 즉시 false로 — 화면꺼짐 재개 핸들러가 동시에 와도 재시작 안 함
       setSpk(false);
