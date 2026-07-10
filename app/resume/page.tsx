@@ -34,12 +34,26 @@ const S = {
 export default function ResumePage() {
   const [openFAQ, setOpenFAQ] = useState<number|null>(null);
   const [by, setBy] = useState(""); const [bm, setBm] = useState(""); const [bd, setBd] = useState("");
+  const [name, setName] = useState(""); const [phone, setPhone] = useState(""); const [email, setEmail] = useState("");
   const [res, setRes] = useState<{score:number;t:string;e:string}|null>(null);
+  const [saving, setSaving] = useState(false);
 
-  function calc() {
+  async function calc() {
     const y=parseInt(by),m=parseInt(bm),d=parseInt(bd);
     if(!y||!m||!d||y<1950||y>2010||m<1||m>12||d<1||d>31){alert("생년월일을 올바르게 입력해주세요");return;}
-    setRes(calcHireScore(y,m,d));
+    if(!name.trim()){alert("이름을 입력해주세요");return;}
+    if(!phone.trim()){alert("전화번호를 입력해주세요");return;}
+    const score = calcHireScore(y,m,d);
+    setSaving(true);
+    try {
+      await fetch("/api/resume-lead", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ name: name.trim(), phone: phone.trim(), email: email.trim(), birthYear: y, birthMonth: m, birthDay: d, score: score.score }),
+      });
+    } catch {}
+    setSaving(false);
+    setRes(score);
   }
 
   return (
@@ -70,13 +84,16 @@ export default function ResumePage() {
           <p style={{fontSize:14, fontWeight:900, color:"white", margin:"0 0 14px", textAlign:"center"}}>올해 내 취업·합격 운세는 몇 점?</p>
           {!res ? (
             <div>
-              <input value={by} onChange={e=>setBy(e.target.value)} placeholder="출생년도 (예: 1998)" maxLength={4} style={{...S.input, marginBottom:8}} />
+              <input value={name} onChange={e=>setName(e.target.value)} placeholder="이름" style={{...S.input, marginBottom:8}} />
+              <input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="전화번호 (예: 01012345678)" maxLength={11} style={{...S.input, marginBottom:8}} inputMode="numeric" />
+              <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="이메일 (선택)" style={{...S.input, marginBottom:8}} inputMode="email" />
+              <input value={by} onChange={e=>setBy(e.target.value)} placeholder="출생년도 (예: 1998)" maxLength={4} style={{...S.input, marginBottom:8}} inputMode="numeric" />
               <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:12}}>
-                <input value={bm} onChange={e=>setBm(e.target.value)} placeholder="월" maxLength={2} style={S.input} />
-                <input value={bd} onChange={e=>setBd(e.target.value)} placeholder="일" maxLength={2} style={S.input} />
+                <input value={bm} onChange={e=>setBm(e.target.value)} placeholder="월" maxLength={2} style={S.input} inputMode="numeric" />
+                <input value={bd} onChange={e=>setBd(e.target.value)} placeholder="일" maxLength={2} style={S.input} inputMode="numeric" />
               </div>
-              <button onClick={calc} style={{width:"100%", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", border:"none", borderRadius:12, padding:"13px", fontSize:14, fontWeight:700, cursor:"pointer"}}>
-                2026년 취업운 점수 보기
+              <button onClick={calc} disabled={saving} style={{width:"100%", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", border:"none", borderRadius:12, padding:"13px", fontSize:14, fontWeight:700, cursor:"pointer", opacity: saving ? 0.7 : 1}}>
+                {saving ? "저장 중..." : "2026년 취업운 점수 보기"}
               </button>
             </div>
           ) : (
