@@ -699,7 +699,7 @@ export default function MainV2() {
 
   const goFree = () => {
     if (!user) { router.push("/main-v2/login"); return; }
-    try { const sp = localStorage.getItem("v2_saved_profile"); if (sp) { const p = JSON.parse(sp); if (p.birthYear && p.gender && p.birthHour) { sessionStorage.setItem("v2_profile", JSON.stringify(p)); router.push("/main-v2/analysis"); return; } } } catch {}
+    try { const sp = localStorage.getItem("v2_saved_profile"); if (sp) { const p = JSON.parse(sp); if (p.birthYear && p.gender && p.birthHour) { sessionStorage.setItem("v2_profile", JSON.stringify(p)); router.push("/main-v2/analysis?fresh=1"); return; } } } catch {}
     router.push("/main-v2/profile");
   };
 

@@ -56,7 +56,9 @@ export default function V2Analysis() {
   useEffect(() => {
     // v2_paid와 v2_result 둘 다 있을 때만 결과지로 이동
     // v2_result 없이 v2_paid만 있으면 result→analysis 무한루프 발생
-    if (localStorage.getItem("v2_paid") === "1" && localStorage.getItem("v2_result")) {
+    // ?fresh=1 이면 유료 결과 리다이렉트를 건너뛰고 새 무료 분석 실행 (메인 "무료" 버튼)
+    const isFresh = window.location.search.includes("fresh=1");
+    if (!isFresh && localStorage.getItem("v2_paid") === "1" && localStorage.getItem("v2_result")) {
       // 현재 입력한 이름과 저장된 결과의 이름이 다른 사람이면 이전 결제 데이터 초기화
       const savedProfile = (() => { try { return JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); } catch { return {}; } })();
       const existingResult = (() => { try { return JSON.parse(localStorage.getItem("v2_result") || "{}"); } catch { return {}; } })();

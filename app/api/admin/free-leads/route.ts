@@ -54,9 +54,22 @@ export async function GET(request: NextRequest) {
   });
   for (const item of dedupByPhone(resumeItems, "resume")) leads.push(item);
 
-  leads.sort((a: any, b: any) => (b.createdAt || 0) - (a.createdAt || 0));
+  // 출처가 달라도 같은 전화번호가 중복될 수 있으므로 (free_leads+career_analyses 동시 저장 등) 최종 전체 중복 제거
+  const finalByPhone = new Map<string, any>();
+  const finalNoPhone: any[] = [];
+  for (const lead of leads) {
+    const p = lead.phone ? String(lead.phone).replace(/\D/g, "") : "";
+    if (p.length >= 10) {
+      const ex = finalByPhone.get(p);
+      if (!ex || (lead.createdAt || 0) > (ex.createdAt || 0)) finalByPhone.set(p, lead);
+    } else {
+      finalNoPhone.push(lead);
+    }
+  }
+  const finalLeads = [...finalByPhone.values(), ...finalNoPhone];
+  finalLeads.sort((a: any, b: any) => (b.createdAt || 0) - (a.createdAt || 0));
 
-  return NextResponse.json({ leads });
+  return NextResponse.json({ leads: finalLeads });
 }
 
 // 무료DB 전체 삭제 (free_leads + career_analyses + resume_analyses)
