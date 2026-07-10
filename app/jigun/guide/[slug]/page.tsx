@@ -137,7 +137,7 @@ export default async function JigunSeoPage({ params }: { params: Promise<{ slug:
         <h1 style={{ fontSize: "clamp(22px,5vw,30px)", fontWeight: 900, lineHeight: 1.3, margin: "0 0 14px", background: "linear-gradient(135deg,#4ade80,#f59e0b)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{d.h1}</h1>
         <p style={{ fontSize: 15, color: "rgba(255,255,255,0.7)", lineHeight: 1.7, margin: "0 0 28px" }}>{d.sub}</p>
         <Link href="/jigun" style={{ display: "inline-block", background: "linear-gradient(135deg,#16a34a,#d97706)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 32px", borderRadius: 30, textDecoration: "none", boxShadow: "0 8px 32px rgba(22,163,74,0.4)" }}>
-          무료로 부업 TOP3 찾기 →
+          내 맞춤 부업 TOP3 찾기 →
         </Link>
         <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 12 }}>8문항 퀴즈 → 맞춤 부업 즉시 추천</p>
       </section>

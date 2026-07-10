@@ -33,9 +33,11 @@ export default function JigunResultPage() {
 
   useEffect(() => {
     if (!id) return;
-    // 사주 결제 후 24시간 이내에만 잠금 해제 (jigun_unlock_until 기간 체크)
+    // 직운 결제 후 24시간 이내에만 잠금 해제
     const jigunUntil = Number(localStorage.getItem("jigun_unlock_until") || 0);
     if (jigunUntil > Date.now()) setIsUnlocked(true);
+    // 결제 직후 리다이렉트 시 즉시 열기
+    if (new URLSearchParams(window.location.search).get("paid") === "1") setIsUnlocked(true);
 
     fetch(`/api/career/analyze?id=${id}`)
       .then(r => r.json())
@@ -185,9 +187,9 @@ export default function JigunResultPage() {
                 <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", borderRadius: 22, background: "rgba(3,0,20,0.7)", backdropFilter: "blur(2px)" }}>
                   <div style={{ fontSize: 32, marginBottom: 10 }}>🔒</div>
                   <p style={{ fontSize: 14, fontWeight: 900, color: "white", margin: "0 0 4px", textAlign: "center" }}>{RANK_BADGE[i]} 잠금</p>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 14px", textAlign: "center" }}>사주 990원 결제 시 무료로 열려요</p>
-                  <Link href="/main-v2" style={{ background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 20, padding: "10px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
-                    990원으로 TOP 3 전체 보기 →
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 14px", textAlign: "center" }}>990원 결제 후 24시간 전체 열람 가능</p>
+                  <Link href={`/jigun/pay?id=${id}`} style={{ background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 20, padding: "10px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+                    ₩990 결제하고 전체 보기 →
                   </Link>
                 </div>
               )}
