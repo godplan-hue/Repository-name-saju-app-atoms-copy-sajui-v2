@@ -121,7 +121,7 @@ function PayInner() {
           <p style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px" }}>합격자소서 {PLAN_LABEL}</p>
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>
             오행 기질 · 직무 키워드 5개 · 기업별 전략<br />
-            면접 예상 질문 5개 · 사주 직업운 연결
+            면접 예상 질문 TOP 5 · 합격 에너지 분석
           </p>
           <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 바로 이름·직무 입력 → 분석 즉시 공개</p>
           <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: 0 }}>
@@ -187,7 +187,7 @@ function PayInner() {
           disabled={loading}
           style={{ width: "100%", background: loading ? "rgba(124,58,237,0.5)" : "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 22, padding: "16px", fontSize: 16, fontWeight: 900, cursor: loading ? "not-allowed" : "pointer", marginBottom: 12 }}
         >
-          {loading ? "결제 처리 중..." : "₩9,900 결제하기"}
+          {loading ? "결제 처리 중..." : `₩${AMOUNT.toLocaleString()} 결제하기`}
         </button>
 
         <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", lineHeight: 1.6 }}>

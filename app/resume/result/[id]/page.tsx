@@ -120,7 +120,7 @@ export default function ResumeResultPage() {
             <p style={{fontSize:16, fontWeight:900, color:"white", margin:"0 0 8px"}}>전체 합격 전략 분석</p>
             <p style={{fontSize:13, color:"rgba(255,255,255,0.65)", lineHeight:1.75, margin:"0 0 6px"}}>
               오행 기질 · 직무 키워드 TOP 5 · 기업 규모별 전략<br />
-              면접 예상 질문 TOP 3 · 합격 에너지 분석
+              면접 예상 질문 TOP 5 · 합격 에너지 분석
             </p>
             <p style={{fontSize:12, color:"#a78bfa", margin:"0 0 18px"}}>결제 후 바로 열람 가능합니다</p>
             <Link href={`/resume/pay?id=${id}`} style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", borderRadius:22, padding:"13px 28px", fontSize:14, fontWeight:900, textDecoration:"none"}}>
@@ -163,7 +163,7 @@ export default function ResumeResultPage() {
 
             {/* 면접 예상 질문 */}
             <div style={S.card}>
-              <p style={{fontSize:13, fontWeight:900, color:"#4ade80", margin:"0 0 12px"}}>💬 면접 예상 질문 TOP 3</p>
+              <p style={{fontSize:13, fontWeight:900, color:"#4ade80", margin:"0 0 12px"}}>💬 면접 예상 질문 TOP 5</p>
               <div style={{display:"flex", flexDirection:"column", gap:12}}>
                 {result.interview.map((q:string, i:number) => (
                   <div key={i} style={{display:"flex", gap:10}}>

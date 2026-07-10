@@ -29,7 +29,7 @@ export default function ResumeStartPage() {
       const res = await fetch("/api/resume/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, prepaid: true }),
+        body: JSON.stringify({ ...form, ...(localStorage.getItem("resume_paid_token") === "1" ? { prepaid: true } : {}) }),
       });
       const data = await res.json();
       if (data.id) {

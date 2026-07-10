@@ -130,7 +130,7 @@ export default function ResumePage() {
         <Link href="/resume/pay" style={{display:"block", background:"white", color:"#1a1a2e", fontSize:15, fontWeight:900, padding:"16px", borderRadius:16, textDecoration:"none", textAlign:"center", marginBottom:6}}>
           🎯 합격 전략 분석 시작하기 →
         </Link>
-        <p style={{fontSize:11, color:"#6b7280", textAlign:"center", margin:"0 0 4px"}}>9,900원 결제 → 폼 작성 → 전체 분석 즉시 공개</p>
+        <p style={{fontSize:11, color:"#6b7280", textAlign:"center", margin:"0 0 4px"}}>990원 결제 → 폼 작성 → 전체 분석 즉시 공개</p>
         <p style={{fontSize:10, color:"#4b5563", textAlign:"center", margin:"0 0 10px"}}>※ 결제 후 바로 이름·직무 입력 → 전략·키워드·면접 전체 공개</p>
         <div style={{textAlign:"center", marginBottom:20}}>
           <button onClick={()=>{const u="https://jeomun.com/resume";if(navigator.share)navigator.share({title:"🎯 점운 합격",text:"사주로 취업 합격 가능성 분석해봤어요!",url:u});else navigator.clipboard?.writeText(u).then(()=>alert("링크 복사됐어요!"));}} style={{background:"linear-gradient(135deg,#fbbf24,#f59e0b)", color:"#111", border:"none", borderRadius:20, padding:"11px 28px", fontSize:13, fontWeight:900, cursor:"pointer"}}>
@@ -187,10 +187,10 @@ export default function ResumePage() {
           <p style={{fontSize:15, fontWeight:900, color:"white", margin:"0 0 12px"}}>당신이 받게 될 것</p>
           <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:8}}>
             {[
-              {label:"합격 가능성 점수 분석\n(최고 96점)", color:"#a78bfa"},
+              {label:"합격 가능성 점수 분석", color:"#a78bfa"},
               {label:"직무별 맞춤 합격 전략", color:"#93c5fd"},
-              {label:"핵심 키워드 3개 제시", color:"#a78bfa"},
-              {label:"면접 예상 질문 3개", color:"#93c5fd"},
+              {label:"핵심 키워드 5개 제시", color:"#a78bfa"},
+              {label:"면접 예상 질문 5개", color:"#93c5fd"},
             ].map(({label,color})=>(
               <div key={label} style={{...S.card, padding:"12px 14px", display:"flex", alignItems:"flex-start", gap:8}}>
                 <span style={{color, fontSize:16, flexShrink:0, marginTop:1}}>✅</span>
