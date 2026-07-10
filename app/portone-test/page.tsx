@@ -23,6 +23,8 @@ export default function PortoneTestPage() {
         payMethod: "CARD",
         customer: {
           fullName: "테스트 고객",
+          email: "test@jeomun.com",
+          phoneNumber: "01000000000",
         },
       });
       if (response?.code) {
