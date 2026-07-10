@@ -162,10 +162,13 @@ Claude를 이용해 사주 원국·십성·신살·대운·세운 등의 콘텐�
   - `payFree`(무료쿠폰)에서 `haemong_unlock_until` / `jigun_unlock_until` / `momcare_unlock_until` 3줄 제거 — 무료쿠폰이 꿈해몽·직운·맘케어를 24시간~30일 무료 열어주던 버그 수정 (commit `90988e7`)
   - 직운 결과지 2/3순위 잠금 안 열리던 버그 수정: `v2_paid=1` + `price>0` (실결제) 시 자동 잠금해제 로직 추가 (`app/jigun/result/[id]/page.tsx`) — 무료쿠폰은 price 미설정이라 제외됨 (commit `89648c1`)
   - 합격자소서 결과지 동일 수정: 사주 실결제 후 자동 잠금해제 (`app/resume/result/[id]/page.tsx`)
-  - **잠금 해제 원칙 (이후 수정 시 반드시 준수)**:
-    - `payFree` → `v2_paid=1`, `v2_plan=select` 만 설정. 다른 앱 unlock 키 절대 추가 금지
-    - 직운/합격자소서 잠금: `v2_paid===1` + `Number(price)>0` 둘 다 true여야 해제
-    - 꿈해몽 잠금: 실카드 결제(`pay` 함수)에서만 `haemong_unlock_until` 설정
+  - **잠금 해제 원칙 확정 (2026-07-10, 이후 절대 변경 금지)**:
+    - **꿈해몽**: 사주 990원 실카드 결제 시 `haemong_unlock_until` 24시간 — `pay()` 함수에서만 설정
+    - **맘케어**: 사주 990원 실카드 결제 시 `momcare_unlock_until` 30일 — `pay()` 함수에서만 설정
+    - **직운**: 직운 전용 990원 결제(`/jigun/pay`) 시 `jigun_unlock_until` 24시간 — 사주 결제와 무관
+    - **합격자소서**: 합격자소서 전용 990원 결제(`/resume/pay`) 시 `resume_unlock_until` 24시간 — 사주 결제와 무관
+    - `payFree`(무료쿠폰) → `v2_paid=1`, `v2_plan=select` 만 설정. unlock 키 절대 추가 금지
+    - `v2_paid` + `price` localStorage는 사주 결과지 표시용 — 다른 앱 잠금해제에 절대 사용 금지
 - 버그 수정 완료 (2026-07-07):
   - 꿈해몽 항상 잠금해제 버그 수정: `payFree`(무료 쿠폰)에서 `haemong_unlock_until` 설정 제거 — 실제 카드 결제(`pay` 함수)만 잠금 해제되도록 수정 (이후 재발, 2026-07-10에 재수정)
   - 대운 결제 후 결과 사라지는 버그 수정: sessionStorage → localStorage+24시간 만료 방식으로 변경, `/payment-complete`(존재하지 않던 URL) 대신 `/main-v2/daewoon?daeunPaid=1` URL로 결제 결과 전달
