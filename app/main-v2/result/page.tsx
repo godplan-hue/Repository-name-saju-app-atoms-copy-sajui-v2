@@ -990,27 +990,30 @@ function V2ResultInner() {
   };
 
   const toggleReadAloud = () => {
-    if (typeof window === "undefined") return;
-    const _ua = navigator.userAgent;
-    const _isKakao = /KAKAOTALK/i.test(_ua);
-    if (_isKakao) {
-      setTipModal({ text: "카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
-      return;
-    }
-    if (!("speechSynthesis" in window)) return;
-    // window.speechSynthesis.speaking은 기기에 따라 실제 상태와 다르게(멈췄는데도
-    // true로) 나오는 경우가 있어서, 이 값으로 "정지 vs 이어읽기"를 판단하면 멈추기
-    // 버튼이 먹통이 되는 문제가 있었음 — 우리가 직접 관리하는 speaking 상태만 보고
-    // 무조건 멈춤(화면꺼짐으로 끊긴 경우의 자동 이어읽기는 resumeAfterHideRef가 따로 처리)
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
       releaseWakeLock();
       return;
     }
+    // 버튼 누르는 시점에 결제 상태 재확인 — tier state는 마운트 시 계산돼 stale할 수 있음
+    const _livePaid = localStorage.getItem("v2_paid") === "1";
+    const _livePlan = localStorage.getItem("v2_plan") ?? "";
+    const _liveTier: "free" | "select" | "package" = !_livePaid ? "free"
+      : _livePlan === "package" ? "package"
+      : _livePlan === "select" ? "select"
+      : tier !== "free" ? tier : "free";
+    const _liveAnalyses: Record<string, string> = Object.keys(allAnalyses).length > 0
+      ? allAnalyses
+      : (() => { try { return (JSON.parse(localStorage.getItem("v2_result") || "{}") as any).allAnalyses ?? {}; } catch { return {}; } })();
+    // tier state가 "free"지만 실제론 유료인 경우 → 이전에 저장된 무료 청크를 버리고 재빌드
+    if (_liveTier !== "free" && tier === "free") {
+      readChunksRef.current = [];
+      readIdxRef.current = 0;
+      try { localStorage.removeItem(ttsProgressKey); } catch {}
+    }
     if (readChunksRef.current.length === 0) {
-      // 화면이 꺼지거나 에러로 다시 들어온 경우, 이전에 멈췄던 위치가
-      // sessionStorage에 남아있으면 처음부터 다시 만들지 말고 그 위치부터 이어read
       try {
         const saved = localStorage.getItem(ttsProgressKey);
         if (saved) {
@@ -1023,17 +1026,6 @@ function V2ResultInner() {
       } catch {}
     }
     if (readChunksRef.current.length === 0) {
-      // 결제 상태를 버튼 누르는 시점에 localStorage에서 직접 재확인 —
-      // tier state는 마운트 시점에 계산돼서 stale할 수 있음(v2_plan 누락 시 free로 잘못 계산됨)
-      const _livePaid = localStorage.getItem("v2_paid") === "1";
-      const _livePlan = localStorage.getItem("v2_plan") ?? "";
-      const _liveTier: "free" | "select" | "package" = !_livePaid ? "free"
-        : _livePlan === "package" ? "package"
-        : _livePlan === "select" ? "select"
-        : tier !== "free" ? tier : "free";
-      const _liveAnalyses: Record<string, string> = Object.keys(allAnalyses).length > 0
-        ? allAnalyses
-        : (() => { try { return (JSON.parse(localStorage.getItem("v2_result") || "{}") as any).allAnalyses ?? {}; } catch { return {}; } })();
       const visibleTexts =
         _liveTier === "free" ? [freeAnalysis]
         : _liveTier === "select" ? ALL_SCORE_CATS.filter(c => c.key !== FREE_CAT && paidCats.includes(c.key)).map(c => _liveAnalyses[c.key])

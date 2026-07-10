@@ -102,7 +102,7 @@ export default function MomcarePage() {
               성장 위기 캘린더 · 수유·수면 기록 · 타임캡슐 편지
             </p>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <Link href="/momcare/daily-tracker" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "12px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>무료로 시작하기</Link>
+              <Link href="/main-v2" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "12px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>무료로 시작하기</Link>
               <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>성장 캘린더 →</Link>
               <button onClick={shareApp} style={{ background: "#f3e8ff", color: "#7c3aed", border: "1.5px solid rgba(124,58,237,0.3)", borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>🔗 공유하기</button>
             </div>
@@ -307,7 +307,7 @@ export default function MomcarePage() {
               <div key={item} style={{ background: "rgba(255,255,255,0.15)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
             ))}
           </div>
-          <Link href="/momcare/daily-tracker" style={{ display: "inline-block", background: "white", color: TEAL, borderRadius: 24, padding: "12px 32px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>
+          <Link href="/main-v2" style={{ display: "inline-block", background: "white", color: TEAL, borderRadius: 24, padding: "12px 32px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>
             지금 무료로 시작하기 →
           </Link>
         </div>
