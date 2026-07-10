@@ -162,6 +162,7 @@ export default function JigunPage() {
   }
 
   async function submit() {
+    if (!name.trim()) { setErr("이름을 입력해주세요."); return; }
     const recommended = calcRecommended(answers);
     setLoading(true);
     setErr("");

@@ -115,8 +115,9 @@ export async function POST(req: NextRequest) {
       createdAt: Date.now(),
     };
 
-    // Firebase 저장
-    const id = `${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+    // 전화번호 있으면 전화번호를 키로 사용 → 같은 번호 재제출 시 덮어쓰기(중복 방지)
+    const cleanPhoneKey = phone ? String(phone).replace(/\D/g, "") : "";
+    const id = cleanPhoneKey.length >= 10 ? cleanPhoneKey : `${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
     await db.ref(`resume_analyses/${id}`).set(result);
 
     // 전화번호 있으면 free_leads에 1회만 저장 (같은 번호 중복 저장 안 함)
