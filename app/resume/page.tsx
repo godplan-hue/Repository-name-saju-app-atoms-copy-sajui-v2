@@ -61,7 +61,7 @@ export default function ResumePage() {
         {/* 서브타이틀 */}
         <div style={{textAlign:"center", padding:"16px 0 16px"}}>
           <p style={{fontSize:13, color:"#fbbf24", fontWeight:700, margin:"0 0 4px"}}>생년월일 + 직무 입력 → 5초 분석</p>
-          <p style={{fontSize:11, color:"#6b7280", margin:0}}>탈잉 2년 연속 1위 강사 제작 · 크몽 상위 2% 프라임 전문가 검증</p>
+          <p style={{fontSize:11, color:"#6b7280", margin:0}}>🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱</p>
         </div>
 
         {/* 사주 점수 계산기 */}

@@ -770,7 +770,7 @@ export default function MainV2() {
       {/* 탈잉·크몽 신뢰 띠 */}
       {!isPartner && (
         <div style={{ textAlign: "center", padding: "7px 16px", background: "linear-gradient(90deg, #fdf2f8, #ede9fe, #fdf2f8)", borderBottom: "1px solid rgba(236,72,153,0.12)" }}>
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임 강사가 만든 앱</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱</span>
         </div>
       )}
 
@@ -900,7 +900,7 @@ export default function MainV2() {
           </div>
           {!isPartner && (
             <p style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", marginTop: 8, letterSpacing: "0.02em" }}>
-              탈잉 2년 연속 1위 강사 제작 · 크몽 상위 2% 프라임 전문가 검증
+              🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
             </p>
           )}
         </div>

@@ -119,7 +119,7 @@ export default function HaemongPage() {
 
         {/* 크몽·탈잉 신뢰 문구 */}
         <p style={{ textAlign: "center", fontSize: 11, color: "rgba(100,60,120,0.55)", marginBottom: 14, letterSpacing: "0.02em" }}>
-          탈잉 2년 연속 1위 강사 제작 · 크몽 상위 2% 프라임 전문가 검증
+          🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
         </p>
 
         {/* 검색창 */}

@@ -14,7 +14,8 @@ export default function PartnerPolicy() {
         <div style={{ marginBottom: 40 }}>
           <button onClick={() => router.push("/partner")} style={{ background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", padding: "10px 16px", borderRadius: 8, fontWeight: 900, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
           <h1 style={{ color: "#fbbf24", fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, marginBottom: 16 }}>파트너 정책</h1>
-          <p style={{ color: "#999999", fontSize: 12 }}>시행일: 2026년 5월 16일 | 최종 수정일: 2026년 5월 16일</p>
+          <p style={{ color: "#999999", fontSize: 12, marginBottom: 8 }}>시행일: 2026년 5월 16일 | 최종 수정일: 2026년 5월 16일</p>
+          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", letterSpacing: "0.02em" }}>🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱</p>
         </div>
 
         {/* 부업 안내 카드 */}

@@ -84,7 +84,7 @@ export default function MomcarePage() {
 
       {/* 탈잉·크몽 신뢰 띠 */}
       <div style={{ textAlign: "center", padding: "7px 16px", background: "linear-gradient(90deg, #e0f2fe, #f0f9ff, #e0f2fe)", borderBottom: "1px solid rgba(2,132,199,0.15)" }}>
-        <span style={{ fontSize: 12, fontWeight: 700, color: "#0369a1" }}>🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임 강사가 만든 앱</span>
+        <span style={{ fontSize: 12, fontWeight: 700, color: "#0369a1" }}>🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱</span>
       </div>
 
       {/* 히어로 */}
