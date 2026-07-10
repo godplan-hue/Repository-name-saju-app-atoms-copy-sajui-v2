@@ -381,12 +381,39 @@ function PaymentCompleteInner() {
         }
       } catch {}
 
+      // 공유 ID를 미리 생성해서 URL에 포함 — 카카오 인앱 브라우저에서 Toss가 외부 브라우저로
+      // 열릴 때 localStorage가 단절되므로, ?sid= 로 공유 결과지를 폴백으로 쓸 수 있게 함
+      let sidParam = "";
+      try {
+        const allA: Record<string, string> = data.allAnalyses ?? {};
+        const shareCats = Object.entries(allA)
+          .filter(([, v]) => v && v.trim())
+          .map(([k, v]) => ({
+            icon: k.split(" ")[0] ?? "✨",
+            label: k.split(" ").slice(1).join(" ") || k,
+            color: "#ec4899",
+            text: v,
+          }));
+        if (shareCats.length > 0) {
+          const shareRes = await fetch("/api/v2/share", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: p.name, scores: data.scores, luckyColor: data.luckyColor,
+              luckyNumber: data.luckyNumber, luckyDirection: data.luckyDirection,
+              categories: shareCats, tier: plan, birthYear: p.birthYear,
+            }),
+          });
+          if (shareRes.ok) { const sd = await shareRes.json(); sidParam = sd.id ?? ""; }
+        }
+      } catch {}
+
       const specialT = sessionStorage.getItem("specialType");
       const specialP = sessionStorage.getItem("specialPaid");
       if (specialT && specialP === "1") {
         router.push("/main-v2/special");
       } else {
-        router.push("/main-v2/result");
+        router.push(sidParam ? `/main-v2/result?sid=${sidParam}` : "/main-v2/result");
       }
     } catch (error) {
       console.error("분석 오류:", error);

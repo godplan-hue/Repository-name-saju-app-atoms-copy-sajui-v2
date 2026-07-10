@@ -336,6 +336,7 @@ function V2ResultInner() {
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
+  const sidFromUrlRef = useRef(searchParams.get("sid") ?? "");
   // 화면이 꺼졌다 켜질 때 모바일 OS가 음성 재생을 조용히 멈춰버리는 경우가 있음(JS
   // 에러 없이 그냥 소리만 끊김) — 이때 speaking 상태는 true로 남아있는데 실제
   // 재생은 멈춘 상태가 되어, 버튼을 눌러도 "멈추기"만 동작하고 다시 눌러야 이어
@@ -390,9 +391,7 @@ function V2ResultInner() {
   }, []);
 
   useEffect(() => {
-    // sid가 URL에 있으면 세션 여부 관계없이 무조건 공유 페이지로 이동
     const sid = searchParams.get("sid");
-    if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
     const raw = localStorage.getItem("v2_result");
     if (!raw) {
       // v2_paid가 남아있으면 analysis → result 무한루프 발생 — 먼저 제거 후 analysis로 이동
@@ -401,6 +400,8 @@ function V2ResultInner() {
         localStorage.removeItem("v2_plan");
         localStorage.removeItem("price");
       }
+      // localStorage가 없어도 sid가 있으면 공유 결과지로 폴백 (Toss가 외부 브라우저로 열린 경우)
+      if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
       router.replace("/main-v2/analysis");
       return;
     }
@@ -1019,9 +1020,10 @@ function V2ResultInner() {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const isKakao = /KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent);
     if (isKakao) {
-      if (shareId) {
-        // 공유 URL로 이동 — 외부 브라우저로 열기 해도 서버 저장 결과를 보여줌(localStorage 불필요)
-        window.location.href = `/main-v2/share/${shareId}`;
+      // shareId: 이 페이지 마운트 후 비동기로 세팅됨 / sidFromUrlRef: payment-complete가 URL에 미리 심어준 값
+      const shareUrlId = shareId || sidFromUrlRef.current;
+      if (shareUrlId) {
+        window.location.href = `/main-v2/share/${shareUrlId}`;
       } else {
         alert("카카오톡 브라우저에서는 읽기 기능을 사용할 수 없어요.\n위의 '공유' 버튼을 눌러 링크를 복사한 뒤, 다른 브라우저에서 열어주세요.");
       }
