@@ -54,9 +54,9 @@ export default function V2Analysis() {
   }, []);
 
   useEffect(() => {
-    // v2_paid가 있으면 분석 화면 완전히 건너뜀 — v2_result 유무와 무관
-    // (결과지에 도착하면 allAnalyses 없을 때 자동 재호출 로직이 있음)
-    if (localStorage.getItem("v2_paid") === "1") {
+    // v2_paid와 v2_result 둘 다 있을 때만 결과지로 이동
+    // v2_result 없이 v2_paid만 있으면 result→analysis 무한루프 발생
+    if (localStorage.getItem("v2_paid") === "1" && localStorage.getItem("v2_result")) {
       router.replace("/main-v2/result");
       return;
     }

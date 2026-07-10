@@ -394,7 +394,9 @@ function V2ResultInner() {
     if (sid) { router.replace(`/main-v2/share/${sid}`); return; }
     const raw = localStorage.getItem("v2_result");
     if (!raw) {
-      router.replace("/main-v2/analysis");
+      // v2_result 없을 때 analysis로 보내면 v2_paid=1이 남아있는 경우 무한루프 발생
+      // — 메인으로 보내서 루프를 끊음
+      router.replace("/main-v2");
       return;
     }
     const r = JSON.parse(raw);
@@ -876,7 +878,11 @@ function V2ResultInner() {
     }
   };
 
-  if (!result) return null;
+  if (!result) return (
+    <main style={{ minHeight: "100vh", background: "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <p style={{ color: "#8b5cf6", fontWeight: 700, fontSize: 16 }}>🔮 로딩 중...</p>
+    </main>
+  );
 
   const { scores, luckyColor, luckyNumber, luckyDirection, profile } = result;
   const freeAnalysis: string = result.analysis ?? "";
