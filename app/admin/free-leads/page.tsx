@@ -14,10 +14,13 @@ interface Lead {
   createdAt: number;
 }
 
+type SourceFilter = "all" | "free" | "jigun" | "resume";
+
 export default function AdminFreeLeads() {
   const router = useRouter();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sourceFilter, setSourceFilter] = useState<SourceFilter>("all");
 
   useEffect(() => {
     const adminId = localStorage.getItem("adminId");
@@ -60,7 +63,25 @@ export default function AdminFreeLeads() {
       <div style={{ flex: 1, padding: "30px" }}>
         <div style={{ background: "white", padding: "30px", borderRadius: "12px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
           <h2 style={{ marginTop: 0, fontSize: "22px", fontWeight: 900 }}>🎁 무료DB ({leads.length}명)</h2>
-          <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 20 }}>전화번호 기준 중복 없이 수집 · 출처: 무료재물운(/free) · 직운 · 합격자소서</p>
+          <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 16 }}>전화번호 기준 중복 없이 수집 · 출처별 필터 선택</p>
+
+          {/* 소스별 필터 버튼 */}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
+            {([
+              { key: "all",    label: "전체", emoji: "📋", color: "#6b7280", bg: sourceFilter === "all" ? "#374151" : "#f3f4f6", textColor: sourceFilter === "all" ? "white" : "#374151" },
+              { key: "free",   label: "재물운무료", emoji: "🎁", color: "#92400e", bg: sourceFilter === "free" ? "#f59e0b" : "#fef3c7", textColor: sourceFilter === "free" ? "white" : "#92400e" },
+              { key: "jigun",  label: "직운무료", emoji: "💼", color: "#6d28d9", bg: sourceFilter === "jigun" ? "#7c3aed" : "#ede9fe", textColor: sourceFilter === "jigun" ? "white" : "#6d28d9" },
+              { key: "resume", label: "자소서무료", emoji: "📄", color: "#1d4ed8", bg: sourceFilter === "resume" ? "#2563eb" : "#dbeafe", textColor: sourceFilter === "resume" ? "white" : "#1d4ed8" },
+            ] as { key: SourceFilter; label: string; emoji: string; color: string; bg: string; textColor: string }[]).map(f => {
+              const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.source ?? "free") === f.key).length;
+              return (
+                <button key={f.key} onClick={() => setSourceFilter(f.key)}
+                  style={{ padding: "8px 16px", background: f.bg, color: f.textColor, border: "none", borderRadius: 20, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
+                  {f.emoji} {f.label} ({cnt}명)
+                </button>
+              );
+            })}
+          </div>
 
           {loading ? (
             <p style={{ color: "#6b7280" }}>불러오는 중...</p>
@@ -80,7 +101,7 @@ export default function AdminFreeLeads() {
                   </tr>
                 </thead>
                 <tbody>
-                  {leads.map((lead, i) => (
+                  {leads.filter(l => sourceFilter === "all" || (l.source ?? "free") === sourceFilter).map((lead, i) => (
                     <tr key={lead.id} style={{ borderBottom: "1px solid #e5e7eb", background: i % 2 === 0 ? "white" : "#fafafa" }}>
                       <td style={{ padding: "12px 16px", fontWeight: 600 }}>{lead.name}</td>
                       <td style={{ padding: "12px 16px", color: "#374151" }}>{lead.phone}</td>

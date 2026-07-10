@@ -54,9 +54,9 @@ export default function V2Analysis() {
   }, []);
 
   useEffect(() => {
-    // v2_paid 체크를 sessionStorage 체크보다 먼저 — iOS가 sessionStorage를 비워도
-    // 유료 결과가 있으면 분석 화면을 완전히 건너뜀(이전 버전은 순서가 반대라 효과 없었음)
-    if (localStorage.getItem("v2_paid") === "1" && localStorage.getItem("v2_result")) {
+    // v2_paid가 있으면 분석 화면 완전히 건너뜀 — v2_result 유무와 무관
+    // (결과지에 도착하면 allAnalyses 없을 때 자동 재호출 로직이 있음)
+    if (localStorage.getItem("v2_paid") === "1") {
       router.replace("/main-v2/result");
       return;
     }
