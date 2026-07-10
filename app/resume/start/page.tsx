@@ -17,14 +17,6 @@ export default function ResumeStartPage() {
   const [error, setError] = useState("");
   const [agreed, setAgreed] = useState(false);
 
-  // 선결제 토큰 없으면 결제 페이지로
-  useEffect(() => {
-    try {
-      if (!localStorage.getItem("resume_paid_token")) {
-        router.replace("/resume/pay");
-      }
-    } catch {}
-  }, []);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
