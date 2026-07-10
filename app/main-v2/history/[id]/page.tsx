@@ -234,37 +234,48 @@ export default function HistoryDetail() {
       window.speechSynthesis.onvoiceschanged = () => { clearTimeout(timer); resolve(pick(window.speechSynthesis.getVoices())); };
     });
   };
-  const speakFrom = async (chunks: string[], startIdx: number) => {
-    try {
-      const voice = await getKoreanVoice();
-      chunks.slice(startIdx).forEach((chunk, i) => {
-        const idx = startIdx + i;
-        const utter = new SpeechSynthesisUtterance(chunk);
-        utter.lang = "ko-KR";
-        if (voice) utter.voice = voice;
-        utter.rate = 1;
-        utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
-        utter.onerror = (e) => {
-          if (e.error === "canceled" || e.error === "interrupted") {
-            // restartingRef가 true면 재시작 중 — speaking을 건드리면 안 됨
-            if (!restartingRef.current) setSpk(false);
-            return;
+  // iOS Safari: async/await 이후 speak() 호출은 user gesture 컨텍스트가 끊겨 무반응
+  // 음성 목록이 이미 로드됐으면 동기로 즉시 speak() — 없으면 async fallback
+  const speakFrom = (chunks: string[], startIdx: number) => {
+    const existingVoices = window.speechSynthesis.getVoices();
+    const syncVoice = existingVoices.find(v => v.lang?.toLowerCase().startsWith("ko")) ?? null;
+
+    const dispatch = (voice: SpeechSynthesisVoice | null) => {
+      try {
+        chunks.slice(startIdx).forEach((chunk, i) => {
+          const idx = startIdx + i;
+          const utter = new SpeechSynthesisUtterance(chunk);
+          utter.lang = "ko-KR";
+          if (voice) utter.voice = voice;
+          utter.rate = 1;
+          utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
+          utter.onerror = (e) => {
+            if (e.error === "canceled" || e.error === "interrupted") {
+              if (!restartingRef.current) setSpk(false);
+              return;
+            }
+            setSpk(false);
+            readChunksRef.current = [];
+            readIdxRef.current = 0;
+            window.speechSynthesis.cancel();
+            releaseWakeLock();
+            setTipModal({ text: "읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
+          };
+          if (idx === chunks.length - 1) {
+            utter.onend = () => { setSpk(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); releaseWakeLock(); };
           }
-          setSpk(false);
-          readChunksRef.current = [];
-          readIdxRef.current = 0;
-          window.speechSynthesis.cancel();
-          releaseWakeLock();
-          setTipModal({ text: "읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
-        };
-        if (idx === chunks.length - 1) {
-          utter.onend = () => { setSpk(false); readIdxRef.current = 0; readChunksRef.current = []; clearTtsProgress(); releaseWakeLock(); };
-        }
-        window.speechSynthesis.speak(utter);
-      });
-    } catch {
-      setSpk(false);
-      releaseWakeLock();
+          window.speechSynthesis.speak(utter);
+        });
+      } catch {
+        setSpk(false);
+        releaseWakeLock();
+      }
+    };
+
+    if (existingVoices.length > 0) {
+      dispatch(syncVoice);
+    } else {
+      getKoreanVoice().then(v => dispatch(v));
     }
   };
   // speakingRef.current를 기준으로 판단 — speaking 상태는 비동기라 stale closure 위험이 있음

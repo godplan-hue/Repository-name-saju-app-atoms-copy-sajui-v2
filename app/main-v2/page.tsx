@@ -721,7 +721,7 @@ export default function MainV2() {
       <audio ref={audioRef} src="/bgm.mp3" loop preload="auto" />
 
       {/* 헤더 */}
-      <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.12)", position: "sticky", top: 0, zIndex: 200 }}>
+      <header style={{ minHeight: 52, padding: "6px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 4, background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.12)", position: "sticky", top: 0, zIndex: 200 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
             {musicOn ? "🎵 ON" : "🎵"}
@@ -733,7 +733,7 @@ export default function MainV2() {
           )}
           <span style={{ fontWeight: 900, fontSize: 16, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{brand?.businessName || "점운"}</span>
         </div>
-        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
           {user
             ? (
               <>

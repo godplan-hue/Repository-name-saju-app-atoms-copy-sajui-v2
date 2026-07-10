@@ -331,6 +331,7 @@ function V2ResultInner() {
   const [couponSubmitting, setCouponSubmitting] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [speaking, setSpeaking] = useState(false);
+  const [shareId, setShareId] = useState<string>("");
   const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
@@ -414,7 +415,8 @@ function V2ResultInner() {
     const price = localStorage.getItem("price") ?? "";
     const PKG_PRICES_SET = ["9900", "19900", "24900", "29900"];
     const isPackage = PKG_PRICES_SET.includes(price);
-    const isSelect = price === "990";
+    // 990원뿐 아니라 3900원 등 비패키지 금액도 select tier로 명시 처리
+    const isSelect = price !== "" && !isPackage && Number(price) > 0;
     const v2Paid = localStorage.getItem("v2_paid") === "1";
     const isPaid = isPackage || isSelect || v2Paid;
     const rawPlan = localStorage.getItem("v2_plan") ?? "";
@@ -459,6 +461,7 @@ function V2ResultInner() {
         });
         if (res.ok) {
           const data = await res.json();
+          setShareId(data.id ?? "");
           // 결제 시 입력한 번호로 영구 결과 링크 SMS 발송
           try {
             const phone = sessionStorage.getItem("v2_payment_phone");
@@ -930,45 +933,58 @@ function V2ResultInner() {
     try { localStorage.removeItem(ttsProgressKey); } catch {}
   };
 
-  const speakFrom = async (chunks: string[], startIdx: number) => {
-    const voice = await getKoreanVoice();
-    chunks.slice(startIdx).forEach((chunk, i) => {
-      const idx = startIdx + i;
-      const utter = new SpeechSynthesisUtterance(chunk);
-      utter.lang = "ko-KR";
-      if (voice) utter.voice = voice;
-      utter.rate = 1;
-      utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
-      utter.onerror = (e) => {
-        if (e.error === "canceled" || e.error === "interrupted") {
-          // restartReadAloud가 cancel()을 호출한 경우 speaking을 false로 바꾸면 안 됨 —
-          // 그 직후 setSpeaking(true)를 해도 이 콜백이 비동기로 늦게 덮어써버려서
-          // 버튼이 "멈추기"가 아닌 "읽기"로 고정되는 버그가 있었음
-          if (!restartingRef.current) setSpeaking(false);
-          return;
-        }
-        setSpeaking(false);
-        readChunksRef.current = [];
-        readIdxRef.current = 0;
-        // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
-        // 멈춰야 함 — 안 그러면 "멈추기"를 눌러도 계속 읽히는 것처럼 보임
-        window.speechSynthesis.cancel();
-        releaseWakeLock();
-        // 진짜 에러여도 멈춘 위치(sessionStorage)는 지우지 않음 — 기기 문제로
-        // 한 번 끊겼다가 다시 들어와도 그 위치부터 이어서 읽을 수 있게 함
-        setTipModal({ text: "읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
-      };
-      if (idx === chunks.length - 1) {
-        utter.onend = () => {
+  // iOS Safari는 user gesture 핸들러에서 speak()를 동기적으로 호출해야 함 —
+  // async/await를 쓰면 await 이후 코드는 user gesture 컨텍스트가 끊겨 speak()가 무반응
+  // 해결: 음성 목록이 이미 로드됐으면 동기로 즉시 speak(), 아직 없으면 async fallback
+  const speakFrom = (chunks: string[], startIdx: number) => {
+    const existingVoices = window.speechSynthesis.getVoices();
+    const syncVoice = existingVoices.find(v => v.lang?.toLowerCase().startsWith("ko")) ?? null;
+
+    const dispatch = (voice: SpeechSynthesisVoice | null) => {
+      chunks.slice(startIdx).forEach((chunk, i) => {
+        const idx = startIdx + i;
+        const utter = new SpeechSynthesisUtterance(chunk);
+        utter.lang = "ko-KR";
+        if (voice) utter.voice = voice;
+        utter.rate = 1;
+        utter.onstart = () => { readIdxRef.current = idx; saveTtsProgress(chunks, idx); };
+        utter.onerror = (e) => {
+          if (e.error === "canceled" || e.error === "interrupted") {
+            // restartReadAloud가 cancel()을 호출한 경우 speaking을 false로 바꾸면 안 됨 —
+            // 그 직후 setSpeaking(true)를 해도 이 콜백이 비동기로 늦게 덮어써버려서
+            // 버튼이 "멈추기"가 아닌 "읽기"로 고정되는 버그가 있었음
+            if (!restartingRef.current) setSpeaking(false);
+            return;
+          }
           setSpeaking(false);
-          readIdxRef.current = 0;
           readChunksRef.current = [];
-          clearTtsProgress();
+          readIdxRef.current = 0;
+          // 진짜 실패일 때는 이미 대기열에 들어가 있는 나머지 문장들도 전부
+          // 멈춰야 함 — 안 그러면 "멈추기"를 눌러도 계속 읽히는 것처럼 보임
+          window.speechSynthesis.cancel();
           releaseWakeLock();
+          // 진짜 에러여도 멈춘 위치(sessionStorage)는 지우지 않음 — 기기 문제로
+          // 한 번 끊겼다가 다시 들어와도 그 위치부터 이어서 읽을 수 있게 함
+          setTipModal({ text: "읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
         };
-      }
-      window.speechSynthesis.speak(utter);
-    });
+        if (idx === chunks.length - 1) {
+          utter.onend = () => {
+            setSpeaking(false);
+            readIdxRef.current = 0;
+            readChunksRef.current = [];
+            clearTtsProgress();
+            releaseWakeLock();
+          };
+        }
+        window.speechSynthesis.speak(utter);
+      });
+    };
+
+    if (existingVoices.length > 0) {
+      dispatch(syncVoice); // 동기 — iOS user gesture 컨텍스트 유지
+    } else {
+      getKoreanVoice().then(v => dispatch(v)); // async fallback (첫 로드 등 드문 경우)
+    }
   };
 
   // 화면이 꺼졌다 켜졌을 때 "speaking 상태는 true인데 실제 음성은 멈춰있는" 경우를
@@ -1003,7 +1019,12 @@ function V2ResultInner() {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const isKakao = /KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent);
     if (isKakao) {
-      alert("카카오톡 브라우저에서는 읽기 기능이 지원되지 않아요.\n우측 상단 ··· → '외부 브라우저로 열기'를 눌러주세요.");
+      if (shareId) {
+        // 공유 URL로 이동 — 외부 브라우저로 열기 해도 서버 저장 결과를 보여줌(localStorage 불필요)
+        window.location.href = `/main-v2/share/${shareId}`;
+      } else {
+        alert("카카오톡 브라우저에서는 읽기 기능을 사용할 수 없어요.\n위의 '공유' 버튼을 눌러 링크를 복사한 뒤, 다른 브라우저에서 열어주세요.");
+      }
       return;
     }
     if (speaking) {
