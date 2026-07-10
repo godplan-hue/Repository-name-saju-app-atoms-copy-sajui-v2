@@ -128,7 +128,7 @@ export default function PartnerLanding() {
             <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
           </div>
           <div style={{ color: "#e9d5a8", fontSize: 12, fontWeight: 700, lineHeight: 1.8, marginBottom: 14 }}>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
               <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "6px 18px", background: "#FEE500", color: "#1a1a1a", borderRadius: 20, textDecoration: "none", fontWeight: 800, fontSize: 12 }}>💬 카카오톡 문의</a>
               <a href="mailto:info@jeomun.com?subject=점운 파트너 문의" style={{ display: "inline-block", padding: "6px 18px", border: "1.5px solid #fbbf24", borderRadius: 20, color: "#fbbf24", textDecoration: "none", fontWeight: 800, fontSize: 12 }}>📧 이메일 문의</a>
             </div>
