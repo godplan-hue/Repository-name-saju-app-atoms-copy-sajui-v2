@@ -32,17 +32,17 @@ export default function JigunResultPage() {
   const [isUnlocked, setIsUnlocked] = useState(false);
 
   useEffect(() => {
-    try {
-      const until = localStorage.getItem("jigun_unlock_until");
-      if (until && Date.now() < parseInt(until)) setIsUnlocked(true);
-    } catch {}
-  }, []);
-
-  useEffect(() => {
     if (!id) return;
     fetch(`/api/career/analyze?id=${id}`)
       .then(r => r.json())
-      .then(d => { if (d.result) setResult(d.result); else setErr("결과를 찾을 수 없어요."); })
+      .then(d => {
+        if (d.result) {
+          setResult(d.result);
+          setIsUnlocked(d.result.paid === true);
+        } else {
+          setErr("결과를 찾을 수 없어요.");
+        }
+      })
       .catch(() => setErr("불러오기 실패"))
       .finally(() => setLoading(false));
   }, [id]);

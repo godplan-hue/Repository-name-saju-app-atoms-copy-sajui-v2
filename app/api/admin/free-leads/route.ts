@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 
-// 전화번호 기준으로 중복 제거 — 같은 번호는 가장 최근 항목 1개만 유지
+// 전화번호 기준으로 중복 제거 — 이름 있는 항목 우선, 둘 다 있으면 최근 항목
 // 전화번호 없고 이름이 "익명"인 항목은 연락 불가 → 어드민 뷰에서 제외
+function hasName(item: any): boolean {
+  return !!(item.name && String(item.name).trim() && item.name !== "익명");
+}
+
 function dedupByPhone(items: any[], source: string): any[] {
   const byPhone = new Map<string, any>();
   const noPhone: any[] = [];
@@ -10,10 +14,19 @@ function dedupByPhone(items: any[], source: string): any[] {
     const phone = item.phone ? String(item.phone).replace(/\D/g, "") : "";
     if (phone.length >= 10) {
       const existing = byPhone.get(phone);
-      if (!existing || (item.createdAt || 0) > (existing.createdAt || 0)) {
+      if (!existing) {
         byPhone.set(phone, { ...item, source });
+      } else {
+        // 이름 있는 항목 우선 선택, 둘 다 이름 있으면 최신 우선
+        const newHasName = hasName(item);
+        const exHasName = hasName(existing);
+        if (newHasName && !exHasName) {
+          byPhone.set(phone, { ...item, source });
+        } else if (newHasName === exHasName && (item.createdAt || 0) > (existing.createdAt || 0)) {
+          byPhone.set(phone, { ...item, source });
+        }
       }
-    } else if (item.name && item.name !== "익명") {
+    } else if (hasName(item)) {
       noPhone.push({ ...item, source });
     }
     // 전화번호 없고 이름이 "익명" → 테스트 데이터로 간주, 제외
@@ -55,13 +68,24 @@ export async function GET(request: NextRequest) {
   for (const item of dedupByPhone(resumeItems, "resume")) leads.push(item);
 
   // 출처가 달라도 같은 전화번호가 중복될 수 있으므로 (free_leads+career_analyses 동시 저장 등) 최종 전체 중복 제거
+  // 이름 있는 항목 우선 선택, 둘 다 이름 있으면 최신 우선
   const finalByPhone = new Map<string, any>();
   const finalNoPhone: any[] = [];
   for (const lead of leads) {
     const p = lead.phone ? String(lead.phone).replace(/\D/g, "") : "";
     if (p.length >= 10) {
       const ex = finalByPhone.get(p);
-      if (!ex || (lead.createdAt || 0) > (ex.createdAt || 0)) finalByPhone.set(p, lead);
+      if (!ex) {
+        finalByPhone.set(p, lead);
+      } else {
+        const newHasName = hasName(lead);
+        const exHasName = hasName(ex);
+        if (newHasName && !exHasName) {
+          finalByPhone.set(p, lead);
+        } else if (newHasName === exHasName && (lead.createdAt || 0) > (ex.createdAt || 0)) {
+          finalByPhone.set(p, lead);
+        }
+      }
     } else {
       finalNoPhone.push(lead);
     }
