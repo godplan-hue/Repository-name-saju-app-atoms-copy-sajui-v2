@@ -61,12 +61,6 @@ function PayInner() {
       });
       const data = await res.json();
       if (data.success) {
-        // Firebase에 paid: true 저장
-        await fetch("/api/resume/analyze", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id }),
-        });
         // 결제 기록 Firebase 저장
         if (name.trim()) {
           fetch("/api/v2/save-payment", {
@@ -81,7 +75,19 @@ function PayInner() {
             }),
           }).catch(() => {});
         }
-        router.push(`/resume/result/${id}?paid=1`);
+        if (id) {
+          // 기존 결과 잠금해제 흐름 (결과지에서 결제)
+          await fetch("/api/resume/analyze", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+          });
+          router.push(`/resume/result/${id}?paid=1`);
+        } else {
+          // 선결제 흐름 (랜딩에서 먼저 결제)
+          localStorage.setItem("resume_paid_token", "1");
+          router.push("/resume/start");
+        }
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");
       }
@@ -113,10 +119,11 @@ function PayInner() {
         <div style={{ background: "linear-gradient(135deg,#1a1a2e,#2d1b69)", border: "1px solid rgba(124,58,237,0.4)", borderRadius: 18, padding: "20px 18px", marginBottom: 24, textAlign: "center" }}>
           <p style={{ fontSize: 20, margin: "0 0 4px" }}>🎓</p>
           <p style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px" }}>합격자소서 전략 분석 1회</p>
-          <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px", lineHeight: 1.6 }}>
+          <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>
             오행 기질 · 직무 키워드 TOP 5<br />
             기업 규모별 합격 전략 · 면접 예상 질문 TOP 3
           </p>
+          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 바로 이름·직무 입력 → 전체 분석 즉시 공개</p>
           <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: 0 }}>
             ₩9,900
           </p>

@@ -88,7 +88,7 @@ const sizeStrategy: Record<string, string> = {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, birthYear, birthMonth, birthDay, field, companySize, company, keywords, phone, email } = body;
+    const { name, birthYear, birthMonth, birthDay, field, companySize, company, keywords, phone, email, prepaid } = body;
 
     const year = parseInt(birthYear); const month = parseInt(birthMonth); const day = parseInt(birthDay);
     if (!year || !month || !day || !name || !field || !companySize) {
@@ -113,6 +113,7 @@ export async function POST(req: NextRequest) {
       interview: fieldData.interview,
       sizeStrategy: sizeTip,
       createdAt: Date.now(),
+      ...(prepaid === true ? { paid: true } : {}),
     };
 
     // 전화번호 있으면 전화번호를 키로 사용 → 같은 번호 재제출 시 덮어쓰기(중복 방지)

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -17,6 +17,15 @@ export default function ResumeStartPage() {
   const [error, setError] = useState("");
   const [agreed, setAgreed] = useState(false);
 
+  // 선결제 토큰 없으면 결제 페이지로
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem("resume_paid_token")) {
+        router.replace("/resume/pay");
+      }
+    } catch {}
+  }, []);
+
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
   async function submit() {
@@ -28,10 +37,13 @@ export default function ResumeStartPage() {
       const res = await fetch("/api/resume/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, prepaid: true }),
       });
       const data = await res.json();
-      if (data.id) router.push(`/resume/result/${data.id}`);
+      if (data.id) {
+        localStorage.removeItem("resume_paid_token");
+        router.push(`/resume/result/${data.id}`);
+      }
       else setError(data.error || "분석 실패. 다시 시도해주세요.");
     } catch { setError("네트워크 오류. 잠시 후 다시 시도해주세요."); }
     finally { setLoading(false); }
