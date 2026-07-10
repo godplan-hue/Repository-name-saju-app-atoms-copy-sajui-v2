@@ -138,6 +138,8 @@ export default function JigunPage() {
   const [answers, setAnswers] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [birthYear, setBirthYear] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [agreed, setAgreed] = useState(false);
@@ -169,6 +171,8 @@ export default function JigunPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name || "익명",
+          phone: phone || "",
+          email: email || "",
           birthYear: birthYear ? parseInt(birthYear) : null,
           birthMonth: null,
           birthDay: null,
@@ -350,6 +354,26 @@ export default function JigunPage() {
                   style={{ width: "100%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 14, padding: "14px 16px", color: "white", fontSize: 14, outline: "none", boxSizing: "border-box" }}
                 />
               </div>
+              <div>
+                <label style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, display: "block", marginBottom: 6 }}>전화번호 (선택 · 30% 할인쿠폰 발급)</label>
+                <input
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                  placeholder="01012345678"
+                  inputMode="tel"
+                  style={{ width: "100%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 14, padding: "14px 16px", color: "white", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+                />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, display: "block", marginBottom: 6 }}>이메일 (선택)</label>
+                <input
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="example@email.com"
+                  inputMode="email"
+                  style={{ width: "100%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 14, padding: "14px 16px", color: "white", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+                />
+              </div>
             </div>
 
             {err && <p style={{ color: "#ef4444", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{err}</p>}
@@ -363,7 +387,7 @@ export default function JigunPage() {
               />
               <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
                 <strong style={{ color: "rgba(255,255,255,0.75)" }}>[필수] 개인정보 수집·이용 동의</strong><br />
-                수집 항목: 이름(선택), 출생연도 / 목적: 부업 추천 서비스 제공 / 보관 기간: 3년 후 파기
+                수집 항목: 이름(선택), 출생연도, 전화번호(선택), 이메일(선택) / 목적: 부업 추천 서비스 제공 / 보관 기간: 3년 후 파기
               </span>
             </label>
 

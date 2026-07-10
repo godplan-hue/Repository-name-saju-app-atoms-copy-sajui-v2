@@ -6,9 +6,11 @@ interface Lead {
   id: string;
   name: string;
   phone: string;
-  birthYear: string;
-  code: string;
-  used: boolean;
+  email?: string;
+  birthYear?: string;
+  source?: string;
+  code?: string;
+  used?: boolean;
   createdAt: number;
 }
 
@@ -58,7 +60,7 @@ export default function AdminFreeLeads() {
       <div style={{ flex: 1, padding: "30px" }}>
         <div style={{ background: "white", padding: "30px", borderRadius: "12px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
           <h2 style={{ marginTop: 0, fontSize: "22px", fontWeight: 900 }}>🎁 무료DB ({leads.length}명)</h2>
-          <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 20 }}>jeomun.com/free 에서 무료 재물운 신청한 고객 목록</p>
+          <p style={{ color: "#6b7280", fontSize: 13, marginBottom: 20 }}>전화번호 기준 중복 없이 수집 · 출처: 무료재물운(/free) · 직운 · 합격자소서</p>
 
           {loading ? (
             <p style={{ color: "#6b7280" }}>불러오는 중...</p>
@@ -71,7 +73,7 @@ export default function AdminFreeLeads() {
                   <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>이름</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>전화번호</th>
-                    <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>생년</th>
+                    <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>출처</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>쿠폰코드</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>사용여부</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>신청일</th>
@@ -82,9 +84,19 @@ export default function AdminFreeLeads() {
                     <tr key={lead.id} style={{ borderBottom: "1px solid #e5e7eb", background: i % 2 === 0 ? "white" : "#fafafa" }}>
                       <td style={{ padding: "12px 16px", fontWeight: 600 }}>{lead.name}</td>
                       <td style={{ padding: "12px 16px", color: "#374151" }}>{lead.phone}</td>
-                      <td style={{ padding: "12px 16px", color: "#6b7280" }}>{lead.birthYear}년</td>
                       <td style={{ padding: "12px 16px" }}>
-                        <span style={{ background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 6, fontWeight: 700, letterSpacing: 1 }}>{lead.code}</span>
+                        <span style={{
+                          background: lead.source === "jigun" ? "#ede9fe" : lead.source === "resume" ? "#dbeafe" : "#fef3c7",
+                          color: lead.source === "jigun" ? "#6d28d9" : lead.source === "resume" ? "#1d4ed8" : "#92400e",
+                          padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700
+                        }}>
+                          {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : "🎁무료재물운"}
+                        </span>
+                      </td>
+                      <td style={{ padding: "12px 16px" }}>
+                        {lead.code
+                          ? <span style={{ background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 6, fontWeight: 700, letterSpacing: 1 }}>{lead.code}</span>
+                          : <span style={{ color: "#9ca3af", fontSize: 12 }}>없음</span>}
                       </td>
                       <td style={{ padding: "12px 16px" }}>
                         <span style={{ background: lead.used ? "#dcfce7" : "#fee2e2", color: lead.used ? "#166534" : "#991b1b", padding: "2px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>

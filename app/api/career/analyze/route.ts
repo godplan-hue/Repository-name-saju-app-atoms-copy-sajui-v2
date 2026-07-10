@@ -91,14 +91,15 @@ const CAREER_DETAIL: Record<string, {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, birthYear, birthMonth, birthDay, timeAvail, skill, speed, career, recommended } = body;
+    const { name, phone, email, birthYear, birthMonth, birthDay, timeAvail, skill, speed, career, recommended } = body;
 
     if (!recommended || recommended.length === 0) {
       return NextResponse.json({ error: "추천 결과 없음" }, { status: 400 });
     }
 
     const result = {
-      name: name || "익명", birthYear, birthMonth, birthDay,
+      name: name || "익명", phone: phone || "", email: email || "",
+      birthYear, birthMonth, birthDay,
       timeAvail, skill, speed, career,
       recommended,
       details: recommended.map((id: string) => CAREER_DETAIL[id] ?? CAREER_DETAIL["content"]),
@@ -107,6 +108,23 @@ export async function POST(req: NextRequest) {
 
     const id = `${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
     await db.ref(`career_analyses/${id}`).set(result);
+
+    // 전화번호 있으면 free_leads에 1회만 저장 (같은 번호 중복 저장 안 함)
+    if (phone) {
+      const cleanPhone = String(phone).replace(/\D/g, "");
+      if (cleanPhone.length >= 10) {
+        const existing = await db.ref(`free_leads/${cleanPhone}`).once("value");
+        if (!existing.exists()) {
+          await db.ref(`free_leads/${cleanPhone}`).set({
+            phone: cleanPhone,
+            name: name || "익명",
+            email: email || "",
+            source: "jigun",
+            createdAt: Date.now(),
+          });
+        }
+      }
+    }
 
     return NextResponse.json({ id, result });
   } catch (e) {

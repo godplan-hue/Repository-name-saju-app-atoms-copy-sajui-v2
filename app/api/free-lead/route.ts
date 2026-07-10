@@ -51,6 +51,7 @@ export async function POST(request: NextRequest) {
       phone: cleanPhone,
       name,
       email: email || "",
+      source: "free",
       code,
       used: false,
       createdAt: Date.now(),
