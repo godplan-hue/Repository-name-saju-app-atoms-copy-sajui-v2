@@ -966,7 +966,7 @@ export default function MainV2() {
         </div>
         <p style={{ color: "#6d28d9", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 · AI 동양 사주 분석</p>
         <div style={{ color: "#581c87", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
-          <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
+          <p style={{ margin: 0 }}>대표:장문정 · 상호 기획의신</p>
           <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
           <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
           <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
