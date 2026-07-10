@@ -84,13 +84,13 @@ export default function AdminDirectPayments() {
     : payments;
 
   const handleDeleteAllLeads = async () => {
-    if (!confirm("무료DB 전체 삭제할까요?\n직운·합격자소서 데이터가 모두 지워집니다.\n(재물운무료 데이터는 유지됩니다)")) return;
+    if (!confirm("무료DB 전체 삭제할까요?\n재물운무료·직운·합격자소서 데이터가 모두 지워집니다.")) return;
     const adminId = localStorage.getItem("adminId");
     await fetch("/api/admin/free-leads", {
       method: "DELETE",
       headers: { "x-admin-id": adminId || "" },
     });
-    setLeads(prev => prev.filter(l => (l.source ?? "free") === "free"));
+    setLeads([]);
   };
 
   const handleDelete = async (id: string, name: string) => {

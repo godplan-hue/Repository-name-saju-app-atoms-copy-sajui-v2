@@ -60,8 +60,18 @@ export default function V2Analysis() {
       router.replace("/main-v2/result");
       return;
     }
-    const p = sessionStorage.getItem("v2_profile");
-    if (!p) { router.replace("/main-v2/profile"); return; }
+    let p = sessionStorage.getItem("v2_profile");
+    if (!p) {
+      // sessionStorage가 모바일 브라우저에서 네비게이션 중 지워지는 경우 대비
+      const saved = localStorage.getItem("v2_saved_profile");
+      if (saved) {
+        p = saved;
+        sessionStorage.setItem("v2_profile", saved);
+      } else {
+        router.replace("/main-v2/profile");
+        return;
+      }
+    }
     setProfile(JSON.parse(p));
   }, []);
 

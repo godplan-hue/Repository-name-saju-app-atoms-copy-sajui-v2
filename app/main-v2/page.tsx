@@ -541,7 +541,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
           </div>
         ) : (
           <>
-            <img src={b.img} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "opacity 0.4s" }} />
+            <img src={b.img} alt="" fetchPriority={cur === 0 ? "high" : undefined} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transition: "opacity 0.4s" }} />
             {/* 하단 텍스트 그라데이션 */}
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "38%", background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)", pointerEvents: "none" }} />
             {/* 배지 */}

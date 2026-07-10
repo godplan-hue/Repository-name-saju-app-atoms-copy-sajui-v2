@@ -59,11 +59,12 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({ leads });
 }
 
-// 직운·합격자소서 데이터 전체 삭제 (재물운무료 free_leads는 유지)
+// 무료DB 전체 삭제 (free_leads + career_analyses + resume_analyses)
 export async function DELETE(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   await Promise.all([
+    db.ref("free_leads").remove(),
     db.ref("career_analyses").remove(),
     db.ref("resume_analyses").remove(),
   ]);

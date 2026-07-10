@@ -300,6 +300,14 @@ export default function V2Profile() {
               style={{ width: "100%", padding: "16px 0", background: "#fbbf24", color: "#1a0f2e", border: "none", borderRadius: 14, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.45)" }}>
               분석 시작
             </button>
+            <button
+              onClick={() => {
+                setForm({ name: "", relationship: "나", birthYear: "", birthMonth: "", birthDay: "", gender: "", birthHour: "", phone: "", email: "" });
+                setSavedMode(false);
+              }}
+              style={{ width: "100%", padding: "11px 0", marginTop: 10, background: "transparent", color: "rgba(255,255,255,0.65)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 12, fontWeight: 700, fontSize: 14, cursor: "pointer" }}>
+              다른 사람 정보로 보기 (배우자·자녀 등)
+            </button>
           </div>
         </div>
       </main>

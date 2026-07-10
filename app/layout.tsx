@@ -47,6 +47,13 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="naver-site-verification" content="3d2048299405b51629792c9344b06287da0b184e" />
         <meta name="msvalidate.01" content="417C086BA7FE5A50231C28C3C9875B10" />
+        {/* LCP 개선: 이미지 CDN 연결 미리 열기 */}
+        <link rel="preconnect" href="https://i.pinimg.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://i.pinimg.com" />
+        <link rel="preconnect" href="https://images.pexels.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.pexels.com" />
+        {/* /main-v2 첫 번째 배너 이미지 미리 로드 */}
+        <link rel="preload" as="image" href="https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg" />
       </head>
       <body style={{ margin: 0, padding: 0 }}>
         <RefTracker />
