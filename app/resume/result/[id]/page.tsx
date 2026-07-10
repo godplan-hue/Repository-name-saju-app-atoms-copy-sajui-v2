@@ -29,11 +29,11 @@ export default function ResumeResultPage() {
 
   useEffect(() => {
     if (!id) return;
-    // 사주 실결제(price > 0) 또는 Firebase paid:true 시 잠금 해제
-    // 무료쿠폰은 price를 설정하지 않으므로 제외됨
-    const sajuPaid = localStorage.getItem("v2_paid") === "1" && Number(localStorage.getItem("price") || 0) > 0;
-    if (sajuPaid) setIsUnlocked(true);
-
+    // 합격자소서 전용 결제 후 Firebase paid:true 시 잠금 해제
+    // ?paid=1 파라미터로 방금 결제 완료됐을 때도 열어줌
+    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("paid") === "1") {
+      setIsUnlocked(true);
+    }
     fetch(`/api/resume/analyze?id=${id}`)
       .then(r => r.json())
       .then(d => {
@@ -121,7 +121,7 @@ export default function ResumeResultPage() {
               면접 예상 질문 TOP 3 · 합격 에너지 분석
             </p>
             <p style={{fontSize:12, color:"#a78bfa", margin:"0 0 18px"}}>결제 후 바로 열람 가능합니다</p>
-            <Link href="/resume" style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", borderRadius:22, padding:"13px 28px", fontSize:14, fontWeight:900, textDecoration:"none"}}>
+            <Link href={`/resume/pay?id=${id}`} style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", borderRadius:22, padding:"13px 28px", fontSize:14, fontWeight:900, textDecoration:"none"}}>
               ₩9,900으로 전체 분석 보기 →
             </Link>
           </div>

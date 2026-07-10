@@ -144,6 +144,18 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id } = body;
+    if (!id) return NextResponse.json({ error: "id 필요" }, { status: 400 });
+    await db.ref(`resume_analyses/${id}`).update({ paid: true, paidAt: Date.now() });
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    return NextResponse.json({ error: "업데이트 실패" }, { status: 500 });
+  }
+}
+
 export async function GET(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
