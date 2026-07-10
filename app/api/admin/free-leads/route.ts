@@ -93,6 +93,34 @@ export async function GET(request: NextRequest) {
   const finalLeads = [...finalByPhone.values(), ...finalNoPhone];
   finalLeads.sort((a: any, b: any) => (b.createdAt || 0) - (a.createdAt || 0));
 
+  // 이름이 없는 항목은 일반회원 DB(consumerCustomers)에서 같은 전화번호로 이름 조회
+  const missingPhones = finalLeads
+    .filter((l: any) => !hasName(l) && l.phone)
+    .map((l: any) => String(l.phone).replace(/\D/g, ""))
+    .filter((p: string) => p.length >= 10);
+
+  if (missingPhones.length > 0) {
+    const nameMap: Record<string, string> = {};
+    await Promise.all(missingPhones.map(async (phone: string) => {
+      const snap = await db.ref("consumerCustomers")
+        .orderByChild("phone")
+        .equalTo(phone)
+        .limitToFirst(1)
+        .once("value");
+      snap.forEach((child) => {
+        const v = child.val();
+        if (v?.name) nameMap[phone] = v.name;
+      });
+    }));
+    for (let i = 0; i < finalLeads.length; i++) {
+      const lead = finalLeads[i];
+      if (!hasName(lead)) {
+        const p = lead.phone ? String(lead.phone).replace(/\D/g, "") : "";
+        if (p && nameMap[p]) finalLeads[i] = { ...lead, name: nameMap[p] };
+      }
+    }
+  }
+
   return NextResponse.json({ leads: finalLeads });
 }
 
