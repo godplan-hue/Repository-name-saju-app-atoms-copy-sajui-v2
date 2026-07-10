@@ -8,7 +8,7 @@ type Result = {
   name: string; field: string; companySize: string; company: string;
   oh: string; score: number; trait: string; ohKeyword: string; ohAdvice: string;
   fieldKeywords: string[]; fieldStrategy: string; interview: string[];
-  sizeStrategy: string; createdAt: number;
+  sizeStrategy: string; createdAt: number; paid?: boolean;
 };
 
 const ohEmoji: Record<string,string> = { 목:"🌿", 화:"🔥", 토:"🌍", 금:"💎", 수:"💧" };
@@ -29,17 +29,16 @@ export default function ResumeResultPage() {
 
   useEffect(() => {
     if (!id) return;
-    try {
-      const until = localStorage.getItem(`resume_unlock_until_${id}`);
-      if (until && Date.now() < parseInt(until)) setIsUnlocked(true);
-    } catch {}
-  }, [id]);
-
-  useEffect(() => {
-    if (!id) return;
     fetch(`/api/resume/analyze?id=${id}`)
       .then(r => r.json())
-      .then(d => { if (d.result) setResult(d.result); else setError("결과를 찾을 수 없어요."); })
+      .then(d => {
+        if (d.result) {
+          setResult(d.result);
+          setIsUnlocked(d.result.paid === true);
+        } else {
+          setError("결과를 찾을 수 없어요.");
+        }
+      })
       .catch(() => setError("불러오기 실패"))
       .finally(() => setLoading(false));
   }, [id]);
