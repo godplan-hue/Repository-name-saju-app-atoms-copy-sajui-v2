@@ -28,11 +28,12 @@ export default function ResumeResultPage() {
   const [isUnlocked, setIsUnlocked] = useState(false);
 
   useEffect(() => {
+    if (!id) return;
     try {
-      const until = localStorage.getItem("resume_unlock_until");
+      const until = localStorage.getItem(`resume_unlock_until_${id}`);
       if (until && Date.now() < parseInt(until)) setIsUnlocked(true);
     } catch {}
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (!id) return;

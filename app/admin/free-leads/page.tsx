@@ -94,6 +94,8 @@ export default function AdminFreeLeads() {
                   <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>이름</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>전화번호</th>
+                    <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>이메일</th>
+                    <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>생년</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>출처</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>쿠폰코드</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>사용여부</th>
@@ -103,8 +105,10 @@ export default function AdminFreeLeads() {
                 <tbody>
                   {leads.filter(l => sourceFilter === "all" || (l.source ?? "free") === sourceFilter).map((lead, i) => (
                     <tr key={lead.id} style={{ borderBottom: "1px solid #e5e7eb", background: i % 2 === 0 ? "white" : "#fafafa" }}>
-                      <td style={{ padding: "12px 16px", fontWeight: 600 }}>{lead.name}</td>
+                      <td style={{ padding: "12px 16px", fontWeight: 600 }}>{lead.name || <span style={{ color: "#9ca3af", fontWeight: 400 }}>—</span>}</td>
                       <td style={{ padding: "12px 16px", color: "#374151" }}>{lead.phone}</td>
+                      <td style={{ padding: "12px 16px", color: "#374151", fontSize: 12 }}>{lead.email || <span style={{ color: "#9ca3af" }}>—</span>}</td>
+                      <td style={{ padding: "12px 16px", color: "#374151", fontSize: 12 }}>{lead.birthYear ? `${lead.birthYear}년` : <span style={{ color: "#9ca3af" }}>—</span>}</td>
                       <td style={{ padding: "12px 16px" }}>
                         <span style={{
                           background: lead.source === "jigun" ? "#ede9fe" : lead.source === "resume" ? "#dbeafe" : "#fef3c7",

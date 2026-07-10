@@ -116,7 +116,7 @@ export default function ResumePage() {
               <p style={{fontSize:12, color:"#d1d5db", margin:"0 0 14px", lineHeight:1.6}}>{res.t}</p>
               <div style={{background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"10px 12px", marginBottom:12, textAlign:"left"}}>
                 <p style={{fontSize:11, color:"#fbbf24", fontWeight:700, margin:"0 0 4px"}}>⚡ 이 점수는 사주 티저입니다</p>
-                <p style={{fontSize:11, color:"#9ca3af", lineHeight:1.6, margin:0}}>자소서 분석 점수와 달리, 이건 2026년 운의 흐름을 보여주는 거예요. 사주 원국(오행, 일주, 대운)까지 보면 정확한 타이밍과 직종을 알 수 있어요.</p>
+                <p style={{fontSize:11, color:"#9ca3af", lineHeight:1.6, margin:0}}>자소서 분석 점수와 달리, 이건 2026년 운의 흐름을 보여주는 거예요.<br />사주 원국(오행, 일주, 대운)까지 보면 정확한 타이밍과 직종을 알 수 있어요.</p>
               </div>
               <div style={{display:"flex", gap:8, justifyContent:"center"}}>
                 <Link href="/main-v2" style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:12, fontWeight:700, padding:"9px 16px", borderRadius:20, textDecoration:"none"}}>정확한 취업운 사주 보기 →</Link>
