@@ -16,6 +16,8 @@ function PayInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
+  const AMOUNT = 990;
+  const PLAN_LABEL = "합격 전략 분석";
 
   const [cardNo, setCardNo] = useState("");
   const [expM, setExpM] = useState("");
@@ -26,8 +28,6 @@ function PayInner() {
   const [mobile, setMobile] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const AMOUNT = 9900;
 
   const formatCardNo = (v: string) => {
     const d = v.replace(/\D/g, "").slice(0, 19);
@@ -118,14 +118,14 @@ function PayInner() {
         {/* 상품 안내 */}
         <div style={{ background: "linear-gradient(135deg,#1a1a2e,#2d1b69)", border: "1px solid rgba(124,58,237,0.4)", borderRadius: 18, padding: "20px 18px", marginBottom: 24, textAlign: "center" }}>
           <p style={{ fontSize: 20, margin: "0 0 4px" }}>🎓</p>
-          <p style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px" }}>합격자소서 전략 분석 1회</p>
+          <p style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px" }}>합격자소서 {PLAN_LABEL}</p>
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>
-            오행 기질 · 직무 키워드 TOP 5<br />
-            기업 규모별 합격 전략 · 면접 예상 질문 TOP 3
+            오행 기질 · 직무 키워드 5개 · 기업별 전략<br />
+            면접 예상 질문 5개 · 사주 직업운 연결
           </p>
-          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 바로 이름·직무 입력 → 전체 분석 즉시 공개</p>
+          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 바로 이름·직무 입력 → 분석 즉시 공개</p>
           <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: 0 }}>
-            ₩9,900
+            ₩{AMOUNT.toLocaleString()}
           </p>
         </div>
 

@@ -138,28 +138,28 @@ export default function ResumePage() {
           </button>
         </div>
 
-        {/* 가격 카드 — 단일 플랜 */}
+        {/* 가격 카드 — 단일 플랜 990원 */}
         <div style={{background:"linear-gradient(135deg,#1a1a2e,#2d1b69)", border:"2px solid rgba(124,58,237,0.5)", borderRadius:20, padding:"24px 18px", marginBottom:20}}>
           <div style={{textAlign:"center", marginBottom:18}}>
             <span style={{display:"inline-block", background:"#dc2626", color:"white", fontSize:11, fontWeight:900, padding:"4px 16px", borderRadius:20, marginBottom:10}}>🔥 AI 합격 전략 분석</span>
-            <p style={{fontSize:32, fontWeight:900, color:"#fde68a", margin:"0 0 4px"}}>9,900원</p>
+            <p style={{fontSize:32, fontWeight:900, color:"#fde68a", margin:"0 0 4px"}}>990원</p>
             <p style={{fontSize:12, color:"#9ca3af", margin:0}}>결제 후 바로 분석 · 24시간 환불 보장</p>
           </div>
           <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8px 16px", marginBottom:20}}>
             {[
-              ["✅","AI 합격 점수 (최고 98점)"],
-              ["✅","직무별 맞춤 합격 전략"],
-              ["✅","핵심 키워드 5개"],
-              ["✅","기업별 인재상 분석"],
-              ["✅","면접 예상 질문 5개"],
-              ["✅","오행 기질 강점 분석"],
-              ["✅","결과 보관·재열람"],
-              ["✅","🔮 사주 직업운+재물운"],
-              ["✅","📈 나의 대운 흐름"],
-              ["✅","📅 합격 택일 날짜"],
-            ].map(([icon,t])=>(
+              "AI 합격 점수 분석",
+              "직무별 맞춤 전략",
+              "핵심 키워드 5개",
+              "기업별 인재상 분석",
+              "면접 예상 질문 5개",
+              "오행 기질 강점",
+              "결과 보관·재열람",
+              "🔮 사주 직업운 연결",
+              "📈 대운 흐름 연결",
+              "📅 합격 택일 연결",
+            ].map(t=>(
               <div key={t} style={{display:"flex", alignItems:"flex-start", gap:6}}>
-                <span style={{color:"#4ade80", flexShrink:0, fontSize:12, lineHeight:"18px"}}>{icon}</span>
+                <span style={{color:"#4ade80", flexShrink:0, fontSize:12}}>✅</span>
                 <span style={{fontSize:12, color:"#d1d5db", lineHeight:1.5}}>{t}</span>
               </div>
             ))}

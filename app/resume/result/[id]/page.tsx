@@ -29,7 +29,9 @@ export default function ResumeResultPage() {
 
   useEffect(() => {
     if (!id) return;
-    // 합격자소서 전용 결제 후 Firebase paid:true 시 잠금 해제
+    // 사주 실결제(price > 0) 또는 합격자소서 전용 결제 시 잠금 해제
+    const sajuPaid = localStorage.getItem("v2_paid") === "1" && Number(localStorage.getItem("price") || 0) > 0;
+    if (sajuPaid) setIsUnlocked(true);
     // ?paid=1 파라미터로 방금 결제 완료됐을 때도 열어줌
     if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("paid") === "1") {
       setIsUnlocked(true);
