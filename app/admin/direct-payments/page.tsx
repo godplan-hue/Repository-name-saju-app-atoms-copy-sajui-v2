@@ -83,6 +83,16 @@ export default function AdminDirectPayments() {
     ? payments.filter(p => p.name.includes(search) || p.phone.includes(search) || p.package.includes(search))
     : payments;
 
+  const handleDeleteAllLeads = async () => {
+    if (!confirm("무료DB 전체 삭제할까요?\n직운·합격자소서 데이터가 모두 지워집니다.\n(재물운무료 데이터는 유지됩니다)")) return;
+    const adminId = localStorage.getItem("adminId");
+    await fetch("/api/admin/free-leads", {
+      method: "DELETE",
+      headers: { "x-admin-id": adminId || "" },
+    });
+    setLeads(prev => prev.filter(l => (l.source ?? "free") === "free"));
+  };
+
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`"${name}" 결제 기록을 삭제할까요?`)) return;
     const adminId = localStorage.getItem("adminId");
@@ -220,6 +230,11 @@ export default function AdminDirectPayments() {
                   </button>
                 );
               })}
+            </div>
+            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+              <button onClick={handleDeleteAllLeads} style={{ padding: "8px 18px", background: "#fee2e2", color: "#dc2626", border: "1px solid #fecaca", borderRadius: 20, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
+                🗑️ 전체 삭제
+              </button>
             </div>
             {leads.length === 0 ? (
               <p style={{ textAlign: "center", color: "#888", padding: "40px 0" }}>아직 신청 데이터가 없어요.</p>
