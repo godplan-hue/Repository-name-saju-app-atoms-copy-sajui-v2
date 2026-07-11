@@ -276,6 +276,15 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
         {/* 사주 전체보기 + 14개 무료앱 버튼 */}
         {!isPartner && (
           <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+            <a href="/apps" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
+              <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 무료 14개 점운 전체앱</span>
+              </div>
+              <div style={{ background: "#f0fdf4", padding: "10px 12px", textAlign: "center" }}>
+                <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>14개 계열앱<br />전부 무료로 이용</p>
+                <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#22c55e", padding: "4px 12px", borderRadius: 20 }}>전체보기 →</span>
+              </div>
+            </a>
             <a href="/main-v2/result" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd", textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
                 <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🔮 사주 전체보기</span>
@@ -283,15 +292,6 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
               <div style={{ background: "#f5f3ff", padding: "10px 12px", textAlign: "center" }}>
                 <p style={{ fontSize: 11, color: "#5b21b6", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>내 운세 결과지<br />전체 확인하기</p>
                 <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "4px 12px", borderRadius: 20 }}>바로보기 →</span>
-              </div>
-            </a>
-            <a href="/apps" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
-              <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
-                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 점운 무료앱</span>
-              </div>
-              <div style={{ background: "#f0fdf4", padding: "10px 12px", textAlign: "center" }}>
-                <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>14개 계열앱<br />전부 무료로 이용</p>
-                <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#22c55e", padding: "4px 12px", borderRadius: 20 }}>전체보기 →</span>
               </div>
             </a>
           </div>
