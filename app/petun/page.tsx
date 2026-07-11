@@ -17,6 +17,8 @@ export default function PetunPage() {
   const [ownerName, setOwnerName] = useState("");
   const [ownerYear, setOwnerYear] = useState("");
   const [ownerPhone, setOwnerPhone] = useState("");
+  const [ownerEmail, setOwnerEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,6 +26,7 @@ export default function PetunPage() {
     const cleanPhone = ownerPhone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setError("보호자 전화번호를 입력해주세요."); return; }
     if (!petYear || petYear.length < 4) { setError("반려동물 출생연도를 입력해주세요."); return; }
+    if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/petun/analyze", {
@@ -31,7 +34,7 @@ export default function PetunPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           petName, petBirthYear: petYear, petBirthMonth: petMonth || "1", petBirthDay: petDay || "1", petSpecies,
-          ownerName, ownerBirthYear: ownerYear || null, ownerPhone: cleanPhone,
+          ownerName, ownerBirthYear: ownerYear || null, ownerPhone: cleanPhone, ownerEmail,
         }),
       });
       const data = await res.json();
@@ -207,10 +210,26 @@ export default function PetunPage() {
             <input style={S.input} placeholder="예) 민지" value={ownerName} onChange={e => setOwnerName(e.target.value)} />
           </div>
 
-          <div>
+          <div style={S.row}>
+            <label style={S.label}>이메일 (선택)</label>
+            <input style={S.input} placeholder="example@email.com" inputMode="email" type="email" value={ownerEmail} onChange={e => setOwnerEmail(e.target.value)} />
+          </div>
+
+          <div style={S.row}>
             <label style={S.label}>출생연도 (선택)</label>
             <input style={S.input} placeholder="1995" maxLength={4} inputMode="numeric" value={ownerYear}
               onChange={e => setOwnerYear(e.target.value.replace(/\D/g, "").slice(0, 4))} />
+          </div>
+
+          <div>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
+              <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
+                style={{ marginTop: 3, accentColor: "#06b6d4", width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
+                <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
+                점운(jeomun.com)이 전화번호·이메일을 수집하여 운세 정보 및 혜택 안내에 활용하며, 3년간 보유 후 파기합니다. 언제든지 수신거부 가능합니다.
+              </span>
+            </label>
           </div>
         </div>
 

@@ -33,6 +33,8 @@ export default function LottoPage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [birthYear, setBirthYear] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthDay, setBirthDay] = useState("");
@@ -45,13 +47,14 @@ export default function LottoPage() {
     if (!birthYear || birthYear.length < 4) { setError("출생연도를 입력해주세요."); return; }
     if (!birthMonth) { setError("출생월을 입력해주세요."); return; }
     if (!birthDay) { setError("출생일을 입력해주세요."); return; }
+    if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/lotto/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name, phone: cleanPhone, birthYear: Number(birthYear), birthMonth: Number(birthMonth), birthDay: Number(birthDay),
+          name, phone: cleanPhone, email, birthYear: Number(birthYear), birthMonth: Number(birthMonth), birthDay: Number(birthDay),
         }),
       });
       const data = await res.json();
@@ -129,9 +132,13 @@ export default function LottoPage() {
             <label style={S.label}>이름 또는 별명 (선택)</label>
             <input style={S.input} placeholder="예) 에스더" value={name} onChange={e => setName(e.target.value)} />
           </div>
-          <div style={{ marginBottom: 14 }}>
+          <div style={{ marginBottom: 10 }}>
             <label style={S.label}>전화번호 (필수)</label>
             <input style={{ ...S.input, border: `1px solid ${error && !phone ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.12)"}` }} placeholder="010-0000-0000" inputMode="tel" value={phone} onChange={e => { setPhone(e.target.value); setError(""); }} />
+          </div>
+          <div style={{ marginBottom: 14 }}>
+            <label style={S.label}>이메일 (선택)</label>
+            <input style={S.input} placeholder="example@email.com" inputMode="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
           </div>
 
           <div style={{ display: "flex", gap: 8 }}>
@@ -150,6 +157,16 @@ export default function LottoPage() {
               <input style={S.input} placeholder="15" maxLength={2} inputMode="numeric"
                 value={birthDay} onChange={e => setBirthDay(e.target.value.replace(/\D/g,"").slice(0,2))} />
             </div>
+          </div>
+          <div style={{ marginTop: 14 }}>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
+              <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
+                style={{ marginTop: 3, accentColor: "#f59e0b", width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
+                <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
+                점운(jeomun.com)이 전화번호·이메일을 수집하여 운세 정보 및 혜택 안내에 활용하며, 3년간 보유 후 파기합니다. 언제든지 수신거부 가능합니다.
+              </span>
+            </label>
           </div>
         </div>
 

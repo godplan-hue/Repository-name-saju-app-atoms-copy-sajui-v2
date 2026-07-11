@@ -18,6 +18,8 @@ export default function GunghapPage() {
   const [month2, setMonth2] = useState("");
   const [day2, setDay2] = useState("");
   const [gender2, setGender2] = useState("");
+  const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -40,13 +42,14 @@ export default function GunghapPage() {
     if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
     if (!year1 || year1.length < 4) { setError("나의 출생연도를 입력해주세요."); return; }
     if (!year2 || year2.length < 4) { setError("상대방 출생연도를 입력해주세요."); return; }
+    if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/gunghap/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          phone: cleanPhone,
+          phone: cleanPhone, email,
           name1: name1 || "나", birthYear1: year1, birthMonth1: month1 || "1", birthDay1: day1 || "1", gender1,
           name2: name2 || "상대방", birthYear2: year2, birthMonth2: month2 || "1", birthDay2: day2 || "1", gender2,
         }),
@@ -167,6 +170,11 @@ export default function GunghapPage() {
               onChange={e => { setPhone(e.target.value); setError(""); }} />
           </div>
 
+          <div style={S.row}>
+            <label style={S.label}>이메일 (선택)</label>
+            <input style={S.input} placeholder="example@email.com" inputMode="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+          </div>
+
           <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
             <div style={{ flex: 1 }}>
               <label style={S.label}>출생연도 *</label>
@@ -185,12 +193,23 @@ export default function GunghapPage() {
             </div>
           </div>
 
-          <div>
+          <div style={{ marginBottom: 14 }}>
             <label style={S.label}>성별 (선택)</label>
             <div style={{ display: "flex", gap: 8 }}>
               <button onClick={() => setGender1("여성")} style={S.gBtn(gender1 === "여성")}>👩 여성</button>
               <button onClick={() => setGender1("남성")} style={S.gBtn(gender1 === "남성")}>👨 남성</button>
             </div>
+          </div>
+
+          <div>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
+              <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
+                style={{ marginTop: 3, accentColor: "#ec4899", width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
+                <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
+                점운(jeomun.com)이 전화번호·이메일을 수집하여 운세 정보 및 혜택 안내에 활용하며, 3년간 보유 후 파기합니다. 언제든지 수신거부 가능합니다.
+              </span>
+            </label>
           </div>
         </div>
 
@@ -199,7 +218,7 @@ export default function GunghapPage() {
           <p style={{ fontSize: 13, fontWeight: 900, color: "#f472b6", margin: "0 0 14px" }}>🩷 상대방</p>
 
           <div style={S.row}>
-            <label style={S.label}>이름 (선택)</label>
+            <label style={S.label}>이름 또는 별명 (선택)</label>
             <input style={S.input} placeholder="예) 태현" value={name2} onChange={e => setName2(e.target.value)} />
           </div>
 

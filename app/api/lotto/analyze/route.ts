@@ -68,8 +68,8 @@ function generateNumbers(year: number, month: number, day: number, oh: string): 
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json() as { name?: string; phone?: string; birthYear: number; birthMonth: number; birthDay: number };
-    const { name, phone, birthYear, birthMonth, birthDay } = body;
+    const body = await req.json() as { name?: string; phone?: string; email?: string; birthYear: number; birthMonth: number; birthDay: number };
+    const { name, phone, email, birthYear, birthMonth, birthDay } = body;
 
     if (!birthYear || !birthMonth || !birthDay) {
       return NextResponse.json({ error: "생년월일 필요" }, { status: 400 });
@@ -81,6 +81,7 @@ export async function POST(req: NextRequest) {
     const result = {
       name: name || "",
       phone: phone || "",
+      email: email || "",
       birthYear: Number(birthYear),
       birthMonth: Number(birthMonth),
       birthDay: Number(birthDay),

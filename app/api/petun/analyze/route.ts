@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { petName, petBirthYear, petBirthMonth, petBirthDay, petSpecies,
-            ownerName, ownerBirthYear, ownerPhone } = body;
+            ownerName, ownerBirthYear, ownerPhone, ownerEmail } = body;
 
     if (!petBirthYear) return NextResponse.json({ error: "강아지 생년을 입력해주세요" }, { status: 400 });
 
@@ -93,6 +93,7 @@ export async function POST(request: NextRequest) {
 
     const result = {
       phone: ownerPhone || "",
+      email: ownerEmail || "",
       name: ownerName || "보호자",
       petName: petName || "우리 강아지",
       petBirthYear, petBirthMonth, petBirthDay,
