@@ -16,6 +16,7 @@ export default function TarotPage() {
   const [step, setStep] = useState<"intro" | "form">("intro");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [birthYear, setBirthYear] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthDay, setBirthDay] = useState("");
@@ -32,7 +33,7 @@ export default function TarotPage() {
       const res = await fetch("/api/tarot/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone: cleanPhone, birthYear, birthMonth: birthMonth || "1", birthDay: birthDay || "1", topic }),
+        body: JSON.stringify({ name, phone: cleanPhone, email, birthYear, birthMonth: birthMonth || "1", birthDay: birthDay || "1", topic }),
       });
       const data = await res.json();
       if (data.id) {
@@ -175,9 +176,14 @@ export default function TarotPage() {
             </div>
           </div>
 
-          <div>
+          <div style={S.row}>
             <label style={S.label}>이름 또는 별명 (선택)</label>
             <input style={S.input} placeholder="예) 민지, 별이" value={name} onChange={e => setName(e.target.value)} />
+          </div>
+
+          <div>
+            <label style={S.label}>이메일 (선택)</label>
+            <input style={S.input} placeholder="example@email.com" inputMode="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
           </div>
         </div>
 

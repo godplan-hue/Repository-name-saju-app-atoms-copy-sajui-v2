@@ -15,7 +15,7 @@ const SOUL_CARD: Record<string, number> = { 목: 21, 화: 19, 토: 3, 금: 11, �
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, phone, birthYear, birthMonth, birthDay, topic } = body;
+    const { name, phone, email, birthYear, birthMonth, birthDay, topic } = body;
 
     const cleanPhone = String(phone || "").replace(/\D/g, "");
     if (cleanPhone.length < 10) return NextResponse.json({ error: "전화번호를 입력해주세요" }, { status: 400 });
@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
     const result = {
       name: name || "",
       phone: cleanPhone,
+      email: email || "",
       birthYear: Number(birthYear),
       birthMonth: Number(birthMonth || 1),
       birthDay: Number(birthDay || 1),

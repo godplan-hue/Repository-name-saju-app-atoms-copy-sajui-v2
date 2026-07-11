@@ -43,6 +43,7 @@ export default function ZodiacPage() {
   const [birthYear, setBirthYear] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -66,7 +67,7 @@ export default function ZodiacPage() {
     setLoading(true); setError("");
     try {
       const body: Record<string, string | number> = {
-        name, phone: cleanPhone,
+        name, phone: cleanPhone, email,
         birthMonth: birthMonth || "0", birthDay: birthDay || "0", birthYear: birthYear || "0",
         zodiacDirect: selectedZodiac,
       };
@@ -248,9 +249,13 @@ export default function ZodiacPage() {
             placeholder="010-0000-0000" inputMode="tel" value={phone}
             onChange={e => { setPhone(e.target.value); setError(""); }} />
         </div>
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 14 }}>
           <label style={S.label}>이름 또는 별명 (선택)</label>
           <input style={S.input} placeholder="예) 지은, 별이" value={name} onChange={e => setName(e.target.value)} />
+        </div>
+        <div style={{ marginBottom: 24 }}>
+          <label style={S.label}>이메일 (선택)</label>
+          <input style={S.input} placeholder="example@email.com" inputMode="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
         </div>
 
         {error && <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>}

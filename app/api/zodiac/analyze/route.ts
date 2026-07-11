@@ -74,7 +74,7 @@ const LUCKY_DIRECTION: Record<string,string> = {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, phone, birthYear, birthMonth, birthDay, zodiacDirect } = body;
+    const { name, phone, email, birthYear, birthMonth, birthDay, zodiacDirect } = body;
 
     const cleanPhone = String(phone || "").replace(/\D/g, "");
     if (cleanPhone.length < 10) return NextResponse.json({ error: "전화번호를 입력해주세요" }, { status: 400 });
@@ -95,6 +95,7 @@ export async function POST(req: NextRequest) {
     const result = {
       name: name || "",
       phone: cleanPhone,
+      email: email || "",
       birthYear: year,
       birthMonth: month,
       birthDay: day,
