@@ -180,6 +180,24 @@ function getFavorites(oh: string): { rank: number; item: string; reason: string 
   return m[oh] || m["목"];
 }
 
+const PET_CARDS = [
+  { name: "🌟 행운의 산책", meaning: "오늘은 새로운 길로 산책을 나가보세요. 좋은 냄새와 만남이 기다리고 있어요!" },
+  { name: "💝 특별한 간식 데이", meaning: "오늘만큼은 특별한 간식을 선물해주세요. 우리 아이의 눈이 반짝일 거예요." },
+  { name: "🛁 목욕 & 그루밍", meaning: "오늘 목욕을 시켜주면 몸도 마음도 상쾌해져요. 드라이 후 칭찬을 듬뿍 해주세요!" },
+  { name: "🧸 새 장난감의 기운", meaning: "새로운 장난감 에너지가 들어오는 날이에요. 탐험 본능을 자극해줄 선물 어떨까요?" },
+  { name: "☀️ 햇살 낮잠 에너지", meaning: "햇살 아래 함께 낮잠 자는 최고의 날이에요. 보호자와 함께 쉬는 것이 오늘 최고의 선물이에요." },
+  { name: "🏃 에너지 발산 데이", meaning: "오늘은 에너지가 넘치는 날! 마음껏 뛰어놀 공간을 만들어주세요." },
+  { name: "💬 소통의 기운", meaning: "오늘은 우리 아이가 뭔가 말하고 싶어해요. 표정과 행동에 집중해서 들어주세요." },
+  { name: "🌈 치유의 에너지", meaning: "몸도 마음도 회복되는 날이에요. 조용하고 편안한 환경을 만들어 주세요." },
+  { name: "🎉 축제 에너지", meaning: "오늘은 우리 아이에게 특별한 날이에요. 평소보다 더 많이 칭찬하고 놀아주세요!" },
+  { name: "🔮 직감의 날", meaning: "우리 아이의 직감이 예리한 날이에요. 이상한 행동을 하면 주변을 한번 살펴보세요." },
+  { name: "💤 휴식의 기운", meaning: "오늘은 푹 쉬어야 하는 날이에요. 조용한 공간에서 충분히 쉬게 해주세요." },
+  { name: "🌿 자연 탐험 에너지", meaning: "풀냄새, 흙냄새 맡을 수 있는 자연으로 나가보세요. 최고의 힐링이 될 거예요!" },
+  { name: "❤️ 사랑 넘치는 날", meaning: "오늘은 보호자와 유대가 깊어지는 날이에요. 눈을 마주치며 천천히 쓰다듬어 주세요." },
+  { name: "🎓 학습 에너지", meaning: "오늘은 훈련이 잘 들어가는 날! 새로운 것을 가르쳐보거나 칭찬 훈련을 해보세요." },
+  { name: "🌙 달빛 산책", meaning: "저녁 산책이 특별히 좋은 날이에요. 시원한 바람과 함께 여유롭게 걸어보세요." },
+];
+
 function getOhColor(oh: string) {
   return ({ 목: "#4ade80", 화: "#f87171", 토: "#fbbf24", 금: "#94a3b8", 수: "#60a5fa" })[oh] || "#a78bfa";
 }
@@ -194,6 +212,9 @@ export default function PetunResultPage() {
   const [foodQuery, setFoodQuery] = useState("");
   const [foodResult, setFoodResult] = useState<typeof FOOD_DB[0] | null | "none">(null);
   const [activeTab, setActiveTab] = useState<"personality"|"health"|"food"|"behavior"|"fav">("personality");
+  const [petCard, setPetCard] = useState<typeof PET_CARDS[0] | null>(null);
+  const [petCardFlipped, setPetCardFlipped] = useState(false);
+  const [petCardUsed, setPetCardUsed] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -298,6 +319,43 @@ export default function PetunResultPage() {
         <button onClick={share} style={{ width: "100%", background: "rgba(6,182,212,0.15)", border: "2px solid rgba(6,182,212,0.4)", borderRadius: 14, padding: "12px", fontSize: 13, fontWeight: 700, color: "#a5f3fc", cursor: "pointer", marginBottom: 16 }}>
           🐾 우리 {result.petName} 사주 — 친구에게 공유하기
         </button>
+
+        {/* 오늘 강아지 운세 뽑기 */}
+        <div style={{ background: "linear-gradient(135deg,rgba(6,182,212,0.12),rgba(124,58,237,0.08))", border: "1px solid rgba(6,182,212,0.35)", borderRadius: 20, padding: "18px 16px", marginBottom: 14 }}>
+          <p style={{ fontSize: 12, fontWeight: 900, color: "#06b6d4", margin: "0 0 6px", letterSpacing: "0.08em", textTransform: "uppercase" as const }}>🎴 오늘 강아지 운세 뽑기</p>
+          <p style={{ fontSize: 13, color: "#a5f3fc", margin: "0 0 14px", lineHeight: 1.6 }}>
+            오늘 {result.petName}에게 어떤 에너지가 필요한지 카드로 확인해보세요
+          </p>
+          {!petCardUsed ? (
+            <button
+              onClick={() => {
+                const card = PET_CARDS[Math.floor(Math.random() * PET_CARDS.length)];
+                setPetCard(card);
+                setPetCardUsed(true);
+                setTimeout(() => setPetCardFlipped(true), 50);
+              }}
+              style={{ width: "100%", background: "linear-gradient(135deg,#0e4e6a,#1e3a5f)", border: "2px solid rgba(6,182,212,0.5)", borderRadius: 16, padding: "20px", cursor: "pointer", color: "white" }}
+            >
+              <div style={{ fontSize: 36, marginBottom: 8 }}>🎴</div>
+              <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 4px" }}>오늘의 카드 뽑기</p>
+              <p style={{ fontSize: 11, color: "#a5f3fc", margin: 0 }}>탭해서 {result.petName}의 오늘 운세 확인하기</p>
+            </button>
+          ) : (
+            <div style={{ textAlign: "center" }}>
+              <div style={{ background: "linear-gradient(135deg,#0e4e6a,#1a3a5f)", border: "2px solid #06b6d4", borderRadius: 16, padding: "22px 18px", opacity: petCardFlipped ? 1 : 0, transform: petCardFlipped ? "scale(1)" : "scale(0.92)", transition: "all 0.4s ease" }}>
+                <div style={{ fontSize: 32, marginBottom: 10 }}>✨</div>
+                <p style={{ fontSize: 16, fontWeight: 900, color: "#a5f3fc", margin: "0 0 10px" }}>{petCard?.name}</p>
+                <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.7, margin: 0 }}>{petCard?.meaning}</p>
+              </div>
+              <button
+                onClick={() => { setPetCardFlipped(false); setTimeout(() => { setPetCard(null); setPetCardUsed(false); }, 300); }}
+                style={{ marginTop: 10, background: "none", border: "1px solid rgba(6,182,212,0.4)", borderRadius: 12, padding: "7px 18px", color: "#06b6d4", fontSize: 12, cursor: "pointer" }}
+              >
+                ↺ 다시 뽑기
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* 오행 기질 특징 */}
         <div style={S.card}>
