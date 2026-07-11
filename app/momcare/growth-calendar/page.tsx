@@ -42,6 +42,8 @@ export default function GrowthCalendarPage() {
   const [babyName, setBabyName] = useState("");
   const [currentWeek, setCurrentWeek] = useState(0);
   const [selectedCrisis, setSelectedCrisis] = useState<typeof CRISIS_WEEKS[0] | null>(null);
+  const [mcUserId, setMcUserId] = useState("");
+
   useEffect(() => {
     const saved = localStorage.getItem("momcare_baby");
     if (saved) {
@@ -49,6 +51,29 @@ export default function GrowthCalendarPage() {
       setBirthDate(d.birthDate || "");
       setBabyName(d.name || "");
     }
+
+    let uid = "";
+    try {
+      const profile = localStorage.getItem("v2_saved_profile");
+      if (profile) { const p = JSON.parse(profile); if (p.phone) uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+    } catch {}
+    if (!uid) {
+      let devId = localStorage.getItem("momcare_device_id");
+      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
+      uid = `device_${devId}`;
+    }
+    setMcUserId(uid);
+
+    fetch(`/api/momcare/save?userId=${uid}&type=baby_profile`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.data && d.data.birthDate) {
+          setBirthDate(d.data.birthDate);
+          setBabyName(d.data.name || "");
+          localStorage.setItem("momcare_baby", JSON.stringify(d.data));
+        }
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -57,9 +82,17 @@ export default function GrowthCalendarPage() {
       setCurrentWeek(w);
       const saved = localStorage.getItem("momcare_baby");
       const d = saved ? JSON.parse(saved) : {};
-      localStorage.setItem("momcare_baby", JSON.stringify({ ...d, birthDate, name: babyName }));
+      const newData = { ...d, birthDate, name: babyName };
+      localStorage.setItem("momcare_baby", JSON.stringify(newData));
+      if (mcUserId) {
+        fetch("/api/momcare/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: mcUserId, type: "baby_profile", data: newData }),
+        }).catch(() => {});
+      }
     }
-  }, [birthDate, babyName]);
+  }, [birthDate, babyName, mcUserId]);
 
   const nextCrisis = CRISIS_WEEKS.find(c => c.week > currentWeek);
   const currentCrisis = CRISIS_WEEKS.find(c => c.week === currentWeek);

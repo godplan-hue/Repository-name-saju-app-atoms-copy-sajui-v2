@@ -217,6 +217,7 @@ export default function BabyWordsPage() {
                       {w.age && <span style={{ fontSize: 11, color: "#9ca3af" }}>· {w.age}</span>}
                     </div>
                   </div>
+                  <button onClick={() => save(words.filter(x => x.id !== w.id))} style={{ background: "none", border: "none", color: "#fca5a5", cursor: "pointer", fontSize: 18, marginLeft: 8 }}>×</button>
                 </div>
               ))}
             </div>

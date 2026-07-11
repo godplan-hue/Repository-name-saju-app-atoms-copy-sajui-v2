@@ -25,15 +25,46 @@ export default function DailyTrackerPage() {
   const [pumpAmount, setPumpAmount] = useState("");
   const [mood, setMood] = useState<MoodKey>("happy");
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [mcUserId, setMcUserId] = useState("");
 
   useEffect(() => {
     const saved = localStorage.getItem(`momcare_logs_${todayKey()}`);
     if (saved) setLogs(JSON.parse(saved));
+
+    let uid = "";
+    try {
+      const profile = localStorage.getItem("v2_saved_profile");
+      if (profile) { const p = JSON.parse(profile); if (p.phone) uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+    } catch {}
+    if (!uid) {
+      let devId = localStorage.getItem("momcare_device_id");
+      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
+      uid = `device_${devId}`;
+    }
+    setMcUserId(uid);
+
+    const todayType = `logs_${todayKey()}`;
+    fetch(`/api/momcare/save?userId=${uid}&type=${todayType}`)
+      .then(r => r.json())
+      .then(d => {
+        if (Array.isArray(d.data) && d.data.length > 0) {
+          setLogs(d.data);
+          localStorage.setItem(`momcare_logs_${todayKey()}`, JSON.stringify(d.data));
+        }
+      })
+      .catch(() => {});
   }, []);
 
   function saveLogs(l: Log[]) {
     setLogs(l);
     localStorage.setItem(`momcare_logs_${todayKey()}`, JSON.stringify(l));
+    if (mcUserId) {
+      fetch("/api/momcare/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: mcUserId, type: `logs_${todayKey()}`, data: l }),
+      }).catch(() => {});
+    }
   }
 
   function addLog(type: TabKey, label: string, detail: string) {

@@ -33,9 +33,33 @@ export default function MemoryJournalPage() {
     if (!exp || Number(exp) <= Date.now()) setUnlocked(false);
   }, []);
 
+  const [mcUserId, setMcUserId] = useState("");
+
   useEffect(() => {
     const saved = localStorage.getItem("momcare_milestones");
     if (saved) setMilestones(JSON.parse(saved));
+
+    let uid = "";
+    try {
+      const profile = localStorage.getItem("v2_saved_profile");
+      if (profile) { const p = JSON.parse(profile); if (p.phone) uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+    } catch {}
+    if (!uid) {
+      let devId = localStorage.getItem("momcare_device_id");
+      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
+      uid = `device_${devId}`;
+    }
+    setMcUserId(uid);
+
+    fetch(`/api/momcare/save?userId=${uid}&type=milestones`)
+      .then(r => r.json())
+      .then(d => {
+        if (Array.isArray(d.data) && d.data.length > 0) {
+          setMilestones(d.data);
+          localStorage.setItem("momcare_milestones", JSON.stringify(d.data));
+        }
+      })
+      .catch(() => {});
   }, []);
 
   if (!unlocked) return (
@@ -59,6 +83,13 @@ export default function MemoryJournalPage() {
   function save(m: Milestone[]) {
     setMilestones(m);
     localStorage.setItem("momcare_milestones", JSON.stringify(m));
+    if (mcUserId) {
+      fetch("/api/momcare/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: mcUserId, type: "milestones", data: m }),
+      }).catch(() => {});
+    }
   }
 
   function addMilestone() {

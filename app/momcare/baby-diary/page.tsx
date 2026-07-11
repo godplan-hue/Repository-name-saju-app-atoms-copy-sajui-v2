@@ -128,8 +128,9 @@ export default function BabyDiaryPage() {
         <nav style={{ background: "white", borderBottom: "1px solid #e5e7eb", padding: "14px 24px", display: "flex", gap: 12, alignItems: "center" }}>
           <button onClick={() => setMode("list")} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer" }}>←</button>
           <span style={{ fontWeight: 700, fontSize: 15 }}>일기 읽기</span>
-          <div style={{ marginLeft: "auto" }}>
+          <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
             <button onClick={() => { setForm({ ...viewEntry }); setMode("write"); }} style={{ background: "#f3f4f6", border: "none", borderRadius: 8, padding: "6px 14px", fontSize: 13, cursor: "pointer", fontWeight: 700 }}>수정</button>
+            <button onClick={() => { save(entries.filter(e => e.id !== viewEntry.id)); setMode("list"); }} style={{ background: "#fca5a5", color: "white", border: "none", borderRadius: 8, padding: "6px 14px", fontSize: 13, cursor: "pointer", fontWeight: 700 }}>삭제</button>
           </div>
         </nav>
         <div style={{ maxWidth: 640, margin: "0 auto", padding: "32px 20px" }}>

@@ -24,6 +24,7 @@ export default function GrowthDiaryPage() {
   const [form, setForm] = useState({ date: new Date().toISOString().slice(0, 10), weight: "", height: "", head: "" });
   const [babyBirth, setBabyBirth] = useState("");
   const [unlocked, setUnlocked] = useState(true);
+  const [mcUserId, setMcUserId] = useState("");
 
   useEffect(() => {
     const exp = localStorage.getItem("momcare_unlock_until");
@@ -35,11 +36,40 @@ export default function GrowthDiaryPage() {
     if (saved) setMeasurements(JSON.parse(saved));
     const baby = localStorage.getItem("momcare_baby");
     if (baby) setBabyBirth(JSON.parse(baby).birthDate || "");
+
+    let uid = "";
+    try {
+      const profile = localStorage.getItem("v2_saved_profile");
+      if (profile) { const p = JSON.parse(profile); if (p.phone) uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+    } catch {}
+    if (!uid) {
+      let devId = localStorage.getItem("momcare_device_id");
+      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
+      uid = `device_${devId}`;
+    }
+    setMcUserId(uid);
+
+    fetch(`/api/momcare/save?userId=${uid}&type=measurements`)
+      .then(r => r.json())
+      .then(d => {
+        if (Array.isArray(d.data) && d.data.length > 0) {
+          setMeasurements(d.data);
+          localStorage.setItem("momcare_measurements", JSON.stringify(d.data));
+        }
+      })
+      .catch(() => {});
   }, []);
 
   function save(m: Measurement[]) {
     setMeasurements(m);
     localStorage.setItem("momcare_measurements", JSON.stringify(m));
+    if (mcUserId) {
+      fetch("/api/momcare/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: mcUserId, type: "measurements", data: m }),
+      }).catch(() => {});
+    }
   }
 
   function addMeasurement() {
