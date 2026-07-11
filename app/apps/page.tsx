@@ -26,18 +26,18 @@ const TOP_APPS = [
 ];
 
 const GRID_APPS = [
-  { href: "/jigun",             emoji: "💼", label: "직운",   badge: "무료",  color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)" },
-  { href: "/resume",            emoji: "🎯", label: "합격",   badge: "무료",  color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)" },
-  { href: "/gunghap",           emoji: "💑", label: "궁합",   badge: "무료",  color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)" },
-  { href: "/mbti",              emoji: "🧠", label: "MBTI",   badge: "무료",  color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)" },
-  { href: "/lotto",             emoji: "🍀", label: "행운번호", badge: "무료", color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)" },
-  { href: "/petun",             emoji: "🐾", label: "펫운",   badge: "무료",  color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)" },
-  { href: "/main-v2/daewoon",   emoji: "⭐", label: "대운",   badge: "유료",  color: "#1e40af", bg: "linear-gradient(145deg,#dbeafe,#bfdbfe)" },
-  { href: "/main-v2/taegil",    emoji: "📅", label: "택일",   badge: "유료",  color: "#047857", bg: "linear-gradient(145deg,#d1fae5,#a7f3d0)" },
-  { href: "/main-v2/qa-list",   emoji: "💬", label: "Q&A",    badge: "무료",  color: "#475569", bg: "linear-gradient(145deg,#f1f5f9,#e2e8f0)" },
-  { href: "/diet",              emoji: "🥗", label: "다이어트", badge: "무료", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)" },
-  { href: "/budget",            emoji: "💰", label: "가계부",  badge: "무료", color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)" },
-  { href: "/partner",           emoji: "🤝", label: "파트너", badge: "신청",  color: "#a21caf", bg: "linear-gradient(145deg,#fdf4ff,#f0abfc)" },
+  { href: "/jigun",    emoji: "💼", label: "직운",    badge: "무료", color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)" },
+  { href: "/resume",   emoji: "🎯", label: "합격",    badge: "무료", color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)" },
+  { href: "/gunghap",  emoji: "💑", label: "궁합",    badge: "무료", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)" },
+  { href: "/mbti",     emoji: "🧠", label: "MBTI",    badge: "무료", color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)" },
+  { href: "/lotto",    emoji: "🍀", label: "행운번호", badge: "무료", color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)" },
+  { href: "/petun",    emoji: "🐾", label: "펫운",    badge: "무료", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)" },
+  { href: "/tarot",    emoji: "🃏", label: "타로",    badge: "무료", color: "#7e22ce", bg: "linear-gradient(145deg,#f3e8ff,#d8b4fe)" },
+  { href: "/zodiac",   emoji: "⭐", label: "별자리",  badge: "무료", color: "#1d4ed8", bg: "linear-gradient(145deg,#eff6ff,#93c5fd)" },
+  { href: "/gamjung",  emoji: "📔", label: "감정일기", badge: "무료", color: "#be185d", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)" },
+  { href: "/diet",     emoji: "🥗", label: "다이어트", badge: "무료", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)" },
+  { href: "/budget",   emoji: "💰", label: "가계부",  badge: "무료", color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)" },
+  { href: "/partner",  emoji: "🤝", label: "파트너",  badge: "신청", color: "#a21caf", bg: "linear-gradient(145deg,#fdf4ff,#f0abfc)" },
 ];
 
 export default function AppsPage() {
