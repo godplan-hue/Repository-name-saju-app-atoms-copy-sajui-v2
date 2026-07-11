@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap] = await Promise.all([
+  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap] = await Promise.all([
     db.ref("free_leads").orderByChild("createdAt").once("value"),
     db.ref("career_analyses").orderByChild("createdAt").once("value"),
     db.ref("resume_analyses").orderByChild("createdAt").once("value"),
@@ -46,6 +46,7 @@ export async function GET(request: NextRequest) {
     db.ref("lotto_analyses").orderByChild("createdAt").once("value"),
     db.ref("gunghap_analyses").orderByChild("createdAt").once("value"),
     db.ref("petun_analyses").orderByChild("createdAt").once("value"),
+    db.ref("tarot_analyses").orderByChild("createdAt").once("value"),
   ]);
 
   const leads: any[] = [];
@@ -102,6 +103,14 @@ export async function GET(request: NextRequest) {
     if (v && v.phone) petunItems.push({ id: child.key, ...v });
   });
   for (const item of dedupByPhone(petunItems, "petun")) leads.push(item);
+
+  // 타로 — tarot_analyses
+  const tarotItems: any[] = [];
+  tarotSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) tarotItems.push({ id: child.key, ...v });
+  });
+  for (const item of dedupByPhone(tarotItems, "tarot")) leads.push(item);
 
   // 출처가 달라도 같은 전화번호가 중복될 수 있으므로 (free_leads+career_analyses 동시 저장 등) 최종 전체 중복 제거
   // 이름 있는 항목 우선 선택, 둘 다 이름 있으면 최신 우선

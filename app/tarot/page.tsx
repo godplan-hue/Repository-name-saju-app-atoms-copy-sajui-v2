@@ -1,40 +1,194 @@
-import type { Metadata } from "next";
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-export const metadata: Metadata = {
-  title: "타로 운세 | 점운 — AI 타로 + 사주 분석",
-  description: "타로 운세와 AI 사주를 함께 확인해보세요. 연애·재물·직업 타로 카드 운세를 무료로 받아보세요.",
-  keywords: ["타로", "타로 운세", "무료 타로", "AI 타로", "타로 카드", "온라인 타로"],
-  openGraph: { title: "타로 운세 — 점운", description: "AI 타로 + 사주 분석. 연애·재물·직업 운세 확인.", url: "https://jeomun.com/tarot" },
-};
-const faqs = [
-  { q: "타로와 사주의 차이는요?", a: "타로는 카드 상징으로 현재 상황과 흐름을 보고, 사주는 생년월일로 타고난 운명과 운세 흐름을 봐요. 두 가지를 함께 보면 더 입체적으로 파악할 수 있어요." },
-  { q: "타로는 무료인가요?", a: "점운에서 기본 운세는 무료로 제공해요. 더 자세한 분석은 990원부터 가능해요." },
-  { q: "타로가 정확한가요?", a: "타로는 현재 에너지와 흐름을 반영해요. 절대적 예언이 아닌 참고 도구로 활용하면 좋아요." },
-  { q: "연애 타로도 볼 수 있나요?", a: "네, 연애·재물·직업·건강 등 다양한 분야의 타로 운세를 확인할 수 있어요." },
+
+const TOPICS = [
+  { key: "today", label: "🌅 오늘 운세", desc: "오늘 하루 흐름" },
+  { key: "love", label: "💞 연애·인연", desc: "사랑과 인연" },
+  { key: "work", label: "💼 직업·돈", desc: "일과 재물" },
+  { key: "choice", label: "🤔 선택·결정", desc: "갈림길에서" },
+  { key: "heal", label: "🌿 마음 치유", desc: "위로가 필요할 때" },
 ];
+
 export default function TarotPage() {
-  return (
-    <main style={{ minHeight: "100vh", background: "#1e1b4b", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", color: "#f5f3ff" }}>
-      <div style={{ background: "linear-gradient(135deg, #312e81, #1e1b4b)", padding: "60px 20px 48px", textAlign: "center" }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: "#a5b4fc", margin: "0 0 10px" }}>🃏 타로 운세</p>
-        <h1 style={{ fontSize: "clamp(26px,5vw,40px)", fontWeight: 900, color: "#f5f3ff", margin: "0 0 12px", lineHeight: 1.25 }}>타로 카드가 말하는<br />지금 내 운세</h1>
-        <p style={{ fontSize: 15, color: "#a5b4fc", margin: "0 0 28px", lineHeight: 1.7 }}>AI 타로 + 사주 분석 결합<br />연애·재물·직업 운세를 확인해보세요</p>
-        <Link href="/main-v2" style={{ display: "inline-block", padding: "14px 36px", background: "linear-gradient(135deg, #818cf8, #6366f1)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none", boxShadow: "0 6px 20px rgba(129,140,248,0.4)" }}>🃏 타로 운세 보기 — 무료~</Link>
-        <p style={{ fontSize: 12, color: "#6b7280", marginTop: 10 }}>즉시 분석 · 무료 맛보기</p>
-      </div>
-      <div style={{ maxWidth: 600, margin: "0 auto", padding: "0 20px 40px" }}>
-        <h2 style={{ fontSize: 20, fontWeight: 900, textAlign: "center", margin: "40px 0 20px", color: "#f5f3ff" }}>자주 묻는 질문</h2>
-        {faqs.map(f => (
-          <div key={f.q} style={{ background: "#312e81", borderRadius: 14, padding: "18px", marginBottom: 12 }}>
-            <p style={{ fontWeight: 800, fontSize: 14, color: "#a5b4fc", margin: "0 0 6px" }}>Q. {f.q}</p>
-            <p style={{ fontSize: 13, color: "#c7d2fe", margin: 0, lineHeight: 1.7 }}>A. {f.a}</p>
+  const router = useRouter();
+  const [step, setStep] = useState<"intro" | "form">("intro");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
+  const [topic, setTopic] = useState("today");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const analyze = async () => {
+    const cleanPhone = phone.replace(/\D/g, "");
+    if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
+    if (!birthYear || birthYear.length < 4) { setError("출생연도를 입력해주세요."); return; }
+    setLoading(true); setError("");
+    try {
+      const res = await fetch("/api/tarot/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone: cleanPhone, birthYear, birthMonth: birthMonth || "1", birthDay: birthDay || "1", topic }),
+      });
+      const data = await res.json();
+      if (data.id) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("tarot_last_params", JSON.stringify({ name, phone: cleanPhone, birthYear, birthMonth, birthDay }));
+        }
+        router.push(`/tarot/result/${data.id}`);
+      } else {
+        setError("오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    } catch {
+      setError("네트워크 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const S = {
+    wrap: { minHeight: "100vh", background: "#0f0320", color: "#F5F5F5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" },
+    inner: { maxWidth: 440, margin: "0 auto", padding: "0 16px 80px" },
+    input: { width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", boxSizing: "border-box" as const },
+    label: { fontSize: 12, color: "#9ca3af", marginBottom: 6, display: "block" as const },
+    row: { marginBottom: 14 },
+    btn: { width: "100%", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "white", border: "none", borderRadius: 22, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.4)" } as const,
+  };
+
+  if (step === "intro") {
+    return (
+      <div style={S.wrap}>
+        <style>{`@keyframes floatCard{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}`}</style>
+        <div style={{ background: "linear-gradient(180deg,#1a0533 0%,#0f0320 100%)", paddingBottom: 40 }}>
+          <div style={{ maxWidth: 440, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
+            <Link href="/main-v2" style={{ color: "#c084fc", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 24, textAlign: "left" }}>← 점운 홈</Link>
+            <div style={{ fontSize: 72, marginBottom: 16, display: "inline-block", animation: "floatCard 3s ease-in-out infinite" }}>🃏</div>
+            <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.3 }}>
+              오늘 나에게 온 카드는?
+              <br />
+              <span style={{ background: "linear-gradient(135deg,#c084fc,#7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운 타로</span>
+            </h1>
+            <p style={{ color: "#c4b5fd", fontSize: 14, lineHeight: 1.7, margin: "0 0 28px" }}>
+              내 생년 오행으로 찾는 소울카드<br />
+              연애 · 직업 · 선택 · 치유 · 오늘운세
+            </p>
+            <div style={{ display: "flex", gap: 10, marginBottom: 28, justifyContent: "center" }}>
+              {[
+                { emoji: "⭐", name: "별", bg: "linear-gradient(135deg,#0c4a6e,#38bdf8)" },
+                { emoji: "☀️", name: "태양", bg: "linear-gradient(135deg,#78350f,#fbbf24)" },
+                { emoji: "🌙", name: "달", bg: "linear-gradient(135deg,#2e1065,#a78bfa)" },
+                { emoji: "🌍", name: "세계", bg: "linear-gradient(135deg,#064e3b,#34d399)" },
+              ].map(c => (
+                <div key={c.name} style={{ width: 78, height: 115, background: c.bg, borderRadius: 10, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.2)", boxShadow: "0 8px 24px rgba(0,0,0,0.5)" }}>
+                  <span style={{ fontSize: 28 }}>{c.emoji}</span>
+                  <span style={{ fontSize: 11, color: "rgba(255,255,255,0.8)", fontWeight: 700, marginTop: 8 }}>{c.name}</span>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => setStep("form")} style={S.btn}>지금 카드 뽑기 🃏 →</button>
+            <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>완전 무료 · 30초만에 결과 확인</p>
           </div>
-        ))}
+        </div>
+
+        <div style={{ maxWidth: 440, margin: "0 auto", padding: "32px 24px" }}>
+          {[
+            { icon: "🔮", title: "오행 소울카드", desc: "내 생년 오행에 맞는 수호 타로카드를 먼저 알려드려요. 오직 나만의 카드예요." },
+            { icon: "💞", title: "5가지 주제 리딩", desc: "연애·직업·돈·선택고민·마음치유 중 원하는 주제를 골라서 뽑아요." },
+            { icon: "🃏", title: "대아르카나 22장", desc: "정통 타로의 22가지 메이저 카드로 지금 나에게 온 메시지를 전해요." },
+            { icon: "🔄", title: "다시 뽑기 가능", desc: "언제든 다시 뽑을 수 있어요. 친구한테 공유해서 반응을 즐겨보세요." },
+          ].map(f => (
+            <div key={f.title} style={{ display: "flex", gap: 16, marginBottom: 20, alignItems: "flex-start" }}>
+              <span style={{ fontSize: 28, flexShrink: 0 }}>{f.icon}</span>
+              <div>
+                <p style={{ fontWeight: 700, margin: "0 0 4px", fontSize: 15 }}>{f.title}</p>
+                <p style={{ color: "#9ca3af", fontSize: 13, margin: 0, lineHeight: 1.5 }}>{f.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
+          <button onClick={() => setStep("form")} style={S.btn}>카드 뽑으러 가기 →</button>
+        </div>
       </div>
-      <div style={{ background: "linear-gradient(135deg, #818cf8, #6366f1)", padding: "40px 20px", textAlign: "center" }}>
-        <p style={{ color: "white", fontSize: 22, fontWeight: 900, margin: "0 0 20px" }}>타로 + 사주 지금 확인</p>
-        <Link href="/main-v2" style={{ display: "inline-block", padding: "14px 40px", background: "white", color: "#6366f1", borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none" }}>🃏 시작하기</Link>
+    );
+  }
+
+  return (
+    <div style={S.wrap}>
+      <div style={S.inner}>
+        <div style={{ paddingTop: 32, marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <button onClick={() => setStep("intro")} style={{ background: "none", border: "none", color: "#c084fc", fontSize: 13, cursor: "pointer", padding: 0 }}>← 뒤로</button>
+          <span style={{ fontSize: 13, color: "#6b7280" }}>타로 카드 뽑기</span>
+        </div>
+
+        <h2 style={{ fontSize: 20, fontWeight: 900, margin: "0 0 4px" }}>무엇이 궁금하세요?</h2>
+        <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 20px" }}>주제를 고르고 카드를 뽑아보세요</p>
+
+        <div style={{ marginBottom: 20 }}>
+          <label style={S.label}>오늘 물어볼 주제</label>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
+            {TOPICS.map(t => (
+              <button key={t.key} onClick={() => setTopic(t.key)}
+                style={{ padding: "12px 16px", borderRadius: 12, border: `2px solid ${topic === t.key ? "#c084fc" : "rgba(255,255,255,0.12)"}`, background: topic === t.key ? "rgba(192,132,252,0.15)" : "transparent", color: topic === t.key ? "#e9d5ff" : "#9ca3af", cursor: "pointer", fontSize: 14, fontWeight: topic === t.key ? 900 : 400, textAlign: "left" as const, display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 18 }}>{t.label.split(" ")[0]}</span>
+                <div>
+                  <span style={{ fontWeight: 700 }}>{t.label.split(" ").slice(1).join(" ")}</span>
+                  <span style={{ fontSize: 11, color: "#6b7280", marginLeft: 8 }}>{t.desc}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 18, padding: "18px 16px", marginBottom: 20 }}>
+          <p style={{ fontSize: 13, fontWeight: 900, color: "#c084fc", margin: "0 0 4px" }}>🔮 내 정보</p>
+          <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 14px" }}>전화번호·생년 필수 · 이름 선택</p>
+
+          <div style={S.row}>
+            <label style={S.label}>전화번호 (필수)</label>
+            <input style={{ ...S.input, border: `1px solid ${error.includes("전화") ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.12)"}` }}
+              placeholder="010-0000-0000" inputMode="tel" value={phone}
+              onChange={e => { setPhone(e.target.value); setError(""); }} />
+          </div>
+
+          <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+            <div style={{ flex: 1.5 }}>
+              <label style={S.label}>출생연도 (필수)</label>
+              <input style={{ ...S.input, border: `1px solid ${error.includes("연도") ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.12)"}` }}
+                placeholder="1995" maxLength={4} inputMode="numeric" value={birthYear}
+                onChange={e => { setBirthYear(e.target.value.replace(/\D/g, "").slice(0, 4)); setError(""); }} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={S.label}>월 (선택)</label>
+              <input style={S.input} placeholder="7" maxLength={2} inputMode="numeric" value={birthMonth}
+                onChange={e => setBirthMonth(e.target.value.replace(/\D/g, "").slice(0, 2))} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={S.label}>일 (선택)</label>
+              <input style={S.input} placeholder="11" maxLength={2} inputMode="numeric" value={birthDay}
+                onChange={e => setBirthDay(e.target.value.replace(/\D/g, "").slice(0, 2))} />
+            </div>
+          </div>
+
+          <div>
+            <label style={S.label}>이름 또는 별명 (선택)</label>
+            <input style={S.input} placeholder="예) 민지, 별이" value={name} onChange={e => setName(e.target.value)} />
+          </div>
+        </div>
+
+        {error && <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>}
+
+        <button onClick={analyze} disabled={loading}
+          style={{ ...S.btn, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
+          {loading ? "카드 뽑는 중... 🃏" : "카드 뽑기 →"}
+        </button>
+        <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>완전 무료 · 결과 후 다시 뽑기 가능</p>
       </div>
-    </main>
+    </div>
   );
 }

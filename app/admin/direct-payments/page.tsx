@@ -53,7 +53,7 @@ export default function AdminDirectPayments() {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"payments" | "leads">("payments");
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun">("all");
+  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot">("all");
 
   useEffect(() => {
     const adminId = localStorage.getItem("adminId");
@@ -224,7 +224,8 @@ export default function AdminDirectPayments() {
                 { key: "lotto",   label: "행운번호", emoji: "🎱", activeBg: "#d97706", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#92400e" },
                 { key: "gunghap", label: "궁합",     emoji: "💞", activeBg: "#ec4899", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
                 { key: "petun",   label: "펫운",     emoji: "🐾", activeBg: "#06b6d4", inactiveBg: "#ecfeff", activeText: "white", inactiveText: "#0e7490" },
-              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
+                { key: "tarot",   label: "타로",     emoji: "🃏", activeBg: "#6d28d9", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#4c1d95" },
+              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.source ?? "free") === f.key).length;
                 const active = sourceFilter === f.key;
                 return (
@@ -259,11 +260,11 @@ export default function AdminDirectPayments() {
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.email || "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
                         <span style={{
-                          background: lead.source === "jigun" ? "#ede9fe" : lead.source === "resume" ? "#dbeafe" : lead.source === "mbti" ? "#f3e8ff" : lead.source === "lotto" ? "#fef3c7" : lead.source === "gunghap" ? "#fce7f3" : lead.source === "petun" ? "#ecfeff" : "#fef3c7",
-                          color: lead.source === "jigun" ? "#6d28d9" : lead.source === "resume" ? "#1d4ed8" : lead.source === "mbti" ? "#7c3aed" : lead.source === "lotto" ? "#d97706" : lead.source === "gunghap" ? "#be185d" : lead.source === "petun" ? "#0e7490" : "#92400e",
+                          background: lead.source === "jigun" ? "#ede9fe" : lead.source === "resume" ? "#dbeafe" : lead.source === "mbti" ? "#f3e8ff" : lead.source === "lotto" ? "#fef3c7" : lead.source === "gunghap" ? "#fce7f3" : lead.source === "petun" ? "#ecfeff" : lead.source === "tarot" ? "#ede9fe" : "#fef3c7",
+                          color: lead.source === "jigun" ? "#6d28d9" : lead.source === "resume" ? "#1d4ed8" : lead.source === "mbti" ? "#7c3aed" : lead.source === "lotto" ? "#d97706" : lead.source === "gunghap" ? "#be185d" : lead.source === "petun" ? "#0e7490" : lead.source === "tarot" ? "#4c1d95" : "#92400e",
                           padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700
                         }}>
-                          {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : lead.source === "mbti" ? "🔮MBTI" : lead.source === "lotto" ? "🎱행운번호" : lead.source === "gunghap" ? "💞궁합" : lead.source === "petun" ? "🐾펫운" : "🎁재물운"}
+                          {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : lead.source === "mbti" ? "🔮MBTI" : lead.source === "lotto" ? "🎱행운번호" : lead.source === "gunghap" ? "💞궁합" : lead.source === "petun" ? "🐾펫운" : lead.source === "tarot" ? "🃏타로" : "🎁재물운"}
                         </span>
                       </td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.birthYear ? `${lead.birthYear}년` : "-"}</td>
