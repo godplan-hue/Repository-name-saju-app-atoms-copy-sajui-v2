@@ -249,7 +249,7 @@ export default function LottoResultPage() {
           <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.6, margin: "0 0 8px" }}>
             사주 원국으로 언제 돈이 들어오고 나가는지<br />재물운·성공운을 훨씬 정확하게 알 수 있어요.
           </p>
-          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 16px", fontWeight: 700 }}>🎁 사주 990원 = 꿈해몽·직운·합격·맘운 30일 무료</p>
+
           <Link href="/main-v2" style={{
             display: "block", background: "linear-gradient(135deg,#8b5cf6,#3b82f6)",
             color: "white", textDecoration: "none", borderRadius: 16, padding: "14px",

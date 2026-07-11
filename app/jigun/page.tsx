@@ -333,7 +333,7 @@ export default function JigunPage() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 24 }}>
               <div>
-                <label style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, display: "block", marginBottom: 6 }}>이름 (선택)</label>
+                <label style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, display: "block", marginBottom: 6 }}>이름 <span style={{ color: "#ec4899" }}>★ 필수</span></label>
                 <input
                   value={name}
                   onChange={e => setName(e.target.value)}

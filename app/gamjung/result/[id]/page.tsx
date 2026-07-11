@@ -188,7 +188,7 @@ export default function GamjungResultPage() {
             오늘 기분이 유독 좋거나 나쁜 이유가 있을 수도 있어요.<br />
             사주로 지금 내 운의 흐름을 확인해보세요.
           </p>
-          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px", fontWeight: 700 }}>🎁 사주 990원 = 꿈해몽·직운·합격·맘운 30일 무료</p>
+
           <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "white", textDecoration: "none", borderRadius: 16, padding: "13px 20px", fontWeight: 900, fontSize: 14, boxShadow: "0 4px 16px rgba(124,58,237,0.4)" }}>
             990원으로 사주 + 점운 전체 입장 →
           </Link>

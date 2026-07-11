@@ -358,7 +358,7 @@ export default function GunghapResultPage() {
         <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.18),rgba(192,132,252,0.1))", border: "1px solid rgba(192,132,252,0.35)", borderRadius: 18, padding: "20px 18px", marginBottom: 16 }}>
           <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 6px", color: "#e9d5ff" }}>💡 궁합점수는 시작일 뿐이에요</p>
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>사주로 보면 연인의 연애 패턴 · 갈등 원인 · 결혼 궁합까지<br />더 정확하게 알 수 있어요.</p>
-          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px", fontWeight: 700 }}>🎁 사주 990원 = 꿈해몽·직운·합격·맘운 30일 무료</p>
+
           <Link href="/main-v2" style={{ display: "block", textAlign: "center", background: "linear-gradient(135deg,#7c3aed,#a855f7)", borderRadius: 14, padding: "13px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900, boxShadow: "0 4px 16px rgba(124,58,237,0.4)" }}>
             990원으로 사주 + 점운 전체 입장 →
           </Link>

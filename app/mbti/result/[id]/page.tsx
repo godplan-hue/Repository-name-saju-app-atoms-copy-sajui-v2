@@ -269,7 +269,7 @@ export default function MbtiResultPage() {
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 8px", lineHeight: 1.6 }}>
             {data.oh}오행 기질 × 사주 원국으로<br />재물운·연애운·직업운·대운까지 분석
           </p>
-          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 16px", fontWeight: 700 }}>🎁 사주 990원 = 꿈해몽·직운·합격·맘운 30일 무료</p>
+
           <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#7c3aed,#a855f7)", borderRadius: 16, padding: "14px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900, boxShadow: "0 4px 16px rgba(124,58,237,0.4)" }}>
             990원으로 사주 + 점운 전체 입장 →
           </Link>

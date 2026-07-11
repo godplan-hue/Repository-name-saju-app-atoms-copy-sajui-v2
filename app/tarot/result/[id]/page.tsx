@@ -449,7 +449,7 @@ export default function TarotResultPage() {
             {displayName}의 {result.oh}오행 에너지를 사주 원국으로 분석하면<br />
             연애·직업·재물 흐름을 훨씬 정확하게 알 수 있어요.
           </p>
-          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px", fontWeight: 700 }}>🎁 사주 990원 = 꿈해몽·직운·합격·맘운 30일 무료</p>
+
           <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "white", borderRadius: 22, padding: "14px", fontSize: 14, fontWeight: 900, textAlign: "center", textDecoration: "none", boxShadow: "0 4px 16px rgba(124,58,237,0.4)" }}>
             990원으로 사주 + 점운 전체 입장 →
           </Link>

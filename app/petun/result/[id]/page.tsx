@@ -574,7 +574,7 @@ export default function PetunResultPage() {
         <div style={{ background: "linear-gradient(135deg,rgba(6,182,212,0.15),rgba(14,165,233,0.08))", border: "1px solid rgba(6,182,212,0.35)", borderRadius: 18, padding: "20px 18px", marginBottom: 14 }}>
           <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 6px", color: "#a5f3fc" }}>🌿 반려동물을 더 잘 돌보고 싶다면?</p>
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>보호자의 사주로 재물운·건강운·연애운까지 분석하면<br />가족 전체 운의 흐름이 보여요.</p>
-          <p style={{ fontSize: 12, color: "#67e8f9", margin: "0 0 14px", fontWeight: 700 }}>🎁 사주 990원 = 꿈해몽·직운·합격·맘운 30일 무료</p>
+
           <Link href="/main-v2" style={{ display: "block", textAlign: "center", background: "linear-gradient(135deg,#0891b2,#06b6d4)", borderRadius: 14, padding: "13px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900, boxShadow: "0 4px 16px rgba(6,182,212,0.4)" }}>
             990원으로 사주 + 점운 전체 입장 →
           </Link>
