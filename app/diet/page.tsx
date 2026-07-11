@@ -427,7 +427,7 @@ export default function DietPage() {
             <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
             <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
             <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
-            <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
+            <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38,<br />7층 7017호(대치동)</p>
             <p style={{ margin: 0 }}>대표전화 010-2106-2689 · 유선 031-585-7255</p>
             <p style={{ margin: "4px 0 0", color: "#f87171", fontWeight: 900, fontSize: 11 }}>※ 전화 문의는 받지 않습니다. 카카오톡으로 문의해 주세요.</p>
           </div>
