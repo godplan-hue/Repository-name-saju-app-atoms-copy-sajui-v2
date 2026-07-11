@@ -138,16 +138,16 @@ export default function ZodiacPage() {
 
         <div style={{ maxWidth: 440, margin: "0 auto", padding: "32px 24px" }}>
           {[
-            { icon: "💗", title: "사랑·직업·건강 점수", desc: "오늘 내 세 가지 에너지를 % 점수로 한눈에 확인해요." },
-            { icon: "🌿", title: "오행 × 별자리 교차분석", desc: "생년 오행과 별자리를 결합한 점운만의 분석이에요." },
-            { icon: "🍀", title: "행운 색상·숫자·방향", desc: "오늘 나에게 유리한 행운 아이템을 알려드려요." },
-            { icon: "📅", title: "오늘·이번주·이번달 운세", desc: "단기와 중기 흐름을 함께 확인할 수 있어요." },
+            { icon: "💗", title: "사랑·직업·건강 점수", desc: "오늘 내 세 가지 에너지를\n% 점수로 한눈에 확인해요." },
+            { icon: "🌿", title: "오행 × 별자리 교차분석", desc: "생년 오행과 별자리를 결합한\n점운만의 분석이에요." },
+            { icon: "🍀", title: "행운 색상·숫자·방향", desc: "오늘 나에게 유리한\n행운 아이템을 알려드려요." },
+            { icon: "📅", title: "오늘·이번주·이번달 운세", desc: "단기와 중기 흐름을\n함께 확인할 수 있어요." },
           ].map(f => (
             <div key={f.title} style={{ display: "flex", gap: 16, marginBottom: 20, alignItems: "flex-start" }}>
               <span style={{ fontSize: 28, flexShrink: 0 }}>{f.icon}</span>
               <div>
                 <p style={{ fontWeight: 700, margin: "0 0 4px", fontSize: 15 }}>{f.title}</p>
-                <p style={{ color: "#9ca3af", fontSize: 13, margin: 0, lineHeight: 1.5 }}>{f.desc}</p>
+                <p style={{ color: "#9ca3af", fontSize: 13, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" }}>{f.desc}</p>
               </div>
             </div>
           ))}
