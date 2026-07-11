@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -38,10 +38,19 @@ export default function GamjungPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const selectedMood = MOODS.find(m => m.score === moodScore);
+  const [history, setHistory] = useState<Array<{id: string; moodLabel: string; moodEmoji: string; createdAt: number}>>([]);
+
+  useEffect(() => {
+    try {
+      const h = localStorage.getItem("gamjung_history");
+      if (h) setHistory(JSON.parse(h).slice(0, 5));
+    } catch {}
+  }, []);
 
   const toggleActivity = (key: string) => {
     setSelectedActivities(prev =>
@@ -52,6 +61,7 @@ export default function GamjungPage() {
   const analyze = async () => {
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
+    if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/gamjung/analyze", {
@@ -61,6 +71,9 @@ export default function GamjungPage() {
       });
       const data = await res.json();
       if (data.id) {
+        if (typeof sessionStorage !== "undefined") {
+          sessionStorage.setItem(`gamjung_result_${data.id}`, JSON.stringify(data.result));
+        }
         router.push(`/gamjung/result/${data.id}`);
       } else {
         setError("오류가 발생했습니다. 다시 시도해주세요.");
@@ -126,6 +139,23 @@ export default function GamjungPage() {
             </div>
           ))}
         </div>
+        {history.length > 0 && (
+          <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 16px" }}>
+            <p style={{ fontSize: 13, color: "#4ade80", fontWeight: 700, margin: "0 0 10px" }}>📔 내 감정일기 기록</p>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
+              {history.map(h => (
+                <Link key={h.id} href={`/gamjung/result/${h.id}`} style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(74,222,128,0.2)", borderRadius: 12, padding: "12px 16px", textDecoration: "none" }}>
+                  <span style={{ fontSize: 24 }}>{h.moodEmoji}</span>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: "#e5e7eb", margin: "0 0 2px" }}>{h.moodLabel}</p>
+                    <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>{new Date(h.createdAt).toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "short" })}</p>
+                  </div>
+                  <span style={{ color: "#4ade80", fontSize: 14 }}>›</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
         <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
           <button onClick={() => setStep("mood")} style={S.btn}>감정일기 시작하기 →</button>
         </div>
@@ -219,10 +249,21 @@ export default function GamjungPage() {
             <label style={S.label}>이름 또는 별명 (선택)</label>
             <input style={S.input} placeholder="예) 지은, 행복이" value={name} onChange={e => setName(e.target.value)} />
           </div>
-          <div>
+          <div style={{ marginBottom: 0 }}>
             <label style={S.label}>이메일 (선택)</label>
             <input style={S.input} placeholder="example@email.com" inputMode="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
           </div>
+        </div>
+
+        <div style={{ background: "rgba(255,255,255,0.06)", border: `1.5px solid ${agreed ? "#4ade80" : "rgba(255,255,255,0.2)"}`, borderRadius: 14, padding: "14px 16px", marginBottom: 16 }}>
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
+            <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
+              style={{ marginTop: 2, accentColor: "#4ade80", width: 18, height: 18, flexShrink: 0 }} />
+            <span style={{ fontSize: 12, color: "#d1d5db", lineHeight: 1.7 }}>
+              <strong style={{ color: "#4ade80", fontSize: 13 }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
+              점운(jeomun.com)이 전화번호·이메일을 수집하여 운세 정보 및 혜택 안내에 활용하며, 3년간 보유 후 파기합니다. 언제든지 수신거부 가능합니다.
+            </span>
+          </label>
         </div>
 
         {error && <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>}

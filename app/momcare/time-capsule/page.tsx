@@ -47,12 +47,51 @@ export default function TimeCapsulePage() {
     if (!exp || Number(exp) <= Date.now()) setMomcareUnlocked(false);
   }, []);
 
+  const [mcUserId, setMcUserId] = useState("");
+  const [hasPhone, setHasPhone] = useState(true);
+
   useEffect(() => {
     const saved = localStorage.getItem("momcare_capsule");
     if (saved) setLetters(JSON.parse(saved));
+
+    let uid = "";
+    try {
+      const profile = localStorage.getItem("v2_saved_profile");
+      if (profile) {
+        const p = JSON.parse(profile);
+        if (p.phone) { uid = `phone_${p.phone.replace(/\D/g, "")}`; setHasPhone(true); }
+      }
+    } catch {}
+    if (!uid) {
+      setHasPhone(false);
+      let devId = localStorage.getItem("momcare_device_id");
+      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
+      uid = `device_${devId}`;
+    }
+    setMcUserId(uid);
+
+    fetch(`/api/momcare/save?userId=${uid}&type=capsule`)
+      .then(r => r.json())
+      .then(d => {
+        if (Array.isArray(d.data) && d.data.length > 0) {
+          setLetters(d.data);
+          localStorage.setItem("momcare_capsule", JSON.stringify(d.data));
+        }
+      })
+      .catch(() => {});
   }, []);
 
-  function save(l: Letter[]) { setLetters(l); localStorage.setItem("momcare_capsule", JSON.stringify(l)); }
+  function save(l: Letter[]) {
+    setLetters(l);
+    localStorage.setItem("momcare_capsule", JSON.stringify(l));
+    if (mcUserId) {
+      fetch("/api/momcare/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: mcUserId, type: "capsule", data: l }),
+      }).catch(() => {});
+    }
+  }
 
   if (!momcareUnlocked) return (
     <div style={{ minHeight: "100vh", background: "#f0f7ff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
@@ -214,6 +253,12 @@ export default function TimeCapsulePage() {
         <button onClick={() => setMode("write")} style={{ background: "#f97316", color: "white", border: "none", borderRadius: 12, padding: "8px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>+ 편지 쓰기</button>
       </nav>
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "24px 20px" }}>
+        {!hasPhone && (
+          <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: "12px 16px", marginBottom: 16, fontSize: 12, color: "#92400e", lineHeight: 1.6 }}>
+            ⚠️ 사주 앱에서 전화번호를 등록하면 모든 기기에서 편지를 영구 보관해요.<br />
+            <a href="/main-v2" style={{ color: "#f97316", fontWeight: 700, textDecoration: "none" }}>전화번호 등록하러 가기 →</a>
+          </div>
+        )}
         <div style={{ background: "linear-gradient(135deg, #fde8d8, #fce7f3)", borderRadius: 18, padding: "24px", marginBottom: 24, textAlign: "center" }}>
           <div style={{ fontSize: 40, marginBottom: 8 }}>💌</div>
           <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px" }}>미래의 아이에게 편지를</h2>

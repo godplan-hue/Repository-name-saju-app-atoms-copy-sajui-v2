@@ -19,6 +19,8 @@ export default function BabyWordsPage() {
   const [showForm, setShowForm] = useState(false);
   const [search, setSearch] = useState("");
   const [unlocked, setUnlocked] = useState(true);
+  const [mcUserId, setMcUserId] = useState("");
+  const [hasPhone, setHasPhone] = useState(true);
 
   useEffect(() => {
     const exp = localStorage.getItem("momcare_unlock_until");
@@ -38,9 +40,45 @@ export default function BabyWordsPage() {
         setForm(f => ({ ...f, age: `생후 ${months}개월` }));
       }
     }
+
+    let uid = "";
+    try {
+      const profile = localStorage.getItem("v2_saved_profile");
+      if (profile) {
+        const p = JSON.parse(profile);
+        if (p.phone) { uid = `phone_${p.phone.replace(/\D/g, "")}`; setHasPhone(true); }
+      }
+    } catch {}
+    if (!uid) {
+      setHasPhone(false);
+      let devId = localStorage.getItem("momcare_device_id");
+      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
+      uid = `device_${devId}`;
+    }
+    setMcUserId(uid);
+
+    fetch(`/api/momcare/save?userId=${uid}&type=words`)
+      .then(r => r.json())
+      .then(d => {
+        if (Array.isArray(d.data) && d.data.length > 0) {
+          setWords(d.data);
+          localStorage.setItem("momcare_words", JSON.stringify(d.data));
+        }
+      })
+      .catch(() => {});
   }, []);
 
-  function save(w: WordEntry[]) { setWords(w); localStorage.setItem("momcare_words", JSON.stringify(w)); }
+  function save(w: WordEntry[]) {
+    setWords(w);
+    localStorage.setItem("momcare_words", JSON.stringify(w));
+    if (mcUserId) {
+      fetch("/api/momcare/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: mcUserId, type: "words", data: w }),
+      }).catch(() => {});
+    }
+  }
 
   function addWord() {
     if (!form.babyWord.trim()) return;
@@ -88,6 +126,14 @@ export default function BabyWordsPage() {
       </nav>
 
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "24px 20px" }}>
+        {/* 전화번호 미등록 안내 */}
+        {!hasPhone && (
+          <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: "12px 16px", marginBottom: 16, fontSize: 12, color: "#92400e", lineHeight: 1.6 }}>
+            ⚠️ 사주 앱에서 전화번호를 등록하면 모든 기기에서 말 사전을 영구 보관해요.<br />
+            <a href="/main-v2" style={{ color: "#f97316", fontWeight: 700, textDecoration: "none" }}>전화번호 등록하러 가기 →</a>
+          </div>
+        )}
+
         {/* 안내 */}
         <div style={{ background: "linear-gradient(135deg, #fce7f3, #dbeafe)", borderRadius: 18, padding: "20px 24px", marginBottom: 20, textAlign: "center" }}>
           <div style={{ fontSize: 36, marginBottom: 6 }}>🗣️</div>
@@ -171,7 +217,6 @@ export default function BabyWordsPage() {
                       {w.age && <span style={{ fontSize: 11, color: "#9ca3af" }}>· {w.age}</span>}
                     </div>
                   </div>
-                  <button onClick={() => save(words.filter(x => x.id !== w.id))} style={{ background: "none", border: "none", color: "#fca5a5", cursor: "pointer", fontSize: 18, marginLeft: 8 }}>×</button>
                 </div>
               ))}
             </div>

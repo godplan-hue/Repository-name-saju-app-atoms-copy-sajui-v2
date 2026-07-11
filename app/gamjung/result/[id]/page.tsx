@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 
 interface GResult {
@@ -41,17 +41,31 @@ const MOOD_COLORS: Record<number, string> = {
   5: "#fbbf24", 4: "#4ade80", 3: "#93c5fd", 2: "#a78bfa", 1: "#f87171",
 };
 
-export default function GamjungResultPage({ params }: { params: { id: string } }) {
+export default function GamjungResultPage() {
   const router = useRouter();
+  const params = useParams();
+  const id = params?.id as string;
   const [result, setResult] = useState<GResult | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/gamjung/analyze?id=${params.id}`)
+    if (!id) return;
+    // sessionStorage에 캐시된 결과 먼저 확인 (폼에서 방금 넘어온 경우)
+    try {
+      const cached = sessionStorage.getItem(`gamjung_result_${id}`);
+      if (cached) {
+        setResult(JSON.parse(cached));
+        setLoading(false);
+        return;
+      }
+    } catch {}
+    // 캐시 없으면 API 조회 (직접 URL 접근 등)
+    fetch(`/api/gamjung/analyze?id=${id}`)
       .then(r => r.json())
       .then(data => { if (data.result) setResult(data.result); })
+      .catch(() => {})
       .finally(() => setLoading(false));
-  }, [params.id]);
+  }, [id]);
 
   if (loading) return (
     <div style={{ minHeight: "100vh", background: "#0f1a14", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -67,11 +81,23 @@ export default function GamjungResultPage({ params }: { params: { id: string } }
 
   const moodColor = MOOD_COLORS[result.moodScore] || "#4ade80";
 
-  const share = () => {
+  // result 로드 완료 시 기록 저장
+  useEffect(() => {
+    if (!result || !id) return;
+    try {
+      const h = JSON.parse(localStorage.getItem("gamjung_history") || "[]");
+      if (!h.some((e: {id: string}) => e.id === id)) {
+        h.unshift({ id, moodLabel: result.moodLabel, moodEmoji: result.moodEmoji, createdAt: result.createdAt });
+        localStorage.setItem("gamjung_history", JSON.stringify(h.slice(0, 50)));
+      }
+    } catch {}
+  }, [result, id]);
+
+  const share = useCallback(() => {
     const text = `오늘 기분: ${result.moodLabel} ${result.moodEmoji}\n오행 에너지: ${result.oh}(${result.ohEmoji}) — ${result.ohKeyword}\n\n${result.ohMessages[0]}\n\n✨ 점운 감정일기 — jeomun.com/gamjung`;
     if (navigator.share) navigator.share({ title: "점운 감정일기", text });
     else { navigator.clipboard.writeText(text); alert("클립보드에 복사됐어요 😊"); }
-  };
+  }, [result]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0f1a14", color: "#F5F5F5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>

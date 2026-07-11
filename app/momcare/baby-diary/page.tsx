@@ -26,6 +26,8 @@ export default function BabyDiaryPage() {
   const [search, setSearch] = useState("");
   const [form, setForm] = useState<DiaryEntry>({ id: "", date: todayStr(), title: "", content: "", mood: "happy", weather: "☀️ 맑음", tags: [] });
   const [unlocked, setUnlocked] = useState(true);
+  const [mcUserId, setMcUserId] = useState("");
+  const [hasPhone, setHasPhone] = useState(true);
 
   useEffect(() => {
     const exp = localStorage.getItem("momcare_unlock_until");
@@ -35,9 +37,45 @@ export default function BabyDiaryPage() {
   useEffect(() => {
     const saved = localStorage.getItem("momcare_diary");
     if (saved) setEntries(JSON.parse(saved));
+
+    let uid = "";
+    try {
+      const profile = localStorage.getItem("v2_saved_profile");
+      if (profile) {
+        const p = JSON.parse(profile);
+        if (p.phone) { uid = `phone_${p.phone.replace(/\D/g, "")}`; setHasPhone(true); }
+      }
+    } catch {}
+    if (!uid) {
+      setHasPhone(false);
+      let devId = localStorage.getItem("momcare_device_id");
+      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
+      uid = `device_${devId}`;
+    }
+    setMcUserId(uid);
+
+    fetch(`/api/momcare/save?userId=${uid}&type=diary`)
+      .then(r => r.json())
+      .then(d => {
+        if (Array.isArray(d.data) && d.data.length > 0) {
+          setEntries(d.data);
+          localStorage.setItem("momcare_diary", JSON.stringify(d.data));
+        }
+      })
+      .catch(() => {});
   }, []);
 
-  function save(e: DiaryEntry[]) { setEntries(e); localStorage.setItem("momcare_diary", JSON.stringify(e)); }
+  function save(e: DiaryEntry[]) {
+    setEntries(e);
+    localStorage.setItem("momcare_diary", JSON.stringify(e));
+    if (mcUserId) {
+      fetch("/api/momcare/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: mcUserId, type: "diary", data: e }),
+      }).catch(() => {});
+    }
+  }
 
   if (!unlocked) return (
     <div style={{ minHeight: "100vh", background: "#f0f7ff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
@@ -90,9 +128,8 @@ export default function BabyDiaryPage() {
         <nav style={{ background: "white", borderBottom: "1px solid #e5e7eb", padding: "14px 24px", display: "flex", gap: 12, alignItems: "center" }}>
           <button onClick={() => setMode("list")} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer" }}>←</button>
           <span style={{ fontWeight: 700, fontSize: 15 }}>일기 읽기</span>
-          <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+          <div style={{ marginLeft: "auto" }}>
             <button onClick={() => { setForm({ ...viewEntry }); setMode("write"); }} style={{ background: "#f3f4f6", border: "none", borderRadius: 8, padding: "6px 14px", fontSize: 13, cursor: "pointer", fontWeight: 700 }}>수정</button>
-            <button onClick={() => { save(entries.filter(e => e.id !== viewEntry.id)); setMode("list"); }} style={{ background: "#fca5a5", color: "white", border: "none", borderRadius: 8, padding: "6px 14px", fontSize: 13, cursor: "pointer", fontWeight: 700 }}>삭제</button>
           </div>
         </nav>
         <div style={{ maxWidth: 640, margin: "0 auto", padding: "32px 20px" }}>
@@ -180,6 +217,14 @@ export default function BabyDiaryPage() {
       </nav>
 
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "24px 20px" }}>
+        {/* 전화번호 미등록 안내 */}
+        {!hasPhone && (
+          <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: "12px 16px", marginBottom: 16, fontSize: 12, color: "#92400e", lineHeight: 1.6 }}>
+            ⚠️ 사주 앱에서 전화번호를 등록하면 모든 기기에서 일기를 영구 보관해요.<br />
+            <a href="/main-v2" style={{ color: "#f97316", fontWeight: 700, textDecoration: "none" }}>전화번호 등록하러 가기 →</a>
+          </div>
+        )}
+
         {/* 검색 */}
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="일기 검색..." style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 16px", fontSize: 14, outline: "none", background: "white", color: "#1a1a2e", boxSizing: "border-box", marginBottom: 20 }} />
 
