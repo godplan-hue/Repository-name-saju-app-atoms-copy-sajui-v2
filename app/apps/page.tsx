@@ -26,7 +26,6 @@ const TOP_APPS = [
 ];
 
 const GRID_APPS = [
-  { href: "/main-v2",           emoji: "🔮", label: "사주",   badge: "무료",  color: "#7c3aed", bg: "linear-gradient(145deg,#ede9fe,#c4b5fd)" },
   { href: "/jigun",             emoji: "💼", label: "직운",   badge: "무료",  color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)" },
   { href: "/resume",            emoji: "🎯", label: "합격",   badge: "무료",  color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)" },
   { href: "/gunghap",           emoji: "💑", label: "궁합",   badge: "무료",  color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)" },
@@ -37,6 +36,7 @@ const GRID_APPS = [
   { href: "/main-v2/taegil",    emoji: "📅", label: "택일",   badge: "유료",  color: "#047857", bg: "linear-gradient(145deg,#d1fae5,#a7f3d0)" },
   { href: "/main-v2/qa-list",   emoji: "💬", label: "Q&A",    badge: "무료",  color: "#475569", bg: "linear-gradient(145deg,#f1f5f9,#e2e8f0)" },
   { href: "/diet",              emoji: "🥗", label: "다이어트", badge: "무료", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)" },
+  { href: "/budget",            emoji: "💰", label: "가계부",  badge: "무료", color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)" },
   { href: "/partner",           emoji: "🤝", label: "파트너", badge: "신청",  color: "#a21caf", bg: "linear-gradient(145deg,#fdf4ff,#f0abfc)" },
 ];
 
