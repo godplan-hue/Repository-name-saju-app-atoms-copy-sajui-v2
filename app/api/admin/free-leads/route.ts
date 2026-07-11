@@ -38,10 +38,12 @@ export async function GET(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [freeSnap, careerSnap, resumeSnap] = await Promise.all([
+  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap] = await Promise.all([
     db.ref("free_leads").orderByChild("createdAt").once("value"),
     db.ref("career_analyses").orderByChild("createdAt").once("value"),
     db.ref("resume_analyses").orderByChild("createdAt").once("value"),
+    db.ref("mbti_analyses").orderByChild("createdAt").once("value"),
+    db.ref("lotto_analyses").orderByChild("createdAt").once("value"),
   ]);
 
   const leads: any[] = [];
@@ -66,6 +68,22 @@ export async function GET(request: NextRequest) {
     if (v) resumeItems.push({ id: child.key, ...v });
   });
   for (const item of dedupByPhone(resumeItems, "resume")) leads.push(item);
+
+  // MBTI — mbti_analyses: 전화번호 기준 중복 제거
+  const mbtiItems: any[] = [];
+  mbtiSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) mbtiItems.push({ id: child.key, name: v.userName || v.name || "", ...v });
+  });
+  for (const item of dedupByPhone(mbtiItems, "mbti")) leads.push(item);
+
+  // 행운번호 — lotto_analyses: 전화번호 기준 중복 제거
+  const lottoItems: any[] = [];
+  lottoSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) lottoItems.push({ id: child.key, birthYear: v.birthYear, ...v });
+  });
+  for (const item of dedupByPhone(lottoItems, "lotto")) leads.push(item);
 
   // 출처가 달라도 같은 전화번호가 중복될 수 있으므로 (free_leads+career_analyses 동시 저장 등) 최종 전체 중복 제거
   // 이름 있는 항목 우선 선택, 둘 다 이름 있으면 최신 우선

@@ -32,6 +32,7 @@ function Ball({ n, size = 44, delay = 0 }: { n: number; size?: number; delay?: n
 export default function LottoPage() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [birthYear, setBirthYear] = useState("");
   const [birthMonth, setBirthMonth] = useState("");
   const [birthDay, setBirthDay] = useState("");
@@ -39,6 +40,8 @@ export default function LottoPage() {
   const [error, setError] = useState("");
 
   const analyze = async () => {
+    const cleanPhone = phone.replace(/\D/g, "");
+    if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
     if (!birthYear || birthYear.length < 4) { setError("출생연도를 입력해주세요."); return; }
     if (!birthMonth) { setError("출생월을 입력해주세요."); return; }
     if (!birthDay) { setError("출생일을 입력해주세요."); return; }
@@ -48,7 +51,7 @@ export default function LottoPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name, birthYear: Number(birthYear), birthMonth: Number(birthMonth), birthDay: Number(birthDay),
+          name, phone: cleanPhone, birthYear: Number(birthYear), birthMonth: Number(birthMonth), birthDay: Number(birthDay),
         }),
       });
       const data = await res.json();
@@ -122,9 +125,13 @@ export default function LottoPage() {
         <div style={{ background: "rgba(251,191,36,0.06)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 20, padding: "20px 18px", marginBottom: 20 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "#fbbf24", margin: "0 0 16px" }}>🎯 정보 입력</p>
 
-          <div style={{ marginBottom: 14 }}>
-            <label style={S.label}>이름 (선택)</label>
+          <div style={{ marginBottom: 10 }}>
+            <label style={S.label}>이름 또는 별명 (선택)</label>
             <input style={S.input} placeholder="예) 에스더" value={name} onChange={e => setName(e.target.value)} />
+          </div>
+          <div style={{ marginBottom: 14 }}>
+            <label style={S.label}>전화번호 (필수)</label>
+            <input style={{ ...S.input, border: `1px solid ${error && !phone ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.12)"}` }} placeholder="010-0000-0000" inputMode="tel" value={phone} onChange={e => { setPhone(e.target.value); setError(""); }} />
           </div>
 
           <div style={{ display: "flex", gap: 8 }}>

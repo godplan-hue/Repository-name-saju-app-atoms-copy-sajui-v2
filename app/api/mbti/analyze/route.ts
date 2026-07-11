@@ -187,8 +187,8 @@ const TYPE_DATA: Record<string, TypeData> = {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json() as { answers: number[]; userName?: string };
-    const { answers, userName } = body;
+    const body = await req.json() as { answers: number[]; userName?: string; phone?: string };
+    const { answers, userName, phone } = body;
     if (!answers || answers.length !== 16) {
       return NextResponse.json({ error: "answers 16개 필요" }, { status: 400 });
     }
@@ -215,6 +215,7 @@ export async function POST(req: NextRequest) {
       eiScore: dimScores.EI, snScore: dimScores.SN, tfScore: dimScores.TF, jpScore: dimScores.JP,
       eiPct: pct(dimScores.EI), snPct: pct(dimScores.SN), tfPct: pct(dimScores.TF), jpPct: pct(dimScores.JP),
       userName: userName || "",
+      phone: phone || "",
       createdAt: Date.now(),
     };
 

@@ -53,7 +53,7 @@ export default function AdminDirectPayments() {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"payments" | "leads">("payments");
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume">("all");
+  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto">("all");
 
   useEffect(() => {
     const adminId = localStorage.getItem("adminId");
@@ -218,9 +218,11 @@ export default function AdminDirectPayments() {
               {([
                 { key: "all",    label: "전체",       emoji: "📋", activeBg: "#374151", inactiveBg: "#f3f4f6", activeText: "white", inactiveText: "#374151" },
                 { key: "free",   label: "재물운무료",  emoji: "🎁", activeBg: "#f59e0b", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#92400e" },
-                { key: "jigun",  label: "직운무료",   emoji: "💼", activeBg: "#7c3aed", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#6d28d9" },
+                { key: "jigun",  label: "직운",       emoji: "💼", activeBg: "#7c3aed", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#6d28d9" },
                 { key: "resume", label: "합격자소서",  emoji: "📄", activeBg: "#2563eb", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#1d4ed8" },
-              ] as { key: "all"|"free"|"jigun"|"resume"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
+                { key: "mbti",   label: "MBTI",       emoji: "🔮", activeBg: "#a855f7", inactiveBg: "#f3e8ff", activeText: "white", inactiveText: "#7c3aed" },
+                { key: "lotto",  label: "행운번호",   emoji: "🎱", activeBg: "#d97706", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#92400e" },
+              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.source ?? "free") === f.key).length;
                 const active = sourceFilter === f.key;
                 return (
@@ -255,11 +257,11 @@ export default function AdminDirectPayments() {
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.email || "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
                         <span style={{
-                          background: lead.source === "jigun" ? "#ede9fe" : lead.source === "resume" ? "#dbeafe" : "#fef3c7",
-                          color: lead.source === "jigun" ? "#6d28d9" : lead.source === "resume" ? "#1d4ed8" : "#92400e",
+                          background: lead.source === "jigun" ? "#ede9fe" : lead.source === "resume" ? "#dbeafe" : lead.source === "mbti" ? "#f3e8ff" : lead.source === "lotto" ? "#fef3c7" : "#fef3c7",
+                          color: lead.source === "jigun" ? "#6d28d9" : lead.source === "resume" ? "#1d4ed8" : lead.source === "mbti" ? "#7c3aed" : lead.source === "lotto" ? "#d97706" : "#92400e",
                           padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700
                         }}>
-                          {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : "🎁재물운"}
+                          {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : lead.source === "mbti" ? "🔮MBTI" : lead.source === "lotto" ? "🎱행운번호" : "🎁재물운"}
                         </span>
                       </td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.birthYear ? `${lead.birthYear}년` : "-"}</td>
