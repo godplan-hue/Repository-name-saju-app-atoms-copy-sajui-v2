@@ -118,7 +118,7 @@ export default function HaemongPage() {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "16px 14px 80px" }}>
 
         {/* 크몽·탈잉 신뢰 문구 */}
-        <p style={{ textAlign: "center", fontSize: 12, color: "#16a34a", fontWeight: 900, marginBottom: 14, letterSpacing: "0.02em" }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "#ffffff", fontWeight: 900, marginBottom: 14, letterSpacing: "0.02em", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>
           🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
         </p>
 
