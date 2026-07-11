@@ -87,10 +87,6 @@ export default function AppsPage() {
           ))}
         </div>
 
-        {/* 하단 안내 */}
-        <div style={{ marginTop: 24, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", lineHeight: 1.8 }}>
-          AI상담 · 감정일기 · 가계부 등 곧 추가됩니다 🔮
-        </div>
       </div>
     </div>
   );
