@@ -224,7 +224,7 @@ export default function DietPage() {
       </nav>
 
       <div style={{ maxWidth: 440, margin: "0 auto", padding: "20px 16px 110px" }}>
-        <p style={{ textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", marginBottom: 14, lineHeight: 1.6 }}>
+        <p style={{ textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.55)", marginBottom: 14, lineHeight: 1.6 }}>
           🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
         </p>
 
