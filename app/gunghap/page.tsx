@@ -260,32 +260,6 @@ export default function GunghapPage() {
         <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>
           기본 결과 무료 · 상세 분석 ₩990
         </p>
-
-      {/* 회사정보 */}
-      <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
-        <div style={{ maxWidth: 380, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)" }}>
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 · Powered by 점운</p>
-          <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 10.5, lineHeight: 1.8, marginBottom: 12 }}>
-            <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
-            <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
-            <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
-            <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
-            <p style={{ margin: 0 }}>대표전화 010-2106-2689 · 유선 031-585-7255</p>
-            <p style={{ margin: "2px 0 0", color: "#f87171", fontWeight: 900 }}>※ 전화 문의는 받지 않습니다. 카카오톡으로 문의해 주세요.</p>
-          </div>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, justifyContent: "center", marginBottom: 10 }}>
-            <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "6px 16px", background: "#FEE500", color: "#1a1a1a", borderRadius: 20, textDecoration: "none", fontWeight: 800, fontSize: 11 }}>💬 카카오톡 문의</a>
-            <a href="mailto:info@jeomun.com?subject=점운 문의" style={{ display: "inline-block", padding: "6px 16px", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 20, color: "rgba(255,255,255,0.6)", textDecoration: "none", fontWeight: 800, fontSize: 11 }}>📧 이메일 문의</a>
-          </div>
-          <div style={{ fontSize: 11 }}>
-            <a href="/terms" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>이용약관</a>
-            <span style={{ color: "rgba(255,255,255,0.2)", margin: "0 8px" }}>|</span>
-            <a href="/privacy" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>개인정보처리방침</a>
-            <span style={{ color: "rgba(255,255,255,0.2)", margin: "0 8px" }}>|</span>
-            <a href="/refund" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none" }}>환불정책</a>
-          </div>
-        </div>
-      </footer>
       </div>
     </div>
   );
