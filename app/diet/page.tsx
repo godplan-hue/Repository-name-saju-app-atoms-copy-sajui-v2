@@ -1,0 +1,379 @@
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { FOODS, OH_DIET, getOhFromYear, type Food } from "@/lib/foodDb";
+
+type Meal = { id: string; name: string; cal: number; unit: string; time: string };
+type DayLog = { meals: Meal[]; totalCal: number; updatedAt?: number };
+
+const today = () => new Date().toISOString().slice(0, 10);
+
+export default function DietPage() {
+  const [view, setView] = useState<"today" | "search" | "history">("today");
+  const [setupDone, setSetupDone] = useState(false);
+  const [birthYear, setBirthYear] = useState("");
+  const [phone, setPhone] = useState("");
+  const [hasPhone, setHasPhone] = useState(false);
+  const [mcUserId, setMcUserId] = useState("");
+  const [meals, setMeals] = useState<Meal[]>([]);
+  const [historyData, setHistoryData] = useState<Record<string, DayLog>>({});
+  const [searchQ, setSearchQ] = useState("");
+  const [customName, setCustomName] = useState("");
+  const [customCal, setCustomCal] = useState("");
+
+  useEffect(() => {
+    // 기존 사주 프로필에서 생년월일·전화번호 자동 로드
+    let uid = "";
+    let yr = "";
+    let ph = "";
+    try {
+      const saved = localStorage.getItem("v2_saved_profile");
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p.birthYear) yr = String(p.birthYear);
+        if (p.phone) { ph = p.phone; setHasPhone(true); uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+      }
+    } catch {}
+    if (!uid) {
+      setHasPhone(false);
+      let devId = localStorage.getItem("diet_device_id");
+      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("diet_device_id", devId); }
+      uid = `device_${devId}`;
+    }
+    setMcUserId(uid);
+    setBirthYear(yr);
+    setPhone(ph);
+    if (yr) setSetupDone(true);
+
+    // localStorage에서 오늘 기록 로드
+    const todayKey = today();
+    const stored = localStorage.getItem(`diet_meals_${todayKey}`);
+    if (stored) setMeals(JSON.parse(stored));
+
+    // Firebase 동기화
+    if (uid) {
+      fetch(`/api/diet?userId=${uid}`)
+        .then(r => r.json())
+        .then(d => {
+          if (d.data && typeof d.data === "object") {
+            setHistoryData(d.data);
+            if (d.data[todayKey]?.meals) {
+              setMeals(d.data[todayKey].meals);
+              localStorage.setItem(`diet_meals_${todayKey}`, JSON.stringify(d.data[todayKey].meals));
+            }
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  function saveToday(m: Meal[]) {
+    const todayKey = today();
+    setMeals(m);
+    localStorage.setItem(`diet_meals_${todayKey}`, JSON.stringify(m));
+    if (mcUserId) {
+      const totalCal = m.reduce((s, x) => s + x.cal, 0);
+      fetch("/api/diet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: mcUserId, date: todayKey, meals: m, totalCal }),
+      }).catch(() => {});
+    }
+  }
+
+  function addMeal(food: Pick<Food, "name" | "cal" | "unit">) {
+    const m: Meal = {
+      id: Date.now().toString(),
+      name: food.name, cal: food.cal, unit: food.unit,
+      time: new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }),
+    };
+    saveToday([...meals, m]);
+    setView("today");
+    setSearchQ("");
+  }
+
+  function addCustom() {
+    const cal = parseInt(customCal);
+    if (!customName || !cal) return;
+    addMeal({ name: customName, cal, unit: "직접 입력" });
+    setCustomName(""); setCustomCal("");
+  }
+
+  function removeMeal(id: string) { saveToday(meals.filter(m => m.id !== id)); }
+
+  function saveSetup() {
+    const yr = parseInt(birthYear);
+    if (!yr || yr < 1940 || yr > 2015) { alert("올바른 출생연도를 입력해주세요 (1940~2015)"); return; }
+    try {
+      const existing = localStorage.getItem("v2_saved_profile");
+      const profile = existing ? JSON.parse(existing) : {};
+      profile.birthYear = yr;
+      if (phone) profile.phone = phone;
+      localStorage.setItem("v2_saved_profile", JSON.stringify(profile));
+    } catch {}
+    if (phone) {
+      const uid = `phone_${phone.replace(/\D/g, "")}`;
+      setMcUserId(uid);
+      setHasPhone(true);
+    }
+    setSetupDone(true);
+  }
+
+  const yr = parseInt(birthYear) || 1990;
+  const oh = getOhFromYear(yr);
+  const ohData = OH_DIET[oh];
+  const target = ohData?.kcal || 1700;
+  const totalCal = meals.reduce((s, m) => s + m.cal, 0);
+  const ratio = Math.min(100, Math.round((totalCal / target) * 100));
+
+  const searchResults: Food[] = searchQ.length >= 1
+    ? FOODS.filter(f => f.name.includes(searchQ)).slice(0, 30)
+    : [];
+
+  // 셋업 화면
+  if (!setupDone) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#052e16", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
+        <nav style={{ background: "rgba(0,0,0,0.3)", borderBottom: "1px solid rgba(255,255,255,0.1)", padding: "14px 20px" }}>
+          <Link href="/" style={{ fontSize: 18, fontWeight: 900, color: "#4ade80", textDecoration: "none" }}>점운 다이어트</Link>
+        </nav>
+        <div style={{ maxWidth: 420, margin: "0 auto", padding: "48px 20px" }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <div style={{ fontSize: 64, marginBottom: 14 }}>🥗</div>
+            <h1 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px" }}>점운 다이어트</h1>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.6 }}>
+              오행 체질에 맞는 맞춤 칼로리 관리<br />바코드·AI 없이 완전 무료
+            </p>
+          </div>
+
+          <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 16, padding: "20px", marginBottom: 14 }}>
+            <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 8 }}>출생연도 * (오행 체질 분석용)</label>
+            <input
+              type="number" value={birthYear} onChange={e => setBirthYear(e.target.value)}
+              placeholder="예: 1992" min="1940" max="2015"
+              style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 18, color: "white", fontWeight: 700, outline: "none", boxSizing: "border-box" }}
+            />
+          </div>
+
+          <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 16, padding: "20px", marginBottom: 8 }}>
+            <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 8 }}>전화번호 * (기록 영구보관 필수)</label>
+            <input
+              type="tel" value={phone} onChange={e => setPhone(e.target.value)}
+              placeholder="010-0000-0000"
+              style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 16, color: "white", outline: "none", boxSizing: "border-box" }}
+            />
+          </div>
+          <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "10px 14px", marginBottom: 24, fontSize: 12, color: "#fbbf24", lineHeight: 1.6 }}>
+            ⚠️ 전화번호를 입력하지 않으면 기록이 이 기기에만 저장되고 영구 보관되지 않아요.
+          </div>
+
+          <button onClick={saveSetup} style={{ width: "100%", background: "#4ade80", color: "#052e16", border: "none", borderRadius: 14, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
+            오행 체질 분석 시작 →
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ minHeight: "100vh", background: ohData.bg, color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
+      <nav style={{ background: "rgba(0,0,0,0.35)", borderBottom: "1px solid rgba(255,255,255,0.1)", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Link href="/" style={{ fontSize: 17, fontWeight: 900, color: ohData.color, textDecoration: "none" }}>점운 다이어트</Link>
+        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>{today()}</span>
+      </nav>
+
+      <div style={{ maxWidth: 440, margin: "0 auto", padding: "20px 16px 110px" }}>
+
+        {/* 전화번호 없음 안내 */}
+        {!hasPhone && (
+          <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#92400e", lineHeight: 1.6 }}>
+            ⚠️ 전화번호 미등록 — 기록이 이 기기에만 저장돼요.<br />
+            <a href="/main-v2" style={{ color: "#f97316", fontWeight: 700, textDecoration: "none" }}>사주 앱에서 전화번호 등록하기 →</a>
+          </div>
+        )}
+
+        {/* 오행 체질 뱃지 */}
+        <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: 14, padding: "14px 18px", marginBottom: 18, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.45)" }}>내 오행 체질</p>
+            <p style={{ margin: "2px 0 0", fontSize: 15, fontWeight: 900, color: ohData.color }}>{ohData.emoji} {ohData.label} — {ohData.type}</p>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.45)" }}>일일 권장</p>
+            <p style={{ margin: "2px 0 0", fontSize: 18, fontWeight: 900, color: ohData.color }}>{ohData.kcal.toLocaleString()} kcal</p>
+          </div>
+        </div>
+
+        {/* ── 오늘 탭 ── */}
+        {view === "today" && (
+          <>
+            {/* 칼로리 진행 */}
+            <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 18, padding: "20px 18px", marginBottom: 18 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
+                <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>오늘 섭취 칼로리</span>
+                <span style={{ fontSize: 15, fontWeight: 900, color: ratio >= 100 ? "#f87171" : ohData.color }}>
+                  {totalCal.toLocaleString()} / {target.toLocaleString()} kcal
+                </span>
+              </div>
+              <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 99, height: 12, overflow: "hidden", marginBottom: 8 }}>
+                <div style={{ width: `${ratio}%`, height: "100%", background: ratio >= 100 ? "#f87171" : ohData.color, borderRadius: 99, transition: "width 0.4s ease" }} />
+              </div>
+              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.5)" }}>
+                {ratio < 80 ? `${(target - totalCal).toLocaleString()} kcal 더 섭취 가능해요` :
+                 ratio < 100 ? `목표까지 ${(target - totalCal).toLocaleString()} kcal 남았어요 💪` :
+                 `목표 초과 +${(totalCal - target).toLocaleString()} kcal ⚠️`}
+              </p>
+            </div>
+
+            {/* 오늘 음식 목록 */}
+            <div style={{ marginBottom: 16 }}>
+              {meals.length === 0 ? (
+                <div style={{ textAlign: "center", padding: "32px 0", color: "rgba(255,255,255,0.35)" }}>
+                  <div style={{ fontSize: 52, marginBottom: 8 }}>🍽️</div>
+                  <p style={{ margin: 0, fontSize: 14 }}>아직 기록한 음식이 없어요</p>
+                </div>
+              ) : meals.map(m => (
+                <div key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 4px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+                  <div>
+                    <p style={{ margin: 0, fontSize: 14, fontWeight: 700 }}>{m.name}</p>
+                    <p style={{ margin: "2px 0 0", fontSize: 12, color: "rgba(255,255,255,0.45)" }}>{m.unit} · {m.time}</p>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <span style={{ fontSize: 14, fontWeight: 900, color: ohData.color }}>{m.cal.toLocaleString()} kcal</span>
+                    <button onClick={() => removeMeal(m.id)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", cursor: "pointer", fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button onClick={() => setView("search")} style={{ width: "100%", background: ohData.color, color: ohData.bg, border: "none", borderRadius: 16, padding: "16px", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 16 }}>
+              + 음식 추가하기
+            </button>
+
+            {/* 오행 맞춤 식단 팁 */}
+            <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: "14px 16px" }}>
+              <p style={{ margin: "0 0 8px", fontSize: 12, color: "rgba(255,255,255,0.45)" }}>{ohData.emoji} {ohData.label} 맞춤 식단 가이드</p>
+              <p style={{ margin: "0 0 6px", fontSize: 13, lineHeight: 1.6 }}>✅ 잘 맞는 음식: <span style={{ color: ohData.color }}>{ohData.good.join(", ")}</span></p>
+              <p style={{ margin: "0 0 6px", fontSize: 13, lineHeight: 1.6 }}>⚠️ 줄여야 할 것: {ohData.avoid.join(", ")}</p>
+              <p style={{ margin: 0, fontSize: 13, color: ohData.color, lineHeight: 1.6 }}>💡 {ohData.tip}</p>
+            </div>
+          </>
+        )}
+
+        {/* ── 검색 탭 ── */}
+        {view === "search" && (
+          <>
+            <input
+              autoFocus
+              value={searchQ}
+              onChange={e => setSearchQ(e.target.value)}
+              placeholder="음식 이름 검색 (예: 삼겹살, 콜라, 사과)"
+              style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 14, padding: "14px 16px", fontSize: 15, color: "white", outline: "none", boxSizing: "border-box", marginBottom: 16 }}
+            />
+
+            {searchQ.length === 0 && (
+              <div style={{ marginBottom: 16 }}>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginBottom: 10 }}>자주 먹는 음식</p>
+                <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 8 }}>
+                  {["밥", "라면", "치킨", "커피", "과일", "빵", "계란", "김밥", "삼겹살"].map(k => (
+                    <button key={k} onClick={() => setSearchQ(k)} style={{ background: "rgba(255,255,255,0.08)", border: "none", borderRadius: 20, padding: "7px 14px", color: "rgba(255,255,255,0.75)", cursor: "pointer", fontSize: 13 }}>{k}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {searchResults.length > 0 && (
+              <div style={{ marginBottom: 16 }}>
+                {searchResults.map((f, i) => (
+                  <button key={i} onClick={() => addMeal(f)} style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "none", borderRadius: 12, padding: "12px 16px", marginBottom: 6, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", textAlign: "left" }}>
+                    <div>
+                      <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "white" }}>{f.name}</p>
+                      <p style={{ margin: "2px 0 0", fontSize: 12, color: "rgba(255,255,255,0.45)" }}>{f.unit} · {f.cat}</p>
+                    </div>
+                    <span style={{ fontSize: 15, fontWeight: 900, color: ohData.color, flexShrink: 0, marginLeft: 10 }}>{f.cal} kcal</span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {searchQ.length > 0 && searchResults.length === 0 && (
+              <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, textAlign: "center", padding: "16px 0" }}>"{searchQ}" 검색 결과 없음</p>
+            )}
+
+            {/* 직접 입력 */}
+            <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: "16px", marginTop: 8 }}>
+              <p style={{ margin: "0 0 12px", fontSize: 13, color: "rgba(255,255,255,0.55)" }}>DB에 없으면 직접 입력</p>
+              <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+                <input value={customName} onChange={e => setCustomName(e.target.value)} placeholder="음식 이름" style={{ flex: 2, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "10px 12px", fontSize: 14, color: "white", outline: "none" }} />
+                <input value={customCal} onChange={e => setCustomCal(e.target.value)} placeholder="kcal" type="number" style={{ flex: 1, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "10px 12px", fontSize: 14, color: "white", outline: "none" }} />
+              </div>
+              <button onClick={addCustom} disabled={!customName || !customCal} style={{ width: "100%", background: customName && customCal ? ohData.color : "rgba(255,255,255,0.1)", color: customName && customCal ? ohData.bg : "rgba(255,255,255,0.4)", border: "none", borderRadius: 10, padding: "10px", fontSize: 14, fontWeight: 700, cursor: customName && customCal ? "pointer" : "default" }}>
+                추가하기
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* ── 기록 탭 ── */}
+        {view === "history" && (
+          <>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 16 }}>최근 30일 칼로리 기록</p>
+            {Object.keys(historyData).length === 0 ? (
+              <div style={{ textAlign: "center", padding: "40px 0", color: "rgba(255,255,255,0.35)" }}>
+                <div style={{ fontSize: 48, marginBottom: 8 }}>📊</div>
+                <p style={{ margin: 0, fontSize: 14 }}>아직 기록이 없어요</p>
+              </div>
+            ) : (
+              Object.entries(historyData)
+                .sort(([a], [b]) => b.localeCompare(a))
+                .slice(0, 30)
+                .map(([date, log]) => {
+                  const cal = log.totalCal || (log.meals || []).reduce((s, m) => s + m.cal, 0);
+                  const r = Math.min(100, Math.round((cal / target) * 100));
+                  return (
+                    <div key={date} style={{ background: "rgba(255,255,255,0.06)", borderRadius: 14, padding: "14px 16px", marginBottom: 10 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                        <span style={{ fontSize: 14, fontWeight: 700 }}>{date}</span>
+                        <span style={{ fontSize: 14, fontWeight: 900, color: r >= 100 ? "#f87171" : ohData.color }}>{cal.toLocaleString()} kcal</span>
+                      </div>
+                      <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 99, height: 6 }}>
+                        <div style={{ width: `${r}%`, height: "100%", background: r >= 100 ? "#f87171" : ohData.color, borderRadius: 99 }} />
+                      </div>
+                      <div style={{ marginTop: 6 }}>
+                        {(log.meals || []).slice(0, 3).map((m, i) => (
+                          <span key={i} style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginRight: 8 }}>{m.name} {m.cal}kcal</span>
+                        ))}
+                        {(log.meals || []).length > 3 && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>+{(log.meals || []).length - 3}개</span>}
+                      </div>
+                    </div>
+                  );
+                })
+            )}
+
+            {/* 사주 CTA */}
+            <div style={{ marginTop: 20, background: "rgba(255,255,255,0.05)", borderRadius: 16, padding: "18px", textAlign: "center" }}>
+              <p style={{ margin: "0 0 6px", fontSize: 13, color: "rgba(255,255,255,0.6)" }}>사주로 건강운 흐름 보기</p>
+              <Link href="/main-v2" style={{ display: "inline-block", background: ohData.color, color: ohData.bg, textDecoration: "none", borderRadius: 12, padding: "11px 24px", fontWeight: 900, fontSize: 13 }}>
+                990원으로 건강운 분석 →
+              </Link>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* 하단 탭바 */}
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(0,0,0,0.85)", backdropFilter: "blur(10px)", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex" }}>
+        {([
+          { key: "today", label: "오늘", emoji: "🍽️" },
+          { key: "search", label: "음식 검색", emoji: "🔍" },
+          { key: "history", label: "기록", emoji: "📊" },
+        ] as const).map(tab => (
+          <button key={tab.key} onClick={() => setView(tab.key)} style={{ flex: 1, background: "none", border: "none", color: view === tab.key ? ohData.color : "rgba(255,255,255,0.45)", cursor: "pointer", padding: "12px 0 18px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4, fontSize: 10, fontWeight: view === tab.key ? 900 : 400 }}>
+            <span style={{ fontSize: 22 }}>{tab.emoji}</span>
+            {tab.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
