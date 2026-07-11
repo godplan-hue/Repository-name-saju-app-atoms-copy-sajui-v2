@@ -67,7 +67,7 @@ export default function PartnerLanding() {
         <section style={{ padding: "50px 20px 30px", textAlign: "center" }}>
           <p style={{ color: "#fde68a", fontSize: 13, fontWeight: 900, margin: "0 0 14px", lineHeight: 1.7, letterSpacing: "0.02em" }}>
             🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />
-            <span style={{ color: "#f5f5f5", fontWeight: 700 }}>기획의신 에스더(Esther)가 직접 만들고 검증한 AI 사주 플랫폼</span>
+            <span style={{ color: "#f5f5f5", fontWeight: 700 }}>기획의신 에스더(Esther)가<br />직접 만들고 검증한 AI 사주 플랫폼</span>
           </p>
           <div style={{ marginBottom: 10 }}>
             {[0,1,2,3,4].map(i => (
