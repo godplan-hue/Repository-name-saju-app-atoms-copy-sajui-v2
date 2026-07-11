@@ -154,15 +154,15 @@ export default function LottoResultPage() {
               {data.birthYear}년 {data.birthMonth}월 {data.birthDay}일 기준
             </p>
 
-            {/* 메인 번호 공들 */}
-            <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" as const, marginBottom: 16 }}>
-              {showBalls && data.main.map((n, i) => <Ball key={n} n={n} size={54} delay={i * 120} />)}
-            </div>
-
-            {/* 보너스 */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
-              <span style={{ fontSize: 12, color: "#9ca3af" }}>보너스</span>
-              {showBalls && <Ball n={data.bonus} size={46} delay={data.main.length * 120} isBonus />}
+            {/* 번호 공 6개 한 줄 */}
+            <div style={{ display: "flex", gap: 8, justifyContent: "center", alignItems: "center", flexWrap: "nowrap" as const, marginBottom: 16 }}>
+              {showBalls && data.main.map((n, i) => <Ball key={n} n={n} size={46} delay={i * 120} />)}
+              {showBalls && (
+                <>
+                  <span style={{ fontSize: 14, color: "#6b7280", flexShrink: 0 }}>+</span>
+                  <Ball n={data.bonus} size={46} delay={data.main.length * 120} isBonus />
+                </>
+              )}
             </div>
 
             {/* 숫자 텍스트 */}
