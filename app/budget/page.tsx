@@ -187,7 +187,7 @@ export default function BudgetPage() {
             </div>
           </div>
           <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "10px 14px", marginBottom: 24, fontSize: 12, color: "#fbbf24", lineHeight: 1.6 }}>
-            ⚠️ 전화번호 필수 — 다른 기기에서 기록을 불러오려면 반드시 입력해주세요.
+            ⚠️ 전화번호 필수 —<br />다른 기기에서 기록을 불러오려면 반드시 입력해주세요.
           </div>
 
           <button onClick={saveBudgetSetup} style={{ width: "100%", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#0f172a", border: "none", borderRadius: 14, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
