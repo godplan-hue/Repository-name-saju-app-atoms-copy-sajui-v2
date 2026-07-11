@@ -155,12 +155,12 @@ export default function LottoResultPage() {
             </p>
 
             {/* 번호 공 한 줄 */}
-            <div style={{ display: "flex", justifyContent: "center", gap: 1, marginBottom: 16, padding: "0 2px", flexWrap: "nowrap" }}>
+            <div style={{ display: "flex", justifyContent: "center", gap: 1, marginBottom: 16, padding: "0 2px", flexWrap: "nowrap", overflowX: "auto" }}>
               {showBalls && data.main.map((n, i) => (
-                <Ball key={n} n={n} size={22} delay={i * 120} />
+                <Ball key={`m${i}`} n={n} size={16} delay={i * 120} />
               ))}
               {showBalls && (
-                <Ball n={data.bonus} size={22} delay={data.main.length * 120} isBonus />
+                <Ball n={data.bonus} size={16} delay={data.main.length * 120} isBonus />
               )}
             </div>
 
