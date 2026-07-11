@@ -28,7 +28,7 @@ const TOP_APPS = [
 const GRID_APPS = [
   { href: "/jigun",   emoji: "💼", label: "직운",    badge: "무료", color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)", img: "https://i.pinimg.com/736x/bc/7c/f6/bc7cf6c186ee2e763c4bd7230098eba3.jpg" },
   { href: "/resume",  emoji: "🎯", label: "합격",    badge: "무료", color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)", img: "https://i.pinimg.com/736x/7c/b2/22/7cb22262844ff11bc8c1800a309f0b99.jpg" },
-  { href: "/gunghap", emoji: "💑", label: "궁합",    badge: "무료", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)", img: "https://i.pinimg.com/vwebp/736x/11/68/2c/11682cfdc4b59a874924be812b96d028.webp" },
+  { href: "/gunghap", emoji: "💑", label: "궁합",    badge: "무료", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)", img: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg" },
   { href: "/mbti",    emoji: "🧠", label: "MBTI",    badge: "무료", color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)", img: "https://i.pinimg.com/1200x/aa/7a/e3/aa7ae3b66dc315f01fedf552b101f033.jpg" },
   { href: "/lotto",   emoji: "🍀", label: "행운번호", badge: "무료", color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)", img: "https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg" },
   { href: "/petun",   emoji: "🐾", label: "펫운",    badge: "무료", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)", img: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg" },
