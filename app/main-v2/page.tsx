@@ -232,7 +232,7 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/main-v2/daewoon",
     bg: "linear-gradient(135deg,#0c1445 0%,#1e3a8a 50%,#1e40af 100%)",
-    bgImg: "https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg",
+    bgImg: "https://i.pinimg.com/736x/61/23/32/6123327f7a74068e6633865707f6b8eb.jpg",
     badge: "⭐ 대운 — 10년 운의 흐름",
     badgeBg: "#1d4ed8",
     icon: "⭐",
@@ -246,12 +246,12 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/apps",
     bg: "linear-gradient(135deg,#0f0520 0%,#2d1b69 50%,#1a0533 100%)",
-    bgImg: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg",
+    bgImg: "https://i.pinimg.com/736x/45/8c/cc/458ccc4777dec685605f4cae0ae87336.jpg",
     badge: "✨ 점운 전체앱 14개",
     badgeBg: "#7c3aed",
     icon: "✨",
     tagline: "14개 앱 한 곳에서 전부",
-    desc: "꿈해몽·궁합·MBTI·타로·다이어트\n무료로 다 쓰세요",
+    desc: "꿈해몽·맘케어·직운·합격·궁합\nMBTI·행운번호·펫운·타로·별자리\n감정일기·다이어트·가계부·파트너",
     cta: "전체앱 보기 →",
     ctaColor: "#c4b5fd",
     route: "free" as const,
@@ -464,14 +464,14 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setCur(c => {
       return (c + 1) % displayBanners.length;
-    }), 4500);
+    }), 6500);
     setCur(next);
   };
 
   useEffect(() => {
     timerRef.current = setInterval(() => setCur(c => {
       return (c + 1) % displayBanners.length;
-    }), 4500);
+    }), 6500);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [displayBanners.length]);
 
