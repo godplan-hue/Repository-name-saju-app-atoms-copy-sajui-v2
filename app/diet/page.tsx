@@ -80,10 +80,11 @@ export default function DietPage() {
 
   function saveToday(m: Meal[]) {
     const todayKey = today();
+    const totalCal = m.reduce((s, x) => s + x.cal, 0);
     setMeals(m);
+    setHistoryData(prev => ({ ...prev, [todayKey]: { meals: m, totalCal } }));
     localStorage.setItem(`diet_meals_${todayKey}`, JSON.stringify(m));
     if (mcUserId) {
-      const totalCal = m.reduce((s, x) => s + x.cal, 0);
       fetch("/api/diet", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -146,7 +147,7 @@ export default function DietPage() {
   const ratio = Math.min(100, Math.round((totalCal / target) * 100));
 
   const searchResults: Food[] = searchQ.length >= 1
-    ? FOODS.filter(f => f.name.includes(searchQ)).slice(0, 30)
+    ? FOODS.filter(f => f.name.includes(searchQ) || f.cat.includes(searchQ)).slice(0, 30)
     : [];
 
   // 셋업 화면
@@ -286,7 +287,7 @@ export default function DietPage() {
               ))}
             </div>
 
-            <button onClick={() => setView("search")} style={{ width: "100%", background: ohData.color, color: ohData.bg, border: "none", borderRadius: 16, padding: "16px", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 16 }}>
+            <button onClick={() => setView("search")} style={{ width: "100%", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", border: "none", borderRadius: 16, padding: "16px", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 16, boxShadow: "0 4px 16px rgba(99,102,241,0.35)" }}>
               + 음식 추가하기
             </button>
 
