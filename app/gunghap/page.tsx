@@ -122,16 +122,16 @@ export default function GunghapPage() {
         {/* 기능 설명 */}
         <div style={{ maxWidth: 440, margin: "0 auto", padding: "32px 24px" }}>
           {[
-            { icon: "🔮", title: "오행 궁합 점수", desc: "사주 오행으로 계산한 진짜 궁합 점수를 알려드려요" },
-            { icon: "💬", title: "연애 패턴 분석", desc: "두 사람의 연애 방식과 갈등 패턴을 정확히 짚어줘요" },
-            { icon: "🃏", title: "인연 타로 뽑기", desc: "오늘 두 사람의 인연을 타로 카드로 확인해보세요" },
-            { icon: "💍", title: "결혼 궁합 체크", desc: "함께 살면 어떨지 결혼 궁합도 살펴드려요" },
+            { icon: "🔮", title: "오행 궁합 점수", desc: "사주 오행으로 계산한\n진짜 궁합 점수를 알려드려요" },
+            { icon: "💬", title: "연애 패턴 분석", desc: "두 사람의 연애 방식과\n갈등 패턴을 정확히 짚어줘요" },
+            { icon: "🃏", title: "인연 타로 뽑기", desc: "오늘 두 사람의 인연을\n타로 카드로 확인해보세요" },
+            { icon: "💍", title: "결혼 궁합 체크", desc: "함께 살면 어떨지\n결혼 궁합도 살펴드려요" },
           ].map(f => (
             <div key={f.title} style={{ display: "flex", gap: 16, marginBottom: 20, alignItems: "flex-start" }}>
               <span style={{ fontSize: 28, flexShrink: 0 }}>{f.icon}</span>
               <div>
                 <p style={{ fontWeight: 700, margin: "0 0 4px", fontSize: 15 }}>{f.title}</p>
-                <p style={{ color: "#9ca3af", fontSize: 13, margin: 0, lineHeight: 1.5 }}>{f.desc}</p>
+                <p style={{ color: "#9ca3af", fontSize: 13, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" }}>{f.desc}</p>
               </div>
             </div>
           ))}
