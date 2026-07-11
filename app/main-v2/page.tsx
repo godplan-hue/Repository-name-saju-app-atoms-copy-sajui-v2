@@ -285,12 +285,12 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                 <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#22c55e", padding: "4px 12px", borderRadius: 20 }}>전체보기 →</span>
               </div>
             </a>
-            <a href="/main-v2/result" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd", textDecoration: "none" }}>
+            <a href="/main-v2/payment" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd", textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
-                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🔮 사주 전체보기</span>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>💳 전체 운세 패키지 보기</span>
               </div>
               <div style={{ background: "#f5f3ff", padding: "10px 12px", textAlign: "center" }}>
-                <p style={{ fontSize: 11, color: "#5b21b6", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>내 운세 결과지<br />전체 확인하기</p>
+                <p style={{ fontSize: 11, color: "#5b21b6", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>운세 패키지<br />전체 확인하기</p>
                 <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "4px 12px", borderRadius: 20 }}>바로보기 →</span>
               </div>
             </a>
@@ -823,16 +823,6 @@ export default function MainV2() {
 
       {/* 연결 앱 3개 배너 */}
 
-      {/* 전체 운세 바로가기 */}
-      {!isPartner && (
-        <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
-          <button
-            onClick={() => router.push("/main-v2/payment")}
-            style={{ width: "100%", padding: "12px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.35)", letterSpacing: "-0.1px" }}>
-            💳 전체 운세 패키지 보기
-          </button>
-        </div>
-      )}
 
 
       {/* 운세 선택 — 9개 박스 그리드(맨 앞 1개는 무료체험, 나머지 8개는 VIP 패키지의
