@@ -116,7 +116,8 @@ export async function POST(req: NextRequest) {
       createdAt: Date.now(),
     };
 
-    const ref = await db.ref("gamjung_analyses").push(result);
+    const ref = db.ref("gamjung_analyses").push();
+    await ref.set(result);
     return NextResponse.json({ id: ref.key, result });
   } catch (e) {
     console.error(e);
