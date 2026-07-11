@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://i.pinimg.com/736x/ad/4f/81/ad4f818060ce83163cf71e9574538c68.jpg",
+        url: "https://i.pinimg.com/736x/7c/b2/22/7cb22262844ff11bc8c1800a309f0b99.jpg",
         width: 1200,
         height: 630,
         alt: "점운 합격 — 합격 가능성 분석",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "🎯 점운 합격 — 사주로 보는 합격 가능성 분석",
     description: "내 사주로 합격 가능성과 면접 전략을 알아보세요",
-    images: ["https://i.pinimg.com/736x/ad/4f/81/ad4f818060ce83163cf71e9574538c68.jpg"],
+    images: ["https://i.pinimg.com/736x/7c/b2/22/7cb22262844ff11bc8c1800a309f0b99.jpg"],
   },
 };
 
