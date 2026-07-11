@@ -26,18 +26,18 @@ const TOP_APPS = [
 ];
 
 const GRID_APPS = [
-  { href: "/jigun",   emoji: "💼", label: "직운",    badge: "무료", color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)", img: "https://i.pinimg.com/736x/bc/7c/f6/bc7cf6c186ee2e763c4bd7230098eba3.jpg" },
-  { href: "/resume",  emoji: "🎯", label: "합격",    badge: "무료", color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)", img: "https://i.pinimg.com/736x/7c/b2/22/7cb22262844ff11bc8c1800a309f0b99.jpg" },
-  { href: "/gunghap", emoji: "💑", label: "궁합",    badge: "무료", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)", img: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg" },
-  { href: "/mbti",    emoji: "🧠", label: "MBTI",    badge: "무료", color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)", img: "https://i.pinimg.com/1200x/aa/7a/e3/aa7ae3b66dc315f01fedf552b101f033.jpg" },
-  { href: "/lotto",   emoji: "🍀", label: "행운번호", badge: "무료", color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)", img: "https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg" },
-  { href: "/petun",   emoji: "🐾", label: "펫운",    badge: "무료", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)", img: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg" },
-  { href: "/tarot",   emoji: "🃏", label: "타로",    badge: "무료", color: "#7e22ce", bg: "linear-gradient(145deg,#f3e8ff,#d8b4fe)", img: "https://i.pinimg.com/1200x/0c/27/99/0c27999149b93230b696dce0918a4e8e.jpg" },
-  { href: "/zodiac",  emoji: "⭐", label: "별자리",  badge: "무료", color: "#1d4ed8", bg: "linear-gradient(145deg,#eff6ff,#93c5fd)", img: "https://i.pinimg.com/736x/3a/36/30/3a3630aa53fc14c5076ab4851d783b6e.jpg" },
-  { href: "/gamjung", emoji: "📔", label: "감정일기", badge: "무료", color: "#be185d", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)", img: "https://i.pinimg.com/736x/7e/ad/71/7ead71fd8ff5c3d3d57abab4b5b01347.jpg" },
-  { href: "/diet",    emoji: "🥗", label: "다이어트", badge: "무료", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)", img: "https://i.pinimg.com/1200x/f1/11/77/f11177335015269c22af426b13f423bc.jpg" },
-  { href: "/budget",  emoji: "💰", label: "가계부",  badge: "무료", color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)", img: "https://i.pinimg.com/736x/73/84/95/738495640e6c2d69d0632c59be89818f.jpg" },
-  { href: "/partner", emoji: "🤝", label: "파트너",  badge: "신청", color: "#a21caf", bg: "linear-gradient(145deg,#fdf4ff,#f0abfc)", img: "https://i.pinimg.com/736x/6f/69/94/6f699457d35927bd3ea33cb6f789dd6e.jpg" },
+  { href: "/jigun",   emoji: "💼", label: "직운",    sub: "AI 진로 · 부업 추천",   desc: "오행 천직 + 부업 TOP3",       badge: "무료", color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)", img: "https://i.pinimg.com/736x/bc/7c/f6/bc7cf6c186ee2e763c4bd7230098eba3.jpg" },
+  { href: "/resume",  emoji: "🎯", label: "합격",    sub: "합격운 · 자소서 분석",  desc: "직무별 합격 전략 + 면접 질문", badge: "무료", color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)", img: "https://i.pinimg.com/736x/7c/b2/22/7cb22262844ff11bc8c1800a309f0b99.jpg" },
+  { href: "/gunghap", emoji: "💑", label: "궁합",    sub: "두 사람의 오행 궁합",   desc: "연애 패턴 · 갈등 · 조언",     badge: "무료", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)", img: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg" },
+  { href: "/mbti",    emoji: "🧠", label: "MBTI",    sub: "오행 기질 분석",         desc: "16가지 유형 전부 무료",        badge: "무료", color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)", img: "https://i.pinimg.com/1200x/aa/7a/e3/aa7ae3b66dc315f01fedf552b101f033.jpg" },
+  { href: "/lotto",   emoji: "🍀", label: "행운번호", sub: "오행 행운번호 6개",     desc: "생년월일 기반 행운 번호",      badge: "무료", color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)", img: "https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg" },
+  { href: "/petun",   emoji: "🐾", label: "펫운",    sub: "반려동물 운세 · 궁합",  desc: "음식 안전도 · 오늘 뽑기",     badge: "무료", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)", img: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg" },
+  { href: "/tarot",   emoji: "🃏", label: "타로",    sub: "AI 타로카드 해석",       desc: "연애 · 직업 · 재물 상담",     badge: "무료", color: "#7e22ce", bg: "linear-gradient(145deg,#f3e8ff,#d8b4fe)", img: "https://i.pinimg.com/1200x/0c/27/99/0c27999149b93230b696dce0918a4e8e.jpg" },
+  { href: "/zodiac",  emoji: "⭐", label: "별자리",  sub: "12별자리 오늘 운세",     desc: "궁합 · 월별 · 오행 분석",     badge: "무료", color: "#1d4ed8", bg: "linear-gradient(145deg,#eff6ff,#93c5fd)", img: "https://i.pinimg.com/736x/3a/36/30/3a3630aa53fc14c5076ab4851d783b6e.jpg" },
+  { href: "/gamjung", emoji: "📔", label: "감정일기", sub: "감정 기록 · 치유 일기", desc: "오행 감정 흐름 분석",          badge: "무료", color: "#be185d", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)", img: "https://i.pinimg.com/736x/7e/ad/71/7ead71fd8ff5c3d3d57abab4b5b01347.jpg" },
+  { href: "/diet",    emoji: "🥗", label: "다이어트", sub: "오행 체질 식단 추천",   desc: "칼로리 계산 + 맞춤 음식",     badge: "무료", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)", img: "https://i.pinimg.com/1200x/f1/11/77/f11177335015269c22af426b13f423bc.jpg" },
+  { href: "/budget",  emoji: "💰", label: "가계부",  sub: "일기식 재물 기록",       desc: "지출 · 수입 · 재물운 연결",   badge: "무료", color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)", img: "https://i.pinimg.com/736x/73/84/95/738495640e6c2d69d0632c59be89818f.jpg" },
+  { href: "/partner", emoji: "🤝", label: "파트너",  sub: "내 브랜드로 판매",       desc: "탈잉 · 크몽 · SNS 판매 OK",  badge: "신청", color: "#a21caf", bg: "linear-gradient(145deg,#fdf4ff,#f0abfc)", img: "https://i.pinimg.com/736x/6f/69/94/6f699457d35927bd3ea33cb6f789dd6e.jpg" },
 ];
 
 export default function AppsPage() {
@@ -62,7 +62,7 @@ export default function AppsPage() {
             >
               <img src={app.img} alt={app.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: app.overlay }} />
-              <span style={{ position: "absolute", top: 10, left: 10, background: app.badgeBg, color: "#fff", fontSize: 9, fontWeight: 900, padding: "3px 8px", borderRadius: 20 }}>{app.badge}</span>
+              <span style={{ position: "absolute", top: 10, right: 10, background: app.badgeBg, color: "#fff", fontSize: 9, fontWeight: 900, padding: "3px 8px", borderRadius: 20 }}>{app.badge}</span>
               <div style={{ position: "absolute", bottom: 12, left: 12, right: 12 }}>
                 <div style={{ fontSize: 16, fontWeight: 900, color: "#fff", marginBottom: 2 }}>{app.title}</div>
                 <div style={{ fontSize: 10, color: "rgba(255,255,255,0.8)", marginBottom: 1 }}>{app.sub}</div>
@@ -85,9 +85,11 @@ export default function AppsPage() {
                   <img src={app.img} alt={app.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 100%)" }} />
                   <span style={{ position: "absolute", top: 10, right: 10, background: "rgba(0,0,0,0.55)", color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{app.badge}</span>
-                  <div style={{ position: "absolute", bottom: 14, left: 0, right: 0, textAlign: "center" }}>
-                    <div style={{ fontSize: 28, marginBottom: 4 }}>{app.emoji}</div>
-                    <div style={{ fontSize: 15, fontWeight: 900, color: "#fff" }}>{app.label}</div>
+                  <div style={{ position: "absolute", bottom: 12, left: 6, right: 6, textAlign: "center" }}>
+                    <div style={{ fontSize: 24, marginBottom: 3 }}>{app.emoji}</div>
+                    <div style={{ fontSize: 14, fontWeight: 900, color: "#fff", marginBottom: 2 }}>{app.label}</div>
+                    {"sub" in app && <div style={{ fontSize: 9, color: "rgba(255,255,255,0.75)", marginBottom: 1 }}>{(app as {sub:string}).sub}</div>}
+                    {"desc" in app && <div style={{ fontSize: 8, color: "rgba(255,255,255,0.5)" }}>{(app as {desc:string}).desc}</div>}
                   </div>
                 </>
               ) : (
