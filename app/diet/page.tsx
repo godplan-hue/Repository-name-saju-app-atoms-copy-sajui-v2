@@ -10,7 +10,14 @@ const today = () => new Date().toISOString().slice(0, 10);
 
 export default function DietPage() {
   const [view, setView] = useState<"today" | "search" | "history">("today");
-  const [setupDone, setSetupDone] = useState(false);
+  const [setupDone, setSetupDone] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      const saved = localStorage.getItem("v2_saved_profile");
+      if (saved) { const p = JSON.parse(saved); if (p.birthYear) return true; }
+    } catch {}
+    return false;
+  });
   const [birthYear, setBirthYear] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -145,9 +152,9 @@ export default function DietPage() {
   // 셋업 화면
   if (!setupDone) {
     return (
-      <div style={{ minHeight: "100vh", background: "#052e16", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#111827,#0f172a)", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
         <nav style={{ background: "rgba(0,0,0,0.3)", borderBottom: "1px solid rgba(255,255,255,0.1)", padding: "14px 20px" }}>
-          <Link href="/" style={{ fontSize: 18, fontWeight: 900, color: "#4ade80", textDecoration: "none" }}>점운 다이어트</Link>
+          <Link href="/" style={{ fontSize: 18, fontWeight: 900, color: "#a5b4fc", textDecoration: "none" }}>점운 다이어트</Link>
         </nav>
         <div style={{ maxWidth: 420, margin: "0 auto", padding: "48px 20px" }}>
           <div style={{ textAlign: "center", marginBottom: 36 }}>
@@ -197,7 +204,7 @@ export default function DietPage() {
             ⚠️ 전화번호 필수 — 입력하지 않으면 다른 기기에서 기록을 불러올 수 없어요.
           </div>
 
-          <button onClick={saveSetup} style={{ width: "100%", background: "#4ade80", color: "#052e16", border: "none", borderRadius: 14, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
+          <button onClick={saveSetup} style={{ width: "100%", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", border: "none", borderRadius: 14, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 16px rgba(99,102,241,0.4)" }}>
             오행 체질 분석 시작 →
           </button>
           <p style={{ textAlign: "center", fontSize: 11, color: "rgba(74,222,128,0.5)", marginTop: 12, lineHeight: 1.6, letterSpacing: "0.02em" }}>
@@ -384,11 +391,13 @@ export default function DietPage() {
             )}
 
             {/* 사주 CTA */}
-            <div style={{ marginTop: 20, background: "rgba(255,255,255,0.05)", borderRadius: 16, padding: "18px", textAlign: "center" }}>
-              <p style={{ margin: "0 0 6px", fontSize: 13, color: "rgba(255,255,255,0.6)" }}>사주로 건강운 흐름 보기</p>
-              <Link href="/main-v2" style={{ display: "inline-block", background: ohData.color, color: ohData.bg, textDecoration: "none", borderRadius: 12, padding: "11px 24px", fontWeight: 900, fontSize: 13 }}>
-                990원으로 건강운 분석 →
+            <div style={{ marginTop: 20, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: "20px 18px", textAlign: "center" }}>
+              <p style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 900, color: "#f3f4f6" }}>🔮 건강 체질이 걱정된다면?</p>
+              <p style={{ margin: "0 0 14px", fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>사주로 건강운 흐름을 분석하면<br />내 몸이 왜 이런지 답이 나와요.</p>
+              <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", textDecoration: "none", borderRadius: 14, padding: "13px", fontWeight: 900, fontSize: 14, boxShadow: "0 4px 16px rgba(99,102,241,0.4)" }}>
+                건강운 사주로 확인하기 — 990원 →
               </Link>
+              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", margin: "8px 0 0" }}>단 1회 결제 · 반복청구 없음</p>
             </div>
           </>
         )}

@@ -184,31 +184,31 @@ export const OH_DIET: Record<string, {
   avoid: string[]; good: string[]; tip: string;
 }> = {
   목: {
-    emoji: "🌿", color: "#4ade80", bg: "#052e16", label: "목(木)",
+    emoji: "🌿", color: "#4ade80", bg: "#0a1c0f", label: "목(木)",
     kcal: 1600, type: "채식 체질", desc: "식물성 식품이 잘 맞는 체질",
     avoid: ["기름진 음식", "튀김류", "술"], good: ["채소", "과일", "콩류", "견과류"],
     tip: "아침을 든든히, 저녁을 가볍게 드세요.",
   },
   화: {
-    emoji: "🔥", color: "#f97316", bg: "#431407", label: "화(火)",
+    emoji: "🔥", color: "#fb923c", bg: "#1c0800", label: "화(火)",
     kcal: 1800, type: "고단백 체질", desc: "단백질 섭취가 중요한 체질",
     avoid: ["자극적인 음식", "매운 음식", "카페인"], good: ["닭가슴살", "생선", "두부", "달걀"],
     tip: "규칙적인 식사 시간을 지키세요.",
   },
   토: {
-    emoji: "🌍", color: "#f59e0b", bg: "#451a03", label: "토(土)",
+    emoji: "🌍", color: "#fbbf24", bg: "#1a1000", label: "토(土)",
     kcal: 1700, type: "균형 체질", desc: "균형 잡힌 식단이 중요한 체질",
     avoid: ["밀가루", "단 음식", "야식"], good: ["잡곡밥", "뿌리채소", "호박", "감자"],
     tip: "천천히 씹어 먹는 습관이 중요해요.",
   },
   금: {
-    emoji: "⚡", color: "#e5e7eb", bg: "#1c1917", label: "금(金)",
+    emoji: "⚡", color: "#a5b4fc", bg: "#111827", label: "금(金)",
     kcal: 1650, type: "저탄 체질", desc: "탄수화물 조절이 필요한 체질",
     avoid: ["흰 쌀밥", "빵", "당류"], good: ["현미", "브로콜리", "닭고기", "어류"],
     tip: "물을 자주 마시고 식이섬유를 챙기세요.",
   },
   수: {
-    emoji: "💧", color: "#93c5fd", bg: "#0c1a35", label: "수(水)",
+    emoji: "💧", color: "#60a5fa", bg: "#070f2a", label: "수(水)",
     kcal: 1750, type: "항산화 체질", desc: "항산화 식품이 잘 맞는 체질",
     avoid: ["짠 음식", "가공식품", "야식"], good: ["등 푸른 생선", "블루베리", "해조류", "견과류"],
     tip: "저녁 7시 이후엔 가볍게 드세요.",
