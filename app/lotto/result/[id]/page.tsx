@@ -154,13 +154,20 @@ export default function LottoResultPage() {
               {data.birthYear}년 {data.birthMonth}월 {data.birthDay}일 기준
             </p>
 
-            {/* 번호 공 한 줄 */}
-            <div style={{ display: "flex", justifyContent: "center", gap: 1, marginBottom: 16, padding: "0 2px", flexWrap: "nowrap", overflowX: "auto" }}>
-              {showBalls && data.main.map((n, i) => (
-                <Ball key={`m${i}`} n={n} size={16} delay={i * 120} />
-              ))}
+            {/* 번호 공 한 줄 — 7칸 그리드로 항상 한 줄 보장 */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 3, marginBottom: 16, padding: "0 4px" }}>
+              {showBalls && data.main.map((n, i) => {
+                const c = n <= 10 ? { bg: "#fbbf24", t: "#78350f" } : n <= 20 ? { bg: "#60a5fa", t: "#1e3a8a" } : n <= 30 ? { bg: "#f97316", t: "#7c2d12" } : n <= 40 ? { bg: "#9ca3af", t: "#1f2937" } : { bg: "#4ade80", t: "#14532d" };
+                return (
+                  <div key={i} style={{ aspectRatio: "1/1", borderRadius: "50%", background: `radial-gradient(circle at 35% 35%,${c.bg}ff,${c.bg}99)`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 11, color: c.t, boxShadow: `0 2px 6px ${c.bg}66`, animation: `ballPop 0.6s cubic-bezier(0.34,1.56,0.64,1) ${i * 120}ms both` }}>
+                    {n}
+                  </div>
+                );
+              })}
               {showBalls && (
-                <Ball n={data.bonus} size={16} delay={data.main.length * 120} isBonus />
+                <div style={{ aspectRatio: "1/1", borderRadius: "50%", background: "radial-gradient(circle at 35% 35%,#c084fc,#7c3aed)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 11, color: "white", boxShadow: "0 2px 6px #7c3aed66", border: "2px solid #c084fc", animation: `ballPop 0.6s cubic-bezier(0.34,1.56,0.64,1) ${data.main.length * 120}ms both` }}>
+                  {data.bonus}
+                </div>
               )}
             </div>
 
