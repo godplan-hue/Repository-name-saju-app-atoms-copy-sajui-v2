@@ -14,7 +14,7 @@ const TOP_APPS = [
   },
   {
     href: "/momcare",
-    img: "https://i.pinimg.com/vwebp/1200x/50/73/a5/5073a503cb18b1cd3459fba8e402c389.webp",
+    img: "https://i.pinimg.com/736x/19/f1/9c/19f19c6326262bd03985e28c1c45226c.jpg",
     title: "👶 맘케어",
     sub: "AI 육아 · 아기 기록",
     desc: "일기 · 타임캡슐 · 아기말",
