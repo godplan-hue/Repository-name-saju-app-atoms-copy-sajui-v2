@@ -154,17 +154,13 @@ export default function LottoResultPage() {
               {data.birthYear}년 {data.birthMonth}월 {data.birthDay}일 기준
             </p>
 
-            {/* 번호 공 6개 한 줄 */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6, marginBottom: 16, padding: "0 8px" }}>
+            {/* 번호 공 한 줄 */}
+            <div style={{ display: "flex", justifyContent: "center", gap: 4, marginBottom: 16, padding: "0 4px" }}>
               {showBalls && data.main.map((n, i) => (
-                <div key={n} style={{ display: "flex", justifyContent: "center" }}>
-                  <Ball n={n} size={40} delay={i * 120} />
-                </div>
+                <Ball key={n} n={n} size={34} delay={i * 120} />
               ))}
               {showBalls && (
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <Ball n={data.bonus} size={40} delay={data.main.length * 120} isBonus />
-                </div>
+                <Ball n={data.bonus} size={34} delay={data.main.length * 120} isBonus />
               )}
             </div>
 

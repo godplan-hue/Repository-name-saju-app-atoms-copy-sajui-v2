@@ -3,7 +3,7 @@
 const TOP_APPS = [
   {
     href: "/haemong",
-    img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg",
+    img: "https://i.pinimg.com/1200x/ed/76/4d/ed764da4ef5dd4e2048939ac2e95dd6f.jpg",
     title: "🌙 꿈해몽",
     sub: "꿈의 의미를 오행으로",
     desc: "태몽 · 흉몽 · 길몽 전부 해석",
