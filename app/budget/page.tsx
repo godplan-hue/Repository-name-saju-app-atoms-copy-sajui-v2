@@ -372,7 +372,7 @@ export default function BudgetPage() {
         {/* ── 차트 탭 ── */}
         {view === "chart" && (
           <div>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 16 }}>카테고리별 지출 분석</p>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 16 }}>{currentMonth} 카테고리별 지출 분석</p>
             {Object.keys(catBreakdown).length === 0 ? (
               <div style={{ textAlign: "center", padding: "40px 0", color: "rgba(255,255,255,0.35)" }}>
                 <p style={{ margin: 0, fontSize: 14 }}>이번 달 지출 내역이 없어요</p>

@@ -224,6 +224,9 @@ export default function DietPage() {
       </nav>
 
       <div style={{ maxWidth: 440, margin: "0 auto", padding: "20px 16px 110px" }}>
+        <p style={{ textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", marginBottom: 14, lineHeight: 1.6 }}>
+          🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
+        </p>
 
         {/* 전화번호 없음 안내 */}
         {!hasPhone && (
@@ -287,8 +290,18 @@ export default function DietPage() {
               ))}
             </div>
 
-            <button onClick={() => setView("search")} style={{ width: "100%", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", border: "none", borderRadius: 16, padding: "16px", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 16, boxShadow: "0 4px 16px rgba(99,102,241,0.35)" }}>
+            <button onClick={() => setView("search")} style={{ width: "100%", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", border: "none", borderRadius: 16, padding: "16px", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 10, boxShadow: "0 4px 16px rgba(99,102,241,0.35)" }}>
               + 음식 추가하기
+            </button>
+            <button onClick={() => {
+              const text = `🥗 오늘 내 다이어트 기록\n${today()} — ${totalCal.toLocaleString()} kcal / ${target.toLocaleString()} kcal\n${meals.slice(0,4).map(m=>`• ${m.name} ${m.cal}kcal`).join("\n")}\n\n내 오행 체질로 맞춤 다이어트 👉 jeomun.com/diet`;
+              if (navigator.share) {
+                navigator.share({ title: "점운 다이어트", text }).catch(() => {});
+              } else {
+                navigator.clipboard.writeText(text).then(() => alert("복사됐어요! 원하는 곳에 붙여넣기 하세요.")).catch(() => {});
+              }
+            }} style={{ width: "100%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.75)", borderRadius: 16, padding: "13px", fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 16 }}>
+              📤 오늘 기록 공유하기
             </button>
 
             {/* 오행 맞춤 식단 팁 */}
