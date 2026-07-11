@@ -113,6 +113,9 @@ export default function GunghapPage() {
               지금 무료로 궁합 보기 →
             </button>
             <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>기본 결과 무료 · 상세 분석 990원</p>
+            <p style={{ textAlign: "center", fontSize: 11, color: "rgba(167,139,250,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
+              🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
+            </p>
           </div>
         </div>
 

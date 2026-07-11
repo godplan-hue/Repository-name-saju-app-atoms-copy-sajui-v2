@@ -170,6 +170,9 @@ export default function DietPage() {
           <button onClick={saveSetup} style={{ width: "100%", background: "#4ade80", color: "#052e16", border: "none", borderRadius: 14, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
             오행 체질 분석 시작 →
           </button>
+          <p style={{ textAlign: "center", fontSize: 11, color: "rgba(74,222,128,0.5)", marginTop: 12, lineHeight: 1.6, letterSpacing: "0.02em" }}>
+            🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
+          </p>
         </div>
       </div>
     );

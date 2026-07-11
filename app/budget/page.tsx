@@ -134,6 +134,11 @@ export default function BudgetPage() {
           </div>
         )}
 
+        {/* 크몽·탈잉 신뢰 뱃지 */}
+        <p style={{ textAlign: "center", fontSize: 11, color: "rgba(251,191,36,0.45)", marginBottom: 16, lineHeight: 1.6, letterSpacing: "0.02em" }}>
+          🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
+        </p>
+
         {/* 이번 달 요약 */}
         <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 18, padding: "18px", marginBottom: 20 }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, textAlign: "center" }}>

@@ -1191,6 +1191,43 @@ export default function MainV2() {
         );
       })()}
 
+      {/* ── 회사 정보 푸터 ── */}
+      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.07)", marginTop: 40, padding: "32px 20px 48px", textAlign: "center", color: "rgba(255,255,255,0.35)", fontSize: 11, lineHeight: 2 }}>
+        <p style={{ fontSize: 20, marginBottom: 4 }}>🐱</p>
+        <p style={{ fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)", marginBottom: 2 }}>점운</p>
+        <p style={{ marginBottom: 12 }}>© 2026 점운 · AI 동양 사주 분석 플랫폼</p>
+
+        <p style={{ marginBottom: 2 }}>대표: 장문정 &nbsp;·&nbsp; 상호: 기획의신</p>
+        <p style={{ marginBottom: 2 }}>사업자등록번호 773-60-00359</p>
+        <p style={{ marginBottom: 2 }}>통신판매업신고 제2020-서울강남-01681호</p>
+        <p style={{ marginBottom: 2 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
+        <p style={{ marginBottom: 2 }}>대표전화 010-2106-2689 &nbsp;·&nbsp; 유선 031-585-7255</p>
+        <p style={{ marginBottom: 16, color: "rgba(255,200,100,0.5)", fontSize: 11 }}>※ 전화 문의는 받지 않습니다. 카카오톡으로 문의해 주세요.</p>
+
+        <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 16, flexWrap: "wrap" as const }}>
+          <a href="http://pf.kakao.com/_jeomun/chat" target="_blank" rel="noopener noreferrer"
+            style={{ padding: "8px 18px", background: "#fee500", color: "#1a1a1a", borderRadius: 20, fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
+            💬 카카오톡 문의
+          </a>
+          <a href="mailto:junga6783@gmail.com"
+            style={{ padding: "8px 18px", background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.6)", borderRadius: 20, fontSize: 12, fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.12)" }}>
+            ✉️ 이메일 문의
+          </a>
+        </div>
+
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 16, flexWrap: "wrap" as const }}>
+          <a href="/terms" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none", fontSize: 11 }}>이용약관</a>
+          <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+          <a href="/privacy" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none", fontSize: 11 }}>개인정보처리방침</a>
+          <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+          <a href="/refund" style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none", fontSize: 11 }}>환불정책</a>
+        </div>
+
+        <a href="/partner" style={{ display: "inline-block", padding: "10px 20px", background: "linear-gradient(135deg, rgba(124,58,237,0.25), rgba(236,72,153,0.25))", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 20, color: "#c4b5fd", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
+          사주 사업을 하고 계신가요? 파트너 모집 안내 →
+        </a>
+      </footer>
+
     </main>
   );
 }
