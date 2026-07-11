@@ -155,14 +155,9 @@ export default function LottoResultPage() {
             </p>
 
             {/* 번호 공 6개 한 줄 */}
-            <div style={{ display: "flex", gap: 8, justifyContent: "center", alignItems: "center", flexWrap: "nowrap" as const, marginBottom: 16 }}>
-              {showBalls && data.main.map((n, i) => <Ball key={n} n={n} size={46} delay={i * 120} />)}
-              {showBalls && (
-                <>
-                  <span style={{ fontSize: 14, color: "#6b7280", flexShrink: 0 }}>+</span>
-                  <Ball n={data.bonus} size={46} delay={data.main.length * 120} isBonus />
-                </>
-              )}
+            <div style={{ display: "flex", gap: 6, justifyContent: "center", alignItems: "center", flexWrap: "nowrap" as const, marginBottom: 16, padding: "0 4px" }}>
+              {showBalls && data.main.map((n, i) => <Ball key={n} n={n} size={40} delay={i * 120} />)}
+              {showBalls && <Ball n={data.bonus} size={40} delay={data.main.length * 120} isBonus />}
             </div>
 
             {/* 숫자 텍스트 */}
