@@ -72,17 +72,17 @@ export default function AppsPage() {
           ))}
         </div>
 
-        {/* 하단 4×3 그리드 */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+        {/* 하단 2×6 그리드 */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
           {GRID_APPS.map(app => (
             <a
               key={app.href}
               href={app.href}
-              style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", background: app.bg, border: `1px solid ${app.color}22`, aspectRatio: "1/1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, position: "relative" }}
+              style={{ borderRadius: 20, overflow: "hidden", textDecoration: "none", background: app.bg, border: `1px solid ${app.color}22`, aspectRatio: "1/1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, position: "relative" }}
             >
-              <span style={{ position: "absolute", top: 5, right: 5, background: app.color, color: "#fff", fontSize: 7, fontWeight: 900, padding: "1.5px 5px", borderRadius: 10 }}>{app.badge}</span>
-              <span style={{ fontSize: 26 }}>{app.emoji}</span>
-              <span style={{ fontSize: 11, fontWeight: 800, color: app.color }}>{app.label}</span>
+              <span style={{ position: "absolute", top: 8, right: 8, background: app.color, color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{app.badge}</span>
+              <span style={{ fontSize: 42 }}>{app.emoji}</span>
+              <span style={{ fontSize: 15, fontWeight: 800, color: app.color }}>{app.label}</span>
             </a>
           ))}
         </div>
