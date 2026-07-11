@@ -49,7 +49,7 @@ export default function AppsPage() {
         <div style={{ textAlign: "center", marginBottom: 20 }}>
           <a href="/main-v2" style={{ display: "inline-block", marginBottom: 12, fontSize: 12, color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>← 메인으로</a>
           <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 4 }}>✨ 점운 전체앱</div>
-          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>14개 앱 전부 무료로 이용하세요</div>
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>14개 앱 무료로 이용하세요</div>
         </div>
 
         {/* 상단 2단 큰 카드 */}
