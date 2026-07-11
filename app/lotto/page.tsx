@@ -107,9 +107,18 @@ export default function LottoPage() {
             사주 에너지가 담긴 나만의 숫자
           </p>
 
-          {/* 샘플 공 */}
-          <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 28, flexWrap: "wrap" as const }}>
-            {SAMPLE_BALLS.map((n, i) => <Ball key={n} n={n} size={46} delay={i * 100} />)}
+          {/* 샘플 공 — 6칸 그리드 한 줄 보장 */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8, marginBottom: 28, padding: "0 8px" }}>
+            {SAMPLE_BALLS.map((n, i) => {
+              const c = n <= 10 ? { bg: "#fbbf24", t: "#78350f" } : n <= 20 ? { bg: "#60a5fa", t: "#1e3a8a" } : n <= 30 ? { bg: "#f97316", t: "#7c2d12" } : n <= 40 ? { bg: "#9ca3af", t: "#1f2937" } : { bg: "#4ade80", t: "#14532d" };
+              return (
+                <div key={n} style={{ position: "relative", width: "100%", paddingBottom: "100%" }}>
+                  <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: `radial-gradient(circle at 35% 35%,${c.bg}ff,${c.bg}99)`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 14, color: c.t, boxShadow: `0 4px 12px ${c.bg}66`, animation: `ballPop 0.5s cubic-bezier(0.34,1.56,0.64,1) ${i * 100}ms both` }}>
+                    {n}
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* 색깔 범례 */}
