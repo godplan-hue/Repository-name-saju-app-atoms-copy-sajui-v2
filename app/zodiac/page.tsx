@@ -44,6 +44,7 @@ export default function ZodiacPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -64,6 +65,7 @@ export default function ZodiacPage() {
   const analyze = async () => {
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
+    if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
     setLoading(true); setError("");
     try {
       const body: Record<string, string | number> = {
@@ -128,6 +130,9 @@ export default function ZodiacPage() {
             </div>
             <button onClick={() => setStep("select")} style={S.btn}>내 별자리 운세 보기 ⭐ →</button>
             <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>완전 무료 · 전화번호만 있으면 OK</p>
+            <p style={{ textAlign: "center", fontSize: 11, color: "rgba(96,165,250,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
+              🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
+            </p>
           </div>
         </div>
 
@@ -253,9 +258,19 @@ export default function ZodiacPage() {
           <label style={S.label}>이름 또는 별명 (선택)</label>
           <input style={S.input} placeholder="예) 지은, 별이" value={name} onChange={e => setName(e.target.value)} />
         </div>
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 14 }}>
           <label style={S.label}>이메일 (선택)</label>
           <input style={S.input} placeholder="example@email.com" inputMode="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+        </div>
+        <div style={{ marginBottom: 24 }}>
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
+            <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
+              style={{ marginTop: 3, accentColor: "#93c5fd", width: 16, height: 16, flexShrink: 0 }} />
+            <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
+              <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
+              점운(jeomun.com)이 전화번호·이메일을 수집하여 운세 정보 및 혜택 안내에 활용하며, 3년간 보유 후 파기합니다. 언제든지 수신거부 가능합니다.
+            </span>
+          </label>
         </div>
 
         {error && <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>}
