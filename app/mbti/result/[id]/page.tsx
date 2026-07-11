@@ -259,8 +259,8 @@ export default function MbtiResultPage() {
         </div>
 
         {/* 공유 버튼 */}
-        <button onClick={handleShare} style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 22, padding: "15px", color: "#d1d5db", fontSize: 15, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>
-          {shared ? "✅ 링크가 복사됐어요!" : "📤 결과 공유하기"}
+        <button onClick={handleShare} style={{ width: "100%", background: shared ? "rgba(34,197,94,0.15)" : "linear-gradient(135deg,#a78bfa,#7c3aed)", border: shared ? "1.5px solid #22c55e" : "none", borderRadius: 22, padding: "16px", color: "white", fontSize: 16, fontWeight: 900, cursor: "pointer", marginBottom: 12, boxShadow: shared ? "none" : "0 4px 20px rgba(124,58,237,0.4)" }}>
+          {shared ? "✅ 복사됐어요!" : "📤 친구에게 공유하기"}
         </button>
 
         {/* 사주 CTA */}
