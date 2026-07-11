@@ -266,14 +266,14 @@ export default function MbtiResultPage() {
         {/* 사주 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.2),rgba(91,33,182,0.15))", border: "1px solid rgba(196,181,253,0.35)", borderRadius: 18, padding: "22px 20px", textAlign: "center" as const }}>
           <p style={{ fontSize: 16, fontWeight: 900, color: "#e9d5ff", margin: "0 0 4px" }}>🔮 MBTI보다 사주가 더 정확해요</p>
-          <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 8px", lineHeight: 1.6 }}>
-            {data.oh}오행 기질 × 사주 원국으로<br />재물운·연애운·직업운·대운까지 분석
+          <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 16px", lineHeight: 1.6 }}>
+            MBTI는 성격만 봐요. 사주는 운명까지 봐요.<br />
+            재물운·연애운·직업운이 왜 이런지 답이 나와요.
           </p>
-
-          <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#7c3aed,#a855f7)", borderRadius: 16, padding: "14px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900, boxShadow: "0 4px 16px rgba(124,58,237,0.4)" }}>
-            990원으로 사주 + 점운 전체 입장 →
+          <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#7c3aed,#a855f7)", borderRadius: 16, padding: "14px", color: "white", textDecoration: "none", fontSize: 15, fontWeight: 900, boxShadow: "0 4px 16px rgba(124,58,237,0.4)" }}>
+            사주로 더 정확하게 알아보기 →
           </Link>
-          <p style={{ fontSize: 11, color: "rgba(196,181,253,0.45)", margin: "8px 0 0" }}>단 1회 결제 · 반복청구 없음</p>
+          <p style={{ fontSize: 11, color: "rgba(196,181,253,0.5)", margin: "8px 0 0" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
 
         <p style={{ textAlign: "center" as const, fontSize: 11, color: "#374151", marginTop: 20 }}>© 점운 jeomun.com</p>

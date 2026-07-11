@@ -347,10 +347,10 @@ export default function ZodiacResultPage() {
             {displayName}의 {result.zodiac} 에너지를 사주 원국으로 분석하면<br />연애·직업·재물 흐름을 훨씬 정확하게 알 수 있어요.
           </p>
 
-          <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#1d4ed8,#7c3aed)", color: "white", borderRadius: 22, padding: "14px", fontSize: 14, fontWeight: 900, textAlign: "center", textDecoration: "none", boxShadow: "0 4px 16px rgba(29,78,216,0.4)" }}>
-            990원으로 사주 + 점운 전체 입장 →
+          <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#1d4ed8,#7c3aed)", color: "white", borderRadius: 22, padding: "14px", fontSize: 15, fontWeight: 900, textAlign: "center", textDecoration: "none", boxShadow: "0 4px 16px rgba(29,78,216,0.4)" }}>
+            사주로 더 정확하게 확인하기 →
           </Link>
-          <p style={{ fontSize: 11, color: "rgba(147,197,253,0.45)", margin: "8px 0 0", textAlign: "center" }}>단 1회 결제 · 반복청구 없음</p>
+          <p style={{ fontSize: 11, color: "rgba(147,197,253,0.5)", margin: "8px 0 0", textAlign: "center" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
       </div>
     </div>

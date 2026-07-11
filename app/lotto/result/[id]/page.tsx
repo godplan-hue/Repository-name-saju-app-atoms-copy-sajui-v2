@@ -244,20 +244,19 @@ export default function LottoResultPage() {
         {/* 사주 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(139,92,246,0.18),rgba(59,130,246,0.12))", border: "1px solid rgba(139,92,246,0.35)", borderRadius: 20, padding: "22px 18px", textAlign: "center" as const, marginBottom: 40 }}>
           <p style={{ fontWeight: 900, fontSize: 15, color: "#e9d5ff", margin: "0 0 6px" }}>
-            🔮 행운번호보다 재물운이 더 정확해요
+            🔮 돈이 잘 들어오는 체질이 있을까요?
           </p>
-          <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.6, margin: "0 0 8px" }}>
-            사주 원국으로 언제 돈이 들어오고 나가는지<br />재물운·성공운을 훨씬 정확하게 알 수 있어요.
+          <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.6, margin: "0 0 16px" }}>
+            사주 원국으로 재물운·성공운을 분석하면<br />언제 돈이 들어오는지 훨씬 정확하게 나와요.
           </p>
-
           <Link href="/main-v2" style={{
             display: "block", background: "linear-gradient(135deg,#8b5cf6,#3b82f6)",
             color: "white", textDecoration: "none", borderRadius: 16, padding: "14px",
             fontSize: 15, fontWeight: 900, boxShadow: "0 4px 16px rgba(139,92,246,0.4)",
           }}>
-            990원으로 사주 + 점운 전체 입장 →
+            재물운 직접 확인하기 →
           </Link>
-          <p style={{ fontSize: 11, color: "rgba(167,139,250,0.45)", margin: "8px 0 0" }}>단 1회 결제 · 반복청구 없음</p>
+          <p style={{ fontSize: 11, color: "rgba(167,139,250,0.5)", margin: "8px 0 0" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
       </div>
     </div>
