@@ -182,7 +182,7 @@ export default function LottoPage() {
 
         <div style={{ marginTop: 28 }}>
           {[
-            { icon: "🌿", t: "오행별 행운숫자", s: "사주 오행에 따라 행운 에너지가 집중되는 숫자가 다릅니다" },
+            { icon: "🌿", t: "오행별 행운숫자", s: "사주 오행에 따라 행운\n에너지가 집중되는 숫자가 다릅니다" },
             { icon: "🎴", t: "행운 메시지 카드", s: "오늘의 운을 담은 카드를 뽑아보세요" },
             { icon: "📤", t: "결과 공유", s: "친구에게 공유하고 서로의 번호를 비교해보세요" },
           ].map(f => (
@@ -190,7 +190,7 @@ export default function LottoPage() {
               <span style={{ fontSize: 24, flexShrink: 0 }}>{f.icon}</span>
               <div>
                 <p style={{ fontWeight: 700, margin: "0 0 2px", fontSize: 14, color: "#fde68a" }}>{f.t}</p>
-                <p style={{ color: "#9ca3af", fontSize: 12, margin: 0, lineHeight: 1.5 }}>{f.s}</p>
+                <p style={{ color: "#9ca3af", fontSize: 12, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" }}>{f.s}</p>
               </div>
             </div>
           ))}
@@ -204,7 +204,7 @@ export default function LottoPage() {
             <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
             <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
             <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
-            <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
+            <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38,<br />7층 7017호(대치동)</p>
             <p style={{ margin: 0 }}>대표전화 010-2106-2689 · 유선 031-585-7255</p>
             <p style={{ margin: "4px 0 0", color: "#f87171", fontWeight: 900, fontSize: 11 }}>※ 전화 문의는 받지 않습니다. 카카오톡으로 문의해 주세요.</p>
           </div>
