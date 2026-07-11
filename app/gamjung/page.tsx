@@ -128,16 +128,16 @@ export default function GamjungPage() {
 
         <div style={{ maxWidth: 440, margin: "0 auto", padding: "32px 24px" }}>
           {[
-            { icon: "💚", title: "5단계 기분 선택", desc: "최고부터 끔찍함까지 — 솔직하게 선택해요. 판단 없이 기록해드려요." },
-            { icon: "🏷️", title: "오늘 한 활동 태그", desc: "수면·운동·친구·일 등 오늘 있었던 일을 골라요. 여러 개 선택 가능해요." },
-            { icon: "🌿", title: "오행 감정 분석", desc: "내 기분이 목·화·토·금·수 중 어떤 오행 에너지인지 알려드려요." },
-            { icon: "💌", title: "오행별 맞춤 위로", desc: "지금 내 감정에 꼭 맞는 조언과 위로를 드려요." },
+            { icon: "💚", title: "5단계 기분 선택", desc: "최고부터 끔찍함까지 —\n솔직하게 선택해요.\n판단 없이 기록해드려요." },
+            { icon: "🏷️", title: "오늘 한 활동 태그", desc: "수면·운동·친구·일 등 오늘 있었던 일을 골라요.\n여러 개 선택 가능해요." },
+            { icon: "🌿", title: "오행 감정 분석", desc: "내 기분이 목·화·토·금·수 중\n어떤 오행 에너지인지 알려드려요." },
+            { icon: "💌", title: "오행별 맞춤 위로", desc: "지금 내 감정에 꼭 맞는\n조언과 위로를 드려요." },
           ].map(f => (
             <div key={f.title} style={{ display: "flex", gap: 16, marginBottom: 20, alignItems: "flex-start" }}>
               <span style={{ fontSize: 28, flexShrink: 0 }}>{f.icon}</span>
               <div>
                 <p style={{ fontWeight: 700, margin: "0 0 4px", fontSize: 15 }}>{f.title}</p>
-                <p style={{ color: "#9ca3af", fontSize: 13, margin: 0, lineHeight: 1.5 }}>{f.desc}</p>
+                <p style={{ color: "#9ca3af", fontSize: 13, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" }}>{f.desc}</p>
               </div>
             </div>
           ))}
