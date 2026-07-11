@@ -120,7 +120,7 @@ function getContent(oh1: string, oh2: string): ContentItem {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name1, birthYear1, birthMonth1, birthDay1, gender1,
+    const { phone, name1, birthYear1, birthMonth1, birthDay1, gender1,
             name2, birthYear2, birthMonth2, birthDay2, gender2 } = body;
 
     if (!birthYear1 || !birthYear2) {
@@ -136,6 +136,8 @@ export async function POST(request: NextRequest) {
     const mbti2 = getMbtiHint(oh2);
 
     const result = {
+      phone: phone || "",
+      name: name1 || "나",
       name1: name1 || "나", birthYear1, birthMonth1, birthDay1, gender1,
       name2: name2 || "상대방", birthYear2, birthMonth2, birthDay2, gender2,
       oh1, oh2, score, grade, mbti1, mbti2,

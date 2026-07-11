@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { petName, petBirthYear, petBirthMonth, petBirthDay, petSpecies,
-            ownerName, ownerBirthYear } = body;
+            ownerName, ownerBirthYear, ownerPhone } = body;
 
     if (!petBirthYear) return NextResponse.json({ error: "강아지 생년을 입력해주세요" }, { status: 400 });
 
@@ -92,6 +92,8 @@ export async function POST(request: NextRequest) {
     const compatDesc = ownerOh ? getCompatDesc(ownerOh, petOh) : null;
 
     const result = {
+      phone: ownerPhone || "",
+      name: ownerName || "보호자",
       petName: petName || "우리 강아지",
       petBirthYear, petBirthMonth, petBirthDay,
       petSpecies: petSpecies || "",

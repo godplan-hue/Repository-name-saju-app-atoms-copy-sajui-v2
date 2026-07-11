@@ -38,12 +38,14 @@ export async function GET(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap] = await Promise.all([
+  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap] = await Promise.all([
     db.ref("free_leads").orderByChild("createdAt").once("value"),
     db.ref("career_analyses").orderByChild("createdAt").once("value"),
     db.ref("resume_analyses").orderByChild("createdAt").once("value"),
     db.ref("mbti_analyses").orderByChild("createdAt").once("value"),
     db.ref("lotto_analyses").orderByChild("createdAt").once("value"),
+    db.ref("gunghap_analyses").orderByChild("createdAt").once("value"),
+    db.ref("petun_analyses").orderByChild("createdAt").once("value"),
   ]);
 
   const leads: any[] = [];
@@ -84,6 +86,22 @@ export async function GET(request: NextRequest) {
     if (v && v.phone) lottoItems.push({ id: child.key, birthYear: v.birthYear, ...v });
   });
   for (const item of dedupByPhone(lottoItems, "lotto")) leads.push(item);
+
+  // 궁합 — gunghap_analyses
+  const gunghapItems: any[] = [];
+  gunghapSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) gunghapItems.push({ id: child.key, ...v });
+  });
+  for (const item of dedupByPhone(gunghapItems, "gunghap")) leads.push(item);
+
+  // 펫운 — petun_analyses
+  const petunItems: any[] = [];
+  petunSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) petunItems.push({ id: child.key, ...v });
+  });
+  for (const item of dedupByPhone(petunItems, "petun")) leads.push(item);
 
   // 출처가 달라도 같은 전화번호가 중복될 수 있으므로 (free_leads+career_analyses 동시 저장 등) 최종 전체 중복 제거
   // 이름 있는 항목 우선 선택, 둘 다 이름 있으면 최신 우선

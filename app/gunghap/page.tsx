@@ -7,6 +7,7 @@ import Link from "next/link";
 export default function GunghapPage() {
   const router = useRouter();
   const [step, setStep] = useState<"intro" | "form">("intro");
+  const [phone, setPhone] = useState("");
   const [name1, setName1] = useState("");
   const [year1, setYear1] = useState("");
   const [month1, setMonth1] = useState("");
@@ -35,6 +36,8 @@ export default function GunghapPage() {
   };
 
   const analyze = async () => {
+    const cleanPhone = phone.replace(/\D/g, "");
+    if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
     if (!year1 || year1.length < 4) { setError("나의 출생연도를 입력해주세요."); return; }
     if (!year2 || year2.length < 4) { setError("상대방 출생연도를 입력해주세요."); return; }
     setLoading(true); setError("");
@@ -43,6 +46,7 @@ export default function GunghapPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          phone: cleanPhone,
           name1: name1 || "나", birthYear1: year1, birthMonth1: month1 || "1", birthDay1: day1 || "1", gender1,
           name2: name2 || "상대방", birthYear2: year2, birthMonth2: month2 || "1", birthDay2: day2 || "1", gender2,
         }),
@@ -152,8 +156,15 @@ export default function GunghapPage() {
           <p style={{ fontSize: 13, fontWeight: 900, color: "#a78bfa", margin: "0 0 14px" }}>💜 나</p>
 
           <div style={S.row}>
-            <label style={S.label}>이름 (선택)</label>
+            <label style={S.label}>이름 또는 별명 (선택)</label>
             <input style={S.input} placeholder="예) 지민" value={name1} onChange={e => setName1(e.target.value)} />
+          </div>
+
+          <div style={S.row}>
+            <label style={S.label}>전화번호 (필수)</label>
+            <input style={{ ...S.input, border: `1px solid ${error.includes("전화") ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.15)"}` }}
+              placeholder="010-0000-0000" inputMode="tel" value={phone}
+              onChange={e => { setPhone(e.target.value); setError(""); }} />
           </div>
 
           <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>

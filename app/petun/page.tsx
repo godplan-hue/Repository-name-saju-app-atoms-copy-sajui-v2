@@ -16,10 +16,13 @@ export default function PetunPage() {
   const [petSpecies, setPetSpecies] = useState("강아지");
   const [ownerName, setOwnerName] = useState("");
   const [ownerYear, setOwnerYear] = useState("");
+  const [ownerPhone, setOwnerPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const analyze = async () => {
+    const cleanPhone = ownerPhone.replace(/\D/g, "");
+    if (cleanPhone.length < 10) { setError("보호자 전화번호를 입력해주세요."); return; }
     if (!petYear || petYear.length < 4) { setError("반려동물 출생연도를 입력해주세요."); return; }
     setLoading(true); setError("");
     try {
@@ -28,7 +31,7 @@ export default function PetunPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           petName, petBirthYear: petYear, petBirthMonth: petMonth || "1", petBirthDay: petDay || "1", petSpecies,
-          ownerName, ownerBirthYear: ownerYear || null,
+          ownerName, ownerBirthYear: ownerYear || null, ownerPhone: cleanPhone,
         }),
       });
       const data = await res.json();
@@ -189,11 +192,18 @@ export default function PetunPage() {
 
         {/* 보호자 정보 */}
         <div style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 18, padding: "18px 16px", marginBottom: 20 }}>
-          <p style={{ fontSize: 13, fontWeight: 900, color: "#a78bfa", margin: "0 0 4px" }}>💜 보호자 정보 (선택)</p>
-          <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 14px" }}>입력하면 보호자-반려동물 궁합도 알 수 있어요</p>
+          <p style={{ fontSize: 13, fontWeight: 900, color: "#a78bfa", margin: "0 0 4px" }}>💜 보호자 정보</p>
+          <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 14px" }}>전화번호 필수 · 이름/연도는 선택</p>
 
           <div style={S.row}>
-            <label style={S.label}>이름 (선택)</label>
+            <label style={S.label}>전화번호 (필수)</label>
+            <input style={{ ...S.input, border: `1px solid ${error.includes("전화") ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.12)"}` }}
+              placeholder="010-0000-0000" inputMode="tel" value={ownerPhone}
+              onChange={e => { setOwnerPhone(e.target.value); setError(""); }} />
+          </div>
+
+          <div style={S.row}>
+            <label style={S.label}>이름 또는 별명 (선택)</label>
             <input style={S.input} placeholder="예) 민지" value={ownerName} onChange={e => setOwnerName(e.target.value)} />
           </div>
 
