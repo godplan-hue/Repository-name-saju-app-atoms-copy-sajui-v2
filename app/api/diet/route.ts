@@ -3,9 +3,19 @@ import { db } from "@/lib/firebase";
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, date, meals, totalCal } = await req.json();
-    if (!userId || !date) return NextResponse.json({ error: "필수 파라미터 없음" }, { status: 400 });
+    const body = await req.json();
+    const { userId, action } = body;
+    if (!userId) return NextResponse.json({ error: "userId 필요" }, { status: 400 });
     const safeId = userId.replace(/[.#$[\]]/g, "_");
+
+    if (action === "lead") {
+      const { name, phone, email, birthYear, createdAt } = body;
+      await db.ref(`diet_leads/${safeId}`).set({ name: name || "", phone: phone || "", email: email || "", birthYear: birthYear || null, createdAt: createdAt || Date.now() });
+      return NextResponse.json({ ok: true });
+    }
+
+    const { date, meals, totalCal } = body;
+    if (!date) return NextResponse.json({ error: "필수 파라미터 없음" }, { status: 400 });
     await db.ref(`diet_logs/${safeId}/${date}`).set({ meals, totalCal, updatedAt: Date.now() });
     return NextResponse.json({ ok: true });
   } catch (e) {

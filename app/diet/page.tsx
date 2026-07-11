@@ -12,7 +12,9 @@ export default function DietPage() {
   const [view, setView] = useState<"today" | "search" | "history">("today");
   const [setupDone, setSetupDone] = useState(false);
   const [birthYear, setBirthYear] = useState("");
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [hasPhone, setHasPhone] = useState(false);
   const [mcUserId, setMcUserId] = useState("");
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -31,6 +33,8 @@ export default function DietPage() {
       if (saved) {
         const p = JSON.parse(saved);
         if (p.birthYear) yr = String(p.birthYear);
+        if (p.name) setName(p.name);
+        if (p.email) setEmail(p.email);
         if (p.phone) { ph = p.phone; setHasPhone(true); uid = `phone_${p.phone.replace(/\D/g, "")}`; }
       }
     } catch {}
@@ -104,18 +108,26 @@ export default function DietPage() {
   function saveSetup() {
     const yr = parseInt(birthYear);
     if (!yr || yr < 1940 || yr > 2015) { alert("올바른 출생연도를 입력해주세요 (1940~2015)"); return; }
+    const cleanPhone = phone.replace(/\D/g, "");
+    if (cleanPhone.length < 10) { alert("전화번호를 입력해주세요."); return; }
     try {
       const existing = localStorage.getItem("v2_saved_profile");
       const profile = existing ? JSON.parse(existing) : {};
       profile.birthYear = yr;
+      if (name) profile.name = name;
       if (phone) profile.phone = phone;
+      if (email) profile.email = email;
       localStorage.setItem("v2_saved_profile", JSON.stringify(profile));
     } catch {}
-    if (phone) {
-      const uid = `phone_${phone.replace(/\D/g, "")}`;
-      setMcUserId(uid);
-      setHasPhone(true);
-    }
+    const uid = `phone_${cleanPhone}`;
+    setMcUserId(uid);
+    setHasPhone(true);
+    // 무료DB 리드 저장
+    fetch("/api/diet", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "lead", userId: uid, name: name.trim() || "", phone: cleanPhone, email: email.trim() || "", birthYear: yr, createdAt: Date.now() }),
+    }).catch(() => {});
     setSetupDone(true);
   }
 
@@ -147,24 +159,42 @@ export default function DietPage() {
           </div>
 
           <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 16, padding: "20px", marginBottom: 14 }}>
-            <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 8 }}>출생연도 * (오행 체질 분석용)</label>
+            <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 8 }}>이름 또는 별명 (선택)</label>
             <input
-              type="number" value={birthYear} onChange={e => setBirthYear(e.target.value)}
-              placeholder="예: 1992" min="1940" max="2015"
-              style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 18, color: "white", fontWeight: 700, outline: "none", boxSizing: "border-box" }}
+              type="text" value={name} onChange={e => setName(e.target.value)}
+              placeholder="예) 에스더"
+              style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 16, color: "white", outline: "none", boxSizing: "border-box" as const }}
             />
           </div>
 
-          <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 16, padding: "20px", marginBottom: 8 }}>
+          <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 16, padding: "20px", marginBottom: 14 }}>
             <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 8 }}>전화번호 * (기록 영구보관 필수)</label>
             <input
               type="tel" value={phone} onChange={e => setPhone(e.target.value)}
               placeholder="010-0000-0000"
-              style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 16, color: "white", outline: "none", boxSizing: "border-box" }}
+              style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 16, color: "white", outline: "none", boxSizing: "border-box" as const }}
+            />
+          </div>
+
+          <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 16, padding: "20px", marginBottom: 14 }}>
+            <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 8 }}>이메일 (선택)</label>
+            <input
+              type="email" inputMode="email" value={email} onChange={e => setEmail(e.target.value)}
+              placeholder="example@email.com"
+              style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 16, color: "white", outline: "none", boxSizing: "border-box" as const }}
+            />
+          </div>
+
+          <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 16, padding: "20px", marginBottom: 8 }}>
+            <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 8 }}>출생연도 * (오행 체질 분석용)</label>
+            <input
+              type="number" value={birthYear} onChange={e => setBirthYear(e.target.value)}
+              placeholder="예: 1992" min="1940" max="2015"
+              style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 18, color: "white", fontWeight: 700, outline: "none", boxSizing: "border-box" as const }}
             />
           </div>
           <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "10px 14px", marginBottom: 24, fontSize: 12, color: "#fbbf24", lineHeight: 1.6 }}>
-            ⚠️ 전화번호를 입력하지 않으면 기록이 이 기기에만 저장되고 영구 보관되지 않아요.
+            ⚠️ 전화번호 필수 — 입력하지 않으면 다른 기기에서 기록을 불러올 수 없어요.
           </div>
 
           <button onClick={saveSetup} style={{ width: "100%", background: "#4ade80", color: "#052e16", border: "none", borderRadius: 14, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>

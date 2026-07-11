@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap] = await Promise.all([
+  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap] = await Promise.all([
     db.ref("free_leads").orderByChild("createdAt").once("value"),
     db.ref("career_analyses").orderByChild("createdAt").once("value"),
     db.ref("resume_analyses").orderByChild("createdAt").once("value"),
@@ -49,6 +49,8 @@ export async function GET(request: NextRequest) {
     db.ref("tarot_analyses").orderByChild("createdAt").once("value"),
     db.ref("zodiac_analyses").orderByChild("createdAt").once("value"),
     db.ref("gamjung_analyses").orderByChild("createdAt").once("value"),
+    db.ref("diet_leads").orderByChild("createdAt").once("value"),
+    db.ref("budget_leads").orderByChild("createdAt").once("value"),
   ]);
 
   const leads: any[] = [];
@@ -129,6 +131,22 @@ export async function GET(request: NextRequest) {
     if (v && v.phone) gamjungItems.push({ id: child.key, ...v });
   });
   for (const item of dedupByPhone(gamjungItems, "gamjung")) leads.push(item);
+
+  // 다이어트 — diet_leads
+  const dietItems: any[] = [];
+  dietSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) dietItems.push({ id: child.key, birthYear: v.birthYear, ...v });
+  });
+  for (const item of dedupByPhone(dietItems, "diet")) leads.push(item);
+
+  // 가계부 — budget_leads
+  const budgetItems: any[] = [];
+  budgetSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) budgetItems.push({ id: child.key, ...v });
+  });
+  for (const item of dedupByPhone(budgetItems, "budget")) leads.push(item);
 
   // 출처가 달라도 같은 전화번호가 중복될 수 있으므로 (free_leads+career_analyses 동시 저장 등) 최종 전체 중복 제거
   // 이름 있는 항목 우선 선택, 둘 다 이름 있으면 최신 우선

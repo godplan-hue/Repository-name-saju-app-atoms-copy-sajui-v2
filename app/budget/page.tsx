@@ -21,6 +21,10 @@ export default function BudgetPage() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [mcUserId, setMcUserId] = useState("");
   const [hasPhone, setHasPhone] = useState(false);
+  const [setupDone, setSetupDone] = useState(false);
+  const [setupName, setSetupName] = useState("");
+  const [setupPhone, setSetupPhone] = useState("");
+  const [setupEmail, setSetupEmail] = useState("");
   const [currentMonth, setCurrentMonth] = useState(thisMonth());
   const [form, setForm] = useState<{ type: EntryType; date: string; category: string; amount: string; memo: string }>({
     type: "expense", date: todayStr(), category: "식비", amount: "", memo: "",
@@ -28,11 +32,21 @@ export default function BudgetPage() {
 
   useEffect(() => {
     let uid = "";
+    // 이미 셋업 완료한 유저 처리
+    const alreadySetup = localStorage.getItem("budget_setup_done");
     try {
       const profile = localStorage.getItem("v2_saved_profile");
       if (profile) {
         const p = JSON.parse(profile);
-        if (p.phone) { uid = `phone_${p.phone.replace(/\D/g, "")}`; setHasPhone(true); }
+        if (p.name) setSetupName(p.name);
+        if (p.email) setSetupEmail(p.email);
+        if (p.phone) {
+          const clean = p.phone.replace(/\D/g, "");
+          setSetupPhone(p.phone);
+          uid = `phone_${clean}`;
+          setHasPhone(true);
+          if (alreadySetup) setSetupDone(true);
+        }
       }
     } catch {}
     if (!uid) {
@@ -56,6 +70,35 @@ export default function BudgetPage() {
       })
       .catch(() => {});
   }, []);
+
+  function saveBudgetSetup() {
+    const cleanPhone = setupPhone.replace(/\D/g, "");
+    if (cleanPhone.length < 10) { alert("전화번호를 입력해주세요."); return; }
+    try {
+      const existing = localStorage.getItem("v2_saved_profile");
+      const profile = existing ? JSON.parse(existing) : {};
+      if (setupName) profile.name = setupName;
+      profile.phone = setupPhone;
+      if (setupEmail) profile.email = setupEmail;
+      localStorage.setItem("v2_saved_profile", JSON.stringify(profile));
+    } catch {}
+    const uid = `phone_${cleanPhone}`;
+    setMcUserId(uid);
+    setHasPhone(true);
+    localStorage.setItem("budget_setup_done", "1");
+    // 무료DB 리드 저장
+    fetch("/api/budget", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "lead", userId: uid, name: setupName.trim() || "", phone: cleanPhone, email: setupEmail.trim() || "", createdAt: Date.now() }),
+    }).catch(() => {});
+    // Firebase에서 기존 데이터 로드
+    fetch(`/api/budget?userId=${uid}`)
+      .then(r => r.json())
+      .then(d => { if (Array.isArray(d.data) && d.data.length > 0) { setEntries(d.data); localStorage.setItem("budget_entries", JSON.stringify(d.data)); } })
+      .catch(() => {});
+    setSetupDone(true);
+  }
 
   function saveEntries(e: Entry[]) {
     setEntries(e);
@@ -112,6 +155,51 @@ export default function BudgetPage() {
   }, {} as Record<string, Entry[]>);
 
   const cats = view === "add" ? (form.type === "expense" ? CAT_EXPENSE : CAT_INCOME) : [];
+
+  if (!setupDone) {
+    const inp: React.CSSProperties = { width: "100%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, padding: "13px 14px", fontSize: 16, color: "white", outline: "none", boxSizing: "border-box" };
+    return (
+      <div style={{ minHeight: "100vh", background: "#0f172a", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
+        <nav style={{ background: "rgba(0,0,0,0.4)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "14px 20px" }}>
+          <Link href="/" style={{ fontSize: 17, fontWeight: 900, color: "#fbbf24", textDecoration: "none" }}>점운 가계부</Link>
+        </nav>
+        <div style={{ maxWidth: 420, margin: "0 auto", padding: "48px 20px" }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <div style={{ fontSize: 60, marginBottom: 14 }}>💰</div>
+            <h1 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px" }}>점운 가계부</h1>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.6 }}>
+              일기처럼 쓰는 수입·지출 기록<br />전화번호로 기록 영구 보관
+            </p>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, marginBottom: 8 }}>
+            <div>
+              <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 6 }}>이름 또는 별명 (선택)</label>
+              <input type="text" value={setupName} onChange={e => setSetupName(e.target.value)} placeholder="예) 에스더" style={inp} />
+            </div>
+            <div>
+              <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 6 }}>전화번호 * (영구 보관 필수)</label>
+              <input type="tel" inputMode="tel" value={setupPhone} onChange={e => setSetupPhone(e.target.value)} placeholder="010-0000-0000" style={inp} />
+            </div>
+            <div>
+              <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 6 }}>이메일 (선택)</label>
+              <input type="email" inputMode="email" value={setupEmail} onChange={e => setSetupEmail(e.target.value)} placeholder="example@email.com" style={inp} />
+            </div>
+          </div>
+          <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "10px 14px", marginBottom: 24, fontSize: 12, color: "#fbbf24", lineHeight: 1.6 }}>
+            ⚠️ 전화번호 필수 — 다른 기기에서 기록을 불러오려면 반드시 입력해주세요.
+          </div>
+
+          <button onClick={saveBudgetSetup} style={{ width: "100%", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#0f172a", border: "none", borderRadius: 14, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
+            가계부 시작하기 →
+          </button>
+          <p style={{ textAlign: "center", fontSize: 11, color: "rgba(251,191,36,0.5)", marginTop: 12, lineHeight: 1.6, letterSpacing: "0.02em" }}>
+            🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "#0f172a", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>

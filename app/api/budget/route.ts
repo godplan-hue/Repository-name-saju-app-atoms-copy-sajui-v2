@@ -3,9 +3,19 @@ import { db } from "@/lib/firebase";
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, entries } = await req.json();
-    if (!userId || !Array.isArray(entries)) return NextResponse.json({ error: "필수 파라미터 없음" }, { status: 400 });
+    const body = await req.json();
+    const { userId, action } = body;
+    if (!userId) return NextResponse.json({ error: "userId 필요" }, { status: 400 });
     const safeId = userId.replace(/[.#$[\]]/g, "_");
+
+    if (action === "lead") {
+      const { name, phone, email, createdAt } = body;
+      await db.ref(`budget_leads/${safeId}`).set({ name: name || "", phone: phone || "", email: email || "", createdAt: createdAt || Date.now() });
+      return NextResponse.json({ ok: true });
+    }
+
+    const { entries } = body;
+    if (!Array.isArray(entries)) return NextResponse.json({ error: "entries 필요" }, { status: 400 });
     await db.ref(`budget_entries/${safeId}`).set(entries);
     return NextResponse.json({ ok: true });
   } catch (e) {
