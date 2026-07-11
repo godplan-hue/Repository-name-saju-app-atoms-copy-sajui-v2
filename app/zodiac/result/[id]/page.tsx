@@ -341,14 +341,16 @@ export default function ZodiacResultPage() {
         </button>
 
         {/* 사주 연결 CTA */}
-        <div style={{ background: "linear-gradient(135deg,rgba(29,78,216,0.15),rgba(124,58,237,0.1))", border: "1px solid rgba(147,197,253,0.2)", borderRadius: 20, padding: "20px 18px" }}>
+        <div style={{ background: "linear-gradient(135deg,rgba(29,78,216,0.18),rgba(124,58,237,0.12))", border: "1px solid rgba(147,197,253,0.3)", borderRadius: 20, padding: "22px 18px" }}>
           <p style={{ fontWeight: 900, fontSize: 15, margin: "0 0 6px" }}>🔮 별자리보다 사주가 더 정확해요</p>
-          <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.6, margin: "0 0 14px" }}>
-            {displayName}의 {result.zodiac} 에너지를<br />사주 원국으로 분석하면 연애·직업·재물 흐름을 정확하게 알 수 있어요.
+          <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.6, margin: "0 0 6px" }}>
+            {displayName}의 {result.zodiac} 에너지를 사주 원국으로 분석하면<br />연애·직업·재물 흐름을 훨씬 정확하게 알 수 있어요.
           </p>
-          <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#1d4ed8,#7c3aed)", color: "white", borderRadius: 22, padding: "14px", fontSize: 14, fontWeight: 900, textAlign: "center", textDecoration: "none" }}>
-            AI 사주 무료로 받아보기 →
+          <p style={{ fontSize: 12, color: "#93c5fd", margin: "0 0 14px", fontWeight: 700 }}>🎁 사주 990원 = 꿈해몽·직운·합격·맘운 30일 무료</p>
+          <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#1d4ed8,#7c3aed)", color: "white", borderRadius: 22, padding: "14px", fontSize: 14, fontWeight: 900, textAlign: "center", textDecoration: "none", boxShadow: "0 4px 16px rgba(29,78,216,0.4)" }}>
+            990원으로 사주 + 점운 전체 입장 →
           </Link>
+          <p style={{ fontSize: 11, color: "rgba(147,197,253,0.45)", margin: "8px 0 0", textAlign: "center" }}>단 1회 결제 · 반복청구 없음</p>
         </div>
       </div>
     </div>

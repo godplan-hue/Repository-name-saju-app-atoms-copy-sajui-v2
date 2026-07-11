@@ -184,13 +184,15 @@ export default function GamjungResultPage() {
         {/* 사주 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.15),rgba(192,132,252,0.1))", border: "1px solid rgba(192,132,252,0.3)", borderRadius: 20, padding: "22px 20px", textAlign: "center" }}>
           <p style={{ fontSize: 13, color: "#c084fc", fontWeight: 700, margin: "0 0 6px" }}>🔮 감정 뒤에 숨겨진 사주 흐름</p>
-          <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.5, margin: "0 0 16px" }}>
+          <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.5, margin: "0 0 8px" }}>
             오늘 기분이 유독 좋거나 나쁜 이유가 있을 수도 있어요.<br />
             사주로 지금 내 운의 흐름을 확인해보세요.
           </p>
-          <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "white", textDecoration: "none", borderRadius: 16, padding: "13px 20px", fontWeight: 900, fontSize: 14 }}>
-            990원으로 사주 보러 가기 →
+          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px", fontWeight: 700 }}>🎁 사주 990원 = 꿈해몽·직운·합격·맘운 30일 무료</p>
+          <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "white", textDecoration: "none", borderRadius: 16, padding: "13px 20px", fontWeight: 900, fontSize: 14, boxShadow: "0 4px 16px rgba(124,58,237,0.4)" }}>
+            990원으로 사주 + 점운 전체 입장 →
           </Link>
+          <p style={{ fontSize: 11, color: "rgba(192,132,252,0.45)", margin: "8px 0 0" }}>단 1회 결제 · 반복청구 없음</p>
         </div>
       </div>
     </div>
