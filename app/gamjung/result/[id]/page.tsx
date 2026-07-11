@@ -67,6 +67,25 @@ export default function GamjungResultPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
+  // result 로드 완료 시 기록 저장 — early return 전에 위치해야 Rules of Hooks 준수
+  useEffect(() => {
+    if (!result || !id) return;
+    try {
+      const h = JSON.parse(localStorage.getItem("gamjung_history") || "[]");
+      if (!h.some((e: {id: string}) => e.id === id)) {
+        h.unshift({ id, moodLabel: result.moodLabel, moodEmoji: result.moodEmoji, createdAt: result.createdAt });
+        localStorage.setItem("gamjung_history", JSON.stringify(h.slice(0, 50)));
+      }
+    } catch {}
+  }, [result, id]);
+
+  const share = useCallback(() => {
+    if (!result) return;
+    const text = `오늘 기분: ${result.moodLabel} ${result.moodEmoji}\n오행 에너지: ${result.oh}(${result.ohEmoji}) — ${result.ohKeyword}\n\n${result.ohMessages[0]}\n\n✨ 점운 감정일기 — jeomun.com/gamjung`;
+    if (navigator.share) navigator.share({ title: "점운 감정일기", text });
+    else { navigator.clipboard.writeText(text); alert("클립보드에 복사됐어요 😊"); }
+  }, [result]);
+
   if (loading) return (
     <div style={{ minHeight: "100vh", background: "#0f1a14", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <p style={{ color: "#4ade80", fontSize: 16 }}>감정 분석 중... 🌿</p>
@@ -80,24 +99,6 @@ export default function GamjungResultPage() {
   );
 
   const moodColor = MOOD_COLORS[result.moodScore] || "#4ade80";
-
-  // result 로드 완료 시 기록 저장
-  useEffect(() => {
-    if (!result || !id) return;
-    try {
-      const h = JSON.parse(localStorage.getItem("gamjung_history") || "[]");
-      if (!h.some((e: {id: string}) => e.id === id)) {
-        h.unshift({ id, moodLabel: result.moodLabel, moodEmoji: result.moodEmoji, createdAt: result.createdAt });
-        localStorage.setItem("gamjung_history", JSON.stringify(h.slice(0, 50)));
-      }
-    } catch {}
-  }, [result, id]);
-
-  const share = useCallback(() => {
-    const text = `오늘 기분: ${result.moodLabel} ${result.moodEmoji}\n오행 에너지: ${result.oh}(${result.ohEmoji}) — ${result.ohKeyword}\n\n${result.ohMessages[0]}\n\n✨ 점운 감정일기 — jeomun.com/gamjung`;
-    if (navigator.share) navigator.share({ title: "점운 감정일기", text });
-    else { navigator.clipboard.writeText(text); alert("클립보드에 복사됐어요 😊"); }
-  }, [result]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0f1a14", color: "#F5F5F5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
