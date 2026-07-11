@@ -26,18 +26,18 @@ const TOP_APPS = [
 ];
 
 const GRID_APPS = [
-  { href: "/jigun",    emoji: "💼", label: "직운",    badge: "무료", color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)" },
-  { href: "/resume",   emoji: "🎯", label: "합격",    badge: "무료", color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)" },
-  { href: "/gunghap",  emoji: "💑", label: "궁합",    badge: "무료", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)" },
-  { href: "/mbti",     emoji: "🧠", label: "MBTI",    badge: "무료", color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)" },
-  { href: "/lotto",    emoji: "🍀", label: "행운번호", badge: "무료", color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)" },
-  { href: "/petun",    emoji: "🐾", label: "펫운",    badge: "무료", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)" },
-  { href: "/tarot",    emoji: "🃏", label: "타로",    badge: "무료", color: "#7e22ce", bg: "linear-gradient(145deg,#f3e8ff,#d8b4fe)" },
-  { href: "/zodiac",   emoji: "⭐", label: "별자리",  badge: "무료", color: "#1d4ed8", bg: "linear-gradient(145deg,#eff6ff,#93c5fd)" },
-  { href: "/gamjung",  emoji: "📔", label: "감정일기", badge: "무료", color: "#be185d", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)" },
-  { href: "/diet",     emoji: "🥗", label: "다이어트", badge: "무료", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)" },
-  { href: "/budget",   emoji: "💰", label: "가계부",  badge: "무료", color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)" },
-  { href: "/partner",  emoji: "🤝", label: "파트너",  badge: "신청", color: "#a21caf", bg: "linear-gradient(145deg,#fdf4ff,#f0abfc)" },
+  { href: "/jigun",   emoji: "💼", label: "직운",    badge: "무료", color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)", img: "https://i.pinimg.com/736x/bc/7c/f6/bc7cf6c186ee2e763c4bd7230098eba3.jpg" },
+  { href: "/resume",  emoji: "🎯", label: "합격",    badge: "무료", color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)", img: "https://i.pinimg.com/736x/7c/b2/22/7cb22262844ff11bc8c1800a309f0b99.jpg" },
+  { href: "/gunghap", emoji: "💑", label: "궁합",    badge: "무료", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)", img: "https://i.pinimg.com/vwebp/736x/11/68/2c/11682cfdc4b59a874924be812b96d028.webp" },
+  { href: "/mbti",    emoji: "🧠", label: "MBTI",    badge: "무료", color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)", img: "https://i.pinimg.com/1200x/aa/7a/e3/aa7ae3b66dc315f01fedf552b101f033.jpg" },
+  { href: "/lotto",   emoji: "🍀", label: "행운번호", badge: "무료", color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)" },
+  { href: "/petun",   emoji: "🐾", label: "펫운",    badge: "무료", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)", img: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg" },
+  { href: "/tarot",   emoji: "🃏", label: "타로",    badge: "무료", color: "#7e22ce", bg: "linear-gradient(145deg,#f3e8ff,#d8b4fe)", img: "https://i.pinimg.com/1200x/0c/27/99/0c27999149b93230b696dce0918a4e8e.jpg" },
+  { href: "/zodiac",  emoji: "⭐", label: "별자리",  badge: "무료", color: "#1d4ed8", bg: "linear-gradient(145deg,#eff6ff,#93c5fd)", img: "https://i.pinimg.com/736x/3a/36/30/3a3630aa53fc14c5076ab4851d783b6e.jpg" },
+  { href: "/gamjung", emoji: "📔", label: "감정일기", badge: "무료", color: "#be185d", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)", img: "https://i.pinimg.com/736x/7e/ad/71/7ead71fd8ff5c3d3d57abab4b5b01347.jpg" },
+  { href: "/diet",    emoji: "🥗", label: "다이어트", badge: "무료", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)" },
+  { href: "/budget",  emoji: "💰", label: "가계부",  badge: "무료", color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)" },
+  { href: "/partner", emoji: "🤝", label: "파트너",  badge: "신청", color: "#a21caf", bg: "linear-gradient(145deg,#fdf4ff,#f0abfc)" },
 ];
 
 export default function AppsPage() {
@@ -78,11 +78,25 @@ export default function AppsPage() {
             <a
               key={app.href}
               href={app.href}
-              style={{ borderRadius: 20, overflow: "hidden", textDecoration: "none", background: app.bg, border: `1px solid ${app.color}22`, aspectRatio: "1/1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, position: "relative" }}
+              style={{ position: "relative", borderRadius: 20, overflow: "hidden", textDecoration: "none", aspectRatio: "1/1", display: "block" }}
             >
-              <span style={{ position: "absolute", top: 8, right: 8, background: app.color, color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{app.badge}</span>
-              <span style={{ fontSize: 42 }}>{app.emoji}</span>
-              <span style={{ fontSize: 15, fontWeight: 800, color: app.color }}>{app.label}</span>
+              {app.img ? (
+                <>
+                  <img src={app.img} alt={app.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 100%)" }} />
+                  <span style={{ position: "absolute", top: 10, right: 10, background: "rgba(0,0,0,0.55)", color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{app.badge}</span>
+                  <div style={{ position: "absolute", bottom: 14, left: 0, right: 0, textAlign: "center" }}>
+                    <div style={{ fontSize: 28, marginBottom: 4 }}>{app.emoji}</div>
+                    <div style={{ fontSize: 15, fontWeight: 900, color: "#fff" }}>{app.label}</div>
+                  </div>
+                </>
+              ) : (
+                <div style={{ width: "100%", height: "100%", background: app.bg, border: `1px solid ${app.color}22`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                  <span style={{ position: "absolute", top: 10, right: 10, background: app.color, color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{app.badge}</span>
+                  <span style={{ fontSize: 42 }}>{app.emoji}</span>
+                  <span style={{ fontSize: 15, fontWeight: 800, color: app.color }}>{app.label}</span>
+                </div>
+              )}
             </a>
           ))}
         </div>
