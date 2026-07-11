@@ -192,9 +192,9 @@ export default function ResumePage() {
               {label:"핵심 키워드 5개 제시", color:"#a78bfa"},
               {label:"면접 예상 질문 5개", color:"#93c5fd"},
             ].map(({label,color})=>(
-              <div key={label} style={{...S.card, padding:"12px 14px", display:"flex", alignItems:"flex-start", gap:8}}>
-                <span style={{color, fontSize:16, flexShrink:0, marginTop:1}}>✅</span>
-                <p style={{fontSize:12, fontWeight:600, color:"#f5f5f5", margin:0, lineHeight:1.4, whiteSpace:"pre-line"}}>{label}</p>
+              <div key={label} style={{...S.card, padding:"10px 8px", display:"flex", alignItems:"center", gap:6}}>
+                <span style={{color, fontSize:13, flexShrink:0}}>✅</span>
+                <p style={{fontSize:10.5, fontWeight:600, color:"#f5f5f5", margin:0, lineHeight:1.3, whiteSpace:"nowrap"}}>{label}</p>
               </div>
             ))}
           </div>
