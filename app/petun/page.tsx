@@ -65,12 +65,12 @@ export default function PetunPage() {
   };
 
   const features = [
-    { icon: "🐾", title: "사주 오행 성격 분석", desc: "생년으로 계산한 오행으로 반려동물 성격을 분석해요" },
-    { icon: "❤️", title: "보호자-반려동물 궁합", desc: "보호자와 우리 아이의 오행 궁합 점수를 알려드려요" },
-    { icon: "🍗", title: "오행별 추천 음식", desc: "오행 에너지에 맞는 음식과 영양소를 추천해요" },
-    { icon: "💊", title: "건강운 & 주의 사항", desc: "오행별 건강 에너지와 주의해야 할 건강 이슈예요" },
-    { icon: "🏆", title: "좋아하는 것 TOP 5", desc: "우리 아이가 가장 좋아하는 것을 사주로 알아봐요" },
-    { icon: "🔍", title: "음식 안전도 체크", desc: "100+ 음식의 반려동물 안전 여부를 바로 확인해요" },
+    { icon: "🐾", title: "사주 오행 성격 분석", desc: "생년으로 계산한 오행으로\n반려동물 성격을 분석해요" },
+    { icon: "❤️", title: "보호자-반려동물 궁합", desc: "보호자와 우리 아이의\n오행 궁합 점수를 알려드려요" },
+    { icon: "🍗", title: "오행별 추천 음식", desc: "오행 에너지에 맞는\n음식과 영양소를 추천해요" },
+    { icon: "💊", title: "건강운 & 주의 사항", desc: "오행별 건강 에너지와\n주의해야 할 건강 이슈예요" },
+    { icon: "🏆", title: "좋아하는 것 TOP 5", desc: "우리 아이가 가장 좋아하는 것을\n사주로 알아봐요" },
+    { icon: "🔍", title: "음식 안전도 체크", desc: "100+ 음식의 반려동물 안전 여부를\n바로 확인해요" },
   ];
 
   if (step === "intro") {
@@ -130,7 +130,7 @@ export default function PetunPage() {
               <span style={{ fontSize: 28, flexShrink: 0 }}>{f.icon}</span>
               <div>
                 <p style={{ fontWeight: 700, margin: "0 0 4px", fontSize: 15 }}>{f.title}</p>
-                <p style={{ color: "#9ca3af", fontSize: 13, margin: 0, lineHeight: 1.5 }}>{f.desc}</p>
+                <p style={{ color: "#9ca3af", fontSize: 13, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" }}>{f.desc}</p>
               </div>
             </div>
           ))}
