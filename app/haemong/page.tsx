@@ -297,7 +297,7 @@ export default function HaemongPage() {
           onClick={() => router.push("/main-v2")}
           style={{ marginTop: 24, borderRadius: 16, overflow: "hidden", cursor: "pointer", position: "relative", boxShadow: "0 4px 20px rgba(236,72,153,0.25)" }}
         >
-          <img src="https://i.pinimg.com/736x/2f/b6/d4/2fb6d40a9b80a685052a1174960ec782.jpg" alt="사주보기" style={{ width: "100%", height: 110, objectFit: "cover" }} />
+          <img src="https://i.pinimg.com/1200x/ed/76/4d/ed764da4ef5dd4e2048939ac2e95dd6f.jpg" alt="사주보기" style={{ width: "100%", height: 110, objectFit: "cover" }} />
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(236,72,153,0.72) 0%, rgba(139,92,246,0.65) 100%)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px" }}>
             <div>
               <p style={{ color: "#fff", fontWeight: 900, fontSize: 15, margin: "0 0 2px", textShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>🐱 꿈 + 사주로 더 정확하게</p>
