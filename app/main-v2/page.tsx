@@ -951,7 +951,6 @@ export default function MainV2() {
         <ExtraFortuneSection onPick={(id) => {
           if (id === "daewoon") { window.location.href = "/main-v2/daewoon"; return; }
           if (id === "taegil") { window.location.href = "/main-v2/taegil"; return; }
-          if (!user) { window.location.href = "/main-v2/login"; return; }
           setShowModal(id);
         }} />
       )}

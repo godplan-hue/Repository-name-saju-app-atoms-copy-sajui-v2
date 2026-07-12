@@ -51,9 +51,7 @@ export default function FreeForm() {
     sessionStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운"]));
 
     // 일반 재물운 플로우: 이름/생년월일 폼 → 분석 → result/page.tsx
-    router.push(
-      "/payment-complete?package=" + encodeURIComponent("💰 재물운") + "&paid=0"
-    );
+    window.location.href = "/payment-complete?package=" + encodeURIComponent("💰 재물운") + "&paid=0";
   }
 
   return (

@@ -34,7 +34,7 @@ export default function ResumeStartPage() {
       const data = await res.json();
       if (data.id) {
         localStorage.removeItem("resume_paid_token");
-        router.push(`/resume/result/${data.id}`);
+        window.location.href = `/resume/result/${data.id}`;
       }
       else setError(data.error || "분석 실패. 다시 시도해주세요.");
     } catch { setError("네트워크 오류. 잠시 후 다시 시도해주세요."); }

@@ -56,7 +56,7 @@ export default function GunghapPage() {
       });
       const data = await res.json();
       if (data.id) {
-        router.push(`/gunghap/result/${data.id}`);
+        window.location.href = `/gunghap/result/${data.id}`;
       } else {
         setError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
       }

@@ -74,7 +74,7 @@ export default function GamjungPage() {
         if (typeof sessionStorage !== "undefined") {
           sessionStorage.setItem(`gamjung_result_${data.id}`, JSON.stringify(data.result));
         }
-        router.push(`/gamjung/result/${data.id}`);
+        window.location.href = `/gamjung/result/${data.id}`;
       } else {
         setError("오류가 발생했습니다. 다시 시도해주세요.");
       }

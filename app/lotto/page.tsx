@@ -59,7 +59,7 @@ export default function LottoPage() {
       });
       const data = await res.json();
       if (data.id) {
-        router.push(`/lotto/result/${data.id}`);
+        window.location.href = `/lotto/result/${data.id}`;
       } else {
         setError("오류가 발생했습니다. 다시 시도해주세요.");
         setLoading(false);

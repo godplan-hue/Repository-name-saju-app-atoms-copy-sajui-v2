@@ -186,7 +186,7 @@ export default function JigunPage() {
       });
       const data = await res.json();
       if (data.id) {
-        router.push(`/jigun/result/${data.id}`);
+        window.location.href = `/jigun/result/${data.id}`;
       } else {
         setErr("분석 실패. 다시 시도해주세요.");
       }
