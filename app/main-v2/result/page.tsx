@@ -416,7 +416,8 @@ function V2ResultInner() {
               }
             }
           } catch {}
-          window.location.replace(`/main-v2/share/${sid}`);
+          // Firebase 복원 실패해도 share 페이지 대신 메인으로 (share 페이지 혼동 방지)
+          window.location.replace("/main-v2");
         })();
         return;
       }
