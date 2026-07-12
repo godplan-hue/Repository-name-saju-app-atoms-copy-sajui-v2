@@ -721,7 +721,7 @@ function V2ResultInner() {
             merged.width = Math.round(Math.max(summary.width, c.width) * scale);
             merged.height = Math.round(rawHeight * scale);
             const ctx = merged.getContext("2d")!;
-            ctx.fillStyle = tier === "package" ? "#fdf6e3" : "#fdf2f8";
+            ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, merged.width, merged.height);
             ctx.drawImage(summary, 0, 0, summary.width * scale, summary.height * scale);
             ctx.drawImage(c, 0, (summary.height + 16) * scale, c.width * scale, c.height * scale);
