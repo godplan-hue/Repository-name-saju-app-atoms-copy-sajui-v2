@@ -415,6 +415,8 @@ function V2ResultInner() {
     if (sid) {
       try { history.replaceState(null, "", "/main-v2/result"); } catch {}
     }
+    // 결과지를 히스토리에 고정 — 어느 버튼 눌러도 뒤로가기 시 결과지로 복귀
+    try { if (!(window as any).__resultPushed) { (window as any).__resultPushed = true; history.pushState(null, "", "/main-v2/result"); } } catch {}
 
     const price = localStorage.getItem("price") ?? "";
     const PKG_PRICES_SET = ["9900", "19900", "24900", "29900"];
