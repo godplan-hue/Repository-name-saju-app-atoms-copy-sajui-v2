@@ -484,10 +484,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
       <div
         style={{ height: 320, borderRadius: 20, position: "relative", overflow: "hidden", cursor: "pointer", boxShadow: "0 6px 28px rgba(139,92,246,0.18)", background: "#f9f0ff" }}
         onClick={() => {
-          if ((b as any).chatBanner) {
-            document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" });
-            return;
-          }
+          if ((b as any).chatBanner) { document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
           if ((b as any).directUrl) { router.push((b as any).directUrl); return; }
           if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
@@ -496,11 +493,19 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         onTouchEnd={e => {
           if (startXRef.current === null) return;
           const dx = e.changedTouches[0].clientX - startXRef.current;
-          if (Math.abs(dx) > 40) {
-            e.preventDefault();
-            resetTimer(dx < 0 ? (cur + 1) % displayBanners.length : (cur - 1 + displayBanners.length) % displayBanners.length);
-          }
           startXRef.current = null;
+          if (Math.abs(dx) > 40) {
+            // 스와이프: 배너 전환
+            resetTimer(dx < 0 ? (cur + 1) % displayBanners.length : (cur - 1 + displayBanners.length) % displayBanners.length);
+          } else {
+            // 탭: 네이버 인앱브라우저에서 onClick이 안 발동하므로 여기서 직접 처리
+            // router.push 대신 window.location.href 사용 (인앱브라우저 호환성)
+            e.preventDefault();
+            if ((b as any).chatBanner) { document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
+            if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
+            if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
+            onStart(b.route);
+          }
         }}
       >
         {(b as any).appBanner ? (
@@ -940,9 +945,20 @@ export default function MainV2() {
       )}
 
       {/* 복냥이 상담창 — 내정보(푸터) 바로 위 */}
-      {!isPartner && savedProfile && (
+      {!isPartner && (
         <div id="chat-widget" style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
-          <QAChatWidget name={(user && !["카카오 사용자","네이버 사용자","Google 사용자"].includes(user)) ? user : savedProfile.name} birthYear={savedProfile.birthYear} />
+          {savedProfile ? (
+            <QAChatWidget name={(user && !["카카오 사용자","네이버 사용자","Google 사용자"].includes(user)) ? user : savedProfile.name} birthYear={savedProfile.birthYear} />
+          ) : (
+            <div style={{ background: "linear-gradient(135deg,#1a0a2e,#2d1b69)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, padding: "24px 20px", textAlign: "center" }}>
+              <p style={{ fontSize: 32, margin: "0 0 8px" }}>🐱</p>
+              <p style={{ fontSize: 15, fontWeight: 900, color: "white", margin: "0 0 6px" }}>복냥이에게 물어보세요!</p>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", margin: "0 0 16px", lineHeight: 1.6 }}>사주를 먼저 분석하면<br />맞춤 답변을 드릴 수 있어요</p>
+              <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "white", border: "none", borderRadius: 20, padding: "11px 28px", fontSize: 14, fontWeight: 900, cursor: "pointer" }}>
+                사주 분석 시작하기 ↑
+              </button>
+            </div>
+          )}
         </div>
       )}
 
