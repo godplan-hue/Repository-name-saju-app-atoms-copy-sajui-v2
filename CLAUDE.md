@@ -270,7 +270,7 @@ getPastLifeCard(oh, z)                         — 전생 이야기 (오행×띠
 - 콘텐츠 완성 (십이운성 12단계 × 5섹션, 무료 미리보기/유료 전체해설)
 - API 연동 완성, 결제 흐름 완성, 결과지 출시
 - 접근 경로: `/main-v2/daewoon` → 결제 → `/main-v2/daewoon/pay` → 결제 후 `/main-v2/daewoon?daeunPaid=1&daeunCount=N&daeunIndices=...`
-- localStorage 키: `daeunPaid`, `daeunPaidExpiry`(24시간 만료 타임스탬프), `daeunPaidCount`, `daeunPaidIndices`
+- sessionStorage 키: `daeunPaid`, `daeunPaidCount`, `daeunPaidIndices` — 탭/브라우저 닫으면 초기화 (의도적 설계: 재방문 시 재결제 유도)
 
 ### Q&A 시스템 — ✅ 완성
 - 11개 카테고리 × ~33문항 × 5오행 = 약 1800개 맞춤 답변 (`lib/qa/`)
