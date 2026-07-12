@@ -638,16 +638,13 @@ function V2ResultInner() {
         el.style.overflow = "visible";
         el.style.overflowX = "hidden";
         el.style.maxHeight = "none";
-        const captureBg = "#ffffff";
         const c = await html2canvas(el, {
-          backgroundColor: captureBg,
+          backgroundColor: null,
           scale: sharedScale,
           useCORS: true,
           allowTaint: true,
           logging: false,
-          height: el.scrollHeight,
           windowWidth: isMobile ? window.innerWidth : 480,
-          windowHeight: el.scrollHeight,
         });
         el.style.overflow = prevOv;
         el.style.overflowX = prevOvX;
