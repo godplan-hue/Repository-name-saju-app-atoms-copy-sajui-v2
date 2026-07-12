@@ -602,7 +602,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         )}
         {/* 이전 화살표 */}
         <button
-          onClick={e => { e.stopPropagation(); }}
+          onClick={e => { e.stopPropagation(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
           onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
           aria-label="이전 배너"
           style={{ position: "absolute", top: "50%", left: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
@@ -611,7 +611,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         </button>
         {/* 다음 화살표 */}
         <button
-          onClick={e => { e.stopPropagation(); }}
+          onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % displayBanners.length); }}
           onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); resetTimer((cur + 1) % displayBanners.length); }}
           aria-label="다음 배너"
           style={{ position: "absolute", top: "50%", right: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
@@ -626,7 +626,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         <div style={{ position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)", zIndex: 3 }}>
           <div style={{ display: "flex", gap: 6 }}>
             {displayBanners.map((_, i) => (
-              <div key={i} onClick={e => { e.stopPropagation(); }} onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); resetTimer(i); }}
+              <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i); }} onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); resetTimer(i); }}
                 style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? "#facc15" : "rgba(250,204,21,0.4)", transition: "all 0.3s ease", cursor: "pointer", boxShadow: cur === i ? "0 0 6px rgba(250,204,21,0.8)" : "none" }} />
             ))}
           </div>
