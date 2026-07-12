@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import {
   POPULAR_DREAMS,
   DREAMS,
@@ -33,7 +32,6 @@ const DREAM_GRID = [
 ];
 
 export default function HaemongPage() {
-  const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
   const [searched, setSearched] = useState(false);
@@ -56,7 +54,7 @@ export default function HaemongPage() {
   }
 
   function goTo(keyword: string) {
-    router.push(`/haemong/${encodeURIComponent(keyword)}`);
+    window.location.href = `/haemong/${encodeURIComponent(keyword)}`;
   }
 
   return (
@@ -69,7 +67,7 @@ export default function HaemongPage() {
           <span style={{ fontWeight: 900, fontSize: 16, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>꿈해몽</span>
         </div>
         <button
-          onClick={() => router.push("/main-v2")}
+          onClick={() => window.location.href = "/main-v2"}
           style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 700, background: "#f5f3ff", border: "1px solid #ddd6fe", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}
         >
           🐱 사주 보기
@@ -182,7 +180,7 @@ export default function HaemongPage() {
                 key={cat.id}
                 onClick={() => cat.id === "top"
                   ? document.getElementById("popular-top20")?.scrollIntoView({ behavior: "smooth" })
-                  : router.push(`/haemong/category/${cat.id}`)
+                  : (window.location.href = `/haemong/category/${cat.id}`)
                 }
                 style={{ aspectRatio: "1 / 1", borderRadius: 16, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 14px ${cat.accent}28` }}
               >
@@ -295,7 +293,7 @@ export default function HaemongPage() {
 
         {/* 사주 연결 배너 */}
         <div
-          onClick={() => router.push("/main-v2")}
+          onClick={() => window.location.href = "/main-v2"}
           style={{ marginTop: 24, borderRadius: 16, overflow: "hidden", cursor: "pointer", position: "relative", boxShadow: "0 4px 20px rgba(236,72,153,0.25)" }}
         >
           <img src="https://i.pinimg.com/1200x/ed/76/4d/ed764da4ef5dd4e2048939ac2e95dd6f.jpg" alt="사주보기" style={{ width: "100%", height: 110, objectFit: "cover" }} />
