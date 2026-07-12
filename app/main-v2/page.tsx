@@ -306,6 +306,8 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
             <div
               key={cat.id}
               onClick={() => onPick(cat.id)}
+              onTouchStart={e => { const t = e.currentTarget as HTMLElement; t.dataset.sx = String(e.touches[0].clientX); t.dataset.sy = String(e.touches[0].clientY); }}
+              onTouchEnd={e => { const t = e.currentTarget as HTMLElement; const dx = Math.abs(e.changedTouches[0].clientX - parseFloat(t.dataset.sx||"0")); const dy = Math.abs(e.changedTouches[0].clientY - parseFloat(t.dataset.sy||"0")); if (dy > 10 && dy >= dx) return; if (dx < 10) { e.preventDefault(); onPick(cat.id); } }}
               style={{
                 aspectRatio: "1 / 1",
                 background: (cat as any).img ? undefined : cat.bg, borderRadius: 16, cursor: "pointer",
@@ -375,7 +377,7 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
         {EXTRA_ITEMS.map(item => (
-          <div key={item.id} onClick={() => onPick(item.id)} onTouchEnd={e => { const t = e.currentTarget as HTMLElement; if (Math.abs((e.changedTouches[0].clientX - parseFloat(t.dataset.sx||"0"))) < 10) { e.preventDefault(); onPick(item.id); } }} onTouchStart={e => { (e.currentTarget as HTMLElement).dataset.sx = String(e.touches[0].clientX); }} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 12px ${item.accent}28`, WebkitTransform: "translateZ(0)", transform: "translateZ(0)" }}>
+          <div key={item.id} onClick={() => onPick(item.id)} onTouchStart={e => { const t = e.currentTarget as HTMLElement; t.dataset.sx = String(e.touches[0].clientX); t.dataset.sy = String(e.touches[0].clientY); }} onTouchEnd={e => { const t = e.currentTarget as HTMLElement; const dx = Math.abs(e.changedTouches[0].clientX - parseFloat(t.dataset.sx||"0")); const dy = Math.abs(e.changedTouches[0].clientY - parseFloat(t.dataset.sy||"0")); if (dy > 10 && dy >= dx) return; if (dx < 10) { e.preventDefault(); onPick(item.id); } }} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 12px ${item.accent}28`, WebkitTransform: "translateZ(0)", transform: "translateZ(0)" }}>
             <img src={item.img} alt={item.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 75%)" }} />
             <span style={{ position: "absolute", top: 5, left: 5, fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, minWidth: 52, textAlign: "center", display: "inline-block", ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "#15803d", color: "#fff" }) }}>{item.price}</span>

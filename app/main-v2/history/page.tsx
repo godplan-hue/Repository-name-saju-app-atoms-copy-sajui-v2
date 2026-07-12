@@ -432,14 +432,15 @@ export default function V2History() {
                     <button
                       onClick={e => {
                         e.stopPropagation();
+                        e.preventDefault();
                         setExpanded(prev => {
                           const next = new Set(prev);
                           next.has(item.id) ? next.delete(item.id) : next.add(item.id);
                           return next;
                         });
                       }}
-                      onTouchEnd={e => { e.stopPropagation(); }}
-                      style={{ marginTop: 6, background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, color: "#ec4899", padding: 0 }}>
+                      onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); setExpanded(prev => { const next = new Set(prev); next.has(item.id) ? next.delete(item.id) : next.add(item.id); return next; }); }}
+                      style={{ marginTop: 6, background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, color: "#ec4899", padding: "8px 4px", margin: "-8px -4px" }}>
                       {expanded.has(item.id) ? "▲ 접기" : "▼ 더보기"}
                     </button>
                   )}
