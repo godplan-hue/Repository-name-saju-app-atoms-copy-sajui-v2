@@ -5,7 +5,7 @@ import { db } from "@/lib/firebase";
 // 공유하는 순간 결과를 서버(Firebase)에 저장해두고 그 고유 id로 공개 조회함
 export async function POST(request: NextRequest) {
   try {
-    const { name, scores, luckyColor, luckyNumber, luckyDirection, categories, businessName, tier, birthYear, subtitle } = await request.json();
+    const { name, scores, luckyColor, luckyNumber, luckyDirection, categories, businessName, tier, birthYear, subtitle, fullResult } = await request.json();
     if (!name || !categories || !Array.isArray(categories) || categories.length === 0) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
     };
     if (subtitle) entry.subtitle = subtitle;
     if (scores && typeof scores === "object" && Object.keys(scores).length > 0) entry.scores = scores;
+    if (fullResult && typeof fullResult === "object") entry.fullResult = fullResult;
     const ref = await db.ref("sharedResults").push(entry);
     return NextResponse.json({ id: ref.key });
   } catch (error) {

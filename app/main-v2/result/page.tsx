@@ -399,8 +399,27 @@ function V2ResultInner() {
         localStorage.removeItem("v2_plan");
         localStorage.removeItem("price");
       }
-      // localStorage가 없어도 sid가 있으면 공유 결과지로 폴백 (Toss가 외부 브라우저로 열린 경우)
-      if (sid) { window.location.replace(`/main-v2/share/${sid}`); return; }
+      // sid 있으면 Firebase에서 fullResult 복원 시도 (Toss 외부 브라우저로 localStorage 단절된 경우)
+      if (sid) {
+        (async () => {
+          try {
+            const res = await fetch(`/api/v2/share?id=${sid}`);
+            if (res.ok) {
+              const { entry } = await res.json();
+              if (entry?.fullResult) {
+                localStorage.setItem("v2_result", JSON.stringify(entry.fullResult));
+                localStorage.setItem("v2_paid", "1");
+                localStorage.setItem("v2_plan", entry.fullResult.plan || "select");
+                localStorage.setItem("price", entry.fullResult.price || "990");
+                window.location.replace("/main-v2/result");
+                return;
+              }
+            }
+          } catch {}
+          window.location.replace(`/main-v2/share/${sid}`);
+        })();
+        return;
+      }
       window.location.replace("/main-v2/analysis");
       return;
     }

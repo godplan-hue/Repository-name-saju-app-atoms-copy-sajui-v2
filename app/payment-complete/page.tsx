@@ -402,6 +402,7 @@ function PaymentCompleteInner() {
               name: p.name, scores: data.scores, luckyColor: data.luckyColor,
               luckyNumber: data.luckyNumber, luckyDirection: data.luckyDirection,
               categories: shareCats, tier: plan, birthYear: p.birthYear,
+              fullResult: { ...result, plan, price },
             }),
           });
           if (shareRes.ok) { const sd = await shareRes.json(); sidParam = sd.id ?? ""; }
