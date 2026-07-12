@@ -481,7 +481,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
       <div
         style={{ height: 320, borderRadius: 20, position: "relative", overflow: "hidden", cursor: "pointer", boxShadow: "0 6px 28px rgba(139,92,246,0.18)", background: "#f9f0ff" }}
         onClick={() => {
-          if ((b as any).chatBanner) { document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
+          if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
           if ((b as any).directUrl) { router.push((b as any).directUrl); return; }
           if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
@@ -499,7 +499,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
             e.preventDefault();
             // 돌아왔을 때 같은 배너가 보이도록 저장 (타이머가 덮어쓰지 않음)
             try { sessionStorage.setItem("bannerCur", String(cur)); } catch {}
-            if ((b as any).chatBanner) { resetTimer(cur); document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
+            if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} resetTimer(cur); document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
             if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
             if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
             onStart(b.route);
