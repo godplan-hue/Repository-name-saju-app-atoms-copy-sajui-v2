@@ -467,6 +467,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
   });
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
+  const startYRef = useRef<number | null>(null);
 
   const resetTimer = (next: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -494,11 +495,15 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
           if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
         }}
-        onTouchStart={e => { startXRef.current = e.touches[0].clientX; }}
+        onTouchStart={e => { startXRef.current = e.touches[0].clientX; startYRef.current = e.touches[0].clientY; }}
         onTouchEnd={e => {
           if (startXRef.current === null) return;
           const dx = e.changedTouches[0].clientX - startXRef.current;
+          const dy = e.changedTouches[0].clientY - (startYRef.current ?? 0);
           startXRef.current = null;
+          startYRef.current = null;
+          // 세로 스크롤이면 무시 (|dy| > 10 이고 |dy| >= |dx|)
+          if (Math.abs(dy) > 10 && Math.abs(dy) >= Math.abs(dx)) return;
           if (Math.abs(dx) > 40) {
             // 스와이프: 배너 전환
             resetTimer(dx < 0 ? (cur + 1) % displayBanners.length : (cur - 1 + displayBanners.length) % displayBanners.length);
