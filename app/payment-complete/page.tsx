@@ -411,9 +411,9 @@ function PaymentCompleteInner() {
       const specialT = sessionStorage.getItem("specialType");
       const specialP = sessionStorage.getItem("specialPaid");
       if (specialT && specialP === "1") {
-        window.location.href = "/main-v2/special";
+        window.location.replace("/main-v2/special");
       } else {
-        window.location.href = sidParam ? `/main-v2/result?sid=${sidParam}` : "/main-v2/result";
+        window.location.replace(sidParam ? `/main-v2/result?sid=${sidParam}` : "/main-v2/result");
       }
     } catch (error) {
       console.error("분석 오류:", error);
