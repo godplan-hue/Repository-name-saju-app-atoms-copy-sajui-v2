@@ -496,7 +496,10 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         onTouchEnd={e => {
           if (startXRef.current === null) return;
           const dx = e.changedTouches[0].clientX - startXRef.current;
-          if (Math.abs(dx) > 40) resetTimer(dx < 0 ? (cur + 1) % BANNERS.length : (cur - 1 + BANNERS.length) % BANNERS.length);
+          if (Math.abs(dx) > 40) {
+            e.preventDefault();
+            resetTimer(dx < 0 ? (cur + 1) % displayBanners.length : (cur - 1 + displayBanners.length) % displayBanners.length);
+          }
           startXRef.current = null;
         }}
       >
