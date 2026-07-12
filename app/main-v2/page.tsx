@@ -455,15 +455,13 @@ function PartnerFortuneGrid({ brand, onPick, onBundle }: {
 function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; onModal?: (id: string, preselect?: string) => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
   const router = useRouter();
   const displayBanners = isPartner ? [BANNERS[2], BANNERS[3]] : BANNERS;
-  const initCur = () => { try { const s = sessionStorage.getItem("bannerCur"); if (s) return Math.min(parseInt(s), displayBanners.length - 1); } catch {} return 0; };
-  const [cur, setCur] = useState(initCur);
+  const [cur, setCur] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
 
-  const resetTimer = (next: number, save = false) => {
+  const resetTimer = (next: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setCur(c => (c + 1) % displayBanners.length), 6500);
-    if (save) { try { sessionStorage.setItem("bannerCur", String(next)); } catch {} }
     setCur(next);
   };
 
@@ -493,12 +491,10 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
           startXRef.current = null;
           if (Math.abs(dx) > 40) {
             // 스와이프: 배너 전환
-            resetTimer(dx < 0 ? (cur + 1) % displayBanners.length : (cur - 1 + displayBanners.length) % displayBanners.length, true);
+            resetTimer(dx < 0 ? (cur + 1) % displayBanners.length : (cur - 1 + displayBanners.length) % displayBanners.length);
           } else {
             // 탭: 네이버 인앱브라우저에서 onClick이 안 발동하므로 여기서 직접 처리
             e.preventDefault();
-            // 돌아왔을 때 같은 배너가 보이도록 저장 (타이머가 덮어쓰지 않음)
-            try { sessionStorage.setItem("bannerCur", String(cur)); } catch {}
             if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} resetTimer(cur); document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
             if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
             if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
@@ -590,8 +586,8 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         )}
         {/* 이전 화살표 */}
         <button
-          onClick={e => { e.stopPropagation(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length, true); }}
-          onTouchEnd={e => { e.stopPropagation(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length, true); }}
+          onClick={e => { e.stopPropagation(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
+          onTouchEnd={e => { e.stopPropagation(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
           aria-label="이전 배너"
           style={{ position: "absolute", top: "50%", left: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
         >
@@ -599,8 +595,8 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         </button>
         {/* 다음 화살표 */}
         <button
-          onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % displayBanners.length, true); }}
-          onTouchEnd={e => { e.stopPropagation(); resetTimer((cur + 1) % displayBanners.length, true); }}
+          onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % displayBanners.length); }}
+          onTouchEnd={e => { e.stopPropagation(); resetTimer((cur + 1) % displayBanners.length); }}
           aria-label="다음 배너"
           style={{ position: "absolute", top: "50%", right: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
         >
@@ -614,7 +610,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         <div style={{ position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)", zIndex: 3 }}>
           <div style={{ display: "flex", gap: 6 }}>
             {displayBanners.map((_, i) => (
-              <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i, true); }} onTouchEnd={e => { e.stopPropagation(); resetTimer(i, true); }}
+              <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i); }} onTouchEnd={e => { e.stopPropagation(); resetTimer(i); }}
                 style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? "#facc15" : "rgba(250,204,21,0.4)", transition: "all 0.3s ease", cursor: "pointer", boxShadow: cur === i ? "0 0 6px rgba(250,204,21,0.8)" : "none" }} />
             ))}
           </div>
