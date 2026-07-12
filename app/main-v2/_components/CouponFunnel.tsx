@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 
 export default function CouponFunnel() {
-  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [phone, setPhone] = useState("");
@@ -159,7 +157,7 @@ export default function CouponFunnel() {
                 <button
                   onClick={() => {
                     try { navigator.clipboard.writeText(code); } catch {}
-                    router.push("/main-v2/payment");
+                    window.location.href = "/main-v2/payment";
                   }}
                   style={{
                     width: "100%", padding: "15px", borderRadius: 12, border: "none",

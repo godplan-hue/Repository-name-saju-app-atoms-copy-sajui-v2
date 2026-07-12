@@ -1,12 +1,10 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Script from "next/script";
 
 type Step = "closed" | "share" | "form" | "code";
 
 export default function KakaoShareCouponBanner() {
-  const router = useRouter();
   const [step, setStep] = useState<Step>("closed");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -171,7 +169,7 @@ export default function KakaoShareCouponBanner() {
                   </button>
                 </div>
                 <button
-                  onClick={() => router.push("/main-v2/payment")}
+                  onClick={() => { window.location.href = "/main-v2/payment"; }}
                   style={{ width: "100%", padding: "14px", borderRadius: 12, border: "none", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "#fff", fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 8 }}
                 >
                   🔮 990원 바로 결제하기

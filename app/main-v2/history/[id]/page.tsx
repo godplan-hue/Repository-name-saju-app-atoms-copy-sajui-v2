@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import Script from "next/script";
 import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
@@ -35,7 +35,6 @@ function SelectModal({ onClose, onPay, paying }: {
   onPay: (cats: string[]) => void;
   paying: boolean;
 }) {
-  const router = useRouter();
   const [selected, setSelected] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const price = selected.length * 990;
   return (
@@ -85,7 +84,7 @@ function SelectModal({ onClose, onPay, paying }: {
           {paying ? "⏳ 분석 중..." : selected.length > 0 ? `💎 ${selected.length}개 운세 보기 · ₩${price.toLocaleString()}` : "운세를 선택하세요"}
         </button>
         <div style={{ marginTop: 10 }}>
-          <button onClick={() => router.push("/main-v2/payment")}
+          <button onClick={() => { window.location.href = "/main-v2/payment"; }}
             style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
             💳 유료 운세 결제하기
           </button>
@@ -141,7 +140,6 @@ function fmtDate(iso: string) {
 }
 
 export default function HistoryDetail() {
-  const router = useRouter();
   const params = useParams();
   const cardRef = useRef<HTMLDivElement>(null);
   const [item, setItem] = useState<any>(null);
@@ -196,7 +194,7 @@ export default function HistoryDetail() {
   itemSnapshotRef.current = item;
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!itemSnapshotRef.current) router.replace("/main-v2/history");
+      if (!itemSnapshotRef.current) window.location.replace("/main-v2/history");
     }, 3000);
     return () => clearTimeout(timer);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -456,7 +454,7 @@ export default function HistoryDetail() {
       const pkgName = cats.map(c => c.replace(/\S+\s/, "")).join("+");
       const price = cats.length * 990;
       const _histIdNext = `/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${cats.length * 30}&paid=${price}`;
-      router.push(`/main-v2/pay?amount=${price}&next=${encodeURIComponent(_histIdNext)}`);
+      window.location.href = `/main-v2/pay?amount=${price}&next=${encodeURIComponent(_histIdNext)}`;
     } finally {
       setPaying(false);
       setShowSelect(false);
@@ -545,7 +543,7 @@ export default function HistoryDetail() {
     <main style={{ minHeight: "100vh", background: BG, backgroundImage: "url('https://i.pinimg.com/736x/49/e5/f9/49e5f910a4d9c765e84937b9919ada01.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-        <button onClick={() => router.push("/main-v2/history")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
+        <button onClick={() => { window.location.href = "/main-v2/history"; }} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
           <span style={{ fontSize: 18 }}>←</span>
           <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>보관함</span>
         </button>
@@ -749,7 +747,7 @@ export default function HistoryDetail() {
 
 
         {/* 꿈해몽 결제 혜택 배너 */}
-        <div onClick={() => router.push("/haemong")} style={{ marginTop: 16, borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>
+        <div onClick={() => { window.location.href = "/haemong"; }} style={{ marginTop: 16, borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>
           <div style={{ background: "#dc2626", padding: "8px 16px" }}>
             <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🎁 결제 혜택</span>
           </div>
@@ -768,7 +766,7 @@ export default function HistoryDetail() {
 
         {/* ── 대운·택일 배너 ── */}
         <div style={{ margin: "14px 0 0", display: "flex", gap: 8 }}>
-          <div onClick={() => router.push("/main-v2/daewoon")} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}>
+          <div onClick={() => { window.location.href = "/main-v2/daewoon"; }} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}>
             <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🌌 대운(大運)</span>
             </div>
@@ -777,7 +775,7 @@ export default function HistoryDetail() {
               <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "4px 12px", borderRadius: 20 }}>₩2,900 →</span>
             </div>
           </div>
-          <div onClick={() => router.push("/main-v2/taegil")} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}>
+          <div onClick={() => { window.location.href = "/main-v2/taegil"; }} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}>
             <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>📅 택일(擇日)</span>
             </div>

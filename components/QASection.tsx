@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { QA_CATEGORIES, getOhaeng, fillTemplate } from "@/lib/qa/index";
 import type { Ohaeng, QACategory } from "@/lib/qa/index";
 
@@ -48,7 +47,6 @@ interface Props {
 }
 
 export default function QASection({ name, birthYear, unlocked = false, onBuyClick }: Props) {
-  const router = useRouter();
   const ohaeng: Ohaeng = getOhaeng(birthYear);
   const [activeCatId, setActiveCatId] = useState(QA_CATEGORIES[0].id);
   const [openIdx, setOpenIdx] = useState<string | null>(null);
@@ -508,7 +506,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>⚡ 신규 990원</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5, marginBottom: 10 }}>
             {QA_SPECIAL_990.map(s => (
-              <button key={s.id} onClick={() => { router.push(`/main-v2/pay?amount=${s.price}&next=${encodeURIComponent(`/payment-complete?special=${s.id}&paid=${s.price}`)}`); }}
+              <button key={s.id} onClick={() => { window.location.href = `/main-v2/pay?amount=${s.price}&next=${encodeURIComponent(`/payment-complete?special=${s.id}&paid=${s.price}`)}`; }}
                 style={{ padding: "9px 5px", background: s.red ? "rgba(40,5,5,0.9)" : "#fdf4ff", border: `1.5px solid ${s.red ? "rgba(239,68,68,0.8)" : "#e9d5ff"}`, borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
                 <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
                 <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: s.red ? "#ffffff" : "#1a1a2e", wordBreak: "keep-all", lineHeight: 1.2 }}>{s.label}</p>
@@ -521,13 +519,13 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: 10 }}>
             {QA_SPECIAL_2900.map(s => (
               <button key={s.id} onClick={() => {
-                if ((s as any).daeun) { router.push(`/main-v2/daewoon`); return; }
-                if (s.id === "taegil") { router.push(`/main-v2/taegil`); return; }
+                if ((s as any).daeun) { window.location.href = `/main-v2/daewoon`; return; }
+                if (s.id === "taegil") { window.location.href = `/main-v2/taegil`; return; }
                 if (s.id === "reunion" || s.id === "pet_compat") { setAwaitOther({ id: s.id }); return; }
                 const SPECIAL_TO_CAT: Record<string, string> = { sinyeon: "🎍 신년운세", love_detail: "💗 연애사주", findmatch: "🔍 내 사람 찾기", marriage_detail: "💍 결혼사주", divorce: "🌧 이혼운세" };
                 const catLabel = SPECIAL_TO_CAT[s.id];
-                if (catLabel) { sessionStorage.setItem("v2_paid_cats", JSON.stringify([catLabel])); router.push(`/main-v2/pay?amount=2900&next=${encodeURIComponent(`/payment-complete?naming=1&queue=${s.id}&paid=2900&package=${encodeURIComponent(s.label)}`)}`); }
-                else { router.push(`/main-v2/pay?amount=2900&next=${encodeURIComponent(`/payment-complete?special=${s.id}&paid=2900`)}`); }
+                if (catLabel) { sessionStorage.setItem("v2_paid_cats", JSON.stringify([catLabel])); window.location.href = `/main-v2/pay?amount=2900&next=${encodeURIComponent(`/payment-complete?naming=1&queue=${s.id}&paid=2900&package=${encodeURIComponent(s.label)}`)}` ; }
+                else { window.location.href = `/main-v2/pay?amount=2900&next=${encodeURIComponent(`/payment-complete?special=${s.id}&paid=2900`)}`; }
               }}
                 style={{ padding: "9px 5px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
                 <p style={{ margin: "0 0 1px", fontSize: 15 }}>{s.emoji}</p>
@@ -543,7 +541,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
               <button key={s.id} onClick={() => {
                 const catKeyMap: Record<string, string> = { "재물운": "💰 재물운", "연애운": "💕 연애운", "건강운": "💪 건강운", "성공운": "🎯 성공운", "총운": "✨ 총운" };
                 sessionStorage.setItem("v2_paid_cats", JSON.stringify([catKeyMap[s.id] ?? s.id]));
-                router.push(`/main-v2/pay?amount=3900&next=${encodeURIComponent(`/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=3900`)}`);
+                window.location.href = `/main-v2/pay?amount=3900&next=${encodeURIComponent(`/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=3900`)}`;
               }}
                 style={{ padding: "8px 3px", background: "#fdf4ff", border: "1.5px solid #e9d5ff", borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
                 <p style={{ margin: "0 0 1px", fontSize: 10, fontWeight: 900, color: "#1a1a2e" }}>{s.label}</p>
@@ -558,7 +556,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
               const pkgEmojis: Record<string, string> = { "기본 분석": "🐱", "베이직": "🌟", "프리미엄": "💎", "VIP 커플팩": "👑" };
               const emoji = pkgEmojis[p.label] ?? "✨";
               return (
-                <button key={p.id} onClick={() => { router.push(`/main-v2/pay?amount=${p.paid}&next=${encodeURIComponent(`/payment-complete?package=${encodeURIComponent(p.label)}&pages=${p.pages}&paid=${p.paid}`)}`); }}
+                <button key={p.id} onClick={() => { window.location.href = `/main-v2/pay?amount=${p.paid}&next=${encodeURIComponent(`/payment-complete?package=${encodeURIComponent(p.label)}&pages=${p.pages}&paid=${p.paid}`)}`; }}
                   style={{ padding: "8px 3px", background: "rgba(20,10,40,0.85)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 10, cursor: "pointer", textAlign: "center", color: "white" }}>
                   <p style={{ margin: "0 0 2px", fontSize: 18 }}>{emoji}</p>
                   <p style={{ margin: "0 0 2px", fontSize: 9, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{p.label}</p>
@@ -598,7 +596,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
               sessionStorage.setItem("specialOtherName", otherInput.trim());
               setAwaitOther(null);
               setOtherInput("");
-              router.push(`/main-v2/pay?amount=2900&next=${encodeURIComponent(`/payment-complete?special=${awaitOther.id}&paid=2900`)}`);
+              window.location.href = `/main-v2/pay?amount=2900&next=${encodeURIComponent(`/payment-complete?special=${awaitOther.id}&paid=2900`)}`;
             }}
             style={{ width: "100%", padding: "13px 0", background: otherInput.trim() ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#e5e7eb", color: otherInput.trim() ? "white" : "#9ca3af", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: otherInput.trim() ? "pointer" : "not-allowed" }}
           >
