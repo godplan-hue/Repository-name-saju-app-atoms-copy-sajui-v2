@@ -375,7 +375,7 @@ function ExtraFortuneSection({ onPick }: { onPick: (id: string) => void }) {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
         {EXTRA_ITEMS.map(item => (
-          <div key={item.id} onClick={() => onPick(item.id)} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 12px ${item.accent}28`, WebkitTransform: "translateZ(0)", transform: "translateZ(0)" }}>
+          <div key={item.id} onClick={() => onPick(item.id)} onTouchEnd={e => { const t = e.currentTarget as HTMLElement; if (Math.abs((e.changedTouches[0].clientX - parseFloat(t.dataset.sx||"0"))) < 10) { e.preventDefault(); onPick(item.id); } }} onTouchStart={e => { (e.currentTarget as HTMLElement).dataset.sx = String(e.touches[0].clientX); }} style={{ aspectRatio: "1 / 1", borderRadius: 14, cursor: "pointer", position: "relative", overflow: "hidden", boxShadow: `0 3px 12px ${item.accent}28`, WebkitTransform: "translateZ(0)", transform: "translateZ(0)" }}>
             <img src={item.img} alt={item.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 75%)" }} />
             <span style={{ position: "absolute", top: 5, left: 5, fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, minWidth: 52, textAlign: "center", display: "inline-block", ...(item.priceNum === 990 ? { background: "#ef4444", color: "#fff" } : { background: "#15803d", color: "#fff" }) }}>{item.price}</span>
@@ -501,8 +501,8 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
           } else {
             // 탭: 네이버 인앱브라우저에서 onClick이 안 발동하므로 여기서 직접 처리
             e.preventDefault();
-            // 돌아왔을 때 다음 배너가 보이도록 저장
-            try { sessionStorage.setItem("bannerCur", String((cur + 1) % displayBanners.length)); } catch {}
+            // 돌아왔을 때 같은 배너가 보이도록 저장
+            try { sessionStorage.setItem("bannerCur", String(cur)); } catch {}
             if ((b as any).chatBanner) { document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
             if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
             if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
@@ -941,9 +941,9 @@ export default function MainV2() {
       {/* ── 추가 운세 상품 섹션 ── */}
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
-          if (!user) { router.push("/main-v2/login"); return; }
           if (id === "daewoon") { window.location.href = "/main-v2/daewoon"; return; }
           if (id === "taegil") { window.location.href = "/main-v2/taegil"; return; }
+          if (!user) { window.location.href = "/main-v2/login"; return; }
           setShowModal(id);
         }} />
       )}
