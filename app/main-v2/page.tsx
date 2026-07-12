@@ -454,23 +454,24 @@ function PartnerFortuneGrid({ brand, onPick, onBundle }: {
 
 function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; onModal?: (id: string, preselect?: string) => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
   const router = useRouter();
-  const [cur, setCur] = useState(0);
+  const displayBanners = isPartner ? [BANNERS[2], BANNERS[3]] : BANNERS;
+  const initCur = () => { try { const s = sessionStorage.getItem("bannerCur"); if (s) return Math.min(parseInt(s), displayBanners.length - 1); } catch {} return 0; };
+  const [cur, setCur] = useState(initCur);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
-
-  const displayBanners = isPartner ? [BANNERS[2], BANNERS[3]] : BANNERS;
 
   const resetTimer = (next: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setCur(c => {
-      return (c + 1) % displayBanners.length;
+      const n = (c + 1) % displayBanners.length; try { sessionStorage.setItem("bannerCur", String(n)); } catch {} return n;
     }), 6500);
+    try { sessionStorage.setItem("bannerCur", String(next)); } catch {}
     setCur(next);
   };
 
   useEffect(() => {
     timerRef.current = setInterval(() => setCur(c => {
-      return (c + 1) % displayBanners.length;
+      const n = (c + 1) % displayBanners.length; try { sessionStorage.setItem("bannerCur", String(n)); } catch {} return n;
     }), 6500);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [displayBanners.length]);
@@ -499,8 +500,9 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
             resetTimer(dx < 0 ? (cur + 1) % displayBanners.length : (cur - 1 + displayBanners.length) % displayBanners.length);
           } else {
             // 탭: 네이버 인앱브라우저에서 onClick이 안 발동하므로 여기서 직접 처리
-            // router.push 대신 window.location.href 사용 (인앱브라우저 호환성)
             e.preventDefault();
+            // 돌아왔을 때 다음 배너가 보이도록 저장
+            try { sessionStorage.setItem("bannerCur", String((cur + 1) % displayBanners.length)); } catch {}
             if ((b as any).chatBanner) { document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
             if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
             if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
@@ -592,7 +594,8 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         )}
         {/* 이전 화살표 */}
         <button
-          onClick={e => { e.stopPropagation(); resetTimer((cur - 1 + BANNERS.length) % BANNERS.length); }}
+          onClick={e => { e.stopPropagation(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
+          onTouchEnd={e => { e.stopPropagation(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
           aria-label="이전 배너"
           style={{ position: "absolute", top: "50%", left: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
         >
@@ -600,7 +603,8 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         </button>
         {/* 다음 화살표 */}
         <button
-          onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % BANNERS.length); }}
+          onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % displayBanners.length); }}
+          onTouchEnd={e => { e.stopPropagation(); resetTimer((cur + 1) % displayBanners.length); }}
           aria-label="다음 배너"
           style={{ position: "absolute", top: "50%", right: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
         >
@@ -613,8 +617,8 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         {/* 인디케이터 — 노란색 */}
         <div style={{ position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)", zIndex: 3 }}>
           <div style={{ display: "flex", gap: 6 }}>
-            {BANNERS.map((_, i) => (
-              <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i); }}
+            {displayBanners.map((_, i) => (
+              <div key={i} onClick={e => { e.stopPropagation(); resetTimer(i); }} onTouchEnd={e => { e.stopPropagation(); resetTimer(i); }}
                 style={{ width: cur === i ? 22 : 7, height: 7, borderRadius: 99, background: cur === i ? "#facc15" : "rgba(250,204,21,0.4)", transition: "all 0.3s ease", cursor: "pointer", boxShadow: cur === i ? "0 0 6px rgba(250,204,21,0.8)" : "none" }} />
             ))}
           </div>
@@ -733,9 +737,9 @@ export default function MainV2() {
   }, []);
 
   const goFree = () => {
-    if (!user) { router.push("/main-v2/login"); return; }
-    try { const sp = localStorage.getItem("v2_saved_profile"); if (sp) { const p = JSON.parse(sp); if (p.birthYear && p.gender && p.birthHour) { sessionStorage.setItem("v2_profile", JSON.stringify(p)); router.push("/main-v2/analysis?fresh=1"); return; } } } catch {}
-    router.push("/main-v2/profile");
+    if (!user) { window.location.href = "/main-v2/login"; return; }
+    try { const sp = localStorage.getItem("v2_saved_profile"); if (sp) { const p = JSON.parse(sp); if (p.birthYear && p.gender && p.birthHour) { sessionStorage.setItem("v2_profile", JSON.stringify(p)); window.location.href = "/main-v2/analysis?fresh=1"; return; } } } catch {}
+    window.location.href = "/main-v2/profile";
   };
 
   const handleCourse = (c: typeof COURSES[0]) => {
@@ -827,7 +831,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { window.location.href = "/main-v2/payment?highlight=wealthlove"; } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
       <FortuneSearch onOpenModal={(catKey, modalId) => {
         if (modalId) { setShowModal(modalId); }
         else if (catKey) { setModalSelectedCats([catKey]); setShowModal("wealth5"); }
@@ -861,7 +865,7 @@ export default function MainV2() {
             if (!user) { router.push("/main-v2/login"); return; }
             setShowModal(id);
           }
-          else { if (id === "qa") { router.push("/main-v2/qa-list"); return; } if (id === "dream") { router.push("/haemong"); return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id === "naming" ? "wealth5" : id); }
+          else { if (id === "qa") { window.location.href = "/main-v2/qa-list"; return; } if (id === "dream") { window.location.href = "/haemong"; return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id === "naming" ? "wealth5" : id); }
         }} />
       )}
 
@@ -938,8 +942,8 @@ export default function MainV2() {
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
           if (!user) { router.push("/main-v2/login"); return; }
-          if (id === "daewoon") { router.push("/main-v2/daewoon"); return; }
-          if (id === "taegil") { router.push("/main-v2/taegil"); return; }
+          if (id === "daewoon") { window.location.href = "/main-v2/daewoon"; return; }
+          if (id === "taegil") { window.location.href = "/main-v2/taegil"; return; }
           setShowModal(id);
         }} />
       )}
@@ -947,18 +951,7 @@ export default function MainV2() {
       {/* 복냥이 상담창 — 내정보(푸터) 바로 위 */}
       {!isPartner && (
         <div id="chat-widget" style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
-          {savedProfile ? (
-            <QAChatWidget name={(user && !["카카오 사용자","네이버 사용자","Google 사용자"].includes(user)) ? user : savedProfile.name} birthYear={savedProfile.birthYear} />
-          ) : (
-            <div style={{ background: "linear-gradient(135deg,#1a0a2e,#2d1b69)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, padding: "24px 20px", textAlign: "center" }}>
-              <p style={{ fontSize: 32, margin: "0 0 8px" }}>🐱</p>
-              <p style={{ fontSize: 15, fontWeight: 900, color: "white", margin: "0 0 6px" }}>복냥이에게 물어보세요!</p>
-              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", margin: "0 0 16px", lineHeight: 1.6 }}>사주를 먼저 분석하면<br />맞춤 답변을 드릴 수 있어요</p>
-              <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "white", border: "none", borderRadius: 20, padding: "11px 28px", fontSize: 14, fontWeight: 900, cursor: "pointer" }}>
-                사주 분석 시작하기 ↑
-              </button>
-            </div>
-          )}
+          <QAChatWidget name={(user && !["카카오 사용자","네이버 사용자","Google 사용자"].includes(user)) ? user : (savedProfile?.name || "고객님")} birthYear={savedProfile?.birthYear || 1990} />
         </div>
       )}
 
