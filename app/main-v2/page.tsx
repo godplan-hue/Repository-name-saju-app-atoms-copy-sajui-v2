@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
 import FortuneSearch from "@/app/main-v2/_components/FortuneSearch";
@@ -453,7 +453,6 @@ function PartnerFortuneGrid({ brand, onPick, onBundle }: {
 }
 
 function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; onModal?: (id: string, preselect?: string) => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
-  const router = useRouter();
   const displayBanners = isPartner ? [BANNERS[2], BANNERS[3]] : BANNERS;
   const [cur, setCur] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -480,7 +479,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         style={{ height: 320, borderRadius: 20, position: "relative", overflow: "hidden", cursor: "pointer", boxShadow: "0 6px 28px rgba(139,92,246,0.18)", background: "#f9f0ff" }}
         onClick={() => {
           if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
-          if ((b as any).directUrl) { router.push((b as any).directUrl); return; }
+          if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
           if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
         }}
@@ -640,7 +639,6 @@ function ModalParamReader({ setShowModal, setModalSelectedCats }: { setShowModal
 }
 
 export default function MainV2() {
-  const router = useRouter();
   const [user, setUser] = useState<string | null>(null);
   const [savedProfile, setSavedProfile] = useState<{ name: string; birthYear: number } | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -740,7 +738,7 @@ export default function MainV2() {
     } else {
       sessionStorage.setItem("selectedPackage", c.packageName ?? "");
       const _pkgPreselect: Record<string, string> = { "기본 분석": "basic", "베이직": "standard", "프리미엄": "premium", "VIP 커플팩": "vip" };
-      router.push(`/main-v2/payment?preselect=${_pkgPreselect[c.packageName ?? ""] || "basic"}`);
+      window.location.href = `/main-v2/payment?preselect=${_pkgPreselect[c.packageName ?? ""] || "basic"}`;
     }
   };
 
@@ -790,11 +788,11 @@ export default function MainV2() {
                 </button>
               </>
             )
-            : <button onClick={() => router.push("/main-v2/login")} style={{ padding: "6px 14px", background: G, color: "white", border: "none", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>로그인</button>
+            : <button onClick={() => { window.location.href = "/main-v2/login"; }} style={{ padding: "6px 14px", background: G, color: "white", border: "none", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>로그인</button>
           }
-          {!isPartner && <button onClick={() => router.push("/main-v2/payment")} style={{ padding: "6px 13px", background: G, color: "white", border: "none", borderRadius: 20, fontWeight: 900, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 8px rgba(236,72,153,0.3)" }}>💳 전체운세</button>}
-          <button onClick={() => router.push("/main-v2/history")} style={{ padding: "6px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>📂 보관함</button>
-          <button onClick={() => router.push("/saju-info")} style={{ padding: "6px 12px", background: "#f3e8ff", color: "#7c3aed", border: "1px solid rgba(124,58,237,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>📖 사주정보</button>
+          {!isPartner && <button onClick={() => { window.location.href = "/main-v2/payment"; }} style={{ padding: "6px 13px", background: G, color: "white", border: "none", borderRadius: 20, fontWeight: 900, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 8px rgba(236,72,153,0.3)" }}>💳 전체운세</button>}
+          <button onClick={() => { window.location.href = "/main-v2/history"; }} style={{ padding: "6px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>📂 보관함</button>
+          <button onClick={() => { window.location.href = "/saju-info"; }} style={{ padding: "6px 12px", background: "#f3e8ff", color: "#7c3aed", border: "1px solid rgba(124,58,237,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>📖 사주정보</button>
         </div>
       </header>
 
@@ -846,7 +844,7 @@ export default function MainV2() {
             const bundlePrice = rawPrice ? (Number(rawPrice.replace(/[^0-9]/g, "")) || 6900) : 6900;
             localStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"]));
             const _bundleNext = `/payment-complete?package=${encodeURIComponent("5개심층번들")}&pages=150&paid=${bundlePrice}`;
-            router.push(`/main-v2/pay?amount=${bundlePrice}&next=${encodeURIComponent(_bundleNext)}`);
+            window.location.href = `/main-v2/pay?amount=${bundlePrice}&next=${encodeURIComponent(_bundleNext)}`;
           }}
         />
       ) : (
@@ -854,7 +852,7 @@ export default function MainV2() {
           sessionStorage.setItem("selectedFortune", id);
           if (id === "free") { goFree(); return; }
           else if (id === "sinyeon_premium") {
-            if (!user) { router.push("/main-v2/login"); return; }
+            if (!user) { window.location.href = "/main-v2/login"; return; }
             setShowModal(id);
           }
           else { if (id === "qa") { window.location.href = "/main-v2/qa-list"; return; } if (id === "dream") { window.location.href = "/haemong"; return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id === "naming" ? "wealth5" : id); }
@@ -1083,7 +1081,7 @@ export default function MainV2() {
                   const _ecPrice = ec.priceNum;
                   setShowModal(null);
                   const _ecNext = `/payment-complete?special=${_ecModal}&paid=${_ecPrice}`;
-                  router.push(`/main-v2/pay?amount=${_ecPrice}&next=${encodeURIComponent(_ecNext)}`);
+                  window.location.href = `/main-v2/pay?amount=${_ecPrice}&next=${encodeURIComponent(_ecNext)}`;
                 }} style={{ width: "100%", padding: "14px 0", background: (showModal === "reunion" || showModal === "pet_compat") && !extraOtherInput.trim() ? "rgba(124,58,237,0.4)" : "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: (showModal === "reunion" || showModal === "pet_compat") && !extraOtherInput.trim() ? "not-allowed" : "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>
                   결제하기
                 </button>
@@ -1138,7 +1136,7 @@ export default function MainV2() {
                     const lovePaid = modalSelectedCats.length * 990;
                     const loveLabel = modalSelectedCats.length === 1 ? (modalSelectedCats[0].split(" ").slice(1).join(" ") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
                     const _loveNext = `/payment-complete?naming=1&queue=${loveQueue}&paid=${lovePaid}&package=${encodeURIComponent(loveLabel)}`;
-                    router.push(`/main-v2/pay?amount=${lovePaid}&next=${encodeURIComponent(_loveNext)}`);
+                    window.location.href = `/main-v2/pay?amount=${lovePaid}&next=${encodeURIComponent(_loveNext)}`;
                     return;
                   }
                   if (showModal === "wealth5") {
@@ -1147,27 +1145,27 @@ export default function MainV2() {
                     const w5Label = modalSelectedCats.length === 1 ? (modalSelectedCats[0].split(" ").slice(1).join(" ") || "운세") : `${modalSelectedCats.length}개 운세 묶음`;
                     localStorage.setItem("v2_paid_cats", JSON.stringify(modalSelectedCats));
                     const _w5Next = `/payment-complete?package=${encodeURIComponent(w5Label)}&pages=${modalSelectedCats.length * 30}&paid=${w5Paid}`;
-                    router.push(`/main-v2/pay?amount=${w5Paid}&next=${encodeURIComponent(_w5Next)}`);
+                    window.location.href = `/main-v2/pay?amount=${w5Paid}&next=${encodeURIComponent(_w5Next)}`;
                     return;
                   }
                   if (showModal === "naming") {
                     const allCats = ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"];
                     localStorage.setItem("v2_paid_cats", JSON.stringify(allCats));
                     const _namingNext = `/payment-complete?package=${encodeURIComponent("심층 5개 묶음")}&pages=150&paid=3900`;
-                    router.push(`/main-v2/pay?amount=3900&next=${encodeURIComponent(_namingNext)}`);
+                    window.location.href = `/main-v2/pay?amount=3900&next=${encodeURIComponent(_namingNext)}`;
                     return;
                   } else if (cfg.catKeys) {
                     localStorage.setItem("v2_paid_cats", JSON.stringify(cfg.catKeys));
                     const _catKeysNext = `/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${cfg.catKeys.length * 30}&paid=${resolvedPrice}`;
-                    router.push(`/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_catKeysNext)}`);
+                    window.location.href = `/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_catKeysNext)}`;
                   } else if (cfg.catKey) {
                     localStorage.setItem("v2_paid_cats", JSON.stringify([cfg.catKey]));
                     const _catKeyNext = `/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=30&paid=${resolvedPrice}`;
-                    router.push(`/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_catKeyNext)}`);
+                    window.location.href = `/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_catKeyNext)}`;
                   } else if (cfg.priceNum) {
                     sessionStorage.setItem("selectedPackage", cfg.preselect ?? "basic");
                     const _pkgNext = `/payment-complete?package=${encodeURIComponent(cfg.title)}&pages=${(cfg.features?.length ?? 3) * 30}&paid=${resolvedPrice}`;
-                    router.push(`/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_pkgNext)}`);
+                    window.location.href = `/main-v2/pay?amount=${resolvedPrice}&next=${encodeURIComponent(_pkgNext)}`;
                   }
                 }}
                 style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}>

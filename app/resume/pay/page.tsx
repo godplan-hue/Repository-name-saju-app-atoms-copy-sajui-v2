@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function ResumePayPage() {
   return (
@@ -13,7 +12,6 @@ export default function ResumePayPage() {
 }
 
 function PayInner() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id") || "";
   const AMOUNT = 990;
@@ -107,7 +105,7 @@ function PayInner() {
       <div style={S.inner}>
         {/* 헤더 */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-          <Link href={id ? `/resume/result/${id}` : "/resume"} style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>← 돌아가기</Link>
+          <a href={id ? `/resume/result/${id}` : "/resume"} style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>← 돌아가기</a>
           <span style={{ fontSize: 13, color: "#6b7280" }}>합격 전략 분석</span>
         </div>
 
