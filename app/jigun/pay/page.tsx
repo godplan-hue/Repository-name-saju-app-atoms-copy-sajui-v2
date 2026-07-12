@@ -64,6 +64,7 @@ function PayInner() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            id: `jigun_${Date.now()}`,
             phone: mobile.replace(/\D/g, "") || "",
             name: name.trim(),
             amount: AMOUNT,

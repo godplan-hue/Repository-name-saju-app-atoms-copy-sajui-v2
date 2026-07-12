@@ -254,14 +254,14 @@ function PaymentCompleteInner() {
     sessionStorage.setItem("v2_plan", "package");
 
     // 추천인 커미션
-    const refPartnerId = localStorage.getItem("v2_ref");
+    const refPartnerId = localStorage.getItem("referred_by");
     if (refPartnerId && paid) {
       fetch("/api/partner/commission", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ partnerId: refPartnerId, paidAmount: Number(paid) }),
       }).catch(() => {});
-      localStorage.removeItem("v2_ref");
+      localStorage.removeItem("referred_by");
     }
 
     setPackageName(pkg);

@@ -628,6 +628,10 @@ function ModalParamReader({ setShowModal, setModalSelectedCats }: { setShowModal
       setModalSelectedCats(["💰 재물운"]);
       setShowModal("naming");
     }
+    if (modal === "love") {
+      setModalSelectedCats(["💕 연애운"]);
+      setShowModal("love");
+    }
     const ref = searchParams.get("ref");
     if (ref) localStorage.setItem("referred_by", ref);
   }, [searchParams]);

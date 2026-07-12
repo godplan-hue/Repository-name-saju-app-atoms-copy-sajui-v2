@@ -38,8 +38,8 @@ export default function FreeForm() {
       // 네트워크 오류는 무시하고 진행
     }
 
-    // 기본 프로필 sessionStorage 저장 (payment-complete 폼에서 이름 pre-fill용)
-    sessionStorage.setItem("v2_saved_profile", JSON.stringify({
+    // 기본 프로필 localStorage 저장 (payment-complete 폼에서 이름 pre-fill용)
+    localStorage.setItem("v2_saved_profile", JSON.stringify({
       name: name.trim(),
       phone: clean,
       email: email.trim(),
