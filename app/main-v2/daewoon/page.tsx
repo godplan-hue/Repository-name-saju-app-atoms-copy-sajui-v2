@@ -58,23 +58,21 @@ function DaewoonInner() {
     wakeLockRef.current = null;
   };
 
-  // 페이지 벗어날 때 TTS 정지 + 결제 상태 초기화 (재방문 시 재결제 필요)
+  // 페이지 벗어날 때 TTS 정지 (결제 상태는 localStorage에 24시간 유지)
   useEffect(() => {
     return () => {
       if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
       releaseWakeLock();
-      sessionStorage.removeItem("daeunPaid");
-      sessionStorage.removeItem("daeunPaidCount");
-      sessionStorage.removeItem("daeunPaidIndices");
     };
   }, []);
 
-  // Router Cache가 이전 결제 상태를 복원할 때 sessionStorage와 불일치 방지
+  // Router Cache가 이전 결제 상태를 복원할 때 localStorage 만료 여부 확인
   useEffect(() => {
     const recheck = () => {
-      const sessPaid = sessionStorage.getItem("daeunPaid") === "1";
+      const expiry = parseInt(localStorage.getItem("daeunPaidExpiry") || "0");
+      const isValid = localStorage.getItem("daeunPaid") === "1" && Date.now() < expiry;
       const urlPaid = new URLSearchParams(window.location.search).get("daeunPaid") === "1";
-      if (!sessPaid && !urlPaid) {
+      if (!isValid && !urlPaid) {
         setPaid(false);
         setPaidCount(0);
         setPaidIndices([]);
@@ -116,20 +114,25 @@ function DaewoonInner() {
       } catch { return []; }
     })();
     if (urlPaid) {
-      // 결제 성공 시 sessionStorage에 저장 (탭 닫으면 자동 초기화 → 재결제 필요)
-      const existing: number[] = (() => { try { return JSON.parse(sessionStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
+      // 결제 성공 시 localStorage에 저장 (24시간 만료, 탭 닫아도 유지)
+      const expiry = Date.now() + 24 * 60 * 60 * 1000;
+      const existing: number[] = (() => { try { return JSON.parse(localStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
       const merged = Array.from(new Set([...existing, ...urlIndices]));
-      const existingCount = parseInt(sessionStorage.getItem("daeunPaidCount") || "0");
-      sessionStorage.setItem("daeunPaid", "1");
-      sessionStorage.setItem("daeunPaidCount", String(existingCount + urlCount));
-      sessionStorage.setItem("daeunPaidIndices", JSON.stringify(merged));
+      const prevExpiry = parseInt(localStorage.getItem("daeunPaidExpiry") || "0");
+      const existingCount = prevExpiry > Date.now() ? parseInt(localStorage.getItem("daeunPaidCount") || "0") : 0;
+      localStorage.setItem("daeunPaid", "1");
+      localStorage.setItem("daeunPaidExpiry", String(expiry));
+      localStorage.setItem("daeunPaidCount", String(existingCount + urlCount));
+      localStorage.setItem("daeunPaidIndices", JSON.stringify(merged));
       // URL 파라미터 제거 — router.replace 대신 history API 사용 (리마운트 방지)
       window.history.replaceState({}, "", "/main-v2/daewoon");
     }
-    // sessionStorage에서 결제 상태 읽기 (탭 닫으면 사라짐)
-    const isPaid = sessionStorage.getItem("daeunPaid") === "1";
-    const paidCountVal = parseInt(sessionStorage.getItem("daeunPaidCount") || "0");
-    const paidIndicesVal: number[] = (() => { try { return JSON.parse(sessionStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
+    // localStorage에서 결제 상태 읽기 (만료 시간 확인)
+    const expiry = parseInt(localStorage.getItem("daeunPaidExpiry") || "0");
+    const isExpired = Date.now() > expiry;
+    const isPaid = !isExpired && localStorage.getItem("daeunPaid") === "1";
+    const paidCountVal = !isExpired ? parseInt(localStorage.getItem("daeunPaidCount") || "0") : 0;
+    const paidIndicesVal: number[] = (() => { if (isExpired) return []; try { return JSON.parse(localStorage.getItem("daeunPaidIndices") || "[]"); } catch { return []; } })();
     setPaid(isPaid);
     setPaidCount(paidCountVal);
     if (paidIndicesVal.length > 0) setPaidIndices(paidIndicesVal);
