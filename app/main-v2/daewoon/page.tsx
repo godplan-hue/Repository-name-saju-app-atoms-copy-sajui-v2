@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Script from "next/script";
 import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
@@ -24,7 +24,6 @@ export default function DaewoonPage() {
 }
 
 function DaewoonInner() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [profile, setProfile] = useState<any>(null);
   const [daeunList, setDaeunList] = useState<DaeunBlock[]>([]);
@@ -98,7 +97,7 @@ function DaewoonInner() {
 
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
-    if (!saved) { router.push("/main-v2"); return; }
+    if (!saved) { window.location.replace("/main-v2"); return; }
     const p = JSON.parse(saved);
     setProfile(p);
     const age = new Date().getFullYear() - parseInt(p.birthYear) + 1;
@@ -182,7 +181,7 @@ function DaewoonInner() {
       count: String(indices.length),
       indices: indices.join(","),
     });
-    router.push(`/main-v2/daewoon/pay?${params.toString()}`);
+    window.location.href = `/main-v2/daewoon/pay?${params.toString()}`;
   };
 
   const togglePurchase = (i: number) => {
@@ -475,7 +474,7 @@ function DaewoonInner() {
 
           {/* 헤더 */}
           <div style={{ marginBottom: 24 }}>
-            <button onClick={() => router.push("/main-v2")} style={{ background: "rgba(139,92,246,0.25)", border: "1px solid rgba(139,92,246,0.6)", color: "#fbbf24", padding: "8px 14px", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
+            <button onClick={() => { window.location.href = "/main-v2"; }} style={{ background: "rgba(139,92,246,0.25)", border: "1px solid rgba(139,92,246,0.6)", color: "#fbbf24", padding: "8px 14px", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 36, marginBottom: 6 }}>🌌</div>
               <h1 style={{ fontSize: 24, fontWeight: 900, color: "#fbbf24", margin: "0 0 6px" }}>대운(大運)</h1>
@@ -485,7 +484,7 @@ function DaewoonInner() {
 
           {/* 쿠폰 배너 */}
           <KakaoShareCouponBanner />
-          <div onClick={() => router.push("/share-coupon")} style={{ marginBottom: 16, borderRadius: 16, overflow: "hidden", cursor: "pointer", border: "1.5px solid #fca5a5" }}>
+          <div onClick={() => { window.location.href = "/share-coupon"; }} style={{ marginBottom: 16, borderRadius: 16, overflow: "hidden", cursor: "pointer", border: "1.5px solid #fca5a5" }}>
             <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: 16 }}>📸</span>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>SNS에 글 올리면 990원 쿠폰 5장!</span>

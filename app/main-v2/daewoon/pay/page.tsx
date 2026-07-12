@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function DaewoonPayPage() {
   return (
@@ -12,7 +12,6 @@ export default function DaewoonPayPage() {
 }
 
 function DaewoonPayInner() {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const price = Number(searchParams.get("price") || "2900");
@@ -21,7 +20,7 @@ function DaewoonPayInner() {
 
   const handleConfirmPay = () => {
     const _daeunNext = `/main-v2/daewoon?daeunPaid=1&daeunCount=${count}&daeunIndices=${encodeURIComponent(indices)}`;
-    router.push(`/main-v2/pay?amount=${price}&next=${encodeURIComponent(_daeunNext)}`);
+    window.location.href = `/main-v2/pay?amount=${price}&next=${encodeURIComponent(_daeunNext)}`;
   };
 
   return (
@@ -100,7 +99,7 @@ function DaewoonPayInner() {
         </button>
 
         <button
-          onClick={() => router.back()}
+          onClick={() => window.history.back()}
           style={{
             width: "100%", padding: "13px 0",
             background: "transparent", color: "rgba(255,255,255,0.5)",

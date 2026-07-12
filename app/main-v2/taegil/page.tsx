@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import Script from "next/script";
 
 type EventType = "이사"|"상견례"|"면접"|"개업"|"결혼"|"수술"|"여행"|"계약"|"시험"|"출산"|"재회연락";
@@ -28,7 +27,6 @@ const RATING_STYLE: Record<Rating, { bg: string; text: string; border: string }>
 };
 
 export default function TaegilPage() {
-  const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
   const [eventType, setEventType] = useState<EventType | "">("");
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
@@ -71,7 +69,7 @@ export default function TaegilPage() {
 
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
-    if (!saved) { router.push("/main-v2"); return; }
+    if (!saved) { window.location.replace("/main-v2"); return; }
     setProfile(JSON.parse(saved));
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -161,7 +159,7 @@ export default function TaegilPage() {
     sessionStorage.setItem("taegilEventType", eventType);
     sessionStorage.setItem("taegilDates", JSON.stringify(selectedDates));
     const next = encodeURIComponent(`/main-v2/taegil`);
-    router.push(`/main-v2/pay?amount=${taegilPrice}&taegil=1&next=${next}`);
+    window.location.href = `/main-v2/pay?amount=${taegilPrice}&taegil=1&next=${next}`;
   };
 
   const stopTts = () => {
@@ -271,7 +269,7 @@ export default function TaegilPage() {
     <main style={{ minHeight:"100vh", background:"#f0fdf4", fontFamily:"'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
       {/* 헤더 — 항상 즉시 렌더링 (LCP 개선) */}
       <div style={{ background:"linear-gradient(135deg,#22c55e,#15803d)", padding:"16px 20px 24px", color:"white" }}>
-        <button onClick={() => router.push("/main-v2")} style={{ background:"none", border:"none", color:"rgba(255,255,255,0.8)", fontSize:14, cursor:"pointer", padding:0, marginBottom:12 }}>← 홈으로</button>
+        <button onClick={() => { window.location.href = "/main-v2"; }} style={{ background:"none", border:"none", color:"rgba(255,255,255,0.8)", fontSize:14, cursor:"pointer", padding:0, marginBottom:12 }}>← 홈으로</button>
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>
           <div style={{ width:44, height:44, borderRadius:"50%", background:"rgba(255,255,255,0.2)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>📅</div>
           <div>

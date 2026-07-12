@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
@@ -35,7 +34,6 @@ const LOAD_MSGS = [
 type Phase = "cat" | "fu" | "loading";
 
 export default function V2Analysis() {
-  const router = useRouter();
   const [phase, setPhase] = useState<Phase>("cat");
   const [selCat, setSelCat] = useState("");
   const [selOpt, setSelOpt] = useState("");
@@ -70,7 +68,7 @@ export default function V2Analysis() {
         localStorage.removeItem("price");
         localStorage.removeItem("v2_paid_cats");
       } else {
-        router.replace("/main-v2/result");
+        window.location.replace("/main-v2/result");
         return;
       }
     }
@@ -82,14 +80,14 @@ export default function V2Analysis() {
         p = saved;
         sessionStorage.setItem("v2_profile", saved);
       } else {
-        router.replace("/main-v2/profile");
+        window.location.replace("/main-v2/profile");
         return;
       }
     }
     try {
       setProfile(JSON.parse(p));
     } catch {
-      router.replace("/main-v2/profile");
+      window.location.replace("/main-v2/profile");
     }
   }, []);
 
@@ -127,7 +125,7 @@ export default function V2Analysis() {
       const data = await res.json();
       const result = { ...data, category: selCat, followUp: selOpt, profile };
       localStorage.setItem("v2_result", JSON.stringify(result));
-      router.push("/main-v2/result");
+      window.location.href = "/main-v2/result";
     } catch {
       alert("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
       setPhase("fu");
@@ -148,7 +146,7 @@ export default function V2Analysis() {
         {/* "/main-v2/profile"은 저장된 정보가 있으면 곧바로 여기로 다시 건너뛰는
             화면이라, 뒤로가기 목적지로 쓰면 분석↔프로필 사이를 무한 왕복하게
             됨(브라우저가 "리디렉션 너무 많음"으로 처리) — 메인으로 보냄 */}
-        <button onClick={() => phase === "fu" ? setPhase("cat") : router.push("/main-v2")}
+        <button onClick={() => phase === "fu" ? setPhase("cat") : window.location.href = "/main-v2"}
           style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
           <span style={{ fontSize: 18 }}>←</span>
           <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>

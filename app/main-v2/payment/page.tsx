@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 interface PromoCode {
   code: string;
@@ -22,7 +22,6 @@ export default function Payment() {
 }
 
 function PaymentInner() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const highlightWealthLove = searchParams.get("highlight") === "wealthlove";
   const preselectId = searchParams.get("preselect");
@@ -127,7 +126,7 @@ function PaymentInner() {
     // 100% 쿠폰으로 0원이 되면 쿠폰 소진 완료 후 이동 (await 필수 — fire-and-forget시 소진 전 이탈 버그)
     if (price === 0) {
       await consumeCoupon();
-      router.push(nextUrl);
+      window.location.href = nextUrl;
       return;
     }
     setPuError("");
@@ -189,7 +188,7 @@ function PaymentInner() {
         }
         await consumeCoupon();
         closePuModal();
-        router.push(url);
+        window.location.href = url;
       } else {
         setPuError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
       }
@@ -437,9 +436,9 @@ function PaymentInner() {
             ].map(s => (
               <button key={s.id}
                 onClick={async () => {
-                  if ((s as any).daeun) { router.push(`/main-v2/daewoon`); return; }
-                  if ((s as any).yearly) { router.push(`/main-v2/yearly`); return; }
-                  if (s.id === "taegil") { router.push(`/main-v2/taegil`); return; }
+                  if ((s as any).daeun) { window.location.href = `/main-v2/daewoon`; return; }
+                  if ((s as any).yearly) { window.location.href = `/main-v2/yearly`; return; }
+                  if (s.id === "taegil") { window.location.href = `/main-v2/taegil`; return; }
                   if (s.id === "reunion" || s.id === "pet_compat") {
                     setOtherInput("");
                     setAwaitOther({ id: s.id, label: s.label });

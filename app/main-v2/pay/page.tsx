@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, Suspense, CSSProperties, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function PayPage() {
   return (
@@ -12,7 +12,6 @@ export default function PayPage() {
 }
 
 function PayInner() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const amount = Number(searchParams.get("amount") || "0");
   const next = searchParams.get("next") || "/main-v2";
@@ -264,7 +263,7 @@ function PayInner() {
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(180deg,#1a0835,#0d0520)", color: "white", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 16px" }}>
       <div style={{ width: "100%", maxWidth: 400 }}>
-        <button onClick={() => router.back()} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: 14, cursor: "pointer", padding: "0 0 20px", display: "flex", alignItems: "center", gap: 4 }}>
+        <button onClick={() => window.history.back()} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: 14, cursor: "pointer", padding: "0 0 20px", display: "flex", alignItems: "center", gap: 4 }}>
           ← 돌아가기
         </button>
 

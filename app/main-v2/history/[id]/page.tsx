@@ -292,6 +292,14 @@ export default function HistoryDetail() {
       setTipModal({ text: "카카오톡 안에서는 읽기 기능이 작동하지 않아요.\n\n보관함 읽기는 처음 사주를 보셨던 브라우저(크롬·삼성인터넷·사파리 등)에서만 작동해요.\n\n그 브라우저를 직접 열고 jeomun.com → 보관함에 들어오면 🔊 읽기가 작동해요." });
       return;
     }
+    if (/NAVER|NaverWebView|naver_/i.test(navigator.userAgent)) {
+      setTipModal({ text: "네이버 앱 안에서는 읽기 기능이 작동하지 않아요.\n\n화면 오른쪽 아래 ⋮ 를 눌러 [다른 브라우저로 열기]를 선택하면 🔊 읽기가 정상 작동해요.\n\n크롬·삼성인터넷·사파리에서 jeomun.com → 보관함에 들어오면 읽기가 작동해요." });
+      return;
+    }
+    if (/DaumApps|Daum|daum/i.test(navigator.userAgent)) {
+      setTipModal({ text: "다음(카카오) 앱 안에서는 읽기 기능이 작동하지 않아요.\n\n화면 오른쪽 아래 ⋮ 를 눌러 [다른 브라우저로 열기]를 선택하면 🔊 읽기가 정상 작동해요.\n\n크롬·삼성인터넷·사파리에서 jeomun.com → 보관함에 들어오면 읽기가 작동해요." });
+      return;
+    }
     if (!("speechSynthesis" in window)) return;
     if (speaking) {
       // speakingRef를 즉시 false로 — 화면꺼짐 재개 핸들러가 동시에 와도 재시작 안 함

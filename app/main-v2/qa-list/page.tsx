@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import { useRouter } from "next/navigation";
 import QASection from "@/components/QASection";
 
 const todayKey = () => {
@@ -10,7 +9,6 @@ const todayKey = () => {
 };
 
 function QAListContent() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [birthYear, setBirthYear] = useState(0);
   const [unlocked, setUnlocked] = useState(false);
@@ -32,7 +30,7 @@ function QAListContent() {
         if (saved) { const p = JSON.parse(saved); n = p?.name ?? ""; y = Number(p?.birthYear ?? 0); }
       } catch {}
     }
-    if (!n || !y) { router.replace("/main-v2"); return; }
+    if (!n || !y) { window.location.replace("/main-v2"); return; }
     setName(n);
     setBirthYear(y);
     const plan = localStorage.getItem("v2_plan") ?? "";
@@ -41,7 +39,7 @@ function QAListContent() {
     const paidToday = lsUnlock === todayKey();
     setUnlocked(paidSession || paidToday);
     setReady(true);
-  }, [router]);
+  }, []);
 
   if (!ready) return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#fdf4ff" }}>
@@ -52,7 +50,7 @@ function QAListContent() {
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
       <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10, position: "sticky", top: 0, zIndex: 10 }}>
-        <button onClick={() => router.back()} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#8b5cf6", padding: "0 4px" }}>←</button>
+        <button onClick={() => window.history.back()} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#8b5cf6", padding: "0 4px" }}>←</button>
         <div style={{ flex: 1 }}>
           <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>사주 Q&amp;A</p>
           <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: unlocked ? "#8b5cf6" : "#ef4444", display: "flex", alignItems: "center", gap: 5 }}>
@@ -70,7 +68,7 @@ function QAListContent() {
           name={name}
           birthYear={birthYear}
           unlocked={unlocked}
-          onBuyClick={() => router.push("/main-v2/payment?scrollTo=packages")}
+          onBuyClick={() => { window.location.href = "/main-v2/payment?scrollTo=packages"; }}
         />
       </div>
     </main>
