@@ -435,8 +435,6 @@ function V2ResultInner() {
     if (sid) {
       try { history.replaceState(null, "", "/main-v2/result"); } catch {}
     }
-    // 결과지를 히스토리에 고정 — 어느 버튼 눌러도 뒤로가기 시 결과지로 복귀
-    try { if (!(window as any).__resultPushed) { (window as any).__resultPushed = true; history.pushState(null, "", "/main-v2/result"); } } catch {}
 
     const price = localStorage.getItem("price") ?? "";
     const PKG_PRICES_SET = ["9900", "19900", "24900", "29900"];
@@ -630,6 +628,29 @@ function V2ResultInner() {
     }
   };
 
+  const autoCropBottom = (src: HTMLCanvasElement): HTMLCanvasElement => {
+    const ctx2 = src.getContext("2d");
+    if (!ctx2) return src;
+    const { width, height } = src;
+    const d = ctx2.getImageData(0, 0, width, height).data;
+    let cropH = height;
+    for (let y = height - 1; y >= 0; y--) {
+      let hasContent = false;
+      for (let x = 0; x < width; x++) {
+        const i = (y * width + x) * 4;
+        if (d[i + 3] > 10 && !(d[i] >= 200 && d[i + 1] >= 200 && d[i + 2] >= 200)) {
+          hasContent = true; break;
+        }
+      }
+      if (hasContent) { cropH = y + 1; break; }
+    }
+    if (cropH >= height) return src;
+    const out = document.createElement("canvas");
+    out.width = width; out.height = cropH;
+    out.getContext("2d")!.drawImage(src, 0, 0);
+    return out;
+  };
+
   const saveImage = async () => {
     if (savingRef.current) return;
     savingRef.current = true;
@@ -671,7 +692,7 @@ function V2ResultInner() {
         el.style.overflow = prevOv;
         el.style.overflowX = prevOvX;
         el.style.maxHeight = prevMH;
-        canvases.push(c);
+        canvases.push(autoCropBottom(c));
       }
       const MAX_CANVAS_HEIGHT = 14000; // 브라우저 캔버스 한계보다 여유 있게 안전선을 둠
       const totalH = canvases.reduce((s, c) => s + c.height, 0) + (canvases.length - 1) * 16;
