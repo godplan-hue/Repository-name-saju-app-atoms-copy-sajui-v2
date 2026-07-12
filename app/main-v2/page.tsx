@@ -959,7 +959,7 @@ export default function MainV2() {
 
       {/* 복냥이 상담창 — 내정보(푸터) 바로 위 */}
       {!isPartner && (
-        <div id="chat-widget" style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
+        <div id="chat-widget" style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }} onClick={() => { try { if (!(window as any).__chatPushed) { (window as any).__chatPushed = true; history.pushState(null, "", window.location.href); } } catch {} }}>
           <QAChatWidget name={(user && !["카카오 사용자","네이버 사용자","Google 사용자"].includes(user)) ? user : (savedProfile?.name || "고객님")} birthYear={savedProfile?.birthYear || 1990} />
         </div>
       )}

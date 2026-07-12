@@ -411,6 +411,10 @@ function V2ResultInner() {
       localStorage.setItem("v2_result", JSON.stringify(r));
     }
     setResult(r);
+    // v2_result 정상 로드 후 URL에서 ?sid= 제거 — 뒤로가기 시 share 폴백 방지
+    if (sid) {
+      try { history.replaceState(null, "", "/main-v2/result"); } catch {}
+    }
 
     const price = localStorage.getItem("price") ?? "";
     const PKG_PRICES_SET = ["9900", "19900", "24900", "29900"];
@@ -634,7 +638,7 @@ function V2ResultInner() {
         el.style.overflow = "visible";
         el.style.overflowX = "hidden";
         el.style.maxHeight = "none";
-        const captureBg = tier !== "package" ? "#ffffff" : (elIdx === 0 ? "#eab308" : "#fdf6e3");
+        const captureBg = "#ffffff";
         const c = await html2canvas(el, {
           backgroundColor: captureBg,
           scale: sharedScale,
