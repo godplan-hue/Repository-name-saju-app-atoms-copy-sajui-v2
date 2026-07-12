@@ -871,7 +871,6 @@ export default function MainV2() {
           sessionStorage.setItem("selectedFortune", id);
           if (id === "free") { goFree(); return; }
           else if (id === "sinyeon_premium") {
-            if (!user) { window.location.href = "/main-v2/login"; return; }
             setShowModal(id);
           }
           else { if (id === "qa") { window.location.href = "/main-v2/qa-list"; return; } if (id === "dream") { window.location.href = "/haemong"; return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id === "naming" ? "wealth5" : id); }
