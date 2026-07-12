@@ -454,7 +454,17 @@ function PartnerFortuneGrid({ brand, onPick, onBundle }: {
 
 function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (route: "free" | "package") => void; onModal?: (id: string, preselect?: string) => void; isPartner: boolean; chatProfile?: { name: string; birthYear: number } | null }) {
   const displayBanners = isPartner ? [BANNERS[2], BANNERS[3]] : BANNERS;
-  const [cur, setCur] = useState(0);
+  const [cur, setCur] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem("banner_click_cur");
+      if (saved !== null) {
+        sessionStorage.removeItem("banner_click_cur");
+        const n = parseInt(saved);
+        if (!isNaN(n) && n >= 0 && n < (isPartner ? 2 : BANNERS.length)) return n;
+      }
+    } catch {}
+    return 0;
+  });
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
 
@@ -479,6 +489,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         style={{ height: 320, borderRadius: 20, position: "relative", overflow: "hidden", cursor: "pointer", boxShadow: "0 6px 28px rgba(139,92,246,0.18)", background: "#f9f0ff" }}
         onClick={() => {
           if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
+          try { sessionStorage.setItem("banner_click_cur", String(cur)); } catch {}
           if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
           if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
@@ -495,6 +506,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
             // 탭: 네이버 인앱브라우저에서 onClick이 안 발동하므로 여기서 직접 처리
             e.preventDefault();
             if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} resetTimer(cur); document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
+            try { sessionStorage.setItem("banner_click_cur", String(cur)); } catch {}
             if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
             if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
             onStart(b.route);
@@ -514,7 +526,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
           </div>
         ) : (b as any).chatBanner ? (
           /* 반짝이는 배경 + 무엇이든 물어보세요 텍스트 */
-          <div style={{ position: "absolute", inset: 0 }}>
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #fce7f3 0%, #ec4899 50%, #9d174d 100%)" }}>
             <img src="https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
             <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.22)" }} />
             <span style={{ position: "absolute", top: 16, left: 16, background: "#ec4899", color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2 }}>AI 사주 상담</span>

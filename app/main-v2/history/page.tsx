@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Script from "next/script";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
@@ -49,7 +48,6 @@ function SelectModal({ onClose, onPay, paying }: {
   onPay: (cats: string[]) => void;
   paying: boolean;
 }) {
-  const router = useRouter();
   const [selected, setSelected] = useState<string[]>(SELECT_CATS.map(c => c.key));
   const price = selected.length * 990;
 
@@ -110,7 +108,7 @@ function SelectModal({ onClose, onPay, paying }: {
               : "운세를 선택하세요"}
         </button>
         <div style={{ marginTop: 10 }}>
-          <button onClick={() => router.push("/main-v2/payment")}
+          <button onClick={() => { window.location.href = "/main-v2/payment"; }}
             style={{ width: "100%", padding: "15px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
             💳 유료 운세 결제하기
           </button>
@@ -125,7 +123,6 @@ function SelectModal({ onClose, onPay, paying }: {
 }
 
 export default function V2History() {
-  const router = useRouter();
   const [hist, setHist] = useState<Item[]>([]);
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
@@ -288,7 +285,7 @@ export default function V2History() {
       const pkgName = cats.map(c => c.replace(/\S+\s/, "")).join("+");
       const price = cats.length * 990;
       const _histNext = `/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${cats.length * 30}&paid=${price}`;
-      router.push(`/main-v2/pay?amount=${price}&next=${encodeURIComponent(_histNext)}`);
+      window.location.href = `/main-v2/pay?amount=${price}&next=${encodeURIComponent(_histNext)}`;
     } finally {
       setPaying(false);
       setShowSelect(false);
@@ -308,7 +305,7 @@ export default function V2History() {
     <main style={{ minHeight: "100vh", background: BG, backgroundImage: "url('https://i.pinimg.com/736x/a2/1c/e8/a21ce8a25b8358702fe3421429020394.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-        <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
+        <button onClick={() => { window.location.href = "/main-v2"; }} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
           <span style={{ fontSize: 18 }}>←</span>
           <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 점운</span>
         </button>
@@ -377,7 +374,7 @@ export default function V2History() {
               {syncMsg && <p style={{ fontSize: 12, color: syncMsg.startsWith("✅") ? "#10b981" : "#ef4444", margin: "10px 0 0", fontWeight: 700 }}>{syncMsg}</p>}
             </div>
 
-            <button onClick={() => router.push("/main-v2/payment")}
+            <button onClick={() => { window.location.href = "/main-v2/payment"; }}
               style={{ padding: "13px 32px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
               💎 지금 결제하고 분석하기
             </button>
@@ -413,14 +410,6 @@ export default function V2History() {
                       <div style={{ fontSize: 22, fontWeight: 900, color: sc(item.scores?.total ?? 0) }}>{item.scores?.total ?? "—"}</div>
                       <div style={{ fontSize: 10, color: "#9ca3af" }}>총운</div>
                     </div>
-                    <div style={{ display: "flex", gap: 5 }}>
-                      <button
-                        onClick={e => { e.stopPropagation(); router.push(`/main-v2/history/${encodeURIComponent(item.id)}`); }}
-                        style={{ padding: "4px 10px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 10, cursor: "pointer" }}
-                      >
-                        🔊 읽기
-                      </button>
-                    </div>
                   </div>
                 </div>
 
@@ -449,6 +438,7 @@ export default function V2History() {
                           return next;
                         });
                       }}
+                      onTouchEnd={e => { e.stopPropagation(); }}
                       style={{ marginTop: 6, background: "none", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700, color: "#ec4899", padding: 0 }}>
                       {expanded.has(item.id) ? "▲ 접기" : "▼ 더보기"}
                     </button>
@@ -457,7 +447,7 @@ export default function V2History() {
               </div>
             ))}
 
-            <button onClick={() => router.push("/main-v2")}
+            <button onClick={() => { window.location.href = "/main-v2"; }}
               style={{ padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", marginTop: 4, boxShadow: "0 6px 20px rgba(236,72,153,0.3)" }}>
               💎 다시 분석하기
             </button>
