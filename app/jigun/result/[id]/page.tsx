@@ -214,7 +214,8 @@ export default function JigunResultPage() {
         <div style={{ background: "linear-gradient(135deg,#1a1a2e,#2d1b69)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 22, padding: "24px 20px", marginBottom: 16 }}>
           <h3 style={{ fontSize: 16, fontWeight: 900, color: "#a78bfa", margin: "0 0 6px" }}>🔮 사주로 더 정확하게 확인하기</h3>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", margin: "0 0 16px", lineHeight: 1.75 }}>
-            "지금이 이직·창업 타이밍인지", "올해가 재물운이 강한 해인지"<br />
+            "지금이 이직·창업 타이밍인지",<br />
+            "올해가 재물운이 강한 해인지"<br />
             사주 직업운·대운으로 훨씬 정확하게 알 수 있어요
           </p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
