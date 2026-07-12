@@ -411,9 +411,9 @@ function PaymentCompleteInner() {
       const specialT = sessionStorage.getItem("specialType");
       const specialP = sessionStorage.getItem("specialPaid");
       if (specialT && specialP === "1") {
-        router.push("/main-v2/special");
+        window.location.href = "/main-v2/special";
       } else {
-        router.push(sidParam ? `/main-v2/result?sid=${sidParam}` : "/main-v2/result");
+        window.location.href = sidParam ? `/main-v2/result?sid=${sidParam}` : "/main-v2/result";
       }
     } catch (error) {
       console.error("분석 오류:", error);
@@ -676,7 +676,7 @@ function PaymentCompleteInner() {
             )}
           </div>
 
-          <button onClick={() => router.push("/main-v2")} style={{ width: "100%", padding: 10, background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "#f5f5f5", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", marginBottom: 8 }}>← 홈으로 돌아가기</button>
+          <button onClick={() => { window.location.href = "/main-v2"; }} style={{ width: "100%", padding: 10, background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "#f5f5f5", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", marginBottom: 8 }}>← 홈으로 돌아가기</button>
         </div>
       </div>
     </main>

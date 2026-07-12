@@ -386,10 +386,11 @@ export default function V2History() {
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {hist.map(item => (
               <div key={item.id}
-                onClick={() => router.push(`/main-v2/history/${encodeURIComponent(item.id)}`)}
+                onClick={() => { window.location.href = `/main-v2/history/${encodeURIComponent(item.id)}`; }}
                 style={{ background: "white", borderRadius: 20, padding: "18px 16px", border: "1.5px solid rgba(236,72,153,0.1)", boxShadow: "0 2px 14px rgba(139,92,246,0.06)", cursor: "pointer", transition: "transform 0.12s, box-shadow 0.12s" }}
                 onTouchStart={e => { e.currentTarget.style.transform = "scale(0.98)"; }}
-                onTouchEnd={e => { e.currentTarget.style.transform = "scale(1)"; }}
+                onTouchEnd={e => { e.currentTarget.style.transform = "scale(1)"; const dx = Math.abs(e.changedTouches[0].clientX - (parseFloat(e.currentTarget.dataset.sx||"0"))); if (dx < 10) { e.preventDefault(); window.location.href = `/main-v2/history/${encodeURIComponent(item.id)}`; } }}
+                onTouchStartCapture={e => { e.currentTarget.dataset.sx = String(e.touches[0].clientX); }}
                 onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 6px 24px rgba(236,72,153,0.14)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                 onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 2px 14px rgba(139,92,246,0.06)"; e.currentTarget.style.transform = "translateY(0)"; }}
               >

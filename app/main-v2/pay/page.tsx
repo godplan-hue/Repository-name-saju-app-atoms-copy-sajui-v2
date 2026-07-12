@@ -140,7 +140,7 @@ function PayInner() {
         }
       } catch {}
       const freeNext = next.includes("paid=") ? next.replace(/([?&]paid=)[^&]+/, "$10") : next;
-      router.push(isTaegil ? `${freeNext}${freeNext.includes("?") ? "&" : "?"}taegilPaid=1` : freeNext);
+      window.location.href = isTaegil ? `${freeNext}${freeNext.includes("?") ? "&" : "?"}taegilPaid=1` : freeNext;
     } finally { setLoading(false); }
   };
 
@@ -235,7 +235,7 @@ function PayInner() {
           localStorage.setItem("price", String(amount));
           localStorage.setItem("v2_plan", "select");
         }
-        router.push(isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next);
+        window.location.href = isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next;
       } else {
         setError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
       }

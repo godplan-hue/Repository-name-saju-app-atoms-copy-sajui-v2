@@ -79,10 +79,10 @@ function PayInner() {
         // 24시간 잠금 해제 (꿈해몽과 동일한 방식)
         localStorage.setItem("resume_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000));
         if (id) {
-          router.push(`/resume/result/${id}?paid=1`);
+          window.location.href = `/resume/result/${id}?paid=1`;
         } else {
           localStorage.setItem("resume_paid_token", "1");
-          router.push("/resume/start");
+          window.location.href = "/resume/start";
         }
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");

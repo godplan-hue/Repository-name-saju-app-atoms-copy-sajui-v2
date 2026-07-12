@@ -72,7 +72,7 @@ function PayInner() {
           }),
         }).catch(() => {});
         localStorage.setItem("gunghap_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000));
-        router.push(id ? `/gunghap/result/${id}?paid=1` : "/gunghap");
+        window.location.href = id ? `/gunghap/result/${id}?paid=1` : "/gunghap";
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");
       }

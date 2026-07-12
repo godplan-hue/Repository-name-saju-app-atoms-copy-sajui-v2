@@ -74,7 +74,7 @@ function PayInner() {
         }).catch(() => {});
         // 24시간 잠금 해제
         localStorage.setItem("jigun_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000));
-        router.push(id ? `/jigun/result/${id}?paid=1` : "/jigun");
+        window.location.href = id ? `/jigun/result/${id}?paid=1` : "/jigun";
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");
       }
