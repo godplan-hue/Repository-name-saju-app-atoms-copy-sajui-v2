@@ -93,9 +93,9 @@ export default function PetunPage() {
               성격·건강운·보호자 궁합·음식 추천
             </p>
 
-            <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 28, flexWrap: "wrap" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 28, maxWidth: 240, margin: "0 auto 28px" }}>
               {["🐶 강아지", "🐱 고양이", "🐰 토끼", "🐹 햄스터"].map(t => (
-                <span key={t} style={{ background: "rgba(6,182,212,0.15)", border: "1px solid rgba(6,182,212,0.4)", borderRadius: 20, padding: "6px 14px", fontSize: 12, color: "#a5f3fc" }}>{t}</span>
+                <span key={t} style={{ background: "rgba(6,182,212,0.15)", border: "1px solid rgba(6,182,212,0.4)", borderRadius: 20, padding: "6px 14px", fontSize: 12, color: "#a5f3fc", textAlign: "center" }}>{t}</span>
               ))}
             </div>
 
