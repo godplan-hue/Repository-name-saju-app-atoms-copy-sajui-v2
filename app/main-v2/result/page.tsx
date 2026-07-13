@@ -1711,9 +1711,9 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { window.location.href = "/main-v2/payment"; }}
-              style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
-              🔮 다시 분석
+            <button onClick={() => { window.location.href = "/main-v2/history"; }}
+              style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
+              📂 보관함 가기
             </button>
             <button onClick={() => { saveToHistory(result, paid, allAnalyses, paidCats, planType); setHistSaved(true); setTimeout(() => setHistSaved(false), 2500); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
@@ -1722,7 +1722,7 @@ function V2ResultInner() {
           </div>
         )}
 
-        {/* ── 패키지(9900~29900): 공유하기 + 유료 결제하기 + 다시 분석 + 보관함 저장 ── */}
+        {/* ── 패키지(9900~29900): 공유하기 + 유료 운세 + 보관함 가기 + 보관함 저장 ── */}
         {tier === "package" && (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
             <button onClick={() => setShowShareModal(true)}
@@ -1733,9 +1733,9 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { window.location.href = "/main-v2/payment"; }}
-              style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
-              🔮 다시 분석
+            <button onClick={() => { window.location.href = "/main-v2/history"; }}
+              style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
+              📂 보관함 가기
             </button>
             <button onClick={() => { const pkgCats2 = PKG_CAT_MAP[pkgName] ?? PKG_CAT_MAP["기본 분석"]; const la: Record<string, string> = {}; pkgCats2.forEach(c => { la[`${c.icon} ${c.label}`] = allAnalyses[c.apiKey] ?? ""; }); saveToHistory(result, paid, la, pkgCats2.map(c => `${c.icon} ${c.label}`), planType); setHistSaved(true); setTimeout(() => setHistSaved(false), 2500); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
@@ -1758,7 +1758,7 @@ function V2ResultInner() {
 
         {/* ── 꿈해몽 배너 (항상 표시) ── */}
         {!isPartner && (
-          <div onClick={() => { window.location.href = "/haemong"; }} style={{ margin: "10px 0", borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>
+          <div onClick={() => { window.open("/haemong", "_blank"); }} style={{ margin: "10px 0", borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>
             <div style={{ background: "#dc2626", padding: "8px 16px" }}>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🎁 사주 결제 혜택</span>
             </div>
@@ -1823,7 +1823,7 @@ function V2ResultInner() {
         {!isPartner && (
           <div style={{ margin: "14px 0 0", display: "flex", gap: 8 }}>
             <div
-              onClick={() => { window.location.href = "/main-v2/daewoon"; }}
+              onClick={() => { window.open("/main-v2/daewoon", "_blank"); }}
               style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
             >
               <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
@@ -1835,7 +1835,7 @@ function V2ResultInner() {
               </div>
             </div>
             <div
-              onClick={() => { window.location.href = "/main-v2/taegil"; }}
+              onClick={() => { window.open("/main-v2/taegil", "_blank"); }}
               style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}
             >
               <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
