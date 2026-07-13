@@ -98,6 +98,7 @@ function PaymentCompleteInner() {
   const [redirectTo, setRedirectTo] = useState(""); // daeun/yearly/naming용
   const formRef = useRef<HTMLDivElement>(null);
   const submittingRef = useRef(false); // 중복 제출 방지
+  const isSpecialFlowRef = useRef(false); // special 상품(신년운세/재회운 등) 결제 여부
 
   // 할인코드
   const [discountInput, setDiscountInput] = useState("");
@@ -214,6 +215,7 @@ function PaymentCompleteInner() {
         sessionStorage.setItem("specialPaid", "1");
         sessionStorage.setItem("v2_after_payment_goto", "special");
       }
+      isSpecialFlowRef.current = true;
       setPackageName(searchParams.get("package") || `${queueArr.length}개 운세 묶음`);
       setRedirectTo("/main-v2/special");
       setNeedsForm(true);
@@ -232,6 +234,7 @@ function PaymentCompleteInner() {
       sessionStorage.setItem("specialType", specialType);
       sessionStorage.setItem("specialPaid", "1");
       sessionStorage.setItem("v2_after_payment_goto", "special");
+      isSpecialFlowRef.current = true;
       setPackageName(SPECIAL_NAMES[specialType] || specialType);
       setNeedsForm(true);
       setReady(true);
@@ -409,9 +412,7 @@ function PaymentCompleteInner() {
         }
       } catch {}
 
-      const specialT = sessionStorage.getItem("specialType");
-      const specialP = sessionStorage.getItem("specialPaid");
-      if (specialT && specialP === "1") {
+      if (isSpecialFlowRef.current) {
         window.location.replace("/main-v2/special");
       } else {
         window.location.replace(sidParam ? `/main-v2/result?sid=${sidParam}` : "/main-v2/result");

@@ -629,6 +629,7 @@ function V2ResultInner() {
   };
 
   const autoCropBottom = (src: HTMLCanvasElement): HTMLCanvasElement => {
+    try {
     const ctx2 = src.getContext("2d");
     if (!ctx2) return src;
     const { width, height } = src;
@@ -649,6 +650,7 @@ function V2ResultInner() {
     out.width = width; out.height = cropH;
     out.getContext("2d")!.drawImage(src, 0, 0);
     return out;
+    } catch { return src; }
   };
 
   const saveImage = async () => {

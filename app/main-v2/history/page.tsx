@@ -386,8 +386,8 @@ export default function V2History() {
                 onClick={() => { window.location.href = `/main-v2/history/${encodeURIComponent(item.id)}`; }}
                 style={{ background: "white", borderRadius: 20, padding: "18px 16px", border: "1.5px solid rgba(236,72,153,0.1)", boxShadow: "0 2px 14px rgba(139,92,246,0.06)", cursor: "pointer", transition: "transform 0.12s, box-shadow 0.12s" }}
                 onTouchStart={e => { e.currentTarget.style.transform = "scale(0.98)"; }}
-                onTouchEnd={e => { e.currentTarget.style.transform = "scale(1)"; const dx = Math.abs(e.changedTouches[0].clientX - (parseFloat(e.currentTarget.dataset.sx||"0"))); if (dx < 10) { e.preventDefault(); window.location.href = `/main-v2/history/${encodeURIComponent(item.id)}`; } }}
-                onTouchStartCapture={e => { e.currentTarget.dataset.sx = String(e.touches[0].clientX); }}
+                onTouchEnd={e => { e.currentTarget.style.transform = "scale(1)"; const dx = Math.abs(e.changedTouches[0].clientX - (parseFloat(e.currentTarget.dataset.sx||"0"))); const dy = Math.abs(e.changedTouches[0].clientY - (parseFloat(e.currentTarget.dataset.sy||"0"))); if (dy > 10 || dx > 10) { e.preventDefault(); return; } e.preventDefault(); window.location.href = `/main-v2/history/${encodeURIComponent(item.id)}`; }}
+                onTouchStartCapture={e => { e.currentTarget.dataset.sx = String(e.touches[0].clientX); e.currentTarget.dataset.sy = String(e.touches[0].clientY); }}
                 onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 6px 24px rgba(236,72,153,0.14)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                 onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 2px 14px rgba(139,92,246,0.06)"; e.currentTarget.style.transform = "translateY(0)"; }}
               >
