@@ -1254,11 +1254,9 @@ function V2ResultInner() {
           </button>
         </div>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
-          {paid && (
           <button onClick={() => { window.location.href = "/main-v2/history"; }} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             📂 보관함
           </button>
-          )}
           <button onClick={() => setShowShareModal(true)} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             📱 공유
           </button>
@@ -1713,7 +1711,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { localStorage.removeItem("v2_paid"); localStorage.removeItem("v2_paid_cats"); localStorage.removeItem("price"); window.location.href = "/main-v2/payment"; }}
+            <button onClick={() => { window.location.href = "/main-v2/payment"; }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
               🔮 다시 분석
             </button>
@@ -1735,7 +1733,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { localStorage.removeItem("v2_paid"); localStorage.removeItem("v2_paid_cats"); localStorage.removeItem("price"); window.location.href = "/main-v2/payment"; }}
+            <button onClick={() => { window.location.href = "/main-v2/payment"; }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
               🔮 다시 분석
             </button>

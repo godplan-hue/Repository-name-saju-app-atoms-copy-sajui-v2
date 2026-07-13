@@ -41,6 +41,11 @@ function fmtDate(iso: string) {
 }
 
 const sc = (s: number) => s >= 80 ? "#10b981" : s >= 65 ? "#f59e0b" : "#ec4899";
+// 이모지+공백으로 시작하는 카테고리명에서 이모지만 제거 (한글로 시작하면 그대로)
+const catLabel = (cat?: string) => {
+  if (!cat) return "운세";
+  return cat.replace(/^[^가-힣㄰-㆏\w]\s/u, "");
+};
 
 // ── 선택 모달 컴포넌트 ──
 function SelectModal({ onClose, onPay, paying }: {
@@ -144,7 +149,7 @@ export default function V2History() {
           name: item.name, scores: item.scores,
           categories: [{
             icon: matchedCat?.icon ?? "🔮",
-            label: item.category?.replace(/\S+\s/, "") ?? "운세",
+            label: catLabel(item.category),
             color: matchedCat?.color ?? "#8b5cf6",
             text: (item as any).fullAnalysis ?? item.analysis,
             badge: item.planType === "package" ? "📦 패키지" : "💎 심층",
@@ -163,7 +168,7 @@ export default function V2History() {
       kakao.Share.sendDefault({
         objectType: "feed",
         content: {
-          title: `🔮 ${item.name}님의 ${item.category?.replace(/\S+\s/, "")} 분석 결과`,
+          title: `🔮 ${item.name}님의 ${catLabel(item.category)} 분석 결과`,
           description: `총운 ${item.scores?.total}점! 💰 990원 AI사주 점운 jeomun.com`,
           imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
           link: { mobileWebUrl: url, webUrl: url },
@@ -174,7 +179,7 @@ export default function V2History() {
         ],
       });
     } else {
-      const text = `${item.name}님의 ${item.category?.replace(/\S+\s/, "")} 분석 🔮\n총운 ${item.scores?.total}점\n\n📱 나도 무료로! jeomun.com`;
+      const text = `${item.name}님의 ${catLabel(item.category)} 분석 🔮\n총운 ${item.scores?.total}점\n\n📱 나도 무료로! jeomun.com`;
       if (navigator.share) navigator.share({ title: "점운 운세 결과", text, url }).catch(() => {});
       else navigator.clipboard.writeText(`${text}\n${url}`).catch(() => {});
     }
@@ -282,7 +287,7 @@ export default function V2History() {
     try {
       // 일반 결제 흐름(메인 990원 선택)과 똑같이 결제완료 확인 화면을 거치게 함
       localStorage.setItem("v2_paid_cats", JSON.stringify(cats));
-      const pkgName = cats.map(c => c.replace(/\S+\s/, "")).join("+");
+      const pkgName = cats.map(c => catLabel(c)).join("+");
       const price = cats.length * 990;
       const _histNext = `/payment-complete?package=${encodeURIComponent(pkgName)}&pages=${cats.length * 30}&paid=${price}`;
       window.location.href = `/main-v2/pay?amount=${price}&next=${encodeURIComponent(_histNext)}`;
@@ -397,7 +402,7 @@ export default function V2History() {
                       {item.category?.split(" ")[0] ?? "✨"}
                     </div>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{item.name}님 · {item.category?.replace(/\S+\s/, "")}</div>
+                      <div style={{ fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>{item.name}님 · {catLabel(item.category)}</div>
                       <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{fmtDate(item.date)}</div>
                       {item.planType === "select"
                         ? <span style={{ fontSize: 9, background: "#f3e8ff", color: "#8b5cf6", border: "1px solid #e9d5ff", padding: "1px 7px", borderRadius: 20, fontWeight: 700 }}>💎 990원</span>
@@ -410,6 +415,7 @@ export default function V2History() {
                       <div style={{ fontSize: 22, fontWeight: 900, color: sc(item.scores?.total ?? 0) }}>{item.scores?.total ?? "—"}</div>
                       <div style={{ fontSize: 10, color: "#9ca3af" }}>총운</div>
                     </div>
+                    <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>읽기 →</span>
                   </div>
                 </div>
 
