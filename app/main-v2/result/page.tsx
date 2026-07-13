@@ -327,6 +327,7 @@ function V2ResultInner() {
   const [tier, setTier] = useState<"free" | "select" | "package">("free");
   const [pkgName, setPkgName] = useState("");
   const [couponPhone, setCouponPhone] = useState("");
+  const [showNoData, setShowNoData] = useState(false);
   const [couponSubmitting, setCouponSubmitting] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [speaking, setSpeaking] = useState(false);
@@ -393,12 +394,6 @@ function V2ResultInner() {
     const sid = searchParams.get("sid");
     const raw = localStorage.getItem("v2_result");
     if (!raw) {
-      // v2_paid가 남아있으면 analysis → result 무한루프 발생 — 먼저 제거 후 analysis로 이동
-      if (localStorage.getItem("v2_paid") === "1") {
-        localStorage.removeItem("v2_paid");
-        localStorage.removeItem("v2_plan");
-        localStorage.removeItem("price");
-      }
       // sid 있으면 Firebase에서 fullResult 복원 시도 (Toss 외부 브라우저로 localStorage 단절된 경우)
       if (sid) {
         (async () => {
@@ -416,12 +411,13 @@ function V2ResultInner() {
               }
             }
           } catch {}
-          // Firebase 복원 실패해도 share 페이지 대신 메인으로 (share 페이지 혼동 방지)
-          window.location.replace("/main-v2");
+          // 복원 실패 시 — 자동이동 없이 그 자리에서 안내
+          setShowNoData(true);
         })();
         return;
       }
-      window.location.replace("/main-v2/analysis");
+      // 데이터 없음 — 자동이동 없이 그 자리에서 안내 (자동이동하면 히스토리에서 결과지가 사라짐)
+      setShowNoData(true);
       return;
     }
     const r = JSON.parse(raw);
@@ -930,6 +926,20 @@ function V2ResultInner() {
       navigator.clipboard.writeText(`${text}\n${url}`).catch(() => {});
     }
   };
+
+  if (showNoData) return (
+    <main style={{ minHeight: "100vh", background: "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 20px" }}>
+      <div style={{ textAlign: "center", background: "#fff", borderRadius: 24, padding: "36px 28px", boxShadow: "0 8px 40px rgba(139,92,246,0.15)", maxWidth: 360, width: "100%" }}>
+        <p style={{ fontSize: 40, margin: "0 0 16px" }}>🔮</p>
+        <p style={{ fontSize: 17, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>결과를 불러올 수 없어요</p>
+        <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 24px", lineHeight: 1.7 }}>분석 결과가 만료되었거나<br/>브라우저 캐시가 초기화되었어요</p>
+        <button onClick={() => { window.location.href = "/main-v2"; }}
+          style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>
+          처음부터 시작하기 →
+        </button>
+      </div>
+    </main>
+  );
 
   if (!result) return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
