@@ -316,7 +316,7 @@ export default function HaemongPage() {
               <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
               <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38,<br />7층 7017호(대치동)</p>
               <p style={{ margin: 0 }}>대표전화 010-2106-2689 · 유선 031-585-7255</p>
-              <p style={{ margin: "2px 0 0", color: "#dc2626", fontWeight: 900 }}>※ 전화 문의는 받지 않습니다. 카카오톡으로 문의해 주세요.</p>
+              <p style={{ margin: "2px 0 0", color: "#dc2626", fontWeight: 900 }}>※ 전화 문의는 받지 않습니다.<br />카카오톡으로 문의해 주세요.</p>
             </div>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", marginBottom: 10 }}>
               <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "6px 16px", background: "#FEE500", color: "#1a1a1a", borderRadius: 20, textDecoration: "none", fontWeight: 800, fontSize: 11 }}>💬 카카오톡 문의</a>
