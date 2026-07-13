@@ -1059,7 +1059,6 @@ function getGenericPaidTemplate(name: string, score: number, G: string, category
   if (category === "재물운") {
     return `🔮 ${name}님의 재물운을 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "재물", "viral")}
 ${getRankCard(score, oh, "재물")}
 
 ${zPersona}
@@ -1224,7 +1223,6 @@ ${oh === "목" ? "목(木) 기운의 당신에게는 초록색과 청록색이 �
     return `🔮 ${name}님의 연애운을 봅니다 — ${score}점
 
 ${getDramaCard(name, oh, score, "연애", "viral")}
-${getRankCard(score, oh, "연애")}
 
 ${zPersona}
 ${fe ? "섬세하고 따뜻한 감성이" : "묵직하고 진심 어린 태도가"} ${z}띠 특유의 ${zTrait[z]}과 어우러져, ${oh === "화" ? "뜨겁고 표현이 풍부한" : oh === "수" ? "깊고 이해심 있는" : oh === "토" ? "안정적이고 믿음직한" : oh === "금" ? "진지하고 한결같은" : "천천히 그러나 변하지 않는"} 사랑의 결을 만들고 있는 것이 사주에 보입니다.
@@ -1359,8 +1357,7 @@ ${name}님의 사랑 이야기는 아직 진행 중입니다. ${score}점의 연
   if (category === "건강운") {
     return `🔮 ${name}님의 건강운을 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "건강", "viral")}
-${getRankCard(score, oh, "건강")}
+${getOhangTypeCard(oh, "건강")}
 
 ${zPersona}
 사주에서 당신의 몸은 ${oh === "목" ? "간과 눈, 근육·관절" : oh === "화" ? "심장과 혈관" : oh === "토" ? "비장과 소화기" : oh === "금" ? "폐와 호흡기" : "신장과 뼈·관절"} 쪽이 특히 민감하게 반응하는 체질로 보입니다. 건강은 그 무엇보다 소중한 자산이며, 모든 성공과 행복의 기반이 된다는 것을 사주는 늘 일러줍니다.
@@ -1471,9 +1468,6 @@ ${name}님, 건강한 몸과 마음이 가장 소중한 재산입니다. ${score
   if (category === "성공운") {
     return `🔮 ${name}님의 성공운을 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "성공", "viral")}
-${getRankCard(score, oh, "성공")}
-
 ${zPersona}
 ${z}띠의 ${zTrait[z]}이 ${oh === "목" || oh === "화" ? "확장과 도전" : oh === "토" ? "신뢰와 지속" : oh === "금" ? "결단과 완성" : "전략과 통찰"}을 통해 성공의 길을 열어주는 것이 사주에 보입니다.
 
@@ -1564,9 +1558,6 @@ ${name}님의 성공 이야기는 아직 끝나지 않았습니다. ${score}점�
 
   if (category === "사업운") {
     return `🔮 ${name}님의 사업운을 봅니다 — ${score}점
-
-${getDramaCard(name, oh, score, "성공", "viral")}
-${getRankCard(score, oh, "사업")}
 
 ${zPersona}
 ${z}띠의 ${zTrait[z]}과 ${ohH[oh]}(${oh}) 기운이 만나 ${oh === "목" || oh === "화" ? "확장형" : oh === "토" ? "안정형" : oh === "금" ? "전문형" : "전략형"} 사업가의 기질을 사주에 새겨두었습니다.
@@ -1858,9 +1849,6 @@ ${name}님, 당신의 이름은 당신만의 고유한 에너지와 이야기를
     ]);
     return `🌟 ${name}님의 오늘(${dayName}) 운세를 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "종합", "viral")}
-${getRankCard(score, oh, "오늘")}
-
 ${z}띠 ${ohH[oh]}(${oh}) 기운을 타고난 ${name}님에게, 오늘은 한 해 전체가 아니라 ‘바로 지금 이 하루’에 사주가 들려주는 이야기입니다.
 
 ━━━━━━━━━━━━━━━━━━━━
@@ -1891,9 +1879,6 @@ ${name}님, 오늘 하루도 ${score}점의 기운이 당신과 함께 흐르고
   // 총운
   return `🔮 ${name}님의 2026년 총운을 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "종합", "viral")}
-${getRankCard(score, oh, "총운")}
-${getOhangTypeCard(oh, "총운")}
 ${getPastLifeCard(oh, z)}
 
 ${zPersona}
@@ -2387,8 +2372,8 @@ function getDramaCard(name: string, oh: string, score: number, catKey: "재물" 
   const title = titles[catKey]?.[key] ?? "나의 2026년 이야기";
   const genre = genres[oh] ?? "인생극";
   if (style === "premium") {
-    return `╔══════════════════════════════╗
-${name}님의 ${catKey}운 드라마
+    return `🎬 ╔══════════════════════════════╗
+  【${name}님의 ${catKey}운 드라마】
   "${title}"
   ${genre} · ${oh}오행 · ${score}점
   ${episodeNum}화와 16화
@@ -2396,8 +2381,8 @@ ${name}님의 ${catKey}운 드라마
 ╚══════════════════════════════╝`;
   }
   if (style === "viral") {
-    return `╔══════════════════════════════╗
-내 ${catKey}운 드라마 제목은?
+    return `🎬 ╔══════════════════════════════╗
+  【내 ${catKey}운 드라마 제목은?】
   "${title}"
   ${genre} · ${oh}오행 · ${score}점
   지금 ${episodeNum}화와 16화
@@ -2418,8 +2403,8 @@ function getOhangTypeCard(oh: string, _catKey: string): string {
     "수": { mbti: "INTP · INFJ · INTJ", vibe: "통찰·분석·깊이형 — 남들이 보지 못하는 것을 먼저 읽는 스타일", strength: "통찰력, 전략적 사고, 직관", weakness: "과잉 분석, 행동력 약함" },
   };
   const t = types[oh] ?? types["목"];
-  return `╔══════════════════════════════╗
-${oh}오행 기질 유형 (MBTI 공명)
+  return `🧬 ╔══════════════════════════════╗
+  【${oh}오행 기질 유형 (MBTI 공명)】
   → ${t.vibe}
   MBTI: ${t.mbti} 스타일
   강점: ${t.strength}
@@ -2434,8 +2419,8 @@ function getRankCard(score: number, oh: string, catKey: string): string {
     : score >= 60
     ? "꾸준히 하면 상위권 진입이 가능합니다"
     : "지금은 준비 시간 — 다음 상승기가 반드시 옵니다";
-  return `╔══════════════════════════════╗
-${oh}오행 ${catKey}운 기운 지수
+  return `📊 ╔══════════════════════════════╗
+  【${oh}오행 ${catKey}운 기운 지수】
   전체 사주 분포 — 상위 ${rankPct}%
   ${comment}
 ╚══════════════════════════════╝`;
@@ -2515,8 +2500,8 @@ function getPastLifeCard(oh: string, z: string): string {
     },
   };
   const job = jobMap[oh]?.[z] ?? "깊은 지혜를 품고 살았던 이름 없는 현자";
-  return `╔══════════════════════════════╗
-사주로 보는 나의 전생
+  return `🪬 ╔══════════════════════════════╗
+  【사주로 보는 나의 전생】
   ${oh}오행 × ${z}띠
   → 전생에 ${job}
   지금의 강점과 집착이 이 전생 업(業)에서 왔을 수 있어요
@@ -2610,11 +2595,6 @@ export function getPackageTemplate(name: string, birth: string, gender: string, 
 
   if (category === "올해 운세") {
     return `🪬 ${name}님의 2026년 — 사주가 그린 운명의 물결
-
-${getDramaCard(name, oh, score, "종합", "premium")}
-${getRankCard(score, oh, "올해")}
-${getOhangTypeCard(oh, "올해")}
-${getPastLifeCard(oh, z)}
 
 ${z}띠 × ${ohH}(${oh}) × ${seasonTrait} ${age}세.
 사주 원국에 흐르는 기운의 방향을 지금 읽어봅니다.
@@ -2865,10 +2845,7 @@ ${name}님, 이 한 해는 사주가 당신에게 건네는 편지입니다. 이
 
     return `📜 ${name}님의 재물 사주 — 심층 비기 (${score}점)
 
-${getDramaCard(name, oh, score, "재물", "premium")}
 ${getRankCard(score, oh, "재물")}
-${getOhangTypeCard(oh, "재물")}
-${getPastLifeCard(oh, z)}
 
 ${z}띠 × ${ohH}(${oh}) × ${seasonTrait} 재물 지도를 펼칩니다.
 ${z}띠의 재물은 ${zMoney[z] ?? "내면의 힘에서 옵니다"}.
@@ -3093,9 +3070,6 @@ ${pick(["지금 이 시간 당신의 재물 근육을 단단하게 만들어두�
     return `📜 ${name}님의 인연 사주 — 심층 비기 (${score}점)
 
 ${getDramaCard(name, oh, score, "연애", "premium")}
-${getRankCard(score, oh, "연애")}
-${getOhangTypeCard(oh, "연애")}
-${getPastLifeCard(oh, z)}
 
 ${z}띠 × ${ohH}(${oh}) × ${seasonTrait} 인연 지도를 읽어드립니다.
 ${loveStyle}.
@@ -3252,10 +3226,7 @@ ${pick(["그 인연이 올 때 당신이 최고의 상태이길 바랍니다.", 
 
     return `📜 ${name}님의 몸 사주 — 심층 비기 (${score}점)
 
-${getDramaCard(name, oh, score, "건강", "premium")}
-${getRankCard(score, oh, "건강")}
 ${getOhangTypeCard(oh, "건강")}
-${getPastLifeCard(oh, z)}
 
 ${z}띠 × ${ohH}(${oh}) × ${seasonTrait} 건강 지도를 펼칩니다.
 
@@ -3818,8 +3789,6 @@ ${oh === "목" || oh === "화" ? "너무 많은 것을 동시에 추구하다 �
     ];
     return `📅 ${name}님의 2026년 월별 운세 — 이달의 사주 코드
 
-${getOhangTypeCard(oh, "월별")}
-
 올해운세가 '강의 전체 흐름'이라면,
 월별운세는 '이달 어떤 문을 열어야 하는가'입니다.
 ${z}띠 × ${ohH}(${oh}) 기운이 각 달에 어떻게 작동하는지 구체적으로 읽어드립니다.
@@ -4094,9 +4063,6 @@ ${parseInt(overallScore) >= 80 ? `사주는 분명하게 말합니다. 이 두 �
 
     return `💍 ${name}님의 사주 궁합 — 두 사주가 만날 때 일어나는 일
 
-${getRankCard(score, oh, "인연")}
-${getOhangTypeCard(oh, "인연")}
-
 사주 명리에서는 인연과 결혼의 기운을 도화(桃花)와 배우자성(配偶者星)으로 살핍니다. ${name}님의 사주에서는 ${z}띠와 ${ohH}(${oh}) 기운이 이 별들의 자리를 함께 이루어, 어떤 사람과 만나야 가장 좋은 인연이 되는지 고유한 패턴을 만들어냅니다.
 ${partnerBlock ? partnerBlock : ""}
 
@@ -4239,9 +4205,6 @@ ${pick(["비로소 진짜 궁합이 완성됩니다.", "그렇게 두 사람만�
 
     return `📜 ${name}님의 성공운을 심층으로 봅니다 — ${score}점
 
-${getDramaCard(name, oh, score, "성공", "premium")}
-${getRankCard(score, oh, "성공")}
-${getOhangTypeCard(oh, "성공")}
 ${getPastLifeCard(oh, z)}
 
 ${z}띠 × ${ohH}(${oh}) × ${seasonTrait} ${name}님의 성공 지도를 펼칩니다.
