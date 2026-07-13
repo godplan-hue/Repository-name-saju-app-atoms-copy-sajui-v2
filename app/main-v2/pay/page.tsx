@@ -337,6 +337,15 @@ function PayInner() {
 
         {error && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>⚠️ {error}</p>}
 
+        <div style={{ marginBottom: 16, padding: "12px 14px", background: "rgba(251,191,36,0.08)", borderRadius: 12, border: "1px solid rgba(251,191,36,0.3)" }}>
+          <p style={{ margin: "0 0 6px", fontSize: 12, fontWeight: 900, color: "#fbbf24" }}>⚠️ 꼭 확인하세요</p>
+          <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>
+            · 결제 후 결과지·보관함은 <strong style={{ color: "#fbbf24" }}>결제하신 앱(브라우저)에서만</strong> 확인 가능해요.<br />
+            · 카카오톡에서 결제하셨다면 카카오톡 안에서, 크롬에서 결제하셨다면 크롬에서 확인하세요.<br />
+            · 디지털 콘텐츠 특성상 결과지 열람 후 <strong style={{ color: "#fbbf24" }}>환불이 불가</strong>합니다.
+          </p>
+        </div>
+
         <button
           onClick={pay}
           disabled={loading}
