@@ -1278,7 +1278,7 @@ function V2ResultInner() {
         {!isPartner && <KakaoShareCouponBanner />}
         {!isPartner && (
           <div
-            onClick={() => { window.location.href = "/share-coupon"; }}
+            onClick={() => { window.open("/share-coupon", "_blank"); }}
             style={{ margin: "0 0 8px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
           >
             <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
@@ -1300,7 +1300,7 @@ function V2ResultInner() {
           <button
             onClick={() => {
               localStorage.setItem("v2_plan", paid ? "select" : "free");
-              window.location.href = "/main-v2/qa-list";
+              window.open("/main-v2/qa-list", "_blank");
             }}
             style={{ width: "100%", padding: "14px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}
           >
@@ -1779,7 +1779,7 @@ function V2ResultInner() {
         {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 Q&A 페이지 이동) ── */}
         {profile?.name && profile?.birthYear && (
           <div
-            onClick={() => { window.location.href = "/main-v2/qa-list"; }}
+            onClick={() => { window.open("/main-v2/qa-list", "_blank"); }}
             style={{
               marginTop: 8, marginBottom: 14,
               borderRadius: 20, overflow: "hidden", cursor: "pointer",
