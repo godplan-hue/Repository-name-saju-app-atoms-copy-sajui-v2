@@ -493,7 +493,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         onClick={() => {
           if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
           try { sessionStorage.setItem("banner_click_cur", String(cur)); } catch {}
-          if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
+          if ((b as any).directUrl) { window.open((b as any).directUrl, "_blank"); return; }
           if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
         }}
@@ -514,7 +514,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
             e.preventDefault();
             if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} resetTimer(cur); document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
             try { sessionStorage.setItem("banner_click_cur", String(cur)); } catch {}
-            if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
+            if ((b as any).directUrl) { window.open((b as any).directUrl, "_blank"); return; }
             if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
             onStart(b.route);
           }
@@ -939,7 +939,7 @@ export default function MainV2() {
           <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
           <h2 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>복냥이가 당신의 길을 안내합니다 🐾</p>
-          <a href="/main-v2/qa-list"
+          <a href="/main-v2/qa-list" target="_blank" rel="noopener noreferrer"
             style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "white", color: "#ec4899", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 18px rgba(0,0,0,0.15)", textDecoration: "none", textAlign: "center" }}>
             💬 사주 Q&amp;A 바로 확인하기
           </a>
@@ -949,8 +949,8 @@ export default function MainV2() {
       {/* ── 추가 운세 상품 섹션 ── */}
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
-          if (id === "daewoon") { window.location.href = "/main-v2/daewoon"; return; }
-          if (id === "taegil") { window.location.href = "/main-v2/taegil"; return; }
+          if (id === "daewoon") { window.open("/main-v2/daewoon", "_blank"); return; }
+          if (id === "taegil") { window.open("/main-v2/taegil", "_blank"); return; }
           setShowModal(id);
         }} />
       )}

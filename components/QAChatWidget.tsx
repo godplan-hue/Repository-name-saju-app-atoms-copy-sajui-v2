@@ -150,6 +150,15 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
 
   useEffect(() => {
     if (!showBuyModal) return;
+    // 모달 열릴 때 history 항목 추가 — 뒤로가기 시 모달만 닫히고 현재 페이지 유지
+    try { history.pushState({ buyModal: true }, ""); } catch {}
+    const onPop = () => { setShowBuyModal(false); };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [showBuyModal]);
+
+  useEffect(() => {
+    if (!showBuyModal) return;
     const prevent = (e: TouchEvent) => {
       if (!buyModalRef.current?.contains(e.target as Node)) e.preventDefault();
     };
