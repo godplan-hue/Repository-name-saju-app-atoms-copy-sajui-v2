@@ -246,7 +246,7 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/apps",
     bg: "linear-gradient(135deg,#0f0520 0%,#2d1b69 50%,#1a0533 100%)",
-    bgImg: "https://i.pinimg.com/736x/45/8c/cc/458ccc4777dec685605f4cae0ae87336.jpg",
+    bgImg: "https://i.pinimg.com/736x/3a/16/a2/3a16a2d6ec404d61ea7e416fc5603c4c.jpg",
     badge: "✨ 점운 전체앱 14개",
     badgeBg: "#7c3aed",
     icon: "✨",
