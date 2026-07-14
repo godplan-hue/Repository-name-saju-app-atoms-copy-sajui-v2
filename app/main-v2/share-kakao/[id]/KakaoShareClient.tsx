@@ -79,8 +79,8 @@ export default function KakaoShareClient({ id }: { id: string }) {
   const restartingRef = useRef(false);
 
   useEffect(() => {
-    // share-kakao 페이지는 누구든 오면 결과지로 자동이동
-    window.location.replace("/main-v2/result");
+    // share-kakao 페이지는 누구든 오면 결과지로 자동이동 (sid 넘겨서 유료 결과 복원)
+    window.location.replace(`/main-v2/result?sid=${id}`);
   }, [id]);
 
   useEffect(() => {
