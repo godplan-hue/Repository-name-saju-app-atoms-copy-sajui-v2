@@ -133,12 +133,10 @@ export default function V2Profile() {
 
     // 유료 or 일반 플로우: 저장된 정보 있으면 단일 확인 폼
     const saved = localStorage.getItem("v2_saved_profile");
-    const loggedInName = localStorage.getItem("v2_user_name") ?? "";
     if (saved) {
       try {
         const p = JSON.parse(saved);
-        const sameName = !loggedInName || p.name === loggedInName;
-        if (sameName && p.birthYear && p.gender && p.birthHour) {
+        if (p.birthYear && p.gender && p.birthHour) {
           setForm(prev => ({
             ...prev,
             name: p.name ?? prev.name,
@@ -154,7 +152,7 @@ export default function V2Profile() {
           return;
         }
         // 부분 저장 (생년월일은 있지만 성별·시간 없음 — /free 랜딩에서 온 경우)
-        if (sameName && p.birthYear) {
+        if (p.birthYear) {
           setForm(prev => ({
             ...prev,
             name: p.name ?? prev.name,
@@ -167,8 +165,6 @@ export default function V2Profile() {
         }
       } catch {}
     }
-    if (loggedInName && !["카카오 사용자", "네이버 사용자", "Google 사용자"].includes(loggedInName))
-      setForm(p => ({ ...p, name: loggedInName }));
   }, []);
 
   const TOTAL = 5;
