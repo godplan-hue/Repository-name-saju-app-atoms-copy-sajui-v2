@@ -43,9 +43,8 @@ export default function TimeCapsulePage() {
   const [unlockConfirm, setUnlockConfirm] = useState(false);
 
   useEffect(() => {
-    // 결제 후 만료된 경우만 잠금 (미결제 = 무료 체험, 기존 편지는 항상 열람 가능)
     const exp = localStorage.getItem("momcare_unlock_until");
-    if (exp && Number(exp) <= Date.now()) setMomcareUnlocked(false);
+    if (!exp || Number(exp) <= Date.now()) setMomcareUnlocked(false);
   }, []);
 
   const [mcUserId, setMcUserId] = useState("");

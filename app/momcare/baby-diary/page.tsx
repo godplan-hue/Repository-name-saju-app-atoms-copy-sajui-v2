@@ -30,9 +30,8 @@ export default function BabyDiaryPage() {
   const [hasPhone, setHasPhone] = useState(true);
 
   useEffect(() => {
-    // 결제 후 만료된 경우만 잠금 (미결제 = 무료 체험, 기존 기록은 항상 열람 가능)
     const exp = localStorage.getItem("momcare_unlock_until");
-    if (exp && Number(exp) <= Date.now()) setUnlocked(false);
+    if (!exp || Number(exp) <= Date.now()) setUnlocked(false);
   }, []);
 
   useEffect(() => {
