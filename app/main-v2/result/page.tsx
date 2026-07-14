@@ -1258,9 +1258,12 @@ function V2ResultInner() {
           <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
             {musicOn ? "🎵 ON" : "🎵"}
           </button>
-          <button onClick={() => { window.location.href = "/main-v2"; }} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap" }}>
-            <span style={{ fontSize: 18 }}>←</span>
-            <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
+          <button onClick={() => {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = "/main-v2"; }
+          }} style={{ background: isMob ? "none" : "linear-gradient(135deg,#ec4899,#8b5cf6)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", borderRadius: isMob ? 0 : 20, padding: isMob ? 0 : "6px 12px" }}>
+            <span style={{ fontSize: 18, color: isMob ? undefined : "white" }}>←</span>
+            <span style={{ fontSize: 14, fontWeight: 900, ...(isMob ? { background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" } : { color: "white" }), whiteSpace: "nowrap" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
           </button>
         </div>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
@@ -1974,6 +1977,12 @@ function V2ResultInner() {
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`PC 또는 크롬·구글 브라우저에서 저장하면\n8개 운세 전체가 한 번에 저장됩니다.\n\n카카오톡이나 기본 모바일 브라우저에서는\n일부만 저장될 수 있어요.\n점 세 개(⋮) → [다른 브라우저로 열기]\n→ 크롬 선택 후 저장하세요.\n\n또는 점 세 개 옆 [링크 복사]로\n카톡·문자·메일로 공유하세요.`}</p>
             </div>
 
+            {/* 전화번호 안내 */}
+            <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>📞 전화번호를 입력하셨나요?</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`전화번호를 입력하셨다면 DB에 자동 저장됩니다.\n안 하셨다면 보관함 저장 또는 공유하기로\n직접 저장해두세요.`}</p>
+            </div>
+
             {/* 버튼 안내 */}
             <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "14px 0 8px" }}>📌 결과지 맨 밑에 버튼을 꼭 확인하세요!</p>
             <div style={{ background: "#fef2f2", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
@@ -1994,17 +2003,33 @@ function V2ResultInner() {
         </div>
       )}
 
-      {/* ── PC 버튼 안내 모달 (버튼 설명만) ── */}
+      {/* ── PC 버튼 안내 모달 ── */}
       {showPcGuideModal && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowPcGuideModal(false)}>
-          <div style={{ background: "white", borderRadius: 20, padding: "24px 22px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+          <div style={{ background: "white", borderRadius: 20, padding: "24px 22px", maxWidth: 380, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
             <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 맨 밑에 버튼을 꼭 확인하세요!</p>
-            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 결과지를 나가면 내용이 모두 사라져요!</p>
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>반드시 <strong>보관함 저장</strong><br />또는 <strong>공유하기</strong> 버튼을 눌러 저장해두세요.<br /><span style={{ color: "#dc2626", fontWeight: 700 }}>나가서 내용이 사라진 경우 환불은 불가합니다.</span></p>
             </div>
-            <div style={{ background: "#fef2f2", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
-              <p style={{ fontSize: 13, color: "#4b5563", margin: 0, lineHeight: 2.4 }}>
+            <div style={{ background: "#fff7ed", border: "1.5px solid #fed7aa", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 4px" }}>💻 PC 이용 안내</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>
+                왼쪽 상단 <strong>← 점운 버튼</strong>을 누르면 메인으로 돌아갑니다.<br />
+                브라우저 ← 버튼이 비활성화된 경우 페이지를 직접 접속한 것이에요.<br />
+                결과를 저장하려면 <strong>보관함 저장</strong> 버튼을 먼저 눌러주세요.
+              </p>
+            </div>
+            <div style={{ background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 4px" }}>📞 전화번호를 입력하셨나요?</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>
+                입력하셨다면 DB에 자동 저장됩니다.<br />
+                안 하셨다면 <strong>보관함 저장</strong> 또는 <strong>공유하기</strong>로<br />
+                직접 저장해두세요.
+              </p>
+            </div>
+            <div style={{ background: "#fef2f2", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>
                 📤 공유하기 — 카카오톡으로 결과 공유<br />
                 💳 유료 운세 결제하기 — 추가 운세 구매<br />
                 🔮 다시 분석 — 새 사주 분석 시작<br />

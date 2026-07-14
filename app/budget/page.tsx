@@ -47,11 +47,15 @@ export default function BudgetPage() {
           setHasPhone(true);
           if (alreadySetup) {
             setSetupDone(true);
-            if (p.name) {
+            // 이름 DB 저장 — 최초 1회만 (재방문마다 덮어쓰기 방지)
+            const nameSynced = localStorage.getItem("budget_name_synced");
+            if (p.name && !nameSynced) {
               fetch("/api/budget", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ action: "lead", userId: uid, name: p.name, phone: clean, email: p.email || "" }),
+              }).then(() => {
+                localStorage.setItem("budget_name_synced", "1");
               }).catch(() => {});
             }
           }
