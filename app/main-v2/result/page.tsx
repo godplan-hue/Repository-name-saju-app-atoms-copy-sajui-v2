@@ -292,8 +292,11 @@ function V2ResultInner() {
   }, []);
   useEffect(() => {
     const ua = navigator.userAgent;
-    setIsMob(/Mobi|Android|iPhone|iPad|iPod/i.test(ua));
+    const mob = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
+    setIsMob(mob);
     setIsKakao(/KAKAOTALK/i.test(ua));
+    if (mob) setShowGuideModal(true);
+    else setShowPcGuideModal(true);
   }, []);
 
 
@@ -477,11 +480,13 @@ function V2ResultInner() {
         const res = await fetch("/api/v2/share", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: r.profile?.name, scores: r.scores, luckyColor: r.luckyColor, luckyNumber: r.luckyNumber, luckyDirection: r.luckyDirection, categories: validCats, tier: isPackage ? "package" : isPaid ? "select" : "free", birthYear: r.profile?.birthYear }),
+          body: JSON.stringify({ name: r.profile?.name, scores: r.scores, luckyColor: r.luckyColor, luckyNumber: r.luckyNumber, luckyDirection: r.luckyDirection, categories: validCats, tier: isPackage ? "package" : isPaid ? "select" : "free", birthYear: r.profile?.birthYear, fullResult: { ...r, plan: isPackage ? "package" : isPaid ? "select" : "", price: price } }),
         });
         if (res.ok) {
           const data = await res.json();
           setShareId(data.id ?? "");
+          // URL에 ?sid 추가 — KakaoTalk 탭 전환 후 복원용 (localStorage 단절 방어)
+          if (data.id) { try { history.replaceState(null, "", `/main-v2/result?sid=${data.id}`); } catch {} }
           // 결제 시 입력한 번호로 영구 결과 링크 SMS 발송
           try {
             const phone = sessionStorage.getItem("v2_payment_phone");
@@ -530,6 +535,30 @@ function V2ResultInner() {
       localStorage.setItem("v2_result", JSON.stringify(newResult));
       setAllAnalyses(data.allAnalyses);
       setResult((prev: any) => ({ ...prev, ...data }));
+      // KakaoTalk 탭 전환 후 복원: Firebase에 fullResult 저장 후 URL에 ?sid 추가
+      const catList = cats
+        .filter((c: string) => data.allAnalyses[c])
+        .map((c: string) => ({ label: c.replace(/^\S+\s/, ""), text: data.allAnalyses[c] }));
+      if (catList.length > 0) {
+        fetch("/api/v2/share", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: profile.name,
+            scores: data.scores,
+            luckyColor: data.luckyColor,
+            luckyNumber: data.luckyNumber,
+            luckyDirection: data.luckyDirection,
+            categories: catList.slice(0, 5),
+            tier: "select",
+            birthYear: profile.birthYear,
+            fullResult: newResult,
+          }),
+        })
+        .then(r2 => r2.ok ? r2.json() : null)
+        .then((d: any) => { if (d?.id) { try { history.replaceState(null, "", `/main-v2/result?sid=${d.id}`); } catch {} } })
+        .catch(() => {});
+      }
     })
     .catch(() => {});
   }, [tier, result]); // allAnalyses 변경 시 재실행 안 되도록 의존성에서 제외
