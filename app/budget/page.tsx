@@ -187,12 +187,12 @@ export default function BudgetPage() {
     return (
       <div style={{ minHeight: "100vh", background: "#0f172a", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", textAlign: "center" }}>
         <div style={{ fontSize: 64, marginBottom: 16 }}>🔒</div>
-        <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.4 }}>사주 990원 결제 후<br />가계부 30일 이용해요</h2>
+        <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.4 }}>🔒 이용권이 필요해요</h2>
         <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 28px" }}>
-          사주 결제 1회로<br />감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용
+          990원 단독권 또는 7개앱 4,900원 풀패스로 이용해요<br />꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어<br />7개를 5개 가격으로!
         </p>
         <a href="/budget/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
-          사주 990원으로 30일 이용 →
+          이용권 구매하기 →
         </a>
         <a href="/main-v2" style={{ display: "block", marginTop: 18, fontSize: 13, color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>← 점운 홈으로</a>
       </div>

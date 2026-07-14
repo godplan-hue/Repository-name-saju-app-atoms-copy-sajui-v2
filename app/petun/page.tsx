@@ -130,12 +130,12 @@ export default function PetunPage() {
 
             {petunLocked ? (
               <div style={{ background: "rgba(251,191,36,0.1)", border: "1.5px solid rgba(251,191,36,0.5)", borderRadius: 18, padding: "20px", textAlign: "left" }}>
-                <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>🔒 사주 990원 결제 후 30일 이용해요</p>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>🔒 이용권이 필요해요</p>
                 <p style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", margin: "0 0 14px", lineHeight: 1.7 }}>
-                  사주 결제 1회로<br />감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용
+                  990원 단독권 또는 7개앱 4,900원 풀패스로 이용해요<br />꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어<br />7개를 5개 가격으로!
                 </p>
                 <a href="/petun/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 14, fontWeight: 900, padding: "13px 28px", borderRadius: 22, textDecoration: "none" }}>
-                  사주 990원으로 30일 이용 →
+                  이용권 구매하기 →
                 </a>
               </div>
             ) : (
@@ -143,7 +143,7 @@ export default function PetunPage() {
                 <button onClick={() => setStep("form")} style={S.btn}>
                   지금 분석하기 🐾 →
                 </button>
-                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>사주 결제 후 30일 이용 · 보호자 정보 선택 입력</p>
+                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>펫운 이용 중 · 보호자 정보 선택 입력</p>
               </>
             )}
             <p style={{ textAlign: "center", fontSize: 11, color: "rgba(6,182,212,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>

@@ -129,7 +129,7 @@ function PayInner() {
       } catch {}
       // fullAccess 쿠폰: 전체 앱 30일/24h 열기
       if (couponFullAccess) {
-        try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
+        try { const _p=Number(localStorage.getItem("haemong_unlock_until")||0); localStorage.setItem("haemong_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
         try { const _p=Number(localStorage.getItem("momcare_unlock_until")||0); localStorage.setItem("momcare_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
         try { const _p=Number(localStorage.getItem("gamjung_unlock_until")||0); localStorage.setItem("gamjung_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
         try { const _p=Number(localStorage.getItem("budget_unlock_until")||0); localStorage.setItem("budget_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
@@ -349,10 +349,12 @@ function PayInner() {
         <div style={{ marginBottom: 16, padding: "12px 14px", background: "rgba(251,191,36,0.08)", borderRadius: 12, border: "1px solid rgba(251,191,36,0.3)" }}>
           <p style={{ margin: "0 0 6px", fontSize: 12, fontWeight: 900, color: "#fbbf24" }}>⚠️ 꼭 확인하세요</p>
           <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>
-            · 결제 후 결과지·보관함은 <strong style={{ color: "#fbbf24" }}>결제하신 앱(브라우저)에서만</strong> 확인 가능해요.<br />
-            · 카카오톡에서 결제하셨다면 카카오톡 안에서, 크롬에서 결제하셨다면 크롬에서 확인하세요.<br />
-            · 꿈해몽·Q&A 등 부가 이용권도 <strong style={{ color: "#fbbf24" }}>결제한 브라우저에서만</strong> 적용돼요. 다른 기기·브라우저에서는 별도 이용권이 필요해요.<br />
-            · 디지털 콘텐츠 특성상 결과지 열람 후 <strong style={{ color: "#fbbf24" }}>환불이 불가</strong>합니다.
+            결제 후 결과지·보관함은<br />
+            결제하신 앱(브라우저)에서만 확인 가능해요.<br />
+            · 카카오톡에서 결제하셨다면 카카오톡 안에서,<br />
+            크롬에서 결제하셨다면 크롬에서 확인하세요.<br />
+            · 디지털 콘텐츠 특성상 결과지 열람 후<br />
+            환불이 불가합니다.
           </p>
         </div>
 

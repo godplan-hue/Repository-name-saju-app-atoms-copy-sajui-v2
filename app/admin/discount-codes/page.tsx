@@ -177,7 +177,7 @@ export default function AdminDiscountCodes() {
                   onChange={e => setForm({ ...form, fullAccess: e.target.checked })}
                   style={{ accentColor: "#22c55e", width: 16, height: 16 }}
                 />
-                전체 앱 열기 (꿈해몽 24h · 맘케어·감정일기·가계부 30일)
+                전체 앱 열기 (꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어 7개앱 30일)
               </label>
               {form.fullAccess && (
                 <p style={{ fontSize: 11, color: "#16a34a", margin: "4px 0 0 24px" }}>

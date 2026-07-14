@@ -144,18 +144,18 @@ export default function GamjungPage() {
             </div>
             {gamjungLocked ? (
               <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 16, padding: "16px 20px", marginBottom: 8 }}>
-                <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>{gamjungNeverPaid ? "🔒 사주 990원 결제 후 30일 이용해요" : "⏰ 30일 이용권이 만료됐어요"}</p>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>{gamjungNeverPaid ? "🔒 이용권이 필요해요" : "⏰ 30일 이용권이 만료됐어요"}</p>
                 <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 12px", lineHeight: 1.6 }}>
-                  {gamjungNeverPaid ? "사주 결제 1회로 감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용" : "기존 감정일기는 계속 볼 수 있어요. 새 일기를 쓰려면 재활성화해주세요."}
+                  {gamjungNeverPaid ? "990원 단독권 또는 7개앱 4,900원 풀패스로 이용해요" : "기존 감정일기는 계속 볼 수 있어요. 새 일기를 쓰려면 재활성화해주세요."}
                 </p>
                 <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 13, fontWeight: 900, padding: "11px 24px", borderRadius: 20, textDecoration: "none" }}>
-                  {gamjungNeverPaid ? "사주 990원으로 30일 이용 →" : "사주 990원으로 30일 재활성화 →"}
+                  {gamjungNeverPaid ? "이용권 구매하기 →" : "30일 재활성화 →"}
                 </a>
               </div>
             ) : (
               <>
                 <button onClick={() => setStep("mood")} style={S.btn}>오늘 감정 기록하기 →</button>
-                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>사주 결제 후 30일 이용 · 1분이면 끝</p>
+                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>감정일기 이용 중 · 1분이면 끝</p>
               </>
             )}
             <p style={{ textAlign: "center", fontSize: 11, color: "rgba(74,222,128,0.5)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
