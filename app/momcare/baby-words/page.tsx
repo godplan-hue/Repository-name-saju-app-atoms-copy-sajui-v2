@@ -23,8 +23,9 @@ export default function BabyWordsPage() {
   const [hasPhone, setHasPhone] = useState(true);
 
   useEffect(() => {
+    // 결제 후 만료된 경우만 잠금 (미결제 = 무료 체험, 기존 단어는 항상 열람 가능)
     const exp = localStorage.getItem("momcare_unlock_until");
-    if (!exp || Number(exp) <= Date.now()) setUnlocked(false);
+    if (exp && Number(exp) <= Date.now()) setUnlocked(false);
   }, []);
 
   useEffect(() => {
@@ -99,30 +100,17 @@ export default function BabyWordsPage() {
     else { navigator.clipboard?.writeText(text).then(() => alert("클립보드에 복사됐어요!")); }
   }
 
-  if (!unlocked) return (
-    <div style={{ minHeight: "100vh", background: "#f0f7ff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      <div style={{ background: "white", borderRadius: 24, padding: "40px 28px", textAlign: "center", maxWidth: 340, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
-        <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>사주 분석 후 30일 무료</h2>
-        <p style={{ fontSize: 14, color: "#6b7280", margin: "0 0 14px", lineHeight: 1.6 }}>점운에서 사주를 보면<br />맘케어 전체 기능을 30일 무료로 이용해요</p>
-        <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 10, padding: "10px 14px", marginBottom: 10, fontSize: 13, color: "#c2410c", fontWeight: 700, lineHeight: 1.5 }}>
-          💡 990원 사주 결제 시<br />육아일기·타임캡슐·말사전 30일 무료!
-        </div>
-        <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 10, padding: "10px 14px", marginBottom: 20, fontSize: 12, color: "#166534", fontWeight: 700, lineHeight: 1.8 }}>
-          🎁 결제하면 하루 무료도 드려요!<br />🌙 꿈해몽 · 🐱 복냥이상담 · ❓ 360개 질문
-        </div>
-        <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 14, padding: "14px", fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>점운 사주 보러 가기 →</Link>
-        <Link href="/momcare" style={{ display: "block", fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>← 맘케어 홈으로</Link>
-      </div>
-    </div>
-  );
 
   return (
     <div style={{ minHeight: "100vh", background: "#f0f7ff", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
       <nav style={{ background: "white", borderBottom: "1px solid #e5e7eb", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 50 }}>
         <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: "#f97316", textDecoration: "none" }}>맘케어</Link>
         <span style={{ fontSize: 14, fontWeight: 700 }}>🗣️ 아기 말 사전</span>
-        <button onClick={() => setShowForm(!showForm)} style={{ background: "#f97316", color: "white", border: "none", borderRadius: 12, padding: "8px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>+ 추가</button>
+        {unlocked ? (
+          <button onClick={() => setShowForm(!showForm)} style={{ background: "#f97316", color: "white", border: "none", borderRadius: 12, padding: "8px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>+ 추가</button>
+        ) : (
+          <a href="/main-v2/pay?amount=990" style={{ background: "#fed7aa", color: "#c2410c", borderRadius: 12, padding: "8px 14px", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>🔒 재활성화</a>
+        )}
       </nav>
 
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "24px 20px" }}>
@@ -134,6 +122,15 @@ export default function BabyWordsPage() {
           </div>
         )}
 
+        {/* 만료 배너 */}
+        {!unlocked && (
+          <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+            <p style={{ fontSize: 14, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>⏰ 30일 이용권이 만료됐어요</p>
+            <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 10px", lineHeight: 1.6 }}>기존 단어는 계속 볼 수 있어요. 새 단어를 추가하려면 재활성화해주세요.</p>
+            <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none" }}>사주 990원으로 30일 재활성화 →</a>
+          </div>
+        )}
+
         {/* 안내 */}
         <div style={{ background: "linear-gradient(135deg, #fce7f3, #dbeafe)", borderRadius: 18, padding: "20px 24px", marginBottom: 20, textAlign: "center" }}>
           <div style={{ fontSize: 36, marginBottom: 6 }}>🗣️</div>
@@ -142,8 +139,8 @@ export default function BabyWordsPage() {
           <button onClick={share} style={{ background: "white", color: "#f97316", border: "2px solid #f97316", borderRadius: 20, padding: "8px 20px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>사전 공유하기 📤</button>
         </div>
 
-        {/* 추가 폼 */}
-        {showForm && (
+        {/* 추가 폼 — 잠금 시 표시 안 함 */}
+        {showForm && unlocked && (
           <div style={{ background: "white", borderRadius: 18, padding: "20px", marginBottom: 16, boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
             <h3 style={{ fontSize: 15, fontWeight: 900, margin: "0 0 14px" }}>새 단어 추가</h3>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>

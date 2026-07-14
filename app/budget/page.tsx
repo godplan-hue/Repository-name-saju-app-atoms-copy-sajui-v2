@@ -23,6 +23,8 @@ export default function BudgetPage() {
   const [hasPhone, setHasPhone] = useState(false);
   const [setupDone, setSetupDone] = useState(false);
   const [budgetLocked, setBudgetLocked] = useState(false);
+  const [budgetExpiringSoon, setBudgetExpiringSoon] = useState(false);
+  const [budgetDaysLeft, setBudgetDaysLeft] = useState(0);
   const [setupName, setSetupName] = useState("");
   const [setupPhone, setSetupPhone] = useState("");
   const [setupEmail, setSetupEmail] = useState("");
@@ -74,7 +76,13 @@ export default function BudgetPage() {
     // 30일 이용권 만료 체크
     try {
       const until = Number(localStorage.getItem("budget_unlock_until") || 0);
-      if (until > 0 && until < Date.now()) setBudgetLocked(true);
+      const now = Date.now();
+      if (until > 0 && until < now) {
+        setBudgetLocked(true);
+      } else if (until > 0 && until - now < 3 * 24 * 60 * 60 * 1000) {
+        setBudgetExpiringSoon(true);
+        setBudgetDaysLeft(Math.ceil((until - now) / (24 * 60 * 60 * 1000)));
+      }
     } catch {}
 
     const stored = localStorage.getItem("budget_entries");
@@ -240,6 +248,21 @@ export default function BudgetPage() {
           <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#92400e", lineHeight: 1.6 }}>
             ⚠️ 전화번호 미등록 — 가계부가 이 기기에만 저장되고 영구 보관되지 않아요.<br />
             <a href="/main-v2" style={{ color: "#f97316", fontWeight: 700, textDecoration: "none" }}>사주 앱에서 전화번호 등록하기 →</a>
+          </div>
+        )}
+
+        {/* 3일 전 만료 경고 배너 */}
+        {budgetExpiringSoon && (
+          <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "12px 14px", marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: "#c2410c" }}>⏰ {budgetDaysLeft}일 후 가계부가 잠겨요</span>
+            <a href="/main-v2/pay?amount=990" style={{ background: "#f97316", color: "white", fontSize: 12, fontWeight: 900, padding: "6px 14px", borderRadius: 14, textDecoration: "none" }}>990원으로 30일 연장 →</a>
+          </div>
+        )}
+        {/* 이용권 만료 배너 */}
+        {budgetLocked && (
+          <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 12, padding: "12px 14px", marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: "#fbbf24" }}>⏰ 이용권 만료 — 기존 내역은 볼 수 있어요</span>
+            <a href="/main-v2/pay?amount=990" style={{ background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 14px", borderRadius: 14, textDecoration: "none" }}>사주 990원으로 재활성화 →</a>
           </div>
         )}
 

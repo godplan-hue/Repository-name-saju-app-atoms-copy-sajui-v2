@@ -45,6 +45,8 @@ export default function GamjungPage() {
   const selectedMood = MOODS.find(m => m.score === moodScore);
   const [history, setHistory] = useState<Array<{id: string; moodLabel: string; moodEmoji: string; createdAt: number}>>([]);
   const [gamjungLocked, setGamjungLocked] = useState(false);
+  const [gamjungExpiringSoon, setGamjungExpiringSoon] = useState(false);
+  const [gamjungDaysLeft, setGamjungDaysLeft] = useState(0);
 
   useEffect(() => {
     try {
@@ -60,7 +62,13 @@ export default function GamjungPage() {
     // 30일 이용권 만료 체크
     try {
       const until = Number(localStorage.getItem("gamjung_unlock_until") || 0);
-      if (until > 0 && until < Date.now()) setGamjungLocked(true);
+      const now = Date.now();
+      if (until > 0 && until < now) {
+        setGamjungLocked(true);
+      } else if (until > 0 && until - now < 3 * 24 * 60 * 60 * 1000) {
+        setGamjungExpiringSoon(true);
+        setGamjungDaysLeft(Math.ceil((until - now) / (24 * 60 * 60 * 1000)));
+      }
     } catch {}
   }, []);
 
@@ -185,7 +193,23 @@ export default function GamjungPage() {
             </div>
           </div>
         )}
-        {!gamjungLocked && (
+        {gamjungExpiringSoon && (
+          <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 12px" }}>
+            <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "12px 16px" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>⏰ {gamjungDaysLeft}일 후 감정일기가 잠겨요</p>
+              <a href="/main-v2/pay?amount=990" style={{ color: "#ea580c", fontWeight: 700, fontSize: 12, textDecoration: "none" }}>지금 990원 결제하면 만료일부터 30일 자동 연장 →</a>
+            </div>
+          </div>
+        )}
+        {gamjungLocked ? (
+          <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
+            <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 14, padding: "20px 18px", textAlign: "center" }}>
+              <p style={{ fontSize: 15, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>⏰ 30일 이용권이 만료됐어요</p>
+              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px" }}>기존 기록은 위에서 계속 볼 수 있어요.</p>
+              <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>사주 990원으로 30일 재활성화 →</a>
+            </div>
+          </div>
+        ) : (
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
             <button onClick={() => setStep("mood")} style={S.btn}>감정일기 시작하기 →</button>
           </div>

@@ -60,11 +60,19 @@ export default function MomcarePage() {
   const [featureIdx, setFeatureIdx] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [momcareExpired, setMomcareExpired] = useState(false);
+  const [momcareExpiringSoon, setMomcareExpiringSoon] = useState(false);
+  const [momcareDaysLeft, setMomcareDaysLeft] = useState(0);
 
   useEffect(() => {
     try {
       const until = Number(localStorage.getItem("momcare_unlock_until") || 0);
-      if (until > 0 && until < Date.now()) setMomcareExpired(true);
+      const now = Date.now();
+      if (until > 0 && until < now) {
+        setMomcareExpired(true);
+      } else if (until > 0 && until - now < 3 * 24 * 60 * 60 * 1000) {
+        setMomcareExpiringSoon(true);
+        setMomcareDaysLeft(Math.ceil((until - now) / (24 * 60 * 60 * 1000)));
+      }
     } catch {}
   }, []);
 
@@ -89,6 +97,16 @@ export default function MomcarePage() {
           <Link href="/momcare/baby-words" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>말사전</Link>
         </div>
       </nav>
+
+      {/* 3일 전 만료 경고 배너 */}
+      {momcareExpiringSoon && (
+        <div style={{ background: "#fff7ed", borderBottom: "1px solid #fed7aa", padding: "12px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#c2410c" }}>⏰ {momcareDaysLeft}일 후 맘케어 이용권이 만료돼요.</span>
+          <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "#f97316", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 16px", borderRadius: 20, textDecoration: "none" }}>
+            만료일부터 30일 연장 →
+          </a>
+        </div>
+      )}
 
       {/* 30일 이용권 만료 배너 */}
       {momcareExpired && (

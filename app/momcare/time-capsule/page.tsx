@@ -43,8 +43,9 @@ export default function TimeCapsulePage() {
   const [unlockConfirm, setUnlockConfirm] = useState(false);
 
   useEffect(() => {
+    // 결제 후 만료된 경우만 잠금 (미결제 = 무료 체험, 기존 편지는 항상 열람 가능)
     const exp = localStorage.getItem("momcare_unlock_until");
-    if (!exp || Number(exp) <= Date.now()) setMomcareUnlocked(false);
+    if (exp && Number(exp) <= Date.now()) setMomcareUnlocked(false);
   }, []);
 
   const [mcUserId, setMcUserId] = useState("");
@@ -93,23 +94,6 @@ export default function TimeCapsulePage() {
     }
   }
 
-  if (!momcareUnlocked) return (
-    <div style={{ minHeight: "100vh", background: "#f0f7ff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      <div style={{ background: "white", borderRadius: 24, padding: "40px 28px", textAlign: "center", maxWidth: 340, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
-        <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>사주 분석 후 30일 무료</h2>
-        <p style={{ fontSize: 14, color: "#6b7280", margin: "0 0 14px", lineHeight: 1.6 }}>점운에서 사주를 보면<br />맘케어 전체 기능을 30일 무료로 이용해요</p>
-        <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 10, padding: "10px 14px", marginBottom: 10, fontSize: 13, color: "#c2410c", fontWeight: 700, lineHeight: 1.5 }}>
-          💡 990원 사주 결제 시<br />육아일기·타임캡슐·말사전 30일 무료!
-        </div>
-        <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 10, padding: "10px 14px", marginBottom: 20, fontSize: 12, color: "#166534", fontWeight: 700, lineHeight: 1.8 }}>
-          🎁 결제하면 하루 무료도 드려요!<br />🌙 꿈해몽 · 🐱 복냥이상담 · ❓ 360개 질문
-        </div>
-        <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 14, padding: "14px", fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>점운 사주 보러 가기 →</Link>
-        <Link href="/momcare" style={{ display: "block", fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>← 맘케어 홈으로</Link>
-      </div>
-    </div>
-  );
 
   function submit() {
     if (!form.content.trim()) return;
@@ -207,6 +191,17 @@ export default function TimeCapsulePage() {
 
   // ── 쓰기 모드 ──────────────────────────────────────────────
   if (mode === "write") {
+    if (!momcareUnlocked) return (
+      <div style={{ minHeight: "100vh", background: "#f0f7ff", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+        <div style={{ textAlign: "center", maxWidth: 320 }}>
+          <div style={{ fontSize: 48, marginBottom: 12 }}>🔒</div>
+          <p style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>새 편지를 쓰려면 재활성화가 필요해요</p>
+          <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 20px", lineHeight: 1.6 }}>기존 편지는 목록에서 계속 읽을 수 있어요</p>
+          <a href="/main-v2/pay?amount=990" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", padding: "14px", borderRadius: 14, fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>사주 990원으로 30일 재활성화 →</a>
+          <button onClick={() => setMode("list")} style={{ background: "none", border: "none", color: "#9ca3af", fontSize: 13, cursor: "pointer" }}>← 목록으로 돌아가기</button>
+        </div>
+      </div>
+    );
     return (
       <div style={{ minHeight: "100vh", background: "#f0f7ff", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
         <nav style={{ background: "white", borderBottom: "1px solid #e5e7eb", padding: "14px 24px", display: "flex", gap: 12, alignItems: "center", position: "sticky", top: 0, zIndex: 50 }}>
@@ -250,7 +245,11 @@ export default function TimeCapsulePage() {
       <nav style={{ background: "white", borderBottom: "1px solid #e5e7eb", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 50 }}>
         <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: "#f97316", textDecoration: "none" }}>맘케어</Link>
         <span style={{ fontSize: 14, fontWeight: 700 }}>💌 타임캡슐 편지</span>
-        <button onClick={() => setMode("write")} style={{ background: "#f97316", color: "white", border: "none", borderRadius: 12, padding: "8px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>+ 편지 쓰기</button>
+        {momcareUnlocked ? (
+          <button onClick={() => setMode("write")} style={{ background: "#f97316", color: "white", border: "none", borderRadius: 12, padding: "8px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>+ 편지 쓰기</button>
+        ) : (
+          <a href="/main-v2/pay?amount=990" style={{ background: "#fed7aa", color: "#c2410c", borderRadius: 12, padding: "8px 14px", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>🔒 재활성화</a>
+        )}
       </nav>
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "24px 20px" }}>
         {!hasPhone && (
@@ -259,6 +258,15 @@ export default function TimeCapsulePage() {
             <a href="/main-v2" style={{ color: "#f97316", fontWeight: 700, textDecoration: "none" }}>전화번호 등록하러 가기 →</a>
           </div>
         )}
+        {/* 만료 배너 */}
+        {!momcareUnlocked && (
+          <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
+            <p style={{ fontSize: 14, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>⏰ 30일 이용권이 만료됐어요</p>
+            <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 10px", lineHeight: 1.6 }}>기존 편지는 계속 읽을 수 있어요. 새 편지를 쓰려면 재활성화해주세요.</p>
+            <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none" }}>사주 990원으로 30일 재활성화 →</a>
+          </div>
+        )}
+
         <div style={{ background: "linear-gradient(135deg, #fde8d8, #fce7f3)", borderRadius: 18, padding: "24px", marginBottom: 24, textAlign: "center" }}>
           <div style={{ fontSize: 40, marginBottom: 8 }}>💌</div>
           <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px" }}>미래의 아이에게 편지를</h2>

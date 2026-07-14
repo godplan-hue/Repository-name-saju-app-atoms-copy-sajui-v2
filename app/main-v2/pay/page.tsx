@@ -130,9 +130,9 @@ function PayInner() {
       // fullAccess 쿠폰: 전체 앱 30일/24h 열기
       if (couponFullAccess) {
         try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
-        try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
-        try { localStorage.setItem("gamjung_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
-        try { localStorage.setItem("budget_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+        try { const _p=Number(localStorage.getItem("momcare_unlock_until")||0); localStorage.setItem("momcare_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        try { const _p=Number(localStorage.getItem("gamjung_unlock_until")||0); localStorage.setItem("gamjung_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        try { const _p=Number(localStorage.getItem("budget_unlock_until")||0); localStorage.setItem("budget_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
       }
       // 추천인 쿠폰 지급
       try {
@@ -194,12 +194,12 @@ function PayInner() {
         }
         // 꿈해몽 24시간 무료 잠금 해제
         try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
-        // 맘케어 30일 무료 잠금 해제
-        try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
-        // 감정일기 30일 무료 잠금 해제
-        try { localStorage.setItem("gamjung_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
-        // 가계부 30일 무료 잠금 해제
-        try { localStorage.setItem("budget_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+        // 맘케어 30일 무료 잠금 해제 (만료일 기준 연장 — 빨리 결제해도 손해 없음)
+        try { const _p=Number(localStorage.getItem("momcare_unlock_until")||0); localStorage.setItem("momcare_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        // 감정일기 30일 무료 잠금 해제 (만료일 기준 연장)
+        try { const _p=Number(localStorage.getItem("gamjung_unlock_until")||0); localStorage.setItem("gamjung_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        // 가계부 30일 무료 잠금 해제 (만료일 기준 연장)
+        try { const _p=Number(localStorage.getItem("budget_unlock_until")||0); localStorage.setItem("budget_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
         // 결제 기록 Firebase 저장 (어드민 결제내역에 표시)
         if (displayAmount > 0 && name.trim()) {
           fetch("/api/v2/save-payment", {
