@@ -90,6 +90,9 @@ export default function V2Profile() {
     phone: "", email: "",
   });
   const [agreed, setAgreed] = useState(false);
+  const [phoneStep, setPhoneStep] = useState(true);
+  const [phoneInput, setPhoneInput] = useState("");
+  const [phoneLoading, setPhoneLoading] = useState(false);
 
   useEffect(() => {
     const loggedInName = localStorage.getItem("v2_user_name") ?? "";
@@ -131,45 +134,57 @@ export default function V2Profile() {
       return; // 저장 정보 없음 → 5단계 마법사 표시
     }
 
-    // 유료 or 일반 플로우: 저장된 정보 있으면 단일 확인 폼
+    // 유료 or 일반 플로우: 전화번호로 본인 확인
+    // 이전에 본인 확인한 전화번호가 있으면 → 바로 savedMode (다음 한 번만)
+    const verifiedPhone = localStorage.getItem("v2_verified_phone");
     const saved = localStorage.getItem("v2_saved_profile");
-    if (saved) {
+    if (verifiedPhone && saved) {
       try {
         const p = JSON.parse(saved);
-        if (p.birthYear && p.gender && p.birthHour) {
-          setForm(prev => ({
-            ...prev,
-            name: p.name ?? prev.name,
-            birthYear: p.birthYear ?? prev.birthYear,
-            birthMonth: p.birthMonth ?? prev.birthMonth,
-            birthDay: p.birthDay ?? prev.birthDay,
-            gender: p.gender ?? prev.gender,
-            birthHour: p.birthHour ?? prev.birthHour,
-            phone: p.phone ?? prev.phone,
-            email: p.email ?? prev.email,
-          }));
+        if (p.phone === verifiedPhone && p.birthYear && p.gender && p.birthHour) {
+          setForm(prev => ({ ...prev, ...p, relationship: p.relationship || "나" }));
           setSavedMode(true);
-          return;
-        }
-        // 부분 저장 (생년월일은 있지만 성별·시간 없음 — /free 랜딩에서 온 경우)
-        if (p.birthYear) {
-          setForm(prev => ({
-            ...prev,
-            name: p.name ?? prev.name,
-            birthYear: p.birthYear ?? prev.birthYear,
-            birthMonth: p.birthMonth ?? prev.birthMonth,
-            birthDay: p.birthDay ?? prev.birthDay,
-            phone: p.phone ?? prev.phone,
-          }));
+          setPhoneStep(false);
           return;
         }
       } catch {}
     }
+    // 처음 방문 or 다른 기기 → 전화번호 입력 화면 표시 (phoneStep = true)
   }, []);
 
   const TOTAL = 5;
   const progress = (step / TOTAL) * 100;
   const cur = STEPS[step - 1];
+
+  const checkPhone = async () => {
+    const phone = phoneInput.replace(/[^0-9]/g, "");
+    if (phone.length < 10) { alert("전화번호를 정확히 입력해주세요"); return; }
+    setPhoneLoading(true);
+    try {
+      const res = await fetch(`/api/v2/customer?phone=${encodeURIComponent(phone)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.found && data.profile) {
+          const p = data.profile;
+          const profileData = { name: p.name || "", birthYear: p.birthYear || "", birthMonth: p.birthMonth || "", birthDay: p.birthDay || "", gender: p.gender || "", birthHour: p.birthHour || "", phone, email: p.email || "" };
+          setForm(prev => ({ ...prev, ...profileData, relationship: "나" }));
+          localStorage.setItem("v2_saved_profile", JSON.stringify(profileData));
+          localStorage.setItem("v2_verified_phone", phone);
+          setSavedMode(true);
+        } else {
+          // 신규 사용자 — 이전 사람 데이터 완전 초기화
+          setForm({ name: "", relationship: "나", birthYear: "", birthMonth: "", birthDay: "", gender: "", birthHour: "", phone, email: "" });
+          localStorage.removeItem("v2_saved_profile");
+        }
+      } else {
+        setForm(prev => ({ ...prev, phone }));
+      }
+    } catch {
+      setForm(prev => ({ ...prev, phone }));
+    }
+    setPhoneStep(false);
+    setPhoneLoading(false);
+  };
 
   const finish = () => {
     sessionStorage.setItem("v2_profile", JSON.stringify(form));
@@ -177,6 +192,7 @@ export default function V2Profile() {
       name: form.name, birthYear: form.birthYear, birthMonth: form.birthMonth, birthDay: form.birthDay,
       gender: form.gender, birthHour: form.birthHour, phone: form.phone, email: form.email,
     }));
+    if (form.phone) localStorage.setItem("v2_verified_phone", form.phone.replace(/[^0-9]/g, ""));
     fetch("/api/v2/customer", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -221,6 +237,36 @@ export default function V2Profile() {
     if (step < TOTAL) { setStep(s => s + 1); return; }
     finish();
   };
+
+  // ── 전화번호 본인 확인 화면 ──────────────────
+  if (phoneStep && !isFreeFlow) {
+    return (
+      <main style={{ minHeight: "100vh", backgroundImage: "url('https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(20,5,50,0.68)", zIndex: 1, pointerEvents: "none" }} />
+        <div style={{ position: "relative", zIndex: 10, maxWidth: 480, margin: "0 auto", padding: "80px 20px 40px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div style={{ fontSize: 48, marginBottom: 12 }}>🔮</div>
+          <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>점운 사주 분석</h1>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", margin: "0 0 32px", textAlign: "center" }}>전화번호로 본인 확인 후 시작합니다</p>
+          <div style={{ width: "100%", background: "rgba(60,20,100,0.72)", backdropFilter: "blur(16px)", borderRadius: 20, padding: "24px 20px", border: "1px solid rgba(255,255,255,0.15)" }}>
+            <label style={{ fontSize: 13, fontWeight: 700, color: "#fbbf24", display: "block", marginBottom: 8 }}>📱 전화번호</label>
+            <input
+              type="tel" value={phoneInput}
+              onChange={e => setPhoneInput(e.target.value)}
+              onKeyDown={e => { if (e.key === "Enter") checkPhone(); }}
+              placeholder="010-0000-0000"
+              style={{ width: "100%", padding: "14px", borderRadius: 12, border: "1.5px solid rgba(251,191,36,0.4)", fontSize: 16, boxSizing: "border-box", outline: "none", color: "#1a1a2e", background: "rgba(255,255,255,0.9)", textAlign: "center", letterSpacing: 2 }}
+            />
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "8px 0 20px", textAlign: "center" }}>전화번호로 기존 정보를 불러옵니다</p>
+            <button
+              onClick={checkPhone} disabled={phoneLoading}
+              style={{ width: "100%", padding: "15px 0", background: phoneLoading ? "rgba(139,92,246,0.5)" : "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: phoneLoading ? "not-allowed" : "pointer" }}>
+              {phoneLoading ? "확인 중..." : "다음 →"}
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   // ── 저장된 정보 단일 폼 (유료 재방문자) ──────────────────
   if (savedMode) {

@@ -1,6 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 
+export async function GET(request: NextRequest) {
+  try {
+    const phone = request.nextUrl.searchParams.get("phone");
+    if (!phone) return NextResponse.json({ found: false });
+    const snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(phone).limitToFirst(1).once("value");
+    if (!snap.exists()) return NextResponse.json({ found: false });
+    const profile = Object.values(snap.val())[0] as Record<string, string>;
+    return NextResponse.json({ found: true, profile });
+  } catch {
+    return NextResponse.json({ found: false });
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { name, phone, email, birthYear, birthMonth, birthDay, gender, birthHour, relationship, referredBy } = await request.json();
