@@ -631,7 +631,7 @@ export default function ShareClient({ id }: { id: string }) {
         {/* 비오너: 나도 무료 사주 받아보기 */}
         {!isOwner && !entry.businessName && (
           <div style={{ marginBottom: 10 }}>
-            <button onClick={() => { window.location.href = entry.tier === "taegil" ? "/main-v2/taegil" : "/main-v2"; }} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+            <button onClick={() => { window.open(entry.tier === "taegil" ? "/main-v2/taegil" : "/main-v2", "_blank"); }} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               {entry.tier === "taegil" ? "📅 나도 택일 받기" : "🔮 나도 무료 사주 받아보기"}
             </button>
           </div>

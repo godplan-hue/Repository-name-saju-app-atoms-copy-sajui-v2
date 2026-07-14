@@ -33,6 +33,7 @@ function PayInner() {
   const [couponFree, setCouponFree] = useState(false);
   const [discountPct, setDiscountPct] = useState(0);
   const [couponFullAccess, setCouponFullAccess] = useState(false);
+  const [refundAgreed, setRefundAgreed] = useState(false);
 
   const displayAmount = discountPct > 0 ? Math.round(amount * (1 - discountPct / 100)) : amount;
 
@@ -355,15 +356,22 @@ function PayInner() {
             결제하신 앱(브라우저)에서만 확인 가능해요.<br />
             · 카카오톡에서 결제하셨다면 카카오톡 안에서,<br />
             크롬에서 결제하셨다면 크롬에서 확인하세요.<br />
+            · 전화번호 입력 시 /apps 에서 다른 기기에서도 복원 가능해요.<br />
             · 디지털 콘텐츠 특성상 결과지 열람 후<br />
             환불이 불가합니다.
           </p>
+          <div onClick={() => setRefundAgreed(v => !v)} style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, cursor: "pointer", userSelect: "none" as const }}>
+            <span style={{ fontSize: 20, color: refundAgreed ? "#4ade80" : "#9ca3af", lineHeight: 1 }}>{refundAgreed ? "✅" : "⬜"}</span>
+            <span style={{ fontSize: 11, color: refundAgreed ? "#4ade80" : "rgba(255,255,255,0.6)", fontWeight: refundAgreed ? 700 : 400, lineHeight: 1.4 }}>
+              디지털 콘텐츠 특성상 환불이 불가함을 확인했습니다
+            </span>
+          </div>
         </div>
 
         <button
           onClick={pay}
-          disabled={loading}
-          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(251,191,36,0.4)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.3)", marginBottom: 8 }}
+          disabled={loading || !refundAgreed}
+          style={{ width: "100%", padding: "15px 0", background: (loading || !refundAgreed) ? "rgba(251,191,36,0.3)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: (loading || !refundAgreed) ? "not-allowed" : "pointer", boxShadow: (loading || !refundAgreed) ? "none" : "0 6px 22px rgba(251,191,36,0.3)", marginBottom: 8 }}
         >
           {loading ? "결제 중..." : `💳 ₩${displayAmount.toLocaleString()} 결제하기`}
         </button>

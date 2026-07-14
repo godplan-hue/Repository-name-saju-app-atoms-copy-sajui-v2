@@ -10,6 +10,9 @@ export default function PetunPage() {
   const router = useRouter();
   const [step, setStep] = useState<"intro" | "form">("intro");
   const [petunLocked, setPetunLocked] = useState(false);
+  const [restorePhone, setRestorePhone] = useState("");
+  const [restoring, setRestoring] = useState(false);
+  const [restoreMsg, setRestoreMsg] = useState("");
   const [petName, setPetName] = useState("");
   const [petYear, setPetYear] = useState("");
   const [petMonth, setPetMonth] = useState("");
@@ -62,6 +65,23 @@ export default function PetunPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRestore = async () => {
+    const ph = restorePhone.replace(/\D/g, "");
+    if (ph.length < 10) { setRestoreMsg("전화번호를 확인해주세요."); return; }
+    setRestoring(true); setRestoreMsg("");
+    try {
+      const r = await fetch(`/api/phone-unlock?phone=${ph}`);
+      const d = await r.json();
+      if (d.ok && d.unlocks?.petun_unlock_until > Date.now()) {
+        try { localStorage.setItem("petun_unlock_until", String(d.unlocks.petun_unlock_until)); } catch {}
+        try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
+        setRestoreMsg("✅ 이용권 복원 완료! 새로고침할게요.");
+        setTimeout(() => window.location.reload(), 1000);
+      } else { setRestoreMsg("해당 전화번호로 등록된 이용권이 없어요."); }
+    } catch { setRestoreMsg("복원 중 오류가 발생했어요."); }
+    finally { setRestoring(false); }
   };
 
   const S = {
@@ -137,6 +157,14 @@ export default function PetunPage() {
                 <a href="/petun/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 14, fontWeight: 900, padding: "13px 28px", borderRadius: 22, textDecoration: "none" }}>
                   이용권 구매하기 →
                 </a>
+                <div style={{ marginTop: 14, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 12 }}>
+                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "10px 12px", color: "white", fontSize: 13, outline: "none" }} inputMode="numeric" />
+                    <button onClick={handleRestore} disabled={restoring} style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 10, padding: "10px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
+                  </div>
+                  {restoreMsg && <p style={{ fontSize: 12, margin: "8px 0 0", color: restoreMsg.startsWith("✅") ? "#4ade80" : "#f87171" }}>{restoreMsg}</p>}
+                </div>
               </div>
             ) : (
               <>

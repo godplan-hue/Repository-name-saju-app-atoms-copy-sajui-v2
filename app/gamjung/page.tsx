@@ -48,6 +48,9 @@ export default function GamjungPage() {
   const [gamjungNeverPaid, setGamjungNeverPaid] = useState(false);
   const [gamjungExpiringSoon, setGamjungExpiringSoon] = useState(false);
   const [gamjungDaysLeft, setGamjungDaysLeft] = useState(0);
+  const [restorePhone, setRestorePhone] = useState("");
+  const [restoring, setRestoring] = useState(false);
+  const [restoreMsg, setRestoreMsg] = useState("");
 
   useEffect(() => {
     try {
@@ -126,6 +129,23 @@ export default function GamjungPage() {
     }
   };
 
+  const handleRestore = async () => {
+    const ph = restorePhone.replace(/\D/g, "");
+    if (ph.length < 10) { setRestoreMsg("전화번호를 확인해주세요."); return; }
+    setRestoring(true); setRestoreMsg("");
+    try {
+      const r = await fetch(`/api/phone-unlock?phone=${ph}`);
+      const d = await r.json();
+      if (d.ok && d.unlocks?.gamjung_unlock_until > Date.now()) {
+        try { localStorage.setItem("gamjung_unlock_until", String(d.unlocks.gamjung_unlock_until)); } catch {}
+        try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
+        setRestoreMsg("✅ 이용권 복원 완료! 새로고침할게요.");
+        setTimeout(() => window.location.reload(), 1000);
+      } else { setRestoreMsg("해당 전화번호로 등록된 이용권이 없어요."); }
+    } catch { setRestoreMsg("복원 중 오류가 발생했어요."); }
+    finally { setRestoring(false); }
+  };
+
   const S = {
     wrap: { minHeight: "100vh", background: "#0f1a14", color: "#F5F5F5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" },
     inner: { maxWidth: 440, margin: "0 auto", padding: "0 16px 80px" },
@@ -168,6 +188,14 @@ export default function GamjungPage() {
                 <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 13, fontWeight: 900, padding: "11px 24px", borderRadius: 20, textDecoration: "none" }}>
                   {gamjungNeverPaid ? "이용권 구매하기 →" : "30일 재활성화 →"}
                 </a>
+                <div style={{ marginTop: 14, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 12 }}>
+                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "10px 12px", color: "white", fontSize: 13, outline: "none" }} inputMode="numeric" />
+                    <button onClick={handleRestore} disabled={restoring} style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 10, padding: "10px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
+                  </div>
+                  {restoreMsg && <p style={{ fontSize: 12, margin: "8px 0 0", color: restoreMsg.startsWith("✅") ? "#4ade80" : "#f87171" }}>{restoreMsg}</p>}
+                </div>
               </div>
             ) : (
               <>
@@ -228,6 +256,14 @@ export default function GamjungPage() {
               <p style={{ fontSize: 15, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>⏰ 30일 이용권이 만료됐어요</p>
               <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px" }}>기존 기록은 위에서 계속 볼 수 있어요.</p>
               <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>사주 990원으로 30일 재활성화 →</a>
+              <div style={{ marginTop: 14, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 12 }}>
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "10px 12px", color: "white", fontSize: 13, outline: "none" }} inputMode="numeric" />
+                  <button onClick={handleRestore} disabled={restoring} style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 10, padding: "10px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
+                </div>
+                {restoreMsg && <p style={{ fontSize: 12, margin: "8px 0 0", color: restoreMsg.startsWith("✅") ? "#4ade80" : "#f87171" }}>{restoreMsg}</p>}
+              </div>
             </div>
           </div>
         ) : (

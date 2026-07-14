@@ -25,6 +25,9 @@ export default function DietPage() {
   const [hasPhone, setHasPhone] = useState(false);
   const [mcUserId, setMcUserId] = useState("");
   const [dietLocked, setDietLocked] = useState(false);
+  const [restorePhone, setRestorePhone] = useState("");
+  const [restoring, setRestoring] = useState(false);
+  const [restoreMsg, setRestoreMsg] = useState("");
   const [meals, setMeals] = useState<Meal[]>([]);
   const [historyData, setHistoryData] = useState<Record<string, DayLog>>({});
   const [searchQ, setSearchQ] = useState("");
@@ -139,6 +142,23 @@ export default function DietPage() {
     setSetupDone(true);
   }
 
+  const handleRestore = async () => {
+    const ph = restorePhone.replace(/\D/g, "");
+    if (ph.length < 10) { setRestoreMsg("전화번호를 확인해주세요."); return; }
+    setRestoring(true); setRestoreMsg("");
+    try {
+      const r = await fetch(`/api/phone-unlock?phone=${ph}`);
+      const d = await r.json();
+      if (d.ok && d.unlocks?.diet_unlock_until > Date.now()) {
+        try { localStorage.setItem("diet_unlock_until", String(d.unlocks.diet_unlock_until)); } catch {}
+        try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
+        setRestoreMsg("✅ 이용권 복원 완료! 새로고침할게요.");
+        setTimeout(() => window.location.reload(), 1000);
+      } else { setRestoreMsg("해당 전화번호로 등록된 이용권이 없어요."); }
+    } catch { setRestoreMsg("복원 중 오류가 발생했어요."); }
+    finally { setRestoring(false); }
+  };
+
   const yr = parseInt(birthYear) || 1990;
   const oh = getOhFromYear(yr);
   const ohData = OH_DIET[oh];
@@ -162,6 +182,14 @@ export default function DietPage() {
         <a href="/diet/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
           이용권 구매하기 →
         </a>
+        <div style={{ marginTop: 20, width: "100%", maxWidth: 320, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 14 }}>
+          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "10px 12px", color: "white", fontSize: 13, outline: "none" }} inputMode="numeric" />
+            <button onClick={handleRestore} disabled={restoring} style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 10, padding: "10px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
+          </div>
+          {restoreMsg && <p style={{ fontSize: 12, margin: "8px 0 0", color: restoreMsg.startsWith("✅") ? "#4ade80" : "#f87171" }}>{restoreMsg}</p>}
+        </div>
         <a href="/main-v2" style={{ display: "block", marginTop: 18, fontSize: 13, color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>← 점운 홈으로</a>
       </div>
     );

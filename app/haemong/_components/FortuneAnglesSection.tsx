@@ -20,6 +20,9 @@ interface Props {
 
 export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, luck }: Props) {
   const [unlocked, setUnlocked] = useState(false);
+  const [restorePhone, setRestorePhone] = useState("");
+  const [restoring, setRestoring] = useState(false);
+  const [restoreMsg, setRestoreMsg] = useState("");
 
   useEffect(() => {
     try {
@@ -34,6 +37,23 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
       setUnlocked(hasRecentPurchase);
     } catch {}
   }, []);
+
+  const handleRestore = async () => {
+    const ph = restorePhone.replace(/\D/g, "");
+    if (ph.length < 10) { setRestoreMsg("전화번호를 확인해주세요."); return; }
+    setRestoring(true); setRestoreMsg("");
+    try {
+      const r = await fetch(`/api/phone-unlock?phone=${ph}`);
+      const d = await r.json();
+      if (d.ok && d.unlocks?.haemong_unlock_until > Date.now()) {
+        try { localStorage.setItem("haemong_unlock_until", String(d.unlocks.haemong_unlock_until)); } catch {}
+        try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
+        setRestoreMsg("✅ 이용권 복원 완료! 새로고침할게요.");
+        setTimeout(() => window.location.reload(), 1000);
+      } else { setRestoreMsg("해당 전화번호로 등록된 이용권이 없어요."); }
+    } catch { setRestoreMsg("복원 중 오류가 발생했어요."); }
+    finally { setRestoring(false); }
+  };
 
   if (!fortuneAngles || fortuneAngles.length === 0) return null;
 
@@ -78,6 +98,14 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
           <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 12, background: "linear-gradient(135deg,#fef2f2,#fee2e2)", border: "1.5px solid #fca5a5", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{ fontSize: 12, color: "#dc2626", fontWeight: 700 }}>📸 소개·추천 글 올리면 쿠폰 5장 + 꿈해몽 무료!</span>
             <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#dc2626", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>받기 →</Link>
+          </div>
+          <div style={{ marginTop: 12, borderTop: "1px solid rgba(236,72,153,0.15)", paddingTop: 12 }}>
+            <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
+            <div style={{ display: "flex", gap: 8 }}>
+              <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(139,92,246,0.05)", border: "1px solid rgba(139,92,246,0.2)", borderRadius: 10, padding: "9px 12px", color: "#374151", fontSize: 13, outline: "none" }} inputMode="numeric" />
+              <button onClick={handleRestore} disabled={restoring} style={{ background: "linear-gradient(135deg,#ec4899,#8b5cf6)", border: "none", borderRadius: 10, padding: "9px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
+            </div>
+            {restoreMsg && <p style={{ fontSize: 12, margin: "8px 0 0", color: restoreMsg.startsWith("✅") ? "#16a34a" : "#dc2626" }}>{restoreMsg}</p>}
           </div>
         </>
       )}

@@ -125,6 +125,18 @@ export default async function KeywordPage({ params }: Props) {
           </div>
         </div>
 
+        {/* 7개앱 풀패스 버튼 */}
+        <a href="/pass" target="_blank" rel="noreferrer" style={{ display: "block", borderRadius: 16, overflow: "hidden", marginBottom: 14, boxShadow: "0 2px 14px rgba(245,158,11,0.2)", border: "2px solid #f59e0b", textDecoration: "none" }}>
+          <div style={{ background: "linear-gradient(135deg,#f59e0b,#ef4444)", padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🔥 7개앱 30일 풀패스</span>
+            <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 11 }}>꿈해몽도 포함</span>
+          </div>
+          <div style={{ background: "#fffbeb", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <p style={{ fontSize: 11, color: "#92400e", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어</p>
+            <span style={{ flexShrink: 0, fontSize: 13, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#f59e0b,#ef4444)", padding: "5px 14px", borderRadius: 20, marginLeft: 8 }}>₩4,900 →</span>
+          </div>
+        </a>
+
         {/* 관련 꿈 */}
         {related.length > 0 && (
           <div style={{ marginBottom: 14 }}>
