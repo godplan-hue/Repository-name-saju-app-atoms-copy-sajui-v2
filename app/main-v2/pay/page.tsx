@@ -119,13 +119,11 @@ function PayInner() {
 
       localStorage.setItem("v2_paid", "1");
       localStorage.setItem("v2_plan", "select");
-      if (isFreeCat) {
-        try {
-          const cats = JSON.parse(localStorage.getItem("v2_paid_cats") || "[]");
-          if (!cats.includes("💰 재물운")) cats.push("💰 재물운");
-          localStorage.setItem("v2_paid_cats", JSON.stringify(cats));
-        } catch {}
-      }
+      try {
+        const cats = JSON.parse(localStorage.getItem("v2_paid_cats") || "[]");
+        if (!cats.includes("💰 재물운")) cats.push("💰 재물운");
+        localStorage.setItem("v2_paid_cats", JSON.stringify(cats));
+      } catch {}
       // 추천인 쿠폰 지급
       try {
         const refCode = localStorage.getItem("referred_by");
