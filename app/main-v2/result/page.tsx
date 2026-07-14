@@ -2033,6 +2033,12 @@ function V2ResultInner() {
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>반드시 <strong>보관함 저장</strong><br />또는 <strong>공유하기</strong> 버튼을 눌러 저장해두세요.<br /><span style={{ color: "#dc2626", fontWeight: 700 }}>나가서 내용이 사라진 경우 환불은 불가합니다.</span></p>
             </div>
 
+            {/* 전화번호 경고 */}
+            <div style={{ background: "#fef2f2", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fca5a5" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 6px" }}>⚠️ 전화번호 안 넣으면 결과 사라져요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>결제 시 전화번호를 입력하지 않으면<br />브라우저를 닫는 순간 결과가 영구 삭제됩니다.<br />지금 바로 <strong>보관함 저장</strong>을 눌러두세요.</p>
+            </div>
+
             {/* 카카오톡에서 접속 시 */}
             <div style={{ background: "#fff7ed", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fed7aa" }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>📲 카카오톡에서 접속하신 경우</p>
@@ -2091,6 +2097,11 @@ function V2ResultInner() {
             <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 결과지를 나가면 내용이 모두 사라져요!</p>
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>반드시 <strong>보관함 저장</strong><br />또는 <strong>공유하기</strong> 버튼을 눌러 저장해두세요.<br /><span style={{ color: "#dc2626", fontWeight: 700 }}>나가서 내용이 사라진 경우 환불은 불가합니다.</span></p>
+            </div>
+            {/* 전화번호 경고 */}
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 전화번호 안 넣으면 결과 사라져요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>결제 시 전화번호를 입력하지 않으면<br />브라우저를 닫는 순간 결과가 영구 삭제됩니다.<br />지금 바로 <strong>보관함 저장</strong>을 눌러두세요.</p>
             </div>
             <div style={{ background: "#fff7ed", border: "1.5px solid #fed7aa", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 4px" }}>💻 PC 이용 안내</p>
