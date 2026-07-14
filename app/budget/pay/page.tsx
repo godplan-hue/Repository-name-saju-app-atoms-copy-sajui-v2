@@ -33,8 +33,12 @@ export default function BudgetPayPage() {
       });
       const data = await res.json();
       if (data.success) {
-        try { const p = Number(localStorage.getItem("budget_unlock_until")||0); localStorage.setItem("budget_unlock_until", String((p>Date.now()?p:Date.now())+30*24*60*60*1000)); } catch {}
-        fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `budget_${Date.now()}`, phone: mobile.replace(/\D/g,"")||"", name: name.trim(), amount: AMOUNT, category: "가계부 30일권", source: "budget" }) }).catch(()=>{});
+        const _ph = mobile.replace(/\D/g,"");
+        const _p = Number(localStorage.getItem("budget_unlock_until")||0);
+        const _until = (_p>Date.now()?_p:Date.now())+30*24*60*60*1000;
+        try { localStorage.setItem("budget_unlock_until", String(_until)); } catch {}
+        if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:{budget_unlock_until:_until}})}).catch(()=>{});
+        fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `budget_${Date.now()}`, phone: _ph||"", name: name.trim(), amount: AMOUNT, category: "가계부 30일권", source: "budget" }) }).catch(()=>{});
         window.location.href = "/budget";
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");

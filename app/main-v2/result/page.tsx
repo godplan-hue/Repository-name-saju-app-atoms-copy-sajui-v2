@@ -1771,19 +1771,25 @@ function V2ResultInner() {
 
         {/* ── 꿈해몽 배너 (항상 표시) ── */}
         {!isPartner && (
-          <div onClick={() => { window.open("/haemong", "_blank"); }} style={{ margin: "10px 0", borderRadius: 16, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", boxShadow: "0 4px 16px rgba(220,38,38,0.15)", overflow: "hidden" }}>
-            <div style={{ background: "#dc2626", padding: "8px 16px" }}>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🎁 사주 결제 혜택</span>
+          <div style={{ display: "flex", gap: 10, margin: "10px 0" }}>
+            <div onClick={() => { window.open("/haemong", "_blank"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden", boxShadow: "0 3px 12px rgba(220,38,38,0.15)" }}>
+              <div style={{ background: "#dc2626", padding: "7px 10px", textAlign: "center" }}>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🎁 사주 결제 혜택</span>
+              </div>
+              <div style={{ padding: "10px" }}>
+                <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>🌙 꿈해몽 <span style={{ background: "#dc2626", color: "#fff", borderRadius: 4, padding: "1px 6px", fontSize: 10 }}>무료</span></p>
+                <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>사주 결제하면<br />꿈해몽 전체 무료</p>
+                <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>꿈해몽 보기 →</div>
+              </div>
             </div>
-            <div style={{ padding: "14px 16px" }}>
-              <p style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 6px", lineHeight: 1.5 }}>
-                🌙 꿈해몽 전체 <span style={{ background: "#dc2626", color: "#fff", borderRadius: 6, padding: "2px 8px", fontSize: 13 }}>무료</span> 이용 가능
-              </p>
-              <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 12px", lineHeight: 1.7 }}>
-                오늘 꾼 꿈이 있으신가요?<br />사주 결제하면 꿈해몽 전체 해석 무료로 볼 수 있어요
-              </p>
-              <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "11px 0", borderRadius: 10, fontWeight: 800, fontSize: 14 }}>
-                무료 꿈해몽 보러가기 →
+            <div onClick={() => { window.open("/pass", "_blank"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
+              <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "7px 10px", textAlign: "center" }}>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔥 7개앱 풀패스</span>
+              </div>
+              <div style={{ padding: "10px" }}>
+                <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>₩4,900<span style={{ fontSize: 10, color: "#6b7280", fontWeight: 400 }}>/30일</span></p>
+                <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>꿈해몽·타로·펫운<br />감정일기 등 7개앱</p>
+                <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>풀패스 구매 →</div>
               </div>
             </div>
           </div>
@@ -2000,6 +2006,12 @@ function V2ResultInner() {
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`전화번호를 입력하셨다면 DB에 자동 저장됩니다.\n안 하셨다면 보관함 저장 또는 공유하기로\n직접 저장해두세요.`}</p>
             </div>
 
+            {/* 다른 기기에서 */}
+            <div style={{ background: "#f0f9ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bae6fd" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#0369a1", margin: "0 0 6px" }}>💾 다른 기기에서 이용하려면?</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`결제 시 전화번호를 입력하셨다면\n앱 목록(/apps)에서 이용권 불러오기로\n다른 기기에서도 이용하실 수 있어요.`}</p>
+            </div>
+
             {/* 버튼 안내 */}
             <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "14px 0 8px" }}>📌 결과지 맨 밑에 버튼을 꼭 확인하세요!</p>
             <div style={{ background: "#fef2f2", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
@@ -2044,6 +2056,22 @@ function V2ResultInner() {
                 안 하셨다면 <strong>보관함 저장</strong> 또는 <strong>공유하기</strong>로<br />
                 직접 저장해두세요.
               </p>
+            </div>
+            <div style={{ background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#b45309", margin: "0 0 4px" }}>📱 모바일·카카오 이용 안내</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서 열면 점 세 개(⋮) → <strong>다른 브라우저로 열기</strong>를 누르면<br />크롬·사파리에서 더 편하게 이용하실 수 있어요.<br />결과는 결제한 브라우저에서만 확인 가능합니다.</p>
+            </div>
+            <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘려두세요.</p>
+            </div>
+            <div style={{ background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 4px" }}>🖼 이미지 저장</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>화면 스크롤 후 <strong>길게 누르기</strong> 또는<br /><strong>이미지 저장 버튼</strong>으로 갤러리에 바로 저장할 수 있어요.</p>
+            </div>
+            <div style={{ background: "#f0f9ff", border: "1.5px solid #bae6fd", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#0369a1", margin: "0 0 4px" }}>💾 다른 기기에서 이용하려면?</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>결제 시 전화번호를 입력하셨다면<br /><strong>앱 목록(/apps)</strong>에서 이용권 불러오기로<br />다른 기기에서도 이용하실 수 있어요.</p>
             </div>
             <div style={{ background: "#fef2f2", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>

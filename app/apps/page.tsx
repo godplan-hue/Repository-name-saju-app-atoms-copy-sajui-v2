@@ -63,6 +63,21 @@ export default function AppsPage() {
           </p>
         </div>
 
+        {/* 풀패스 배너 */}
+        <div
+          onClick={() => { window.open("/pass", "_blank"); }}
+          style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(239,68,68,0.35)", border: "2px solid #ef4444", marginBottom: 14 }}
+        >
+          <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>🔥 7개앱 30일 풀패스</span>
+            <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>₩4,900</span>
+          </div>
+          <div style={{ background: "#fff5f5", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·맘케어 전부 30일 이용</p>
+            <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
+          </div>
+        </div>
+
         {/* 상단 2단 큰 카드 */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           {TOP_APPS.map(app => (

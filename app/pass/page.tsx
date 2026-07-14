@@ -43,11 +43,14 @@ export default function PassPage() {
       });
       const data = await res.json();
       if (data.success) {
-        const until = (Date.now() + 30*24*60*60*1000);
+        const _ph = mobile.replace(/\D/g,"");
+        const _baseUntil = Date.now() + 30*24*60*60*1000;
+        const _unlocks: Record<string, number> = {};
         PASS_APPS.forEach(app => {
-          try { const p = Number(localStorage.getItem(app.key)||0); localStorage.setItem(app.key, String(p>Date.now()?p+30*24*60*60*1000:until)); } catch {}
+          try { const p = Number(localStorage.getItem(app.key)||0); const u = p>Date.now()?p+30*24*60*60*1000:_baseUntil; localStorage.setItem(app.key, String(u)); _unlocks[app.key] = u; } catch {}
         });
-        fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `pass_${Date.now()}`, phone: mobile.replace(/\D/g,"")||"", name: name.trim(), amount: AMOUNT, category: "풀패스 7개앱 30일권", source: "pass" }) }).catch(()=>{});
+        if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
+        fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `pass_${Date.now()}`, phone: _ph||"", name: name.trim(), amount: AMOUNT, category: "풀패스 7개앱 30일권", source: "pass" }) }).catch(()=>{});
         window.location.href = "/apps";
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");

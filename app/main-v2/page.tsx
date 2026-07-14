@@ -256,6 +256,19 @@ const BANNERS = [
     ctaColor: "#c4b5fd",
     route: "free" as const,
   },
+  {
+    appBanner: true,
+    directUrl: "/pass",
+    bg: "linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#991b1b 100%)",
+    badge: "🔥 7개앱 30일 풀패스",
+    badgeBg: "#dc2626",
+    icon: "🔥",
+    tagline: "7개앱 30일 전체 이용 ₩4,900",
+    desc: "꿈해몽·감정일기·다이어트·가계부\n타로·펫운·맘케어 7개앱\n하나 값으로 전부 30일!",
+    cta: "풀패스 보러가기 →",
+    ctaColor: "#fff",
+    route: "free" as const,
+  },
 ];
 
 const FORTUNE_CATEGORIES = [
@@ -960,15 +973,15 @@ export default function MainV2() {
         <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
           <div
             onClick={() => { window.open("/pass", "_blank"); }}
-            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(245,158,11,0.2)", border: "2px solid #f59e0b" }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(239,68,68,0.35)", border: "2px solid #ef4444" }}
           >
-            <div style={{ background: "linear-gradient(135deg,#92400e,#b45309)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ color: "#fbbf24", fontWeight: 900, fontSize: 14 }}>🔥 7개앱 30일 풀패스</span>
-              <span style={{ color: "#fbbf24", fontWeight: 900, fontSize: 16 }}>₩4,900</span>
+            <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>🔥 7개앱 30일 풀패스</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>₩4,900</span>
             </div>
-            <div style={{ background: "#fffbeb", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <p style={{ fontSize: 12, color: "#92400e", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·맘케어 전부 30일 이용</p>
-              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#f59e0b", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
+            <div style={{ background: "#fff5f5", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·맘케어 전부 30일 이용</p>
+              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
             </div>
           </div>
         </div>

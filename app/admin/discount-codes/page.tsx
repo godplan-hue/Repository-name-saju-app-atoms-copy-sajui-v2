@@ -32,6 +32,8 @@ export default function AdminDiscountCodes() {
   const [codes, setCodes] = useState<PromoCode[]>([]);
   const [form, setForm] = useState({ code: "", discountPercent: 100, note: "", maxUses: 1, fullAccess: false });
   const [saving, setSaving] = useState(false);
+  const [codeTab, setCodeTab] = useState<"mine"|"auto">("mine");
+  const isAutoCode = (c: PromoCode) => c.code.startsWith("FREE") || c.code.startsWith("무료");
 
   const loadAll = () => {
     fetch("/api/promo-codes").then(res => res.json()).then(data => setCodes(data.codes || []));
@@ -78,6 +80,8 @@ export default function AdminDiscountCodes() {
       setSaving(false);
     }
   };
+
+  const filteredCodes = codes.filter(c => codeTab === "mine" ? !isAutoCode(c) : isAutoCode(c));
 
   return (
     <main style={{ minHeight: "100vh", background: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo', sans-serif", display: "flex" }}>
@@ -195,6 +199,22 @@ export default function AdminDiscountCodes() {
             </button>
           </div>
 
+          {/* 탭 버튼 */}
+          <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+            <button
+              onClick={() => setCodeTab("mine")}
+              style={{ padding: "8px 18px", borderRadius: 20, border: "none", fontWeight: 700, fontSize: 13, cursor: "pointer", background: codeTab === "mine" ? "#667eea" : "#e5e7eb", color: codeTab === "mine" ? "white" : "#333" }}
+            >
+              📝 내가 만든 쿠폰
+            </button>
+            <button
+              onClick={() => setCodeTab("auto")}
+              style={{ padding: "8px 18px", borderRadius: 20, border: "none", fontWeight: 700, fontSize: 13, cursor: "pointer", background: codeTab === "auto" ? "#22c55e" : "#e5e7eb", color: codeTab === "auto" ? "white" : "#333" }}
+            >
+              🎁 자동·무료 쿠폰 (FREE·무료)
+            </button>
+          </div>
+
           {/* 목록 */}
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
             <thead>
@@ -209,10 +229,10 @@ export default function AdminDiscountCodes() {
               </tr>
             </thead>
             <tbody>
-              {codes.length === 0 ? (
-                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 등록된 할인코드가 없습니다.</td></tr>
+              {filteredCodes.length === 0 ? (
+                <tr><td colSpan={7} style={{ padding: "20px", textAlign: "center", color: "#999" }}>등록된 코드가 없습니다.</td></tr>
               ) : (
-                codes.map(c => (
+                filteredCodes.map(c => (
                   <tr key={c.code} style={{ borderBottom: "1px solid #eee" }}>
                     <td style={{ padding: "12px", color: "#333", fontWeight: 700 }}>{c.code}</td>
                     <td style={{ padding: "12px", color: c.discountPercent === 100 ? "#16a34a" : "#666", fontWeight: c.discountPercent === 100 ? 700 : 400 }}>{c.discountPercent}%</td>
