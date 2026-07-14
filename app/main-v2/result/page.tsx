@@ -2060,7 +2060,13 @@ function V2ResultInner() {
             {/* 전화번호 안내 */}
             <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>📞 전화번호를 입력하셨나요?</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`전화번호를 입력하셨다면 DB에 자동 저장됩니다.\n안 하셨다면 보관함 저장 또는 공유하기로\n직접 저장해두세요.`}</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`전화번호를 입력하셨다면 SMS로 결과 링크가 발송됩니다.\n그 링크로는 어떤 기기·브라우저에서도 결과를 볼 수 있어요.`}</p>
+            </div>
+
+            {/* 보관함 브라우저 경고 */}
+            <div style={{ background: "#fef2f2", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fca5a5" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 6px" }}>⚠️ 보관함은 이 기기·브라우저에서만 보여요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>다른 브라우저나 기기로 접속하면<br />보관함에 저장된 목록이 보이지 않아요.<br />결과는 반드시 <strong>SMS 링크</strong>로 따로 보관하세요.</p>
             </div>
 
             {/* 다른 기기에서 */}
@@ -2114,10 +2120,14 @@ function V2ResultInner() {
             <div style={{ background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 4px" }}>📞 전화번호를 입력하셨나요?</p>
               <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>
-                입력하셨다면 DB에 자동 저장됩니다.<br />
-                안 하셨다면 <strong>보관함 저장</strong> 또는 <strong>공유하기</strong>로<br />
-                직접 저장해두세요.
+                입력하셨다면 SMS로 결과 링크가 발송됩니다.<br />
+                그 링크로 어떤 기기·브라우저에서도 결과를 볼 수 있어요.
               </p>
+            </div>
+            {/* 보관함 브라우저 경고 */}
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 보관함은 이 기기·브라우저에서만 보여요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>다른 브라우저나 기기로 접속하면<br />보관함에 저장된 목록이 보이지 않아요.<br />결과는 반드시 <strong>SMS 링크</strong>로 따로 보관하세요.</p>
             </div>
             <div style={{ background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#b45309", margin: "0 0 4px" }}>📱 모바일·카카오 이용 안내</p>
