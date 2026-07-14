@@ -963,8 +963,8 @@ export default function MainV2() {
       {/* ── 추가 운세 상품 섹션 ── */}
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
-          if (id === "daewoon") { window.open("/main-v2/daewoon", "_blank"); return; }
-          if (id === "taegil") { window.open("/main-v2/taegil", "_blank"); return; }
+          if (id === "daewoon") { window.location.href = "/main-v2/daewoon"; return; }
+          if (id === "taegil") { window.location.href = "/main-v2/taegil"; return; }
           setShowModal(id);
         }} />
       )}
@@ -973,7 +973,7 @@ export default function MainV2() {
       {!isPartner && (
         <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
           <div
-            onClick={() => { window.open("/pass", "_blank"); }}
+            onClick={() => { window.location.href = "/pass"; }}
             style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(239,68,68,0.35)", border: "2px solid #ef4444" }}
           >
             <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
