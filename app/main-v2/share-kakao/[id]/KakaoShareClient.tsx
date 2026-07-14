@@ -73,6 +73,7 @@ export default function KakaoShareClient({ id }: { id: string }) {
   const [notFound, setNotFound] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
+  const [hasPaidResult, setHasPaidResult] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
@@ -82,6 +83,7 @@ export default function KakaoShareClient({ id }: { id: string }) {
       .then(res => res.ok ? res.json() : Promise.reject())
       .then(data => setEntry(data.entry))
       .catch(() => setNotFound(true));
+    try { if (localStorage.getItem("v2_paid") === "1") setHasPaidResult(true); } catch {}
   }, [id]);
 
   useEffect(() => {
@@ -361,10 +363,17 @@ export default function KakaoShareClient({ id }: { id: string }) {
 
         {/* 나도 무료로 사주 보기 — 파트너 공유 결과지에는 표시 안 함 */}
         {!entry.businessName && (
-          <button onClick={() => window.open("/main-v2", "_blank")}
-            style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-            🔮 나도 무료로 사주 보기
-          </button>
+          hasPaidResult ? (
+            <button onClick={() => window.location.replace("/main-v2/result")}
+              style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+              🔮 내 결과지 보기 →
+            </button>
+          ) : (
+            <button onClick={() => window.location.replace("/main-v2")}
+              style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+              🔮 나도 무료로 사주 보기
+            </button>
+          )
         )}
 
       </div>

@@ -291,18 +291,27 @@ export default function HaemongPage() {
           );
         })()}
 
-        {/* 사주 연결 배너 */}
-        <div
-          onClick={() => window.location.href = "/main-v2"}
-          style={{ marginTop: 24, borderRadius: 16, overflow: "hidden", cursor: "pointer", position: "relative", boxShadow: "0 4px 20px rgba(236,72,153,0.25)" }}
-        >
-          <img src="https://i.pinimg.com/1200x/ed/76/4d/ed764da4ef5dd4e2048939ac2e95dd6f.jpg" alt="사주보기" style={{ width: "100%", height: 110, objectFit: "cover" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(236,72,153,0.72) 0%, rgba(139,92,246,0.65) 100%)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px" }}>
-            <div>
-              <p style={{ color: "#fff", fontWeight: 900, fontSize: 15, margin: "0 0 2px", textShadow: "0 1px 4px rgba(0,0,0,0.4)" }}>🐱 꿈 + 사주로 더 정확하게</p>
-              <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, margin: 0 }}>내 사주까지 보면 꿈의 의미가 선명해요</p>
+        {/* 사주 + 7개앱 풀패스 카드 */}
+        <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
+          <div onClick={() => window.open("/main-v2", "_blank")} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #8b5cf6", overflow: "hidden", boxShadow: "0 3px 12px rgba(139,92,246,0.15)" }}>
+            <div style={{ background: "#8b5cf6", padding: "7px 10px", textAlign: "center" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔮 꿈 + 사주 조합</span>
             </div>
-            <span style={{ background: "#fff", color: "#be185d", fontWeight: 900, fontSize: 12, padding: "8px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>보기 →</span>
+            <div style={{ padding: "10px" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>🐱 AI 사주 분석</p>
+              <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>꿈 + 사주로<br />더 정확한 해석</p>
+              <div style={{ background: "#8b5cf6", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>사주 보기 →</div>
+            </div>
+          </div>
+          <div onClick={() => window.open("/pass", "_blank")} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
+            <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "7px 10px", textAlign: "center" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔥 7개앱 풀패스</span>
+            </div>
+            <div style={{ padding: "10px" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>₩4,900<span style={{ fontSize: 10, color: "#6b7280", fontWeight: 400 }}>/30일</span></p>
+              <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>꿈해몽·사주·펫운<br />감정일기 등 7개앱</p>
+              <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>풀패스 구매 →</div>
+            </div>
           </div>
         </div>
 
