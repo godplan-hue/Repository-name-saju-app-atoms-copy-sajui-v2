@@ -295,8 +295,6 @@ function V2ResultInner() {
     const mob = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
     setIsMob(mob);
     setIsKakao(/KAKAOTALK/i.test(ua));
-    if (mob) setShowGuideModal(true);
-    else setShowPcGuideModal(true);
   }, []);
 
 
