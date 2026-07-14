@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { db } from "@/lib/firebase";
 import KakaoShareClient from "./KakaoShareClient";
 
@@ -26,5 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function KakaoSharePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  // 봇(카카오·소셜 미리보기)이 아닌 실제 사용자는 결과지로 서버사이드 즉시 이동
+  // → share-kakao URL이 브라우저 히스토리에 절대 남지 않음
+  const headersList = await headers();
+  const ua = (headersList.get("user-agent") || "").toLowerCase();
+  const isBot = /bot|crawl|scrap|spider|facebook|slack|discord|telegram|preview|kakaotalk-scrap|kakaostory-scrap/i.test(ua);
+  if (!isBot) redirect(`/main-v2/result?sid=${id}`);
   return <KakaoShareClient id={id} />;
 }

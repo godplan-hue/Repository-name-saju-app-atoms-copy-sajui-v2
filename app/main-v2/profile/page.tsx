@@ -172,9 +172,26 @@ export default function V2Profile() {
           localStorage.setItem("v2_verified_phone", phone);
           setSavedMode(true);
         } else {
-          // 신규 사용자 — 이전 사람 데이터 완전 초기화
-          setForm({ name: "", relationship: "나", birthYear: "", birthMonth: "", birthDay: "", gender: "", birthHour: "", phone, email: "" });
-          localStorage.removeItem("v2_saved_profile");
+          // Firebase에서 못 찾음 → 로컬에 기존 데이터 있으면 그대로 사용 (입력 전에 완성 가능)
+          const localSaved = localStorage.getItem("v2_saved_profile");
+          let usedLocal = false;
+          if (localSaved) {
+            try {
+              const localP = JSON.parse(localSaved);
+              if (localP.birthYear && localP.gender && localP.birthHour) {
+                const profileData = { ...localP, phone };
+                setForm(prev => ({ ...prev, ...profileData, relationship: localP.relationship || "나" }));
+                localStorage.setItem("v2_saved_profile", JSON.stringify(profileData));
+                localStorage.setItem("v2_verified_phone", phone);
+                setSavedMode(true);
+                usedLocal = true;
+              }
+            } catch {}
+          }
+          if (!usedLocal) {
+            setForm({ name: "", relationship: "나", birthYear: "", birthMonth: "", birthDay: "", gender: "", birthHour: "", phone, email: "" });
+            localStorage.removeItem("v2_saved_profile");
+          }
         }
       } else {
         setForm(prev => ({ ...prev, phone }));
@@ -198,6 +215,11 @@ export default function V2Profile() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     }).catch(() => {});
+    // 재방문자(savedMode)는 매번 분석 재실행 없이 메인으로 (보관함·결과는 메인에서 이동)
+    if (savedMode) {
+      router.push("/main-v2");
+      return;
+    }
     // 유료 결제가 있으면 분석 재실행 없이 결과지로 (결과지에서 필요 시 자동 재호출함)
     if (localStorage.getItem("v2_paid") === "1") {
       router.push("/main-v2/result");
@@ -339,8 +361,11 @@ export default function V2Profile() {
             </button>
             <button
               onClick={() => {
-                setForm({ name: "", relationship: "나", birthYear: "", birthMonth: "", birthDay: "", gender: "", birthHour: "", phone: "", email: "" });
+                localStorage.removeItem("v2_saved_profile");
+                localStorage.removeItem("v2_verified_phone");
                 setSavedMode(false);
+                setPhoneInput("");
+                setPhoneStep(true);
               }}
               style={{ width: "100%", padding: "11px 0", marginTop: 10, background: "transparent", color: "rgba(255,255,255,0.65)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 12, fontWeight: 700, fontSize: 14, cursor: "pointer" }}>
               다른 사람 정보로 보기 (배우자·자녀 등)
