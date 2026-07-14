@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -144,6 +144,15 @@ export default function JigunPage() {
   const [err, setErr] = useState("");
   const [agreed, setAgreed] = useState(false);
 
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.name) setName(p.name);
+      if (p.phone) setPhone(p.phone);
+      if (p.email) setEmail(p.email);
+    } catch {}
+  }, []);
+
   const qIdx = step - 1;
 
   function selectOpt(val: string) {
@@ -171,7 +180,7 @@ export default function JigunPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: name || "익명",
+          name: name || "",
           phone: phone || "",
           email: email || "",
           birthYear: birthYear ? parseInt(birthYear) : null,

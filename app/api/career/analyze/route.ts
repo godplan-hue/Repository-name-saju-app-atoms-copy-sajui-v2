@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
     }
 
     const result = {
-      name: name || "익명", phone: phone || "", email: email || "",
+      name: name || "", phone: phone || "", email: email || "",
       birthYear, birthMonth, birthDay,
       timeAvail, skill, speed, career,
       recommended,
@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
         if (!existing.exists()) {
           await db.ref(`free_leads/${cleanPhone}`).set({
             phone: cleanPhone,
-            name: name || "익명",
+            name: name || "",
             email: email || "",
             source: "jigun",
             createdAt: Date.now(),

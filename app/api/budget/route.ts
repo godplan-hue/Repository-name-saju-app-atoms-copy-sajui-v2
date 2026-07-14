@@ -10,7 +10,14 @@ export async function POST(req: NextRequest) {
 
     if (action === "lead") {
       const { name, phone, email, createdAt } = body;
-      await db.ref(`budget_leads/${safeId}`).set({ name: name || "", phone: phone || "", email: email || "", createdAt: createdAt || Date.now() });
+      const existingSnap = await db.ref(`budget_leads/${safeId}`).once("value");
+      const existing = existingSnap.val() || {};
+      await db.ref(`budget_leads/${safeId}`).set({
+        name: name || existing.name || "",
+        phone: phone || existing.phone || "",
+        email: email || existing.email || "",
+        createdAt: existing.createdAt || createdAt || Date.now(),
+      });
       return NextResponse.json({ ok: true });
     }
 

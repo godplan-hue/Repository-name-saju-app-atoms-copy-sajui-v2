@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -58,6 +58,15 @@ export default function MbtiPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.name) setUserName(p.name);
+      if (p.phone) setPhone(p.phone);
+      if (p.email) setEmail(p.email);
+    } catch {}
+  }, []);
 
   const handleAnswer = (val: number) => {
     if (selected !== null) return;

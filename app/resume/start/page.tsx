@@ -18,6 +18,18 @@ export default function ResumeStartPage() {
   const [agreed, setAgreed] = useState(false);
 
 
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      setForm(f => ({
+        ...f,
+        ...(p.name ? { name: p.name } : {}),
+        ...(p.phone ? { phone: p.phone } : {}),
+        ...(p.email ? { email: p.email } : {}),
+      }));
+    } catch {}
+  }, []);
+
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
   async function submit() {

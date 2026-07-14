@@ -45,7 +45,16 @@ export default function BudgetPage() {
           setSetupPhone(p.phone);
           uid = `phone_${clean}`;
           setHasPhone(true);
-          if (alreadySetup) setSetupDone(true);
+          if (alreadySetup) {
+            setSetupDone(true);
+            if (p.name) {
+              fetch("/api/budget", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "lead", userId: uid, name: p.name, phone: clean, email: p.email || "" }),
+              }).catch(() => {});
+            }
+          }
         }
       }
     } catch {}

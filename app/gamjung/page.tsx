@@ -50,6 +50,12 @@ export default function GamjungPage() {
       const h = localStorage.getItem("gamjung_history");
       if (h) setHistory(JSON.parse(h).slice(0, 5));
     } catch {}
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.name) setName(p.name);
+      if (p.phone) setPhone(p.phone);
+      if (p.email) setEmail(p.email);
+    } catch {}
   }, []);
 
   const toggleActivity = (key: string) => {

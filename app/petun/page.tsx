@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -21,6 +21,15 @@ export default function PetunPage() {
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.name) setOwnerName(p.name);
+      if (p.phone) setOwnerPhone(p.phone);
+      if (p.email) setOwnerEmail(p.email);
+    } catch {}
+  }, []);
 
   const analyze = async () => {
     const cleanPhone = ownerPhone.replace(/\D/g, "");
