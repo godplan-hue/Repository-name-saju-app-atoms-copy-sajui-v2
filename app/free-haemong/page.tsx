@@ -10,7 +10,6 @@ export default function FreeHaemongPage() {
   const [step, setStep] = useState<Step>("form");
   const [keyword, setKeyword] = useState("");
   const [phone, setPhone] = useState("");
-  const [name, setName] = useState("");
   const [alreadyUsed, setAlreadyUsed] = useState(false);
   const [dreamKey, setDreamKey] = useState("");
 
@@ -25,7 +24,7 @@ export default function FreeHaemongPage() {
       const res = await fetch("/api/free-trial", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: ph, app: "haemong", name }),
+        body: JSON.stringify({ phone: ph, app: "haemong" }),
       });
       const data = await res.json();
 
@@ -96,17 +95,6 @@ export default function FreeHaemongPage() {
                 onChange={e => setKeyword(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && handleSubmit()}
                 placeholder="예) 뱀꿈, 돼지꿈, 불꿈, 이빨빠지는꿈"
-                style={{ width: "100%", padding: "13px 16px", borderRadius: 12, border: "2px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }}
-              />
-            </div>
-
-            {/* 이름 */}
-            <div style={{ marginBottom: 14 }}>
-              <label style={{ fontSize: 13, fontWeight: 700, color: "#374151", display: "block", marginBottom: 6 }}>이름 또는 별명 <span style={{ color: "#9ca3af", fontWeight: 400 }}>(선택)</span></label>
-              <input
-                value={name}
-                onChange={e => setName(e.target.value)}
-                placeholder="홍길동"
                 style={{ width: "100%", padding: "13px 16px", borderRadius: 12, border: "2px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }}
               />
             </div>
@@ -250,7 +238,7 @@ export default function FreeHaemongPage() {
 
             {/* 다시 하기 */}
             {alreadyUsed && (
-              <button onClick={() => { setStep("form"); setAlreadyUsed(false); setKeyword(""); setPhone(""); setName(""); }}
+              <button onClick={() => { setStep("form"); setAlreadyUsed(false); setKeyword(""); setPhone(""); }}
                 style={{ width: "100%", background: "transparent", border: "2px solid #e5e7eb", borderRadius: 12, padding: "12px 0", fontSize: 14, color: "#6b7280", cursor: "pointer", marginTop: 8 }}>
                 다른 전화번호로 시도하기
               </button>
