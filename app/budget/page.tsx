@@ -23,6 +23,7 @@ export default function BudgetPage() {
   const [hasPhone, setHasPhone] = useState(false);
   const [setupDone, setSetupDone] = useState(false);
   const [budgetLocked, setBudgetLocked] = useState(false);
+  const [budgetNeverPaid, setBudgetNeverPaid] = useState(false);
   const [budgetExpiringSoon, setBudgetExpiringSoon] = useState(false);
   const [budgetDaysLeft, setBudgetDaysLeft] = useState(0);
   const [setupName, setSetupName] = useState("");
@@ -77,9 +78,12 @@ export default function BudgetPage() {
     try {
       const until = Number(localStorage.getItem("budget_unlock_until") || 0);
       const now = Date.now();
-      if (until > 0 && until < now) {
+      if (!until) {
         setBudgetLocked(true);
-      } else if (until > 0 && until - now < 3 * 24 * 60 * 60 * 1000) {
+        setBudgetNeverPaid(true);
+      } else if (until < now) {
+        setBudgetLocked(true);
+      } else if (until - now < 3 * 24 * 60 * 60 * 1000) {
         setBudgetExpiringSoon(true);
         setBudgetDaysLeft(Math.ceil((until - now) / (24 * 60 * 60 * 1000)));
       }
@@ -114,12 +118,6 @@ export default function BudgetPage() {
     setMcUserId(uid);
     setHasPhone(true);
     localStorage.setItem("budget_setup_done", "1");
-    // 무료DB 리드 저장
-    fetch("/api/budget", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "lead", userId: uid, name: setupName.trim() || "", phone: cleanPhone, email: setupEmail.trim() || "", createdAt: Date.now() }),
-    }).catch(() => {});
     // Firebase에서 기존 데이터 로드
     fetch(`/api/budget?userId=${uid}`)
       .then(r => r.json())
@@ -183,6 +181,23 @@ export default function BudgetPage() {
   }, {} as Record<string, Entry[]>);
 
   const cats = view === "add" ? (form.type === "expense" ? CAT_EXPENSE : CAT_INCOME) : [];
+
+  // 미결제 시 전체 잠금 화면
+  if (budgetLocked && budgetNeverPaid) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#0f172a", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", textAlign: "center" }}>
+        <div style={{ fontSize: 64, marginBottom: 16 }}>🔒</div>
+        <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.4 }}>사주 990원 결제 후<br />가계부 30일 이용해요</h2>
+        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 28px" }}>
+          사주 결제 1회로<br />감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용
+        </p>
+        <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
+          사주 990원으로 30일 이용 →
+        </a>
+        <a href="/main-v2" style={{ display: "block", marginTop: 18, fontSize: 13, color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>← 점운 홈으로</a>
+      </div>
+    );
+  }
 
   if (!setupDone) {
     const inp: React.CSSProperties = { width: "100%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, padding: "13px 14px", fontSize: 16, color: "white", outline: "none", boxSizing: "border-box" };
@@ -258,8 +273,8 @@ export default function BudgetPage() {
             <a href="/main-v2/pay?amount=990" style={{ background: "#f97316", color: "white", fontSize: 12, fontWeight: 900, padding: "6px 14px", borderRadius: 14, textDecoration: "none" }}>990원으로 30일 연장 →</a>
           </div>
         )}
-        {/* 이용권 만료 배너 */}
-        {budgetLocked && (
+        {/* 이용권 만료 배너 (결제한 적 있으나 만료) */}
+        {budgetLocked && !budgetNeverPaid && (
           <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 12, padding: "12px 14px", marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: "#fbbf24" }}>⏰ 이용권 만료 — 기존 내역은 볼 수 있어요</span>
             <a href="/main-v2/pay?amount=990" style={{ background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 14px", borderRadius: 14, textDecoration: "none" }}>사주 990원으로 재활성화 →</a>

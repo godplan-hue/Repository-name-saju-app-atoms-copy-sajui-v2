@@ -133,6 +133,9 @@ function PayInner() {
         try { const _p=Number(localStorage.getItem("momcare_unlock_until")||0); localStorage.setItem("momcare_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
         try { const _p=Number(localStorage.getItem("gamjung_unlock_until")||0); localStorage.setItem("gamjung_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
         try { const _p=Number(localStorage.getItem("budget_unlock_until")||0); localStorage.setItem("budget_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        try { const _p=Number(localStorage.getItem("tarot_unlock_until")||0); localStorage.setItem("tarot_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        try { const _p=Number(localStorage.getItem("petun_unlock_until")||0); localStorage.setItem("petun_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        try { const _p=Number(localStorage.getItem("diet_unlock_until")||0); localStorage.setItem("diet_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
       }
       // 추천인 쿠폰 지급
       try {
@@ -200,6 +203,12 @@ function PayInner() {
         try { const _p=Number(localStorage.getItem("gamjung_unlock_until")||0); localStorage.setItem("gamjung_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
         // 가계부 30일 무료 잠금 해제 (만료일 기준 연장)
         try { const _p=Number(localStorage.getItem("budget_unlock_until")||0); localStorage.setItem("budget_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        // 타로 30일 잠금 해제 (만료일 기준 연장)
+        try { const _p=Number(localStorage.getItem("tarot_unlock_until")||0); localStorage.setItem("tarot_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        // 펫운 30일 잠금 해제 (만료일 기준 연장)
+        try { const _p=Number(localStorage.getItem("petun_unlock_until")||0); localStorage.setItem("petun_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        // 다이어트 30일 잠금 해제 (만료일 기준 연장)
+        try { const _p=Number(localStorage.getItem("diet_unlock_until")||0); localStorage.setItem("diet_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
         // 결제 기록 Firebase 저장 (어드민 결제내역에 표시)
         if (displayAmount > 0 && name.trim()) {
           fetch("/api/v2/save-payment", {

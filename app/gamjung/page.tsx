@@ -45,6 +45,7 @@ export default function GamjungPage() {
   const selectedMood = MOODS.find(m => m.score === moodScore);
   const [history, setHistory] = useState<Array<{id: string; moodLabel: string; moodEmoji: string; createdAt: number}>>([]);
   const [gamjungLocked, setGamjungLocked] = useState(false);
+  const [gamjungNeverPaid, setGamjungNeverPaid] = useState(false);
   const [gamjungExpiringSoon, setGamjungExpiringSoon] = useState(false);
   const [gamjungDaysLeft, setGamjungDaysLeft] = useState(0);
 
@@ -63,9 +64,12 @@ export default function GamjungPage() {
     try {
       const until = Number(localStorage.getItem("gamjung_unlock_until") || 0);
       const now = Date.now();
-      if (until > 0 && until < now) {
+      if (!until) {
         setGamjungLocked(true);
-      } else if (until > 0 && until - now < 3 * 24 * 60 * 60 * 1000) {
+        setGamjungNeverPaid(true);
+      } else if (until < now) {
+        setGamjungLocked(true);
+      } else if (until - now < 3 * 24 * 60 * 60 * 1000) {
         setGamjungExpiringSoon(true);
         setGamjungDaysLeft(Math.ceil((until - now) / (24 * 60 * 60 * 1000)));
       }
@@ -140,18 +144,18 @@ export default function GamjungPage() {
             </div>
             {gamjungLocked ? (
               <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 16, padding: "16px 20px", marginBottom: 8 }}>
-                <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>⏰ 30일 이용권이 만료됐어요</p>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>{gamjungNeverPaid ? "🔒 사주 990원 결제 후 30일 이용해요" : "⏰ 30일 이용권이 만료됐어요"}</p>
                 <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 12px", lineHeight: 1.6 }}>
-                  기존 감정일기는 계속 볼 수 있어요.<br />새 일기를 쓰려면 재활성화해주세요.
+                  {gamjungNeverPaid ? "사주 결제 1회로 감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용" : "기존 감정일기는 계속 볼 수 있어요. 새 일기를 쓰려면 재활성화해주세요."}
                 </p>
                 <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 13, fontWeight: 900, padding: "11px 24px", borderRadius: 20, textDecoration: "none" }}>
-                  사주 990원으로 30일 재활성화 →
+                  {gamjungNeverPaid ? "사주 990원으로 30일 이용 →" : "사주 990원으로 30일 재활성화 →"}
                 </a>
               </div>
             ) : (
               <>
                 <button onClick={() => setStep("mood")} style={S.btn}>오늘 감정 기록하기 →</button>
-                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>완전 무료 · 1분이면 끝</p>
+                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>사주 결제 후 30일 이용 · 1분이면 끝</p>
               </>
             )}
             <p style={{ textAlign: "center", fontSize: 11, color: "rgba(74,222,128,0.5)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>

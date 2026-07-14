@@ -1,5 +1,5 @@
 ﻿"use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -14,6 +14,14 @@ const TOPICS = [
 export default function TarotPage() {
   const router = useRouter();
   const [step, setStep] = useState<"intro" | "form">("intro");
+  const [tarotLocked, setTarotLocked] = useState(false);
+
+  useEffect(() => {
+    try {
+      const until = Number(localStorage.getItem("tarot_unlock_until") || 0);
+      if (!until || until < Date.now()) setTarotLocked(true);
+    } catch {}
+  }, []);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -92,8 +100,22 @@ export default function TarotPage() {
                 </div>
               ))}
             </div>
-            <button onClick={() => setStep("form")} style={S.btn}>지금 카드 뽑기 🃏 →</button>
-            <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>완전 무료 · 30초만에 결과 확인</p>
+            {tarotLocked ? (
+              <div style={{ background: "rgba(251,191,36,0.1)", border: "1.5px solid rgba(251,191,36,0.5)", borderRadius: 18, padding: "20px", textAlign: "left" }}>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>🔒 사주 990원 결제 후 30일 이용해요</p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", margin: "0 0 14px", lineHeight: 1.7 }}>
+                  사주 결제 1회로<br />감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용
+                </p>
+                <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 14, fontWeight: 900, padding: "13px 28px", borderRadius: 22, textDecoration: "none" }}>
+                  사주 990원으로 30일 이용 →
+                </a>
+              </div>
+            ) : (
+              <>
+                <button onClick={() => setStep("form")} style={S.btn}>지금 카드 뽑기 🃏 →</button>
+                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>사주 결제 후 30일 이용 · 30초만에 결과 확인</p>
+              </>
+            )}
             <p style={{ textAlign: "center", fontSize: 11, color: "rgba(196,181,253,0.5)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
               🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
             </p>
@@ -117,9 +139,11 @@ export default function TarotPage() {
           ))}
         </div>
 
-        <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
-          <button onClick={() => setStep("form")} style={S.btn}>카드 뽑으러 가기 →</button>
-        </div>
+        {!tarotLocked && (
+          <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
+            <button onClick={() => setStep("form")} style={S.btn}>카드 뽑으러 가기 →</button>
+          </div>
+        )}
 
       {/* 회사정보 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>

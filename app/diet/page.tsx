@@ -24,6 +24,7 @@ export default function DietPage() {
   const [email, setEmail] = useState("");
   const [hasPhone, setHasPhone] = useState(false);
   const [mcUserId, setMcUserId] = useState("");
+  const [dietLocked, setDietLocked] = useState(false);
   const [meals, setMeals] = useState<Meal[]>([]);
   const [historyData, setHistoryData] = useState<Record<string, DayLog>>({});
   const [searchQ, setSearchQ] = useState("");
@@ -31,6 +32,11 @@ export default function DietPage() {
   const [customCal, setCustomCal] = useState("");
 
   useEffect(() => {
+    // 30일 이용권 잠금 체크
+    try {
+      const until = Number(localStorage.getItem("diet_unlock_until") || 0);
+      if (!until || until < Date.now()) setDietLocked(true);
+    } catch {}
     // 기존 사주 프로필에서 생년월일·전화번호 자동 로드
     let uid = "";
     let yr = "";
@@ -130,12 +136,6 @@ export default function DietPage() {
     const uid = `phone_${cleanPhone}`;
     setMcUserId(uid);
     setHasPhone(true);
-    // 무료DB 리드 저장
-    fetch("/api/diet", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "lead", userId: uid, name: name.trim() || "", phone: cleanPhone, email: email.trim() || "", birthYear: yr, createdAt: Date.now() }),
-    }).catch(() => {});
     setSetupDone(true);
   }
 
@@ -150,6 +150,23 @@ export default function DietPage() {
     ? FOODS.filter(f => f.name.includes(searchQ) || f.cat.includes(searchQ)).slice(0, 30)
     : [];
 
+  // 잠금 화면 (미결제 또는 만료)
+  if (dietLocked) {
+    return (
+      <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#111827,#0f172a)", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", textAlign: "center" }}>
+        <div style={{ fontSize: 64, marginBottom: 16 }}>🔒</div>
+        <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.4 }}>사주 990원 결제 후<br />다이어트 30일 이용해요</h2>
+        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 28px" }}>
+          사주 결제 1회로<br />감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용
+        </p>
+        <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
+          사주 990원으로 30일 이용 →
+        </a>
+        <a href="/main-v2" style={{ display: "block", marginTop: 18, fontSize: 13, color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>← 점운 홈으로</a>
+      </div>
+    );
+  }
+
   // 셋업 화면
   if (!setupDone) {
     return (
@@ -162,7 +179,7 @@ export default function DietPage() {
             <div style={{ fontSize: 64, marginBottom: 14 }}>🥗</div>
             <h1 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px" }}>점운 다이어트</h1>
             <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.6 }}>
-              오행 체질에 맞는 맞춤 칼로리 관리<br />바코드·AI 없이 완전 무료
+              오행 체질에 맞는 맞춤 칼로리 관리<br />바코드·AI 없이 빠른 칼로리 기록
             </p>
           </div>
 
