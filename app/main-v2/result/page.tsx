@@ -606,7 +606,7 @@ function V2ResultInner() {
     localStorage.setItem("v2_paid_cats", JSON.stringify(selectedCats));
     localStorage.setItem("v2_plan", "select");
     setShowSelect(false);
-    window.location.href = "/main-v2/payment";
+    window.open("/main-v2/payment", "_blank");
   };
 
   const payInline = async () => {
@@ -1296,7 +1296,7 @@ function V2ResultInner() {
           </button>
         </div>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
-          <button onClick={() => { window.location.href = "/main-v2/history"; }} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+          <button onClick={() => { window.open("/main-v2/history", "_blank"); }} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             📂 보관함
           </button>
           <button onClick={() => setShowShareModal(true)} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
@@ -1578,7 +1578,7 @@ function V2ResultInner() {
                     ))}
                   </div>
                   <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 <span style={{ display: "inline-block", background: "#ec4899", color: "white", fontWeight: 900, fontStyle: "normal", padding: "2px 10px", borderRadius: 8, margin: "0 2px" }}>990원 결제</span> 시 모두 공개됩니다</p>
-                  <button onClick={() => { window.location.href = "/main-v2/payment?scrollTo=select"; }} style={{ width: "100%", marginTop: 14, padding: "13px 0", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>💎 {yc.category} 완벽 공략법 보기</button>
+                  <button onClick={() => { window.open("/main-v2/payment?scrollTo=select", "_blank"); }} style={{ width: "100%", marginTop: 14, padding: "13px 0", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>💎 {yc.category} 완벽 공략법 보기</button>
                 </div>
               </div>
             );
@@ -1724,15 +1724,15 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
               📤 공유하기
             </button>
-            <button onClick={() => { window.location.href = "/main-v2?modal=love"; }}
+            <button onClick={() => { window.open("/main-v2?modal=love", "_blank"); }}
               style={{ padding: "12px 4px", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(245,158,11,0.35)" }}>
               💎 990원 사주 보기
             </button>
-            <button onClick={() => { window.location.href = `/main-v2/pay?amount=4900&next=${encodeURIComponent("/payment-complete?special=sinyeon_premium&paid=4900")}`; }}
+            <button onClick={() => { window.open(`/main-v2/pay?amount=4900&next=${encodeURIComponent("/payment-complete?special=sinyeon_premium&paid=4900")}`, "_blank"); }}
               style={{ padding: "11px 4px", background: "rgba(40,5,5,0.9)", color: "white", border: "1.5px solid rgba(239,68,68,0.8)", borderRadius: 50, fontWeight: 900, fontSize: 12, cursor: "pointer", boxShadow: "0 4px 16px rgba(239,68,68,0.25)" }}>
               📅 신년+월별 12달 <span style={{ color: "#ef4444" }}>₩4,900</span>
             </button>
-            <button onClick={() => { window.location.href = "/main-v2/payment"; }}
+            <button onClick={() => { window.open("/main-v2/payment", "_blank"); }}
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
@@ -1749,11 +1749,11 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
               📤 공유하기
             </button>
-            <button onClick={() => { window.location.href = "/main-v2/payment"; }}
+            <button onClick={() => { window.open("/main-v2/payment", "_blank"); }}
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { window.location.href = "/main-v2/history"; }}
+            <button onClick={() => { window.open("/main-v2/history", "_blank"); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
               📂 보관함 가기
             </button>
@@ -1771,11 +1771,11 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
               📤 공유하기
             </button>
-            <button onClick={() => { window.location.href = "/main-v2/payment"; }}
+            <button onClick={() => { window.open("/main-v2/payment", "_blank"); }}
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { window.location.href = "/main-v2/history"; }}
+            <button onClick={() => { window.open("/main-v2/history", "_blank"); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
               📂 보관함 가기
             </button>
