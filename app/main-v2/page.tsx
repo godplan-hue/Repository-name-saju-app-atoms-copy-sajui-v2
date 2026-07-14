@@ -259,6 +259,7 @@ const BANNERS = [
   {
     appBanner: true,
     directUrl: "/pass",
+    bgImg: "https://i.pinimg.com/736x/43/e3/98/43e398b2b2984dfaae1c86aa5d2f4ca5.jpg",
     bg: "linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#991b1b 100%)",
     badge: "🔥 7개앱 30일 풀패스",
     badgeBg: "#dc2626",
