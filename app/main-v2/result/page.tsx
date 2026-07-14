@@ -428,10 +428,6 @@ function V2ResultInner() {
       localStorage.setItem("v2_result", JSON.stringify(r));
     }
     setResult(r);
-    // v2_result 정상 로드 후 URL에서 ?sid= 제거 — 뒤로가기 시 share 폴백 방지
-    if (sid) {
-      try { history.replaceState(null, "", "/main-v2/result"); } catch {}
-    }
 
     const price = localStorage.getItem("price") ?? "";
     const PKG_PRICES_SET = ["9900", "19900", "24900", "29900"];
