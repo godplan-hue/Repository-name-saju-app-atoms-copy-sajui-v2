@@ -197,18 +197,6 @@ function PayInner() {
         }
         // 꿈해몽 24시간 무료 잠금 해제
         try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
-        // 맘케어 30일 무료 잠금 해제 (만료일 기준 연장 — 빨리 결제해도 손해 없음)
-        try { const _p=Number(localStorage.getItem("momcare_unlock_until")||0); localStorage.setItem("momcare_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        // 감정일기 30일 무료 잠금 해제 (만료일 기준 연장)
-        try { const _p=Number(localStorage.getItem("gamjung_unlock_until")||0); localStorage.setItem("gamjung_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        // 가계부 30일 무료 잠금 해제 (만료일 기준 연장)
-        try { const _p=Number(localStorage.getItem("budget_unlock_until")||0); localStorage.setItem("budget_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        // 타로 30일 잠금 해제 (만료일 기준 연장)
-        try { const _p=Number(localStorage.getItem("tarot_unlock_until")||0); localStorage.setItem("tarot_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        // 펫운 30일 잠금 해제 (만료일 기준 연장)
-        try { const _p=Number(localStorage.getItem("petun_unlock_until")||0); localStorage.setItem("petun_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        // 다이어트 30일 잠금 해제 (만료일 기준 연장)
-        try { const _p=Number(localStorage.getItem("diet_unlock_until")||0); localStorage.setItem("diet_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
         // 결제 기록 Firebase 저장 (어드민 결제내역에 표시)
         if (displayAmount > 0 && name.trim()) {
           fetch("/api/v2/save-payment", {
@@ -363,6 +351,7 @@ function PayInner() {
           <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>
             · 결제 후 결과지·보관함은 <strong style={{ color: "#fbbf24" }}>결제하신 앱(브라우저)에서만</strong> 확인 가능해요.<br />
             · 카카오톡에서 결제하셨다면 카카오톡 안에서, 크롬에서 결제하셨다면 크롬에서 확인하세요.<br />
+            · 꿈해몽·Q&A 등 부가 이용권도 <strong style={{ color: "#fbbf24" }}>결제한 브라우저에서만</strong> 적용돼요. 다른 기기·브라우저에서는 별도 이용권이 필요해요.<br />
             · 디지털 콘텐츠 특성상 결과지 열람 후 <strong style={{ color: "#fbbf24" }}>환불이 불가</strong>합니다.
           </p>
         </div>

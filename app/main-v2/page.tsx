@@ -955,6 +955,25 @@ export default function MainV2() {
         }} />
       )}
 
+      {/* ── 7개앱 풀패스 배너 ── */}
+      {!isPartner && (
+        <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
+          <div
+            onClick={() => { window.open("/pass", "_blank"); }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(245,158,11,0.2)", border: "2px solid #f59e0b" }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#92400e,#b45309)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ color: "#fbbf24", fontWeight: 900, fontSize: 14 }}>🔥 7개앱 30일 풀패스</span>
+              <span style={{ color: "#fbbf24", fontWeight: 900, fontSize: 16 }}>₩4,900</span>
+            </div>
+            <div style={{ background: "#fffbeb", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <p style={{ fontSize: 12, color: "#92400e", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·맘케어 전부 30일 이용</p>
+              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#f59e0b", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 복냥이 상담창 — 내정보(푸터) 바로 위 */}
       {!isPartner && (
         <div id="chat-widget" style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }} onClick={() => { try { if (!(window as any).__chatPushed) { (window as any).__chatPushed = true; history.pushState(null, "", window.location.href); } } catch {} }}>

@@ -148,7 +148,7 @@ export default function GamjungPage() {
                 <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 12px", lineHeight: 1.6 }}>
                   {gamjungNeverPaid ? "사주 결제 1회로 감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용" : "기존 감정일기는 계속 볼 수 있어요. 새 일기를 쓰려면 재활성화해주세요."}
                 </p>
-                <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 13, fontWeight: 900, padding: "11px 24px", borderRadius: 20, textDecoration: "none" }}>
+                <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 13, fontWeight: 900, padding: "11px 24px", borderRadius: 20, textDecoration: "none" }}>
                   {gamjungNeverPaid ? "사주 990원으로 30일 이용 →" : "사주 990원으로 30일 재활성화 →"}
                 </a>
               </div>
@@ -201,7 +201,7 @@ export default function GamjungPage() {
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 12px" }}>
             <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "12px 16px" }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>⏰ {gamjungDaysLeft}일 후 감정일기가 잠겨요</p>
-              <a href="/main-v2/pay?amount=990" style={{ color: "#ea580c", fontWeight: 700, fontSize: 12, textDecoration: "none" }}>지금 990원 결제하면 만료일부터 30일 자동 연장 →</a>
+              <a href="/gamjung/pay" style={{ color: "#ea580c", fontWeight: 700, fontSize: 12, textDecoration: "none" }}>지금 990원 결제하면 만료일부터 30일 자동 연장 →</a>
             </div>
           </div>
         )}
@@ -210,7 +210,7 @@ export default function GamjungPage() {
             <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 14, padding: "20px 18px", textAlign: "center" }}>
               <p style={{ fontSize: 15, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>⏰ 30일 이용권이 만료됐어요</p>
               <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px" }}>기존 기록은 위에서 계속 볼 수 있어요.</p>
-              <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>사주 990원으로 30일 재활성화 →</a>
+              <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>사주 990원으로 30일 재활성화 →</a>
             </div>
           </div>
         ) : (

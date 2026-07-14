@@ -197,7 +197,7 @@ export default function TimeCapsulePage() {
           <div style={{ fontSize: 48, marginBottom: 12 }}>🔒</div>
           <p style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>새 편지를 쓰려면 재활성화가 필요해요</p>
           <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 20px", lineHeight: 1.6 }}>기존 편지는 목록에서 계속 읽을 수 있어요</p>
-          <a href="/main-v2/pay?amount=990" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", padding: "14px", borderRadius: 14, fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>사주 990원으로 30일 재활성화 →</a>
+          <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", padding: "14px", borderRadius: 14, fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>사주 990원으로 30일 재활성화 →</a>
           <button onClick={() => setMode("list")} style={{ background: "none", border: "none", color: "#9ca3af", fontSize: 13, cursor: "pointer" }}>← 목록으로 돌아가기</button>
         </div>
       </div>
@@ -248,7 +248,7 @@ export default function TimeCapsulePage() {
         {momcareUnlocked ? (
           <button onClick={() => setMode("write")} style={{ background: "#f97316", color: "white", border: "none", borderRadius: 12, padding: "8px 16px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>+ 편지 쓰기</button>
         ) : (
-          <a href="/main-v2/pay?amount=990" style={{ background: "#fed7aa", color: "#c2410c", borderRadius: 12, padding: "8px 14px", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>🔒 재활성화</a>
+          <a href="/momcare/pay" style={{ background: "#fed7aa", color: "#c2410c", borderRadius: 12, padding: "8px 14px", fontSize: 12, fontWeight: 700, textDecoration: "none" }}>🔒 재활성화</a>
         )}
       </nav>
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "24px 20px" }}>
@@ -263,7 +263,7 @@ export default function TimeCapsulePage() {
           <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
             <p style={{ fontSize: 14, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>⏰ 30일 이용권이 만료됐어요</p>
             <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 10px", lineHeight: 1.6 }}>기존 편지는 계속 읽을 수 있어요. 새 편지를 쓰려면 재활성화해주세요.</p>
-            <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none" }}>사주 990원으로 30일 재활성화 →</a>
+            <a href="/momcare/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none" }}>사주 990원으로 30일 재활성화 →</a>
           </div>
         )}
 

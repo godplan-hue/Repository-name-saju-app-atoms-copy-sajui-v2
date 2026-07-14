@@ -191,7 +191,7 @@ export default function BudgetPage() {
         <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 28px" }}>
           사주 결제 1회로<br />감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용
         </p>
-        <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
+        <a href="/budget/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
           사주 990원으로 30일 이용 →
         </a>
         <a href="/main-v2" style={{ display: "block", marginTop: 18, fontSize: 13, color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>← 점운 홈으로</a>
@@ -270,14 +270,14 @@ export default function BudgetPage() {
         {budgetExpiringSoon && (
           <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "12px 14px", marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: "#c2410c" }}>⏰ {budgetDaysLeft}일 후 가계부가 잠겨요</span>
-            <a href="/main-v2/pay?amount=990" style={{ background: "#f97316", color: "white", fontSize: 12, fontWeight: 900, padding: "6px 14px", borderRadius: 14, textDecoration: "none" }}>990원으로 30일 연장 →</a>
+            <a href="/budget/pay" style={{ background: "#f97316", color: "white", fontSize: 12, fontWeight: 900, padding: "6px 14px", borderRadius: 14, textDecoration: "none" }}>990원으로 30일 연장 →</a>
           </div>
         )}
         {/* 이용권 만료 배너 (결제한 적 있으나 만료) */}
         {budgetLocked && !budgetNeverPaid && (
           <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 12, padding: "12px 14px", marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: "#fbbf24" }}>⏰ 이용권 만료 — 기존 내역은 볼 수 있어요</span>
-            <a href="/main-v2/pay?amount=990" style={{ background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 14px", borderRadius: 14, textDecoration: "none" }}>사주 990원으로 재활성화 →</a>
+            <a href="/budget/pay" style={{ background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 14px", borderRadius: 14, textDecoration: "none" }}>사주 990원으로 재활성화 →</a>
           </div>
         )}
 
@@ -375,7 +375,7 @@ export default function BudgetPage() {
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", margin: "0 0 16px", lineHeight: 1.6 }}>
               기존 가계부 내역은 계속 볼 수 있어요.<br />새 내역 추가는 재활성화 후 이용해주세요.
             </p>
-            <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#0f172a", fontSize: 14, fontWeight: 900, padding: "13px 28px", borderRadius: 20, textDecoration: "none" }}>
+            <a href="/budget/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#0f172a", fontSize: 14, fontWeight: 900, padding: "13px 28px", borderRadius: 20, textDecoration: "none" }}>
               사주 990원으로 30일 재활성화 →
             </a>
           </div>

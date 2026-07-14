@@ -159,7 +159,7 @@ export default function DietPage() {
         <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 28px" }}>
           사주 결제 1회로<br />감정일기·다이어트·가계부·타로·펫운 5개 앱 30일 이용
         </p>
-        <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
+        <a href="/diet/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
           사주 990원으로 30일 이용 →
         </a>
         <a href="/main-v2" style={{ display: "block", marginTop: 18, fontSize: 13, color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>← 점운 홈으로</a>
