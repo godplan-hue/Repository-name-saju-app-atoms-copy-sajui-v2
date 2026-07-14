@@ -34,7 +34,10 @@ export default function TarotPayPage() {
       const data = await res.json();
       if (data.success) {
         const _ph = mobile.replace(/\D/g,"");
-        const _p = Number(localStorage.getItem("tarot_unlock_until")||0);
+        let _fbUntil = 0;
+        if (_ph) { try { const _r = await fetch(`/api/phone-unlock?phone=${_ph}`); const _d = await _r.json(); if (_d.ok) _fbUntil = Number(_d.unlocks?.tarot_unlock_until||0); } catch {} }
+        const _local = Number(localStorage.getItem("tarot_unlock_until")||0);
+        const _p = Math.max(_local, _fbUntil);
         const _until = (_p>Date.now()?_p:Date.now())+30*24*60*60*1000;
         try { localStorage.setItem("tarot_unlock_until", String(_until)); } catch {}
         if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:{tarot_unlock_until:_until}})}).catch(()=>{});

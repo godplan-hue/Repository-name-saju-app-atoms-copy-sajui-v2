@@ -129,13 +129,15 @@ function PayInner() {
       } catch {}
       // fullAccess 쿠폰: 전체 앱 30일/24h 열기
       if (couponFullAccess) {
-        try { const _p=Number(localStorage.getItem("haemong_unlock_until")||0); localStorage.setItem("haemong_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        try { const _p=Number(localStorage.getItem("momcare_unlock_until")||0); localStorage.setItem("momcare_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        try { const _p=Number(localStorage.getItem("gamjung_unlock_until")||0); localStorage.setItem("gamjung_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        try { const _p=Number(localStorage.getItem("budget_unlock_until")||0); localStorage.setItem("budget_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        try { const _p=Number(localStorage.getItem("tarot_unlock_until")||0); localStorage.setItem("tarot_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        try { const _p=Number(localStorage.getItem("petun_unlock_until")||0); localStorage.setItem("petun_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
-        try { const _p=Number(localStorage.getItem("diet_unlock_until")||0); localStorage.setItem("diet_unlock_until",String((_p>Date.now()?_p:Date.now())+30*24*60*60*1000)); } catch {}
+        const _faKeys = ["haemong_unlock_until","momcare_unlock_until","gamjung_unlock_until","budget_unlock_until","tarot_unlock_until","petun_unlock_until","diet_unlock_until"];
+        const _faUnlocks: Record<string, number> = {};
+        _faKeys.forEach(k => { try { const _p=Number(localStorage.getItem(k)||0); const _u=(_p>Date.now()?_p:Date.now())+30*24*60*60*1000; localStorage.setItem(k,String(_u)); _faUnlocks[k]=_u; } catch {} });
+        try {
+          const _ph = (mobile||"").replace(/\D/g,"");
+          if (_ph && Object.keys(_faUnlocks).length > 0) {
+            fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_faUnlocks})}).catch(()=>{});
+          }
+        } catch {}
       }
       // 추천인 쿠폰 지급
       try {

@@ -118,6 +118,18 @@ export async function POST(req: NextRequest) {
 
     const ref = db.ref("gamjung_analyses").push();
     await ref.set(result);
+
+    // 전화번호별 이력 인덱스 저장 — 다른 브라우저에서도 목록 복원 가능
+    if (cleanPhone && ref.key) {
+      db.ref(`gamjung_history_phone/${cleanPhone}/${ref.key}`).set({
+        id: ref.key,
+        moodLabel: moodInfo.label,
+        moodEmoji: moodInfo.emoji,
+        createdAt: result.createdAt,
+        memo: (memo || "").slice(0, 50),
+      }).catch(() => {});
+    }
+
     return NextResponse.json({ id: ref.key, result });
   } catch (e) {
     console.error(e);
@@ -127,7 +139,21 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const id = new URL(req.url).searchParams.get("id");
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+    const phone = url.searchParams.get("phone");
+
+    // 전화번호로 이력 목록 조회
+    if (phone && !id) {
+      const cleanPh = phone.replace(/\D/g, "");
+      if (!cleanPh) return NextResponse.json({ entries: [] });
+      const snap = await db.ref(`gamjung_history_phone/${cleanPh}`).once("value");
+      if (!snap.exists()) return NextResponse.json({ entries: [] });
+      const raw = snap.val() as Record<string, {id: string; moodLabel: string; moodEmoji: string; createdAt: number; memo: string}>;
+      const entries = Object.values(raw).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      return NextResponse.json({ entries });
+    }
+
     if (!id) return NextResponse.json({ error: "id 없음" }, { status: 400 });
     const snap = await db.ref(`gamjung_analyses/${id}`).once("value");
     if (!snap.exists()) return NextResponse.json({ error: "결과 없음" }, { status: 404 });

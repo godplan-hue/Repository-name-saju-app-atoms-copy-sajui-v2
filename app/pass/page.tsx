@@ -46,8 +46,24 @@ export default function PassPage() {
         const _ph = mobile.replace(/\D/g,"");
         const _baseUntil = Date.now() + 30*24*60*60*1000;
         const _unlocks: Record<string, number> = {};
+        // 새 브라우저에서도 기존 기간이 정확히 연장되도록 Firebase에서 먼저 확인
+        let _fbUnlocks: Record<string, number> = {};
+        try {
+          if (_ph) {
+            const _fbRes = await fetch(`/api/phone-unlock?phone=${_ph}`);
+            const _fbData = await _fbRes.json();
+            if (_fbData.ok) _fbUnlocks = _fbData.unlocks || {};
+          }
+        } catch {}
         PASS_APPS.forEach(app => {
-          try { const p = Number(localStorage.getItem(app.key)||0); const u = p>Date.now()?p+30*24*60*60*1000:_baseUntil; localStorage.setItem(app.key, String(u)); _unlocks[app.key] = u; } catch {}
+          try {
+            const _local = Number(localStorage.getItem(app.key)||0);
+            const _fb = Number(_fbUnlocks[app.key]||0);
+            const p = Math.max(_local, _fb);
+            const u = p>Date.now()?p+30*24*60*60*1000:_baseUntil;
+            localStorage.setItem(app.key, String(u));
+            _unlocks[app.key] = u;
+          } catch {}
         });
         if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
         fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `pass_${Date.now()}`, phone: _ph||"", name: name.trim(), amount: AMOUNT, category: "풀패스 7개앱 30일권", source: "pass" }) }).catch(()=>{});

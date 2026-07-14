@@ -59,6 +59,23 @@ export default function GamjungPage() {
       if (p.name) setName(p.name);
       if (p.phone) setPhone(p.phone);
       if (p.email) setEmail(p.email);
+      // 전화번호 있으면 Firebase에서 이력 복원 (다른 브라우저에서도 목록 보임)
+      const cleanPh = (p.phone || "").replace(/\D/g, "");
+      if (cleanPh) {
+        fetch(`/api/gamjung/analyze?phone=${cleanPh}`)
+          .then(r => r.ok ? r.json() : null)
+          .then(data => {
+            if (data?.entries?.length > 0) {
+              setHistory(prev => {
+                const merged = [...data.entries, ...prev];
+                const unique = merged.filter((e: {id: string}, i: number, arr: {id: string}[]) => arr.findIndex(a => a.id === e.id) === i);
+                const sliced = unique.slice(0, 50);
+                try { localStorage.setItem("gamjung_history", JSON.stringify(sliced.slice(0, 5))); } catch {}
+                return sliced.slice(0, 5);
+              });
+            }
+          }).catch(() => {});
+      }
     } catch {}
     // 30일 이용권 만료 체크
     try {

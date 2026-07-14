@@ -241,11 +241,21 @@ function saveToHistory(r: any, isPaid: boolean, analyses: Record<string, string>
       hist.unshift(item);
       // Firebase에도 저장 (fire-and-forget, 기기 간 동기화용)
       if (name) {
-        fetch("/api/v2/history", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, item }),
-        }).catch(() => {});
+        try {
+          const _prof = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+          const _phone = (_prof.phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+          fetch("/api/v2/history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, phone: _phone || undefined, item }),
+          }).catch(() => {});
+        } catch {
+          fetch("/api/v2/history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, item }),
+          }).catch(() => {});
+        }
       }
     });
     localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
