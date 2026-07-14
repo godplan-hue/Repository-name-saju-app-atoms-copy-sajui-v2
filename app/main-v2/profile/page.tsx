@@ -102,11 +102,6 @@ export default function V2Profile() {
   }, []);
 
   useEffect(() => {
-    // 유료 결제가 있으면 어떤 경로로 오든 결과지로 — 분석 재실행 없이
-    if (localStorage.getItem("v2_paid") === "1") {
-      router.replace("/main-v2/result");
-      return;
-    }
     // 무료 플로우: 저장된 정보 있으면 바로 분석, 없으면 5단계 마법사
     const flow = sessionStorage.getItem("v2_profile_flow");
     if (flow === "free") {
