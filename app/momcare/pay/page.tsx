@@ -122,12 +122,10 @@ export default function MomcarePayPage() {
         <div style={{ marginBottom:16, padding:"12px 14px", background:"rgba(251,191,36,0.08)", borderRadius:12, border:"1px solid rgba(251,191,36,0.3)" }}>
           <p style={{ margin:"0 0 6px", fontSize:12, fontWeight:900, color:"#fbbf24" }}>⚠️ 꼭 확인하세요</p>
           <p style={{ margin:0, fontSize:11, color:"rgba(255,255,255,0.7)", lineHeight:1.7 }}>
-            결제 후 결과지·보관함은<br />
-            결제하신 앱(브라우저)에서만 확인 가능해요.<br />
-            · 카카오톡에서 결제하셨다면 카카오톡 안에서,<br />
-            크롬에서 결제하셨다면 크롬에서 확인하세요.<br />
-            · 디지털 콘텐츠 특성상 결과지 열람 후<br />
-            환불이 불가합니다.
+            · 전화번호를 입력하시면 PC·모바일 어떤 기기에서도 이용 가능해요.<br />
+            (앱 목록 /apps → 이용권 불러오기)<br />
+            · 이미 이용 중이라면 남은 기간에 자동으로 연장돼요.<br />
+            · 디지털 콘텐츠 특성상 환불이 불가합니다.
           </p>
         </div>
         <p style={{ fontSize:11, color:"#6b7280", textAlign:"center", lineHeight:1.6 }}>결제 후 맘케어 30일 이용권이 즉시 적용돼요.<br />카드 정보는 결제 후 저장되지 않습니다.</p>

@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 
 const TOP_APPS = [
   {
@@ -41,6 +42,31 @@ const GRID_APPS = [
 ];
 
 export default function AppsPage() {
+  const [restorePhone, setRestorePhone] = useState("");
+  const [restoring, setRestoring] = useState(false);
+  const [restoreMsg, setRestoreMsg] = useState("");
+
+  const handleRestore = async () => {
+    const ph = restorePhone.replace(/\D/g, "");
+    if (ph.length < 10) { setRestoreMsg("전화번호를 확인해주세요."); return; }
+    setRestoring(true); setRestoreMsg("");
+    try {
+      const res = await fetch(`/api/phone-unlock?phone=${ph}`);
+      const data = await res.json();
+      if (data.ok && Object.keys(data.unlocks).length > 0) {
+        const now = Date.now();
+        let count = 0;
+        for (const [k, v] of Object.entries(data.unlocks as Record<string, number>)) {
+          if ((v as number) > now) { try { localStorage.setItem(k, String(v)); count++; } catch {} }
+        }
+        setRestoreMsg(count > 0 ? `✅ ${count}개 이용권이 이 기기에 적용됐어요!` : "이미 만료된 이용권이에요.");
+      } else {
+        setRestoreMsg("해당 전화번호로 구매 내역이 없어요.");
+      }
+    } catch { setRestoreMsg("오류가 발생했어요. 다시 시도해주세요."); }
+    finally { setRestoring(false); }
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0f0520 0%, #1e1040 50%, #0a0818 100%)", padding: "20px 14px 48px" }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
@@ -52,15 +78,29 @@ export default function AppsPage() {
           <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>무료 9개 · 이용권으로 7개앱 30일</div>
         </div>
 
-        {/* 이용 안내 배너 */}
-        <div style={{ marginBottom: 16, padding: "10px 14px", background: "rgba(251,191,36,0.08)", borderRadius: 12, border: "1px solid rgba(251,191,36,0.25)" }}>
-          <p style={{ margin: "0 0 4px", fontSize: 11, fontWeight: 900, color: "#fbbf24" }}>📌 이용권 적용 안내</p>
-          <p style={{ margin: 0, fontSize: 10, color: "rgba(255,255,255,0.6)", lineHeight: 1.8 }}>
-            이용권은 결제한 기기(브라우저)에서만 적용돼요.<br />
-            · PC에서 결제 → PC에서만 · 모바일에서 결제 → 모바일에서만<br />
-            · 카카오톡 안에서 결제하셨다면 카카오톡 안에서 이용하세요.<br />
-            · 다른 기기에서 이용하려면 해당 기기에서 별도 이용권을 구매해주세요.
+        {/* 이용권 불러오기 */}
+        <div style={{ marginBottom: 16, padding: "12px 14px", background: "rgba(99,102,241,0.08)", borderRadius: 12, border: "1px solid rgba(99,102,241,0.35)" }}>
+          <p style={{ margin: "0 0 6px", fontSize: 12, fontWeight: 900, color: "#a5b4fc" }}>📲 다른 기기에서 이용권 불러오기</p>
+          <p style={{ margin: "0 0 10px", fontSize: 10, color: "rgba(255,255,255,0.6)", lineHeight: 1.8 }}>
+            결제 시 전화번호를 입력하셨다면 어떤 기기에서도 이용 가능해요.
           </p>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input
+              value={restorePhone}
+              onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))}
+              placeholder="01012345678"
+              inputMode="numeric"
+              style={{ flex: 1, padding: "8px 10px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.07)", color: "white", fontSize: 12, outline: "none" }}
+            />
+            <button
+              onClick={handleRestore}
+              disabled={restoring}
+              style={{ padding: "8px 14px", borderRadius: 8, background: restoring ? "#6366f1aa" : "#6366f1", color: "white", border: "none", fontWeight: 700, fontSize: 12, cursor: restoring ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}
+            >
+              {restoring ? "조회중..." : "불러오기"}
+            </button>
+          </div>
+          {restoreMsg && <p style={{ margin: "8px 0 0", fontSize: 11, color: restoreMsg.startsWith("✅") ? "#86efac" : "#fca5a5" }}>{restoreMsg}</p>}
         </div>
 
         {/* 풀패스 배너 */}
