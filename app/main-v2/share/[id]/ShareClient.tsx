@@ -628,11 +628,16 @@ export default function ShareClient({ id }: { id: string }) {
           </>
         )}
 
-        {/* 비오너: 나도 무료 사주 받아보기 버튼만 */}
+        {/* 비오너: 내 결과지 보기 + 나도 무료 사주 받아보기 */}
         {!isOwner && !entry.businessName && (
-          <button onClick={() => { window.location.href = entry.tier === "taegil" ? "/main-v2/taegil" : "/main-v2"; }} style={{ width: "100%", marginBottom: 10, padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
-            {entry.tier === "taegil" ? "📅 나도 택일 받기" : "🔮 나도 무료 사주 받아보기"}
-          </button>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 10 }}>
+            <button onClick={() => { window.location.href = `/main-v2/result?sid=${id}`; }} style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg,#1e3a8a,#7c3aed)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 4px 16px rgba(124,58,237,0.35)" }}>
+              🔮 내 결과지 보러가기
+            </button>
+            <button onClick={() => { window.location.href = entry.tier === "taegil" ? "/main-v2/taegil" : "/main-v2"; }} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+              {entry.tier === "taegil" ? "📅 나도 택일 받기" : "🔮 나도 무료 사주 받아보기"}
+            </button>
+          </div>
         )}
 
       </div>
