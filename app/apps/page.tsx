@@ -49,7 +49,18 @@ export default function AppsPage() {
         <div style={{ textAlign: "center", marginBottom: 20 }}>
           <a href="/main-v2" style={{ display: "inline-block", marginBottom: 12, fontSize: 12, color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>← 메인으로</a>
           <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 4 }}>✨ 점운 전체앱</div>
-          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>무료 9개 · 사주 결제 후 30일 이용 5개</div>
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>무료 9개 · 이용권으로 7개앱 30일</div>
+        </div>
+
+        {/* 이용 안내 배너 */}
+        <div style={{ marginBottom: 16, padding: "10px 14px", background: "rgba(251,191,36,0.08)", borderRadius: 12, border: "1px solid rgba(251,191,36,0.25)" }}>
+          <p style={{ margin: "0 0 4px", fontSize: 11, fontWeight: 900, color: "#fbbf24" }}>📌 이용권 적용 안내</p>
+          <p style={{ margin: 0, fontSize: 10, color: "rgba(255,255,255,0.6)", lineHeight: 1.8 }}>
+            이용권은 결제한 기기(브라우저)에서만 적용돼요.<br />
+            · PC에서 결제 → PC에서만 · 모바일에서 결제 → 모바일에서만<br />
+            · 카카오톡 안에서 결제하셨다면 카카오톡 안에서 이용하세요.<br />
+            · 다른 기기에서 이용하려면 해당 기기에서 별도 이용권을 구매해주세요.
+          </p>
         </div>
 
         {/* 상단 2단 큰 카드 */}

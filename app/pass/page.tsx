@@ -111,6 +111,20 @@ export default function PassPage() {
           </div>
         )}
 
+        {/* 꼭 확인하세요 */}
+        <div style={{ marginBottom:16, padding:"12px 14px", background:"rgba(251,191,36,0.08)", borderRadius:12, border:"1px solid rgba(251,191,36,0.3)" }}>
+          <p style={{ margin:"0 0 6px", fontSize:12, fontWeight:900, color:"#fbbf24" }}>⚠️ 꼭 확인하세요</p>
+          <p style={{ margin:0, fontSize:11, color:"rgba(255,255,255,0.7)", lineHeight:1.9 }}>
+            이용권은 결제한 기기(브라우저)에서만 적용돼요.<br />
+            · PC에서 결제 → PC에서만 이용 가능<br />
+            · 모바일에서 결제 → 모바일에서만 이용 가능<br />
+            · 카카오톡 안에서 결제 → 카카오톡에서만 이용 가능<br />
+            · 이미 이용 중인 앱이 있다면<br />
+            남은 기간에 30일이 자동으로 추가 연장돼요.<br />
+            · 디지털 콘텐츠 특성상 환불이 불가합니다.
+          </p>
+        </div>
+
         {/* 포함 앱 목록 */}
         <div style={{ background:"rgba(255,255,255,0.05)", borderRadius:18, padding:"4px 0", marginBottom:20, border:"1px solid rgba(255,255,255,0.08)" }}>
           <div style={{ fontSize:12, color:"rgba(255,255,255,0.4)", textAlign:"center", padding:"14px 0 8px", fontWeight:700, letterSpacing:1 }}>포함된 앱 7가지</div>
