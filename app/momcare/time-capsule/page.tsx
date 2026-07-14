@@ -282,9 +282,9 @@ export default function TimeCapsulePage() {
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {letters.map(l => (
-              <div key={l.id} onClick={() => openLetter(l)} style={{ background: "white", borderRadius: 18, padding: "20px", boxShadow: "0 2px 10px rgba(0,0,0,0.06)", cursor: "pointer" }}>
+              <div key={l.id} style={{ background: "white", borderRadius: 18, padding: "20px", boxShadow: "0 2px 10px rgba(0,0,0,0.06)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div>
+                  <div style={{ flex: 1, cursor: "pointer" }} onClick={() => openLetter(l)}>
                     <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
                       <span style={{ fontSize: 22 }}>{canOpen(l) ? "💌" : "🔒"}</span>
                       <span style={{ fontSize: 11, background: canOpen(l) ? "#d1fae5" : "#fde8d8", color: canOpen(l) ? "#059669" : "#f97316", borderRadius: 8, padding: "2px 8px", fontWeight: 700 }}>{canOpen(l) ? "지금 열 수 있어요!" : `${l.openAge}에 열기`}</span>
@@ -292,7 +292,10 @@ export default function TimeCapsulePage() {
                     <p style={{ fontSize: 15, fontWeight: 800, color: "#1a1a2e", margin: "0 0 4px" }}>{l.title}</p>
                     <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>{l.writtenDate} 작성{l.openDate && ` · ${l.openDate} 개봉`}</p>
                   </div>
-                  <span style={{ color: "#d1d5db", fontSize: 18 }}>›</span>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center", flexShrink: 0 }}>
+                    <button onClick={() => save(letters.filter(x => x.id !== l.id))} style={{ background: "none", border: "none", color: "#fca5a5", cursor: "pointer", fontSize: 18 }}>×</button>
+                    <span onClick={() => openLetter(l)} style={{ color: "#d1d5db", fontSize: 18, cursor: "pointer" }}>›</span>
+                  </div>
                 </div>
               </div>
             ))}
