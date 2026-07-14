@@ -3,9 +3,13 @@ import { db } from "@/lib/firebase";
 
 export async function GET(request: NextRequest) {
   try {
-    const phone = request.nextUrl.searchParams.get("phone");
-    if (!phone) return NextResponse.json({ found: false });
-    const snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(phone).limitToFirst(1).once("value");
+    const raw = request.nextUrl.searchParams.get("phone");
+    if (!raw) return NextResponse.json({ found: false });
+    const digits = raw.replace(/[^0-9]/g, "");
+    const withDash = digits.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    // 숫자만 형식과 대시 형식 둘 다 조회 (Firebase에 어떤 형식으로 저장됐든 찾음)
+    let snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(digits).limitToFirst(1).once("value");
+    if (!snap.exists()) snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(withDash).limitToFirst(1).once("value");
     if (!snap.exists()) return NextResponse.json({ found: false });
     const profile = Object.values(snap.val())[0] as Record<string, string>;
     return NextResponse.json({ found: true, profile });

@@ -141,7 +141,7 @@ export default function V2Profile() {
     if (verifiedPhone && saved) {
       try {
         const p = JSON.parse(saved);
-        if (p.phone === verifiedPhone && p.birthYear && p.gender && p.birthHour) {
+        if ((p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone && p.birthYear && p.gender && p.birthHour) {
           setForm(prev => ({ ...prev, ...p, relationship: p.relationship || "나" }));
           setSavedMode(true);
           setPhoneStep(false);
