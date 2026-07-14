@@ -427,8 +427,9 @@ function V2ResultInner() {
         })();
         return;
       }
-      // 데이터 없음 — 자동이동 없이 그 자리에서 안내 (자동이동하면 히스토리에서 결과지가 사라짐)
-      setShowNoData(true);
+      // 데이터 없음 — localStorage 초기화 후 메인으로 자동이동
+      ["v2_saved_profile","v2_paid_cats","v2_plan","v2_paid","v2_price","haemong_unlock_until","momcare_unlock_until","jigun_unlock_until","resume_unlock_until"].forEach(k => localStorage.removeItem(k));
+      window.location.replace("/main-v2");
       return;
     }
     const r = JSON.parse(raw);
