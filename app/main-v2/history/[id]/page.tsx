@@ -770,32 +770,6 @@ export default function HistoryDetail() {
           </div>
         </div>
 
-        {/* ── 7개앱 바로가기 ── */}
-        <div style={{ margin: "10px 0" }}>
-          <p style={{ fontSize: 11, fontWeight: 900, color: "#9ca3af", textAlign: "center", margin: "0 0 6px", letterSpacing: 0.3 }}>✨ 점운 7개앱 바로가기</p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7 }}>
-            {[
-              { name: "꿈해몽", emoji: "🌙", url: "/haemong", color: "#4f46e5", bg: "#eef2ff", textColor: "#3730a3", desc: "꿈·태몽 해석" },
-              { name: "타로", emoji: "🃏", url: "/free-tarot", color: "#7c3aed", bg: "#f5f3ff", textColor: "#5b21b6", desc: "오늘의 타로" },
-              { name: "감정일기", emoji: "💜", url: "/free-gamjung", color: "#ec4899", bg: "#fdf2f8", textColor: "#be185d", desc: "마음 기록" },
-              { name: "다이어트", emoji: "🥗", url: "/free-diet", color: "#16a34a", bg: "#f0fdf4", textColor: "#15803d", desc: "오행 체질" },
-              { name: "가계부", emoji: "💰", url: "/free-budget", color: "#d97706", bg: "#fffbeb", textColor: "#b45309", desc: "재물운 팁" },
-              { name: "펫운", emoji: "🐾", url: "/petun", color: "#ea580c", bg: "#fff7ed", textColor: "#c2410c", desc: "반려동물 운세" },
-              { name: "맘케어", emoji: "👶", url: "/momcare", color: "#e11d48", bg: "#fff1f2", textColor: "#be123c", desc: "육아·태몽" },
-            ].map((app, i) => (
-              <div key={app.name} onClick={() => { window.open(app.url, "_blank"); }} style={{ borderRadius: 12, overflow: "hidden", cursor: "pointer", border: `1.5px solid ${app.color}33`, gridColumn: i === 6 ? "1 / -1" : undefined, boxShadow: "0 1px 6px rgba(0,0,0,0.06)" }}>
-                <div style={{ background: app.color, padding: "5px 8px", textAlign: "center" }}>
-                  <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>{app.emoji} {app.name}</span>
-                </div>
-                <div style={{ background: app.bg, padding: "7px 8px", textAlign: "center" }}>
-                  <p style={{ fontSize: 10, color: app.textColor, margin: "0 0 4px", lineHeight: 1.3, fontWeight: 600 }}>{app.desc}</p>
-                  <span style={{ fontSize: 9, fontWeight: 900, color: "#fff", background: app.color, padding: "2px 8px", borderRadius: 20 }}>바로가기 →</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* ── 대운·택일 배너 ── */}
         <div style={{ margin: "14px 0 0", display: "flex", gap: 8 }}>
           <div onClick={() => { window.location.href = "/main-v2/daewoon"; }} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}>

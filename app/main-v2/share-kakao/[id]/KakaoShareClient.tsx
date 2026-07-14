@@ -361,7 +361,7 @@ export default function KakaoShareClient({ id }: { id: string }) {
 
         {/* 나도 무료로 사주 보기 — 파트너 공유 결과지에는 표시 안 함 */}
         {!entry.businessName && (
-          <button onClick={() => router.push("/main-v2")}
+          <button onClick={() => window.open("/main-v2", "_blank")}
             style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
             🔮 나도 무료로 사주 보기
           </button>
