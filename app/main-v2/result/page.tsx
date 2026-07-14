@@ -966,7 +966,7 @@ function V2ResultInner() {
         <p style={{ fontSize: 40, margin: "0 0 16px" }}>🔮</p>
         <p style={{ fontSize: 17, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>결과를 불러올 수 없어요</p>
         <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 24px", lineHeight: 1.7 }}>분석 결과가 만료되었거나<br/>브라우저 캐시가 초기화되었어요</p>
-        <button onClick={() => { window.location.href = "/main-v2"; }}
+        <button onClick={() => { ["v2_saved_profile","v2_paid_cats","v2_plan","v2_paid","v2_price","haemong_unlock_until","momcare_unlock_until","jigun_unlock_until","resume_unlock_until"].forEach(k => localStorage.removeItem(k)); window.location.href = "/main-v2"; }}
           style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>
           처음부터 시작하기 →
         </button>
@@ -1300,7 +1300,7 @@ function V2ResultInner() {
           </button>
         </div>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
-          <button onClick={() => { window.location.href = "/main-v2/history"; }} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+          <button onClick={() => { window.open("/main-v2/history", "_blank"); }} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             📂 보관함
           </button>
           <button onClick={() => setShowShareModal(true)} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
@@ -1324,7 +1324,7 @@ function V2ResultInner() {
         {!isPartner && <KakaoShareCouponBanner />}
         {!isPartner && (
           <div
-            onClick={() => { window.location.href = "/share-coupon"; }}
+            onClick={() => { window.open("/share-coupon", "_blank"); }}
             style={{ margin: "0 0 8px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
           >
             <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
@@ -1346,7 +1346,7 @@ function V2ResultInner() {
           <button
             onClick={() => {
               localStorage.setItem("v2_plan", paid ? "select" : "free");
-              window.location.href = "/main-v2/qa-list";
+              window.open("/main-v2/qa-list", "_blank");
             }}
             style={{ width: "100%", padding: "14px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}
           >
@@ -1728,7 +1728,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
               📤 공유하기
             </button>
-            <button onClick={() => { window.location.href = "/main-v2?modal=love"; }}
+            <button onClick={() => { window.open("/main-v2?modal=love", "_blank"); }}
               style={{ padding: "12px 4px", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(245,158,11,0.35)" }}>
               💎 990원 사주 보기
             </button>
@@ -1757,7 +1757,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { window.location.href = "/main-v2/history"; }}
+            <button onClick={() => { window.open("/main-v2/history", "_blank"); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
               📂 보관함 가기
             </button>
@@ -1779,7 +1779,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { window.location.href = "/main-v2/history"; }}
+            <button onClick={() => { window.open("/main-v2/history", "_blank"); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
               📂 보관함 가기
             </button>
@@ -1791,13 +1791,13 @@ function V2ResultInner() {
         )}
 
         {!isPartner && (
-          <div style={{ margin: "16px 0 8px", borderRadius: 16, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "16px 20px", textAlign: "center", cursor: "pointer" }} onClick={() => { window.location.href = "/main-v2"; }}>
+          <div style={{ margin: "16px 0 8px", borderRadius: 16, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "16px 20px", textAlign: "center", cursor: "pointer" }} onClick={() => { window.open("/main-v2", "_blank"); }}>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "white", letterSpacing: "-0.3px" }}>🔮 AI 사주 990원부터 시작</p>
             <p style={{ margin: "4px 0 0", fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700 }}>지금 바로 내 운세 확인하기 →</p>
           </div>
         )}
 
-        <button onClick={() => { window.location.href = "/main-v2"; }}
+        <button onClick={() => { window.open("/main-v2", "_blank"); }}
           style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
           🏠 홈으로
         </button>
@@ -1805,7 +1805,7 @@ function V2ResultInner() {
         {/* ── 꿈해몽 배너 (항상 표시) ── */}
         {!isPartner && (
           <div style={{ display: "flex", gap: 10, margin: "10px 0" }}>
-            <div onClick={() => { window.location.href = "/haemong"; }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden", boxShadow: "0 3px 12px rgba(220,38,38,0.15)" }}>
+            <div onClick={() => { window.open("/haemong", "_blank"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden", boxShadow: "0 3px 12px rgba(220,38,38,0.15)" }}>
               <div style={{ background: "#dc2626", padding: "7px 10px", textAlign: "center" }}>
                 <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🎁 사주 결제 혜택</span>
               </div>
@@ -1815,7 +1815,7 @@ function V2ResultInner() {
                 <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>꿈해몽 보기 →</div>
               </div>
             </div>
-            <div onClick={() => { window.location.href = "/pass"; }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
+            <div onClick={() => { window.open("/pass", "_blank"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
               <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "7px 10px", textAlign: "center" }}>
                 <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔥 7개앱 풀패스</span>
               </div>
@@ -1842,7 +1842,7 @@ function V2ResultInner() {
                 { name: "펫운", emoji: "🐾", url: "/petun", color: "#ea580c", bg: "#fff7ed", textColor: "#c2410c", desc: "반려동물 운세" },
                 { name: "맘케어", emoji: "👶", url: "/momcare", color: "#e11d48", bg: "#fff1f2", textColor: "#be123c", desc: "육아·태몽" },
               ].map((app, i) => (
-                <div key={app.name} onClick={() => { window.location.href = app.url; }} style={{ borderRadius: 12, overflow: "hidden", cursor: "pointer", border: `1.5px solid ${app.color}33`, gridColumn: i === 6 ? "1 / -1" : undefined, boxShadow: "0 1px 6px rgba(0,0,0,0.06)" }}>
+                <div key={app.name} onClick={() => { window.open(app.url, "_blank"); }} style={{ borderRadius: 12, overflow: "hidden", cursor: "pointer", border: `1.5px solid ${app.color}33`, gridColumn: i === 6 ? "1 / -1" : undefined, boxShadow: "0 1px 6px rgba(0,0,0,0.06)" }}>
                   <div style={{ background: app.color, padding: "5px 8px", textAlign: "center" }}>
                     <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>{app.emoji} {app.name}</span>
                   </div>
@@ -1859,7 +1859,7 @@ function V2ResultInner() {
         {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 Q&A 페이지 이동) ── */}
         {profile?.name && profile?.birthYear && (
           <div
-            onClick={() => { window.location.href = "/main-v2/qa-list"; }}
+            onClick={() => { window.open("/main-v2/qa-list", "_blank"); }}
             style={{
               marginTop: 8, marginBottom: 14,
               borderRadius: 20, overflow: "hidden", cursor: "pointer",
@@ -1903,7 +1903,7 @@ function V2ResultInner() {
         {!isPartner && (
           <div style={{ margin: "14px 0 0", display: "flex", gap: 8 }}>
             <div
-              onClick={() => { window.location.href = "/main-v2/daewoon"; }}
+              onClick={() => { window.open("/main-v2/daewoon", "_blank"); }}
               style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
             >
               <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
@@ -1915,7 +1915,7 @@ function V2ResultInner() {
               </div>
             </div>
             <div
-              onClick={() => { window.location.href = "/main-v2/taegil"; }}
+              onClick={() => { window.open("/main-v2/taegil", "_blank"); }}
               style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}
             >
               <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
@@ -1932,7 +1932,7 @@ function V2ResultInner() {
         {/* ── 7개앱 풀패스 배너 ── */}
         {!isPartner && (
           <div
-            onClick={() => { window.location.href = "/pass"; }}
+            onClick={() => { window.open("/pass", "_blank"); }}
             style={{ margin: "10px 0 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(245,158,11,0.2)", border: "2px solid #f59e0b" }}
           >
             <div style={{ background: "linear-gradient(135deg,#92400e,#b45309)", padding: "8px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>

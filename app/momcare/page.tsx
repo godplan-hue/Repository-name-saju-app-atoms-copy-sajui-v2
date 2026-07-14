@@ -14,8 +14,8 @@ const CARD = "rgba(255,255,255,0.85)";
 const BORDER = "rgba(2,132,199,0.18)";
 
 const FEATURES = [
-  { icon: "📅", title: "성장 위기 캘린더", desc: "출생부터 156주까지 매주 상세한 발달 정보와 스킬 체크리스트를 제공합니다.", href: "/momcare/growth-calendar", img: "https://i.pinimg.com/736x/7a/ac/0e/7aac0e7741ab24964a8fb3d4ccd367f3.jpg", badge: "무료", badgeColor: "#10b981" },
-  { icon: "🍼", title: "수면·수유·기저귀 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 실시간으로 기록하고 일별 요약을 확인하세요.", href: "/momcare/daily-tracker", img: "https://i.pinimg.com/736x/92/ba/35/92ba357d9adb66bdd748ab26a1dcba84.jpg", badge: "무료", badgeColor: "#10b981" },
+  { icon: "📅", title: "성장 위기 캘린더", desc: "출생부터 156주까지 매주 상세한 발달 정보와 스킬 체크리스트를 제공합니다.", href: "/momcare/growth-calendar", img: "https://i.pinimg.com/736x/7a/ac/0e/7aac0e7741ab24964a8fb3d4ccd367f3.jpg", badge: "유료", badgeColor: "#f97316" },
+  { icon: "🍼", title: "수면·수유·기저귀 트래커", desc: "수면, 수유, 기저귀, 유축, 기분을 실시간으로 기록하고 일별 요약을 확인하세요.", href: "/momcare/daily-tracker", img: "https://i.pinimg.com/736x/92/ba/35/92ba357d9adb66bdd748ab26a1dcba84.jpg", badge: "유료", badgeColor: "#f97316" },
   { icon: "📏", title: "성장 일기: 키, 몸무게, 둘레", desc: "아이의 성장 지표를 기록하고 WHO 표준과 비교하여 성장 상태를 확인하세요.", href: "/momcare/growth-diary", img: "https://i.pinimg.com/1200x/a6/ed/26/a6ed26f98086d16a87f0915b06877a6e.jpg", badge: "유료", badgeColor: "#f97316" },
   { icon: "📸", title: "소중한 순간 저널", desc: "첫 미소, 첫 이빨, 첫 걸음 — 아이의 소중한 순간들을 기록하고 공유하세요.", href: "/momcare/memory-journal", img: "https://i.pinimg.com/1200x/7b/d2/37/7bd237d913e168a76275fdbbef7f4387.jpg", badge: "유료", badgeColor: "#f97316" },
 ];
@@ -44,7 +44,7 @@ const REVIEWS = [
 const FAQ_ITEMS = [
   { q: "성장 위기란 무엇인가요?", a: "출생부터 3세까지 아이는\n여러 번의 성장 및 발달 위기를 겪습니다.\n이는 신경계와 뇌가 발달하고\n아이가 새로운 능력을 보이기 시작하는\n자연스러운 과정입니다.\n이 시기에 아이는 보채거나\n잠을 잘 못 잘 수도 있어요.\n맘케어가 이 시기를 미리 알려드립니다." },
   { q: "앱 정보를 신뢰할 수 있는 이유는 무엇인가요?", a: "앱에 있는 모든 글, 설명, 발달 운동은\n현직 소아과 의사들과\n협력하여 제작되었습니다.\nAI가 근거 기반 의학 데이터를 바탕으로\n아이의 성장을 분석합니다." },
-  { q: "무료로 사용할 수 있나요?", a: "성장 위기 캘린더, 일일 트래커는 무료로 사용하실 수 있어요.\n\n성장 일기, 육아 일기, 타임캡슐 편지, 아기 말 사전은\n유료 기능입니다." },
+  { q: "어떻게 이용하나요?", a: "맘케어 7가지 기능 전체는 990원 결제 후 30일간 이용 가능해요.\n\n점운에서 사주 990원을 결제하시면\n맘케어도 함께 이용하실 수 있어요." },
   { q: "아이가 여러 명이어도 사용할 수 있나요?", a: "현재는 아이 1명 기준으로 기록하는 방식이에요.\n형제자매 각각 기록하고 싶다면\n브라우저를 나눠 사용하시거나\n기기를 따로 사용하시면 됩니다." },
   { q: "WHO 성장 기준과 어떻게 비교하나요?", a: "세계보건기구(WHO)의\n공식 성장 기준 데이터를 기반으로\n아이의 키, 몸무게, 머리둘레를\n백분위수로 비교해 드립니다.\n또래 평균과의 차이를\n한눈에 확인할 수 있습니다." },
 ];
@@ -158,7 +158,7 @@ export default function MomcarePage() {
         <div style={{ maxWidth: 800, margin: "0 auto", padding: "40px 24px 36px", display: "flex", alignItems: "center", gap: 28, flexWrap: "wrap" }}>
           {/* 텍스트 */}
           <div style={{ flex: 1, minWidth: 240 }}>
-            <span style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "3px 14px", fontSize: 11, fontWeight: 700, marginBottom: 12 }}>👶 맘케어 — 무료</span>
+            <span style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "3px 14px", fontSize: 11, fontWeight: 700, marginBottom: 12 }}>👶 맘케어</span>
             <h1 style={{ fontSize: "clamp(22px, 4vw, 36px)", fontWeight: 900, lineHeight: 1.25, margin: "0 0 12px", color: DARK, wordBreak: "keep-all" }}>
               부모가 만든,<br />
               <span style={{ color: TEAL }}>소아과 전문의</span>가 함께하는<br />
@@ -168,7 +168,7 @@ export default function MomcarePage() {
               성장 위기 캘린더 · 수유·수면 기록 · 타임캡슐 편지
             </p>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <Link href="/main-v2" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "12px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>무료로 시작하기</Link>
+              <Link href="/main-v2/pay?amount=990" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "12px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>시작하기</Link>
               <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>성장 캘린더 →</Link>
               <button onClick={shareApp} style={{ background: "#f3e8ff", color: "#7c3aed", border: "1.5px solid rgba(124,58,237,0.3)", borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>🔗 공유하기</button>
             </div>
@@ -188,7 +188,7 @@ export default function MomcarePage() {
       {/* 4가지 핵심 기능 — 캐러셀 */}
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "56px 24px 0" }}>
         <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 900, marginBottom: 8, color: DARK }}>함께 성장해요. <span style={{ color: TEAL }}>매 순간마다.</span></h2>
-        <p style={{ textAlign: "center", fontSize: 14, color: "#f97316", fontWeight: 700, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 4가지 핵심 기능</p>
+        <p style={{ textAlign: "center", fontSize: 14, color: "#f97316", fontWeight: 700, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 맘케어 기능들</p>
 
         {/* 캐러셀 카드 */}
         <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 24, overflow: "hidden", boxShadow: "0 4px 24px rgba(2,132,199,0.12)" }}>
@@ -355,17 +355,11 @@ export default function MomcarePage() {
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
         <div style={{ background: TEAL_GRAD, borderRadius: 20, padding: "32px 24px", textAlign: "center", boxShadow: "0 4px 24px rgba(2,132,199,0.25)" }}>
           <div style={{ fontSize: 36, marginBottom: 8 }}>🎁</div>
-          <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>무료 기능</h2>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.9)", margin: "0 0 14px" }}>로그인 없이 바로 사용하세요</p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
-            {["📅 성장 위기 캘린더", "🍼 일일 트래커"].map(item => (
-              <div key={item} style={{ background: "rgba(255,255,255,0.2)", borderRadius: 12, padding: "10px 8px", fontSize: 12, color: "white", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
-            ))}
-          </div>
-          <p style={{ fontSize: 13, color: "#fbbf24", margin: "0 0 10px", fontWeight: 900 }}>🔒 맘케어 990원으로 30일 이용</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 10 }}>
-            {["📏 성장 일기", "📔 육아 일기", "💌 타임캡슐", "🗣️ 말 사전"].map(item => (
-              <div key={item} style={{ background: "rgba(0,0,0,0.15)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "rgba(255,255,255,0.7)", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
+          <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>맘케어 7가지 기능</h2>
+          <p style={{ fontSize: 13, color: "#fbbf24", margin: "0 0 10px", fontWeight: 900 }}>🔒 990원 결제 후 30일 이용</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 10 }}>
+            {["📅 성장 위기 캘린더", "🍼 일일 트래커", "📏 성장 일기", "📔 육아 일기", "💌 타임캡슐", "🗣️ 말 사전"].map(item => (
+              <div key={item} style={{ background: "rgba(255,255,255,0.2)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "white", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
             ))}
           </div>
           <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 8px", fontWeight: 800 }}>✨ 사주 990원 결제하면 덤으로 24h!</p>
@@ -407,7 +401,7 @@ export default function MomcarePage() {
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
         <div style={{ background: TEAL_GRAD, borderRadius: 20, padding: "40px 24px", textAlign: "center", boxShadow: "0 8px 32px rgba(2,132,199,0.3)" }}>
           <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>지금 바로<br />맘케어를 시작하세요</h2>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: "0 0 24px" }}>무료로 시작하세요. 안전합니다.</p>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: "0 0 24px" }}>990원으로 시작하세요.</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <button onClick={() => alert("앱스토어 출시 준비 중입니다!")} style={{ background: "white", color: TEAL, border: "none", borderRadius: 12, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>App Store 다운로드</button>
             <button onClick={() => alert("구글플레이 출시 준비 중입니다!")} style={{ background: "rgba(255,255,255,0.2)", color: "white", border: "2px solid rgba(255,255,255,0.5)", borderRadius: 12, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Google Play 다운로드</button>
