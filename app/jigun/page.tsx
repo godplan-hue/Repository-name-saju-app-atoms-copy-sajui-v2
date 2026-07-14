@@ -172,6 +172,8 @@ export default function JigunPage() {
 
   async function submit() {
     if (!name.trim()) { setErr("이름을 입력해주세요."); return; }
+    const cleanPhone = phone.replace(/\D/g, "");
+    if (cleanPhone.length < 10) { setErr("전화번호를 입력해주세요. (필수사항)"); return; }
     const recommended = calcRecommended(answers);
     setLoading(true);
     setErr("");
@@ -365,7 +367,7 @@ export default function JigunPage() {
                 />
               </div>
               <div>
-                <label style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, display: "block", marginBottom: 6 }}>전화번호 (선택 · 30% 할인쿠폰 발급)</label>
+                <label style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, display: "block", marginBottom: 6 }}>전화번호 <span style={{ color: "#ec4899" }}>★ 필수사항</span></label>
                 <input
                   value={phone}
                   onChange={e => setPhone(e.target.value)}

@@ -29,9 +29,6 @@ export default function ResumeResultPage() {
 
   useEffect(() => {
     if (!id) return;
-    // 사주 결제 후 24시간 이내에만 잠금 해제 (resume_unlock_until 기간 체크)
-    const resumeUntil = Number(localStorage.getItem("resume_unlock_until") || 0);
-    if (resumeUntil > Date.now()) setIsUnlocked(true);
     // ?paid=1 파라미터 — 합격자소서 전용 결제 직후 리다이렉트 시
     if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("paid") === "1") {
       setIsUnlocked(true);
@@ -41,6 +38,8 @@ export default function ResumeResultPage() {
       .then(d => {
         if (d.result) {
           setResult(d.result);
+          // Firebase에 paid:true 저장된 경우 영구 잠금 해제
+          if (d.result?.paid === true) setIsUnlocked(true);
         } else {
           setError("결과를 찾을 수 없어요.");
         }
@@ -179,7 +178,7 @@ export default function ResumeResultPage() {
         <div style={{background:"linear-gradient(135deg,#0f2027,#1a3a1a)", border:"1px solid rgba(74,222,128,0.3)", borderRadius:18, padding:"20px 18px", marginBottom:14}}>
           <p style={{fontSize:13, fontWeight:900, color:"#4ade80", margin:"0 0 8px"}}>📅 면접·지원서 제출 최적 날짜는?</p>
           <p style={{fontSize:12, color:"#9ca3af", lineHeight:1.7, margin:"0 0 14px"}}>사주 택일로 합격 에너지가 강한 날짜를 고르면 같은 스펙도 더 유리합니다. 면접 날짜, 원서 제출일을 사주로 골라보세요.</p>
-          <Link href="/main-v2/taegil" style={{display:"inline-block", background:"#16a34a", color:"white", fontSize:12, fontWeight:700, padding:"10px 20px", borderRadius:20, textDecoration:"none"}}>합격 택일 날짜 보기 →</Link>
+          <Link href="/main-v2/taegil" target="_blank" style={{display:"inline-block", background:"#16a34a", color:"white", fontSize:12, fontWeight:700, padding:"10px 20px", borderRadius:20, textDecoration:"none"}}>합격 택일 날짜 보기 →</Link>
         </div>
 
         {/* 사주 연결 */}
@@ -187,8 +186,8 @@ export default function ResumeResultPage() {
           <p style={{fontSize:13, fontWeight:900, color:"#a78bfa", margin:"0 0 8px"}}>🔮 사주로 더 깊이 확인하기</p>
           <p style={{fontSize:12, color:"#9ca3af", lineHeight:1.7, margin:"0 0 14px"}}>합격 점수는 티저예요. 사주 직업운·대운으로 보면 "올해가 진짜 취업 타이밍인지", "내 천직이 뭔지" 훨씬 정확하게 알 수 있어요.</p>
           <div style={{display:"flex", gap:8, flexWrap:"wrap"}}>
-            <Link href="/main-v2" style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:12, fontWeight:700, padding:"10px 18px", borderRadius:20, textDecoration:"none"}}>직업운 사주 보기 →</Link>
-            <Link href="/main-v2/daewoon" style={{display:"inline-block", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.2)", color:"white", fontSize:12, fontWeight:700, padding:"10px 16px", borderRadius:20, textDecoration:"none"}}>나의 대운 확인 →</Link>
+            <Link href="/main-v2" target="_blank" style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:12, fontWeight:700, padding:"10px 18px", borderRadius:20, textDecoration:"none"}}>직업운 사주 보기 →</Link>
+            <Link href="/main-v2/daewoon" target="_blank" style={{display:"inline-block", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.2)", color:"white", fontSize:12, fontWeight:700, padding:"10px 16px", borderRadius:20, textDecoration:"none"}}>나의 대운 확인 →</Link>
             <Link href="/haemong" style={{display:"inline-block", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.2)", color:"white", fontSize:12, fontWeight:700, padding:"10px 16px", borderRadius:20, textDecoration:"none"}}>합격 꿈해몽 →</Link>
           </div>
         </div>

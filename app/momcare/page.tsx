@@ -59,6 +59,14 @@ export default function MomcarePage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [featureIdx, setFeatureIdx] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
+  const [momcareExpired, setMomcareExpired] = useState(false);
+
+  useEffect(() => {
+    try {
+      const until = Number(localStorage.getItem("momcare_unlock_until") || 0);
+      if (until > 0 && until < Date.now()) setMomcareExpired(true);
+    } catch {}
+  }, []);
 
   useEffect(() => {
     if (!autoPlay) return;
@@ -81,6 +89,16 @@ export default function MomcarePage() {
           <Link href="/momcare/baby-words" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>말사전</Link>
         </div>
       </nav>
+
+      {/* 30일 이용권 만료 배너 */}
+      {momcareExpired && (
+        <div style={{ background: "#fef3c7", borderBottom: "1px solid #f59e0b", padding: "12px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#92400e" }}>⏰ 맘케어 30일 이용권이 만료됐어요.</span>
+          <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "#f59e0b", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 16px", borderRadius: 20, textDecoration: "none" }}>
+            사주 990원으로 재활성화 →
+          </a>
+        </div>
+      )}
 
       {/* 탈잉·크몽 신뢰 띠 */}
       <div style={{ textAlign: "center", padding: "7px 16px", background: "linear-gradient(90deg, #e0f2fe, #f0f9ff, #e0f2fe)", borderBottom: "1px solid rgba(2,132,199,0.15)" }}>

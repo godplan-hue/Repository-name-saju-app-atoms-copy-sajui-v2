@@ -30,7 +30,7 @@ function maxUsesLabel(v: number) {
 export default function AdminDiscountCodes() {
   const router = useRouter();
   const [codes, setCodes] = useState<PromoCode[]>([]);
-  const [form, setForm] = useState({ code: "", discountPercent: 100, note: "", maxUses: 1 });
+  const [form, setForm] = useState({ code: "", discountPercent: 100, note: "", maxUses: 1, fullAccess: false });
   const [saving, setSaving] = useState(false);
 
   const loadAll = () => {
@@ -72,7 +72,7 @@ export default function AdminDiscountCodes() {
         body: JSON.stringify(form),
       });
       if (!res.ok) { alert("코드 생성에 실패했습니다."); return; }
-      setForm({ code: "", discountPercent: 100, note: "", maxUses: 1 });
+      setForm({ code: "", discountPercent: 100, note: "", maxUses: 1, fullAccess: false });
       loadAll();
     } finally {
       setSaving(false);
@@ -166,6 +166,24 @@ export default function AdminDiscountCodes() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            {/* 전체 앱 열기 */}
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, fontWeight: 700, color: "#333" }}>
+                <input
+                  type="checkbox"
+                  checked={form.fullAccess}
+                  onChange={e => setForm({ ...form, fullAccess: e.target.checked })}
+                  style={{ accentColor: "#22c55e", width: 16, height: 16 }}
+                />
+                전체 앱 열기 (꿈해몽 24h · 맘케어·감정일기·가계부 30일)
+              </label>
+              {form.fullAccess && (
+                <p style={{ fontSize: 11, color: "#16a34a", margin: "4px 0 0 24px" }}>
+                  이 쿠폰 사용 시 사주 외 모든 앱이 자동으로 열립니다.
+                </p>
+              )}
             </div>
 
             <button

@@ -72,8 +72,12 @@ function PayInner() {
             source: "jigun",
           }),
         }).catch(() => {});
-        // 24시간 잠금 해제
-        localStorage.setItem("jigun_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000));
+        // 결과 ID에 paid:true 영구 저장
+        fetch("/api/career/analyze", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        }).catch(() => {});
         window.location.href = id ? `/jigun/result/${id}?paid=1` : "/jigun";
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");
@@ -110,7 +114,7 @@ function PayInner() {
             부업 TOP 3 상세 분석 · 수입 범위<br />
             3단계 시작법 · 플랫폼 · 함정 주의
           </p>
-          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 바로 열림 · 24시간 이용 가능</p>
+          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 바로 열림 · 해당 결과 영구 이용 가능</p>
           <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: 0 }}>
             ₩{AMOUNT.toLocaleString()}
           </p>
@@ -178,7 +182,7 @@ function PayInner() {
         </button>
 
         <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", lineHeight: 1.6 }}>
-          결제 후 24시간 이용 가능합니다.<br />
+          결제 후 해당 결과를 영구적으로 이용하실 수 있어요.<br />
           카드 정보는 결제 후 저장되지 않습니다.
         </p>
       </div>

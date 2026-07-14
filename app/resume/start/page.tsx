@@ -36,6 +36,9 @@ export default function ResumeStartPage() {
     if (!form.name || !form.birthYear || !form.birthMonth || !form.birthDay || !form.field || !form.companySize) {
       setError("이름, 생년월일, 직무, 기업 규모는 필수입니다"); return;
     }
+    if (!form.phone.replace(/\D/g, "") || form.phone.replace(/\D/g, "").length < 10) {
+      setError("전화번호를 입력해주세요. (필수사항)"); return;
+    }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/resume/analyze", {
@@ -117,7 +120,7 @@ export default function ResumeStartPage() {
 
           {/* 연락처 (선택, 나중에 재열람 위해) */}
           <div>
-            <label className="text-xs text-gray-400 font-bold block mb-1">전화번호 (선택 — 결과 나중에 다시 받기)</label>
+            <label className="text-xs text-purple-400 font-bold block mb-1">전화번호 <span className="text-pink-400">★ 필수사항</span></label>
             <input value={form.phone} onChange={e => set("phone", e.target.value)} placeholder="010-0000-0000" className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
           </div>
 

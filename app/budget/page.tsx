@@ -22,6 +22,7 @@ export default function BudgetPage() {
   const [mcUserId, setMcUserId] = useState("");
   const [hasPhone, setHasPhone] = useState(false);
   const [setupDone, setSetupDone] = useState(false);
+  const [budgetLocked, setBudgetLocked] = useState(false);
   const [setupName, setSetupName] = useState("");
   const [setupPhone, setSetupPhone] = useState("");
   const [setupEmail, setSetupEmail] = useState("");
@@ -69,6 +70,12 @@ export default function BudgetPage() {
       uid = `device_${devId}`;
     }
     setMcUserId(uid);
+
+    // 30일 이용권 만료 체크
+    try {
+      const until = Number(localStorage.getItem("budget_unlock_until") || 0);
+      if (until > 0 && until < Date.now()) setBudgetLocked(true);
+    } catch {}
 
     const stored = localStorage.getItem("budget_entries");
     if (stored) setEntries(JSON.parse(stored));
@@ -323,7 +330,19 @@ export default function BudgetPage() {
         )}
 
         {/* ── 추가 탭 ── */}
-        {view === "add" && (
+        {view === "add" && budgetLocked && (
+          <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 18, padding: "28px 20px", textAlign: "center" }}>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>⏰</div>
+            <p style={{ fontSize: 16, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>30일 이용권이 만료됐어요</p>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", margin: "0 0 16px", lineHeight: 1.6 }}>
+              기존 가계부 내역은 계속 볼 수 있어요.<br />새 내역 추가는 재활성화 후 이용해주세요.
+            </p>
+            <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#0f172a", fontSize: 14, fontWeight: 900, padding: "13px 28px", borderRadius: 20, textDecoration: "none" }}>
+              사주 990원으로 30일 재활성화 →
+            </a>
+          </div>
+        )}
+        {view === "add" && !budgetLocked && (
           <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 18, padding: "20px 18px" }}>
             <h3 style={{ margin: "0 0 18px", fontSize: 16, fontWeight: 900 }}>새 내역 추가</h3>
 

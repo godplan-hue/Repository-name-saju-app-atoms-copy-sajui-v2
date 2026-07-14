@@ -28,7 +28,7 @@ function getOhaeng(year: number): string {
 export async function POST(request: NextRequest) {
   try {
     const { name, phone, email } = await request.json();
-    if (!phone || !name) return NextResponse.json({ error: "이름과 전화번호가 필요합니다." }, { status: 400 });
+    if (!phone) return NextResponse.json({ error: "전화번호가 필요합니다." }, { status: 400 });
 
     const cleanPhone = String(phone).replace(/\D/g, "");
 

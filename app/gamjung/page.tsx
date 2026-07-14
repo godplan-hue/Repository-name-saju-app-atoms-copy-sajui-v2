@@ -44,6 +44,7 @@ export default function GamjungPage() {
 
   const selectedMood = MOODS.find(m => m.score === moodScore);
   const [history, setHistory] = useState<Array<{id: string; moodLabel: string; moodEmoji: string; createdAt: number}>>([]);
+  const [gamjungLocked, setGamjungLocked] = useState(false);
 
   useEffect(() => {
     try {
@@ -55,6 +56,11 @@ export default function GamjungPage() {
       if (p.name) setName(p.name);
       if (p.phone) setPhone(p.phone);
       if (p.email) setEmail(p.email);
+    } catch {}
+    // 30일 이용권 만료 체크
+    try {
+      const until = Number(localStorage.getItem("gamjung_unlock_until") || 0);
+      if (until > 0 && until < Date.now()) setGamjungLocked(true);
     } catch {}
   }, []);
 
@@ -124,8 +130,22 @@ export default function GamjungPage() {
                 </div>
               ))}
             </div>
-            <button onClick={() => setStep("mood")} style={S.btn}>오늘 감정 기록하기 →</button>
-            <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>완전 무료 · 1분이면 끝</p>
+            {gamjungLocked ? (
+              <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 16, padding: "16px 20px", marginBottom: 8 }}>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>⏰ 30일 이용권이 만료됐어요</p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 12px", lineHeight: 1.6 }}>
+                  기존 감정일기는 계속 볼 수 있어요.<br />새 일기를 쓰려면 재활성화해주세요.
+                </p>
+                <a href="/main-v2/pay?amount=990" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 13, fontWeight: 900, padding: "11px 24px", borderRadius: 20, textDecoration: "none" }}>
+                  사주 990원으로 30일 재활성화 →
+                </a>
+              </div>
+            ) : (
+              <>
+                <button onClick={() => setStep("mood")} style={S.btn}>오늘 감정 기록하기 →</button>
+                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>완전 무료 · 1분이면 끝</p>
+              </>
+            )}
             <p style={{ textAlign: "center", fontSize: 11, color: "rgba(74,222,128,0.5)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
               🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
             </p>
@@ -165,9 +185,11 @@ export default function GamjungPage() {
             </div>
           </div>
         )}
-        <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
-          <button onClick={() => setStep("mood")} style={S.btn}>감정일기 시작하기 →</button>
-        </div>
+        {!gamjungLocked && (
+          <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
+            <button onClick={() => setStep("mood")} style={S.btn}>감정일기 시작하기 →</button>
+          </div>
+        )}
 
       {/* 회사정보 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>

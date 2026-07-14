@@ -32,6 +32,7 @@ function PayInner() {
   const [couponMsg, setCouponMsg] = useState("");
   const [couponFree, setCouponFree] = useState(false);
   const [discountPct, setDiscountPct] = useState(0);
+  const [couponFullAccess, setCouponFullAccess] = useState(false);
 
   const displayAmount = discountPct > 0 ? Math.round(amount * (1 - discountPct / 100)) : amount;
 
@@ -67,9 +68,11 @@ function PayInner() {
       if (data.discountPercent === 100) {
         setCouponFree(true);
         setDiscountPct(100);
+        setCouponFullAccess(data.fullAccess ?? false);
         setCouponMsg("✅ 100% 무료 쿠폰 적용됐어요!");
       } else {
         setDiscountPct(data.discountPercent);
+        setCouponFullAccess(data.fullAccess ?? false);
         setCouponMsg(`✅ ${data.discountPercent}% 할인 적용! ₩${Math.round(amount * (1 - data.discountPercent / 100)).toLocaleString()}로 결제됩니다.`);
       }
     } catch { setCouponMsg("코드 확인 중 오류가 발생했습니다."); }
@@ -124,6 +127,13 @@ function PayInner() {
         if (!cats.includes("💰 재물운")) cats.push("💰 재물운");
         localStorage.setItem("v2_paid_cats", JSON.stringify(cats));
       } catch {}
+      // fullAccess 쿠폰: 전체 앱 30일/24h 열기
+      if (couponFullAccess) {
+        try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
+        try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+        try { localStorage.setItem("gamjung_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+        try { localStorage.setItem("budget_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+      }
       // 추천인 쿠폰 지급
       try {
         const refCode = localStorage.getItem("referred_by");
@@ -186,6 +196,10 @@ function PayInner() {
         try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
         // 맘케어 30일 무료 잠금 해제
         try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+        // 감정일기 30일 무료 잠금 해제
+        try { localStorage.setItem("gamjung_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+        // 가계부 30일 무료 잠금 해제
+        try { localStorage.setItem("budget_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
         // 결제 기록 Firebase 저장 (어드민 결제내역에 표시)
         if (displayAmount > 0 && name.trim()) {
           fetch("/api/v2/save-payment", {

@@ -23,7 +23,6 @@ export default function FreeForm() {
   }, []);
 
   async function handleSubmit() {
-    if (!name.trim()) { setError("이름을 입력해주세요."); return; }
     const clean = phone.replace(/\D/g, "");
     if (clean.length < 10) { setError("전화번호를 정확히 입력해주세요."); return; }
     if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }

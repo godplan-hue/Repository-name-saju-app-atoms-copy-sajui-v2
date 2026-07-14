@@ -74,12 +74,15 @@ function PayInner() {
             }),
           }).catch(() => {});
         }
-        // 24시간 잠금 해제 (꿈해몽과 동일한 방식)
-        localStorage.setItem("resume_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000));
+        // 결과 ID에 paid:true 영구 저장
         if (id) {
+          fetch("/api/resume/analyze", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+          }).catch(() => {});
           window.location.href = `/resume/result/${id}?paid=1`;
         } else {
-          localStorage.setItem("resume_paid_token", "1");
           window.location.href = "/resume/start";
         }
       } else {

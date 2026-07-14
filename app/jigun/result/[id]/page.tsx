@@ -33,9 +33,6 @@ export default function JigunResultPage() {
 
   useEffect(() => {
     if (!id) return;
-    // 직운 결제 후 24시간 이내에만 잠금 해제
-    const jigunUntil = Number(localStorage.getItem("jigun_unlock_until") || 0);
-    if (jigunUntil > Date.now()) setIsUnlocked(true);
     // 결제 직후 리다이렉트 시 즉시 열기
     if (new URLSearchParams(window.location.search).get("paid") === "1") setIsUnlocked(true);
 
@@ -205,7 +202,7 @@ export default function JigunResultPage() {
             재고 없음 · 초기 투자 0원 · 결제·분석·고객관리 모두 자동<br />
             내 카카오·인스타 링크 공유만 하면 수익이 납니다
           </p>
-          <Link href="/partner" style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 22, padding: "12px 24px", fontSize: 14, fontWeight: 700, textDecoration: "none" }}>
+          <Link href="/partner" target="_blank" style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 22, padding: "12px 24px", fontSize: 14, fontWeight: 700, textDecoration: "none" }}>
             파트너 무료 신청하기 →
           </Link>
         </div>
@@ -219,10 +216,10 @@ export default function JigunResultPage() {
             사주 직업운·대운으로 훨씬 정확하게 알 수 있어요
           </p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <Link href="/main-v2" style={{ background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 20, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+            <Link href="/main-v2" target="_blank" style={{ background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 20, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
               직업·재물운 사주 보기 →
             </Link>
-            <Link href="/main-v2/daewoon" style={{ background: "rgba(255,255,255,0.1)", color: "white", borderRadius: 20, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)" }}>
+            <Link href="/main-v2/daewoon" target="_blank" style={{ background: "rgba(255,255,255,0.1)", color: "white", borderRadius: 20, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)" }}>
               나의 대운 확인 →
             </Link>
           </div>
