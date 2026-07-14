@@ -205,7 +205,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({ leads: finalLeads });
 }
 
-// 무료DB 전체 삭제 (free_leads + career_analyses + resume_analyses)
+// 무료DB 전체 삭제 (모든 무료앱 경로)
 export async function DELETE(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -213,6 +213,15 @@ export async function DELETE(request: NextRequest) {
     db.ref("free_leads").remove(),
     db.ref("career_analyses").remove(),
     db.ref("resume_analyses").remove(),
+    db.ref("mbti_analyses").remove(),
+    db.ref("lotto_analyses").remove(),
+    db.ref("gunghap_analyses").remove(),
+    db.ref("petun_analyses").remove(),
+    db.ref("gamjung_analyses").remove(),
+    db.ref("budget_leads").remove(),
+    db.ref("tarot_analyses").remove(),
+    db.ref("zodiac_analyses").remove(),
+    db.ref("diet_leads").remove(),
   ]);
   return NextResponse.json({ ok: true });
 }

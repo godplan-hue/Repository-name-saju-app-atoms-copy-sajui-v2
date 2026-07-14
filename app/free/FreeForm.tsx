@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
@@ -12,6 +12,15 @@ export default function FreeForm() {
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.name) setName(p.name);
+      if (p.phone) setPhone(p.phone);
+      if (p.email) setEmail(p.email);
+    } catch {}
+  }, []);
 
   async function handleSubmit() {
     if (!name.trim()) { setError("이름을 입력해주세요."); return; }
@@ -46,9 +55,15 @@ export default function FreeForm() {
     }));
 
     // 재물운 결제 완료 플로우 (naming=1 아님 — 재물운 개별 분석)
-    sessionStorage.setItem("v2_paid", "1");
-    sessionStorage.setItem("v2_plan", "select");
-    sessionStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운"]));
+    localStorage.setItem("v2_paid", "1");
+    localStorage.setItem("v2_plan", "select");
+    try {
+      const cats = JSON.parse(localStorage.getItem("v2_paid_cats") || "[]");
+      if (!cats.includes("💰 재물운")) cats.push("💰 재물운");
+      localStorage.setItem("v2_paid_cats", JSON.stringify(cats));
+    } catch {
+      localStorage.setItem("v2_paid_cats", JSON.stringify(["💰 재물운"]));
+    }
 
     // 일반 재물운 플로우: 이름/생년월일 폼 → 분석 → result/page.tsx
     window.location.href = "/payment-complete?package=" + encodeURIComponent("💰 재물운") + "&paid=0";
