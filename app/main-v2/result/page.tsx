@@ -934,7 +934,8 @@ function V2ResultInner() {
     const text = isPartnerShare
       ? `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}`
       : `${result.profile?.name}님의 운세 분석 🔮\n총운 ${result.scores?.total}점${extra}\n\n📱 나도 무료로! jeomun.com`;
-    if (kakaoReady && url) {
+    const isKakaoApp = /KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent);
+    if (kakaoReady && url && !isKakaoApp) {
       try {
         kakao.Share.sendDefault({
           objectType: "feed",
