@@ -79,11 +79,17 @@ export default function KakaoShareClient({ id }: { id: string }) {
   const restartingRef = useRef(false);
 
   useEffect(() => {
+    // 결제한 사용자는 카톡 공유 페이지 대신 자기 결과지로 자동이동
+    try {
+      if (localStorage.getItem("v2_paid") === "1") {
+        window.location.replace("/main-v2/result");
+        return;
+      }
+    } catch {}
     fetch(`/api/v2/share?id=${encodeURIComponent(id)}`)
       .then(res => res.ok ? res.json() : Promise.reject())
       .then(data => setEntry(data.entry))
       .catch(() => setNotFound(true));
-    try { if (localStorage.getItem("v2_paid") === "1") setHasPaidResult(true); } catch {}
   }, [id]);
 
   useEffect(() => {
