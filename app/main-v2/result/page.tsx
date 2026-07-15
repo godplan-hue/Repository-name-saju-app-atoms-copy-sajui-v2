@@ -1903,22 +1903,6 @@ function V2ResultInner() {
           </div>
         )}
 
-        {/* ── 7개앱 풀패스 배너 ── */}
-        {!isPartner && (
-          <div
-            onClick={() => { window.open("/pass", "_blank"); }}
-            style={{ margin: "10px 0 0", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(245,158,11,0.2)", border: "2px solid #f59e0b" }}
-          >
-            <div style={{ background: "linear-gradient(135deg,#92400e,#b45309)", padding: "8px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ color: "#fbbf24", fontWeight: 900, fontSize: 13 }}>🔥 7개앱 30일 풀패스</span>
-              <span style={{ color: "#fbbf24", fontWeight: 900, fontSize: 15 }}>₩4,900</span>
-            </div>
-            <div style={{ background: "#fffbeb", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <p style={{ fontSize: 11, color: "#92400e", margin: 0, lineHeight: 1.5 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·맘케어 전부 30일 이용</p>
-              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#f59e0b", padding: "4px 12px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
-            </div>
-          </div>
-        )}
 
       </div>
 
