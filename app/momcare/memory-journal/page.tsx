@@ -74,7 +74,7 @@ export default function MemoryJournalPage() {
         <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 10, padding: "10px 14px", marginBottom: 20, fontSize: 12, color: "#166534", fontWeight: 700, lineHeight: 1.8 }}>
           🎁 덤으로 24시간 추가 혜택!<br />🌙 꿈해몽 · 🐱 복냥이상담 · ❓ 360개 질문
         </div>
-        <Link href="/main-v2/pay" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 14, padding: "14px", fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 10 }}>사주 990원 결제하기 →</Link>
+        <Link href="/main-v2/pay?amount=990" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 14, padding: "14px", fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 10 }}>사주 990원 결제하기 →</Link>
         <Link href="/momcare" style={{ display: "block", fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>← 맘케어 홈으로</Link>
       </div>
     </div>
