@@ -8,7 +8,7 @@ const TOP_APPS = [
     title: "🌙 꿈해몽",
     sub: "꿈의 의미를 오행으로",
     desc: "태몽 · 흉몽 · 길몽 전부 해석",
-    badge: "무료",
+    badge: "30일",
     badgeBg: "#7c3aed",
     overlay: "linear-gradient(to top, rgba(30,10,70,0.88) 0%, rgba(60,20,120,0.45) 55%, rgba(0,0,0,0) 100%)",
     border: "rgba(167,139,250,0.35)",
@@ -19,7 +19,7 @@ const TOP_APPS = [
     title: "👶 맘케어",
     sub: "AI 육아 · 아기 기록",
     desc: "일기 · 타임캡슐 · 아기말",
-    badge: "무료",
+    badge: "30일",
     badgeBg: "#be185d",
     overlay: "linear-gradient(to top, rgba(131,24,67,0.88) 0%, rgba(190,24,93,0.35) 55%, rgba(0,0,0,0) 100%)",
     border: "rgba(251,113,133,0.35)",
@@ -75,7 +75,7 @@ export default function AppsPage() {
         <div style={{ textAlign: "center", marginBottom: 20 }}>
           <a href="/main-v2" style={{ display: "inline-block", marginBottom: 12, fontSize: 12, color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>← 메인으로</a>
           <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 4 }}>✨ 점운 전체앱</div>
-          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>무료 9개 · 이용권으로 7개앱 30일</div>
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>무료 7개 · 이용권으로 7개앱 30일</div>
         </div>
 
         {/* 이용권 불러오기 */}
