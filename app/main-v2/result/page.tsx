@@ -1728,7 +1728,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
               📤 공유하기
             </button>
-            <button onClick={() => { nav("/main-v2?modal=love"); }}
+            <button onClick={() => { window.location.href = "/main-v2/payment"; }}
               style={{ padding: "12px 4px", background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(245,158,11,0.35)" }}>
               💎 990원 사주 보기
             </button>
