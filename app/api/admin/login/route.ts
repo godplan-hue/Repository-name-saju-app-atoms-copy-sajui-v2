@@ -15,7 +15,7 @@ const ADMIN_ACCOUNTS = [
   {
     id: "admin1",
     email: "junga6783@gmail.com",
-    password: "5598c97bc1937aeba10b639bc0f3d919:5e680541406d779ae086562d6ac51c9217bfce381141177da216ea054d5c9fa2688c884488a11d1c1c0743de0a354f3d24eab63d3a252cc969c9dfcf6b40071e",
+    password: "e04ca527d72b3af8518f262d1260454d:02d4ab989b5d04de245b9e64fea29ff088fb5ecd490a019bd3951c78477812cdaffc2a61a76a4d7ba403bd40cfba72cee3234dd2135312efd8bbd8891e5c882e",
     name: "관리자",
   },
 ];
