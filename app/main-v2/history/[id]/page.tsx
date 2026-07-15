@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import Script from "next/script";
 import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
+import { nav } from "@/lib/navigate";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const G_YELLOW = "#eab308";
@@ -761,7 +762,7 @@ export default function HistoryDetail() {
 
         {/* 꿈해몽 + 풀패스 2버튼 */}
         <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-          <div onClick={() => { window.open("/haemong", "_blank"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden", boxShadow: "0 3px 12px rgba(220,38,38,0.15)" }}>
+          <div onClick={() => { nav("/haemong"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden", boxShadow: "0 3px 12px rgba(220,38,38,0.15)" }}>
             <div style={{ background: "#dc2626", padding: "7px 10px", textAlign: "center" }}>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🎁 사주 결제 혜택</span>
             </div>
@@ -771,7 +772,7 @@ export default function HistoryDetail() {
               <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>꿈해몽 보기 →</div>
             </div>
           </div>
-          <div onClick={() => { window.open("/pass", "_blank"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
+          <div onClick={() => { nav("/pass"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
             <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "7px 10px", textAlign: "center" }}>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔥 7개앱 풀패스</span>
             </div>
@@ -785,7 +786,7 @@ export default function HistoryDetail() {
 
         {/* ── 대운·택일 배너 ── */}
         <div style={{ margin: "14px 0 0", display: "flex", gap: 8 }}>
-          <div onClick={() => { window.open("/main-v2/daewoon", "_blank"); }} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}>
+          <div onClick={() => { nav("/main-v2/daewoon"); }} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}>
             <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🌌 대운(大運)</span>
             </div>
@@ -794,7 +795,7 @@ export default function HistoryDetail() {
               <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "4px 12px", borderRadius: 20 }}>₩2,900 →</span>
             </div>
           </div>
-          <div onClick={() => { window.open("/main-v2/taegil", "_blank"); }} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}>
+          <div onClick={() => { nav("/main-v2/taegil"); }} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}>
             <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>📅 택일(擇日)</span>
             </div>

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Script from "next/script";
 import KakaoShareCouponBanner from "../../_components/KakaoShareCouponBanner";
 import QAChatWidget from "../../../../components/QAChatWidget";
+import { nav } from "../../../../lib/navigate";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -320,7 +321,7 @@ export default function ShareClient({ id }: { id: string }) {
       <main style={{ minHeight: "100vh", background: BG, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
         <div style={{ textAlign: "center" }}>
           <p style={{ fontSize: 14, fontWeight: 700, color: "#9ca3af", marginBottom: 16 }}>결과를 찾을 수 없어요.</p>
-          <button onClick={() => window.open("/main-v2", "_blank")} style={{ padding: "12px 28px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
+          <button onClick={() => nav("/main-v2")} style={{ padding: "12px 28px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
             🔮 내 운세 보러 가기
           </button>
         </div>
@@ -351,7 +352,7 @@ export default function ShareClient({ id }: { id: string }) {
       </div>
 
       <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
-        <span onClick={() => window.open("/main-v2", "_blank")} style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap", cursor: "pointer" }}>{entry.businessName ? `🔮 ${entry.businessName}` : "🐱 점운"}</span>
+        <span onClick={() => nav("/main-v2")} style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap", cursor: "pointer" }}>{entry.businessName ? `🔮 ${entry.businessName}` : "🐱 점운"}</span>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
           <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             {speaking ? "⏸ 멈추기" : "🔊 읽기"}
@@ -373,7 +374,7 @@ export default function ShareClient({ id }: { id: string }) {
         )}
         {isOwner && !entry.businessName && <KakaoShareCouponBanner />}
         {isOwner && !entry.businessName && (
-          <div onClick={() => window.open("/share-coupon", "_blank")} style={{ margin: "0 0 8px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}>
+          <div onClick={() => nav("/share-coupon")} style={{ margin: "0 0 8px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}>
             <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ fontSize: 18 }}>📸</span>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>소개·추천 글 올리면 쿠폰 5장 + 꿈해몽 무료!</span>
@@ -385,7 +386,7 @@ export default function ShareClient({ id }: { id: string }) {
           </div>
         )}
         {isOwner && entry.name && entry.birthYear && (
-          <button onClick={() => window.open("/main-v2/qa-list", "_blank")} style={{ width: "100%", padding: "14px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
+          <button onClick={() => nav("/main-v2/qa-list")} style={{ width: "100%", padding: "14px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}>
             💬 사주 Q&A — 무엇이든 물어보세요
           </button>
         )}
@@ -566,10 +567,10 @@ export default function ShareClient({ id }: { id: string }) {
             <button onClick={handleKakaoShare} style={{ padding: "12px 4px", background: "linear-gradient(135deg, #fce7f3, #fbcfe8)", color: "#be185d", border: "1.5px solid rgba(236,72,153,0.3)", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 2px 10px rgba(236,72,153,0.18)" }}>
               📤 공유하기
             </button>
-            <button onClick={() => window.open("/main-v2/payment", "_blank")} style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+            <button onClick={() => nav("/main-v2/payment")} style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => window.open("/main-v2/history", "_blank")} style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
+            <button onClick={() => nav("/main-v2/history")} style={{ padding: "11px 4px", background: "linear-gradient(135deg, #ede9fe, #ddd6fe)", color: "#6d28d9", border: "1.5px solid rgba(139,92,246,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(139,92,246,0.15)" }}>
               📂 보관함 가기
             </button>
             <button onClick={() => { saveToHistory(); setHistorySaved(true); }} style={{ padding: "11px 4px", background: historySaved ? "#dcfce7" : "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: historySaved ? "#15803d" : "#4338ca", border: `1.5px solid ${historySaved ? "#22c55e" : "rgba(99,102,241,0.35)"}`, borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
@@ -581,13 +582,13 @@ export default function ShareClient({ id }: { id: string }) {
         {/* 오너 전용 하단 배너 */}
         {isOwner && !entry.businessName && (
           <>
-            <div style={{ margin: "16px 0 8px", borderRadius: 16, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "16px 20px", textAlign: "center", cursor: "pointer" }} onClick={() => window.open("/main-v2", "_blank")}>
+            <div style={{ margin: "16px 0 8px", borderRadius: 16, background: "linear-gradient(135deg, #ec4899, #8b5cf6)", padding: "16px 20px", textAlign: "center", cursor: "pointer" }} onClick={() => nav("/main-v2")}>
               <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "white" }}>🔮 AI 사주 990원부터 시작</p>
               <p style={{ margin: "4px 0 0", fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700 }}>지금 바로 내 운세 확인하기 →</p>
             </div>
-            <button onClick={() => window.open("/main-v2", "_blank")} style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>🏠 홈으로</button>
+            <button onClick={() => nav("/main-v2")} style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#9ca3af", border: "none", fontWeight: 600, fontSize: 12, cursor: "pointer" }}>🏠 홈으로</button>
             <div style={{ display: "flex", gap: 10, margin: "10px 0" }}>
-              <div onClick={() => window.open("/haemong", "_blank")} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden", boxShadow: "0 3px 12px rgba(220,38,38,0.15)" }}>
+              <div onClick={() => nav("/haemong")} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden", boxShadow: "0 3px 12px rgba(220,38,38,0.15)" }}>
                 <div style={{ background: "#dc2626", padding: "7px 10px", textAlign: "center" }}>
                   <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🎁 사주 결제 혜택</span>
                 </div>
@@ -597,7 +598,7 @@ export default function ShareClient({ id }: { id: string }) {
                   <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>꿈해몽 보기 →</div>
                 </div>
               </div>
-              <div onClick={() => window.open("/pass", "_blank")} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
+              <div onClick={() => nav("/pass")} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
                 <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "7px 10px", textAlign: "center" }}>
                   <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔥 7개앱 풀패스</span>
                 </div>
@@ -610,7 +611,7 @@ export default function ShareClient({ id }: { id: string }) {
             </div>
             {entry.name && entry.birthYear && (
               <>
-                <div onClick={() => window.open("/main-v2/qa-list", "_blank")} style={{ marginTop: 8, marginBottom: 14, borderRadius: 20, overflow: "hidden", cursor: "pointer", background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)", boxShadow: "0 10px 36px rgba(139,92,246,0.45)", position: "relative", minHeight: 140 }}>
+                <div onClick={() => nav("/main-v2/qa-list")} style={{ marginTop: 8, marginBottom: 14, borderRadius: 20, overflow: "hidden", cursor: "pointer", background: "linear-gradient(135deg, #1a0635 0%, #3b0764 50%, #1e0a3c 100%)", boxShadow: "0 10px 36px rgba(139,92,246,0.45)", position: "relative", minHeight: 140 }}>
                   <div style={{ position: "absolute", top: -30, right: -30, width: 160, height: 160, borderRadius: "50%", background: "rgba(236,72,153,0.18)", filter: "blur(30px)", pointerEvents: "none" }} />
                   <div style={{ position: "absolute", bottom: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(139,92,246,0.2)", filter: "blur(25px)", pointerEvents: "none" }} />
                   <div style={{ padding: "22px 20px 20px", position: "relative", zIndex: 2 }}>
@@ -632,7 +633,7 @@ export default function ShareClient({ id }: { id: string }) {
               </>
             )}
             <div style={{ margin: "14px 0 0", display: "flex", gap: 8 }}>
-              <div onClick={() => window.open("/main-v2/daewoon", "_blank")} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}>
+              <div onClick={() => nav("/main-v2/daewoon")} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}>
                 <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
                   <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🌌 대운(大運)</span>
                 </div>
@@ -641,7 +642,7 @@ export default function ShareClient({ id }: { id: string }) {
                   <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "4px 12px", borderRadius: 20 }}>₩2,900 →</span>
                 </div>
               </div>
-              <div onClick={() => window.open("/main-v2/taegil", "_blank")} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}>
+              <div onClick={() => nav("/main-v2/taegil")} style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}>
                 <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
                   <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>📅 택일(擇日)</span>
                 </div>
@@ -660,7 +661,7 @@ export default function ShareClient({ id }: { id: string }) {
         {/* 비오너: 나도 무료 사주 받아보기 */}
         {!isOwner && !entry.businessName && (
           <div style={{ marginBottom: 10 }}>
-            <button onClick={() => { window.open(entry.tier === "taegil" ? "/main-v2/taegil" : "/main-v2", "_blank"); }} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
+            <button onClick={() => { nav(entry.tier === "taegil" ? "/main-v2/taegil" : "/main-v2"); }} style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               {entry.tier === "taegil" ? "📅 나도 택일 받기" : "🔮 나도 무료 사주 받아보기"}
             </button>
           </div>
