@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
@@ -71,11 +71,6 @@ export default function KakaoShareClient({ id }: { id: string }) {
   const router = useRouter();
   const [entry, setEntry] = useState<SharedEntry | null>(null);
   const [notFound, setNotFound] = useState(false);
-  const [speaking, setSpeaking] = useState(false);
-  const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
-  const readChunksRef = useRef<string[]>([]);
-  const readIdxRef = useRef(0);
-  const restartingRef = useRef(false);
 
   useEffect(() => {
     fetch(`/api/v2/share?id=${encodeURIComponent(id)}`)
@@ -83,121 +78,6 @@ export default function KakaoShareClient({ id }: { id: string }) {
       .then(data => setEntry(data.entry))
       .catch(() => setNotFound(true));
   }, [id]);
-
-  useEffect(() => {
-    return () => {
-      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
-    };
-  }, []);
-
-  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> => {
-    return new Promise(resolve => {
-      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
-      const existing = window.speechSynthesis.getVoices();
-      if (existing.length > 0) { resolve(pick(existing)); return; }
-      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
-      window.speechSynthesis.onvoiceschanged = () => {
-        clearTimeout(timer);
-        resolve(pick(window.speechSynthesis.getVoices()));
-      };
-    });
-  };
-
-  const speakFrom = async (chunks: string[], startIdx: number) => {
-    const voice = await getKoreanVoice();
-    chunks.slice(startIdx).forEach((chunk, i) => {
-      const idx = startIdx + i;
-      const utter = new SpeechSynthesisUtterance(chunk);
-      utter.lang = "ko-KR";
-      if (voice) utter.voice = voice;
-      utter.rate = 1;
-      utter.onstart = () => { readIdxRef.current = idx; };
-      utter.onerror = (e) => {
-        if (e.error === "canceled" || e.error === "interrupted") {
-          if (!restartingRef.current) setSpeaking(false);
-          return;
-        }
-        setSpeaking(false);
-        readChunksRef.current = [];
-        readIdxRef.current = 0;
-        window.speechSynthesis.cancel();
-        alert("읽어주기가 끊겼어요. 화면이 자동으로 꺼지면서 끊기는 경우가 많아요.\n휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.");
-      };
-      if (idx === chunks.length - 1) {
-        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
-      }
-      window.speechSynthesis.speak(utter);
-    });
-  };
-
-  const buildChunks = () => {
-    return (entry?.categories ?? []).map(c => c.text).filter(Boolean).join("\n")
-      .replace(/(\d+)\s*~\s*(\d+)\s*(시|월|일|년|분|초|회|번|개|세)/g, "$1$3에서 $2$3")
-      .replace(/(\d+[가-힣]{0,2})\s*~\s*(?=\d)/g, "$1에서 ")
-      .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{25A0}-\u{25FF}\u{FE0F}]/gu, "")
-      .replace(/[（(][一-鿿]+[）)]/g, "")
-      .replace(/[一-鿿]+[（(]([가-힣]+)[）)]/g, "$1")
-      .replace(/×/g, " 와 ")
-      .split(/(?<=[.!?。\n])\s*/).map(s => s.trim()).filter(Boolean);
-  };
-
-  const toggleReadAloud = () => {
-    if (typeof window === "undefined") return;
-    const _ua = navigator.userAgent;
-    const _isKakao = /KAKAOTALK/i.test(_ua);
-    if (_isKakao) {
-      setTipModal({ text: "카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
-      return;
-    }
-    if (!("speechSynthesis" in window)) return;
-    if (speaking) {
-      window.speechSynthesis.cancel();
-      setSpeaking(false);
-      return;
-    }
-    const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const ttsTipKey = "kakao_share_tts_tip_shown_date";
-    if (isMobileDevice && localStorage.getItem(ttsTipKey) !== new Date().toDateString()) {
-      setTipModal({
-        text: "💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n\n휴대폰 설정 → 디스플레이 → 화면 자동 꺼짐 시간을 늘리거나,\n'보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요.\n\n확인을 누르면 바로 읽기 시작해요.",
-        onConfirm: () => {
-          if (readChunksRef.current.length === 0) {
-            const chunks = buildChunks();
-            if (!chunks.length) return;
-            readChunksRef.current = chunks;
-            readIdxRef.current = 0;
-          }
-          window.speechSynthesis.cancel();
-          speakFrom(readChunksRef.current, readIdxRef.current);
-          setSpeaking(true);
-        },
-      });
-      localStorage.setItem(ttsTipKey, new Date().toDateString());
-      return;
-    }
-    if (readChunksRef.current.length === 0) {
-      const chunks = buildChunks();
-      if (!chunks.length) return;
-      readChunksRef.current = chunks;
-      readIdxRef.current = 0;
-    }
-    window.speechSynthesis.cancel();
-    speakFrom(readChunksRef.current, readIdxRef.current);
-    setSpeaking(true);
-  };
-
-  const restartReadAloud = () => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    restartingRef.current = true;
-    window.speechSynthesis.cancel();
-    const chunks = buildChunks();
-    if (!chunks.length) return;
-    readChunksRef.current = chunks;
-    readIdxRef.current = 0;
-    speakFrom(chunks, 0);
-    setSpeaking(true);
-    setTimeout(() => { restartingRef.current = false; }, 300);
-  };
 
   if (notFound) {
     return (
@@ -216,31 +96,16 @@ export default function KakaoShareClient({ id }: { id: string }) {
 
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      {tipModal && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setTipModal(null)}>
-          <div style={{ background: "white", borderRadius: 20, padding: "28px 24px 20px", maxWidth: 340, width: "100%", boxShadow: "0 8px 40px rgba(0,0,0,0.25)" }} onClick={e => e.stopPropagation()}>
-            <p style={{ fontSize: 15, fontWeight: 900, color: "#333", margin: "0 0 16px", lineHeight: 1.6, whiteSpace: "pre-line" }}>{tipModal.text}</p>
-            <button
-              onClick={() => { const cb = tipModal.onConfirm; setTipModal(null); if (cb) cb(); }}
-              style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}
-            >확인</button>
-          </div>
-        </div>
-      )}
-      <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
-        <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", whiteSpace: "nowrap" }}>🐱 {entry.businessName || "점운"}</span>
-        <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
-          <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
-            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
-          </button>
-          <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺ 처음부터 듣기</button>
-        </div>
+      <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
+        <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 {entry.businessName || "점운"}</span>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* 쿠폰 배너 */}
+        {/* 쿠폰 배너 1 */}
         {!entry.businessName && <KakaoShareCouponBanner />}
+
+        {/* 쿠폰 배너 2 */}
         {!entry.businessName && (
           <div onClick={() => router.push("/share-coupon")} style={{ marginBottom: 16, borderRadius: 16, overflow: "hidden", cursor: "pointer", border: "1.5px solid #fca5a5" }}>
             <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
@@ -300,7 +165,7 @@ export default function KakaoShareClient({ id }: { id: string }) {
           </div>
         )}
 
-        {/* 사주팔자 맛보기 — 띠/오행 (점수 바 다음에 표시) */}
+        {/* 사주팔자 맛보기 */}
         {entry.birthYear && (() => {
           const zodiacList = ["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
           const ohArr = ["목","목","화","화","토","토","금","금","수","수"];
@@ -359,7 +224,7 @@ export default function KakaoShareClient({ id }: { id: string }) {
           );
         })}
 
-        {/* 나도 무료 사주 받아보기 */}
+        {/* 나도 무료 사주 받아보기 버튼 */}
         {!entry.businessName && (
           <button onClick={() => window.open("/main-v2", "_blank")}
             style={{ width: "100%", padding: "16px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
