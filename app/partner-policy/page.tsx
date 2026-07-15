@@ -52,7 +52,7 @@ export default function PartnerPolicy() {
               <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#fbbf24" }}>🔮 점운 사주 — 핵심 유료 상품</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
                 오늘의 운세 1회 무료.<br />
-                990원: 기본 분석 + 꿈해몽 24시간 · 맘케어 30일 자동 제공.<br />
+                990원: 기본 분석 + 꿈해몽 24시간 자동 제공.<br />
                 3,900원: 연애·건강·성공·직업·배우자운 등 개별 운세.<br />
                 9,900원~: 여러 운세 묶음 패키지.
               </p>
@@ -62,8 +62,7 @@ export default function PartnerPolicy() {
             <div style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.35)", borderRadius: 12, padding: "14px 16px" }}>
               <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#c4b5fd" }}>🎁 사주 990원 결제 시 자동 제공</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
-                🌙 점운 꿈해몽 — 꿈 해석·태몽 분석. 사주 990원 결제 시 24시간 무료 제공.<br />
-                👶 점운 맘케어 — AI 육아 기록·아기일기·타임캡슐. 사주 990원 결제 시 30일 무료 제공.
+                🌙 점운 꿈해몽 — 꿈 해석·태몽 분석. 사주 990원 결제 시 24시간 무료 제공.
               </p>
             </div>
 
@@ -91,6 +90,7 @@ export default function PartnerPolicy() {
             <div style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.35)", borderRadius: 12, padding: "14px 16px" }}>
               <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#fcd34d" }}>💎 별도 유료 상품</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
+                👶 점운 맘케어 — AI 육아 기록·아기일기·타임캡슐. 990원 (30일) / 4,900원 (7개앱 풀패스).<br />
                 🎓 점운 합격 (합격자소서) — 9,900원 (단품) / 29,900원 (5회 풀코스).<br />
                 📅 대운 — 사주 메인에서 별도 결제.<br />
                 📆 택일 — 사주 메인에서 별도 결제.
