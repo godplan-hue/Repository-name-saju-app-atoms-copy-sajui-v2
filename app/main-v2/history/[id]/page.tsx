@@ -287,15 +287,15 @@ export default function HistoryDetail() {
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
     if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\n지금 이 페이지에서 바로 읽으려면:\n화면 오른쪽 아래 ⋮ 를 누르고\n[다른 브라우저로 열기]를 선택하세요.\n\n크롬, 삼성인터넷, 사파리 중 아무거나 선택하면 돼요." });
+      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\n읽기를 사용하려면:\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n\n⚠️ 카카오톡 [다른 브라우저로 열기]는\n데이터가 없어 보관함 홈으로 이동돼요." });
       return;
     }
     if (/NAVER|NaverWebView|naver_/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡에서는 화면 오른쪽 아래 ⋮ 를 눌러 [다른 브라우저로 열기]를 선택하면 🔊 읽기가 정상 작동해요.\n\n크롬·삼성인터넷·사파리에서 jeomun.com → 보관함에 들어오면 읽기가 작동해요." });
+      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\n읽기를 사용하려면:\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n\n⚠️ 카카오톡 [다른 브라우저로 열기]는\n데이터가 없어 보관함 홈으로 이동돼요." });
       return;
     }
     if (/DaumApps|Daum|daum/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡에서는 화면 오른쪽 아래 ⋮ 를 눌러 [다른 브라우저로 열기]를 선택하면 🔊 읽기가 정상 작동해요.\n\n크롬·삼성인터넷·사파리에서 jeomun.com → 보관함에 들어오면 읽기가 작동해요." });
+      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\n읽기를 사용하려면:\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n\n⚠️ 카카오톡 [다른 브라우저로 열기]는\n데이터가 없어 보관함 홈으로 이동돼요." });
       return;
     }
     if (!("speechSynthesis" in window)) return;
@@ -392,7 +392,7 @@ export default function HistoryDetail() {
     try {
       if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
         setSaving(false);
-        alert("카카오톡에서는 이미지 저장이 안돼요.\n\n화면 오른쪽 아래 ⋮ 를 누르고\n[다른 브라우저로 열기]를 선택한 후\n저장해 주세요.");
+        alert("카카오톡에서는 이미지 저장이 안 돼요.\n\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 이미지 저장을 이용하세요.\n\n또는 스크린샷으로 저장해 주세요.");
         return;
       }
       const html2canvas = (await import("html2canvas")).default;
@@ -832,17 +832,17 @@ export default function HistoryDetail() {
             {/* 카카오톡에서 접속 시 */}
             <div style={{ background: "#fff7ed", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fed7aa" }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>📲 카카오톡에서 접속하신 경우</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`화면 오른쪽 아래 점 세 개(⋮)를 누르고\n[다른 브라우저로 열기] 선택\n→ 이미지 저장·읽기 모두 이용 가능해요`}</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`카카오톡에서는 이미지 저장·읽기가 작동하지 않아요.\n\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함 메뉴에서 이용하세요.\n\n⚠️ [다른 브라우저로 열기]는 데이터가 없어\n보관함 홈으로 이동됩니다.`}</p>
             </div>
             {/* 읽기 기능 */}
             <div style={{ background: "#eff6ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bfdbfe" }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#1d4ed8", margin: "0 0 6px" }}>🔊 읽기 기능</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`카카오톡 안에서는 읽기가 작동하지 않아요.\n\n읽기를 사용하려면:\n화면 오른쪽 아래 ⋮ → [다른 브라우저로 열기]\n크롬·삼성인터넷·사파리 선택 후 이용하세요.\n\n읽는 중 화면이 꺼지면 끊길 수 있어요.\n설정 → 디스플레이 → 화면 자동 꺼짐 시간을 늘려두세요.`}</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`카카오톡 안에서는 읽기가 작동하지 않아요.\n\n읽기를 사용하려면:\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n\n읽는 중 화면이 꺼지면 끊길 수 있어요.\n설정 → 디스플레이 → 화면 자동 꺼짐 시간을 늘려두세요.`}</p>
             </div>
             {/* 이미지 저장 */}
             <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>🖼 이미지 저장</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`PC 또는 크롬·구글 브라우저에서 저장하면\n8개 운세 전체가 한 번에 저장됩니다.\n\n카카오톡이나 기본 모바일 브라우저에서는\n일부만 저장될 수 있어요.\n점 세 개(⋮) → [다른 브라우저로 열기]\n→ 크롬 선택 후 저장하세요.\n\n또는 점 세 개 옆 [링크 복사]로\n카톡·문자·메일로 공유하세요.`}</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`PC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 이미지 저장을 이용하세요.\n\n카카오톡에서는 이미지 저장이 안 돼요.\n스크린샷으로 저장해 주세요.\nAndroid: 볼륨↓ + 전원 동시 누르기\niPhone: 사이드버튼 + 볼륨↑ 동시 누르기`}</p>
             </div>
             <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
               확인
