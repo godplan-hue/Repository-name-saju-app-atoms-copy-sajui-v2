@@ -58,14 +58,26 @@ export default function PartnerPolicy() {
               </p>
             </div>
 
-            {/* 유료 앱 */}
+            {/* 풀패스 포함 유료 앱 */}
             <div style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.35)", borderRadius: 12, padding: "14px 16px" }}>
               <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#fcd34d" }}>💎 유료 앱 — 단품 990원 / 7개앱 묶음 4,900원</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
-                🌙 점운 꿈해몽 — 꿈 해석·태몽 분석. 유료 (단품 990원 / 7개앱 묶음 4,900원).<br />
-                👶 점운 맘케어 — AI 육아 기록·아기일기·타임캡슐. 유료 (단품 990원 / 7개앱 묶음 4,900원).<br />
-                🎓 점운 합격 (합격자소서) — AI 사주 기반 취업 전략 분석. 유료 (단품 990원 / 7개앱 묶음 4,900원).<br />
-                🐾 점운 펫운 — 반려동물 운세·궁합·음식 안전도. 유료 (단품 990원 / 7개앱 묶음 4,900원).<br />
+                🌙 점운 꿈해몽 — 꿈 해석·태몽 분석.<br />
+                👶 점운 맘케어 — AI 육아 기록·아기일기·타임캡슐.<br />
+                🐾 점운 펫운 — 반려동물 운세·궁합·음식 안전도.<br />
+                🃏 점운 타로 — AI 타로카드 해석.<br />
+                📔 점운 감정일기 — 감정 기록·치유 일기.<br />
+                🥗 점운 다이어트 — 오행 체질 식단 추천.<br />
+                💰 점운 가계부 — 일기식 재물 기록.
+              </p>
+            </div>
+
+            {/* 별도 유료 앱 (풀패스 미포함) */}
+            <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 12, padding: "14px 16px" }}>
+              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#fbbf24" }}>💳 별도 유료 앱 (풀패스 미포함)</p>
+              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
+                💼 점운 직운 — AI 직업·부업 추천. 유료.<br />
+                🎓 점운 합격 (합격자소서) — AI 사주 기반 취업 전략 분석. 유료.<br />
                 📅 대운 · 📆 택일 — 사주 메인에서 별도 결제.
               </p>
             </div>
@@ -75,9 +87,9 @@ export default function PartnerPolicy() {
               <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#a5b4fc" }}>🆓 완전 무료 앱 (결제 없음)</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
                 💑 점운 궁합 — 오행 궁합 분석·타로 뽑기. 완전 무료.<br />
-                💼 점운 직운 — AI 직업·부업 추천. 완전 무료.<br />
                 🧠 점운 MBTI — 오행 기질 16유형 분석. 완전 무료.<br />
-                🍀 점운 행운번호 — 오행 기반 행운번호 6개. 완전 무료.
+                🍀 점운 행운번호 — 오행 기반 행운번호 6개. 완전 무료.<br />
+                ⭐ 점운 별자리 — 12별자리 오늘 운세. 완전 무료.
               </p>
             </div>
 
@@ -85,7 +97,7 @@ export default function PartnerPolicy() {
             <div style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.35)", borderRadius: 12, padding: "14px 16px" }}>
               <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#6ee7b7" }}>🔥 7개앱 30일 풀패스 — ₩4,900</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
-                꿈해몽 · 맘케어 · 합격자소서 · 펫운 · 감정일기 · 다이어트 · 가계부.<br />
+                꿈해몽 · 맘케어 · 펫운 · 타로 · 감정일기 · 다이어트 · 가계부.<br />
                 30일 동안 7개 앱 전체 이용 가능.
               </p>
             </div>
