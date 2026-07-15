@@ -19,7 +19,7 @@ export default function PartnerPolicy() {
         </div>
 
         {/* 부업 안내 카드 */}
-        <div style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(236,72,153,0.2))", border: "2px solid rgba(124,58,237,0.6)", borderRadius: 16, padding: "28px 24px", marginBottom: 28 }}>
+        <div style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(99,102,241,0.2))", border: "2px solid rgba(124,58,237,0.6)", borderRadius: 16, padding: "28px 24px", marginBottom: 28 }}>
           <div style={{ display: "inline-block", background: "#7c3aed", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 11, fontWeight: 700, marginBottom: 14 }}>🔥 부업으로 시작하는 분들께</div>
           <h2 style={{ color: "white", fontSize: 18, fontWeight: 900, margin: "0 0 16px", lineHeight: 1.5 }}>돈 한 푼 안 들이고<br />AI 사주 부업을 시작하는 법</h2>
           <ul style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: 600, lineHeight: 2.2, marginLeft: 4, marginBottom: 16, listStyle: "none", padding: 0 }}>
@@ -42,14 +42,14 @@ export default function PartnerPolicy() {
 
         {/* 점운 앱 서비스 구성 */}
         <div style={{ background: "rgba(108,64,200,0.2)", padding: "24px", borderRadius: 16, border: "1px solid rgba(139,92,246,0.4)", marginBottom: 28 }}>
-          <div style={{ display: "inline-block", background: "#7c3aed", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 11, fontWeight: 700, marginBottom: 16 }}>✨ 점운 앱 서비스 구성</div>
+          <div style={{ display: "inline-block", background: "#7c3aed", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 11, fontWeight: 700, marginBottom: 16 }}>✨ 점운 앱 서비스 구성 (전체 10개)</div>
           <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 12, marginBottom: 16, lineHeight: 1.7 }}>파트너가 고객에게 제공하는 점운 앱 전체 구성입니다.<br />파트너는 사주 분석 서비스를 주로 판매하며, 나머지 앱들은 자동으로 연결됩니다.</p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
 
             {/* 사주 — 핵심 유료 */}
             <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 12, padding: "14px 16px" }}>
-              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#fbbf24" }}>🔮 점운 사주 (핵심 상품)</p>
+              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#fbbf24" }}>🔮 점운 사주 — 핵심 유료 상품</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
                 오늘의 운세 1회 무료.<br />
                 990원: 기본 분석 + 꿈해몽 24시간 · 맘케어 30일 자동 제공.<br />
@@ -58,33 +58,51 @@ export default function PartnerPolicy() {
               </p>
             </div>
 
-            {/* 7개앱 풀패스 */}
-            <div style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 12, padding: "14px 16px" }}>
-              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#fcd34d" }}>🔥 7개앱 30일 풀패스 — ₩4,900</p>
+            {/* 사주 결제 시 자동 제공 */}
+            <div style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.35)", borderRadius: 12, padding: "14px 16px" }}>
+              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#c4b5fd" }}>🎁 사주 990원 결제 시 자동 제공</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
-                꿈해몽 · 감정일기 · 다이어트 · 가계부 · 타로 · 펫운 · 맘케어.<br />
-                30일 동안 7개 앱 전체 이용 가능.
+                🌙 점운 꿈해몽 — 꿈 해석·태몽 분석. 사주 990원 결제 시 24시간 무료 제공.<br />
+                👶 점운 맘케어 — AI 육아 기록·아기일기·타임캡슐. 사주 990원 결제 시 30일 무료 제공.
               </p>
             </div>
 
             {/* 완전 무료 앱 */}
             <div style={{ background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 12, padding: "14px 16px" }}>
-              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#a5b4fc" }}>🎁 완전 무료 앱</p>
+              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#a5b4fc" }}>🆓 완전 무료 앱 (결제 없음)</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
-                🧠 점운 MBTI — 16문항 유형 분석, 완전 무료.<br />
-                🍀 점운 행운번호 — 오행 행운번호 생성, 완전 무료.<br />
-                💞 점운 궁합 — 기본 점수 무료, 상세 분석 990원.
+                💼 점운 직운 — AI 직업·부업 추천. 완전 무료.<br />
+                🧠 점운 MBTI — 오행 기질 16유형 분석. 완전 무료.<br />
+                🍀 점운 행운번호 — 오행 기반 행운번호 6개. 완전 무료.<br />
+                🐾 점운 펫운 — 반려동물 운세·궁합·음식 안전도. 완전 무료.
+              </p>
+            </div>
+
+            {/* 기본 무료 / 상세 유료 */}
+            <div style={{ background: "rgba(99,102,241,0.1)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 12, padding: "14px 16px" }}>
+              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#c4b5fd" }}>💑 점운 궁합 — 기본 무료 / 상세 유료</p>
+              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
+                오행 궁합 점수·상생상극 시각화 무료.<br />
+                연애 패턴·갈등·조언·결혼 궁합 전체: 990원.
               </p>
             </div>
 
             {/* 별도 유료 상품 */}
-            <div style={{ background: "rgba(99,102,241,0.1)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 12, padding: "14px 16px" }}>
-              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#c4b5fd" }}>💎 별도 유료 상품</p>
+            <div style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.35)", borderRadius: 12, padding: "14px 16px" }}>
+              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#fcd34d" }}>💎 별도 유료 상품</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
-                🎯 점운 직운 — 퀴즈 결과 무료, 전체 열람 990원.<br />
-                🎓 합격자소서 — 9,900원 (단품) / 29,900원 (5회 풀코스).<br />
+                🎓 점운 합격 (합격자소서) — 9,900원 (단품) / 29,900원 (5회 풀코스).<br />
                 📅 대운 — 사주 메인에서 별도 결제.<br />
                 📆 택일 — 사주 메인에서 별도 결제.
+              </p>
+            </div>
+
+            {/* 7개앱 풀패스 */}
+            <div style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.35)", borderRadius: 12, padding: "14px 16px" }}>
+              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#6ee7b7" }}>🔥 7개앱 30일 풀패스 — ₩4,900</p>
+              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
+                꿈해몽 · 맘케어 · 펫운 · 감정일기 · 다이어트 · 가계부 · 타로.<br />
+                30일 동안 7개 앱 전체 이용 가능.
               </p>
             </div>
 
