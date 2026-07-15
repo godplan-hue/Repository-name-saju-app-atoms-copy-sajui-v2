@@ -29,18 +29,23 @@ export default function Refund() {
           <section style={{ marginBottom: 30, padding: 16, background: "rgba(139,92,246,0.15)", borderRadius: 8, border: "1px solid rgba(139,92,246,0.4)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>서비스별 결제 안내</h2>
             <div style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 2 }}>
-              <p style={{ margin: "0 0 4px" }}>🔮 <span style={{ color: "#fbbf24" }}>점운 사주</span> — 유료 (990원 / 2,900원 / 3,900원 / 9,900원~)</p>
-              <p style={{ margin: "0 0 4px" }}>🌙 <span style={{ color: "#a78bfa" }}>점운 꿈해몽</span> — <span style={{ color: "#fbbf24" }}>유료 (990원 / 4,900원)</span></p>
-              <p style={{ margin: "0 0 4px" }}>👶 <span style={{ color: "#f9a8d4" }}>점운 맘케어</span> — <span style={{ color: "#fbbf24" }}>유료 (990원 / 4,900원)</span></p>
-              <p style={{ margin: "0 0 4px" }}>🎓 <span style={{ color: "#fbbf24" }}>점운 합격 (합격자소서)</span> — <span style={{ color: "#fbbf24" }}>유료 (990원 / 4,900원)</span></p>
-              <p style={{ margin: "0 0 4px" }}>💑 <span style={{ color: "#f9a8d4" }}>점운 궁합</span> — 기본 무료 / 상세 유료 (990원)</p>
-              <p style={{ margin: "0 0 4px" }}>💼 <span style={{ color: "#60a5fa" }}>점운 직운 (직업·부업)</span> — <span style={{ color: "#4ade80" }}>무료</span></p>
-              <p style={{ margin: "0 0 4px" }}>🧠 <span style={{ color: "#c4b5fd" }}>점운 MBTI</span> — <span style={{ color: "#4ade80" }}>무료</span></p>
-              <p style={{ margin: "0 0 4px" }}>🍀 <span style={{ color: "#4ade80" }}>점운 행운번호</span> — <span style={{ color: "#4ade80" }}>무료</span></p>
-              <p style={{ margin: 0 }}>🐾 <span style={{ color: "#fbbf24" }}>점운 펫운</span> — <span style={{ color: "#4ade80" }}>무료</span></p>
+              {/* 사주 */}
+              <p style={{ margin: "0 0 8px" }}>🔮 <span style={{ color: "#fbbf24" }}>점운 사주</span> — <span style={{ color: "#fbbf24" }}>유료 (990원 ~ 29,900원)</span></p>
+              {/* 유료 7개앱 */}
+              <p style={{ margin: "0 0 4px", color: "#c4b5fd", fontSize: 12 }}>▼ 유료 앱 — 단품 990원 / 7개앱 묶음 4,900원</p>
+              <p style={{ margin: "0 0 4px" }}>🌙 <span style={{ color: "#a78bfa" }}>점운 꿈해몽</span> — <span style={{ color: "#fbbf24" }}>유료 (단품 990원 / 7개앱 묶음 4,900원)</span></p>
+              <p style={{ margin: "0 0 4px" }}>👶 <span style={{ color: "#f9a8d4" }}>점운 맘케어</span> — <span style={{ color: "#fbbf24" }}>유료 (단품 990원 / 7개앱 묶음 4,900원)</span></p>
+              <p style={{ margin: "0 0 4px" }}>🎓 <span style={{ color: "#fbbf24" }}>점운 합격 (합격자소서)</span> — <span style={{ color: "#fbbf24" }}>유료 (단품 990원 / 7개앱 묶음 4,900원)</span></p>
+              <p style={{ margin: "0 0 12px" }}>🐾 <span style={{ color: "#fbbf24" }}>점운 펫운</span> — <span style={{ color: "#fbbf24" }}>유료 (단품 990원 / 7개앱 묶음 4,900원)</span></p>
+              {/* 무료 앱 */}
+              <p style={{ margin: "0 0 4px", color: "#86efac", fontSize: 12 }}>▼ 무료 앱 — 결제 없음</p>
+              <p style={{ margin: "0 0 4px" }}>💑 <span style={{ color: "#f9a8d4" }}>점운 궁합</span> — <span style={{ color: "#4ade80" }}>기본 무료</span> (상세 분석 990원)</p>
+              <p style={{ margin: "0 0 4px" }}>💼 <span style={{ color: "#60a5fa" }}>점운 직운 (직업·부업)</span> — <span style={{ color: "#4ade80" }}>완전 무료</span></p>
+              <p style={{ margin: "0 0 4px" }}>🧠 <span style={{ color: "#c4b5fd" }}>점운 MBTI</span> — <span style={{ color: "#4ade80" }}>완전 무료</span></p>
+              <p style={{ margin: 0 }}>🍀 <span style={{ color: "#4ade80" }}>점운 행운번호</span> — <span style={{ color: "#4ade80" }}>완전 무료</span></p>
             </div>
             <p style={{ color: "#f97316", fontSize: 12, fontWeight: 700, margin: "12px 0 0" }}>
-              ※ 꿈해몽·맘케어·합격자소서는 각각 990원 (30일 단품) 또는 4,900원 (7개앱 30일 풀패스) 결제가 필요합니다.
+              ※ 7개앱 묶음 4,900원은 꿈해몽·맘케어·합격자소서·펫운 등 7개 앱을 30일간 이용하는 풀패스입니다.
             </p>
           </section>
 
