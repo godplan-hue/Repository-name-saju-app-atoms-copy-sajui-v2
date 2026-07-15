@@ -681,43 +681,19 @@ export default function ShareClient({ id }: { id: string }) {
           </div>
           <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 전화번호 안 넣으면 결과 사라져요!</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>결제 시 전화번호를 입력하지 않으면<br />브라우저를 닫는 순간 결과가 영구 삭제됩니다.<br /><strong>지금 바로 보관함 저장을 눌러두세요.</strong></p>
-          </div>
-          <div style={{ background: "#fff7ed", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fed7aa" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>📱 모바일·카카오 이용 안내</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서 열면 점 세 개(⋮) → 다른 브라우저로 열기를 누르면<br />크롬·사파리에서 더 편하게 이용하실 수 있어요.<br />결과는 결제한 브라우저에서만 확인 가능합니다.</p>
-          </div>
-          <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>📞 전화번호를 입력하셨나요?</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>입력하셨다면 SMS로 결과 링크가 발송됩니다.<br />그 링크로 어떤 기기·브라우저에서도 결과를 볼 수 있어요.</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>결제 시 전화번호 미입력하면<br />브라우저 닫는 순간 결과가 영구 삭제됩니다.<br />바로 <strong>보관함</strong>에 저장하세요.</p>
           </div>
           <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 보관함은 이 기기·브라우저에서만 보여요!</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>다른 브라우저나 기기로 접속하면<br />보관함에 저장된 목록이 보이지 않아요.<br /><strong>결과는 반드시 SMS 링크로 따로 보관하세요.</strong></p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>다른 브라우저나 기기로 접속하면<br />보관함에 저장된 목록이 보이지 않아요.<br />결과는 반드시 <strong>공유하기</strong>로 따로 보관하세요.</p>
           </div>
-          <div style={{ background: "#f5f3ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #ddd6fe" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>🔊 읽어주기 팁</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘려두세요.</p>
+          <div style={{ background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#b45309", margin: "0 0 4px" }}>📱 모바일·카카오 이용 안내</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>읽기 또는 이미지 저장 하려면<br />PC 또는 크롬(구글) 브라우저를 이용하세요.</p>
           </div>
-          <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>🖼 이미지 저장</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>화면 스크롤 후 길게 누르기 또는<br />이미지 저장 버튼으로 갤러리에 바로 저장할 수 있어요.</p>
-          </div>
-          <div style={{ background: "#f0f9ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bae6fd" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#0369a1", margin: "0 0 6px" }}>💾 다른 기기에서 이용하려면?</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>결제 시 전화번호를 입력하셨다면<br />앱 목록(/apps)에서 이용권 불러오기로<br />다른 기기에서도 이용하실 수 있어요.</p>
-          </div>
-          <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "14px 0 8px" }}>📌 결과지 맨 밑에 버튼을 꼭 확인하세요!</p>
-          <div style={{ background: "#fef2f2", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>
-              📤 공유하기 — 카카오톡으로 결과 공유<br />
-              💳 유료 운세 결제하기 — 추가 운세 구매<br />
-              🔮 다시 분석 — 새 사주 분석 시작<br />
-              📥 보관함 저장 — 결과 저장 (언제든 다시 보기)<br />
-              📂 보관함 보기 — 저장된 결과 확인<br />
-              🖼 이미지 저장 — 화면 캡처 이미지 저장<br />
-              🔊 읽기 — 사주 내용 읽어주기
-            </p>
+          <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />오른쪽 맨밑에 점 세 개(⋮) 누르고<br />→ 다른 브라우저로 열기 누른 후 읽기 다시 누르세요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
           </div>
           <button onClick={() => setShowMobGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
         </div>
@@ -735,47 +711,19 @@ export default function ShareClient({ id }: { id: string }) {
           </div>
           <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 전화번호 안 넣으면 결과 사라져요!</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>결제 시 전화번호를 입력하지 않으면<br />브라우저를 닫는 순간 결과가 영구 삭제됩니다.<br /><strong>지금 바로 보관함 저장을 눌러두세요.</strong></p>
-          </div>
-          <div style={{ background: "#eff6ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bfdbfe" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#1d4ed8", margin: "0 0 6px" }}>💻 PC 이용 안내</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>왼쪽 상단 ← 점운 버튼을 누르면 메인으로 돌아갑니다.<br />브라우저 ← 버튼이 비활성화된 경우 페이지를 직접 접속한 것이에요.<br />결과를 저장하려면 보관함 저장 버튼을 먼저 눌러주세요.</p>
-          </div>
-          <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>📞 전화번호를 입력하셨나요?</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>입력하셨다면 SMS로 결과 링크가 발송됩니다.<br />그 링크로 어떤 기기·브라우저에서도 결과를 볼 수 있어요.</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>결제 시 전화번호 미입력하면<br />브라우저 닫는 순간 결과가 영구 삭제됩니다.<br />바로 <strong>보관함</strong>에 저장하세요.</p>
           </div>
           <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 보관함은 이 기기·브라우저에서만 보여요!</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>다른 브라우저나 기기로 접속하면<br />보관함에 저장된 목록이 보이지 않아요.<br /><strong>결과는 반드시 SMS 링크로 따로 보관하세요.</strong></p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>다른 브라우저나 기기로 접속하면<br />보관함에 저장된 목록이 보이지 않아요.<br />결과는 반드시 <strong>공유하기</strong>로 따로 보관하세요.</p>
           </div>
-          <div style={{ background: "#fff7ed", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fed7aa" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>📱 모바일·카카오 이용 안내</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서 열면 점 세 개(⋮) → 다른 브라우저로 열기를 누르면<br />크롬·사파리에서 더 편하게 이용하실 수 있어요.<br />결과는 결제한 브라우저에서만 확인 가능합니다.</p>
+          <div style={{ background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#b45309", margin: "0 0 4px" }}>📱 모바일·카카오 이용 안내</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>읽기 또는 이미지 저장 하려면<br />PC 또는 크롬(구글) 브라우저를 이용하세요.</p>
           </div>
-          <div style={{ background: "#f5f3ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #ddd6fe" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>🔊 읽어주기 팁</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘려두세요.</p>
-          </div>
-          <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>🖼 이미지 저장</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>화면 스크롤 후 길게 누르기 또는<br />이미지 저장 버튼으로 갤러리에 바로 저장할 수 있어요.</p>
-          </div>
-          <div style={{ background: "#f0f9ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bae6fd" }}>
-            <p style={{ fontSize: 13, fontWeight: 900, color: "#0369a1", margin: "0 0 6px" }}>💾 다른 기기에서 이용하려면?</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>결제 시 전화번호를 입력하셨다면<br />앱 목록(/apps)에서 이용권 불러오기로<br />다른 기기에서도 이용하실 수 있어요.</p>
-          </div>
-          <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "14px 0 8px" }}>📌 결과지 맨 밑에 버튼을 꼭 확인하세요!</p>
-          <div style={{ background: "#fef2f2", borderRadius: 10, padding: "12px 14px", marginBottom: 16 }}>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2.2 }}>
-              📤 공유하기 — 카카오톡으로 결과 공유<br />
-              💳 유료 운세 결제하기 — 추가 운세 구매<br />
-              🔮 다시 분석 — 새 사주 분석 시작<br />
-              📥 보관함 저장 — 결과 저장 (언제든 다시 보기)<br />
-              📂 보관함 보기 — 저장된 결과 확인<br />
-              🖼 이미지 저장 — 화면 캡처 이미지 저장<br />
-              🔊 읽기 — 사주 내용 읽어주기
-            </p>
+          <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />오른쪽 맨밑에 점 세 개(⋮) 누르고<br />→ 다른 브라우저로 열기 누른 후 읽기 다시 누르세요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
           </div>
           <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
         </div>
