@@ -29,15 +29,18 @@ export default function Refund() {
           <section style={{ marginBottom: 30, padding: 16, background: "rgba(139,92,246,0.15)", borderRadius: 8, border: "1px solid rgba(139,92,246,0.4)" }}>
             <h2 style={{ color: "#fbbf24", fontSize: 16, fontWeight: 900, marginBottom: 12 }}>서비스별 결제 안내</h2>
             <div style={{ color: "#f5f5f5", fontSize: 13, fontWeight: 700, lineHeight: 2 }}>
-              <p style={{ margin: "0 0 6px" }}>🔮 <span style={{ color: "#fbbf24" }}>점운 사주</span> — 유료 (990원 / 2,900원 / 3,900원 / 4,900원 / 9,900원~)</p>
-              <p style={{ margin: "0 0 6px" }}>🌙 <span style={{ color: "#a78bfa" }}>점운 꿈해몽</span> — <span style={{ color: "#4ade80" }}>사주 결제 시 무료 제공</span> (별도 결제 없음)</p>
-              <p style={{ margin: "0 0 6px" }}>💼 <span style={{ color: "#60a5fa" }}>점운 직운 (직업·부업)</span> — <span style={{ color: "#4ade80" }}>무료 서비스</span> (결제 없음)</p>
-              <p style={{ margin: "0 0 6px" }}>👶 <span style={{ color: "#f9a8d4" }}>점운 맘케어</span> — <span style={{ color: "#fbbf24" }}>유료 (990원 / 4,900원)</span></p>
-              <p style={{ margin: 0 }}>🎓 <span style={{ color: "#fbbf24" }}>점운 합격 (합격자소서)</span> — 유료 (9,900원 / 29,900원)</p>
+              <p style={{ margin: "0 0 4px" }}>🔮 <span style={{ color: "#fbbf24" }}>점운 사주</span> — 유료 (990원 / 2,900원 / 3,900원 / 9,900원~)</p>
+              <p style={{ margin: "0 0 4px" }}>🌙 <span style={{ color: "#a78bfa" }}>점운 꿈해몽</span> — <span style={{ color: "#fbbf24" }}>유료 (990원 / 4,900원)</span></p>
+              <p style={{ margin: "0 0 4px" }}>👶 <span style={{ color: "#f9a8d4" }}>점운 맘케어</span> — <span style={{ color: "#fbbf24" }}>유료 (990원 / 4,900원)</span></p>
+              <p style={{ margin: "0 0 4px" }}>🎓 <span style={{ color: "#fbbf24" }}>점운 합격 (합격자소서)</span> — <span style={{ color: "#fbbf24" }}>유료 (990원 / 4,900원)</span></p>
+              <p style={{ margin: "0 0 4px" }}>💑 <span style={{ color: "#f9a8d4" }}>점운 궁합</span> — 기본 무료 / 상세 유료 (990원)</p>
+              <p style={{ margin: "0 0 4px" }}>💼 <span style={{ color: "#60a5fa" }}>점운 직운 (직업·부업)</span> — <span style={{ color: "#4ade80" }}>무료</span></p>
+              <p style={{ margin: "0 0 4px" }}>🧠 <span style={{ color: "#c4b5fd" }}>점운 MBTI</span> — <span style={{ color: "#4ade80" }}>무료</span></p>
+              <p style={{ margin: "0 0 4px" }}>🍀 <span style={{ color: "#4ade80" }}>점운 행운번호</span> — <span style={{ color: "#4ade80" }}>무료</span></p>
+              <p style={{ margin: 0 }}>🐾 <span style={{ color: "#fbbf24" }}>점운 펫운</span> — <span style={{ color: "#4ade80" }}>무료</span></p>
             </div>
             <p style={{ color: "#f97316", fontSize: 12, fontWeight: 700, margin: "12px 0 0" }}>
-              ※ 꿈해몽은 사주 990원 이상 결제 완료 시 24시간 자동 이용 가능합니다.<br />
-              ※ 맘케어는 전용 결제 (990원 30일 / 4,900원 7개앱 풀패스) 가 별도로 필요합니다.
+              ※ 꿈해몽·맘케어·합격자소서는 각각 990원 (30일 단품) 또는 4,900원 (7개앱 30일 풀패스) 결제가 필요합니다.
             </p>
           </section>
 
