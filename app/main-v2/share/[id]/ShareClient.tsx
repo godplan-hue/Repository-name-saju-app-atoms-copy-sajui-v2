@@ -177,7 +177,19 @@ export default function ShareClient({ id }: { id: string }) {
   useEffect(() => {
     fetch(`/api/v2/share?id=${encodeURIComponent(id)}`)
       .then(res => res.ok ? res.json() : Promise.reject())
-      .then(data => setEntry(data.entry))
+      .then(data => {
+        setEntry(data.entry);
+        // 내 프로필(이름+생년)이 share 데이터와 일치하면 오너로 처리 (기존 링크 복구)
+        try {
+          const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+          if (data.entry && sp.name && sp.birthYear &&
+              data.entry.name === sp.name &&
+              String(data.entry.birthYear) === String(sp.birthYear)) {
+            setIsOwner(true);
+            localStorage.setItem(`share_owner_${id}`, "1");
+          }
+        } catch {}
+      })
       .catch(() => setNotFound(true));
   }, [id]);
 
