@@ -88,9 +88,12 @@ export default function ShareClient({ id }: { id: string }) {
   useEffect(() => {
     if (sessionStorage.getItem("share_just_paid") === "1") {
       sessionStorage.removeItem("share_just_paid");
+      try { localStorage.setItem(`share_owner_${id}`, "1"); } catch {}
       setIsOwner(true);
+    } else {
+      try { if (localStorage.getItem(`share_owner_${id}`) === "1") setIsOwner(true); } catch {}
     }
-  }, []);
+  }, [id]);
   const [showGuideModal, setShowGuideModal] = useState(false);
   const [showMobGuideModal, setShowMobGuideModal] = useState(false);
   const [namingQueue, setNamingQueue] = useState<string[]>([]);
