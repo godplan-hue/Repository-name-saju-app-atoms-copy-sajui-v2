@@ -1293,10 +1293,7 @@ function V2ResultInner() {
           <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
             {musicOn ? "🎵 ON" : "🎵"}
           </button>
-          <button onClick={() => {
-            if (window.history.length > 1) { window.history.back(); }
-            else { window.location.href = "/main-v2"; }
-          }} style={{ background: isMob ? "none" : "linear-gradient(135deg,#ec4899,#8b5cf6)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", borderRadius: isMob ? 0 : 20, padding: isMob ? 0 : "6px 12px" }}>
+          <button onClick={() => { window.location.href = "/main-v2"; }} style={{ background: isMob ? "none" : "linear-gradient(135deg,#ec4899,#8b5cf6)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", borderRadius: isMob ? 0 : 20, padding: isMob ? 0 : "6px 12px" }}>
             <span style={{ fontSize: 18, color: isMob ? undefined : "white" }}>←</span>
             <span style={{ fontSize: 14, fontWeight: 900, ...(isMob ? { background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" } : { color: "white" }), whiteSpace: "nowrap" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
           </button>
