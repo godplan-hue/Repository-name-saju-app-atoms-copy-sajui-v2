@@ -111,12 +111,17 @@ export default function DailyTrackerPage() {
 
   if (!unlocked) return (
     <div style={{ minHeight: "100vh", background: "#f0f7ff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      <div style={{ background: "white", borderRadius: 24, padding: "40px 28px", textAlign: "center", maxWidth: 340, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
-        <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>결제 후 30일 이용 가능</h2>
-        <p style={{ fontSize: 14, color: "#6b7280", margin: "0 0 20px", lineHeight: 1.6 }}>사주 990원 결제하면<br />맘케어 7가지 기능을 30일 이용할 수 있어요</p>
-        <Link href="/main-v2/pay?amount=990" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 14, padding: "14px", fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 10 }}>사주 990원 결제하기 →</Link>
-        <Link href="/momcare" style={{ display: "block", fontSize: 13, color: "#9ca3af", textDecoration: "none" }}>← 맘케어 홈으로</Link>
+      <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", textAlign: "center", maxWidth: 340, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
+        <Link href="/momcare" style={{ display: "block", fontSize: 13, color: "#f97316", textDecoration: "none", marginBottom: 16, textAlign: "left" }}>← 맘케어 홈으로</Link>
+        <div style={{ fontSize: 48, marginBottom: 12 }}>🔒</div>
+        <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1a1a2e", margin: "0 0 16px" }}>결제 후 30일 이용 가능</h2>
+        <Link href="/momcare/pay" style={{ display: "block", background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 10, padding: "12px 14px", marginBottom: 12, fontSize: 13, color: "#c2410c", fontWeight: 700, lineHeight: 1.5, textDecoration: "none" }}>
+          💡 990원 결제 시<br />맘케어 7가지 기능 30일 이용!
+        </Link>
+        <Link href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 14, padding: "14px", fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>사주 990원 결제하기 →</Link>
+        <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 10, padding: "12px 14px", fontSize: 12, color: "#166534", fontWeight: 700, lineHeight: 1.8 }}>
+          🎁 덤으로 24시간 추가 혜택!<br />🌙 꿈해몽 · 🐱 복냥이상담 · ❓ 360개 질문
+        </div>
       </div>
     </div>
   );
