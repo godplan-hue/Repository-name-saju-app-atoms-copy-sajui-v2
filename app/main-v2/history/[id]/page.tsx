@@ -420,31 +420,39 @@ export default function HistoryDetail() {
       el.style.maxHeight = prevMH;
       const name = `점운_${item?.name ?? "운세"}_${item?.category?.replace(/\S+\s/, "") ?? ""}.png`;
       const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      if (isIOS) {
-        const dataUrl = canvas.toDataURL("image/png");
+      canvas.toBlob(async blob => {
         setSaving(false);
-        const w = window.open(dataUrl, "_blank");
-        if (w) setTimeout(() => alert("열린 이미지를 길게 눌러 [사진에 추가]를 선택하면 저장돼요!"), 800);
-        else alert("팝업이 차단됐어요. 주소창 위 팝업 허용 버튼을 눌러주세요.");
-      } else {
-        canvas.toBlob(async blob => {
-          setSaving(false);
-          if (!blob) { alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요."); return; }
-          const file = new File([blob], name, { type: "image/png" });
-          const doDownload = () => {
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.download = name;
-            link.href = url;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => URL.revokeObjectURL(url), 60000);
-            setTimeout(() => alert("✅ 다운로드 폴더에 저장됐어요!"), 300);
-          };
-          doDownload();
-        }, "image/png");
-      }
+        if (!blob) { alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요."); return; }
+        const file = new File([blob], name, { type: "image/png" });
+        // Web Share API 시도 (iOS 15+, Android Chrome 76+) — 갤러리 직접 저장 가능
+        if (typeof navigator.share === "function") {
+          try {
+            const canShare = typeof navigator.canShare === "function" ? navigator.canShare({ files: [file] }) : true;
+            if (canShare) {
+              await navigator.share({ files: [file], title: "점운 운세 결과" });
+              return;
+            }
+          } catch {}
+        }
+        // iOS fallback: 새 탭에서 이미지 열기
+        if (isIOS) {
+          const dataUrl = canvas.toDataURL("image/png");
+          const w = window.open(dataUrl, "_blank");
+          if (w) setTimeout(() => alert("열린 이미지를 길게 눌러 [사진에 추가]를 선택하면 저장돼요!"), 800);
+          else alert("팝업이 차단됐어요. 주소창 위 팝업 허용 버튼을 눌러주세요.");
+          return;
+        }
+        // Android/PC: 다운로드 링크
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = name;
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        setTimeout(() => alert("✅ 다운로드 폴더에 저장됐어요!"), 300);
+      }, "image/png");
     } catch {
       alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요.");
       setSaving(false);
