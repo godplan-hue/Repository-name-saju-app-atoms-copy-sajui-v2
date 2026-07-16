@@ -51,9 +51,12 @@ export default function AdminDirectPayments() {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [tab, setTab] = useState<"payments" | "leads">("payments");
+  const [tab, setTab] = useState<"payments" | "leads" | "sns">("payments");
   const [leads, setLeads] = useState<Lead[]>([]);
   const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget">("all");
+  const [snsPending, setSnsPending] = useState<{phone: string; postUrl: string; createdAt: number}[]>([]);
+  const [snsLoading, setSnsLoading] = useState(false);
+  const [approvedCodes, setApprovedCodes] = useState<{phone: string; codes: string[]} | null>(null);
 
   useEffect(() => {
     const adminId = localStorage.getItem("adminId");
@@ -123,9 +126,14 @@ export default function AdminDirectPayments() {
       <div style={{ flex: 1, padding: 30, overflowX: "auto" }}>
         <div style={{ background: "white", padding: 30, borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
           {/* 탭 */}
-          <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
+          <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
             <button onClick={() => setTab("payments")} style={{ padding: "10px 20px", borderRadius: 10, border: "none", background: tab === "payments" ? "linear-gradient(135deg,#667eea,#764ba2)" : "#f3f4f6", color: tab === "payments" ? "white" : "#6b7280", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>💳 결제내역</button>
             <button onClick={() => setTab("leads")} style={{ padding: "10px 20px", borderRadius: 10, border: "none", background: tab === "leads" ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3f4f6", color: tab === "leads" ? "white" : "#6b7280", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>🎁 무료DB ({leads.length}명)</button>
+            <button onClick={() => {
+              setTab("sns");
+              setSnsLoading(true);
+              fetch("/api/admin/sns-pending").then(r => r.json()).then(d => { setSnsPending(d.list || []); setSnsLoading(false); }).catch(() => setSnsLoading(false));
+            }} style={{ padding: "10px 20px", borderRadius: 10, border: "none", background: tab === "sns" ? "linear-gradient(135deg,#f59e0b,#ec4899)" : "#f3f4f6", color: tab === "sns" ? "white" : "#6b7280", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>📸 SNS후기신청 {snsPending.length > 0 ? `(${snsPending.length})` : ""}</button>
           </div>
 
           {tab === "payments" && <>
@@ -290,6 +298,54 @@ export default function AdminDirectPayments() {
                 </tbody>
               </table>
             )}
+          </>}
+
+          {/* SNS 후기 신청 탭 */}
+          {tab === "sns" && <>
+            <h1 style={{ fontSize: 24, fontWeight: 900, margin: "0 0 6px", color: "#333" }}>📸 SNS 후기 신청 목록</h1>
+            <p style={{ fontSize: 13, color: "#888", margin: "0 0 20px" }}>링크 확인 후 승인하면 쿠폰 10장이 자동 생성돼요</p>
+
+            {snsLoading && <p style={{ color: "#888" }}>불러오는 중...</p>}
+
+            {approvedCodes && (
+              <div style={{ background: "#f0fdf4", border: "2px solid #16a34a", borderRadius: 12, padding: 16, marginBottom: 20 }}>
+                <p style={{ fontWeight: 900, color: "#16a34a", margin: "0 0 8px" }}>✅ {approvedCodes.phone} 승인 완료! 카카오로 전송하세요</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {approvedCodes.codes.map(c => (
+                    <span key={c} style={{ background: "#dcfce7", border: "1px solid #16a34a", borderRadius: 8, padding: "4px 10px", fontWeight: 900, letterSpacing: 1, fontSize: 14 }}>{c}</span>
+                  ))}
+                </div>
+                <button onClick={() => { navigator.clipboard.writeText(approvedCodes.codes.join("\n")); }} style={{ marginTop: 10, padding: "8px 16px", borderRadius: 8, border: "none", background: "#16a34a", color: "#fff", fontWeight: 900, cursor: "pointer" }}>📋 코드 전체 복사</button>
+              </div>
+            )}
+
+            {!snsLoading && snsPending.length === 0 && <p style={{ color: "#888" }}>신청 내역이 없어요.</p>}
+
+            {snsPending.map(item => (
+              <div key={item.phone} style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: 16, marginBottom: 12 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 8 }}>
+                  <div>
+                    <p style={{ fontWeight: 900, color: "#333", margin: "0 0 4px" }}>📱 {item.phone}</p>
+                    <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 8px" }}>신청일: {new Date(item.createdAt).toLocaleString("ko-KR")}</p>
+                    <a href={item.postUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#7c3aed", wordBreak: "break-all" }}>🔗 {item.postUrl}</a>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      if (!confirm(`${item.phone} 승인하고 쿠폰 10장 발급할까요?`)) return;
+                      const res = await fetch("/api/share-coupon/approve", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: item.phone }) });
+                      const data = await res.json();
+                      if (data.codes) {
+                        setApprovedCodes({ phone: item.phone, codes: data.codes });
+                        setSnsPending(prev => prev.filter(p => p.phone !== item.phone));
+                      } else {
+                        alert(data.error || "승인 실패");
+                      }
+                    }}
+                    style={{ padding: "10px 20px", borderRadius: 10, border: "none", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "#fff", fontWeight: 900, cursor: "pointer", whiteSpace: "nowrap" }}
+                  >✅ 승인 + 쿠폰 발급</button>
+                </div>
+              </div>
+            ))}
           </>}
         </div>
       </div>

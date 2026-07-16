@@ -11,9 +11,8 @@ export default function ShareCouponPage() {
   const [postUrl, setPostUrl] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ codes?: string[] } | null>(null);
+  const [done, setDone] = useState(false);
   const [error, setError] = useState("");
-  const [copied, setCopied] = useState<string | null>(null);
 
   const SNS_DOMAINS = ["instagram.com", "youtube.com", "youtu.be", "tiktok.com", "blog.naver.com", "naver.com", "twitter.com", "x.com", "facebook.com", "threads.net", "story.kakao.com"];
   function isValidSnsUrl(url: string) {
@@ -33,30 +32,16 @@ export default function ShareCouponPage() {
         body: JSON.stringify({ phone: cleanPhone, postUrl: postUrl.trim() }),
       });
       const data = await res.json();
-      if (data.codes?.length) {
-        setResult(data);
+      if (data.success) {
+        setDone(true);
       } else {
-        setError(data.error || "발급에 실패했어요. 다시 시도해주세요.");
+        setError(data.error || "신청에 실패했어요. 다시 시도해주세요.");
       }
     } catch {
       setError("오류가 발생했어요. 다시 시도해주세요.");
     } finally {
       setLoading(false);
     }
-  }
-
-  async function copy(text: string) {
-    try { await navigator.clipboard.writeText(text); } catch {}
-    setCopied(text);
-    setTimeout(() => setCopied(null), 2000);
-  }
-
-  async function copyAll() {
-    if (!result?.codes) return;
-    const text = result.codes.join("\n");
-    try { await navigator.clipboard.writeText(text); } catch {}
-    setCopied("ALL");
-    setTimeout(() => setCopied(null), 2000);
   }
 
   return (
@@ -69,42 +54,62 @@ export default function ShareCouponPage() {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "24px 16px" }}>
 
         {/* 히어로 */}
-        <div style={{ textAlign: "center", marginBottom: 20 }}>
-          <div style={{ fontSize: 48, marginBottom: 10 }}>📸</div>
-          <h1 style={{ fontSize: 22, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "0 0 8px", lineHeight: 1.3 }}>
-            SNS에 올리면 사주 무료 5장!
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <div style={{ fontSize: 52, marginBottom: 10 }}>📸</div>
+          <h1 style={{ fontSize: 24, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "0 0 10px", lineHeight: 1.3 }}>
+            SNS 후기 올리고<br />사주 쿠폰 10장!
           </h1>
-          <p style={{ fontSize: 13, color: "#6d28d9", lineHeight: 1.7, margin: 0 }}>
-            점운 소개·추천 글을 SNS에 올리면<br />
-            <strong>990원 쿠폰 5장</strong>을 드려요 🎁<br />
+          <p style={{ fontSize: 13, color: "#6d28d9", lineHeight: 1.8, margin: 0 }}>
+            점운 후기를 SNS에 올리면<br />
+            <strong style={{ color: "#be185d" }}>990원 쿠폰 10장(9,900원 상당)</strong>을 드려요 🎁<br />
             <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>+ 꿈해몽 24시간 무료 이용권 포함!</span>
           </p>
         </div>
 
-        {/* 혜택 안내 */}
-        <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", border: "1.5px solid #c4b5fd", borderRadius: 14, padding: "14px 16px", marginBottom: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {/* 혜택 카드 */}
+        <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", border: "1.5px solid #c4b5fd", borderRadius: 16, padding: "16px", marginBottom: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
             <div style={{ textAlign: "center", flex: 1 }}>
-              <p style={{ fontSize: 22, fontWeight: 900, color: "#be185d", margin: "0 0 2px" }}>5장</p>
-              <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>받는 쿠폰 수</p>
+              <p style={{ fontSize: 28, fontWeight: 900, color: "#be185d", margin: "0 0 2px" }}>10장</p>
+              <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>990원 쿠폰</p>
             </div>
-            <div style={{ width: 1, height: 36, background: "#e5e7eb" }} />
+            <div style={{ width: 1, height: 40, background: "#e5e7eb" }} />
             <div style={{ textAlign: "center", flex: 1 }}>
-              <p style={{ fontSize: 22, fontWeight: 900, color: "#7c3aed", margin: "0 0 2px" }}>990원</p>
-              <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>쿠폰 1장 가치</p>
+              <p style={{ fontSize: 28, fontWeight: 900, color: "#7c3aed", margin: "0 0 2px" }}>9,900원</p>
+              <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>총 혜택</p>
             </div>
-            <div style={{ width: 1, height: 36, background: "#e5e7eb" }} />
+            <div style={{ width: 1, height: 40, background: "#e5e7eb" }} />
             <div style={{ textAlign: "center", flex: 1 }}>
-              <p style={{ fontSize: 22, fontWeight: 900, color: "#16a34a", margin: "0 0 2px" }}>1회</p>
-              <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>전화번호당</p>
+              <p style={{ fontSize: 28, fontWeight: 900, color: "#16a34a", margin: "0 0 2px" }}>1회</p>
+              <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>번호당</p>
+            </div>
+          </div>
+
+          {/* HOW TO */}
+          <div style={{ background: "rgba(139,92,246,0.08)", borderRadius: 12, padding: "12px 14px" }}>
+            <p style={{ fontSize: 12, fontWeight: 900, color: "#6d28d9", margin: "0 0 8px" }}>✅ 이렇게 하면 돼요</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {[
+                { n: "1", t: "SNS에 점운 후기 올리기", s: "1,000자 이상 · 사진 3장 이상 · 공개 게시글" },
+                { n: "2", t: "아래 폼에 URL + 전화번호 입력" },
+                { n: "3", t: "1~3일 내 확인 후 카카오로 쿠폰 발송" },
+              ].map(item => (
+                <div key={item.n} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <div style={{ minWidth: 22, height: 22, borderRadius: "50%", background: G, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 12, fontWeight: 900 }}>{item.n}</div>
+                  <div>
+                    <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: "#4c1d95" }}>{item.t}</p>
+                    {item.s && <p style={{ margin: "2px 0 0", fontSize: 11, color: "#9ca3af" }}>{item.s}</p>}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {!result ? (
+        {!done ? (
           <div style={{ background: "#fff", borderRadius: 20, padding: "20px", boxShadow: "0 4px 20px rgba(139,92,246,0.1)" }}>
-            <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 4px" }}>📝 SNS 게시글 URL + 전화번호 입력</p>
-            <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 14px", lineHeight: 1.6 }}>500자 이상 · 사진 2장 이상 · 점운 소개·추천 내용</p>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 14px" }}>📝 신청하기</p>
+
             <div style={{ marginBottom: 14 }}>
               <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#6d28d9", marginBottom: 6 }}>올린 게시글 URL</label>
               <input
@@ -116,8 +121,9 @@ export default function ShareCouponPage() {
               />
               <p style={{ fontSize: 11, color: "#9ca3af", margin: "5px 0 0" }}>인스타그램 · 네이버 블로그 · 유튜브 · 틱톡 가능</p>
             </div>
+
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#6d28d9", marginBottom: 6 }}>전화번호</label>
+              <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#6d28d9", marginBottom: 6 }}>전화번호 (카카오 발송용)</label>
               <input
                 type="tel"
                 value={phone}
@@ -126,58 +132,53 @@ export default function ShareCouponPage() {
                 style={{ width: "100%", padding: "13px 14px", borderRadius: 12, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", boxSizing: "border-box" }}
               />
             </div>
+
             {error && <p style={{ color: "#dc2626", fontSize: 12, margin: "0 0 12px", fontWeight: 600 }}>{error}</p>}
+
             <button
               onClick={handleSubmit}
               disabled={loading}
               style={{ width: "100%", padding: "15px", borderRadius: 14, border: "none", background: G, color: "#fff", fontSize: 15, fontWeight: 900, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, boxShadow: "0 4px 18px rgba(236,72,153,0.4)" }}
             >
-              {loading ? "⏳ 확인 중..." : "🎁 쿠폰 5장 받기"}
+              {loading ? "⏳ 신청 중..." : "🎁 쿠폰 10장 신청하기"}
             </button>
+
             <p style={{ fontSize: 11, color: "#dc2626", textAlign: "center", margin: "10px 0 0", fontWeight: 700, lineHeight: 1.7 }}>
-              ⚠️ 공개 게시글만 인증 가능 · 1인 1회<br />
-              비방·악성 내용 포함 시 쿠폰 즉시 무효 +<br />해당 번호 영구 이용 제한<br />
-              <span style={{ color: "#9ca3af", fontWeight: 400 }}>코드 분실 시 jeomun.com/my-coupon 에서 번호로 재조회</span>
+              ⚠️ 공개 게시글만 · 1,000자 이상 · 사진 3장 이상 필수<br />
+              기준 미달 시 발급 불가 · 1인 1회<br />
+              <span style={{ color: "#9ca3af", fontWeight: 400 }}>비방·광고성 내용 포함 시 영구 이용 제한</span>
             </p>
           </div>
         ) : (
-          /* 발급 완료 */
-          <div style={{ background: "#fff", borderRadius: 20, padding: "24px 20px", boxShadow: "0 4px 20px rgba(139,92,246,0.12)" }}>
-            <p style={{ fontSize: 20, fontWeight: 900, color: "#16a34a", margin: "0 0 4px", textAlign: "center" }}>✅ 발급 완료!</p>
-            <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 20px", textAlign: "center" }}>공유해주셔서 감사해요 🙏</p>
-
-            <p style={{ fontSize: 13, fontWeight: 800, color: "#4c1d95", margin: "0 0 12px" }}>
-              990원 무료 사주 쿠폰 {result.codes?.length}장 — 결제 시 1장씩 입력
+          /* 신청 완료 */
+          <div style={{ background: "#fff", borderRadius: 20, padding: "28px 20px", boxShadow: "0 4px 20px rgba(139,92,246,0.12)", textAlign: "center" }}>
+            <div style={{ fontSize: 52, marginBottom: 12 }}>✅</div>
+            <p style={{ fontSize: 22, fontWeight: 900, color: "#16a34a", margin: "0 0 8px" }}>신청 완료!</p>
+            <p style={{ fontSize: 14, color: "#6b7280", margin: "0 0 20px", lineHeight: 1.8 }}>
+              후기를 확인한 후<br />
+              <strong style={{ color: "#7c3aed" }}>1~3일 내 카카오로 쿠폰을 보내드려요</strong> 🎁<br />
+              <span style={{ fontSize: 12 }}>입력하신 전화번호({phone})로 발송됩니다</span>
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
-              {result.codes?.map((code, i) => (
-                <div key={code} style={{ background: i === 0 ? "#fdf2f8" : "#f5f3ff", border: `1.5px dashed ${i === 0 ? "#ec4899" : "#8b5cf6"}`, borderRadius: 12, padding: "12px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <div>
-                    <p style={{ fontSize: 10, color: "#9ca3af", margin: "0 0 2px" }}>{i === 0 ? "내 쿠폰" : `선물 쿠폰 ${i}`}</p>
-                    <p style={{ fontSize: 20, fontWeight: 900, color: i === 0 ? "#be185d" : "#6d28d9", margin: 0, letterSpacing: 2 }}>{code}</p>
-                  </div>
-                  <button
-                    onClick={() => copy(code)}
-                    style={{ padding: "6px 12px", borderRadius: 10, border: `1.5px solid ${i === 0 ? "#ec4899" : "#8b5cf6"}`, background: copied === code ? "#fdf2f8" : "#fff", color: i === 0 ? "#be185d" : "#6d28d9", fontSize: 12, fontWeight: 800, cursor: "pointer" }}
-                  >
-                    {copied === code ? "✅" : "복사"}
-                  </button>
-                </div>
-              ))}
+            {/* 바이럴 유도 */}
+            <div style={{ background: "linear-gradient(135deg,#fdf2f8,#f5f3ff)", border: "1.5px solid #ec4899", borderRadius: 14, padding: "14px 16px", marginBottom: 14, textAlign: "left" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#be185d", margin: "0 0 6px" }}>🎁 쿠폰 10장 활용법</p>
+              <p style={{ fontSize: 12, color: "#6b7280", margin: 0, lineHeight: 1.9 }}>
+                1장은 내가 쓰고,<br />
+                <strong style={{ color: "#7c3aed" }}>나머지 9장은 친구·가족·지인에게 선물하세요!</strong><br />
+                카카오로 쿠폰 코드 보내주면 바로 사용 가능해요 😊<br />
+                <span style={{ fontSize: 11, color: "#ec4899" }}>"나 이거 써봤는데 신기해서 너도 해봐" 한마디면 충분!</span>
+              </p>
             </div>
 
-            {/* 전체 복사 */}
-            <button
-              onClick={copyAll}
-              style={{ width: "100%", padding: "11px", borderRadius: 12, border: "1.5px solid #c4b5fd", background: copied === "ALL" ? "#ede9fe" : "#fafafa", color: "#6d28d9", fontSize: 13, fontWeight: 800, cursor: "pointer", marginBottom: 12 }}
-            >
-              {copied === "ALL" ? "✅ 전체 복사됨" : "📋 코드 5개 전체 복사 (카카오로 보내기용)"}
-            </button>
-
-            <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px", textAlign: "center", lineHeight: 1.6 }}>
-              선물 쿠폰은 친구·가족에게 카카오로 보내세요 🎁<br />
-              결제 화면 → 쿠폰 코드 입력 → 무료로 시작
-            </p>
+            <div style={{ background: "#f5f3ff", borderRadius: 12, padding: "12px 16px", marginBottom: 20, textAlign: "left" }}>
+              <p style={{ fontSize: 12, fontWeight: 800, color: "#6d28d9", margin: "0 0 6px" }}>📋 발송 전 확인 기준</p>
+              <p style={{ fontSize: 11, color: "#6b7280", margin: 0, lineHeight: 1.8 }}>
+                ✓ 1,000자 이상 작성<br />
+                ✓ 사진 3장 이상 포함<br />
+                ✓ 점운 소개·추천 내용<br />
+                ✓ 공개 게시글
+              </p>
+            </div>
             <button
               onClick={() => router.push("/main-v2")}
               style={{ width: "100%", padding: "14px", borderRadius: 14, border: "none", background: G, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 16px rgba(236,72,153,0.4)" }}
