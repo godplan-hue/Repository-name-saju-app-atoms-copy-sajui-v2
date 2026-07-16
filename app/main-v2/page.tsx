@@ -988,6 +988,25 @@ export default function MainV2() {
         </div>
       )}
 
+      {/* SNS 후기 쿠폰 배너 */}
+      {!isPartner && (
+        <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
+          <div
+            onClick={() => { window.open("/share-coupon", "_blank"); }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 18 }}>📸</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>SNS에 후기 올리면 쿠폰 10장!</span>
+            </div>
+            <div style={{ background: "#fef2f2", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <p style={{ fontSize: 11, color: "#dc2626", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>1,000자 이상 + 사진 3장 올리면<br /><strong>990원 쿠폰 10장(9,900원 상당)</strong> 🎁</p>
+              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>받기 →</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 복냥이 상담창 — 내정보(푸터) 바로 위 */}
       {!isPartner && (
         <div id="chat-widget" style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }} onClick={() => { try { if (!(window as any).__chatPushed) { (window as any).__chatPushed = true; history.pushState(null, "", window.location.href); } } catch {} }}>
