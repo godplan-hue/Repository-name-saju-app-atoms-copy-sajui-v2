@@ -62,8 +62,7 @@ export default function ShareCouponPage() {
           </h1>
           <p style={{ fontSize: 13, color: "#6d28d9", lineHeight: 1.8, margin: 0 }}>
             점운 후기를 SNS에 올리면<br />
-            <strong style={{ color: "#be185d" }}>990원 쿠폰 10장(9,900원 상당)</strong>을 드려요 🎁<br />
-            <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>+ 꿈해몽 24시간 무료 이용권 포함!</span>
+            <strong style={{ color: "#be185d" }}>990원 쿠폰 10장(9,900원 상당)</strong>을 드려요 🎁
           </p>
         </div>
 
