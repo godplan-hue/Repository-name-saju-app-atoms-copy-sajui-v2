@@ -13,15 +13,14 @@ function makeAuth(apiKey: string, apiSecret: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { phone, amount, histId } = await request.json();
+    const { phone, amount, histId, partnerName } = await request.json();
     if (!phone) return NextResponse.json({ error: "phone required" }, { status: 400 });
 
     const apiKey    = process.env.SOLAPI_API_KEY;
     const apiSecret = process.env.SOLAPI_API_SECRET;
-    const from      = process.env.SOLAPI_PHONE_NUMBER ?? process.env.SOLAPI_SENDER ?? process.env.SOLAPI_SENDER_NUMBER;
 
-    if (!apiKey || !apiSecret || !from) {
-      console.error("Solapi env missing", { apiKey: !!apiKey, apiSecret: !!apiSecret, from: !!from });
+    if (!apiKey || !apiSecret) {
+      console.error("Solapi env missing");
       return NextResponse.json({ error: "Solapi config missing" }, { status: 500 });
     }
 
@@ -38,11 +37,11 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         message: {
           to: String(phone).replace(/\D/g, ""),
-          from: String(from).replace(/\D/g, ""),
           kakaoOptions: {
             pfId: CHANNEL_ID,
             templateId: TEMPLATE_ID,
             variables: {
+              "#{파트너명}": partnerName || "점운",
               "#{금액}": String(amount ?? 0),
               "#{링크}": link,
             },
