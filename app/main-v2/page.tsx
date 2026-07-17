@@ -507,7 +507,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         onClick={() => {
           if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
           try { sessionStorage.setItem("banner_click_cur", String(cur)); } catch {}
-          if ((b as any).directUrl) { window.open((b as any).directUrl, "_blank"); return; }
+          if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
           if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
         }}
@@ -528,7 +528,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
             e.preventDefault();
             if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} resetTimer(cur); document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
             try { sessionStorage.setItem("banner_click_cur", String(cur)); } catch {}
-            if ((b as any).directUrl) { window.open((b as any).directUrl, "_blank"); return; }
+            if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
             if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
             onStart(b.route);
           }

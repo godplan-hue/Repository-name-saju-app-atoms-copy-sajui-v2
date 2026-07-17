@@ -105,7 +105,7 @@ export default function AppsPage() {
 
         {/* 풀패스 배너 */}
         <div
-          onClick={() => { window.open("/pass", "_blank"); }}
+          onClick={() => { window.location.href = "/pass"; }}
           style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(239,68,68,0.35)", border: "2px solid #ef4444", marginBottom: 14 }}
         >
           <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
