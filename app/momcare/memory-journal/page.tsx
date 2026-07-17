@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Category = { key: string; label: string; emoji: string; color: string };
 type Milestone = { id: string; category: string; date: string; title: string; desc: string };
@@ -34,6 +35,7 @@ export default function MemoryJournalPage() {
   }, []);
 
   const [mcUserId, setMcUserId] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const saved = localStorage.getItem("momcare_milestones");
@@ -41,14 +43,10 @@ export default function MemoryJournalPage() {
 
     let uid = "";
     try {
-      const profile = localStorage.getItem("v2_saved_profile");
-      if (profile) { const p = JSON.parse(profile); if (p.phone) uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+      const ph = (JSON.parse(localStorage.getItem("v2_saved_profile") || "{}").phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+      if (ph.length >= 10) uid = `phone_${ph}`;
     } catch {}
-    if (!uid) {
-      let devId = localStorage.getItem("momcare_device_id");
-      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
-      uid = `device_${devId}`;
-    }
+    if (!uid) { router.replace("/momcare"); return; }
     setMcUserId(uid);
 
     fetch(`/api/momcare/save?userId=${uid}&type=milestones`)

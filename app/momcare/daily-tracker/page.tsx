@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type TabKey = "sleep" | "feeding" | "diaper" | "pumping" | "mood";
 type Log = { id: string; type: TabKey; label: string; detail: string; time: string };
@@ -27,6 +28,7 @@ export default function DailyTrackerPage() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [mcUserId, setMcUserId] = useState("");
   const [unlocked, setUnlocked] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const exp = localStorage.getItem("momcare_unlock_until");
@@ -39,14 +41,10 @@ export default function DailyTrackerPage() {
 
     let uid = "";
     try {
-      const profile = localStorage.getItem("v2_saved_profile");
-      if (profile) { const p = JSON.parse(profile); if (p.phone) uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+      const ph = (JSON.parse(localStorage.getItem("v2_saved_profile") || "{}").phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+      if (ph.length >= 10) uid = `phone_${ph}`;
     } catch {}
-    if (!uid) {
-      let devId = localStorage.getItem("momcare_device_id");
-      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
-      uid = `device_${devId}`;
-    }
+    if (!uid) { router.replace("/momcare"); return; }
     setMcUserId(uid);
 
     const todayType = `logs_${todayKey()}`;

@@ -62,9 +62,6 @@ export default function MomcarePage() {
   const [momcareExpired, setMomcareExpired] = useState(false);
   const [momcareExpiringSoon, setMomcareExpiringSoon] = useState(false);
   const [momcareDaysLeft, setMomcareDaysLeft] = useState(0);
-  const [restorePhone, setRestorePhone] = useState("");
-  const [restoring, setRestoring] = useState(false);
-  const [restoreMsg, setRestoreMsg] = useState("");
   const [hasPhone, setHasPhone] = useState(true);
   const [phoneGate, setPhoneGate] = useState("");
 
@@ -88,22 +85,6 @@ export default function MomcarePage() {
     } catch {}
   }, []);
 
-  const handleRestore = async () => {
-    const ph = restorePhone.replace(/\D/g, "");
-    if (ph.length < 10) { setRestoreMsg("전화번호를 확인해주세요."); return; }
-    setRestoring(true); setRestoreMsg("");
-    try {
-      const r = await fetch(`/api/phone-unlock?phone=${ph}`);
-      const d = await r.json();
-      if (d.ok && d.unlocks?.momcare_unlock_until > Date.now()) {
-        try { localStorage.setItem("momcare_unlock_until", String(d.unlocks.momcare_unlock_until)); } catch {}
-        try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
-        setRestoreMsg("✅ 이용권 복원 완료! 새로고침할게요.");
-        setTimeout(() => window.location.reload(), 1000);
-      } else { setRestoreMsg("해당 전화번호로 등록된 이용권이 없어요."); }
-    } catch { setRestoreMsg("복원 중 오류가 발생했어요."); }
-    finally { setRestoring(false); }
-  };
 
   useEffect(() => {
     if (!autoPlay) return;
@@ -122,18 +103,25 @@ export default function MomcarePage() {
         <input
           value={phoneGate}
           onChange={e => setPhoneGate(e.target.value)}
-          onKeyDown={e => { if (e.key === "Enter") { const ph = phoneGate.replace(/\D/g,""); if(ph.length>=10){try{const p=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}");p.phone=ph;localStorage.setItem("v2_saved_profile",JSON.stringify(p));localStorage.setItem("v2_saved_phone",ph);}catch{}setHasPhone(true);}else alert("전화번호를 정확히 입력해주세요."); }}}
+          onKeyDown={e => { if (e.key === "Enter") (document.getElementById("mc-login-btn") as HTMLButtonElement)?.click(); }}
           placeholder="010-1234-5678"
           type="tel"
           style={{ width: "100%", border: "2px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 16, outline: "none", boxSizing: "border-box", marginBottom: 12, textAlign: "center", letterSpacing: 1 }}
         />
-        <button onClick={() => {
+        <button id="mc-login-btn" onClick={async () => {
           const ph = phoneGate.replace(/\D/g, "");
           if (ph.length < 10) { alert("전화번호를 정확히 입력해주세요."); return; }
           try { const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); p.phone = ph; localStorage.setItem("v2_saved_profile", JSON.stringify(p)); localStorage.setItem("v2_saved_phone", ph); } catch {}
+          try {
+            const r = await fetch(`/api/phone-unlock?phone=${ph}`);
+            const d = await r.json();
+            if (d.ok && d.unlocks?.momcare_unlock_until > Date.now()) {
+              localStorage.setItem("momcare_unlock_until", String(d.unlocks.momcare_unlock_until));
+            }
+          } catch {}
           setHasPhone(true);
         }} style={{ width: "100%", background: TEAL_GRAD, color: "white", border: "none", borderRadius: 14, padding: "15px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>맘케어 시작하기 →</button>
-        <p style={{ fontSize: 11, color: LIGHT, textAlign: "center", margin: "14px 0 0", lineHeight: 1.6 }}>📱 이미 사주 앱에서 결제하셨다면<br />자동으로 로그인됩니다.</p>
+        <p style={{ fontSize: 11, color: LIGHT, textAlign: "center", margin: "14px 0 0", lineHeight: 1.6 }}>새 기기에서도 이용권·기록 자동 복원돼요.</p>
       </div>
     </div>
   );
@@ -172,14 +160,6 @@ export default function MomcarePage() {
             <a href="/momcare/pay" style={{ display: "inline-block", background: "#f59e0b", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 16px", borderRadius: 20, textDecoration: "none" }}>
               맘케어 990원으로 재활성화 →
             </a>
-          </div>
-          <div style={{ borderTop: "1px solid rgba(245,158,11,0.3)", paddingTop: 10 }}>
-            <p style={{ fontSize: 11, color: "#92400e", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
-            <div style={{ display: "flex", gap: 8 }}>
-              <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(0,0,0,0.06)", border: "1px solid rgba(245,158,11,0.5)", borderRadius: 10, padding: "9px 12px", color: "#1a1a1a", fontSize: 13, outline: "none" }} inputMode="numeric" />
-              <button onClick={handleRestore} disabled={restoring} style={{ background: "#f59e0b", border: "none", borderRadius: 10, padding: "9px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
-            </div>
-            {restoreMsg && <p style={{ fontSize: 12, margin: "8px 0 0", color: restoreMsg.startsWith("✅") ? "#16a34a" : "#dc2626" }}>{restoreMsg}</p>}
           </div>
         </div>
       )}

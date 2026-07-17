@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const CRISIS_WEEKS = [
   { week: 5,  name: "1차 성장 급증", color: "#fed7aa", symptoms: ["더 많이 먹으려 함", "보채고 울음이 늘어남", "수면 패턴 변화"], skills: ["시각이 발달해 얼굴을 더 잘 따라봄", "소리에 반응이 좋아짐"], tips: "충분히 안아주고 수유 횟수를 늘려도 됩니다." },
@@ -44,6 +45,7 @@ export default function GrowthCalendarPage() {
   const [selectedCrisis, setSelectedCrisis] = useState<typeof CRISIS_WEEKS[0] | null>(null);
   const [mcUserId, setMcUserId] = useState("");
   const [unlocked, setUnlocked] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const exp = localStorage.getItem("momcare_unlock_until");
@@ -60,14 +62,10 @@ export default function GrowthCalendarPage() {
 
     let uid = "";
     try {
-      const profile = localStorage.getItem("v2_saved_profile");
-      if (profile) { const p = JSON.parse(profile); if (p.phone) uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+      const ph = (JSON.parse(localStorage.getItem("v2_saved_profile") || "{}").phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+      if (ph.length >= 10) uid = `phone_${ph}`;
     } catch {}
-    if (!uid) {
-      let devId = localStorage.getItem("momcare_device_id");
-      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
-      uid = `device_${devId}`;
-    }
+    if (!uid) { router.replace("/momcare"); return; }
     setMcUserId(uid);
 
     fetch(`/api/momcare/save?userId=${uid}&type=baby_profile`)
