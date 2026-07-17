@@ -530,6 +530,39 @@ getPastLifeCard(oh, z)                         — 전생 이야기 (오행×띠
 
 ---
 
+### UX 개선 · 바이럴 강화 (2026-07-17)
+
+#### 15개 앱 공유 버튼 카카오톡 직접 공유로 통일
+- **커밋**: `5fe83f9`
+- 수정 원칙: `navigator.share()` → 안 되면 `kakaotalk://msg/send?text=...` 딥링크 (URL 복사 방식 제거)
+- 적용 파일: `haemong/page.tsx`, `momcare/page.tsx`, `jigun/page.tsx`, `gamjung/page.tsx`, `zodiac/page.tsx`, `budget/page.tsx`
+- `tarot/page.tsx`는 이전 세션에서 이미 완료됨
+- `app/apps/page.tsx` "다른 기기에서 이용권 불러오기" 패널 제거 (전화번호 Firebase 자동 복원이 대체)
+
+#### 결과지 "나도 해보기" CTA 6개 앱 추가
+- **커밋**: `7f7d8e6`
+- 공유된 결과지에서 바이럴 유입 → 폼 전환 유도 버튼 추가
+- `mbti/result`: "나도 MBTI 해보기 (무료) →" (보라)
+- `lotto/result`: "나도 행운번호 뽑기 (무료) →" (금색)
+- `tarot/result`: "나도 타로 뽑기 (무료) →" (보라)
+- `zodiac/result`: "나도 별자리 운세 보기 (무료) →" (파랑)
+- `gunghap/result`: "나도 궁합 해보기 (무료) →" (핑크)
+- `petun/result`: "나도 펫운 해보기 (무료) →" (청록)
+- **원칙**: 공유된 결과지는 전체 공개 유지 → 결과지 내 "나도 해보기" 버튼으로 자연스럽게 폼 유입
+
+#### FreeForm.tsx 이름·전화번호 라벨 개선
+- **커밋**: `e624509`
+- 이름 → "이름 (선택)" 으로 표시 변경
+- 전화번호 → "전화번호 ★ 필수" 라벨 추가 (제출 시 10자리 미만 차단은 이미 구현됨)
+
+#### 기능 구현 현황 재확인 (2026-07-17)
+- `fullAccess 쿠폰` (admin 체크박스 + API + payFree 7개앱 30일 잠금해제): ✅ 이미 완성
+- `momcare 만료 배너` (3일 전 경고 + 만료 배너): ✅ 이미 완성
+- `gamjung 만료 잠금 + 배너`: ✅ 이미 완성
+- `budget 만료 잠금 + 배너`: ✅ 이미 완성
+- `resume/start 전화번호 필수`: ✅ 이미 완성 (line 39-40)
+- `jigun 전화번호 필수`: ✅ 이미 완성
+
 ### 버그 수정 · 전략 업데이트 (2026-07-15)
 
 #### `lib/navigate.ts` 신규 생성 — 검정 화면 + 뒤로가기 버그 완전 해결
