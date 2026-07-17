@@ -50,7 +50,11 @@ export default function FortuneSearch({ onOpenModal }: Props) {
 
   const navigate = (m: KW) => {
     if (m.directPath) {
-      window.location.href = m.directPath;
+      if (m.directPath === "/main-v2/payment") {
+        window.location.href = m.directPath;
+      } else {
+        window.open(m.directPath, "_blank");
+      }
     } else if (m.modalId && onOpenModal) {
       onOpenModal(null, m.modalId);
     } else if (m.catKey && onOpenModal) {

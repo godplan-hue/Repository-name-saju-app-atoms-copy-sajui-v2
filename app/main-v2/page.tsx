@@ -290,7 +290,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
         {/* 사주 전체보기 + 14개 무료앱 버튼 */}
         {!isPartner && (
           <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
-            <a href="/apps" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
+            <a href="/apps" target="_blank" rel="noopener noreferrer" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
                 <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 무료 14개<br />점운 전체앱</span>
               </div>
@@ -887,7 +887,7 @@ export default function MainV2() {
           else if (id === "sinyeon_premium") {
             setShowModal(id);
           }
-          else { if (id === "qa") { window.location.href = "/main-v2/qa-list"; return; } if (id === "dream") { window.location.href = "/haemong"; return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id === "naming" ? "wealth5" : id); }
+          else { if (id === "qa") { window.open("/main-v2/qa-list", "_blank"); return; } if (id === "dream") { window.open("/haemong", "_blank"); return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id === "naming" ? "wealth5" : id); }
         }} />
       )}
 
