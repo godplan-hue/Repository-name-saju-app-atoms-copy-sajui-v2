@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type KW = {
   words: string[];
@@ -40,6 +41,7 @@ interface Props {
 }
 
 export default function FortuneSearch({ onOpenModal }: Props) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [suggestion, setSuggestion] = useState<KW | null>(null);
 
@@ -53,7 +55,7 @@ export default function FortuneSearch({ onOpenModal }: Props) {
       if (m.directPath === "/main-v2/payment") {
         window.location.href = m.directPath;
       } else {
-        window.open(m.directPath, "_blank");
+        router.push(m.directPath);
       }
     } else if (m.modalId && onOpenModal) {
       onOpenModal(null, m.modalId);

@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
 import QAChatWidget from "@/components/QAChatWidget";
 import FortuneSearch from "@/app/main-v2/_components/FortuneSearch";
@@ -290,7 +290,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
         {/* 사주 전체보기 + 14개 무료앱 버튼 */}
         {!isPartner && (
           <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
-            <a href="/apps" target="_blank" rel="noopener noreferrer" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
+            <a href="/apps" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
                 <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 무료 14개<br />점운 전체앱</span>
               </div>
@@ -672,6 +672,7 @@ function ModalParamReader({ setShowModal, setModalSelectedCats }: { setShowModal
 }
 
 export default function MainV2() {
+  const router = useRouter();
   const [user, setUser] = useState<string | null>(null);
   const [savedProfile, setSavedProfile] = useState<{ name: string; birthYear: number } | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -887,7 +888,7 @@ export default function MainV2() {
           else if (id === "sinyeon_premium") {
             setShowModal(id);
           }
-          else { if (id === "qa") { window.open("/main-v2/qa-list", "_blank"); return; } if (id === "dream") { window.open("/haemong", "_blank"); return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id === "naming" ? "wealth5" : id); }
+          else { if (id === "qa") { router.push("/main-v2/qa-list"); return; } if (id === "dream") { router.push("/haemong"); return; } if (id === "naming") setModalSelectedCats(["💰 재물운"]); if (id === "love") setModalSelectedCats(["🎍 신년운세"]); setShowModal(id === "naming" ? "wealth5" : id); }
         }} />
       )}
 
@@ -953,7 +954,7 @@ export default function MainV2() {
           <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
           <h2 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>복냥이가 당신의 길을 안내합니다 🐾</p>
-          <a href="/main-v2/qa-list" target="_blank" rel="noopener noreferrer"
+          <a href="/main-v2/qa-list"
             style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "white", color: "#ec4899", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 18px rgba(0,0,0,0.15)", textDecoration: "none", textAlign: "center" }}>
             💬 사주 Q&amp;A 바로 확인하기
           </a>
@@ -963,8 +964,8 @@ export default function MainV2() {
       {/* ── 추가 운세 상품 섹션 ── */}
       {!isPartner && (
         <ExtraFortuneSection onPick={(id) => {
-          if (id === "daewoon") { window.open("/main-v2/daewoon", "_blank"); return; }
-          if (id === "taegil") { window.open("/main-v2/taegil", "_blank"); return; }
+          if (id === "daewoon") { router.push("/main-v2/daewoon"); return; }
+          if (id === "taegil") { router.push("/main-v2/taegil"); return; }
           setShowModal(id);
         }} />
       )}
@@ -973,7 +974,7 @@ export default function MainV2() {
       {!isPartner && (
         <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
           <div
-            onClick={() => { window.open("/pass", "_blank"); }}
+            onClick={() => { router.push("/pass"); }}
             style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(239,68,68,0.35)", border: "2px solid #ef4444" }}
           >
             <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -992,7 +993,7 @@ export default function MainV2() {
       {!isPartner && (
         <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
           <div
-            onClick={() => { window.open("/share-coupon", "_blank"); }}
+            onClick={() => { router.push("/share-coupon"); }}
             style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(249,115,22,0.2)", border: "1.5px solid #fed7aa" }}
           >
             <div style={{ background: "linear-gradient(135deg,#f97316,#f59e0b)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
