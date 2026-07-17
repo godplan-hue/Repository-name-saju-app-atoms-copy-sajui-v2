@@ -127,9 +127,8 @@ export default function BabyWordsPage() {
         {!unlocked && (
           <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
             <p style={{ fontSize: 14, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>{expired ? "⏰ 30일 이용권이 만료됐어요" : "🔒 결제 후 새 단어를 추가할 수 있어요"}</p>
-            <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 10px", lineHeight: 1.6 }}>{expired ? "기존 단어는 계속 볼 수 있어요. 새 단어를 추가하려면 재활성화해주세요." : "사주 990원 결제하면 맘케어 30일 이용 가능해요."}</p>
-            <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", marginBottom: 8, textAlign: "center" }}>💳 맘케어 결제하기 (990원·4,900원) →</a>
-            <a href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", textAlign: "center" }}>사주 990원 결제하기 →</a>
+            <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 10px", lineHeight: 1.6 }}>{expired ? "기존 단어는 계속 볼 수 있어요. 새 단어를 추가하려면 재활성화해주세요." : "맘케어 결제하면 30일 이용 가능해요."}</p>
+            <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", textAlign: "center" }}>💳 맘케어 결제하기 (990원·4,900원) →</a>
           </div>
         )}
 

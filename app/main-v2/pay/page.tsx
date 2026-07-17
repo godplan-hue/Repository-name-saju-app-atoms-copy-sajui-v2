@@ -199,9 +199,8 @@ function PayInner() {
             sessionStorage.setItem("v2_payment_phone", cleanMobile);
           } catch {}
         }
-        // 꿈해몽 24시간 + 맘케어 30일 + Q&A/복냥이 24시간 잠금 해제 (실카드 결제만)
-        try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("haemong_unlock_until", String(_h)); localStorage.setItem("v2_qa_unlock_until", String(_h)); } catch {}
-        try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+        // Q&A/복냥이 24시간 잠금 해제 (실카드 결제만)
+        try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); } catch {}
         // 결제 기록 Firebase 저장 (어드민 결제내역에 표시)
         if (displayAmount > 0 && name.trim()) {
           fetch("/api/v2/save-payment", {
