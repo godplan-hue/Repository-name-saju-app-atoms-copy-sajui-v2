@@ -290,6 +290,7 @@ function V2ResultInner() {
 
   const [result, setResult] = useState<any>(null);
   const [paid, setPaid] = useState(false);
+  const [qaUnlocked, setQaUnlocked] = useState(false);
   const [allAnalyses, setAllAnalyses] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [histSaved, setHistSaved] = useState(false);
@@ -455,6 +456,7 @@ function V2ResultInner() {
     setTier(detectedTier);
     if (isPackage) setPkgName(sessionStorage.getItem("selectedPackage") ?? "");
     setPaid(isPaid);
+    setQaUnlocked(Number(localStorage.getItem("v2_qa_unlock_until") || 0) > Date.now());
     setPlanType(plan);
     const analyses = isPaid ? (r.allAnalyses ?? {}) : {};
     setAllAnalyses(analyses);
@@ -650,6 +652,7 @@ function V2ResultInner() {
         const _d = new Date();
         const _tk = `${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,"0")}-${String(_d.getDate()).padStart(2,"0")}`;
         localStorage.setItem(`v2_qa_unlock_${profile.name}_${profile.birthYear}`, _tk);
+        localStorage.setItem("v2_qa_unlock_until", String(Date.now() + 24*60*60*1000));
       }
       await new Promise(r => setTimeout(r, 1200));
       window.location.reload();
@@ -1865,7 +1868,7 @@ function V2ResultInner() {
 
         {/* 복냥이 채팅 */}
         {profile?.name && profile?.birthYear && (
-          <QAChatWidget name={profile.name} birthYear={Number(profile.birthYear)} unlocked={paid} />
+          <QAChatWidget name={profile.name} birthYear={Number(profile.birthYear)} unlocked={qaUnlocked} />
         )}
 
         {/* 쿠폰 퍼널 — 무료 사용자에게만 5초 후 표시 */}

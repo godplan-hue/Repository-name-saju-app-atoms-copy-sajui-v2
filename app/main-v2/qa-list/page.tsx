@@ -33,11 +33,10 @@ function QAListContent() {
     if (!n || !y) { window.location.replace("/main-v2"); return; }
     setName(n);
     setBirthYear(y);
-    const plan = localStorage.getItem("v2_plan") ?? "";
-    const paidSession = plan === "select" || plan === "package";
     const lsUnlock = localStorage.getItem(`v2_qa_unlock_${n}_${y}`);
     const paidToday = lsUnlock === todayKey();
-    setUnlocked(paidSession || paidToday);
+    const qaUntil = Number(localStorage.getItem("v2_qa_unlock_until") || 0);
+    setUnlocked(paidToday || qaUntil > Date.now());
     setReady(true);
   }, []);
 

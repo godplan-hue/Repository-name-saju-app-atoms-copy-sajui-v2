@@ -133,7 +133,8 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
   useEffect(() => {
     const lsUnlock = localStorage.getItem(`v2_qa_unlock_${name}_${birthYear}`);
     const paidToday = lsUnlock === todayKey();
-    const eff = unlocked || paidToday;
+    const qaUntil = Number(localStorage.getItem("v2_qa_unlock_until") || 0);
+    const eff = unlocked || paidToday || qaUntil > Date.now();
     setEffectiveUnlocked(eff);
     const used = Number(localStorage.getItem(`${storagePrefix}_${name}_${birthYear}_${todayKey()}`) ?? 0);
     setRemaining(eff ? 999 : Math.max(0, FREE_QUESTIONS - used));
