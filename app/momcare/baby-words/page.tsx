@@ -227,7 +227,7 @@ export default function BabyWordsPage() {
           <p style={{ fontSize: 13, fontWeight: 900, color: "#7c3aed", margin: "0 0 4px" }}>우리 아이의 언어 재능이 궁금하다면?</p>
           <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px" }}>사주로 보는 우리 아이 성공운 · 재능운</p>
           <Link href="/main-v2" style={{ display: "inline-block", background: "linear-gradient(135deg, #7c3aed, #ec4899)", color: "white", borderRadius: 20, padding: "10px 24px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
-            아이 사주 보러가기 →
+            아이 사주 보러가기 (990원) →
           </Link>
         </div>
       </div>
