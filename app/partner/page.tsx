@@ -119,45 +119,6 @@ export default function PartnerLanding() {
           </div>
         </section>
 
-        {/* 고객 이용 앱 안내 */}
-        <section style={{ padding: "30px 16px" }}>
-          <h3 style={{ textAlign: "center", color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 20px)", marginBottom: 6 }}>고객이 이용하는 점운 앱 구성</h3>
-          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, marginBottom: 16 }}>파트너는 사주 분석을 판매하며, 아래 앱들이 자동 연결됩니다</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 560, margin: "0 auto" }}>
-            <div style={{ background: "rgba(251,191,36,0.12)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 12, padding: "12px 16px" }}>
-              <p style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 900, color: "#fbbf24" }}>🔮 점운 사주 (핵심 상품)</p>
-              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 1.9 }}>
-                오늘의 운세 무료<br />
-                990원 기본분석 · 3,900원 개별운세<br />
-                9,900원~ 패키지
-              </p>
-            </div>
-            <div style={{ background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 12, padding: "12px 16px" }}>
-              <p style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 900, color: "#4ade80" }}>🎁 완전 무료 앱 (결제 없음)</p>
-              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 1.9 }}>
-                💞 점운 궁합 (기본 무료 · 상세 990원)<br />
-                🧠 점운 MBTI<br />
-                🍀 점운 행운번호<br />
-                🐾 점운 펫운
-              </p>
-            </div>
-            <div style={{ background: "rgba(139,92,246,0.12)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 12, padding: "12px 16px" }}>
-              <p style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 900, color: "#c4b5fd" }}>💛 사주 990원 결제 시 자동 제공</p>
-              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 1.9 }}>
-                🌙 점운 꿈해몽 — 24시간 무료<br />
-                🧡 점운 맘케어 — 30일 무료
-              </p>
-            </div>
-            <div style={{ background: "rgba(236,72,153,0.1)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 12, padding: "12px 16px" }}>
-              <p style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 900, color: "#f9a8d4" }}>💎 별도 유료 앱</p>
-              <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 1.9 }}>
-                🎯 점운 직운 (직업·부업) — 990원<br />
-                🎓 점운 합격자소서 — 9,900원 / 29,900원
-              </p>
-            </div>
-          </div>
-        </section>
-
         <section style={{ padding: "40px 16px", textAlign: "center" }}>
           <h3 style={{ color: "#fbbf24", fontWeight: 900, fontSize: "clamp(16px, 2.5vw, 24px)", marginBottom: 10 }}>지금 바로</h3>
           <p style={{ color: "#f5f5f5", fontSize: "clamp(12px, 2vw, 15px)", fontWeight: 700, marginBottom: 18 }}>사주 사업, 점운과 함께 시작하세요</p>
