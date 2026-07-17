@@ -289,8 +289,8 @@ export default function MomcarePage() {
             <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "14px 12px", border: "1px solid rgba(255,255,255,0.12)", display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: 24, marginBottom: 6 }}>🔮</div>
               <h3 style={{ fontSize: 12, fontWeight: 800, margin: "0 0 6px", wordBreak: "keep-all" }}>아이 재능·건강운</h3>
-              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.5, flex: 1, wordBreak: "keep-all" }}>생년월일로 재능·건강운 분석<br /><span style={{ color: "rgba(255,255,255,0.4)", fontSize: 10 }}>맘케어 990원 이용권 필요</span></p>
-              <Link href="/momcare/pay" style={{ display: "block", textAlign: "center", background: TEAL_GRAD, color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>이용권 구매 →</Link>
+              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.5, flex: 1, wordBreak: "keep-all" }}>생년월일로 재능·건강운 분석<br /><span style={{ color: "rgba(255,255,255,0.4)", fontSize: 10 }}>맘케어 결제 후 30일 이용</span></p>
+              <Link href="/momcare/pay" style={{ display: "block", textAlign: "center", background: TEAL_GRAD, color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>맘케어 결제하기 →</Link>
             </div>
             <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "14px 12px", border: "1px solid rgba(255,255,255,0.12)", display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: 24, marginBottom: 6 }}>🌸</div>
