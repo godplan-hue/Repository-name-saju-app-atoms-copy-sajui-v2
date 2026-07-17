@@ -198,8 +198,9 @@ function PayInner() {
             sessionStorage.setItem("v2_payment_phone", cleanMobile);
           } catch {}
         }
-        // 꿈해몽 24시간 무료 잠금 해제 (실카드 결제만)
+        // 꿈해몽 24시간 + 맘케어 30일 잠금 해제 (실카드 결제만)
         try { localStorage.setItem("haemong_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000)); } catch {}
+        try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
         // 결제 기록 Firebase 저장 (어드민 결제내역에 표시)
         if (displayAmount > 0 && name.trim()) {
           fetch("/api/v2/save-payment", {
