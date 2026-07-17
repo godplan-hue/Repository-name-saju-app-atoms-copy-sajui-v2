@@ -288,6 +288,17 @@ export default function BabyDiaryPage() {
           </div>
         )}
       </div>
+
+      {/* 아이 사주 CTA */}
+      <div style={{ maxWidth: 600, margin: "0 auto", padding: "0 20px 32px" }}>
+        <div style={{ background: "linear-gradient(135deg, #fde8d8, #ede9fe)", borderRadius: 18, padding: "20px", textAlign: "center" }}>
+          <p style={{ fontSize: 13, fontWeight: 900, color: "#7c3aed", margin: "0 0 4px" }}>아이의 미래가 더 궁금하다면?</p>
+          <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px" }}>사주로 보는 우리 아이 미래운·성공운</p>
+          <Link href="/main-v2" style={{ display: "inline-block", background: "linear-gradient(135deg, #7c3aed, #ec4899)", color: "white", borderRadius: 20, padding: "10px 24px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+            아이 사주 보러가기 (990원) →
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
