@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 type Result = {
   name1: string; name2: string;
@@ -120,8 +121,27 @@ export default function GunghapResultPage() {
     if (!result) return;
     const url = `https://jeomun.com/gunghap/result/${id}`;
     const text = `${result.name1}♥${result.name2} 궁합 점수 ${result.score}점 ${result.grade}\n오행 ${result.oh1}×${result.oh2} | 점운에서 무료로 확인하세요!`;
-    if (navigator.share) navigator.share({ title: "점운 궁합", text, url }).catch(() => {});
-    else navigator.clipboard.writeText(url).then(() => alert("링크가 복사됐어요! 💞")).catch(() => {});
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: `💞 ${result.name1}♥${result.name2} 궁합 ${result.score}점 ${result.grade}`,
+            description: `오행 ${result.oh1}×${result.oh2} 조합! 점운에서 무료로 확인해봐!`,
+            imageUrl: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "궁합 결과 보기 💞", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 해보기 →", link: { mobileWebUrl: "https://jeomun.com/gunghap", webUrl: "https://jeomun.com/gunghap" } },
+          ],
+        });
+        return;
+      } catch {}
+    }
+    navigator.clipboard?.writeText(url);
+    alert("링크가 복사됐어요! 💞");
   };
 
   const S = {
@@ -369,6 +389,14 @@ export default function GunghapResultPage() {
           📤 결과 공유하기
         </button>
       </div>
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 type ZodiacResult = {
   name: string; zodiac: string; oh: string; crossKey: string;
@@ -197,14 +198,29 @@ export default function ZodiacResultPage() {
       .catch(() => setLoading(false));
   }, [id]);
 
-  const share = async () => {
-    const url = `${window.location.origin}/zodiac/result/${id}`;
-    if (navigator.share) {
-      try { await navigator.share({ title: `${result?.zodiac} 오늘의 운세`, text: "점운 별자리 운세를 확인해봐요!", url }); } catch {}
-    } else {
-      await navigator.clipboard.writeText(url);
-      setSharing(true); setTimeout(() => setSharing(false), 2000);
+  const share = () => {
+    const url = `https://jeomun.com/zodiac/result/${id}`;
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: `⭐ ${result?.zodiac} 오늘의 운세`,
+            description: "점운 별자리 운세에서 오늘 나의 별자리 운을 확인해봐!",
+            imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "운세 결과 보기 ⭐", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 확인하기 →", link: { mobileWebUrl: "https://jeomun.com/zodiac", webUrl: "https://jeomun.com/zodiac" } },
+          ],
+        });
+        return;
+      } catch {}
     }
+    navigator.clipboard?.writeText(url);
+    setSharing(true); setTimeout(() => setSharing(false), 2000);
   };
 
   const S = {
@@ -353,6 +369,14 @@ export default function ZodiacResultPage() {
           <p style={{ fontSize: 11, color: "rgba(147,197,253,0.5)", margin: "8px 0 0", textAlign: "center" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
       </div>
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
     </div>
   );
 }

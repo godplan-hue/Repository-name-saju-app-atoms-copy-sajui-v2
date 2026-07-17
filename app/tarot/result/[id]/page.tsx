@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 type TarotResult = {
   name: string;
@@ -289,15 +290,30 @@ export default function TarotResultPage() {
 
   const redraw = () => router.push("/tarot");
 
-  const share = async () => {
-    const url = `${window.location.origin}/tarot/result/${id}`;
-    if (navigator.share) {
-      try { await navigator.share({ title: "점운 타로 결과", text: "타로 카드가 나에게 보내는 메시지", url }); } catch {}
-    } else {
-      await navigator.clipboard.writeText(url);
-      setSharing(true);
-      setTimeout(() => setSharing(false), 2000);
+  const share = () => {
+    const url = `https://jeomun.com/tarot/result/${id}`;
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: "🃏 타로 카드가 나에게 보내는 메시지",
+            description: "점운 타로에서 오늘 나에게 오는 메시지를 확인해봐!",
+            imageUrl: "https://i.pinimg.com/1200x/4d/aa/bb/4daabb706b7a50f71fcfdc1e7ae03c7a.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "타로 결과 보기 🃏", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 뽑아보기 →", link: { mobileWebUrl: "https://jeomun.com/tarot", webUrl: "https://jeomun.com/tarot" } },
+          ],
+        });
+        return;
+      } catch {}
     }
+    navigator.clipboard?.writeText(url);
+    setSharing(true);
+    setTimeout(() => setSharing(false), 2000);
   };
 
   const S = {
@@ -456,6 +472,14 @@ export default function TarotResultPage() {
           <p style={{ fontSize: 11, color: "rgba(192,132,252,0.5)", margin: "8px 0 0", textAlign: "center" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
       </div>
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
     </div>
   );
 }

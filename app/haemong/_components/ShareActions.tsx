@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Script from "next/script";
 
 interface Props {
   keyword: string;
@@ -9,23 +10,32 @@ interface Props {
 export default function ShareActions({ keyword }: Props) {
   const [modal, setModal] = useState<null | "guide" | "copied">(null);
 
-  async function handleShare() {
+  function handleShare() {
     const base = typeof window !== "undefined" ? window.location.href.split("?")[0] : "";
     const myRef = typeof window !== "undefined" ? (localStorage.getItem("my_ref_code") || "") : "";
     const url = myRef ? `${base}?ref=${myRef}` : base;
-    if (navigator.share) {
+    const kakao = typeof window !== "undefined" ? (window as any).Kakao : null;
+    if (kakao?.isInitialized() && kakao?.Share) {
       try {
-        await navigator.share({
-          title: `${keyword} 해몽 — 점운`,
-          text: `${keyword}을(를) 꿨다면? 점운에서 무료로 해석해보세요 🌙`,
-          url,
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: `🌙 ${keyword} 해몽 결과`,
+            description: `${keyword}을(를) 꿨다면? 점운에서 무료로 해석해보세요!`,
+            imageUrl: "https://i.pinimg.com/1200x/50/73/a5/5073a503cb18b1cd3459fba8e402c389.webp",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "해몽 결과 보기 🌙", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 해보기 →", link: { mobileWebUrl: "https://jeomun.com/haemong", webUrl: "https://jeomun.com/haemong" } },
+          ],
         });
+        return;
       } catch {}
-    } else {
-      await navigator.clipboard.writeText(url);
-      setModal("copied");
-      setTimeout(() => setModal(null), 2000);
     }
+    navigator.clipboard?.writeText(url);
+    setModal("copied");
+    setTimeout(() => setModal(null), 2000);
   }
 
   return (
@@ -139,6 +149,14 @@ export default function ShareActions({ keyword }: Props) {
           </div>
         </div>
       )}
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
     </>
   );
 }

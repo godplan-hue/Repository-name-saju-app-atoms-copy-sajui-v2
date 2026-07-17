@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 interface LottoResult {
   id: string;
@@ -93,13 +94,30 @@ export default function LottoResultPage() {
     }, 600);
   };
 
-  const handleShare = async () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    const text = data ? `🎱 내 오행 행운번호 — ${data.main.join(", ")} + 보너스 ${data.bonus}\n사주 오행(${data.oh})이 이끄는 나만의 숫자!\n점운에서 확인 👉 ${url}` : "";
-    if (navigator.share) {
-      try { await navigator.share({ title: "내 오행 행운번호", text, url }); return; } catch {}
+  const handleShare = () => {
+    if (!data) return;
+    const url = typeof window !== "undefined" ? window.location.href.split("?")[0] : "https://jeomun.com/lotto";
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: `🎱 내 오행 행운번호 — ${data.main.join(", ")} + 보너스 ${data.bonus}`,
+            description: `사주 오행(${data.oh})이 이끄는 나만의 숫자! 점운에서 무료로 뽑아봐!`,
+            imageUrl: "https://i.pinimg.com/1200x/ab/4e/bb/ab4ebb7c3bce50af2dc6e9f9bce02ff2.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "내 행운번호 보기 🎱", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 뽑아보기 →", link: { mobileWebUrl: "https://jeomun.com/lotto", webUrl: "https://jeomun.com/lotto" } },
+          ],
+        });
+        return;
+      } catch {}
     }
-    await navigator.clipboard.writeText(text);
+    const text = `🎱 내 오행 행운번호 — ${data.main.join(", ")} + 보너스 ${data.bonus}\n사주 오행(${data.oh})이 이끄는 나만의 숫자!\n점운에서 확인 👉 ${url}`;
+    navigator.clipboard?.writeText(text);
     setShared(true);
     setTimeout(() => setShared(false), 2000);
   };
@@ -269,6 +287,14 @@ export default function LottoResultPage() {
           <p style={{ fontSize: 11, color: "rgba(167,139,250,0.5)", margin: "8px 0 0" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
       </div>
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
     </div>
   );
 }

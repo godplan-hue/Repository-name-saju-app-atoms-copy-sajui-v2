@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 type PetPersonality = { title: string; desc: string; trait: string; care: string; play: string; emotion: string };
 type OhFood = { best: string[]; good: string[]; desc: string };
@@ -234,9 +235,27 @@ export default function PetunResultPage() {
   const share = () => {
     if (!result) return;
     const url = `https://jeomun.com/petun/result/${id}`;
-    const text = `${result.petName}(${result.petOh}오행) ${result.petPersonality.title}\n${result.petSpecies} 사주 분석! 점운 펫운에서 무료로 확인하세요 🐾`;
-    if (navigator.share) navigator.share({ title: "점운 펫운", text, url }).catch(() => {});
-    else navigator.clipboard.writeText(url).then(() => alert("링크 복사됐어요! 🐾")).catch(() => {});
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: `🐾 ${result.petName}(${result.petOh}오행) ${result.petPersonality.title}`,
+            description: `${result.petSpecies} 사주 분석! 점운 펫운에서 무료로 확인해봐!`,
+            imageUrl: "https://i.pinimg.com/1200x/92/81/1b/92811ba3f49b58f4fc5e22b5a765a17b.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: `${result.petName} 결과 보기 🐾`, link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 해보기 →", link: { mobileWebUrl: "https://jeomun.com/petun", webUrl: "https://jeomun.com/petun" } },
+          ],
+        });
+        return;
+      } catch {}
+    }
+    navigator.clipboard?.writeText(url);
+    alert("링크 복사됐어요! 🐾");
   };
 
   const S = {
@@ -585,6 +604,14 @@ export default function PetunResultPage() {
           🐾 {result.petName} 결과 공유하기
         </button>
       </div>
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
     </div>
   );
 }

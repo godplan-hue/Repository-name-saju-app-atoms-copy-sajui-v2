@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 interface GResult {
   name: string;
@@ -81,9 +82,29 @@ export default function GamjungResultPage() {
 
   const share = useCallback(() => {
     if (!result) return;
+    const url = typeof window !== "undefined" ? window.location.href.split("?")[0] : "https://jeomun.com/gamjung";
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: `오늘 기분: ${result.moodLabel} ${result.moodEmoji} — ${result.oh}오행 에너지`,
+            description: `${result.ohMessages[0].slice(0, 60)}... 점운 감정일기에서 내 감정을 분석해봐!`,
+            imageUrl: "https://i.pinimg.com/1200x/a6/ed/26/a6ed26f97fc86e6cf74de5e3e3e64c11.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "결과 보러가기 😊", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 기록하기 →", link: { mobileWebUrl: "https://jeomun.com/gamjung", webUrl: "https://jeomun.com/gamjung" } },
+          ],
+        });
+        return;
+      } catch {}
+    }
     const text = `오늘 기분: ${result.moodLabel} ${result.moodEmoji}\n오행 에너지: ${result.oh}(${result.ohEmoji}) — ${result.ohKeyword}\n\n${result.ohMessages[0]}\n\n✨ 점운 감정일기 — jeomun.com/gamjung`;
-    if (navigator.share) navigator.share({ title: "점운 감정일기", text });
-    else { navigator.clipboard.writeText(text); alert("클립보드에 복사됐어요 😊"); }
+    navigator.clipboard?.writeText(text);
+    alert("클립보드에 복사됐어요 😊");
   }, [result]);
 
   if (loading) return (
@@ -195,6 +216,14 @@ export default function GamjungResultPage() {
           <p style={{ fontSize: 11, color: "rgba(192,132,252,0.5)", margin: "8px 0 0" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
       </div>
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
     </div>
   );
 }
