@@ -71,12 +71,12 @@ export default function FreeForm() {
   return (
     <div style={{ background: "#fff", borderRadius: 20, padding: "24px 20px", boxShadow: "0 8px 40px rgba(0,0,0,0.3)" }}>
       <div style={{ marginBottom: 14 }}>
-        <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>이름</label>
+        <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>이름 <span style={{ fontWeight: 400, color: "#9ca3af" }}>(선택)</span></label>
         <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="홍길동"
           style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
       </div>
       <div style={{ marginBottom: 14 }}>
-        <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>전화번호</label>
+        <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>전화번호 <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
         <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="010-0000-0000"
           style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
       </div>
