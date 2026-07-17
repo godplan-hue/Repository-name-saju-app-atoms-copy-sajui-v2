@@ -192,7 +192,10 @@ export default function MbtiPage() {
       {/* 히어로 */}
       <div style={{ background: "linear-gradient(180deg,#12003a 0%,#07000f 100%)", paddingBottom: 40 }}>
         <div style={{ maxWidth: 480, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
-          <Link href="/main-v2" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 24, textAlign: "left" }}>← 점운 홈</Link>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+            <Link href="/main-v2" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
+            <button onClick={() => { const d = { title: "점운 MBTI — 사주로 보는 나의 성격 유형", text: "16문항으로 MBTI와 사주 오행 기질을 알아보세요! 완전 무료 🔮", url: "https://jeomun.com/mbti" }; if (typeof navigator !== "undefined" && navigator.share) navigator.share(d).catch(()=>{}); else if (typeof navigator !== "undefined" && navigator.clipboard) navigator.clipboard.writeText(d.url).then(()=>alert("링크가 복사됐어요!")); }} style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, background: "rgba(124,58,237,0.15)", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
+          </div>
 
           <div style={{ fontSize: 60, marginBottom: 16 }}>🔮</div>
           <h1 style={{ fontSize: 26, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.3 }}>

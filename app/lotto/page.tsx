@@ -102,7 +102,10 @@ export default function LottoPage() {
 
       <div style={{ background: "linear-gradient(180deg,#120030 0%,#050010 100%)" }}>
         <div style={{ maxWidth: 440, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
-          <Link href="/main-v2" style={{ color: "#fbbf24", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 20, textAlign: "left" }}>← 점운 홈</Link>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <Link href="/main-v2" style={{ color: "#fbbf24", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
+            <button onClick={() => { const d = { title: "점운 행운번호 — 사주 오행 행운번호", text: "내 생년월일로 사주 오행 행운번호를 뽑아보세요! 완전 무료 🎱", url: "https://jeomun.com/lotto" }; if (typeof navigator !== "undefined" && navigator.share) navigator.share(d).catch(()=>{}); else if (typeof navigator !== "undefined" && navigator.clipboard) navigator.clipboard.writeText(d.url).then(()=>alert("링크가 복사됐어요!")); }} style={{ fontSize: 12, color: "#d97706", fontWeight: 700, background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
+          </div>
 
           <div style={{ fontSize: 56, marginBottom: 12, animation: "float 3s ease-in-out infinite" }}>🎱</div>
           <h1 style={{ fontSize: 27, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3 }}>

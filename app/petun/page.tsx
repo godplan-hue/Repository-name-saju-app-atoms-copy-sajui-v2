@@ -112,7 +112,10 @@ export default function PetunPage() {
       <div style={S.wrap}>
         <div style={{ background: "linear-gradient(180deg, #0a001f 0%, #05000f 100%)", paddingBottom: 40 }}>
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
-            <Link href="/main-v2" style={{ color: "#06b6d4", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 24, textAlign: "left" }}>← 점운 홈</Link>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+              <Link href="/main-v2" style={{ color: "#06b6d4", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
+              <button onClick={() => { const d = { title: "점운 펫운 — 반려동물 사주 분석", text: "우리 아이 생년월일로 반려동물 사주와 보호자 궁합을 알아보세요! 완전 무료 🐾", url: "https://jeomun.com/petun" }; if (typeof navigator !== "undefined" && navigator.share) navigator.share(d).catch(()=>{}); else if (typeof navigator !== "undefined" && navigator.clipboard) navigator.clipboard.writeText(d.url).then(()=>alert("링크가 복사됐어요!")); }} style={{ fontSize: 12, color: "#06b6d4", fontWeight: 700, background: "rgba(6,182,212,0.15)", border: "1px solid rgba(6,182,212,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
+            </div>
 
             <div style={{ fontSize: 64, marginBottom: 16 }}>🐾</div>
             <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.3 }}>

@@ -150,7 +150,8 @@ export default function BabyDiaryPage() {
           <div style={{ fontSize: 48, marginBottom: 12 }}>🔒</div>
           <p style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>새 일기를 쓰려면 재활성화가 필요해요</p>
           <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 20px", lineHeight: 1.6 }}>기존 일기는 목록에서 계속 읽을 수 있어요</p>
-          <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", padding: "14px", borderRadius: 14, fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>{expired ? "사주 990원으로 30일 재활성화 →" : "사주 990원 결제하기 →"}</a>
+          <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", padding: "14px", borderRadius: 14, fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 10, textAlign: "center" }}>💳 맘케어 결제하기 (990원·4,900원) →</a>
+          <a href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", padding: "14px", borderRadius: 14, fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12, textAlign: "center" }}>사주 990원 결제하기 →</a>
           <button onClick={() => setMode("list")} style={{ background: "none", border: "none", color: "#9ca3af", fontSize: 13, cursor: "pointer" }}>← 목록으로 돌아가기</button>
         </div>
       </div>
@@ -231,7 +232,8 @@ export default function BabyDiaryPage() {
           <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
             <p style={{ fontSize: 14, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>{expired ? "⏰ 30일 이용권이 만료됐어요" : "🔒 결제 후 새 일기를 쓸 수 있어요"}</p>
             <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 10px", lineHeight: 1.6 }}>{expired ? "기존 일기는 계속 읽을 수 있어요. 새 일기를 쓰려면 재활성화해주세요." : "사주 990원 결제하면 맘케어 30일 이용 가능해요."}</p>
-            <a href="/momcare/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none" }}>{expired ? "사주 990원으로 30일 재활성화 →" : "사주 990원 결제하기 →"}</a>
+            <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", marginBottom: 8, textAlign: "center" }}>💳 맘케어 결제하기 (990원·4,900원) →</a>
+            <a href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", textAlign: "center" }}>사주 990원 결제하기 →</a>
           </div>
         )}
 

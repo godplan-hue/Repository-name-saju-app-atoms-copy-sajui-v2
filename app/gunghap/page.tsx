@@ -82,7 +82,10 @@ export default function GunghapPage() {
         {/* 히어로 */}
         <div style={{ background: "linear-gradient(180deg, #1a0030 0%, #0a0015 100%)", paddingBottom: 40 }}>
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
-            <Link href="/main-v2" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 24, textAlign: "left" }}>← 점운 홈</Link>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+              <Link href="/main-v2" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
+              <button onClick={() => { const d = { title: "점운 궁합 — 오행으로 보는 우리 궁합", text: "오행 사주로 진짜 궁합 점수를 알아보세요! 완전 무료 🔮", url: "https://jeomun.com/gunghap" }; if (typeof navigator !== "undefined" && navigator.share) navigator.share(d).catch(()=>{}); else if (typeof navigator !== "undefined" && navigator.clipboard) navigator.clipboard.writeText(d.url).then(()=>alert("링크가 복사됐어요!")); }} style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, background: "rgba(124,58,237,0.15)", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
+            </div>
 
             <div style={{ fontSize: 64, marginBottom: 16 }}>💞</div>
             <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 12px", lineHeight: 1.3 }}>
