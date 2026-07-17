@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 
 interface PromoCode {
   code: string;
@@ -30,10 +31,10 @@ function maxUsesLabel(v: number) {
 export default function AdminDiscountCodes() {
   const router = useRouter();
   const [codes, setCodes] = useState<PromoCode[]>([]);
-  const [form, setForm] = useState({ code: "", discountPercent: 100, note: "", maxUses: 1, fullAccess: false });
+  const [form, setForm] = useState({ code: "", discountPercent: 100, note: "", maxUses: 1, fullAccess: false, maxAmount: 990 });
   const [saving, setSaving] = useState(false);
   const [codeTab, setCodeTab] = useState<"mine"|"auto">("mine");
-  const [couponPreview, setCouponPreview] = useState<{ code: string; discountPercent: number; note: string; maxUses: number; fullAccess: boolean } | null>(null);
+  const [couponPreview, setCouponPreview] = useState<{ code: string; discountPercent: number; note: string; maxUses: number; fullAccess: boolean; maxAmount: number } | null>(null);
   const [copied, setCopied] = useState(false);
   const isAutoCode = (c: PromoCode) => c.code.startsWith("FREE") || c.code.startsWith("무료");
 
@@ -76,8 +77,8 @@ export default function AdminDiscountCodes() {
         body: JSON.stringify(form),
       });
       if (!res.ok) { alert("코드 생성에 실패했습니다."); return; }
-      setCouponPreview({ code: form.code.toUpperCase(), discountPercent: form.discountPercent, note: form.note, maxUses: form.maxUses, fullAccess: form.fullAccess });
-      setForm({ code: "", discountPercent: 100, note: "", maxUses: 1, fullAccess: false });
+      setCouponPreview({ code: form.code.toUpperCase(), discountPercent: form.discountPercent, note: form.note, maxUses: form.maxUses, fullAccess: form.fullAccess, maxAmount: form.maxAmount });
+      setForm({ code: "", discountPercent: 100, note: "", maxUses: 1, fullAccess: false, maxAmount: 990 });
       loadAll();
     } finally {
       setSaving(false);
@@ -173,6 +174,36 @@ export default function AdminDiscountCodes() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            {/* 적용 상품 */}
+            <div style={{ marginBottom: 16 }}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: "#666", margin: "0 0 6px" }}>적용 상품 (어떤 결제에만 쓸 수 있나요?)</p>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {[
+                  { label: "990원 전용", value: 990 },
+                  { label: "3,900원 이하", value: 3900 },
+                  { label: "9,900원 이하", value: 9900 },
+                  { label: "전체 상품", value: 0 },
+                ].map(opt => (
+                  <button
+                    key={opt.value}
+                    onClick={() => setForm({ ...form, maxAmount: opt.value })}
+                    style={{
+                      padding: "6px 16px", borderRadius: 6, border: "none", fontWeight: 700, fontSize: 13, cursor: "pointer",
+                      background: form.maxAmount === opt.value ? "#f59e0b" : "#e5e7eb",
+                      color: form.maxAmount === opt.value ? "white" : "#333",
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+              {form.maxAmount > 0 && (
+                <p style={{ fontSize: 11, color: "#d97706", margin: "4px 0 0" }}>
+                  ₩{form.maxAmount.toLocaleString()} 초과 상품엔 쿠폰 적용 안 됩니다.
+                </p>
+              )}
             </div>
 
             {/* 전체 앱 열기 */}
@@ -288,6 +319,9 @@ export default function AdminDiscountCodes() {
                           🌟 7개 앱 30일 전체 이용 포함
                         </p>
                       )}
+                      <p style={{ fontSize: 13, color: "#f59e0b", margin: 0, fontWeight: 700 }}>
+                        🛒 {couponPreview.maxAmount > 0 ? `₩${couponPreview.maxAmount.toLocaleString()} 이하 상품 전용` : "전체 상품 사용 가능"}
+                      </p>
                       <p style={{ fontSize: 12, color: "#9ca3af", margin: "4px 0 0" }}>
                         📍 사용처: jeomun.com/main-v2 → 결제 시 코드 입력
                       </p>

@@ -32,13 +32,14 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { code, discountPercent, note, maxUses, fullAccess } = await request.json();
+    const { code, discountPercent, note, maxUses, fullAccess, maxAmount } = await request.json();
     if (!code || discountPercent === undefined || discountPercent === null) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
     const key = String(code).trim().toUpperCase();
-    // maxUses: -1 = 무제한, 1+ = N회 사용 후 비활성화
-    await db.ref(`promoCodes/${key}`).set({ discountPercent, note: note || "", active: true, usageCount: 0, maxUses: maxUses ?? 1, fullAccess: fullAccess ?? false });
+    const data: Record<string, unknown> = { discountPercent, note: note || "", active: true, usageCount: 0, maxUses: maxUses ?? 1, fullAccess: fullAccess ?? false };
+    if (maxAmount && maxAmount > 0) data.maxAmount = maxAmount;
+    await db.ref(`promoCodes/${key}`).set(data);
     return NextResponse.json({ success: true, code: key });
   } catch (error) {
     console.error("Promo code create error:", error);
