@@ -108,7 +108,10 @@ export default function ZodiacPage() {
         `}</style>
         <div style={{ background: "linear-gradient(180deg,#0a1628 0%,#050d1a 100%)", paddingBottom: 40 }}>
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
-            <Link href="/main-v2" style={{ color: "#93c5fd", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 24, textAlign: "left" }}>← 점운 홈</Link>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+              <Link href="/main-v2" style={{ color: "#93c5fd", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
+              <button onClick={() => { const d = { title: "점운 별자리 — 12별자리 오늘 운세", text: "내 별자리 오늘 운세를 봤어요! 완전 무료 ⭐", url: "https://jeomun.com/zodiac" }; if (typeof navigator !== "undefined" && navigator.share) navigator.share(d).catch(()=>{}); else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(d.text + '\n' + d.url)}`; }; }} style={{ fontSize: 12, color: "#93c5fd", fontWeight: 700, background: "rgba(147,197,253,0.15)", border: "1px solid rgba(147,197,253,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
+            </div>
             <div style={{ fontSize: 72, marginBottom: 12, display: "inline-block", animation: "floatStar 3s ease-in-out infinite" }}>⭐</div>
             <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.3 }}>
               오늘 내 별자리는?

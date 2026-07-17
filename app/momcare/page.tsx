@@ -52,7 +52,7 @@ const FAQ_ITEMS = [
 function shareApp() {
   const data = { title: "맘케어 — AI 육아 앱", text: "소아과 전문의가 함께하는 AI 육아 앱 맘케어를 추천합니다 👶", url: "https://jeomun.com/momcare" };
   if (typeof navigator !== "undefined" && navigator.share) { navigator.share(data).catch(() => {}); }
-  else if (typeof navigator !== "undefined" && navigator.clipboard) { navigator.clipboard.writeText(data.url).then(() => alert("링크가 복사됐어요!")); }
+  else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(data.text + '\n' + data.url)}`; }
 }
 
 export default function MomcarePage() {

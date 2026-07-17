@@ -160,7 +160,10 @@ export default function GamjungPage() {
         <style>{`@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}`}</style>
         <div style={{ background: "linear-gradient(180deg,#0a2010 0%,#0f1a14 100%)", paddingBottom: 40 }}>
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
-            <Link href="/main-v2" style={{ color: "#4ade80", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 24, textAlign: "left" }}>← 점운 홈</Link>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+              <Link href="/main-v2" style={{ color: "#4ade80", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
+              <button onClick={() => { const d = { title: "점운 감정일기 — 감정 기록 · 치유 일기", text: "오행으로 감정 흐름을 기록하고 치유해요 📔", url: "https://jeomun.com/gamjung" }; if (typeof navigator !== "undefined" && navigator.share) navigator.share(d).catch(()=>{}); else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(d.text + '\n' + d.url)}`; }; }} style={{ fontSize: 12, color: "#4ade80", fontWeight: 700, background: "rgba(74,222,128,0.15)", border: "1px solid rgba(74,222,128,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
+            </div>
             <div style={{ fontSize: 72, marginBottom: 16, display: "inline-block", animation: "breathe 3s ease-in-out infinite" }}>😊</div>
             <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.3 }}>
               오늘 기분이 어때요?

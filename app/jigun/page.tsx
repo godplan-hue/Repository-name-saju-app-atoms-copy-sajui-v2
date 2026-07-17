@@ -251,7 +251,7 @@ export default function JigunPage() {
                 onClick={() => {
                   const url = "https://jeomun.com/jigun";
                   if (navigator.share) navigator.share({ title: "💼 나에게 맞는 부업 찾기 — 직운", text: "8가지 질문으로 나에게 딱 맞는 부업 TOP 3를 찾아봤어요!", url });
-                  else navigator.clipboard?.writeText(url).then(() => alert("링크가 복사됐어요! 친구에게 공유해보세요 😊"));
+                  else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent("나에게 딱 맞는 부업 TOP 3를 찾아봤어요! 💼\n" + url)}`; }
                 }}
                 style={{ background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a1a00", border: "none", borderRadius: 28, padding: "13px 36px", fontSize: 15, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 20px rgba(251,191,36,0.45)" }}
               >

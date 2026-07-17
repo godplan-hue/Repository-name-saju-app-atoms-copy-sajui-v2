@@ -60,7 +60,7 @@ export default function HaemongPage() {
   function shareApp() {
     const data = { title: "점운 꿈해몽 — AI 꿈 해석", text: "꿈을 검색하면 AI가 바로 해몽해줘요! 무료로 써보세요 🌙", url: "https://jeomun.com/haemong" };
     if (typeof navigator !== "undefined" && navigator.share) { navigator.share(data).catch(() => {}); }
-    else if (typeof navigator !== "undefined" && navigator.clipboard) { navigator.clipboard.writeText(data.url).then(() => alert("링크가 복사됐어요!")); }
+    else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(data.text + '\n' + data.url)}`; }
   }
 
   return (

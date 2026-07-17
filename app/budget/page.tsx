@@ -214,14 +214,6 @@ export default function BudgetPage() {
         <a href="/budget/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
           이용권 구매하기 →
         </a>
-        <div style={{ marginTop: 20, width: "100%", maxWidth: 320, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 14 }}>
-          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
-          <div style={{ display: "flex", gap: 8 }}>
-            <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "10px 12px", color: "white", fontSize: 13, outline: "none" }} inputMode="numeric" />
-            <button onClick={handleRestore} disabled={restoring} style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 10, padding: "10px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
-          </div>
-          {restoreMsg && <p style={{ fontSize: 12, margin: "8px 0 0", color: restoreMsg.startsWith("✅") ? "#4ade80" : "#f87171" }}>{restoreMsg}</p>}
-        </div>
         <a href="/main-v2" style={{ display: "block", marginTop: 18, fontSize: 13, color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>← 점운 홈으로</a>
       </div>
     );
@@ -231,8 +223,9 @@ export default function BudgetPage() {
     const inp: React.CSSProperties = { width: "100%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, padding: "13px 14px", fontSize: 16, color: "white", outline: "none", boxSizing: "border-box" };
     return (
       <div style={{ minHeight: "100vh", background: "#0f172a", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
-        <nav style={{ background: "rgba(0,0,0,0.4)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "14px 20px" }}>
-          <Link href="/" style={{ fontSize: 17, fontWeight: 900, color: "#fbbf24", textDecoration: "none" }}>점운 가계부</Link>
+        <nav style={{ background: "rgba(0,0,0,0.4)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Link href="/main-v2" style={{ fontSize: 14, color: "#fbbf24", textDecoration: "none" }}>← 점운 홈</Link>
+          <button onClick={() => { const d = { title: "점운 가계부 — 일기식 재물 기록", text: "오행 재물운으로 수입·지출을 기록해요 💰", url: "https://jeomun.com/budget" }; if (typeof navigator !== "undefined" && navigator.share) navigator.share(d).catch(()=>{}); else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(d.text + '\n' + d.url)}`; }; }} style={{ fontSize: 12, color: "#fbbf24", fontWeight: 700, background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
         </nav>
         <div style={{ maxWidth: 420, margin: "0 auto", padding: "48px 20px" }}>
           <div style={{ textAlign: "center", marginBottom: 36 }}>
