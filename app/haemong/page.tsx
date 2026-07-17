@@ -57,6 +57,12 @@ export default function HaemongPage() {
     window.location.href = `/haemong/${encodeURIComponent(keyword)}`;
   }
 
+  function shareApp() {
+    const data = { title: "점운 꿈해몽 — AI 꿈 해석", text: "꿈을 검색하면 AI가 바로 해몽해줘요! 무료로 써보세요 🌙", url: "https://jeomun.com/haemong" };
+    if (typeof navigator !== "undefined" && navigator.share) { navigator.share(data).catch(() => {}); }
+    else if (typeof navigator !== "undefined" && navigator.clipboard) { navigator.clipboard.writeText(data.url).then(() => alert("링크가 복사됐어요!")); }
+  }
+
   return (
     <main style={{ minHeight: "100vh", background: BG, backgroundImage: `url('https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
 
@@ -66,12 +72,10 @@ export default function HaemongPage() {
           <span style={{ fontSize: 20 }}>🌙</span>
           <span style={{ fontWeight: 900, fontSize: 16, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>꿈해몽</span>
         </div>
-        <button
-          onClick={() => window.location.href = "/main-v2"}
-          style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 700, background: "#f5f3ff", border: "1px solid #ddd6fe", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}
-        >
-          🐱 사주 보기
-        </button>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <button onClick={shareApp} style={{ fontSize: 12, color: "#be185d", fontWeight: 700, background: "#fce7f3", border: "1px solid rgba(190,24,93,0.25)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
+          <button onClick={() => window.location.href = "/main-v2"} style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 700, background: "#f5f3ff", border: "1px solid #ddd6fe", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🐱 사주 보기</button>
+        </div>
       </header>
 
       {/* 슬라이딩 배너 */}
@@ -303,14 +307,14 @@ export default function HaemongPage() {
               <div style={{ background: "#8b5cf6", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>사주 보기 →</div>
             </div>
           </div>
-          <div onClick={() => { window.location.href = "/haemong/pay"; }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
-            <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "7px 10px", textAlign: "center" }}>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔥 7개앱 풀패스</span>
+          <div onClick={() => { window.location.href = "/haemong/pay"; }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #f59e0b", overflow: "hidden", boxShadow: "0 3px 12px rgba(245,158,11,0.2)" }}>
+            <div style={{ background: "linear-gradient(135deg,#f59e0b,#ef4444)", padding: "7px 10px", textAlign: "center" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🌙 꿈해몽 이용권</span>
             </div>
             <div style={{ padding: "10px" }}>
-              <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>₩4,900<span style={{ fontSize: 10, color: "#6b7280", fontWeight: 400 }}>/30일</span></p>
-              <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>꿈해몽·사주·펫운<br />감정일기 등 7개앱</p>
-              <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>풀패스 구매 →</div>
+              <p style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>₩990 또는 ₩4,900</p>
+              <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>단독권 또는<br />7개앱 풀패스 선택</p>
+              <div style={{ background: "linear-gradient(135deg,#f59e0b,#ef4444)", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>이용권 보기 →</div>
             </div>
           </div>
         </div>
