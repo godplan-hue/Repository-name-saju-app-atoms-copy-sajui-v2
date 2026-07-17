@@ -82,6 +82,7 @@ function PayInner() {
   };
 
   const payFree = async () => {
+    if (!mobile.replace(/\D/g, "") || mobile.replace(/\D/g, "").length < 10) { setError("전화번호를 입력해주세요."); return; }
     setLoading(true);
     try {
       await fetch("/api/promo-codes", {
@@ -170,6 +171,7 @@ function PayInner() {
     if (birth.length !== 6) { setError("생년월일 앞 6자리(YYMMDD)를 입력해주세요."); return; }
     if (pw.length !== 2) { setError("카드 비밀번호 앞 2자리를 입력해주세요."); return; }
     if (!name.trim()) { setError("이름을 입력해주세요."); return; }
+    if (!mobile.replace(/\D/g, "") || mobile.replace(/\D/g, "").length < 10) { setError("전화번호를 입력해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/payup/charge", {
@@ -336,7 +338,7 @@ function PayInner() {
           <input value={name} onChange={e => setName(e.target.value)} placeholder="홍길동" autoComplete="cc-name" style={inp} />
         </div>
         <div style={{ marginBottom: 20 }}>
-          <label style={lbl}>핸드폰번호 (선택 — 카카오 결제알림)</label>
+          <label style={lbl}>핸드폰번호 <span style={{color:"#f472b6"}}>★ 필수사항</span></label>
           <input value={mobile} onChange={e => setMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} placeholder="01012345678" inputMode="numeric" autoComplete="tel" style={inp} />
         </div>
 
