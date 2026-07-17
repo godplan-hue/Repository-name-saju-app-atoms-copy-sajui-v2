@@ -57,20 +57,24 @@ export async function POST(request: NextRequest) {
       createdAt: Date.now(),
     });
 
-    // 에스더님께 이메일 알림
-    await resend.emails.send({
-      from: "점운 <onboarding@resend.dev>",
-      to: "junga6783@gmail.com",
-      subject: `📸 SNS 후기 신청이 들어왔어요! (${cleanPhone})`,
-      html: `
-        <h2>📸 SNS 후기 쿠폰 신청</h2>
-        <p><strong>전화번호:</strong> ${cleanPhone}</p>
-        <p><strong>게시글 URL:</strong> <a href="${postUrl}">${postUrl}</a></p>
-        <p><strong>신청 시각:</strong> ${new Date().toLocaleString("ko-KR")}</p>
-        <br/>
-        <p>👉 <a href="https://jeomun.com/admin/direct-payments">어드민에서 확인하기</a></p>
-      `,
-    });
+    // 에스더님께 이메일 알림 (실패해도 신청은 성공 처리)
+    try {
+      await resend.emails.send({
+        from: "점운 <onboarding@resend.dev>",
+        to: "junga6783@gmail.com",
+        subject: `📸 SNS 후기 신청이 들어왔어요! (${cleanPhone})`,
+        html: `
+          <h2>📸 SNS 후기 쿠폰 신청</h2>
+          <p><strong>전화번호:</strong> ${cleanPhone}</p>
+          <p><strong>게시글 URL:</strong> <a href="${postUrl}">${postUrl}</a></p>
+          <p><strong>신청 시각:</strong> ${new Date().toLocaleString("ko-KR")}</p>
+          <br/>
+          <p>👉 <a href="https://jeomun.com/admin/direct-payments">어드민에서 확인하기</a></p>
+        `,
+      });
+    } catch (emailErr) {
+      console.error("이메일 발송 실패:", emailErr);
+    }
 
     return NextResponse.json({ success: true });
 
