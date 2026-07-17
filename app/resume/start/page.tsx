@@ -141,7 +141,7 @@ export default function ResumeStartPage() {
             />
             <span className="text-xs text-gray-400 leading-relaxed">
               <strong className="text-gray-300">[필수] 개인정보 수집·이용 동의</strong><br />
-              수집 항목: 이름, 생년월일, 전화번호·이메일(선택) /<br />
+              수집 항목: 이름, 생년월일, 전화번호(필수), 이메일(선택) /<br />
               목적: 합격 전략 분석 서비스 제공 / 보관 기간: 3년 후 파기
             </span>
           </label>

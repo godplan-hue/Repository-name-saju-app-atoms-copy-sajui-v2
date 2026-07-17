@@ -36,6 +36,7 @@ export default function HaemongPayPage() {
 
   const pay = async () => {
     const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
+    if (!mobile.replace(/\D/g,"") || mobile.replace(/\D/g,"").length < 10) { setError("전화번호를 입력해주세요. (필수사항)"); return; }
     if (couponData && (finalAmount === 0 || couponData.fullAccess)) {
       setLoading(true);
       try {
@@ -177,13 +178,13 @@ export default function HaemongPayPage() {
               <div style={{ flex:1 }}><label style={S.label}>카드 비밀번호 앞 2자리</label><input style={S.input} placeholder="••" maxLength={2} type="password" value={pw} onChange={e=>setPw(e.target.value.replace(/\D/g,"").slice(0,2))} inputMode="numeric" /></div>
             </div>
             <div style={S.row}><label style={S.label}>이름</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
-            <div style={S.row}><label style={S.label}>휴대폰 번호 (선택)</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
+            <div style={S.row}><label style={S.label}>휴대폰 번호 <span style={{color:"#f472b6"}}>★ 필수사항</span></label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
           </div>
         )}
         {isFree && (
           <div style={{ marginBottom:16 }}>
             <div style={S.row}><label style={S.label}>이름 (선택)</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
-            <div style={S.row}><label style={S.label}>휴대폰 번호 (선택)</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
+            <div style={S.row}><label style={S.label}>휴대폰 번호 <span style={{color:"#f472b6"}}>★ 필수사항</span></label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
           </div>
         )}
         {error && <p style={{ color:"#f87171", fontSize:13, textAlign:"center", marginBottom:12 }}>{error}</p>}

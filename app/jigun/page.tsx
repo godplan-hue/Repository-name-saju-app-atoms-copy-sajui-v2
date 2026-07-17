@@ -399,7 +399,7 @@ export default function JigunPage() {
               />
               <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
                 <strong style={{ color: "rgba(255,255,255,0.75)" }}>[필수] 개인정보 수집·이용 동의</strong><br />
-                수집 항목: 이름(선택), 출생연도, 전화번호(선택), 이메일(선택) /<br />목적: 부업 추천 서비스 제공 / 보관 기간: 3년 후 파기
+                수집 항목: 이름(선택), 출생연도, 전화번호(필수), 이메일(선택) /<br />목적: 부업 추천 서비스 제공 / 보관 기간: 3년 후 파기
               </span>
             </label>
 
