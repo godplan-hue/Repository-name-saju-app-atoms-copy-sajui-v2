@@ -145,7 +145,7 @@ export default function ShareCouponPage() {
 
             <p style={{ fontSize: 11, color: "#dc2626", textAlign: "center", margin: "10px 0 0", fontWeight: 700, lineHeight: 1.7 }}>
               ⚠️ 공개 게시글만 · 1,000자 이상 · 사진 3장 이상 필수<br />
-              기준 미달 시 발급 불가 · 1인 1회<br />
+              기준에 맞는 게시글만 발급 · 1인 1회<br />
               <span style={{ color: "#be185d", fontWeight: 600 }}>기준에 맞는 좋은 후기 잘 부탁드려요 🙏</span>
             </p>
           </div>
