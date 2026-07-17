@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Letter = { id: string; title: string; content: string; writtenDate: string; openDate: string; openAge: string; isLocked: boolean };
 
@@ -50,8 +51,7 @@ export default function TimeCapsulePage() {
   }, []);
 
   const [mcUserId, setMcUserId] = useState("");
-  const [hasPhone, setHasPhone] = useState(true);
-  const [phoneInput, setPhoneInput] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const saved = localStorage.getItem("momcare_capsule");
@@ -60,14 +60,9 @@ export default function TimeCapsulePage() {
     let uid = "";
     try {
       const ph = (JSON.parse(localStorage.getItem("v2_saved_profile") || "{}").phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
-      if (ph.length >= 10) { uid = `phone_${ph}`; setHasPhone(true); }
+      if (ph.length >= 10) { uid = `phone_${ph}`; }
     } catch {}
-    if (!uid) {
-      setHasPhone(false);
-      let devId = localStorage.getItem("momcare_device_id");
-      if (!devId) { devId = Date.now().toString(36) + Math.random().toString(36).slice(2); localStorage.setItem("momcare_device_id", devId); }
-      uid = `device_${devId}`;
-    }
+    if (!uid) { router.replace("/momcare"); return; }
     setMcUserId(uid);
 
     fetch(`/api/momcare/save?userId=${uid}&type=capsule`)
@@ -251,21 +246,6 @@ export default function TimeCapsulePage() {
         )}
       </nav>
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "24px 20px" }}>
-        {!hasPhone && (
-          <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: "14px 16px", marginBottom: 16, fontSize: 12, color: "#92400e", lineHeight: 1.6 }}>
-            ⚠️ 전화번호를 등록하면 모든 기기에서 편지를 영구 보관해요.<br />
-            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-              <input value={phoneInput} onChange={e => setPhoneInput(e.target.value)} placeholder="010-1234-5678" style={{ flex: 1, border: "1px solid #f59e0b", borderRadius: 8, padding: "8px 10px", fontSize: 13, outline: "none" }} />
-              <button onClick={() => {
-                const ph = phoneInput.replace(/\D/g, "");
-                if (ph.length < 10) { alert("전화번호를 정확히 입력해주세요."); return; }
-                try { const profile = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); profile.phone = ph; localStorage.setItem("v2_saved_profile", JSON.stringify(profile)); localStorage.setItem("v2_saved_phone", ph); } catch {}
-                setMcUserId(`phone_${ph}`);
-                setHasPhone(true);
-              }} style={{ background: "#f97316", color: "white", border: "none", borderRadius: 8, padding: "8px 14px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>저장</button>
-            </div>
-          </div>
-        )}
         {/* 잠금 배너 */}
         {!momcareUnlocked && (
           <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>

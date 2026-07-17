@@ -112,19 +112,28 @@ export default function MomcarePage() {
   }, [autoPlay]);
 
   if (!hasPhone) return (
-    <div style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-      <div style={{ background: "white", borderRadius: 24, padding: "36px 28px", maxWidth: 360, width: "100%", textAlign: "center", boxShadow: "0 8px 40px rgba(0,0,0,0.10)" }}>
-        <div style={{ fontSize: 56, marginBottom: 12 }}>👶</div>
-        <h2 style={{ fontSize: 22, fontWeight: 900, color: DARK, margin: "0 0 8px" }}>맘케어에 오신 걸 환영해요!</h2>
-        <p style={{ fontSize: 13, color: MID, margin: "0 0 24px", lineHeight: 1.7 }}>전화번호를 등록하면 일기·편지·기록이<br />모든 기기에서 영구 보관돼요.</p>
-        <input value={phoneGate} onChange={e => setPhoneGate(e.target.value)} placeholder="010-1234-5678" style={{ width: "100%", border: "2px solid #0284c7", borderRadius: 12, padding: "13px 16px", fontSize: 16, outline: "none", boxSizing: "border-box", marginBottom: 12, textAlign: "center" }} />
+    <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0c2340 0%, #0284c7 60%, #0891b2 100%)", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div style={{ fontSize: 64, marginBottom: 8 }}>👶</div>
+      <h1 style={{ fontSize: 26, fontWeight: 900, color: "white", margin: "0 0 6px", letterSpacing: -0.5 }}>맘케어</h1>
+      <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", margin: "0 0 36px" }}>AI 육아 플랫폼</p>
+      <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", maxWidth: 360, width: "100%", boxShadow: "0 16px 60px rgba(0,0,0,0.25)" }}>
+        <h2 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 6px" }}>전화번호로 시작하기</h2>
+        <p style={{ fontSize: 12, color: MID, margin: "0 0 20px", lineHeight: 1.7 }}>일기·편지·아기 말 기록이 모든 기기에서<br />자동으로 영구 보관됩니다.</p>
+        <input
+          value={phoneGate}
+          onChange={e => setPhoneGate(e.target.value)}
+          onKeyDown={e => { if (e.key === "Enter") { const ph = phoneGate.replace(/\D/g,""); if(ph.length>=10){try{const p=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}");p.phone=ph;localStorage.setItem("v2_saved_profile",JSON.stringify(p));localStorage.setItem("v2_saved_phone",ph);}catch{}setHasPhone(true);}else alert("전화번호를 정확히 입력해주세요."); }}}
+          placeholder="010-1234-5678"
+          type="tel"
+          style={{ width: "100%", border: "2px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 16, outline: "none", boxSizing: "border-box", marginBottom: 12, textAlign: "center", letterSpacing: 1 }}
+        />
         <button onClick={() => {
           const ph = phoneGate.replace(/\D/g, "");
           if (ph.length < 10) { alert("전화번호를 정확히 입력해주세요."); return; }
           try { const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); p.phone = ph; localStorage.setItem("v2_saved_profile", JSON.stringify(p)); localStorage.setItem("v2_saved_phone", ph); } catch {}
           setHasPhone(true);
-        }} style={{ width: "100%", background: TEAL_GRAD, color: "white", border: "none", borderRadius: 14, padding: "14px", fontSize: 16, fontWeight: 900, cursor: "pointer", marginBottom: 12 }}>시작하기 →</button>
-        <button onClick={() => setHasPhone(true)} style={{ width: "100%", background: "none", border: "none", color: LIGHT, fontSize: 12, cursor: "pointer" }}>나중에 할게요 (이 기기에서만 보관)</button>
+        }} style={{ width: "100%", background: TEAL_GRAD, color: "white", border: "none", borderRadius: 14, padding: "15px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>맘케어 시작하기 →</button>
+        <p style={{ fontSize: 11, color: LIGHT, textAlign: "center", margin: "14px 0 0", lineHeight: 1.6 }}>📱 이미 사주 앱에서 결제하셨다면<br />자동으로 로그인됩니다.</p>
       </div>
     </div>
   );
