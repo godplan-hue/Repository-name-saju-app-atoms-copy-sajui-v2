@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 interface MbtiData {
   type: string;
@@ -101,16 +102,32 @@ export default function MbtiResultPage() {
     setTimeout(() => { setCard(c); setCardFlipped(true); }, 50);
   };
 
-  const handleShare = async () => {
+  const handleShare = () => {
     if (!data) return;
-    const text = `나의 MBTI는 ${data.type} ${data.name}!\n사주 오행: ${data.oh}오행 기질\n\n점운에서 무료 테스트 → jeomun.com/mbti`;
-    if (navigator.share) {
-      try { await navigator.share({ title: `MBTI: ${data.type} ${data.name}`, text }); } catch { /* cancelled */ }
-    } else {
-      await navigator.clipboard.writeText(text);
-      setShared(true);
-      setTimeout(() => setShared(false), 2000);
+    const url = typeof window !== "undefined" ? window.location.href.split("?")[0] : "https://jeomun.com/mbti";
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: `나의 MBTI는 ${data.type} ${data.name}! 🧠`,
+            description: `사주 오행 ${data.oh}오행 기질 — 점운에서 무료로 테스트해봐!`,
+            imageUrl: "https://i.pinimg.com/1200x/aa/7a/e3/aa7ae3b66dc315f01fedf552b101f033.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "결과 보러가기", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 해보기 →", link: { mobileWebUrl: "https://jeomun.com/mbti", webUrl: "https://jeomun.com/mbti" } },
+          ],
+        });
+        return;
+      } catch {}
     }
+    const text = `나의 MBTI는 ${data.type} ${data.name}!\n사주 오행: ${data.oh}오행 기질\n\n점운에서 무료 테스트 → jeomun.com/mbti`;
+    navigator.clipboard?.writeText(text);
+    setShared(true);
+    setTimeout(() => setShared(false), 2000);
   };
 
   if (loading) {
@@ -278,6 +295,8 @@ export default function MbtiResultPage() {
 
         <p style={{ textAlign: "center" as const, fontSize: 11, color: "#374151", marginTop: 20 }}>© 점운 jeomun.com</p>
       </div>
+      <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"
+        onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
     </div>
   );
 }
