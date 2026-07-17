@@ -251,7 +251,7 @@ const BANNERS = [
     badgeBg: "#7c3aed",
     icon: "✨",
     tagline: "14개 앱 한 곳에서 전부",
-    desc: "🎁 완전무료: MBTI·행운번호\n🔥 풀패스 4,900원: 꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어\n💎 유료: 직운·합격자소서·궁합상세",
+    desc: "사주·꿈운·직운·합운·궁합·MBTI·행운번호·펫운·맘케어·감정일기·타로·별자리·다이어트·가계부",
     cta: "전체앱 보기 →",
     ctaColor: "#c4b5fd",
     route: "free" as const,

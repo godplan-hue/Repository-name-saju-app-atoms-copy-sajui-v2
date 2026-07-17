@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 type Detail = {
   title: string; icon: string; income: string;
@@ -51,9 +52,28 @@ export default function JigunResultPage() {
   }, [id]);
 
   function share() {
-    const url = window.location.href;
-    if (navigator.share) navigator.share({ title: "직운 — 내 부업 추천 결과", url });
-    else navigator.clipboard?.writeText(url).then(() => alert("링크가 복사됐어요!"));
+    const url = window.location.href.split("?")[0];
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: "💼 직운 — 내 부업 추천 결과",
+            description: "사주 오행으로 찾은 나만의 부업 TOP3! 점운에서 무료로 확인해봐!",
+            imageUrl: "https://i.pinimg.com/1200x/d2/bb/fc/d2bbfc234fc1e0e5eedf218d4cf9bfe4.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "내 부업 결과 보기 💼", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 해보기 →", link: { mobileWebUrl: "https://jeomun.com/jigun", webUrl: "https://jeomun.com/jigun" } },
+          ],
+        });
+        return;
+      } catch {}
+    }
+    navigator.clipboard?.writeText(url);
+    alert("링크가 복사됐어요!");
   }
 
   if (loading) return (
@@ -229,6 +249,14 @@ export default function JigunResultPage() {
           <Link href="/jigun" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>다시 추천받기 →</Link>
         </div>
       </div>
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 
 type Result = {
   name: string; field: string; companySize: string; company: string;
@@ -49,9 +50,28 @@ export default function ResumeResultPage() {
   }, [id]);
 
   function share() {
-    const url = window.location.href;
-    if (navigator.share) navigator.share({ title: "나의 합격 전략 분석", url });
-    else navigator.clipboard?.writeText(url).then(() => alert("링크가 복사됐어요!"));
+    const url = window.location.href.split("?")[0];
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: "📄 나의 합격 전략 분석 결과",
+            description: "사주 오행으로 찾은 나만의 합격 전략! 점운 합격에서 확인해봐!",
+            imageUrl: "https://i.pinimg.com/1200x/45/8c/cc/458ccc47124fae1f3b7d0d0c2ba16e8b.jpg",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "합격 전략 보기 📄", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 분석하기 →", link: { mobileWebUrl: "https://jeomun.com/resume", webUrl: "https://jeomun.com/resume" } },
+          ],
+        });
+        return;
+      } catch {}
+    }
+    navigator.clipboard?.writeText(url);
+    alert("링크가 복사됐어요!");
   }
 
   if (loading) return (
@@ -198,6 +218,14 @@ export default function ResumeResultPage() {
         </div>
 
       </div>
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
     </div>
   );
 }

@@ -33,6 +33,8 @@ export default function AdminDiscountCodes() {
   const [form, setForm] = useState({ code: "", discountPercent: 100, note: "", maxUses: 1, fullAccess: false });
   const [saving, setSaving] = useState(false);
   const [codeTab, setCodeTab] = useState<"mine"|"auto">("mine");
+  const [couponPreview, setCouponPreview] = useState<{ code: string; discountPercent: number; note: string; maxUses: number; fullAccess: boolean } | null>(null);
+  const [copied, setCopied] = useState(false);
   const isAutoCode = (c: PromoCode) => c.code.startsWith("FREE") || c.code.startsWith("무료");
 
   const loadAll = () => {
@@ -74,6 +76,7 @@ export default function AdminDiscountCodes() {
         body: JSON.stringify(form),
       });
       if (!res.ok) { alert("코드 생성에 실패했습니다."); return; }
+      setCouponPreview({ code: form.code.toUpperCase(), discountPercent: form.discountPercent, note: form.note, maxUses: form.maxUses, fullAccess: form.fullAccess });
       setForm({ code: "", discountPercent: 100, note: "", maxUses: 1, fullAccess: false });
       loadAll();
     } finally {
@@ -198,6 +201,109 @@ export default function AdminDiscountCodes() {
               {saving ? "추가중..." : "+ 코드 추가"}
             </button>
           </div>
+
+          {/* 쿠폰 미리보기 */}
+          {couponPreview && (
+            <div style={{ marginBottom: 28 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#333", margin: 0 }}>🎉 쿠폰 생성 완료! — 스크린샷 찍어서 보내세요</p>
+                <button onClick={() => setCouponPreview(null)} style={{ background: "none", border: "none", fontSize: 18, cursor: "pointer", color: "#999" }}>✕</button>
+              </div>
+
+              {/* 쿠폰 카드 */}
+              <div style={{
+                background: "linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)",
+                borderRadius: 20, padding: "2px", maxWidth: 480,
+                boxShadow: "0 8px 32px rgba(124,58,237,0.4)",
+              }}>
+                <div style={{
+                  background: "#fff", borderRadius: 18, overflow: "hidden",
+                  display: "flex", flexDirection: "column",
+                }}>
+                  {/* 상단 */}
+                  <div style={{
+                    background: "linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)",
+                    padding: "20px 24px", color: "white",
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                  }}>
+                    <div>
+                      <p style={{ margin: 0, fontSize: 11, fontWeight: 700, opacity: 0.85, letterSpacing: "0.1em" }}>JEOMUN.COM</p>
+                      <p style={{ margin: "4px 0 0", fontSize: 20, fontWeight: 900 }}>🔮 점운 할인 쿠폰</p>
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                      <p style={{ margin: 0, fontSize: 36, fontWeight: 900, lineHeight: 1 }}>
+                        {couponPreview.discountPercent === 100 ? "FREE" : `${couponPreview.discountPercent}%`}
+                      </p>
+                      <p style={{ margin: "2px 0 0", fontSize: 11, opacity: 0.85 }}>
+                        {couponPreview.discountPercent === 100 ? "완전 무료" : "할인"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 점선 구분 */}
+                  <div style={{ display: "flex", alignItems: "center", padding: "0 20px" }}>
+                    <div style={{ width: 20, height: 20, borderRadius: "50%", background: "linear-gradient(135deg,#7c3aed,#ec4899)", flexShrink: 0, marginLeft: -30 }} />
+                    <div style={{ flex: 1, borderTop: "2px dashed #e5e7eb", margin: "0 8px" }} />
+                    <div style={{ width: 20, height: 20, borderRadius: "50%", background: "linear-gradient(135deg,#7c3aed,#ec4899)", flexShrink: 0, marginRight: -30 }} />
+                  </div>
+
+                  {/* 코드 영역 */}
+                  <div style={{ padding: "20px 24px" }}>
+                    <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 8px", fontWeight: 700, letterSpacing: "0.05em" }}>쿠폰 코드</p>
+                    <div style={{
+                      background: "linear-gradient(135deg, #f5f3ff, #fdf2f8)",
+                      border: "2px dashed #c4b5fd",
+                      borderRadius: 12, padding: "14px 20px",
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      marginBottom: 14,
+                    }}>
+                      <span style={{ fontSize: 26, fontWeight: 900, color: "#7c3aed", letterSpacing: "0.12em" }}>
+                        {couponPreview.code}
+                      </span>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard?.writeText(couponPreview.code);
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        style={{
+                          background: copied ? "#22c55e" : "#7c3aed",
+                          color: "white", border: "none", borderRadius: 8,
+                          padding: "6px 14px", fontSize: 12, fontWeight: 700, cursor: "pointer",
+                        }}
+                      >
+                        {copied ? "✓ 복사됨!" : "복사"}
+                      </button>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      {couponPreview.note && (
+                        <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>📝 {couponPreview.note}</p>
+                      )}
+                      <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>
+                        🔢 사용 횟수: {couponPreview.maxUses === -1 ? "무제한" : `${couponPreview.maxUses}회`}
+                      </p>
+                      {couponPreview.fullAccess && (
+                        <p style={{ fontSize: 13, color: "#16a34a", margin: 0, fontWeight: 700 }}>
+                          🌟 7개 앱 30일 전체 이용 포함
+                        </p>
+                      )}
+                      <p style={{ fontSize: 12, color: "#9ca3af", margin: "4px 0 0" }}>
+                        📍 사용처: jeomun.com/main-v2 → 결제 시 코드 입력
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 하단 */}
+                  <div style={{ background: "#f9f9f9", padding: "12px 24px", borderTop: "1px solid #f3f4f6" }}>
+                    <p style={{ fontSize: 11, color: "#9ca3af", margin: 0, textAlign: "center" }}>
+                      점운 AI 사주 · jeomun.com · 대한민국 AI 운세 플랫폼
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* 탭 버튼 */}
           <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
