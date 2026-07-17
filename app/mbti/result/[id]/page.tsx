@@ -280,6 +280,11 @@ export default function MbtiResultPage() {
           {shared ? "✅ 복사됐어요!" : "📤 친구에게 공유하기"}
         </button>
 
+        {/* 나도 해보기 */}
+        <Link href="/mbti" style={{ display: "block", textAlign: "center" as const, background: "rgba(124,58,237,0.08)", border: "1.5px solid rgba(124,58,237,0.35)", borderRadius: 16, padding: "14px", color: "#a78bfa", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
+          나도 MBTI 해보기 (무료) →
+        </Link>
+
         {/* 사주 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.2),rgba(91,33,182,0.15))", border: "1px solid rgba(196,181,253,0.35)", borderRadius: 18, padding: "22px 20px", textAlign: "center" as const }}>
           <p style={{ fontSize: 16, fontWeight: 900, color: "#e9d5ff", margin: "0 0 4px" }}>🔮 MBTI보다 사주가 더 정확해요</p>

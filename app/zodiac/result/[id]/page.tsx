@@ -356,6 +356,11 @@ export default function ZodiacResultPage() {
           {sharing ? "✅ 링크 복사됨!" : "📤 친구에게 공유하기"}
         </button>
 
+        {/* 나도 해보기 */}
+        <Link href="/zodiac" style={{ display: "block", textAlign: "center" as const, background: "rgba(147,197,253,0.08)", border: "1.5px solid rgba(147,197,253,0.35)", borderRadius: 16, padding: "14px", color: "#93c5fd", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
+          나도 별자리 운세 보기 (무료) →
+        </Link>
+
         {/* 사주 연결 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(29,78,216,0.18),rgba(124,58,237,0.12))", border: "1px solid rgba(147,197,253,0.3)", borderRadius: 20, padding: "22px 18px" }}>
           <p style={{ fontWeight: 900, fontSize: 15, margin: "0 0 6px" }}>🔮 별자리보다 사주가 더 정확해요</p>

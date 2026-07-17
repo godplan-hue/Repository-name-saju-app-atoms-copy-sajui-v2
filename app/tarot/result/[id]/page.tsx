@@ -458,6 +458,11 @@ export default function TarotResultPage() {
           </button>
         </div>
 
+        {/* 나도 해보기 */}
+        <Link href="/tarot" style={{ display: "block", textAlign: "center" as const, background: "rgba(192,132,252,0.08)", border: "1.5px solid rgba(192,132,252,0.35)", borderRadius: 16, padding: "14px", color: "#c084fc", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
+          나도 타로 뽑기 (무료) →
+        </Link>
+
         {/* 사주 연결 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.18),rgba(192,132,252,0.1))", border: "1px solid rgba(192,132,252,0.35)", borderRadius: 20, padding: "22px 18px" }}>
           <p style={{ fontWeight: 900, fontSize: 15, margin: "0 0 6px" }}>🔮 타로가 맞는다면 사주는 더 정확해요</p>

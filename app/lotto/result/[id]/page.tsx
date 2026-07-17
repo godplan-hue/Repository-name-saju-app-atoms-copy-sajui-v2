@@ -269,6 +269,11 @@ export default function LottoResultPage() {
           {shared ? "✅ 복사됐어요!" : "📤 번호 공유하기"}
         </button>
 
+        {/* 나도 해보기 */}
+        <Link href="/lotto" style={{ display: "block", textAlign: "center" as const, background: "rgba(251,191,36,0.08)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 16, padding: "14px", color: "#fbbf24", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
+          나도 행운번호 뽑기 (무료) →
+        </Link>
+
         {/* 사주 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(139,92,246,0.18),rgba(59,130,246,0.12))", border: "1px solid rgba(139,92,246,0.35)", borderRadius: 20, padding: "22px 18px", textAlign: "center" as const, marginBottom: 40 }}>
           <p style={{ fontWeight: 900, fontSize: 15, color: "#e9d5ff", margin: "0 0 6px" }}>

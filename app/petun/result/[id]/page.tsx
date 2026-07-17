@@ -589,6 +589,11 @@ export default function PetunResultPage() {
           </div>
         )}
 
+        {/* 나도 해보기 */}
+        <Link href="/petun" style={{ display: "block", textAlign: "center" as const, background: "rgba(6,182,212,0.08)", border: "1.5px solid rgba(6,182,212,0.35)", borderRadius: 16, padding: "14px", color: "#22d3ee", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
+          나도 펫운 해보기 (무료) →
+        </Link>
+
         {/* 사주 연결 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(6,182,212,0.15),rgba(14,165,233,0.08))", border: "1px solid rgba(6,182,212,0.35)", borderRadius: 18, padding: "20px 18px", marginBottom: 14 }}>
           <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 6px", color: "#a5f3fc" }}>🌿 반려동물이 마음에 걸린다면?</p>

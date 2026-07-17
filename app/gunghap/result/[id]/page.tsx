@@ -374,6 +374,11 @@ export default function GunghapResultPage() {
           </>
         )}
 
+        {/* 나도 해보기 */}
+        <Link href="/gunghap" style={{ display: "block", textAlign: "center" as const, background: "rgba(236,72,153,0.08)", border: "1.5px solid rgba(236,72,153,0.35)", borderRadius: 16, padding: "14px", color: "#f472b6", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
+          나도 궁합 해보기 (무료) →
+        </Link>
+
         {/* 사주 연결 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.18),rgba(192,132,252,0.1))", border: "1px solid rgba(192,132,252,0.35)", borderRadius: 18, padding: "20px 18px", marginBottom: 16 }}>
           <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 6px", color: "#e9d5ff" }}>💡 궁합점수가 전부가 아닙니다</p>
