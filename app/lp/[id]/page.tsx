@@ -22,14 +22,12 @@ const HERO_IMAGE_URLS: Record<string, string> = {
 };
 
 const PRODUCT_MAP: Record<string, { name: string; icon: string; desc: string; price: number }> = {
-  basic:   { name: "기본분석",    icon: "🔮", desc: "사주 원국 + 오늘의 운세",  price: 990  },
-  wealth:  { name: "재물운",     icon: "💰", desc: "재물·돈의 흐름 분석",     price: 3900 },
-  love:    { name: "연애운",     icon: "💕", desc: "연애·결혼 운세 분석",     price: 3900 },
-  health:  { name: "건강운",     icon: "💪", desc: "건강 흐름 분석",          price: 3900 },
-  success: { name: "성공운",     icon: "🎯", desc: "직업·커리어 분석",        price: 3900 },
-  career:  { name: "직업/사업운", icon: "🏢", desc: "사업·직업 상세 분석",    price: 3900 },
+  wealth:  { name: "재물운",     icon: "💰", desc: "재물·돈의 흐름 분석",     price: 7900 },
+  love:    { name: "연애운",     icon: "💕", desc: "연애·결혼 운세 분석",     price: 7900 },
+  health:  { name: "건강운",     icon: "💪", desc: "건강 흐름 분석",          price: 7900 },
+  success: { name: "성공운",     icon: "🎯", desc: "직업·커리어 분석",        price: 7900 },
+  yearly:  { name: "총운",       icon: "📅", desc: "2026년 전체 흐름 분석",   price: 7900 },
   daewoon: { name: "대운(大運)", icon: "🌌", desc: "10년 운명의 큰 흐름",    price: 2900 },
-  yearly:  { name: "올해운세",    icon: "📅", desc: "2026년 전체 흐름 분석",  price: 3900 },
   taegil:  { name: "택일",       icon: "🗓",  desc: "중요한 날 좋은 날 찾기", price: 2900 },
   pkg:     { name: "패키지 특가", icon: "🎁", desc: "5개 운세 묶음 한 번에",  price: 9900 },
 };
