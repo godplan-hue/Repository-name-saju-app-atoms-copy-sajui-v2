@@ -65,6 +65,15 @@ export default function MomcarePage() {
   const [restorePhone, setRestorePhone] = useState("");
   const [restoring, setRestoring] = useState(false);
   const [restoreMsg, setRestoreMsg] = useState("");
+  const [hasPhone, setHasPhone] = useState(true);
+  const [phoneGate, setPhoneGate] = useState("");
+
+  useEffect(() => {
+    try {
+      const ph = (JSON.parse(localStorage.getItem("v2_saved_profile") || "{}").phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+      if (ph.length < 10) setHasPhone(false);
+    } catch { setHasPhone(false); }
+  }, []);
 
   useEffect(() => {
     try {
@@ -101,6 +110,24 @@ export default function MomcarePage() {
     const t = setInterval(() => setFeatureIdx(i => (i + 1) % FEATURES.length), 4000);
     return () => clearInterval(t);
   }, [autoPlay]);
+
+  if (!hasPhone) return (
+    <div style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div style={{ background: "white", borderRadius: 24, padding: "36px 28px", maxWidth: 360, width: "100%", textAlign: "center", boxShadow: "0 8px 40px rgba(0,0,0,0.10)" }}>
+        <div style={{ fontSize: 56, marginBottom: 12 }}>👶</div>
+        <h2 style={{ fontSize: 22, fontWeight: 900, color: DARK, margin: "0 0 8px" }}>맘케어에 오신 걸 환영해요!</h2>
+        <p style={{ fontSize: 13, color: MID, margin: "0 0 24px", lineHeight: 1.7 }}>전화번호를 등록하면 일기·편지·기록이<br />모든 기기에서 영구 보관돼요.</p>
+        <input value={phoneGate} onChange={e => setPhoneGate(e.target.value)} placeholder="010-1234-5678" style={{ width: "100%", border: "2px solid #0284c7", borderRadius: 12, padding: "13px 16px", fontSize: 16, outline: "none", boxSizing: "border-box", marginBottom: 12, textAlign: "center" }} />
+        <button onClick={() => {
+          const ph = phoneGate.replace(/\D/g, "");
+          if (ph.length < 10) { alert("전화번호를 정확히 입력해주세요."); return; }
+          try { const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); p.phone = ph; localStorage.setItem("v2_saved_profile", JSON.stringify(p)); localStorage.setItem("v2_saved_phone", ph); } catch {}
+          setHasPhone(true);
+        }} style={{ width: "100%", background: TEAL_GRAD, color: "white", border: "none", borderRadius: 14, padding: "14px", fontSize: 16, fontWeight: 900, cursor: "pointer", marginBottom: 12 }}>시작하기 →</button>
+        <button onClick={() => setHasPhone(true)} style={{ width: "100%", background: "none", border: "none", color: LIGHT, fontSize: 12, cursor: "pointer" }}>나중에 할게요 (이 기기에서만 보관)</button>
+      </div>
+    </div>
+  );
 
   return (
     <div style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", color: DARK }}>
