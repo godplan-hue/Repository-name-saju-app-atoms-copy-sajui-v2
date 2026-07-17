@@ -75,7 +75,7 @@ export default function ShareCouponPage() {
             </div>
             <div style={{ width: 1, height: 40, background: "#e5e7eb" }} />
             <div style={{ textAlign: "center", flex: 1 }}>
-              <p style={{ fontSize: 28, fontWeight: 900, color: "#7c3aed", margin: "0 0 2px" }}>9,900원</p>
+              <p style={{ fontSize: 28, fontWeight: 900, color: "#7c3aed", margin: "0 0 2px", whiteSpace: "nowrap" }}>9,900원</p>
               <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>총 혜택</p>
             </div>
             <div style={{ width: 1, height: 40, background: "#e5e7eb" }} />
