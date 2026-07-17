@@ -26,6 +26,7 @@ function PayInner() {
   const [pw, setPw] = useState("");
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [couponCode, setCouponCode] = useState("");
@@ -37,6 +38,15 @@ function PayInner() {
   const [refundAgreed, setRefundAgreed] = useState(false);
 
   const displayAmount = discountPct > 0 ? Math.round(amount * (1 - discountPct / 100)) : amount;
+
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.name) setName(p.name);
+      if (p.phone) setMobile(p.phone);
+      if (p.email) setEmail(p.email);
+    } catch {}
+  }, []);
 
   useEffect(() => {
     try {
@@ -125,6 +135,7 @@ function PayInner() {
 
       localStorage.setItem("v2_paid", "1");
       localStorage.setItem("v2_plan", "select");
+      try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); const cleanMob = mobile.replace(/\D/g,""); localStorage.setItem("v2_saved_profile", JSON.stringify({...sp, phone: cleanMob, email: email.trim()})); if (cleanMob) localStorage.setItem("v2_saved_phone", cleanMob); } catch {}
       try {
         const cats = JSON.parse(localStorage.getItem("v2_paid_cats") || "[]");
         if (!cats.includes("💰 재물운")) cats.push("💰 재물운");
@@ -201,6 +212,7 @@ function PayInner() {
             sessionStorage.setItem("v2_payment_phone", cleanMobile);
           } catch {}
         }
+        try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({...sp, phone: cleanMobile, email: email.trim()})); } catch {}
         // 맘케어 30일 + Q&A/복냥이 24시간 잠금 해제 (실카드 결제만)
         try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); } catch {}
         try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
@@ -214,6 +226,7 @@ function PayInner() {
               date: new Date().toISOString(),
               name: name.trim(),
               phone: mobile.replace(/\D/g, ""),
+              email: email.trim(),
               amount: displayAmount,
               package: "운세",
               categories: [],
@@ -337,9 +350,13 @@ function PayInner() {
           <label style={lbl}>이름 (카드 명의자)</label>
           <input value={name} onChange={e => setName(e.target.value)} placeholder="홍길동" autoComplete="cc-name" style={inp} />
         </div>
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 12 }}>
           <label style={lbl}>핸드폰번호 <span style={{color:"#f472b6"}}>★ 필수사항</span></label>
           <input value={mobile} onChange={e => setMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} placeholder="01012345678" inputMode="numeric" autoComplete="tel" style={inp} />
+        </div>
+        <div style={{ marginBottom: 20 }}>
+          <label style={lbl}>이메일 (선택 — 운세·혜택 정보 수신)</label>
+          <input value={email} onChange={e => setEmail(e.target.value)} placeholder="example@email.com" inputMode="email" type="email" autoComplete="email" style={inp} />
         </div>
 
         {error && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>⚠️ {error}</p>}

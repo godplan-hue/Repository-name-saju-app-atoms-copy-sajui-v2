@@ -12,6 +12,7 @@ export default function HaemongPayPage() {
   const [pw, setPw] = useState("");
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [coupon, setCoupon] = useState("");
@@ -47,7 +48,8 @@ export default function HaemongPayPage() {
           : {haemong_unlock_until:_until};
         Object.entries(_unlocks).forEach(([k,v])=>{try{localStorage.setItem(k,String(v));}catch{}});
         if(_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
-        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`haemong_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"꿈해몽 쿠폰",source:"haemong"})}).catch(()=>{});
+        try { const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:_ph,email:email.trim()})); if(_ph) localStorage.setItem("v2_saved_phone",_ph); } catch {}
+        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`haemong_${Date.now()}`,phone:_ph||"",name:name.trim()||"",email:email.trim()||"",amount:0,category:"꿈해몽 쿠폰",source:"haemong"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         window.location.href = "/haemong";
       } finally { setLoading(false); }
@@ -77,7 +79,8 @@ export default function HaemongPayPage() {
         const _until = (_p>Date.now()?_p:Date.now())+30*24*60*60*1000;
         try { localStorage.setItem("haemong_unlock_until", String(_until)); } catch {}
         if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:{haemong_unlock_until:_until}})}).catch(()=>{});
-        fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `haemong_${Date.now()}`, phone: _ph||"", name: name.trim(), amount: finalAmount, category: "꿈해몽 30일권", source: "haemong" }) }).catch(()=>{});
+        try { const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:_ph,email:email.trim()})); if(_ph) localStorage.setItem("v2_saved_phone",_ph); } catch {}
+        fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `haemong_${Date.now()}`, phone: _ph||"", name: name.trim(), email: email.trim(), amount: finalAmount, category: "꿈해몽 30일권", source: "haemong" }) }).catch(()=>{});
         window.location.href = "/haemong";
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");
@@ -179,12 +182,14 @@ export default function HaemongPayPage() {
             </div>
             <div style={S.row}><label style={S.label}>이름</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
             <div style={S.row}><label style={S.label}>휴대폰 번호 <span style={{color:"#f472b6"}}>★ 필수사항</span></label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
+            <div style={S.row}><label style={S.label}>이메일 (선택)</label><input style={S.input} placeholder="example@email.com" type="email" inputMode="email" value={email} onChange={e=>setEmail(e.target.value)} /></div>
           </div>
         )}
         {isFree && (
           <div style={{ marginBottom:16 }}>
             <div style={S.row}><label style={S.label}>이름 (선택)</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
             <div style={S.row}><label style={S.label}>휴대폰 번호 <span style={{color:"#f472b6"}}>★ 필수사항</span></label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
+            <div style={S.row}><label style={S.label}>이메일 (선택)</label><input style={S.input} placeholder="example@email.com" type="email" inputMode="email" value={email} onChange={e=>setEmail(e.target.value)} /></div>
           </div>
         )}
         {error && <p style={{ color:"#f87171", fontSize:13, textAlign:"center", marginBottom:12 }}>{error}</p>}
