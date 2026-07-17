@@ -26,13 +26,42 @@ function PayInner() {
   const [mobile, setMobile] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [coupon, setCoupon] = useState("");
+  const [couponData, setCouponData] = useState<any>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
 
   const formatCardNo = (v: string) => {
     const d = v.replace(/\D/g, "").slice(0, 19);
     return d.match(/.{1,4}/g)?.join(" ") ?? d;
   };
 
+  const applyCoupon = async () => {
+    if (!coupon.trim()) return;
+    setCouponLoading(true);
+    try {
+      const r = await fetch(`/api/promo-codes?code=${coupon.trim().toUpperCase()}`);
+      const d = await r.json();
+      if (d.found) {
+        if (d.maxAmount && AMOUNT > d.maxAmount) { setError(`이 쿠폰은 ₩${d.maxAmount.toLocaleString()} 이하 상품에만 사용 가능해요.`); setCouponData(null); }
+        else { setCouponData(d); setError(""); }
+      } else { setError("유효하지 않은 쿠폰이에요."); setCouponData(null); }
+    } catch { setError("쿠폰 확인 중 오류가 발생했어요."); }
+    finally { setCouponLoading(false); }
+  };
+
   const pay = async () => {
+    const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
+    if (couponData && (finalAmount === 0 || couponData.fullAccess)) {
+      setLoading(true);
+      try {
+        const _ph = mobile.replace(/\D/g,"");
+        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`resume_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"합격자소서 쿠폰",source:"resume"})}).catch(()=>{});
+        fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
+        if (id) fetch("/api/resume/analyze",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id})}).catch(()=>{});
+        window.location.href = id ? `/resume/result/${id}?paid=1` : "/resume/start";
+      } finally { setLoading(false); }
+      return;
+    }
     const clean = cardNo.replace(/\s/g, "");
     if (clean.length < 14) { setError("카드번호를 확인해주세요."); return; }
     if (!expM || !expY) { setError("유효기간을 입력해주세요."); return; }
@@ -51,7 +80,7 @@ function PayInner() {
           expireYear: expY.slice(-2),
           birthday: birth,
           cardPw: pw,
-          amount: AMOUNT,
+          amount: finalAmount,
           itemName: "점운 합격자소서 분석 1회",
           userName: name.trim(),
           mobileNumber: mobile.replace(/\D/g, ""),
@@ -59,7 +88,7 @@ function PayInner() {
       });
       const data = await res.json();
       if (data.success) {
-        // 결제 기록 Firebase 저장
+        if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         if (name.trim()) {
           fetch("/api/v2/save-payment", {
             method: "POST",
@@ -68,13 +97,12 @@ function PayInner() {
               id: `resume_${Date.now()}`,
               phone: mobile.replace(/\D/g, "") || "",
               name: name.trim(),
-              amount: AMOUNT,
+              amount: finalAmount,
               category: "합격자소서 1회권",
               source: "resume",
             }),
           }).catch(() => {});
         }
-        // 결과 ID에 paid:true 영구 저장
         if (id) {
           fetch("/api/resume/analyze", {
             method: "PATCH",
@@ -126,7 +154,21 @@ function PayInner() {
           </p>
         </div>
 
+        {/* 쿠폰 */}
+        <div style={{ marginBottom:16, background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:16, padding:"14px 16px" }}>
+          <label style={{ fontSize:12, color:"#9ca3af", marginBottom:8, display:"block" as const }}>🎟 쿠폰 코드 (선택)</label>
+          <div style={{ display:"flex", gap:8 }}>
+            <input style={{ flex:1, background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:12, padding:"11px 14px", color:"white", fontSize:14, outline:"none" }}
+              placeholder="쿠폰 코드 입력" value={coupon} onChange={e=>setCoupon(e.target.value.toUpperCase())} onKeyDown={e=>e.key==="Enter"&&applyCoupon()} />
+            <button onClick={applyCoupon} disabled={couponLoading} style={{ background:"rgba(124,58,237,0.3)", border:"1px solid rgba(124,58,237,0.6)", color:"#c4b5fd", fontSize:13, fontWeight:700, padding:"0 16px", borderRadius:12, cursor:"pointer", flexShrink:0 }}>
+              {couponLoading?"...":"적용"}
+            </button>
+          </div>
+          {couponData && <p style={{ fontSize:12, color:"#4ade80", marginTop:8, marginBottom:0 }}>✅ {(Math.round(AMOUNT*(1-couponData.discountPercent/100))===0||couponData.fullAccess)?"무료 이용권 — 카드 없이 바로 이용 가능!":`${couponData.discountPercent}% 할인 → ₩${Math.round(AMOUNT*(1-couponData.discountPercent/100)).toLocaleString()}`}</p>}
+        </div>
+
         {/* 카드 정보 입력 */}
+        {!(couponData && (Math.round(AMOUNT*(1-couponData.discountPercent/100))===0||couponData.fullAccess)) && (
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 18, padding: "20px 18px", marginBottom: 16 }}>
           <p style={{ fontSize: 13, fontWeight: 900, color: "#a78bfa", margin: "0 0 16px" }}>💳 카드 정보 입력</p>
 
@@ -174,6 +216,7 @@ function PayInner() {
               onChange={e => setMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} inputMode="numeric" />
           </div>
         </div>
+        )}
 
         {error && (
           <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>
@@ -184,7 +227,7 @@ function PayInner() {
           disabled={loading}
           style={{ width: "100%", background: loading ? "rgba(124,58,237,0.5)" : "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 22, padding: "16px", fontSize: 16, fontWeight: 900, cursor: loading ? "not-allowed" : "pointer", marginBottom: 12 }}
         >
-          {loading ? "결제 처리 중..." : `₩${AMOUNT.toLocaleString()} 결제하기`}
+          {loading?"처리 중...":(couponData&&(Math.round(AMOUNT*(1-couponData.discountPercent/100))===0||couponData.fullAccess))?"🎟 무료로 이용하기":couponData?`₩${Math.round(AMOUNT*(1-couponData.discountPercent/100)).toLocaleString()} 결제하기`:`₩${AMOUNT.toLocaleString()} 결제하기`}
         </button>
 
         <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", lineHeight: 1.6 }}>
