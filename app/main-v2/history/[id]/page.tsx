@@ -288,15 +288,15 @@ export default function HistoryDetail() {
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
     if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\n읽기를 사용하려면:\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n\n⚠️ 카카오톡 [다른 브라우저로 열기]는\n데이터가 없어 보관함 홈으로 이동돼요." });
+      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\nPC나 크롬 브라우저에서 jeomun.com 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n(전화번호로 자동 복원돼요)" });
       return;
     }
     if (/NAVER|NaverWebView|naver_/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\n읽기를 사용하려면:\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n\n⚠️ 카카오톡 [다른 브라우저로 열기]는\n데이터가 없어 보관함 홈으로 이동돼요." });
+      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\nPC나 크롬 브라우저에서 jeomun.com 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n(전화번호로 자동 복원돼요)" });
       return;
     }
     if (/DaumApps|Daum|daum/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\n읽기를 사용하려면:\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n\n⚠️ 카카오톡 [다른 브라우저로 열기]는\n데이터가 없어 보관함 홈으로 이동돼요." });
+      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\nPC나 크롬 브라우저에서 jeomun.com 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n(전화번호로 자동 복원돼요)" });
       return;
     }
     if (!("speechSynthesis" in window)) return;

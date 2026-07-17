@@ -54,7 +54,7 @@ export default function ShareActions({ keyword }: Props) {
             cursor: "pointer", boxShadow: "0 2px 8px rgba(220,38,38,0.4)",
           }}
         >
-          ❗ 꼭 읽어보세요
+          💬 이용 안내
         </button>
 
         <div style={{ flex: 1 }} />

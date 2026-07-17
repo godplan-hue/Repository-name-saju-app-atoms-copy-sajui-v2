@@ -450,9 +450,7 @@ function PartnerAnalysisResultInner() {
 
         {partnerTier === "free" && (
           <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 12, padding: "10px 14px", margin: "8px 16px 0", fontSize: 12, color: "#92400e", fontWeight: 700, lineHeight: 1.8 }}>
-            📤 <strong>공유 버튼</strong>을 눌러 고객에게 결과지 링크를 카카오톡·문자·메일로 보내세요.<br />
-            이미지 저장은 PC 또는 크롬·구글 브라우저에서 하면 8개 운세 전체가 한 번에 저장됩니다.<br />
-            카카오톡·기본 모바일 브라우저는 일부만 저장될 수 있어요. → 크롬으로 열어서 저장하세요.
+            📤 <strong>공유 버튼</strong>을 눌러 고객에게 결과지 링크를 카카오톡·문자·메일로 보내세요.
           </div>
         )}
 
