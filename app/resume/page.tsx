@@ -154,7 +154,7 @@ export default function ResumePage() {
               </div>
             ))}
           </div>
-          <Link href="/resume/pay" style={{display:"block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:16, fontWeight:900, padding:"16px", borderRadius:14, textDecoration:"none", textAlign:"center"}}>
+          <Link href="/resume/start" style={{display:"block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:16, fontWeight:900, padding:"16px", borderRadius:14, textDecoration:"none", textAlign:"center"}}>
             합격 전략 분석 시작하기 →
           </Link>
         </div>
