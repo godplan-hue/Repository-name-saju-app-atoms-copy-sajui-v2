@@ -13,7 +13,10 @@ export default function PayPage() {
 
 function PayInner() {
   const searchParams = useSearchParams();
-  const amount = Number(searchParams.get("amount") || "0");
+  const urlAmount = Number(searchParams.get("amount") || "990");
+  const [selectedAmount, setSelectedAmount] = useState(urlAmount || 990);
+  const amount = selectedAmount;
+  const isFullPass = selectedAmount === 4900;
   const next = searchParams.get("next") || "/main-v2";
   const isTaegil = searchParams.get("taegil") === "1";
   const isFreeCat = searchParams.get("freeCat") === "1";
@@ -128,8 +131,8 @@ function PayInner() {
         if (!cats.includes("💰 재물운")) cats.push("💰 재물운");
         localStorage.setItem("v2_paid_cats", JSON.stringify(cats));
       } catch {}
-      // fullAccess 쿠폰: 전체 앱 30일/24h 열기
-      if (couponFullAccess) {
+      // fullAccess 쿠폰 또는 4,900원 풀패스 결제: 전체 앱 30일 열기
+      if (couponFullAccess || isFullPass) {
         const _faKeys = ["haemong_unlock_until","momcare_unlock_until","gamjung_unlock_until","budget_unlock_until","tarot_unlock_until","petun_unlock_until","diet_unlock_until"];
         const _faUnlocks: Record<string, number> = {};
         _faKeys.forEach(k => { try { const _p=Number(localStorage.getItem(k)||0); const _u=(_p>Date.now()?_p:Date.now())+30*24*60*60*1000; localStorage.setItem(k,String(_u)); _faUnlocks[k]=_u; } catch {} });
@@ -265,14 +268,6 @@ function PayInner() {
   };
   const lbl: CSSProperties = { display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 };
 
-  if (!amount) {
-    return (
-      <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0d0520", color: "white", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
-        <p>잘못된 접근입니다.</p>
-      </main>
-    );
-  }
-
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(180deg,#1a0835,#0d0520)", color: "white", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 16px" }}>
       <div style={{ width: "100%", maxWidth: 400 }}>
@@ -280,17 +275,40 @@ function PayInner() {
           ← 돌아가기
         </button>
 
-        <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 22, margin: "0 0 4px" }}>💳 카드 결제</p>
+        {/* 상품 선택 */}
+        <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+          {[
+            { price: 990, label: "🔮 사주 분석", sub: "기본 사주 분석", color: "#c4b5fd", border: "#7c3aed" },
+            { price: 4900, label: "🔥 풀패스", sub: "7개앱 30일 전체", color: "#fbbf24", border: "#f59e0b" },
+          ].map(opt => (
+            <button
+              key={opt.price}
+              onClick={() => { setSelectedAmount(opt.price); setDiscountPct(0); setCouponFree(false); setCouponMsg(""); setCouponCode(""); }}
+              style={{
+                flex: 1, padding: "14px 10px", borderRadius: 14, cursor: "pointer", textAlign: "center",
+                background: selectedAmount === opt.price ? `rgba(${opt.price === 990 ? "124,58,237" : "245,158,11"},0.25)` : "rgba(255,255,255,0.05)",
+                border: `2px solid ${selectedAmount === opt.price ? opt.border : "rgba(255,255,255,0.1)"}`,
+                color: "white", transition: "all 0.2s",
+              }}
+            >
+              <p style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 900, color: selectedAmount === opt.price ? opt.color : "#d1d5db" }}>{opt.label}</p>
+              <p style={{ margin: "0 0 6px", fontSize: 11, color: "#9ca3af" }}>{opt.sub}</p>
+              <p style={{ margin: 0, fontSize: 18, fontWeight: 900, color: selectedAmount === opt.price ? opt.color : "#6b7280" }}>₩{opt.price.toLocaleString()}</p>
+            </button>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginBottom: 16 }}>
           {discountPct > 0 && !couponFree && (
             <p style={{ color: "rgba(196,181,253,0.5)", fontWeight: 700, fontSize: 14, margin: 0, textDecoration: "line-through" }}>₩{amount.toLocaleString()}</p>
           )}
-          <p style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 18, margin: 0 }}>₩{displayAmount.toLocaleString()}</p>
+          <p style={{ color: isFullPass ? "#fbbf24" : "#c4b5fd", fontWeight: 900, fontSize: 20, margin: 0 }}>결제금액 ₩{displayAmount.toLocaleString()}</p>
+          {isFullPass && <p style={{ color: "#9ca3af", fontSize: 12, margin: "4px 0 0" }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어 30일</p>}
         </div>
 
         {/* 무료 쿠폰 */}
         <div style={{ marginBottom: 16, padding: "12px 14px", background: "rgba(255,255,255,0.06)", borderRadius: 12, border: "1px solid rgba(251,191,36,0.25)" }}>
-          <label style={{ ...lbl, marginBottom: 8 }}>🎟 쿠폰 코드 (어떤 상품이든 사용 가능)</label>
+          <label style={{ ...lbl, marginBottom: 8 }}>🎟 쿠폰 코드</label>
           <div style={{ display: "flex", gap: 8 }}>
             <input
               value={couponCode}
