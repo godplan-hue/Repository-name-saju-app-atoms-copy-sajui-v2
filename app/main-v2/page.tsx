@@ -922,11 +922,6 @@ export default function MainV2() {
             <span style={{ fontSize: 12 }}>🌸</span>
             <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>오늘의 무료사주</span>
           </div>
-          {!isPartner && (
-            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", marginTop: 8, letterSpacing: "0.02em" }}>
-              🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
-            </p>
-          )}
         </div>
         {/* 마법사 고양이 이미지 */}
         <div style={{ position: "relative", display: "inline-block", flexShrink: 0 }}>
