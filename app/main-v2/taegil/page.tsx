@@ -235,7 +235,7 @@ export default function TaegilPage() {
     } else if (navigator.share) {
       navigator.share({ title, text: desc, url: shareUrl });
     } else {
-      navigator.clipboard.writeText(shareUrl).then(() => alert("링크가 복사됐어요! 카카오톡에 붙여넣기 하세요."));
+      window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(shareUrl)}`;
     }
   };
 

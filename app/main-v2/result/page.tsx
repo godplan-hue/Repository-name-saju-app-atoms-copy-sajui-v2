@@ -959,10 +959,10 @@ function V2ResultInner() {
               ],
         });
       } catch {
-        navigator.clipboard.writeText(`${text}\n${url}`).catch(() => {});
+        if (navigator.share) { navigator.share({ title: "🔮 점운 운세 결과", text: `${text}\n${url}` }).catch(() => {}); } else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(`${text}\n${url}`)}`; }
       }
     } else {
-      navigator.clipboard.writeText(`${text}\n${url}`).catch(() => {});
+      if (navigator.share) { navigator.share({ title: "🔮 점운 운세 결과", text: `${text}\n${url}` }).catch(() => {}); } else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(`${text}\n${url}`)}`; }
     }
   };
 

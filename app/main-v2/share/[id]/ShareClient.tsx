@@ -127,10 +127,10 @@ export default function ShareClient({ id }: { id: string }) {
       try {
         kakao.Share.sendDefault({ objectType: "feed", content: { title: `🔮 ${entry.name}님의 ${entry.categories[0]?.label ?? "사주"} 분석 결과`, description: `총운 ${entry.scores?.total ?? "?"}점! 🔮 AI 사주 점운 jeomun.com`, imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "내 사주 결과 보기", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 무료로 사주 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } }] });
       } catch {
-        navigator.clipboard.writeText(url).catch(() => {});
+        if (navigator.share) { navigator.share({ title: "🔮 점운 사주 결과", url }).catch(() => {}); } else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(url)}`; }
       }
     } else {
-      navigator.clipboard.writeText(url).catch(() => {});
+      if (navigator.share) { navigator.share({ title: "🔮 점운 사주 결과", url }).catch(() => {}); } else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(url)}`; }
     }
   };
 

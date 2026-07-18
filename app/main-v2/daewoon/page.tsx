@@ -415,8 +415,7 @@ function DaewoonInner() {
     } else if (navigator.share) {
       navigator.share({ title, text: `${desc} | 점운 AI사주`, url: shareUrl }).catch(() => {});
     } else {
-      try { await navigator.clipboard.writeText(shareUrl); } catch {}
-      alert("공유 링크가 복사됐어요!\n" + shareUrl);
+      window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(shareUrl)}`;
     }
   };
 
