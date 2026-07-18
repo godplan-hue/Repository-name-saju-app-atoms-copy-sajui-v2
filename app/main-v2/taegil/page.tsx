@@ -180,6 +180,10 @@ export default function TaegilPage() {
 
   const handleRead = async () => {
     if (!results.length) return;
+    if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
+      alert("카카오톡 안에서는 읽기가 바로 시작되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요.");
+      return;
+    }
     if (speaking) { stopTts(); return; }
     const text = results.map(r => {
       const d = new Date(r.date);
@@ -479,6 +483,14 @@ export default function TaegilPage() {
           </div>
         )}
       </div>}
+      {/* 고정 읽기 버튼 */}
+      {results.length > 0 && (
+        <div style={{ position: "fixed", right: 16, bottom: 80, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+          <button onClick={handleRead} style={{ display: "flex", alignItems: "center", gap: 6, padding: "11px 18px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg,#ef4444,#f97316)" : "linear-gradient(135deg,#22c55e,#15803d)", color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.28)" }}>
+            {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
+          </button>
+        </div>
+      )}
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"
         onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
     </main>
