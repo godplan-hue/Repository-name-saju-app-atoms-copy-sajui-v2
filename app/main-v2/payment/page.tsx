@@ -279,32 +279,34 @@ function PaymentInner() {
       {awaitOther && (
         <>
           <div onClick={() => setAwaitOther(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 302 }} />
-          <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 303, background: "linear-gradient(180deg,#1a0f35,#0f0620)", borderRadius: "20px 20px 0 0", padding: "28px 20px 40px", maxWidth: 500, margin: "0 auto" }}>
+          <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 303, background: "linear-gradient(180deg,#1a0f35,#0f0620)", borderRadius: "20px 20px 0 0", padding: "28px 20px 0", maxWidth: 500, margin: "0 auto" }}>
             <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 16, marginBottom: 16, textAlign: "center" }}>
               {awaitOther.id === "pet_compat" ? "🐾 반려동물 이름을 입력해주세요" : "💔 상대방 이름을 입력해주세요"}
             </p>
-            <input
-              value={otherInput}
-              onChange={e => setOtherInput(e.target.value)}
-              onKeyDown={e => { if (e.key === "Enter" && otherInput.trim()) { const cur = awaitOther!; sessionStorage.setItem("specialOtherName", otherInput.trim()); const paidPrice = finalPrice(2900); setAwaitOther(null); openPuModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`); } }}
-              placeholder={awaitOther.id === "pet_compat" ? "예: 초코" : "예: 홍길동"}
-              autoFocus
-              style={{ width: "100%", padding: "13px 16px", borderRadius: 12, border: "1.5px solid rgba(251,191,36,0.5)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box", marginBottom: 14 }}
-            />
-            <button
-              onClick={async () => {
-                if (!otherInput.trim()) return;
-                const cur = awaitOther!;
-                sessionStorage.setItem("specialOtherName", otherInput.trim());
-                const paidPrice = finalPrice(2900);
-                setAwaitOther(null);
-                openPuModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`);
-              }}
-              disabled={!otherInput.trim()}
-              style={{ width: "100%", padding: "14px 0", background: otherInput.trim() ? "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)" : "rgba(255,255,255,0.1)", color: otherInput.trim() ? "#1a0f2e" : "rgba(255,255,255,0.4)", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: otherInput.trim() ? "pointer" : "not-allowed" }}
-            >
-              💳 결제하기 · ₩2,900
-            </button>
+            <form onSubmit={e => {
+              e.preventDefault();
+              if (!otherInput.trim()) return;
+              const cur = awaitOther!;
+              sessionStorage.setItem("specialOtherName", otherInput.trim());
+              const paidPrice = finalPrice(2900);
+              setAwaitOther(null);
+              openPuModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`);
+            }}>
+              <input
+                value={otherInput}
+                onChange={e => setOtherInput(e.target.value)}
+                placeholder={awaitOther.id === "pet_compat" ? "예: 초코" : "예: 홍길동"}
+                autoFocus
+                enterKeyHint="go"
+                style={{ width: "100%", padding: "13px 16px", borderRadius: 12, border: "1.5px solid rgba(251,191,36,0.5)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box", marginBottom: 14 }}
+              />
+              <button
+                type="submit"
+                style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 40 }}
+              >
+                💳 결제하기 · ₩2,900
+              </button>
+            </form>
           </div>
         </>
       )}
