@@ -36,6 +36,10 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
       });
       setUnlocked(hasRecentPurchase);
     } catch {}
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.phone) setRestorePhone(p.phone);
+    } catch {}
   }, []);
 
   const handleRestore = async () => {
@@ -100,7 +104,7 @@ export default function FortuneAnglesSection({ fortuneAngles, keyword, emoji, lu
             <Link href="/share-coupon" style={{ fontSize: 11, fontWeight: 900, textDecoration: "none", background: "#dc2626", color: "#fff", padding: "4px 10px", borderRadius: 10 }}>받기 →</Link>
           </div>
           <div style={{ marginTop: 12, borderTop: "1px solid rgba(236,72,153,0.15)", paddingTop: 12 }}>
-            <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
+            <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 8px" }}>📱 PC나 다른 기기에서 이용하시려면 전화번호로 복원해요</p>
             <div style={{ display: "flex", gap: 8 }}>
               <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(139,92,246,0.05)", border: "1px solid rgba(139,92,246,0.2)", borderRadius: 10, padding: "9px 12px", color: "#374151", fontSize: 13, outline: "none" }} inputMode="numeric" />
               <button onClick={handleRestore} disabled={restoring} style={{ background: "linear-gradient(135deg,#ec4899,#8b5cf6)", border: "none", borderRadius: 10, padding: "9px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>

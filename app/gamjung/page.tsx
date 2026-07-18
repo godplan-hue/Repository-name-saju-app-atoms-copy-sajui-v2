@@ -61,6 +61,7 @@ export default function GamjungPage() {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
       if (p.name) setName(p.name);
       if (p.phone) setPhone(p.phone);
+      if (p.phone) setRestorePhone(p.phone);
       if (p.email) setEmail(p.email);
       // 전화번호 있으면 Firebase에서 이력 복원 (다른 브라우저에서도 목록 보임)
       const cleanPh = (p.phone || "").replace(/\D/g, "");
@@ -192,7 +193,7 @@ export default function GamjungPage() {
                   {gamjungNeverPaid ? "이용권 구매하기 →" : "30일 재활성화 →"}
                 </a>
                 <div style={{ marginTop: 14, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 12 }}>
-                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
+                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>📱 PC나 다른 기기에서 이용하시려면 전화번호로 복원해요</p>
                   <div style={{ display: "flex", gap: 8 }}>
                     <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "10px 12px", color: "white", fontSize: 13, outline: "none" }} inputMode="numeric" />
                     <button onClick={handleRestore} disabled={restoring} style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 10, padding: "10px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
@@ -260,7 +261,7 @@ export default function GamjungPage() {
               <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px" }}>{gamjungNeverPaid ? "990원으로 감정일기를 시작해보세요." : "기존 기록은 위에서 계속 볼 수 있어요."}</p>
               <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>{gamjungNeverPaid ? "이용권 구매하기 →" : "사주 990원으로 30일 재활성화 →"}</a>
               <div style={{ marginTop: 14, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 12 }}>
-                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
+                <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>📱 PC나 다른 기기에서 이용하시려면 전화번호로 복원해요</p>
                 <div style={{ display: "flex", gap: 8 }}>
                   <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "10px 12px", color: "white", fontSize: 13, outline: "none" }} inputMode="numeric" />
                   <button onClick={handleRestore} disabled={restoring} style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 10, padding: "10px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
