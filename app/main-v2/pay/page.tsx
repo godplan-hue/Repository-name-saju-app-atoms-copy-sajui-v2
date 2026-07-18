@@ -176,6 +176,7 @@ function PayInner() {
   };
 
   const pay = async () => {
+    if (!refundAgreed) { setError("아래 환불 확인 체크박스를 먼저 체크해주세요. ✅"); return; }
     const clean = cardNo.replace(/\s/g, "");
     if (clean.length < 14) { setError("카드번호를 확인해주세요."); return; }
     if (!expM || !expY) { setError("유효기간을 입력해주세요."); return; }
@@ -379,8 +380,8 @@ function PayInner() {
 
         <button
           onClick={pay}
-          disabled={loading || !refundAgreed}
-          style={{ width: "100%", padding: "15px 0", background: (loading || !refundAgreed) ? "rgba(251,191,36,0.3)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: (loading || !refundAgreed) ? "not-allowed" : "pointer", boxShadow: (loading || !refundAgreed) ? "none" : "0 6px 22px rgba(251,191,36,0.3)", marginBottom: 8 }}
+          disabled={loading}
+          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(251,191,36,0.3)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 6px 22px rgba(251,191,36,0.3)", marginBottom: 8 }}
         >
           {loading ? "결제 중..." : `💳 ₩${displayAmount.toLocaleString()} 결제하기`}
         </button>
