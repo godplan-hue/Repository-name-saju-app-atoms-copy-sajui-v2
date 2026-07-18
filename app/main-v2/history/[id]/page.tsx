@@ -288,7 +288,7 @@ export default function HistoryDetail() {
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
     if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\nPC나 크롬 브라우저에서 jeomun.com 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n(전화번호로 자동 복원돼요)" });
+      setTipModal({ text: "카카오톡 안에서는 읽기가 바로 시작되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요." });
       return;
     }
     if (/NAVER|NaverWebView|naver_/i.test(navigator.userAgent)) {
