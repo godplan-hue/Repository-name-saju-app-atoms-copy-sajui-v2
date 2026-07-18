@@ -1314,6 +1314,16 @@ function V2ResultInner() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
+        {/* ── 꼭 읽어보세요 버튼 ── */}
+        {paid && (
+          <button
+            onClick={() => isMob ? setShowGuideModal(true) : setShowPcGuideModal(true)}
+            style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
+          >
+            📌 꼭 읽어보세요 · 자세히 보기 →
+          </button>
+        )}
+
         {/* ── 읽기 이용 안내 버튼 (유료 결과지에서만 표시) ── */}
         {paid && (
           <button
