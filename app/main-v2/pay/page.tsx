@@ -369,20 +369,10 @@ function PayInner() {
 
         {error && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>⚠️ {error}</p>}
 
-        <div style={{ marginBottom: 16, padding: "12px 14px", background: "rgba(251,191,36,0.08)", borderRadius: 12, border: "1px solid rgba(251,191,36,0.3)" }}>
-          <p style={{ margin: "0 0 6px", fontSize: 12, fontWeight: 900, color: "#fbbf24" }}>⚠️ 꼭 확인하세요</p>
-          <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>
-            · 전화번호 입력 시 모든 기기·브라우저에서<br />
-            결과 자동 복원돼요.<br />
-            · 디지털 콘텐츠 특성상 결과지 열람 후<br />
-            환불이 불가합니다.
-          </p>
-          <div onClick={() => setRefundAgreed(v => !v)} style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, cursor: "pointer", userSelect: "none" as const }}>
-            <span style={{ fontSize: 20, color: refundAgreed ? "#4ade80" : "#9ca3af", lineHeight: 1 }}>{refundAgreed ? "✅" : "⬜"}</span>
-            <span style={{ fontSize: 11, color: refundAgreed ? "#4ade80" : "rgba(255,255,255,0.6)", fontWeight: refundAgreed ? 700 : 400, lineHeight: 1.4 }}>
-              디지털 콘텐츠 특성상 환불이 불가함을 확인했습니다
-            </span>
-          </div>
+        <p style={{ margin: "0 0 8px", fontSize: 11, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>⚠️ 디지털 콘텐츠 특성상 결과 열람 후 환불이 불가합니다.</p>
+        <div onClick={() => setRefundAgreed(v => !v)} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, cursor: "pointer", userSelect: "none" as const }}>
+          <span style={{ fontSize: 20, color: refundAgreed ? "#4ade80" : "#9ca3af", lineHeight: 1 }}>{refundAgreed ? "✅" : "⬜"}</span>
+          <span style={{ fontSize: 12, color: refundAgreed ? "#4ade80" : "rgba(255,255,255,0.6)", fontWeight: refundAgreed ? 700 : 400 }}>네, 확인했어요!</span>
         </div>
 
         <button
