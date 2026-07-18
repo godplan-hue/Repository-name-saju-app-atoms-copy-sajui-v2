@@ -41,7 +41,7 @@ const DATA: Entry[] = [
   { slug:"love-emotion-diary", title:"연애 감정일기 | 점운 감정일기", desc:"연애 감정일기 — 연애에서 오는 다양한 감정을 오행으로 분석하고 건강한 연애 감정을 키우세요.", h1:"연애 감정일기 — 오행으로 보는 연애 감정 패턴", sub:"연애 감정 패턴을 오행으로 분석하는 연애 감정일기", emoji:"💕" },
   { slug:"work-emotion-diary", title:"직장 감정일기 | 점운 감정일기", desc:"직장 감정일기 — 직장에서 오는 스트레스와 감정을 오행으로 분석하고 건강한 직장 생활을 만드세요.", h1:"직장 감정일기 — 오행으로 보는 직장 감정 패턴", sub:"직장 스트레스·감정 패턴을 오행으로 분석하는 일기", emoji:"🏢" },
   { slug:"family-emotion-diary", title:"가족 감정일기 | 점운 감정일기", desc:"가족 감정일기 — 가족 관계에서 오는 감정을 오행으로 분석하고 건강한 가족 관계를 만드세요.", h1:"가족 감정일기 — 오행으로 보는 가족 감정 패턴", sub:"가족 관계 감정 패턴을 오행으로 분석하는 감정일기", emoji:"👨‍👩‍👧‍👦" },
-  { slug:"emotion-diary-app", title:"감정일기 앱 | 점운 감정일기", desc:"감정일기 앱 — 점운 감정일기 앱으로 매일 감정을 기록하고 오행 에너지로 감정 패턴을 분석하세요.", h1:"감정일기 앱 — 오행 감정 기록 분석 무료 앱", sub:"매일 감정 기록+오행 에너지 패턴 분석 무료 앱", emoji:"📱" },
+  { slug:"emotion-diary-app", title:"감정일기 앱 | 점운 감정일기", desc:"감정일기 앱 — 점운 감정일기 앱으로 매일 감정을 기록하고 오행 에너지로 감정 패턴을 분석하세요.", h1:"감정일기 앱 — 오행 감정 기록 분석 앱", sub:"매일 감정 기록+오행 에너지 패턴 분석 앱", emoji:"📱" },
   { slug:"sleep-emotion", title:"수면 감정 일기 | 점운 감정일기", desc:"수면과 감정 오행 분석 — 오행 기질로 수면의 질과 감정의 관계를 분석하고 더 잘 자는 방법을 안내합니다.", h1:"수면 감정 일기 — 오행으로 보는 수면과 감정 관계", sub:"오행 기질로 수면과 감정의 관계 분석과 수면 개선법", emoji:"😴" },
   { slug:"emotion-color", title:"감정 색깔 오행 | 점운 감정일기", desc:"감정 색깔과 오행 — 오행 오색(청·적·황·백·흑)과 감정의 연결로 내 감정 에너지를 시각화합니다.", h1:"감정 색깔 오행 — 오색으로 시각화하는 내 감정", sub:"오행 오색(청·적·황·백·흑)과 감정의 연결 시각화", emoji:"🌈" },
   { slug:"emotion-season", title:"계절별 감정 | 점운 감정일기", desc:"계절별 감정 오행 분석 — 봄·여름·가을·겨울 오행 에너지에 따른 감정 변화 패턴을 분석합니다.", h1:"계절별 감정 — 봄·여름·가을·겨울 오행 감정 흐름", sub:"계절별 오행 에너지와 감정 변화 패턴 분석 가이드", emoji:"🌿" },
@@ -135,7 +135,7 @@ export default async function GamjungSeoPage({ params }: { params: Promise<{ slu
   const faqs = [
     { q: "감정일기가 왜 필요한가요?", a: "감정일기를 쓰면 감정 패턴을 파악하고 더 건강한 감정 관리가 가능합니다. 오행 에너지와 연결하면 감정의 근본 원인을 더 깊이 이해할 수 있습니다." },
     { q: "오행과 감정은 어떻게 연결되나요?", a: "동양 오행 철학에서는 목=분노, 화=기쁨, 토=걱정, 금=슬픔, 수=두려움으로 연결합니다. 오행 균형이 맞으면 감정도 안정됩니다." },
-    { q: "완전 무료인가요?", a: "네, 완전 무료입니다. 감정 기록, 오행 분석, 감정 치유 방법 모두 무료로 이용하세요." },
+    { q: "이용 요금이 있나요?", a: "첫 30일은 990원 단독권으로 시작할 수 있어요. 감정 기록 내역은 영구 보관됩니다." },
     { q: "사주와 어떻게 연결되나요?", a: "내 사주 오행 기질(목·화·토·금·수)에 따라 특히 강한 감정과 약한 감정이 달라집니다. 사주를 함께 보면 더 정확한 감정 분석이 가능합니다." },
   ];
 
@@ -148,7 +148,7 @@ export default async function GamjungSeoPage({ params }: { params: Promise<{ slu
         <Link href="/gamjung" style={{ display: "inline-block", background: "linear-gradient(135deg,#059669,#2563eb)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 32px", borderRadius: 30, textDecoration: "none", boxShadow: "0 8px 32px rgba(5,150,105,0.4)" }}>
           지금 감정일기 쓰기 →
         </Link>
-        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 12 }}>감정 기록 · 오행 분석 · 완전 무료</p>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 12 }}>감정 기록 · 오행 분석 · 오행 치유</p>
       </section>
 
       <section style={{ maxWidth: 520, margin: "0 auto", padding: "0 20px 40px" }}>
@@ -180,9 +180,9 @@ export default async function GamjungSeoPage({ params }: { params: Promise<{ slu
         <div style={{ background: "linear-gradient(135deg,#1a4a2a,#0a2a1a)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 24, padding: "32px 24px" }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>📔</div>
           <h3 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 10px" }}>오늘 감정일기 쓰기</h3>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 22px" }}>오늘의 감정을 기록하고 사주 오행으로 감정의 흐름과 패턴을 즉시 무료로 분석해드려요</p>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 22px" }}>오늘의 감정을 기록하고 사주 오행으로 감정의 흐름과 패턴을 즉시 분석해드려요</p>
           <Link href="/gamjung" style={{ display: "inline-block", background: "linear-gradient(135deg,#059669,#2563eb)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 36px", borderRadius: 30, textDecoration: "none" }}>
-            무료 감정일기 시작 →
+            감정일기 시작하기 →
           </Link>
         </div>
         <div style={{ marginTop: 20, display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>

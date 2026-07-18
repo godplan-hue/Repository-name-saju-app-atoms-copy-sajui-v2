@@ -5,7 +5,7 @@ type Entry = { slug: string; title: string; desc: string; h1: string; sub: strin
 
 const DATA: Entry[] = [
   { slug:"tarot", title:"타로카드 | 점운 타로", desc:"지금 내 마음의 질문에 타로카드가 답해드려요. 오행 에너지와 타로카드를 결합한 무료 타로 분석입니다.", h1:"타로카드 — 오행 에너지와 타로의 만남", sub:"지금 내 마음의 질문에 오행 타로카드가 답합니다", emoji:"🃏" },
-  { slug:"free-tarot", title:"무료 타로 | 점운 타로", desc:"무료 타로카드 — 지금 바로 무료로 타로카드를 뽑고 오행 에너지로 해석한 메시지를 확인하세요.", h1:"무료 타로카드 — 즉시 무료 타로 뽑기", sub:"회원가입 없이 즉시 무료로 타로카드 뽑기", emoji:"🆓" },
+  { slug:"free-tarot", title:"타로카드 뽑기 | 점운 타로", desc:"타로카드 뽑기 — 지금 바로 타로카드를 뽑고 오행 에너지로 해석한 메시지를 확인하세요.", h1:"타로카드 뽑기 — 오행 에너지 타로 즉석 확인", sub:"회원가입 없이 즉시 오행 타로카드 뽑기", emoji:"🃏" },
   { slug:"tarot-one-card", title:"타로 원카드 | 점운 타로", desc:"타로 원카드 뽑기 — 지금 이 순간 가장 필요한 메시지를 타로 원카드 한 장에서 받아보세요.", h1:"타로 원카드 — 지금 이 순간 필요한 메시지", sub:"원카드 한 장으로 받는 오행 에너지 메시지", emoji:"1️⃣" },
   { slug:"tarot-three-card", title:"타로 쓰리카드 | 점운 타로", desc:"타로 쓰리카드 뽑기 — 과거·현재·미래를 보는 3장 타로카드로 지금 상황을 분석해드립니다.", h1:"타로 쓰리카드 — 과거·현재·미래 3장 분석", sub:"과거·현재·미래 3장 타로카드 오행 분석", emoji:"3️⃣" },
   { slug:"love-tarot", title:"연애 타로 | 점운 타로", desc:"연애 타로카드 — 지금 좋아하는 사람의 마음, 우리의 관계, 앞으로의 방향을 타로카드로 분석합니다.", h1:"연애 타로 — 그 사람의 마음을 타로가 말한다", sub:"연애 현재 상황·상대방 마음·미래 방향 타로 분석", emoji:"💕" },
@@ -126,7 +126,7 @@ export default async function TarotSeoPage({ params }: { params: Promise<{ slug:
   const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
 
   const features = [
-    { icon: "🃏", title: "오행 타로카드 뽑기", desc: "오행 에너지와 결합한 타로카드로 지금 이 순간 필요한 메시지를 즉시 무료로 받아보세요." },
+    { icon: "🃏", title: "오행 타로카드 뽑기", desc: "오행 에너지와 결합한 타로카드로 지금 이 순간 필요한 메시지를 즉시 받아보세요." },
     { icon: "☯️", title: "사주 오행 연결", desc: "서양 타로카드와 동양 사주 오행을 결합해 더 정확하고 깊은 인사이트를 제공합니다." },
     { icon: "❓", title: "예스노 즉시 답변", desc: "YES or NO 질문에 타로카드가 즉시 답해드립니다. 오행 에너지로 더 정확한 답을 받으세요." },
     { icon: "🔮", title: "78장 완전 해설", desc: "메이저 22장, 마이너 56장 타로카드의 오행 에너지 의미를 완전히 안내합니다." },
@@ -134,7 +134,7 @@ export default async function TarotSeoPage({ params }: { params: Promise<{ slug:
 
   const faqs = [
     { q: "타로카드가 정확한가요?", a: "타로카드는 현재 에너지와 잠재의식을 시각화하는 도구입니다. 오행 에너지와 결합해 더 다양한 관점에서 상황을 볼 수 있습니다." },
-    { q: "완전 무료인가요?", a: "네, 완전 무료입니다. 회원가입 없이 즉시 타로카드를 뽑고 오행 에너지 해석을 받을 수 있습니다." },
+    { q: "이용 요금이 있나요?", a: "990원으로 시작할 수 있어요. 사주 분석 후 타로카드 결과도 함께 확인하세요." },
     { q: "타로와 사주는 어떻게 다른가요?", a: "타로는 서양의 직관 기반 점술이고 사주는 동양의 철학 기반 운명 분석입니다. 점운은 두 가지를 결합해 더 깊은 분석을 제공합니다." },
     { q: "몇 번이나 뽑을 수 있나요?", a: "무제한으로 뽑을 수 있습니다. 다시 뽑기 버튼으로 새로운 카드 에너지를 언제든 확인하세요." },
   ];
@@ -148,7 +148,7 @@ export default async function TarotSeoPage({ params }: { params: Promise<{ slug:
         <Link href="/tarot" style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#be185d)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 32px", borderRadius: 30, textDecoration: "none", boxShadow: "0 8px 32px rgba(124,58,237,0.4)" }}>
           지금 타로카드 뽑기 →
         </Link>
-        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 12 }}>회원가입 없이 즉시 무료 · 오행 에너지 해석 포함</p>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 12 }}>오행 에너지 해석 포함 · 사주 연동</p>
       </section>
 
       <section style={{ maxWidth: 520, margin: "0 auto", padding: "0 20px 40px" }}>
@@ -180,9 +180,9 @@ export default async function TarotSeoPage({ params }: { params: Promise<{ slug:
         <div style={{ background: "linear-gradient(135deg,#1e0040,#0f0020)", border: "1px solid rgba(192,132,252,0.3)", borderRadius: 24, padding: "32px 24px" }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>🃏</div>
           <h3 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 10px" }}>지금 타로카드 뽑기</h3>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 22px" }}>지금 내 마음의 질문에 오행 타로카드가 답해드려요. 회원가입 없이 즉시 무료로 뽑아보세요</p>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 22px" }}>지금 내 마음의 질문에 오행 타로카드가 답해드려요. 오행 에너지로 깊은 인사이트를 받아보세요</p>
           <Link href="/tarot" style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#be185d)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 36px", borderRadius: 30, textDecoration: "none" }}>
-            무료 타로카드 뽑기 →
+            타로카드 뽑기 →
           </Link>
         </div>
         <div style={{ marginTop: 20, display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>

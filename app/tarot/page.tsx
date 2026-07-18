@@ -290,7 +290,7 @@ export default function TarotPage() {
           style={{ ...S.btn, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
           {loading ? "카드 뽑는 중... 🃏" : "카드 뽑기 →"}
         </button>
-        <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>완전 무료 · 결과 후 다시 뽑기 가능</p>
+        <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>결과 후 다시 뽑기 가능</p>
 
       {/* 회사정보 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>

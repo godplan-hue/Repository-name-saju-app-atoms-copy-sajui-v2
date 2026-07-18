@@ -258,7 +258,7 @@ export default function GamjungPage() {
             <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 14, padding: "20px 18px", textAlign: "center" }}>
               <p style={{ fontSize: 15, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>⏰ 30일 이용권이 만료됐어요</p>
               <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px" }}>기존 기록은 위에서 계속 볼 수 있어요.</p>
-              <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>사주 990원으로 30일 재활성화 →</a>
+              <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>990원으로 30일 재활성화 →</a>
               <div style={{ marginTop: 14, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 12 }}>
                 <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
                 <div style={{ display: "flex", gap: 8 }}>
@@ -412,7 +412,7 @@ export default function GamjungPage() {
           style={{ ...S.btn, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
           {loading ? "감정 분석 중... 🌿" : "오행 감정 분석 보기 →"}
         </button>
-        <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>완전 무료 · 광고 없음</p>
+        <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>광고 없음</p>
 
       {/* 회사정보 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
