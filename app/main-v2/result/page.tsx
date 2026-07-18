@@ -1322,13 +1322,6 @@ function V2ResultInner() {
           📌 꼭 읽어보세요 · 자세히 보기 →
         </button>
 
-        {/* ── 읽기 이용 안내 버튼 ── */}
-        <button
-          onClick={() => isMob ? setShowGuideModal(true) : setShowPcGuideModal(true)}
-          style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 14, background: "#6d28d9", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(109,40,217,0.35)" }}
-        >
-          🔊 읽기 이용 안내
-        </button>
 
 
         {/* ── 쿠폰·혜택 배너 — 페이지 최상단 ── */}
