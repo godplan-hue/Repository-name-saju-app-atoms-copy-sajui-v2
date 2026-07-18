@@ -678,7 +678,7 @@ export default function ShareClient({ id }: { id: string }) {
           <p style={{ fontSize: 15, fontWeight: 900, color: "#6d28d9", margin: "0 0 14px" }}>🔊 읽기 이용 안내</p>
           <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡으로 공유된 결과지에서도 🔊 읽기 버튼을 누르면 바로 읽어줘요!<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡에서는 읽기가 안 돼요.<br />⋮ → 다른 브라우저로 열기 → 🔊 읽기를 눌러요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
           </div>
           <button onClick={() => setShowMobGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#6d28d9", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
         </div>
@@ -692,7 +692,7 @@ export default function ShareClient({ id }: { id: string }) {
           <p style={{ fontSize: 15, fontWeight: 900, color: "#6d28d9", margin: "0 0 14px" }}>🔊 읽기 이용 안내</p>
           <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡으로 공유된 결과지에서도 🔊 읽기 버튼을 누르면 바로 읽어줘요!<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡에서는 읽기가 안 돼요.<br />⋮ → 다른 브라우저로 열기 → 🔊 읽기를 눌러요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
           </div>
           <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#6d28d9", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
         </div>
