@@ -248,12 +248,6 @@ export default function ShareClient({ id }: { id: string }) {
 
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
-    const _ua = navigator.userAgent;
-    const _isKakao = /KAKAOTALK/i.test(_ua);
-    if (_isKakao) {
-      setTipModal({ text: "카카오톡 등 앱 안에서는 화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고 [다른 브라우저로 열기]를 선택한 다음 읽기를 누르면 읽어주기 기능이 작동합니다.\n\n그래도 안 되면, 점 세 개(⋮) 버튼을 누르고 [다른 앱으로 공유] → [Chrome]을 선택해서 들어간 다음 읽기를 눌러보세요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요. 휴대폰 설정 > 디스플레이 > 화면 자동 꺼짐 시간을 늘리거나, '보고 있는 동안 화면 켜짐' 기능을 켜두면 끊기지 않아요." });
-      return;
-    }
     if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
@@ -363,15 +357,6 @@ export default function ShareClient({ id }: { id: string }) {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* 이용 안내 버튼 */}
-        {isOwner && (
-          <button
-            onClick={() => isMob ? setShowMobGuideModal(true) : setShowGuideModal(true)}
-            style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 14, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
-          >
-            🔊 읽기 이용 안내
-          </button>
-        )}
         {isOwner && !entry.businessName && <KakaoShareCouponBanner />}
         {isOwner && !entry.businessName && (
           <div onClick={() => nav("/share-coupon")} style={{ margin: "0 0 8px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}>
@@ -678,7 +663,7 @@ export default function ShareClient({ id }: { id: string }) {
           <p style={{ fontSize: 15, fontWeight: 900, color: "#6d28d9", margin: "0 0 14px" }}>🔊 읽기 이용 안내</p>
           <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />오른쪽 맨밑에 점 세 개(⋮) 누르고<br />→ 다른 브라우저로 열기 누른 후 읽기 다시 누르세요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡으로 공유된 결과지에서도 🔊 읽기 버튼을 누르면 바로 읽어줘요!<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
           </div>
           <button onClick={() => setShowMobGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#6d28d9", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
         </div>
@@ -692,7 +677,7 @@ export default function ShareClient({ id }: { id: string }) {
           <p style={{ fontSize: 15, fontWeight: 900, color: "#6d28d9", margin: "0 0 14px" }}>🔊 읽기 이용 안내</p>
           <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
-            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />오른쪽 맨밑에 점 세 개(⋮) 누르고<br />→ 다른 브라우저로 열기 누른 후 읽기 다시 누르세요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡으로 공유된 결과지에서도 🔊 읽기 버튼을 누르면 바로 읽어줘요!<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
           </div>
           <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#6d28d9", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
         </div>

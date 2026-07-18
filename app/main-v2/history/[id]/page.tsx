@@ -833,7 +833,7 @@ export default function HistoryDetail() {
             {/* 카카오톡에서 접속 시 */}
             <div style={{ background: "#fff7ed", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #fed7aa" }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>📲 카카오톡에서 접속하신 경우</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`카카오톡에서는 이미지 저장·읽기가 작동하지 않아요.\n\nPC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함 메뉴에서 이용하세요.\n\n⚠️ [다른 브라우저로 열기]는 데이터가 없어\n보관함 홈으로 이동됩니다.`}</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`보관함 읽기가 안 되시면,\n결과 공유하기로 카카오톡에 공유한 후\n공유 결과지에서 🔊 읽기를 누르세요!\n\n이미지 저장은 PC 또는 크롬에서\njeomun.com 접속 후 보관함에서 이용하세요.`}</p>
             </div>
             {/* 읽기 기능 */}
             <div style={{ background: "#eff6ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bfdbfe" }}>

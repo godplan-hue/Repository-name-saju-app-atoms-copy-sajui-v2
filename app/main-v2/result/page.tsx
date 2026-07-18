@@ -1112,16 +1112,6 @@ function V2ResultInner() {
 
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
-    const isKakao = /KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent);
-    if (isKakao) {
-      const shareUrlId = shareId || sidFromUrlRef.current;
-      setTipModal({
-        text: shareUrlId
-          ? "카카오톡 안에서는 읽기 기능이 작동하지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택해주세요.\n\n외부 브라우저에서 🔊 읽기 버튼을 누르면\n읽어주기가 작동해요.\n\n💡 읽는 중간에 화면이 꺼지면 끊길 수 있어요.\n설정 > 화면 자동 꺼짐 시간을 늘리거나\n'보고 있는 동안 화면 켜짐'을 켜두세요."
-          : "카카오톡 안에서는 읽기 기능이 작동하지 않아요.\n\n위의 공유 버튼으로 링크를 복사한 뒤\n다른 브라우저(Chrome·Safari)에서 열어주세요.\n외부 브라우저에서 🔊 읽기를 누르면 작동해요.",
-      });
-      return;
-    }
     if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
@@ -2012,7 +2002,7 @@ function V2ResultInner() {
             </div>
             <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />오른쪽 맨밑에 점 세 개(⋮) 누르고<br />→ 다른 브라우저로 열기 누른 후 읽기 다시 누르세요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡으로 공유된 결과지에서도 🔊 읽기가 가능해요!<br />공유하기로 카카오톡에 공유한 후 읽기를 눌러보세요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
             </div>
             <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
               확인
@@ -2028,7 +2018,7 @@ function V2ResultInner() {
             <p style={{ fontSize: 15, fontWeight: 900, color: "#6d28d9", margin: "0 0 14px" }}>🔊 읽기 이용 안내</p>
             <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡 안에서는 읽기 기능이 작동 안 해요.<br />오른쪽 맨밑에 점 세 개(⋮) 누르고<br />→ 다른 브라우저로 열기 누른 후 읽기 다시 누르세요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡으로 공유된 결과지에서도 🔊 읽기가 가능해요!<br />공유하기로 카카오톡에 공유한 후 읽기를 눌러보세요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
             </div>
             <button onClick={() => setShowPcGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#6d28d9", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
               확인
