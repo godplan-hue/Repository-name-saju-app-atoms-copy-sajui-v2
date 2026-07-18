@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
@@ -15,6 +15,10 @@ export default function YearlyPage() {
   const [scores, setScores] = useState<any>(null);
   const [paid, setPaid] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [speaking, setSpeaking] = useState(false);
+  const [showGuideModal, setShowGuideModal] = useState(false);
+  const readChunksRef = useRef<string[]>([]);
+  const readIdxRef = useRef(0);
 
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
@@ -56,6 +60,57 @@ export default function YearlyPage() {
     }
   };
 
+  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> =>
+    new Promise(resolve => {
+      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
+      const existing = window.speechSynthesis.getVoices();
+      if (existing.length > 0) { resolve(pick(existing)); return; }
+      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
+      window.speechSynthesis.onvoiceschanged = () => { clearTimeout(timer); resolve(pick(window.speechSynthesis.getVoices())); };
+    });
+
+  const toggleReadAloud = async () => {
+    if (typeof window === "undefined") return;
+    if (/KAKAOTALK|kakaoBrowser|KAKAO/i.test(navigator.userAgent)) {
+      alert("카카오톡에서 바로 읽기가 되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요.");
+      return;
+    }
+    if (!("speechSynthesis" in window)) return;
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      readChunksRef.current = [];
+      readIdxRef.current = 0;
+      return;
+    }
+    const fullText = [yearlyText, paid && monthlyText ? monthlyText : ""].filter(Boolean).join("\n\n");
+    if (!fullText.trim()) return;
+    readChunksRef.current = fullText.match(/.{1,200}/g) || [fullText];
+    readIdxRef.current = 0;
+    window.speechSynthesis.cancel();
+    const voice = await getKoreanVoice();
+    setSpeaking(true);
+    readChunksRef.current.forEach((chunk, idx) => {
+      const utt = new SpeechSynthesisUtterance(chunk);
+      utt.lang = "ko-KR"; utt.rate = 0.95;
+      if (voice) utt.voice = voice;
+      utt.onerror = () => { setSpeaking(false); };
+      if (idx === readChunksRef.current.length - 1) {
+        utt.onend = () => { setSpeaking(false); readChunksRef.current = []; readIdxRef.current = 0; };
+      }
+      window.speechSynthesis.speak(utt);
+    });
+  };
+
+  const restartReadAloud = () => {
+    if (typeof window === "undefined") return;
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+    readChunksRef.current = [];
+    readIdxRef.current = 0;
+    setTimeout(() => toggleReadAloud(), 80);
+  };
+
   // 점수에서 막대 색 계산
   const scoreColor = (s: number) => s >= 75 ? "#10b981" : s >= 60 ? "#f59e0b" : "#ef4444";
 
@@ -67,6 +122,15 @@ export default function YearlyPage() {
   const teaserLines = yearlyText.split("\n").filter(l => l.trim()).slice(0, 4).join("\n");
 
   return (
+    <>
+    {/* 고정 읽기 버튼 */}
+    <div style={{ position: "fixed", right: 16, bottom: 80, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+      <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(37,99,235,0.15)", color: "#1d4ed8", fontWeight: 800, fontSize: 16, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺ 처음부터 듣기</button>
+      <button onClick={toggleReadAloud} style={{ display: "flex", alignItems: "center", gap: 6, padding: "11px 18px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg,#ef4444,#f97316)" : "linear-gradient(135deg,#2563eb,#6366f1)", color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
+        {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
+      </button>
+    </div>
+
     <main style={{
       minHeight: "100vh",
       background: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #e0f2fe 100%)",
@@ -74,16 +138,32 @@ export default function YearlyPage() {
     }}>
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(255,255,255,0.3)", zIndex: 1, pointerEvents: "none" }} />
 
+      {/* 헤더 */}
+      <div style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(37,99,235,0.1)", padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", color: "#1d4ed8", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>← 점운</button>
+        <div style={{ display: "flex", gap: 7 }}>
+          <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#eff6ff", color: "#1d4ed8", border: "1px solid rgba(37,99,235,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
+            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+          </button>
+          <button onClick={restartReadAloud} style={{ padding: "5px 9px", background: "#eff6ff", color: "#1d4ed8", border: "1px solid rgba(37,99,235,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺ 처음부터 듣기</button>
+        </div>
+      </div>
+
       <div style={{ position: "relative", zIndex: 10, maxWidth: 520, margin: "0 auto", padding: "24px 16px 60px" }}>
 
-        {/* 헤더 */}
-        <div style={{ marginBottom: 24 }}>
-          <button onClick={() => router.push("/main-v2")} style={{ background: "rgba(37,99,235,0.1)", border: "1px solid rgba(37,99,235,0.3)", color: "#1d4ed8", padding: "8px 14px", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 36, marginBottom: 6 }}>📅</div>
-            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1d4ed8", margin: "0 0 6px" }}>연도별운세</h1>
-            <p style={{ color: "#6b7280", fontSize: 13, margin: 0 }}>올해 전체 흐름 + 12개월 로드맵</p>
-          </div>
+        {/* 꼭 읽어보세요 버튼 */}
+        <button
+          onClick={() => setShowGuideModal(true)}
+          style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
+        >
+          📌 꼭 읽어보세요 · 자세히 보기 →
+        </button>
+
+        {/* 타이틀 */}
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <div style={{ fontSize: 36, marginBottom: 6 }}>📅</div>
+          <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1d4ed8", margin: "0 0 6px" }}>연도별운세</h1>
+          <p style={{ color: "#6b7280", fontSize: 13, margin: 0 }}>올해 전체 흐름 + 12개월 로드맵</p>
         </div>
 
         {/* 쿠폰 배너 */}
@@ -207,5 +287,24 @@ export default function YearlyPage() {
         )}
       </div>
     </main>
+
+    {/* 읽기 안내 모달 */}
+    {showGuideModal && (
+      <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
+        <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+          <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 꼭 확인하세요!</p>
+          <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 이 화면을 나가면 결과가 사라져요!</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>탭을 닫거나 나가면 연도별운세가 초기화돼요.<br />화면 캡처로 저장해두세요.</p>
+          </div>
+          <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+            <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
+            <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡에서는 읽기가 안 돼요.<br />⋮ → 다른 브라우저로 열기 → 🔊 읽기를 눌러요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+          </div>
+          <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

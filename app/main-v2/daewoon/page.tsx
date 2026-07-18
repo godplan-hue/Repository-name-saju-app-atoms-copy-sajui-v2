@@ -41,6 +41,7 @@ function DaewoonInner() {
   const [sharing, setSharing] = useState(false);
   const [historySaved, setHistorySaved] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [showGuideModal, setShowGuideModal] = useState(false);
 
   const cardRef = useRef<HTMLDivElement | null>(null);
   const readChunksRef = useRef<string[]>([]);
@@ -492,6 +493,14 @@ function DaewoonInner() {
             </div>
           </div>
 
+          {/* 꼭 읽어보세요 버튼 */}
+          <button
+            onClick={() => setShowGuideModal(true)}
+            style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
+          >
+            📌 꼭 읽어보세요 · 자세히 보기 →
+          </button>
+
           {loading ? (
             <div style={{ textAlign: "center", padding: "60px 0", color: "rgba(255,255,255,0.6)" }}>
               <div style={{ fontSize: 32, marginBottom: 12 }}>🌙</div>
@@ -712,6 +721,24 @@ function DaewoonInner() {
           </button>
         </div>
       </main>
+
+      {/* 읽기 안내 모달 */}
+      {showGuideModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
+          <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 꼭 확인하세요!</p>
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 이 화면을 나가면 결과가 사라져요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>탭을 닫거나 나가면 대운 결과가 초기화돼요.<br /><strong>카카오톡 공유</strong> 또는 화면 캡처로 저장하세요.</p>
+            </div>
+            <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡에서는 읽기가 안 돼요.<br />⋮ → 다른 브라우저로 열기 → 🔊 읽기를 눌러요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+            </div>
+            <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

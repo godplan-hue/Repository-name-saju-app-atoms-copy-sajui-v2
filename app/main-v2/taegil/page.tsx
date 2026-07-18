@@ -36,6 +36,7 @@ export default function TaegilPage() {
   const [isPaid, setIsPaid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [showGuideModal, setShowGuideModal] = useState(false);
   const [partnerName, setPartnerName] = useState("");
   const [partnerBirthYear, setPartnerBirthYear] = useState("");
   const [partnerBirthMonth, setPartnerBirthMonth] = useState("");
@@ -176,6 +177,15 @@ export default function TaegilPage() {
     setSpeaking(false);
     chunksRef.current = [];
     chunkIdxRef.current = 0;
+  };
+
+  const restartReadAloud = () => {
+    if (typeof window === "undefined") return;
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+    chunksRef.current = [];
+    chunkIdxRef.current = 0;
+    setTimeout(() => handleRead(), 80);
   };
 
   const handleRead = async () => {
@@ -433,9 +443,20 @@ export default function TaegilPage() {
         {/* 결과 — 결제 완료 시에만 표시 */}
         {results.length > 0 && isPaid && (
           <div ref={resultsRef}>
+            {/* 꼭 읽어보세요 버튼 */}
+            <button
+              onClick={() => setShowGuideModal(true)}
+              style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
+            >
+              📌 꼭 읽어보세요 · 자세히 보기 →
+            </button>
             <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
               <p style={{ margin:0, fontWeight:900, fontSize:16, color:"#1f2937" }}>📊 분석 결과</p>
               <div style={{ display:"flex", gap:8 }}>
+                <button onClick={restartReadAloud}
+                  style={{ padding:"6px 10px", border:"1px solid rgba(139,92,246,0.4)", background: "rgba(139,92,246,0.08)", color:"#7c3aed", borderRadius:20, fontSize:12, fontWeight:700, cursor:"pointer" }}>
+                  ↺ 처음부터
+                </button>
                 <button onClick={handleRead}
                   style={{ padding:"6px 12px", border:"1px solid #22c55e", background: speaking ? "#dcfce7" : "white", color:"#15803d", borderRadius:20, fontSize:12, fontWeight:700, cursor:"pointer" }}>
                   {speaking ? "⏹ 멈추기" : "🔊 읽기"}
@@ -486,9 +507,28 @@ export default function TaegilPage() {
       {/* 고정 읽기 버튼 */}
       {results.length > 0 && (
         <div style={{ position: "fixed", right: 16, bottom: 80, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+          <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(139,92,246,0.15)", color: "#7c3aed", fontWeight: 800, fontSize: 16, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺ 처음부터 듣기</button>
           <button onClick={handleRead} style={{ display: "flex", alignItems: "center", gap: 6, padding: "11px 18px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg,#ef4444,#f97316)" : "linear-gradient(135deg,#22c55e,#15803d)", color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.28)" }}>
             {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
           </button>
+        </div>
+      )}
+
+      {/* 읽기 안내 모달 */}
+      {showGuideModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
+          <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 꼭 확인하세요!</p>
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 이 화면을 나가면 결과가 사라져요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>결과를 저장하려면 <strong>[공유]</strong> 버튼을 눌러<br />카카오톡 등에 공유해 두세요.</p>
+            </div>
+            <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡에서는 읽기가 안 돼요.<br />⋮ → 다른 브라우저로 열기 → 🔊 읽기를 눌러요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+            </div>
+            <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
+          </div>
         </div>
       )}
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"
