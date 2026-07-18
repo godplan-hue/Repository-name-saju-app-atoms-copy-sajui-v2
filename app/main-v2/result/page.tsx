@@ -1112,8 +1112,7 @@ function V2ResultInner() {
 
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
-    if (!("speechSynthesis" in window)) return;
-    const _isKakao = /KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent);
+    const _isKakao = /KAKAOTALK|kakaoBrowser|KAKAO/i.test(navigator.userAgent);
     if (_isKakao) {
       const shareUrlId = shareId || sidFromUrlRef.current;
       setTipModal({
@@ -1123,6 +1122,7 @@ function V2ResultInner() {
       });
       return;
     }
+    if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);

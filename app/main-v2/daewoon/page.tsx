@@ -281,11 +281,11 @@ function DaewoonInner() {
 
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
-    if (!("speechSynthesis" in window)) return;
-    if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
-      alert("카카오톡 안에서는 읽기가 바로 시작되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요.");
+    if (/KAKAOTALK|kakaoBrowser|KAKAO/i.test(navigator.userAgent)) {
+      alert("카카오톡에서 바로 읽기가 되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요.");
       return;
     }
+    if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
