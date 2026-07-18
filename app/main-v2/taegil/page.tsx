@@ -162,6 +162,15 @@ export default function TaegilPage() {
     window.location.href = `/main-v2/pay?amount=${taegilPrice}&taegil=1&next=${next}`;
   };
 
+  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> =>
+    new Promise(resolve => {
+      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
+      const existing = window.speechSynthesis.getVoices();
+      if (existing.length > 0) { resolve(pick(existing)); return; }
+      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
+      window.speechSynthesis.onvoiceschanged = () => { clearTimeout(timer); resolve(pick(window.speechSynthesis.getVoices())); };
+    });
+
   const stopTts = () => {
     if (typeof window !== "undefined") window.speechSynthesis.cancel();
     setSpeaking(false);
@@ -169,16 +178,7 @@ export default function TaegilPage() {
     chunkIdxRef.current = 0;
   };
 
-  const speakNext = () => {
-    if (chunkIdxRef.current >= chunksRef.current.length) { setSpeaking(false); return; }
-    const utt = new SpeechSynthesisUtterance(chunksRef.current[chunkIdxRef.current]);
-    utt.lang = "ko-KR"; utt.rate = 0.95;
-    utt.onend = () => { chunkIdxRef.current++; speakNext(); };
-    utt.onerror = () => { setSpeaking(false); };
-    window.speechSynthesis.speak(utt);
-  };
-
-  const handleRead = () => {
+  const handleRead = async () => {
     if (!results.length) return;
     if (speaking) { stopTts(); return; }
     const text = results.map(r => {
@@ -187,8 +187,19 @@ export default function TaegilPage() {
     }).join(". 다음 날짜. ");
     chunksRef.current = text.match(/.{1,200}/g) || [text];
     chunkIdxRef.current = 0;
+    window.speechSynthesis.cancel();
+    const voice = await getKoreanVoice();
     setSpeaking(true);
-    speakNext();
+    chunksRef.current.forEach((chunk, idx) => {
+      const utt = new SpeechSynthesisUtterance(chunk);
+      utt.lang = "ko-KR"; utt.rate = 0.95;
+      if (voice) utt.voice = voice;
+      utt.onerror = () => { setSpeaking(false); };
+      if (idx === chunksRef.current.length - 1) {
+        utt.onend = () => { setSpeaking(false); chunksRef.current = []; chunkIdxRef.current = 0; };
+      }
+      window.speechSynthesis.speak(utt);
+    });
   };
 
   const handleShare = async () => {
@@ -208,7 +219,7 @@ export default function TaegilPage() {
       const res = await fetch("/api/v2/share", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: profile?.name, categories, tier: "taegil", birthYear: String(profile?.birthYear ?? ""), subtitle: `${eventType} 택일 분석` }),
+        body: JSON.stringify({ name: profile?.name, categories, tier: "taegil", subtitle: `${eventType} 택일 분석` }),
       });
       if (res.ok) { const data = await res.json(); if (data.id) shareUrl = `${window.location.origin}/main-v2/share/${data.id}`; }
     } catch {}

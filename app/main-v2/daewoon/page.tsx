@@ -382,7 +382,7 @@ function DaewoonInner() {
         const res = await fetch("/api/v2/share", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: profile?.name, categories, tier: "daeun", birthYear: profile?.birthYear }),
+          body: JSON.stringify({ name: profile?.name, categories, tier: "daeun" }),
         });
         if (res.ok) { const data = await res.json(); shareUrl = `${window.location.origin}/main-v2/share/${data.id}`; }
       }
