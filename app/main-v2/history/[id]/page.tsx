@@ -288,6 +288,14 @@ export default function HistoryDetail() {
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
     if (!("speechSynthesis" in window)) return;
+    if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
+      setTipModal({ text: "카카오톡에서 바로 읽기가 되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요." });
+      return;
+    }
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent)) {
+      setTipModal({ text: "지금 브라우저에서는 읽기가 원활하지 않아요.\n\n📱 카카오톡으로 공유 후 읽거나\n💻 PC·크롬 브라우저에서 jeomun.com → 보관함에서 이용하세요.\n(전화번호로 자동 복원돼요)" });
+      return;
+    }
     if (speaking) {
       // speakingRef를 즉시 false로 — 화면꺼짐 재개 핸들러가 동시에 와도 재시작 안 함
       setSpk(false);
@@ -561,16 +569,6 @@ export default function HistoryDetail() {
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 72px" }}>
-
-        {/* ── 모바일 이용 안내 버튼 ── */}
-        {isMob && (
-          <button
-            onClick={() => setShowGuideModal(true)}
-            style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 14, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
-          >
-            📱 꼭 사용 전에 보세요
-          </button>
-        )}
 
         {/* 카카오 공유 쿠폰 배너 — 상단 */}
         <KakaoShareCouponBanner />
