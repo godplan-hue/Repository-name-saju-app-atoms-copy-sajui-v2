@@ -256,9 +256,9 @@ export default function GamjungPage() {
         {gamjungLocked ? (
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
             <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 14, padding: "20px 18px", textAlign: "center" }}>
-              <p style={{ fontSize: 15, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>⏰ 30일 이용권이 만료됐어요</p>
-              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px" }}>기존 기록은 위에서 계속 볼 수 있어요.</p>
-              <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>990원으로 30일 재활성화 →</a>
+              <p style={{ fontSize: 15, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>{gamjungNeverPaid ? "🔒 이용권이 필요해요" : "⏰ 30일 이용권이 만료됐어요"}</p>
+              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px" }}>{gamjungNeverPaid ? "990원으로 감정일기를 시작해보세요." : "기존 기록은 위에서 계속 볼 수 있어요."}</p>
+              <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>{gamjungNeverPaid ? "이용권 구매하기 →" : "사주 990원으로 30일 재활성화 →"}</a>
               <div style={{ marginTop: 14, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 12 }}>
                 <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
                 <div style={{ display: "flex", gap: 8 }}>
