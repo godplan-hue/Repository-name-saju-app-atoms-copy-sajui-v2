@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const AMOUNT = 990;
 
@@ -20,6 +20,13 @@ export default function GamjungPayPage() {
 
   const fmt = (v: string) => { const d = v.replace(/\D/g,"").slice(0,19); return d.match(/.{1,4}/g)?.join(" ")??d; };
 
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.phone) setMobile(p.phone.replace(/\D/g,"").slice(0,11));
+    } catch {}
+  }, []);
+
   const applyCoupon = async () => {
     if (!coupon.trim()) return;
     setCouponLoading(true);
@@ -35,6 +42,7 @@ export default function GamjungPayPage() {
   };
 
   const pay = async () => {
+    if (mobile.replace(/\D/g,"").length < 10) { setError("다른 기기에서도 이용하시려면 휴대폰 번호를 입력해주세요."); return; }
     const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
     if (couponData && (finalAmount === 0 || couponData.fullAccess)) {
       setLoading(true);
@@ -167,13 +175,13 @@ export default function GamjungPayPage() {
               <div style={{ flex:1 }}><label style={S.label}>카드 비밀번호 앞 2자리</label><input style={S.input} placeholder="••" maxLength={2} type="password" value={pw} onChange={e=>setPw(e.target.value.replace(/\D/g,"").slice(0,2))} inputMode="numeric" /></div>
             </div>
             <div style={S.row}><label style={S.label}>이름</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
-            <div style={S.row}><label style={S.label}>휴대폰 번호 (선택)</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
+            <div style={S.row}><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
           </div>
         )}
         {isFree && (
           <div style={{ marginBottom:16 }}>
             <div style={S.row}><label style={S.label}>이름 (선택)</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
-            <div style={S.row}><label style={S.label}>휴대폰 번호 (선택)</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
+            <div style={S.row}><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
           </div>
         )}
         {error && <p style={{ color:"#f87171", fontSize:13, textAlign:"center", marginBottom:12 }}>{error}</p>}

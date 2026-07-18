@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function GunghapPayPage() {
@@ -33,6 +33,13 @@ function PayInner() {
     const d = v.replace(/\D/g, "").slice(0, 19);
     return d.match(/.{1,4}/g)?.join(" ") ?? d;
   };
+
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.phone) setMobile(p.phone.replace(/\D/g,"").slice(0,11));
+    } catch {}
+  }, []);
 
   const applyCoupon = async () => {
     if (!coupon.trim()) return;
@@ -69,6 +76,7 @@ function PayInner() {
     if (birth.length !== 6) { setError("생년월일 앞 6자리(YYMMDD)를 입력해주세요."); return; }
     if (pw.length !== 2) { setError("카드 비밀번호 앞 2자리를 입력해주세요."); return; }
     if (!name.trim()) { setError("이름을 입력해주세요."); return; }
+    if (mobile.replace(/\D/g, "").length < 10) { setError("다른 기기에서도 이용하시려면 휴대폰 번호를 입력해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/payup/charge", {
@@ -101,7 +109,10 @@ function PayInner() {
             source: "gunghap",
           }),
         }).catch(() => {});
-        localStorage.setItem("gunghap_unlock_until", String(Date.now() + 24 * 60 * 60 * 1000));
+        const _phG = mobile.replace(/\D/g,"");
+        const _untilG = Date.now() + 24 * 60 * 60 * 1000;
+        localStorage.setItem("gunghap_unlock_until", String(_untilG));
+        if (_phG) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_phG,unlocks:{gunghap_unlock_until:_untilG}})}).catch(()=>{});
         window.location.href = id ? `/gunghap/result/${id}?paid=1` : "/gunghap";
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");
@@ -199,7 +210,7 @@ function PayInner() {
           </div>
 
           <div style={S.row}>
-            <label style={S.label}>휴대폰 번호 (선택)</label>
+            <label style={S.label}>휴대폰 번호 ★ 필수</label>
             <input style={S.input} placeholder="01012345678" value={mobile}
               onChange={e => setMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} inputMode="numeric" />
           </div>

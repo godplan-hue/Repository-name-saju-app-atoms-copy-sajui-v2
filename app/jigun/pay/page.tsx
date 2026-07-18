@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -36,6 +36,13 @@ function PayInner() {
     return d.match(/.{1,4}/g)?.join(" ") ?? d;
   };
 
+  useEffect(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.phone) setMobile(p.phone.replace(/\D/g,"").slice(0,11));
+    } catch {}
+  }, []);
+
   const applyCoupon = async () => {
     if (!coupon.trim()) return;
     setCouponLoading(true);
@@ -69,6 +76,7 @@ function PayInner() {
     if (birth.length !== 6) { setError("생년월일 앞 6자리(YYMMDD)를 입력해주세요."); return; }
     if (pw.length !== 2) { setError("카드 비밀번호 앞 2자리를 입력해주세요."); return; }
     if (!name.trim()) { setError("이름을 입력해주세요."); return; }
+    if (mobile.replace(/\D/g, "").length < 10) { setError("다른 기기에서도 이용하시려면 휴대폰 번호를 입력해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/payup/charge", {
@@ -205,7 +213,7 @@ function PayInner() {
           </div>
 
           <div style={S.row}>
-            <label style={S.label}>휴대폰 번호 (선택)</label>
+            <label style={S.label}>휴대폰 번호 ★ 필수</label>
             <input style={S.input} placeholder="01012345678" value={mobile}
               onChange={e => setMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} inputMode="numeric" />
           </div>
