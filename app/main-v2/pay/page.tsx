@@ -176,7 +176,7 @@ function PayInner() {
   };
 
   const pay = async () => {
-    if (!refundAgreed) { setError("아래 환불 확인 체크박스를 먼저 체크해주세요. ✅"); return; }
+    if (!refundAgreed) { setError("아래 체크박스를 먼저 체크해주세요. ✅"); return; }
     const clean = cardNo.replace(/\s/g, "");
     if (clean.length < 14) { setError("카드번호를 확인해주세요."); return; }
     if (!expM || !expY) { setError("유효기간을 입력해주세요."); return; }
