@@ -173,7 +173,7 @@ export default async function JigunSeoPage({ params }: { params: Promise<{ slug:
           <h3 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 10px" }}>지금 부업 TOP3 찾기</h3>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 22px" }}>8문항 퀴즈 + 오행 기질 → 수입범위·시작법·플랫폼 포함 맞춤 부업 TOP3 즉시 확인</p>
           <Link href="/jigun" style={{ display: "inline-block", background: "linear-gradient(135deg,#16a34a,#d97706)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 36px", borderRadius: 30, textDecoration: "none" }}>
-            무료 직운 퀴즈 시작 →
+            직운 퀴즈 시작하기 →
           </Link>
         </div>
         <div style={{ marginTop: 20, display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>

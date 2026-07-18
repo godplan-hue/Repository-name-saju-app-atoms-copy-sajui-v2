@@ -4,8 +4,8 @@ import Link from "next/link";
 type Entry = { slug: string; title: string; desc: string; h1: string; sub: string; emoji: string; };
 
 const DATA: Entry[] = [
-  { slug:"ohaeng-diet", title:"오행 다이어트 | 점운 다이어트", desc:"내 오행 체질에 맞는 다이어트 플랜과 음식 칼로리를 무료로 확인하세요. 오행 기질별 맞춤 다이어트 방법입니다.", h1:"오행 다이어트 — 내 체질에 맞는 맞춤 다이어트", sub:"오행 체질별 맞춤 다이어트 플랜·음식 칼로리 무료 분석", emoji:"🥗" },
-  { slug:"free-calorie", title:"무료 칼로리 계산기 | 점운 다이어트", desc:"무료 칼로리 계산기 — 3,000가지 이상 음식의 칼로리를 즉시 무료로 확인하고 오행 체질별 식단을 추천합니다.", h1:"무료 칼로리 계산기 — 3,000가지 음식 즉시 확인", sub:"3,000가지 음식 칼로리 즉시 무료 확인+오행 체질 식단", emoji:"🔢" },
+  { slug:"ohaeng-diet", title:"오행 다이어트 | 점운 다이어트", desc:"내 오행 체질에 맞는 다이어트 플랜과 음식 칼로리를확인하세요. 오행 기질별 맞춤 다이어트 방법입니다.", h1:"오행 다이어트 — 내 체질에 맞는 맞춤 다이어트", sub:"오행 체질별 맞춤 다이어트 플랜·음식 칼로리 분석", emoji:"🥗" },
+  { slug:"free-calorie", title:"칼로리 계산기 | 점운 다이어트", desc:"칼로리 계산기 — 3,000가지 이상 음식의 칼로리를 즉시 확인하고 오행 체질별 식단을 추천합니다.", h1:"칼로리 계산기 — 3,000가지 음식 즉시 확인", sub:"3,000가지 음식 칼로리 즉시 확인+오행 체질 식단", emoji:"🔢" },
   { slug:"mok-diet", title:"목 오행 다이어트 | 점운 다이어트", desc:"목(木) 오행 체질 다이어트 — 목 오행 기질의 식이 패턴, 추천 음식, 피해야 할 음식과 운동법을 안내합니다.", h1:"목 오행 다이어트 — 목 체질 맞춤 식단과 운동", sub:"목 오행 체질 추천 음식·피해야 할 음식·운동 가이드", emoji:"🌿" },
   { slug:"hwa-diet", title:"화 오행 다이어트 | 점운 다이어트", desc:"화(火) 오행 체질 다이어트 — 화 오행 기질의 식이 패턴, 추천 음식, 피해야 할 음식과 운동법을 안내합니다.", h1:"화 오행 다이어트 — 화 체질 맞춤 식단과 운동", sub:"화 오행 체질 추천 음식·피해야 할 음식·운동 가이드", emoji:"🔥" },
   { slug:"to-diet", title:"토 오행 다이어트 | 점운 다이어트", desc:"토(土) 오행 체질 다이어트 — 토 오행 기질의 식이 패턴, 추천 음식, 피해야 할 음식과 운동법을 안내합니다.", h1:"토 오행 다이어트 — 토 체질 맞춤 식단과 운동", sub:"토 오행 체질 추천 음식·피해야 할 음식·운동 가이드", emoji:"🌍" },
@@ -92,7 +92,7 @@ const DATA: Entry[] = [
   { slug:"diet-age-50s", title:"50대 다이어트 | 점운 다이어트", desc:"50대 다이어트 오행 — 오행 금(金) 에너지가 강한 50대의 체질과 건강한 체중 관리법입니다.", h1:"50대 다이어트 — 금 오행 에너지 50대 건강 체중 관리", sub:"오행 금 에너지 강한 50대 체질과 건강한 체중 관리법", emoji:"🌟" },
   { slug:"diet-calorie-burn-tips", title:"칼로리 소모 팁 | 점운 다이어트", desc:"일상 칼로리 소모 팁 — 오행 기질에 맞는 일상 속 칼로리 소모를 높이는 실용적인 팁 모음입니다.", h1:"칼로리 소모 팁 — 오행 기질 맞춤 일상 소모 팁", sub:"오행 기질에 맞는 일상 속 칼로리 소모를 높이는 팁", emoji:"💡" },
   { slug:"diet-calorie-calculator", title:"칼로리 계산기 | 점운 다이어트", desc:"오행 체질 칼로리 계산기 — 생년월일 기반 오행 체질과 목표 체중으로 일일 칼로리 목표를 계산합니다.", h1:"오행 칼로리 계산기 — 체질별 일일 칼로리 목표 계산", sub:"생년월일 오행 체질 기반 일일 칼로리 목표 계산기", emoji:"🔢" },
-  { slug:"diet-free-start", title:"무료 다이어트 시작 | 점운 다이어트", desc:"무료 오행 다이어트 시작 — 생년월일만으로 내 오행 체질에 맞는 다이어트 방법을 무료로 시작하세요.", h1:"무료 오행 다이어트 — 체질별 다이어트 무료 시작", sub:"생년월일 기반 오행 체질 맞춤 다이어트 무료 시작", emoji:"🎁" },
+  { slug:"diet-free-start", title:"다이어트 시작 | 점운 다이어트", desc:"오행 다이어트 시작 — 생년월일만으로 내 오행 체질에 맞는 다이어트 방법을 시작하세요.", h1:"오행 다이어트 — 체질별 다이어트 시작", sub:"생년월일 기반 오행 체질 맞춤 다이어트 시작", emoji:"🎁" },
   { slug:"calorie-tofu-legume", title:"두부·콩류 칼로리 | 점운 다이어트", desc:"두부·콩류 칼로리 — 두부·된장·콩국·두유·낫토·에다마메 칼로리와 오행 체질별 선택법입니다.", h1:"두부·콩류 칼로리 — 두부·된장·콩국 칼로리 정리", sub:"두부·된장·콩국·두유 칼로리와 오행 체질별 선택법", emoji:"🫘" },
   { slug:"calorie-egg-dish", title:"계란 요리 칼로리 | 점운 다이어트", desc:"계란 요리 칼로리 — 삶은달걀·스크램블·달걀후라이·계란찜·에그샌드 칼로리와 오행 가이드입니다.", h1:"계란 요리 칼로리 — 삶은달걀·스크램블 칼로리 정리", sub:"삶은달걀·스크램블·후라이·계란찜 칼로리 오행 가이드", emoji:"🍳" },
   { slug:"calorie-seafood", title:"해산물 칼로리 | 점운 다이어트", desc:"해산물 칼로리 완전 정리 — 새우·오징어·고등어·연어·참치·꽃게·굴 칼로리와 오행 체질 가이드.", h1:"해산물 칼로리 — 새우·오징어·연어·참치 칼로리 정리", sub:"새우·오징어·고등어·연어·참치·꽃게 칼로리 오행 가이드", emoji:"🦐" },
@@ -135,7 +135,7 @@ export default async function DietSeoPage({ params }: { params: Promise<{ slug: 
   const faqs = [
     { q: "오행 체질 다이어트란 무엇인가요?", a: "동양 오행 철학(목·화·토·금·수)에 기반한 체질 맞춤 다이어트입니다. 체질에 맞는 음식을 선택해 더 효과적으로 체중을 관리할 수 있습니다." },
     { q: "칼로리 계산기는 어떻게 사용하나요?", a: "음식 이름을 검색하면 3,000가지 이상의 음식 칼로리를 즉시 확인할 수 있습니다. 오행 체질별 추천/주의 표시도 함께 제공됩니다." },
-    { q: "완전 무료인가요?", a: "네, 완전 무료입니다. 오행 체질 분석, 칼로리 계산기, 맞춤 식단 추천 모두 무료로 이용하세요." },
+    { q: "이용 요금이 있나요?", a: "990원으로 시작할 수 있어요. 오행 체질 분석과 사주 연동 맞춤 식단 추천을 함께 확인하세요." },
     { q: "사주와 어떻게 연결되나요?", a: "내 사주 오행 기질(목·화·토·금·수)로 체질을 파악하고, 체질에 맞는 식품과 운동을 추천합니다. 사주를 함께 보면 더 정확한 체질 분석이 가능합니다." },
   ];
 
@@ -148,7 +148,7 @@ export default async function DietSeoPage({ params }: { params: Promise<{ slug: 
         <Link href="/diet" style={{ display: "inline-block", background: "linear-gradient(135deg,#65a30d,#0891b2)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 32px", borderRadius: 30, textDecoration: "none", boxShadow: "0 8px 32px rgba(101,163,13,0.4)" }}>
           지금 오행 다이어트 시작 →
         </Link>
-        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 12 }}>오행 체질 분석 · 3,000가지 칼로리 · 완전 무료</p>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 12 }}>오행 체질 분석 · 3,000가지 칼로리 · 사주 연동</p>
       </section>
 
       <section style={{ maxWidth: 520, margin: "0 auto", padding: "0 20px 40px" }}>
@@ -180,9 +180,9 @@ export default async function DietSeoPage({ params }: { params: Promise<{ slug: 
         <div style={{ background: "linear-gradient(135deg,#2a4a1a,#1a2a0a)", border: "1px solid rgba(132,204,22,0.3)", borderRadius: 24, padding: "32px 24px" }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>🥗</div>
           <h3 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 10px" }}>오행 체질 다이어트 시작</h3>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 22px" }}>내 오행 체질에 맞는 다이어트 플랜과 3,000가지 이상 음식 칼로리를 즉시 무료로 확인하세요</p>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 22px" }}>내 오행 체질에 맞는 다이어트 플랜과 3,000가지 이상 음식 칼로리를 즉시 확인하세요</p>
           <Link href="/diet" style={{ display: "inline-block", background: "linear-gradient(135deg,#65a30d,#0891b2)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 36px", borderRadius: 30, textDecoration: "none" }}>
-            무료 오행 다이어트 →
+            오행 다이어트 →
           </Link>
         </div>
         <div style={{ marginTop: 20, display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>

@@ -139,7 +139,7 @@ export default async function ResumeSeoPage({ params }: { params: Promise<{ slug
         <h1 style={{ fontSize: "clamp(22px,5vw,30px)", fontWeight: 900, lineHeight: 1.3, margin: "0 0 14px", background: "linear-gradient(135deg,#a78bfa,#ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{d.h1}</h1>
         <p style={{ fontSize: 15, color: "rgba(255,255,255,0.7)", lineHeight: 1.7, margin: "0 0 28px" }}>{d.sub}</p>
         <Link href="/resume/start" style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 32px", borderRadius: 30, textDecoration: "none", boxShadow: "0 8px 32px rgba(124,58,237,0.4)" }}>
-          무료로 합격 점수 확인하기 →
+          합격 점수 확인하기 →
         </Link>
         <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 12 }}>생년월일 + 직무 입력 → 즉시 분석</p>
       </section>
@@ -178,7 +178,7 @@ export default async function ResumeSeoPage({ params }: { params: Promise<{ slug
           <h3 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 10px" }}>지금 합격 점수 확인하기</h3>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 22px" }}>생년월일 + 직무 + 기업규모 → 합격 가능성 점수 + 자소서 전략 + 면접 질문 즉시 확인</p>
           <Link href="/resume/start" style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", fontWeight: 900, fontSize: 16, padding: "15px 36px", borderRadius: 30, textDecoration: "none" }}>
-            무료 합격 분석 시작 →
+            합격 분석 시작하기 →
           </Link>
         </div>
         <div style={{ marginTop: 20, display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>
