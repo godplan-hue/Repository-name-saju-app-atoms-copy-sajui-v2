@@ -17,6 +17,8 @@ export default function MomcarePayPage() {
   const [coupon, setCoupon] = useState("");
   const [couponData, setCouponData] = useState<any>(null);
   const [couponLoading, setCouponLoading] = useState(false);
+  const [refundAgreed, setRefundAgreed] = useState(false);
+  const [showRefund, setShowRefund] = useState(false);
 
   const fmt = (v: string) => { const d = v.replace(/\D/g,"").slice(0,19); return d.match(/.{1,4}/g)?.join(" ")??d; };
 
@@ -42,6 +44,7 @@ export default function MomcarePayPage() {
   };
 
   const pay = async () => {
+    if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
     if (mobile.replace(/\D/g,"").length < 10) { setError("다른 기기에서도 이용하시려면 휴대폰 번호를 입력해주세요."); return; }
     const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
     if (couponData && (finalAmount === 0 || couponData.fullAccess)) {
@@ -184,8 +187,22 @@ export default function MomcarePayPage() {
             <div style={S.row}><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
           </div>
         )}
+        <div style={{ marginBottom:12 }}>
+          <button type="button" onClick={()=>setShowRefund(v=>!v)} style={{ background:"none", border:"none", color:"#9ca3af", fontSize:12, cursor:"pointer", padding:"4px 0", display:"flex", alignItems:"center", gap:4 }}>
+            📋 결제 전 확인사항 {showRefund?"▲":"▼"}
+          </button>
+          {showRefund && (
+            <div style={{ marginTop:8, background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"12px 14px" }}>
+              <p style={{ fontSize:12, color:"#9ca3af", margin:"0 0 10px", lineHeight:1.6 }}>디지털 콘텐츠 특성상, 이용이 시작된 후에는 취소가 어렵습니다.</p>
+              <div onClick={()=>setRefundAgreed(v=>!v)} style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", userSelect:"none" as const }}>
+                <span style={{ fontSize:18, color:refundAgreed?"#4ade80":"#9ca3af", lineHeight:1 }}>{refundAgreed?"✅":"⬜"}</span>
+                <span style={{ fontSize:12, color:refundAgreed?"#4ade80":"rgba(255,255,255,0.6)", fontWeight:refundAgreed?700:400 }}>네, 확인했어요!</span>
+              </div>
+            </div>
+          )}
+        </div>
         {error && <p style={{ color:"#f87171", fontSize:13, textAlign:"center", marginBottom:12 }}>{error}</p>}
-        <button onClick={pay} disabled={loading} style={{ width:"100%", background:loading?"rgba(190,24,93,0.5)":"linear-gradient(135deg,#be185d,#ec4899)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:loading?"not-allowed":"pointer", marginBottom:12 }}>
+        <button onClick={pay} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"rgba(190,24,93,0.5)":"linear-gradient(135deg,#be185d,#ec4899)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer", marginBottom:12 }}>
           {loading?"처리 중...":isFree?"🎟 무료로 이용하기":couponData?`₩${Math.round(AMOUNT*(1-couponData.discountPercent/100)).toLocaleString()} 결제하기`:`₩${AMOUNT.toLocaleString()} 결제하기`}
         </button>
         <div style={{ marginBottom:16, padding:"12px 14px", background:"rgba(251,191,36,0.08)", borderRadius:12, border:"1px solid rgba(251,191,36,0.3)" }}>
@@ -193,8 +210,7 @@ export default function MomcarePayPage() {
           <p style={{ margin:0, fontSize:11, color:"rgba(255,255,255,0.7)", lineHeight:1.7 }}>
             · 전화번호를 입력하시면 PC·모바일 어떤 기기에서도 이용 가능해요.<br />
             (앱 목록 /apps → 이용권 불러오기)<br />
-            · 이미 이용 중이라면 남은 기간에 자동으로 연장돼요.<br />
-            · 디지털 콘텐츠 특성상 환불이 불가합니다.
+            · 이미 이용 중이라면 남은 기간에 자동으로 연장돼요.
           </p>
         </div>
         <p style={{ fontSize:11, color:"#6b7280", textAlign:"center", lineHeight:1.6 }}>결제 후 맘케어 30일 이용권이 즉시 적용돼요.<br />카드 정보는 결제 후 저장되지 않습니다.</p>

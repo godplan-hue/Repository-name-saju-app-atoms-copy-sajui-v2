@@ -28,6 +28,8 @@ function PayInner() {
   const [coupon, setCoupon] = useState("");
   const [couponData, setCouponData] = useState<any>(null);
   const [couponLoading, setCouponLoading] = useState(false);
+  const [refundAgreed, setRefundAgreed] = useState(false);
+  const [showRefund, setShowRefund] = useState(false);
 
   const formatCardNo = (v: string) => {
     const d = v.replace(/\D/g, "").slice(0, 19);
@@ -56,6 +58,7 @@ function PayInner() {
   };
 
   const pay = async () => {
+    if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
     const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
     if (couponData && (finalAmount === 0 || couponData.fullAccess)) {
       setLoading(true);
@@ -217,10 +220,24 @@ function PayInner() {
         </div>
         )}
 
+        <div style={{ marginBottom:12 }}>
+          <button type="button" onClick={()=>setShowRefund(v=>!v)} style={{ background:"none", border:"none", color:"#9ca3af", fontSize:12, cursor:"pointer", padding:"4px 0", display:"flex", alignItems:"center", gap:4 }}>
+            📋 결제 전 확인사항 {showRefund?"▲":"▼"}
+          </button>
+          {showRefund && (
+            <div style={{ marginTop:8, background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"12px 14px" }}>
+              <p style={{ fontSize:12, color:"#9ca3af", margin:"0 0 10px", lineHeight:1.6 }}>디지털 콘텐츠 특성상, 이용이 시작된 후에는 취소가 어렵습니다.</p>
+              <div onClick={()=>setRefundAgreed(v=>!v)} style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", userSelect:"none" as const }}>
+                <span style={{ fontSize:18, color:refundAgreed?"#4ade80":"#9ca3af", lineHeight:1 }}>{refundAgreed?"✅":"⬜"}</span>
+                <span style={{ fontSize:12, color:refundAgreed?"#4ade80":"rgba(255,255,255,0.6)", fontWeight:refundAgreed?700:400 }}>네, 확인했어요!</span>
+              </div>
+            </div>
+          )}
+        </div>
         {error && <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>}
 
-        <button onClick={pay} disabled={loading}
-          style={{ width: "100%", background: loading ? "rgba(124,58,237,0.5)" : "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 22, padding: "16px", fontSize: 16, fontWeight: 900, cursor: loading ? "not-allowed" : "pointer", marginBottom: 12 }}>
+        <button onClick={pay} disabled={loading||!refundAgreed}
+          style={{ width: "100%", background: (loading||!refundAgreed) ? "rgba(124,58,237,0.5)" : "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 22, padding: "16px", fontSize: 16, fontWeight: 900, cursor: (loading||!refundAgreed) ? "not-allowed" : "pointer", marginBottom: 12 }}>
           {loading?"처리 중...":(couponData&&(Math.round(AMOUNT*(1-couponData.discountPercent/100))===0||couponData.fullAccess))?"🎟 무료로 이용하기":couponData?`💞 ₩${Math.round(AMOUNT*(1-couponData.discountPercent/100)).toLocaleString()} 결제하기`:`💞 ₩${AMOUNT.toLocaleString()} 결제하기`}
         </button>
 

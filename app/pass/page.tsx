@@ -26,6 +26,8 @@ export default function PassPage() {
   const [coupon, setCoupon] = useState("");
   const [couponData, setCouponData] = useState<any>(null);
   const [couponLoading, setCouponLoading] = useState(false);
+  const [refundAgreed, setRefundAgreed] = useState(false);
+  const [showRefund, setShowRefund] = useState(false);
 
   const fmt = (v: string) => { const d = v.replace(/\D/g,"").slice(0,19); return d.match(/.{1,4}/g)?.join(" ")??d; };
 
@@ -54,6 +56,7 @@ export default function PassPage() {
   const finalAmount = couponData ? Math.round(AMOUNT*(1-couponData.discountPercent/100)) : AMOUNT;
 
   const pay = async () => {
+    if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
     if (mobile.replace(/\D/g,"").length < 10) { setError("다른 기기에서도 이용하시려면 휴대폰 번호를 입력해주세요."); return; }
     if (isFree) {
       setLoading(true);
@@ -192,9 +195,23 @@ export default function PassPage() {
           </div>
         )}
 
+        <div style={{ marginBottom:12 }}>
+          <button type="button" onClick={()=>setShowRefund(v=>!v)} style={{ background:"none", border:"none", color:"#9ca3af", fontSize:12, cursor:"pointer", padding:"4px 0", display:"flex", alignItems:"center", gap:4 }}>
+            📋 결제 전 확인사항 {showRefund?"▲":"▼"}
+          </button>
+          {showRefund && (
+            <div style={{ marginTop:8, background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"12px 14px" }}>
+              <p style={{ fontSize:12, color:"#9ca3af", margin:"0 0 10px", lineHeight:1.6 }}>디지털 콘텐츠 특성상, 이용이 시작된 후에는 취소가 어렵습니다.</p>
+              <div onClick={()=>setRefundAgreed(v=>!v)} style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", userSelect:"none" as const }}>
+                <span style={{ fontSize:18, color:refundAgreed?"#4ade80":"#9ca3af", lineHeight:1 }}>{refundAgreed?"✅":"⬜"}</span>
+                <span style={{ fontSize:12, color:refundAgreed?"#4ade80":"rgba(255,255,255,0.6)", fontWeight:refundAgreed?700:400 }}>네, 확인했어요!</span>
+              </div>
+            </div>
+          )}
+        </div>
         {error && <p style={{ color:"#f87171", fontSize:13, textAlign:"center", marginBottom:12 }}>{error}</p>}
 
-        <button onClick={pay} disabled={loading} style={{ width:"100%", background:loading?"rgba(124,58,237,0.5)":"linear-gradient(135deg,#7c3aed,#a855f7)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:loading?"not-allowed":"pointer", marginBottom:16 }}>
+        <button onClick={pay} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"rgba(124,58,237,0.5)":"linear-gradient(135deg,#7c3aed,#a855f7)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer", marginBottom:16 }}>
           {loading?"결제 처리 중...":isFree?"🎟 무료로 이용하기":`₩${finalAmount.toLocaleString()} 결제하기 (7개앱 30일)`}
         </button>
 
@@ -204,8 +221,7 @@ export default function PassPage() {
           <p style={{ margin:0, fontSize:11, color:"rgba(255,255,255,0.7)", lineHeight:1.9 }}>
             · 전화번호를 입력하시면 PC·모바일 어떤 기기에서도 이용 가능해요.<br />
             (앱 목록 /apps → 이용권 불러오기)<br />
-            · 이미 이용 중인 앱이 있다면 남은 기간에 30일이 자동으로 추가 연장돼요.<br />
-            · 디지털 콘텐츠 특성상 환불이 불가합니다.
+            · 이미 이용 중인 앱이 있다면 남은 기간에 30일이 자동으로 추가 연장돼요.
           </p>
         </div>
 
