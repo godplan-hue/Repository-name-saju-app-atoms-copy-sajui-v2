@@ -287,18 +287,6 @@ export default function HistoryDetail() {
   };
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
-    if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡 안에서는 읽기가 바로 시작되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요." });
-      return;
-    }
-    if (/NAVER|NaverWebView|naver_/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\nPC나 크롬 브라우저에서 jeomun.com 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n(전화번호로 자동 복원돼요)" });
-      return;
-    }
-    if (/DaumApps|Daum|daum/i.test(navigator.userAgent)) {
-      setTipModal({ text: "카카오톡 안에서는 🔊 읽기가 작동하지 않아요.\n\nPC나 크롬 브라우저에서 jeomun.com 접속 후\n보관함에서 내 운세를 열어 이용하세요.\n(전화번호로 자동 복원돼요)" });
-      return;
-    }
     if (!("speechSynthesis" in window)) return;
     if (speaking) {
       // speakingRef를 즉시 false로 — 화면꺼짐 재개 핸들러가 동시에 와도 재시작 안 함
@@ -833,7 +821,7 @@ export default function HistoryDetail() {
             {/* 읽기 기능 */}
             <div style={{ background: "#eff6ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bfdbfe" }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#1d4ed8", margin: "0 0 6px" }}>🔊 읽기 기능</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`카카오톡 안에서 🔊 읽기 버튼을 누르면\n'다른 브라우저로 열기' 안내가 나와요.\n외부 브라우저로 열면 바로 읽기가 됩니다.\n\n읽는 중 화면이 꺼지면 끊길 수 있어요.\n설정 → 화면 자동 꺼짐 시간을 늘려두세요.`}</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`읽는 중 화면이 꺼지면 끊길 수 있어요.\n설정 → 화면 자동 꺼짐 시간을 늘려두세요.`}</p>
             </div>
             {/* 이미지 저장 */}
             <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
