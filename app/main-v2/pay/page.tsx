@@ -316,10 +316,17 @@ function PayInner() {
         </div>
 
         {couponFree && (
-          <button onClick={payFree} disabled={loading}
-            style={{ width: "100%", padding: "15px 0", background: "linear-gradient(135deg,#4ade80,#22c55e)", color: "#052e16", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: "0 6px 22px rgba(74,222,128,0.35)", marginBottom: 8 }}>
-            {loading ? "처리 중..." : "🎁 무료로 시작하기"}
-          </button>
+          <>
+            <div style={{ marginBottom: 12 }}>
+              <label style={lbl}>핸드폰번호 <span style={{color:"#f472b6"}}>★ 필수사항</span></label>
+              <input value={mobile} onChange={e => setMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} placeholder="01012345678" inputMode="numeric" autoComplete="tel" style={inp} />
+            </div>
+            {error && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>⚠️ {error}</p>}
+            <button onClick={payFree} disabled={loading}
+              style={{ width: "100%", padding: "15px 0", background: "linear-gradient(135deg,#4ade80,#22c55e)", color: "#052e16", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: "0 6px 22px rgba(74,222,128,0.35)", marginBottom: 8 }}>
+              {loading ? "처리 중..." : "🎁 무료로 시작하기"}
+            </button>
+          </>
         )}
 
         {!couponFree && (<>
