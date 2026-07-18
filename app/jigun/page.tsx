@@ -250,7 +250,8 @@ export default function JigunPage() {
               <button
                 onClick={() => {
                   const url = "https://jeomun.com/jigun";
-                  if (navigator.share) navigator.share({ title: "💼 나에게 맞는 부업 찾기 — 직운", text: "8가지 질문으로 나에게 딱 맞는 부업 TOP 3를 찾아봤어요!", url });
+                  const _k = (window as any).Kakao;
+                  if (_k?.isInitialized() && _k?.Share) { _k.Share.sendDefault({ objectType: "feed", content: { title: "💼 점운 직운 — AI 진로·부업 추천", description: "8가지 질문으로 나에게 딱 맞는 부업 TOP 3를 찾아봤어요!", imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "직운 보기 💼", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 해보기 →", link: { mobileWebUrl: url, webUrl: url } }] }); }
                   else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent("나에게 딱 맞는 부업 TOP 3를 찾아봤어요! 💼\n" + url)}`; }
                 }}
                 style={{ background: "linear-gradient(135deg,#fbbf24,#f59e0b)", color: "#1a1a00", border: "none", borderRadius: 28, padding: "13px 36px", fontSize: 15, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 20px rgba(251,191,36,0.45)" }}

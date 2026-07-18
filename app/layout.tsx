@@ -61,6 +61,15 @@ export default function RootLayout({
         {children}
         <Analytics />
       </body>
+      <Script
+        id="kakao-sdk"
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const k = (window as any).Kakao;
+          if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+        }}
+      />
       <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-Y2MVHQYPMQ" />
       <Script id="ga-init" strategy="afterInteractive">{`
         window.dataLayer = window.dataLayer || [];

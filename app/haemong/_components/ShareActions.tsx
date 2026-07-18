@@ -22,7 +22,7 @@ export default function ShareActions({ keyword }: Props) {
           content: {
             title: `🌙 ${keyword} 해몽 결과`,
             description: `${keyword}을(를) 꿨다면? 점운에서 무료로 해석해보세요!`,
-            imageUrl: "https://i.pinimg.com/1200x/50/73/a5/5073a503cb18b1cd3459fba8e402c389.webp",
+            imageUrl: "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
           buttons: [

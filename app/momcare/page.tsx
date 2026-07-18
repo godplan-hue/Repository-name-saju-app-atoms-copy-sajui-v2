@@ -50,9 +50,13 @@ const FAQ_ITEMS = [
 ];
 
 function shareApp() {
-  const data = { title: "맘케어 — AI 육아 앱", text: "소아과 전문의가 함께하는 AI 육아 앱 맘케어를 추천합니다 👶", url: "https://jeomun.com/momcare" };
-  if (typeof navigator !== "undefined" && navigator.share) { navigator.share(data).catch(() => {}); }
-  else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(data.text + '\n' + data.url)}`; }
+  const url = "https://jeomun.com/momcare";
+  const kakao = typeof window !== "undefined" ? (window as any).Kakao : null;
+  if (kakao?.isInitialized() && kakao?.Share) {
+    kakao.Share.sendDefault({ objectType: "feed", content: { title: "👶 점운 맘케어 — AI 육아 앱", description: "소아과 전문의가 함께하는 AI 육아 앱! 무료로 시작해요 👶", imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "맘케어 보기 👶", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 해보기 →", link: { mobileWebUrl: url, webUrl: url } }] });
+  } else {
+    window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent("소아과 전문의가 함께하는 AI 육아 앱 맘케어! 무료 👶\n" + url)}`;
+  }
 }
 
 export default function MomcarePage() {

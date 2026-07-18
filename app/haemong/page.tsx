@@ -58,9 +58,13 @@ export default function HaemongPage() {
   }
 
   function shareApp() {
-    const data = { title: "점운 꿈해몽 — AI 꿈 해석", text: "꿈을 검색하면 AI가 바로 해몽해줘요! 무료로 써보세요 🌙", url: "https://jeomun.com/haemong" };
-    if (typeof navigator !== "undefined" && navigator.share) { navigator.share(data).catch(() => {}); }
-    else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(data.text + '\n' + data.url)}`; }
+    const url = "https://jeomun.com/haemong";
+    const kakao = typeof window !== "undefined" ? (window as any).Kakao : null;
+    if (kakao?.isInitialized() && kakao?.Share) {
+      kakao.Share.sendDefault({ objectType: "feed", content: { title: "🌙 점운 꿈해몽 — AI 꿈 해석", description: "꿈을 검색하면 AI가 바로 해몽해줘요! 무료로 써보세요 🌙", imageUrl: "https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "꿈해몽 보기 🌙", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 해보기 →", link: { mobileWebUrl: url, webUrl: url } }] });
+    } else {
+      window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent("꿈을 검색하면 AI가 바로 해몽해줘요! 무료 🌙\n" + url)}`;
+    }
   }
 
   return (
