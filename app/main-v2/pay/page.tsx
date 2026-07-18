@@ -36,6 +36,7 @@ function PayInner() {
   const [discountPct, setDiscountPct] = useState(0);
   const [couponFullAccess, setCouponFullAccess] = useState(false);
   const [refundAgreed, setRefundAgreed] = useState(false);
+  const [showRefundNote, setShowRefundNote] = useState(false);
 
   const displayAmount = discountPct > 0 ? Math.round(amount * (1 - discountPct / 100)) : amount;
 
@@ -369,7 +370,18 @@ function PayInner() {
 
         {error && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "0 0 12px", textAlign: "center" }}>⚠️ {error}</p>}
 
-        <p style={{ margin: "0 0 8px", fontSize: 11, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>⚠️ 디지털 콘텐츠 특성상 결과 열람 후 환불이 불가합니다.</p>
+        <div style={{ marginBottom: 8 }}>
+          <div onClick={() => setShowRefundNote(v => !v)} style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", marginBottom: showRefundNote ? 8 : 0 }}>
+            <span style={{ fontSize: 14 }}>📋</span>
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", fontWeight: 700 }}>결제 전 확인사항 {showRefundNote ? "▲" : "▼"}</span>
+          </div>
+          {showRefundNote && (
+            <p style={{ margin: "0 0 0 20px", fontSize: 11, color: "rgba(255,255,255,0.45)", lineHeight: 1.7 }}>
+              · 디지털 콘텐츠 특성상 결과 열람 후 환불이 불가합니다.<br />
+              · 전화번호 입력 시 모든 기기·브라우저에서 결과 자동 복원돼요.
+            </p>
+          )}
+        </div>
         <div onClick={() => setRefundAgreed(v => !v)} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, cursor: "pointer", userSelect: "none" as const }}>
           <span style={{ fontSize: 20, color: refundAgreed ? "#4ade80" : "#9ca3af", lineHeight: 1 }}>{refundAgreed ? "✅" : "⬜"}</span>
           <span style={{ fontSize: 12, color: refundAgreed ? "#4ade80" : "rgba(255,255,255,0.6)", fontWeight: refundAgreed ? 700 : 400 }}>네, 확인했어요!</span>
