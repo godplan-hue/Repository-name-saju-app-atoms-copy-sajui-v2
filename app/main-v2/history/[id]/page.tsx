@@ -287,8 +287,7 @@ export default function HistoryDetail() {
   };
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
-    if (!("speechSynthesis" in window)) return;
-    if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
+    if (/KAKAOTALK|kakaoBrowser|KAKAO/i.test(navigator.userAgent)) {
       setTipModal({ text: "카카오톡에서 바로 읽기가 되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요." });
       return;
     }
@@ -296,6 +295,7 @@ export default function HistoryDetail() {
       setTipModal({ text: "지금 브라우저에서는 읽기가 원활하지 않아요.\n\n📱 카카오톡으로 공유 후 읽거나\n💻 PC·크롬 브라우저에서 jeomun.com → 보관함에서 이용하세요.\n(전화번호로 자동 복원돼요)" });
       return;
     }
+    if (!("speechSynthesis" in window)) return;
     if (speaking) {
       // speakingRef를 즉시 false로 — 화면꺼짐 재개 핸들러가 동시에 와도 재시작 안 함
       setSpk(false);
