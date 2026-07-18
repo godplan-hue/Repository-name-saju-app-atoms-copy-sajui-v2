@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
@@ -71,6 +71,83 @@ export default function KakaoShareClient({ id }: { id: string }) {
   const router = useRouter();
   const [entry, setEntry] = useState<SharedEntry | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
+  const [isMob, setIsMob] = useState(false);
+  const readChunksRef = useRef<string[]>([]);
+  const readIdxRef = useRef(0);
+  const restartingRef = useRef(false);
+
+  useEffect(() => { setIsMob(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)); }, []);
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    };
+  }, []);
+
+  const getKoreanVoice = (): Promise<SpeechSynthesisVoice | null> => {
+    return new Promise(resolve => {
+      const pick = (list: SpeechSynthesisVoice[]) => list.find(v => v.lang?.toLowerCase().startsWith("ko")) || null;
+      const existing = window.speechSynthesis.getVoices();
+      if (existing.length > 0) { resolve(pick(existing)); return; }
+      const timer = setTimeout(() => resolve(pick(window.speechSynthesis.getVoices())), 1000);
+      window.speechSynthesis.onvoiceschanged = () => { clearTimeout(timer); resolve(pick(window.speechSynthesis.getVoices())); };
+    });
+  };
+
+  const speakFrom = async (chunks: string[], startIdx: number) => {
+    const voice = await getKoreanVoice();
+    chunks.slice(startIdx).forEach((chunk, i) => {
+      const idx = startIdx + i;
+      const utter = new SpeechSynthesisUtterance(chunk);
+      utter.lang = "ko-KR";
+      if (voice) utter.voice = voice;
+      utter.rate = 1;
+      utter.onstart = () => { readIdxRef.current = idx; };
+      utter.onerror = () => {
+        setSpeaking(false);
+        readChunksRef.current = [];
+        readIdxRef.current = 0;
+        window.speechSynthesis.cancel();
+      };
+      if (idx === chunks.length - 1) {
+        utter.onend = () => { setSpeaking(false); readIdxRef.current = 0; readChunksRef.current = []; };
+      }
+      window.speechSynthesis.speak(utter);
+    });
+  };
+
+  const toggleReadAloud = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    const _isKakao = /KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent);
+    if (_isKakao) {
+      setTipModal({ text: "카카오톡 안에서는 읽기 기능이 작동하지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어줘요!" });
+      return;
+    }
+    if (speaking) { window.speechSynthesis.cancel(); setSpeaking(false); return; }
+    if (!entry) return;
+    const chunks = entry.categories.map(cat => `${cat.label}\n${cat.text}`).filter(Boolean);
+    if (chunks.length === 0) return;
+    setSpeaking(true);
+    readChunksRef.current = chunks;
+    readIdxRef.current = 0;
+    speakFrom(chunks, 0);
+  };
+
+  const restartReadAloud = () => {
+    restartingRef.current = true;
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+    setTimeout(() => {
+      restartingRef.current = false;
+      if (!entry) return;
+      const chunks = entry.categories.map(cat => `${cat.label}\n${cat.text}`).filter(Boolean);
+      readChunksRef.current = chunks;
+      readIdxRef.current = 0;
+      setSpeaking(true);
+      speakFrom(chunks, 0);
+    }, 300);
+  };
 
   useEffect(() => {
     fetch(`/api/v2/share?id=${encodeURIComponent(id)}`)
@@ -96,9 +173,22 @@ export default function KakaoShareClient({ id }: { id: string }) {
 
   return (
     <main style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
-      <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
+      <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)" }}>
         <span style={{ fontSize: 14, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>🐱 {entry.businessName || "점운"}</span>
+        <div style={{ display: "flex", gap: 6 }}>
+          <button onClick={restartReadAloud} style={{ padding: "5px 10px", background: "rgba(139,92,246,0.12)", border: "none", borderRadius: 20, fontSize: 11, fontWeight: 700, color: "#7c3aed", cursor: "pointer" }}>↺ 처음부터</button>
+          <button onClick={toggleReadAloud} style={{ padding: "5px 10px", background: speaking ? "rgba(236,72,153,0.15)" : "rgba(139,92,246,0.12)", border: "none", borderRadius: 20, fontSize: 11, fontWeight: 700, color: speaking ? "#ec4899" : "#7c3aed", cursor: "pointer" }}>{speaking ? "⏸ 멈춤" : "🔊 읽기"}</button>
+        </div>
       </header>
+
+      {tipModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+          <div style={{ background: "white", borderRadius: 20, padding: "28px 24px", maxWidth: 320, width: "100%", textAlign: "center" }}>
+            <p style={{ fontSize: 14, lineHeight: 1.8, color: "#374151", margin: "0 0 20px", whiteSpace: "pre-line" }}>{tipModal.text}</p>
+            <button onClick={() => setTipModal(null)} style={{ padding: "12px 32px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
+          </div>
+        </div>
+      )}
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
