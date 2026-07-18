@@ -563,6 +563,30 @@ getPastLifeCard(oh, z)                         — 전생 이야기 (오행×띠
 - `resume/start 전화번호 필수`: ✅ 이미 완성 (line 39-40)
 - `jigun 전화번호 필수`: ✅ 이미 완성
 
+### TTS 읽기 기능 전면 개선 (2026-07-18)
+
+#### KakaoTalk UA 탐지 순서 버그 수정 (이전 세션)
+- **커밋**: `b7af974`, `e9ec989`, `cacc8f0`, `c6cb48f`, `cef106c`, `99dfffd`
+- **문제**: `speechSynthesis` 체크가 KakaoTalk 탐지보다 먼저 실행 → 카톡 인앱브라우저에서 음성 없이 침묵
+- **수정**: KakaoTalk UA 탐지(`/KAKAOTALK|kakaoBrowser|KAKAO/i`)를 항상 `speechSynthesis` 체크보다 **먼저** 실행
+- 적용 파일 6개: `result/page.tsx`, `history/[id]/page.tsx`, `share/[id]/ShareClient.tsx`, `daewoon/page.tsx`, `taegil/page.tsx`, `yearly/page.tsx`
+
+#### 모든 가격대 결과지에 "꼭 읽어보세요" + 읽기 버튼 통일 (2026-07-18)
+- **커밋**: `25fe674`
+- **배경**: ₩4,900 신년운세·₩2,900 재회운은 `special/page.tsx` → 즉시 `ShareClient.tsx`로 리다이렉트. ShareClient에 읽기 버튼은 있었지만 "꼭 읽어보세요" 빨간 버튼이 없었음
+- **기준**: `result/page.tsx` (₩990/₩3,900 사주)를 기준으로 모든 결과지 통일
+
+| 파일 | 수정 내용 |
+|------|---------|
+| `app/main-v2/share/[id]/ShareClient.tsx` | "📌 꼭 읽어보세요 · 자세히 보기 →" 빨간 버튼 추가 (결과 영역 최상단) |
+| `app/main-v2/taegil/page.tsx` | `restartReadAloud` 추가, "↺ 처음부터" 버튼 추가, 가이드 모달 추가 |
+| `app/main-v2/daewoon/page.tsx` | "📌 꼭 읽어보세요" 버튼 + 가이드 모달 추가 |
+| `app/main-v2/yearly/page.tsx` | TTS 읽기 기능 **전체 신규 구현** (이전에 없었음): `toggleReadAloud`, `restartReadAloud`, 고정 버튼, 가이드 모달 전부 추가 |
+
+#### 가이드 모달 공통 내용 (모든 결과지 동일)
+- "⚠️ 이 화면을 나가면 결과가 사라져요!" — 스크린샷 저장 권고
+- "🔊 읽어주기 팁" — 카카오톡에서 안 되면 다른 브라우저로 열기 안내
+
 ### 버그 수정 · 전략 업데이트 (2026-07-15)
 
 #### `lib/navigate.ts` 신규 생성 — 검정 화면 + 뒤로가기 버그 완전 해결
