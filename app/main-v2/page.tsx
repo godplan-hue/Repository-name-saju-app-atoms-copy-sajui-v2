@@ -516,6 +516,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         }}
         onTouchStart={e => { startXRef.current = e.touches[0].clientX; startYRef.current = e.touches[0].clientY; }}
         onTouchEnd={e => {
+          e.preventDefault(); // ghost click(300ms 지연 클릭) 완전 차단
           if (Date.now() - lastArrowTouchRef.current < 300) { startXRef.current = null; startYRef.current = null; return; }
           if (startXRef.current === null) return;
           const dx = e.changedTouches[0].clientX - startXRef.current;
@@ -523,11 +524,11 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
           startXRef.current = null;
           startYRef.current = null;
           if (Math.abs(dx) > 40) {
-            // 스와이프: 배너 전환
-            resetTimer(dx < 0 ? (cur + 1) % displayBanners.length : (cur - 1 + displayBanners.length) % displayBanners.length);
+            // 스와이프: 배너 전환 (경계에서 순환 없음)
+            const next = dx < 0 ? cur + 1 : cur - 1;
+            if (next >= 0 && next < displayBanners.length) resetTimer(next);
           } else if (Math.abs(dy) <= 10 && Math.abs(dx) <= 20) {
             // 탭: 양축 모두 작은 경우만 (스크롤 오인식 방지)
-            e.preventDefault();
             if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} resetTimer(cur); document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
             try { sessionStorage.setItem("banner_click_cur", String(cur)); } catch {}
             if ((b as any).directUrl) { router.push((b as any).directUrl); return; }
@@ -620,8 +621,8 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         )}
         {/* 이전 화살표 */}
         <button
-          onClick={e => { e.stopPropagation(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
-          onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); lastArrowTouchRef.current = Date.now(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
+          onClick={e => { e.stopPropagation(); if (cur > 0) resetTimer(cur - 1); }}
+          onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); lastArrowTouchRef.current = Date.now(); if (cur > 0) resetTimer(cur - 1); }}
           aria-label="이전 배너"
           style={{ position: "absolute", top: "50%", left: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
         >
@@ -629,8 +630,8 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         </button>
         {/* 다음 화살표 */}
         <button
-          onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % displayBanners.length); }}
-          onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); lastArrowTouchRef.current = Date.now(); resetTimer((cur + 1) % displayBanners.length); }}
+          onClick={e => { e.stopPropagation(); if (cur < displayBanners.length - 1) resetTimer(cur + 1); }}
+          onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); lastArrowTouchRef.current = Date.now(); if (cur < displayBanners.length - 1) resetTimer(cur + 1); }}
           aria-label="다음 배너"
           style={{ position: "absolute", top: "50%", right: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
         >
