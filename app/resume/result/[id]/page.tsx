@@ -83,7 +83,7 @@ export default function ResumeResultPage() {
     <div style={{...S.wrap, display:"flex", alignItems:"center", justifyContent:"center"}}>
       <div style={{textAlign:"center"}}>
         <p style={{color:"#f87171", marginBottom:16}}>{error || "결과 없음"}</p>
-        <Link href="/resume/start" style={{color:"#a78bfa", textDecoration:"none"}}>← 다시 분석하기</Link>
+        <Link href="/resume/start" target="_blank" style={{color:"#a78bfa", textDecoration:"none"}}>← 다시 분석하기</Link>
       </div>
     </div>
   );
@@ -104,7 +104,7 @@ export default function ResumeResultPage() {
 
         {/* 헤더 */}
         <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20}}>
-          <Link href="/resume" style={{color:"#a78bfa", fontSize:13, textDecoration:"none"}}>← 합격자소서</Link>
+          <Link href="/resume" target="_blank" style={{color:"#a78bfa", fontSize:13, textDecoration:"none"}}>← 합격자소서</Link>
           <button onClick={share} style={{background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.2)", color:"white", fontSize:12, fontWeight:700, padding:"8px 16px", borderRadius:20, cursor:"pointer"}}>공유하기 📤</button>
         </div>
 
@@ -208,13 +208,13 @@ export default function ResumeResultPage() {
           <div style={{display:"flex", gap:8, flexWrap:"wrap"}}>
             <Link href="/main-v2" target="_blank" style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:12, fontWeight:700, padding:"10px 18px", borderRadius:20, textDecoration:"none"}}>직업운 사주 보기 →</Link>
             <Link href="/main-v2/daewoon" target="_blank" style={{display:"inline-block", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.2)", color:"white", fontSize:12, fontWeight:700, padding:"10px 16px", borderRadius:20, textDecoration:"none"}}>나의 대운 확인 →</Link>
-            <Link href="/haemong" style={{display:"inline-block", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.2)", color:"white", fontSize:12, fontWeight:700, padding:"10px 16px", borderRadius:20, textDecoration:"none"}}>합격 꿈해몽 →</Link>
+            <Link href="/haemong" target="_blank" style={{display:"inline-block", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.2)", color:"white", fontSize:12, fontWeight:700, padding:"10px 16px", borderRadius:20, textDecoration:"none"}}>합격 꿈해몽 →</Link>
           </div>
         </div>
 
         {/* 다시 분석 */}
         <div style={{textAlign:"center", paddingTop:8}}>
-          <Link href="/resume/start" style={{color:"#a78bfa", fontSize:13, textDecoration:"none"}}>다른 직무·기업으로 다시 분석하기</Link>
+          <Link href="/resume/start" target="_blank" style={{color:"#a78bfa", fontSize:13, textDecoration:"none"}}>다른 직무·기업으로 다시 분석하기</Link>
         </div>
 
       </div>
