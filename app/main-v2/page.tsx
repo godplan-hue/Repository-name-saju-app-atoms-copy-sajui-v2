@@ -484,6 +484,8 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startXRef = useRef<number | null>(null);
   const startYRef = useRef<number | null>(null);
+  const lastArrowTouchRef = useRef(0);
+  const router = useRouter();
 
   const resetTimer = (next: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -505,30 +507,30 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
       <div
         style={{ height: 320, borderRadius: 20, position: "relative", overflow: "hidden", cursor: "pointer", boxShadow: "0 6px 28px rgba(139,92,246,0.18)", background: "#f9f0ff" }}
         onClick={() => {
+          if (Date.now() - lastArrowTouchRef.current < 500) return;
           if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
           try { sessionStorage.setItem("banner_click_cur", String(cur)); } catch {}
-          if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
+          if ((b as any).directUrl) { router.push((b as any).directUrl); return; }
           if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
           onStart(b.route);
         }}
         onTouchStart={e => { startXRef.current = e.touches[0].clientX; startYRef.current = e.touches[0].clientY; }}
         onTouchEnd={e => {
+          if (Date.now() - lastArrowTouchRef.current < 300) { startXRef.current = null; startYRef.current = null; return; }
           if (startXRef.current === null) return;
           const dx = e.changedTouches[0].clientX - startXRef.current;
           const dy = e.changedTouches[0].clientY - (startYRef.current ?? 0);
           startXRef.current = null;
           startYRef.current = null;
-          // 세로 스크롤이면 무시 (|dy| > 10 이고 |dy| >= |dx|)
-          if (Math.abs(dy) > 10 && Math.abs(dy) >= Math.abs(dx)) return;
           if (Math.abs(dx) > 40) {
             // 스와이프: 배너 전환
             resetTimer(dx < 0 ? (cur + 1) % displayBanners.length : (cur - 1 + displayBanners.length) % displayBanners.length);
-          } else {
-            // 탭: 네이버 인앱브라우저에서 onClick이 안 발동하므로 여기서 직접 처리
+          } else if (Math.abs(dy) <= 10 && Math.abs(dx) <= 20) {
+            // 탭: 양축 모두 작은 경우만 (스크롤 오인식 방지)
             e.preventDefault();
             if ((b as any).chatBanner) { try { history.pushState(null, "", window.location.href); } catch {} resetTimer(cur); document.getElementById("chat-widget")?.scrollIntoView({ behavior: "smooth" }); return; }
             try { sessionStorage.setItem("banner_click_cur", String(cur)); } catch {}
-            if ((b as any).directUrl) { window.location.href = (b as any).directUrl; return; }
+            if ((b as any).directUrl) { router.push((b as any).directUrl); return; }
             if ((b as any).modalId && onModal) { onModal((b as any).modalId, (b as any).preselect); return; }
             onStart(b.route);
           }
@@ -619,7 +621,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         {/* 이전 화살표 */}
         <button
           onClick={e => { e.stopPropagation(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
-          onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
+          onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); lastArrowTouchRef.current = Date.now(); resetTimer((cur - 1 + displayBanners.length) % displayBanners.length); }}
           aria-label="이전 배너"
           style={{ position: "absolute", top: "50%", left: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
         >
@@ -628,7 +630,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
         {/* 다음 화살표 */}
         <button
           onClick={e => { e.stopPropagation(); resetTimer((cur + 1) % displayBanners.length); }}
-          onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); resetTimer((cur + 1) % displayBanners.length); }}
+          onTouchEnd={e => { e.stopPropagation(); e.preventDefault(); lastArrowTouchRef.current = Date.now(); resetTimer((cur + 1) % displayBanners.length); }}
           aria-label="다음 배너"
           style={{ position: "absolute", top: "50%", right: 10, transform: "translateY(-50%)", zIndex: 3, width: 34, height: 34, borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.35)", color: "white", fontSize: 18, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
         >
@@ -855,7 +857,7 @@ export default function MainV2() {
       </section>
 
       {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { window.location.href = "/main-v2/payment?highlight=wealthlove"; } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
       <FortuneSearch onOpenModal={(catKey, modalId) => {
         if (modalId) { setShowModal(modalId); }
         else if (catKey) { setModalSelectedCats([catKey]); setShowModal("wealth5"); }
