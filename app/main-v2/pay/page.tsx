@@ -19,11 +19,6 @@ function PayInner() {
   const isTaegil = searchParams.get("taegil") === "1";
   const isFreeCat = searchParams.get("freeCat") === "1";
 
-  const [cardNo, setCardNo] = useState("");
-  const [expM, setExpM] = useState("");
-  const [expY, setExpY] = useState("");
-  const [birth, setBirth] = useState("");
-  const [pw, setPw] = useState("");
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
@@ -171,106 +166,82 @@ function PayInner() {
     } finally { setLoading(false); }
   };
 
-  const formatCardNo = (v: string) => {
-    const d = v.replace(/\D/g, "").slice(0, 19);
-    return d.match(/.{1,4}/g)?.join(" ") ?? d;
-  };
-
   const pay = async () => {
     if (!refundAgreed) { setError("아래 체크박스를 먼저 체크해주세요. ✅"); return; }
-    const clean = cardNo.replace(/\s/g, "");
-    if (clean.length < 14) { setError("카드번호를 확인해주세요."); return; }
-    if (!expM || !expY) { setError("유효기간을 입력해주세요."); return; }
-    if (birth.length !== 6) { setError("생년월일 앞 6자리(YYMMDD)를 입력해주세요."); return; }
-    if (pw.length !== 2) { setError("카드 비밀번호 앞 2자리를 입력해주세요."); return; }
-    if (!name.trim()) { setError("이름을 입력해주세요."); return; }
     if (!mobile.replace(/\D/g, "") || mobile.replace(/\D/g, "").length < 10) { setError("전화번호를 입력해주세요."); return; }
     setLoading(true); setError("");
     try {
-      const res = await fetch("/api/payup/charge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cardNo: clean,
-          expireMonth: expM.padStart(2, "0"),
-          expireYear: expY.slice(-2),
-          birthday: birth,
-          cardPw: pw,
-          amount: displayAmount,
-          itemName: "점운 운세",
-          userName: name.trim(),
-          mobileNumber: mobile.replace(/\D/g, ""),
-        }),
+      const PortOne = await import("@portone/browser-sdk/v2");
+      const paymentId = `jeomun-${Date.now()}`;
+      const response = await PortOne.requestPayment({
+        storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
+        channelKey: "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7",
+        paymentId,
+        orderName: "점운 사주 분석",
+        totalAmount: displayAmount,
+        currency: "KRW",
+        payMethod: "CARD",
+        customer: {
+          fullName: name.trim() || "고객",
+          phoneNumber: mobile.replace(/\D/g, ""),
+          email: email.trim() || undefined,
+        },
       });
-      const data = await res.json();
-      if (data.success) {
-        if (couponCode.trim() && discountPct > 0) {
-          fetch("/api/promo-codes", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: couponCode.trim().toUpperCase() }) }).catch(() => {});
-        }
-        const cleanMobile = mobile.replace(/\D/g, "");
-        if (cleanMobile) {
-          try {
-            localStorage.setItem("v2_saved_phone", cleanMobile);
-            sessionStorage.setItem("v2_payment_phone", cleanMobile);
-          } catch {}
-        }
-        try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({...sp, phone: cleanMobile, email: email.trim()})); } catch {}
-        // 맘케어 30일 + Q&A/복냥이 24시간 잠금 해제 (실카드 결제만)
-        try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); } catch {}
-        try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
-        // 결제 기록 Firebase 저장 (어드민 결제내역에 표시)
-        if (displayAmount > 0 && name.trim()) {
-          fetch("/api/v2/save-payment", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id: `pay_${Date.now()}`,
-              date: new Date().toISOString(),
-              name: name.trim(),
-              phone: mobile.replace(/\D/g, ""),
-              email: email.trim(),
-              amount: displayAmount,
-              package: "운세",
-              categories: [],
-              plan: "select",
-              discountCode: couponCode.trim().toUpperCase() || "",
-              discountPercent: discountPct,
-              originalAmount: amount,
-            }),
-          }).catch(() => {});
-        }
-        // 추천인 쿠폰 지급
-        try {
-          const refCode = localStorage.getItem("referred_by");
-          if (refCode) {
-            fetch("/api/referral", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ refCode }),
-            }).catch(() => {});
-            localStorage.removeItem("referred_by");
-          }
-        } catch {}
-        // 카카오 알림톡 발송
-        if (cleanMobile) {
-          fetch("/api/notify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ phone: cleanMobile, amount: displayAmount }),
-          }).catch(() => {});
-        }
-        // 결과지 tier 인식용 — 패키지 외 990/2900/3900 결제도 select로 인식되게
-        if (!isTaegil) {
-          localStorage.setItem("v2_paid", "1");
-          localStorage.setItem("price", String(amount));
-          localStorage.setItem("v2_plan", "select");
-        }
-        window.location.href = isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next;
-      } else {
-        setError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
+      if (response?.code) {
+        setError(response.message || "결제에 실패했습니다. 다시 시도해주세요.");
+        return;
       }
+      if (couponCode.trim() && discountPct > 0) {
+        fetch("/api/promo-codes", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: couponCode.trim().toUpperCase() }) }).catch(() => {});
+      }
+      const cleanMobile = mobile.replace(/\D/g, "");
+      if (cleanMobile) {
+        try {
+          localStorage.setItem("v2_saved_phone", cleanMobile);
+          sessionStorage.setItem("v2_payment_phone", cleanMobile);
+        } catch {}
+      }
+      try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({...sp, phone: cleanMobile, email: email.trim()})); } catch {}
+      try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); } catch {}
+      try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+      if (displayAmount > 0 && name.trim()) {
+        fetch("/api/v2/save-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: paymentId,
+            date: new Date().toISOString(),
+            name: name.trim(),
+            phone: mobile.replace(/\D/g, ""),
+            email: email.trim(),
+            amount: displayAmount,
+            package: "운세",
+            categories: [],
+            plan: "select",
+            discountCode: couponCode.trim().toUpperCase() || "",
+            discountPercent: discountPct,
+            originalAmount: amount,
+          }),
+        }).catch(() => {});
+      }
+      try {
+        const refCode = localStorage.getItem("referred_by");
+        if (refCode) {
+          fetch("/api/referral", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ refCode }) }).catch(() => {});
+          localStorage.removeItem("referred_by");
+        }
+      } catch {}
+      if (cleanMobile) {
+        fetch("/api/notify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: cleanMobile, amount: displayAmount }) }).catch(() => {});
+      }
+      if (!isTaegil) {
+        localStorage.setItem("v2_paid", "1");
+        localStorage.setItem("price", String(amount));
+        localStorage.setItem("v2_plan", "select");
+      }
+      window.location.href = isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next;
     } catch {
-      setError("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+      setError("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
       setLoading(false);
     }
@@ -331,32 +302,11 @@ function PayInner() {
         )}
 
         {!couponFree && (<>
-        <div style={{ marginBottom: 12 }}>
-          <label style={lbl}>카드번호</label>
-          <input value={cardNo} onChange={e => setCardNo(formatCardNo(e.target.value))} placeholder="0000 0000 0000 0000" inputMode="numeric" autoComplete="off" style={inp} />
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }}>
-          <div>
-            <label style={lbl}>유효기간 월 (MM)</label>
-            <input value={expM} onChange={e => setExpM(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="01" inputMode="numeric" maxLength={2} autoComplete="cc-exp-month" style={inp} />
-          </div>
-          <div>
-            <label style={lbl}>유효기간 년 (YY)</label>
-            <input value={expY} onChange={e => setExpY(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="27" inputMode="numeric" maxLength={2} autoComplete="cc-exp-year" style={inp} />
-          </div>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 12 }}>
-          <div>
-            <label style={lbl}>생년월일 앞 6자리</label>
-            <input value={birth} onChange={e => setBirth(e.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="예: 901225" inputMode="numeric" maxLength={6} autoComplete="off" style={inp} />
-          </div>
-          <div>
-            <label style={lbl}>비밀번호 앞 2자리</label>
-            <input type="password" value={pw} onChange={e => setPw(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="••" inputMode="numeric" maxLength={2} autoComplete="off" style={{ ...inp, fontSize: 20 }} />
-          </div>
+        <div style={{ marginBottom: 12, padding: "10px 14px", background: "rgba(251,191,36,0.08)", borderRadius: 10, border: "1px solid rgba(251,191,36,0.2)" }}>
+          <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>💳 결제하기 버튼을 누르면 <b style={{color:"#fbbf24"}}>KCP 신용카드 결제창</b>이 열립니다.</p>
         </div>
         <div style={{ marginBottom: 12 }}>
-          <label style={lbl}>이름 (카드 명의자)</label>
+          <label style={lbl}>이름 (선택)</label>
           <input value={name} onChange={e => setName(e.target.value)} placeholder="홍길동" autoComplete="cc-name" style={inp} />
         </div>
         <div style={{ marginBottom: 12 }}>
@@ -395,7 +345,7 @@ function PayInner() {
           {loading ? "결제 중..." : `💳 ₩${displayAmount.toLocaleString()} 결제하기`}
         </button>
 
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "8px 0 0" }}>SSL 보안 결제 · 페이업㈜ 제공</p>
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "8px 0 0" }}>SSL 보안 결제 · NHN KCP 제공</p>
         </>)}
       </div>
     </main>
