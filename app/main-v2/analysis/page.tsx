@@ -81,6 +81,7 @@ export default function V2Analysis() {
         sessionStorage.setItem("v2_profile", saved);
       } else {
         sessionStorage.setItem("v2_from_app", "1");
+        document.cookie = "jeomun_from_app=1; path=/; max-age=30";
         window.location.replace("/main-v2/profile");
         return;
       }

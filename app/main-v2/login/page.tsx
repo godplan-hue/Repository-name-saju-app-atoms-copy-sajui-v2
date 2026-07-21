@@ -30,6 +30,7 @@ export default function V2Login() {
     // 보여주기 위한 기준값(main-v2/profile에서 사용)
     localStorage.setItem("v2_login_session_id", String(Date.now()));
     sessionStorage.setItem("v2_from_app", "1");
+    document.cookie = "jeomun_from_app=1; path=/; max-age=30";
     router.push("/main-v2/profile");
   };
 

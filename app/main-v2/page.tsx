@@ -768,6 +768,7 @@ export default function MainV2() {
     try { const sp = localStorage.getItem("v2_saved_profile"); if (sp) { const p = JSON.parse(sp); if (p.birthYear && p.gender && p.birthHour) { sessionStorage.setItem("v2_profile", JSON.stringify(p)); window.location.href = "/main-v2/analysis?fresh=1"; return; } } } catch {}
     sessionStorage.setItem("v2_profile_flow", "free");
     sessionStorage.setItem("v2_from_app", "1");
+    document.cookie = "jeomun_from_app=1; path=/; max-age=30";
     window.location.href = "/main-v2/profile";
   };
 
