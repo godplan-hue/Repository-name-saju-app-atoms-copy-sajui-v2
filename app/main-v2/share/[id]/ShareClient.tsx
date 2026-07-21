@@ -649,9 +649,6 @@ export default function ShareClient({ id }: { id: string }) {
                 </div>
               </div>
             </div>
-            <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, width: "100%", marginTop: 14, padding: "13px 16px", background: "#FEE500", color: "#1a1a1a", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textDecoration: "none" }}>
-              <span style={{ fontSize: 18 }}>💬</span> 궁금한 점 카카오톡으로 문의하기
-            </a>
           </>
         )}
 

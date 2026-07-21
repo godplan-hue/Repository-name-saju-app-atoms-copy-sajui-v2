@@ -800,15 +800,6 @@ export default function HistoryDetail() {
           </div>
         </div>
 
-        {/* ── 카카오채널 채팅 문의 버튼 ── */}
-        <a
-          href="http://pf.kakao.com/_xbwtPX/chat"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, width: "100%", marginTop: 14, padding: "13px 16px", background: "#FEE500", color: "#1a1a1a", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textDecoration: "none", boxShadow: "0 2px 10px rgba(254,229,0,0.4)" }}
-        >
-          <span style={{ fontSize: 18 }}>💬</span> 궁금한 점 카카오톡으로 문의하기
-        </a>
 
       </div>
 
