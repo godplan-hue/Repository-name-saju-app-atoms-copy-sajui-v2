@@ -550,6 +550,14 @@ export default function HistoryDetail() {
         if (kakao && !kakao.isInitialized()) kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
       }}
     />
+    {/* 어디서 스크롤해도 항상 누를 수 있게 고정된 읽기 버튼 */}
+    <div style={{ position: "fixed", right: 16, bottom: 80, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+      <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(139,92,246,0.15)", color: "#8b5cf6", fontWeight: 800, fontSize: 16, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺ 처음부터 듣기</button>
+      <button onClick={toggleReadAloud} style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
+        {speaking ? "⏹ 멈추기" : "🔊 읽어주기"}
+      </button>
+    </div>
+
     <main style={{ minHeight: "100vh", background: BG, backgroundImage: "url('https://i.pinimg.com/736x/49/e5/f9/49e5f910a4d9c765e84937b9919ada01.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
 
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
@@ -569,6 +577,14 @@ export default function HistoryDetail() {
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 72px" }}>
+
+        {/* ── 꼭 읽어보세요 버튼 ── */}
+        <button
+          onClick={() => setShowGuideModal(true)}
+          style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
+        >
+          📌 꼭 읽어보세요 · 자세히 보기 →
+        </button>
 
         {/* 카카오 공유 쿠폰 배너 — 상단 */}
         <KakaoShareCouponBanner />
@@ -814,17 +830,23 @@ export default function HistoryDetail() {
 
       {showGuideModal && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
-          <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "80vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
-            <p style={{ fontSize: 14, fontWeight: 900, color: "#be185d", margin: "0 0 12px" }}>📱 모바일 이용 안내</p>
-            {/* 읽기 기능 */}
-            <div style={{ background: "#eff6ff", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bfdbfe" }}>
-              <p style={{ fontSize: 13, fontWeight: 900, color: "#1d4ed8", margin: "0 0 6px" }}>🔊 읽기 기능</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`읽는 중 화면이 꺼지면 끊길 수 있어요.\n설정 → 화면 자동 꺼짐 시간을 늘려두세요.`}</p>
+          <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 맨 밑에 버튼을 꼭 확인하세요!</p>
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 결과지를 나가면 내용이 모두 사라져요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>반드시 <strong>보관함 저장</strong><br />또는 <strong>공유하기</strong> 버튼을 눌러 저장해두세요.<br /><span style={{ color: "#dc2626", fontWeight: 700 }}>나가서 내용이 사라진 경우 환불은 불가합니다.</span></p>
             </div>
-            {/* 이미지 저장 */}
-            <div style={{ background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 12, border: "1.5px solid #bbf7d0" }}>
-              <p style={{ fontSize: 13, fontWeight: 900, color: "#15803d", margin: "0 0 6px" }}>🖼 이미지 저장</p>
-              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 2, whiteSpace: "pre-line" }}>{`PC 또는 구글 크롬에서\njeomun.com 직접 접속 후\n보관함에서 이미지 저장을 이용하세요.\n\n카카오톡에서는 이미지 저장이 안 돼요.\n스크린샷으로 저장해 주세요.\nAndroid: 볼륨↓ + 전원 동시 누르기\niPhone: 사이드버튼 + 볼륨↑ 동시 누르기`}</p>
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 전화번호 안 넣으면 결과 사라져요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>결제 시 전화번호 미입력하면<br />브라우저 닫는 순간 결과가 영구 삭제됩니다.<br />바로 <strong>보관함</strong>에 저장하세요.</p>
+            </div>
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 보관함은 이 기기·브라우저에서만 보여요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>다른 브라우저나 기기로 접속하면<br />보관함에 저장된 목록이 보이지 않아요.<br />결과는 반드시 <strong>공유하기</strong>로 따로 보관하세요.</p>
+            </div>
+            <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡에서는 읽기가 안 돼요.<br />⋮ → 다른 브라우저로 열기 → 🔊 읽기를 눌러요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
             </div>
             <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>
               확인

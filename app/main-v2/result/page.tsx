@@ -1320,7 +1320,7 @@ function V2ResultInner() {
 
         {/* ── 꼭 읽어보세요 버튼 ── */}
         <button
-          onClick={() => isMob ? setShowGuideModal(true) : setShowPcGuideModal(true)}
+          onClick={() => setShowGuideModal(true)}
           style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
         >
           📌 꼭 읽어보세요 · 자세히 보기 →
