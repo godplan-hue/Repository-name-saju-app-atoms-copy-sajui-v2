@@ -151,16 +151,24 @@ export default function V2Profile() {
     if (verifiedPhone && saved) {
       try {
         const p = JSON.parse(saved);
-        if ((p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone && p.birthYear && p.gender && p.birthHour) {
+        const loggedInName = localStorage.getItem("v2_user_name") ?? "";
+        // 로그인 이름이 다른 사람이면 이전 정보 무시 → 처음부터 (전화번호 입력)
+        const nameOk = !loggedInName || !p.name || p.name === loggedInName;
+        if (nameOk && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone && p.birthYear && p.gender && p.birthHour) {
           setForm(prev => ({ ...prev, ...p, relationship: p.relationship || "나" }));
           setSavedMode(true);
           setPhoneStep(false);
           setChecking(false);
           return;
         }
+        // 다른 사람 → 저장된 이전 정보 초기화
+        if (!nameOk) {
+          localStorage.removeItem("v2_saved_profile");
+          localStorage.removeItem("v2_verified_phone");
+        }
       } catch {}
     }
-    setChecking(false); // 처음 방문 or 다른 기기 → 전화번호 입력 화면 표시
+    setChecking(false); // 처음 방문 or 다른 사람 → 전화번호 입력 화면 표시
   }, []);
 
   const TOTAL = 5;
