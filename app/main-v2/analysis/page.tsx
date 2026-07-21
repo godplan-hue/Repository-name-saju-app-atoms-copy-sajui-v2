@@ -87,7 +87,16 @@ export default function V2Analysis() {
       }
     }
     try {
-      setProfile(JSON.parse(p));
+      const parsed = JSON.parse(p);
+      // 이름 없으면 어떤 경로로 왔든 프로필 입력 화면으로
+      if (!parsed.name || !parsed.birthYear || !parsed.gender || !parsed.birthHour) {
+        sessionStorage.setItem("v2_profile_flow", "free");
+        sessionStorage.setItem("v2_from_app", "1");
+        document.cookie = "jeomun_from_app=1; path=/; max-age=30";
+        window.location.replace("/main-v2/profile");
+        return;
+      }
+      setProfile(parsed);
     } catch {
       sessionStorage.setItem("v2_from_app", "1");
       window.location.replace("/main-v2/profile");
