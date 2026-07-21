@@ -1308,7 +1308,7 @@ function V2ResultInner() {
           </button>
           <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺ 처음부터 듣기</button>
           {tier !== "free" && (
-            <button onClick={() => { nav("/main-v2/history"); }} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+            <button onClick={() => { window.open("/main-v2/history", "_blank"); }} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
               📂 보관함
             </button>
           )}
@@ -1334,7 +1334,7 @@ function V2ResultInner() {
         {!isPartner && <KakaoShareCouponBanner />}
         {!isPartner && (
           <div
-            onClick={() => { nav("/share-coupon"); }}
+            onClick={() => { window.open("/share-coupon", "_blank"); }}
             style={{ margin: "0 0 8px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}
           >
             <div style={{ background: "linear-gradient(135deg,#dc2626,#b91c1c)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
@@ -1356,7 +1356,7 @@ function V2ResultInner() {
           <button
             onClick={() => {
               localStorage.setItem("v2_plan", paid ? "select" : "free");
-              nav("/main-v2/qa-list");
+              window.open("/main-v2/qa-list", "_blank");
             }}
             style={{ width: "100%", padding: "14px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1a0635, #3b0764)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, boxShadow: "0 4px 20px rgba(139,92,246,0.4)" }}
           >
@@ -1767,7 +1767,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { nav("/main-v2/history"); }}
+            <button onClick={() => { window.open("/main-v2/history", "_blank"); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
               📂 보관함 가기
             </button>
@@ -1789,7 +1789,7 @@ function V2ResultInner() {
               style={{ padding: "12px 4px", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.35)" }}>
               💳 유료 운세
             </button>
-            <button onClick={() => { nav("/main-v2/history"); }}
+            <button onClick={() => { window.open("/main-v2/history", "_blank"); }}
               style={{ padding: "11px 4px", background: "linear-gradient(135deg, #e0e7ff, #c7d2fe)", color: "#4338ca", border: "1.5px solid rgba(99,102,241,0.35)", borderRadius: 50, fontWeight: 800, fontSize: 12, cursor: "pointer", boxShadow: "0 2px 10px rgba(99,102,241,0.18)" }}>
               📂 보관함 가기
             </button>
@@ -1815,7 +1815,7 @@ function V2ResultInner() {
         {/* ── 꿈해몽 배너 (항상 표시) ── */}
         {!isPartner && (
           <div style={{ display: "flex", gap: 10, margin: "10px 0" }}>
-            <div onClick={() => { nav("/haemong"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden", boxShadow: "0 3px 12px rgba(220,38,38,0.15)" }}>
+            <div onClick={() => { window.open("/haemong", "_blank"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #dc2626", overflow: "hidden", boxShadow: "0 3px 12px rgba(220,38,38,0.15)" }}>
               <div style={{ background: "#dc2626", padding: "7px 10px", textAlign: "center" }}>
                 <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🎁 사주 결제 혜택</span>
               </div>
@@ -1825,7 +1825,7 @@ function V2ResultInner() {
                 <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>꿈해몽 보기 →</div>
               </div>
             </div>
-            <div onClick={() => { nav("/pass"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
+            <div onClick={() => { window.open("/pass", "_blank"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
               <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "7px 10px", textAlign: "center" }}>
                 <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔥 7개앱 풀패스</span>
               </div>
@@ -1841,7 +1841,7 @@ function V2ResultInner() {
         {/* ── 사주 Q&A 배너 (무엇이든 물어보세요 → 클릭 시 Q&A 페이지 이동) ── */}
         {profile?.name && profile?.birthYear && (
           <div
-            onClick={() => { nav("/main-v2/qa-list"); }}
+            onClick={() => { window.open("/main-v2/qa-list", "_blank"); }}
             style={{
               marginTop: 8, marginBottom: 14,
               borderRadius: 20, overflow: "hidden", cursor: "pointer",
@@ -1885,7 +1885,7 @@ function V2ResultInner() {
         {!isPartner && (
           <div style={{ margin: "14px 0 0", display: "flex", gap: 8 }}>
             <div
-              onClick={() => { nav("/main-v2/daewoon"); }}
+              onClick={() => { window.open("/main-v2/daewoon", "_blank"); }}
               style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd" }}
             >
               <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
@@ -1897,7 +1897,7 @@ function V2ResultInner() {
               </div>
             </div>
             <div
-              onClick={() => { nav("/main-v2/taegil"); }}
+              onClick={() => { window.open("/main-v2/taegil", "_blank"); }}
               style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac" }}
             >
               <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
