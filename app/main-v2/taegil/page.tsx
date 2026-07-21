@@ -37,6 +37,7 @@ export default function TaegilPage() {
   const [loading, setLoading] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [showGuideModal, setShowGuideModal] = useState(false);
+  const [historySaved, setHistorySaved] = useState(false);
   const [partnerName, setPartnerName] = useState("");
   const [partnerBirthYear, setPartnerBirthYear] = useState("");
   const [partnerBirthMonth, setPartnerBirthMonth] = useState("");
@@ -214,6 +215,38 @@ export default function TaegilPage() {
       }
       window.speechSynthesis.speak(utt);
     });
+  };
+
+  const saveToHistory = () => {
+    if (!profile || !results.length) return;
+    try {
+      const id = `taegil-${profile.name}-${eventType}-${Date.now()}`;
+      const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
+      const newItem = {
+        id, date: new Date().toISOString(),
+        name: profile.name,
+        category: `📅 택일 ${eventType} 분석`,
+        analysis: results.map(r => {
+          const d = new Date(r.date);
+          return `${d.getMonth()+1}월 ${d.getDate()}일 (${r.dayOfWeek}) ${r.rating}\n${r.title}${r.reason ? `\n${r.reason}` : ""}`;
+        }).join("\n\n"),
+        scores: { total: 75, wealth: 70, love: 70, health: 75, success: 75 },
+        isPaid: true, planType: "taegil", birthYear: profile.birthYear ?? "",
+      };
+      hist.unshift(newItem);
+      localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
+      const name = profile.name;
+      if (name) {
+        try {
+          const _prof = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+          const _phone = (_prof.phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+          fetch("/api/v2/history", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, phone: _phone || undefined, item: newItem }) }).catch(() => {});
+        } catch {
+          fetch("/api/v2/history", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, item: newItem }) }).catch(() => {});
+        }
+      }
+      setHistorySaved(true);
+    } catch {}
   };
 
   const handleShare = async () => {
@@ -464,6 +497,10 @@ export default function TaegilPage() {
                 <button onClick={handleShare}
                   style={{ padding:"6px 12px", border:"none", background:"#FEE500", color:"#3C1E1E", borderRadius:20, fontSize:12, fontWeight:900, cursor:"pointer" }}>
                   공유
+                </button>
+                <button onClick={saveToHistory}
+                  style={{ padding:"6px 12px", border:"1px solid #6366f1", background: historySaved ? "#e0e7ff" : "white", color:"#4338ca", borderRadius:20, fontSize:12, fontWeight:700, cursor:"pointer" }}>
+                  {historySaved ? "✅ 저장됨" : "📋 보관함"}
                 </button>
               </div>
             </div>
