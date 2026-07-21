@@ -309,6 +309,24 @@ function V2ResultInner() {
     setIsKakao(/KAKAOTALK/i.test(ua));
   }, []);
 
+  // 스크롤 위치 저장/복원 — 버튼 눌렀다 돌아올 때 같은 자리로 복원
+  useEffect(() => {
+    const KEY = 'rp_scroll';
+    const saved = sessionStorage.getItem(KEY);
+    if (saved) {
+      const y = parseInt(saved, 10);
+      if (y > 0) setTimeout(() => window.scrollTo({ top: y, behavior: 'instant' }), 300);
+    }
+    let rafId: number;
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        sessionStorage.setItem(KEY, String(Math.round(window.scrollY)));
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(rafId); };
+  }, []);
 
   const [showSelect, setShowSelect] = useState(false);
   const [selectedCats, setSelectedCats] = useState<string[]>(SELECT_CATS.map(c => c.key));
