@@ -25,24 +25,50 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
 
-    // 전화번호 또는 이메일 기준 중복 확인 — 같은 사람이 여러 번 가입해도 1건만 저장
-    if (phone) {
-      const snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(phone).limitToFirst(1).once("value");
-      if (snap.exists()) return NextResponse.json({ success: true, duplicate: true });
-    }
-    if (email) {
-      const snap = await db.ref("consumerCustomers").orderByChild("email").equalTo(email).limitToFirst(1).once("value");
-      if (snap.exists()) return NextResponse.json({ success: true, duplicate: true });
-    }
-
     const entry = {
       name, phone: phone || "", email: email || "",
       birthYear: birthYear || "", birthMonth: birthMonth || "", birthDay: birthDay || "",
       gender: gender || "", birthHour: birthHour || "", relationship: relationship || "",
       referredBy: referredBy || "",
-      consentGiven: true, createdAt: new Date().toISOString(),
+      consentGiven: true,
     };
-    const ref = await db.ref("consumerCustomers").push(entry);
+
+    // 전화번호로 기존 레코드 찾기 — 있으면 업데이트, 없으면 신규 생성
+    if (phone) {
+      const digits = phone.replace(/[^0-9]/g, "");
+      const withDash = digits.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+      let snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(phone).limitToFirst(1).once("value");
+      if (!snap.exists()) snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(digits).limitToFirst(1).once("value");
+      if (!snap.exists()) snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(withDash).limitToFirst(1).once("value");
+      if (snap.exists()) {
+        const key = Object.keys(snap.val())[0];
+        const existing = Object.values(snap.val())[0] as Record<string, string>;
+        await db.ref(`consumerCustomers/${key}`).update({
+          ...entry,
+          createdAt: existing.createdAt || new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        });
+        return NextResponse.json({ success: true, updated: true, id: key });
+      }
+    }
+
+    // 이메일로 기존 레코드 찾기
+    if (email) {
+      const snap = await db.ref("consumerCustomers").orderByChild("email").equalTo(email).limitToFirst(1).once("value");
+      if (snap.exists()) {
+        const key = Object.keys(snap.val())[0];
+        const existing = Object.values(snap.val())[0] as Record<string, string>;
+        await db.ref(`consumerCustomers/${key}`).update({
+          ...entry,
+          createdAt: existing.createdAt || new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        });
+        return NextResponse.json({ success: true, updated: true, id: key });
+      }
+    }
+
+    // 신규 생성
+    const ref = await db.ref("consumerCustomers").push({ ...entry, createdAt: new Date().toISOString() });
     return NextResponse.json({ success: true, id: ref.key });
   } catch (error) {
     console.error("일반회원 저장 실패:", error);
