@@ -142,7 +142,7 @@ export default function V2Profile() {
     const verifiedPhone = localStorage.getItem("v2_verified_phone");
     const saved = localStorage.getItem("v2_saved_profile");
     if (!fromApp) {
-      router.replace("/main-v2");
+      window.location.replace("/main-v2");
       return; // 리다이렉트 — checking 풀지 않음 (깜박임 방지)
     }
 
