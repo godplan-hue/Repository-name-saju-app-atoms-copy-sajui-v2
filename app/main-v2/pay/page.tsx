@@ -41,6 +41,17 @@ function PayInner() {
       try {
         const sp = localStorage.getItem("v2_saved_profile");
         const p = sp ? JSON.parse(sp) : {};
+        const loggedInName = localStorage.getItem("v2_user_name") ?? "";
+        // 로그인 이름이 저장된 이름과 다른 사람이면 → 이전 정보 초기화 → 프로필부터
+        if (loggedInName && p.name && loggedInName !== p.name) {
+          localStorage.removeItem("v2_saved_profile");
+          localStorage.removeItem("v2_verified_phone");
+          sessionStorage.setItem("v2_profile_next_url", window.location.href);
+          sessionStorage.setItem("v2_from_app", "1");
+          document.cookie = "jeomun_from_app=1; path=/; max-age=30";
+          window.location.href = "/main-v2/profile";
+          return;
+        }
         if (!p.birthYear || !p.gender || !p.birthHour) {
           // 생년월일 없으면 프로필 먼저 → 완료 후 이 결제 페이지로 복귀
           sessionStorage.setItem("v2_profile_next_url", window.location.href);
