@@ -281,7 +281,7 @@ export default function V2Profile() {
 
   const next = () => {
     const ok: Record<number, boolean> = {
-      1: !!form.relationship,
+      1: !!form.name.trim() && !!form.relationship,
       2: !!(form.birthYear && form.birthMonth && form.birthDay),
       3: !!form.gender,
       4: !!form.birthHour,
@@ -447,6 +447,18 @@ export default function V2Profile() {
         <div style={{ background: "rgba(255,255,255,0.78)", backdropFilter: "blur(14px)", borderRadius: 24, padding: "22px 16px", boxShadow: "0 12px 40px rgba(0,0,0,0.18)", border: "1.5px solid rgba(251,191,36,0.45)" }}>
 
           {step === 1 && (
+            <div>
+              <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>이름 (별명도 괜찮아요)</label>
+              <input
+                autoFocus
+                type="text" value={form.name}
+                onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                placeholder="홍길동"
+                style={{ ...inp, marginBottom: 18 }}
+                onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
+                onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")}
+              />
+              <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>누구의 운세인가요?</label>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 9 }}>
               {RELS.map(r => (
                 <button key={r.value} onClick={() => setForm(p => {
@@ -458,6 +470,7 @@ export default function V2Profile() {
                   <div style={{ fontSize: 11, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
                 </button>
               ))}
+            </div>
             </div>
           )}
 
