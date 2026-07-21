@@ -308,6 +308,12 @@ export default function HistoryDetail() {
   const toggleReadAloud = () => {
     if (typeof window === "undefined") return;
     if (/KAKAOTALK|kakaoBrowser|KAKAO/i.test(navigator.userAgent)) {
+      // share-xxx 형식 아이템(4900원/2900원)은 크롬에서 다른 브라우저로 열기 시 share URL로 이동
+      const decodedId = decodeURIComponent(String(params.id ?? ""));
+      if (decodedId.startsWith("share-")) {
+        const shareId = decodedId.replace(/^share-/, "");
+        window.history.replaceState({}, "", `/main-v2/share/${shareId}`);
+      }
       setTipModal({ text: "카카오톡에서 바로 읽기가 되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요." });
       return;
     }

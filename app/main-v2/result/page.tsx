@@ -977,10 +977,10 @@ function V2ResultInner() {
               ],
         });
       } catch {
-        if (navigator.share) { navigator.share({ title: "🔮 점운 운세 결과", text: `${text}\n${url}` }).catch(() => {}); } else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(`${text}\n${url}`)}`; }
+        if (navigator.share) { navigator.share({ title: "🔮 점운 운세 결과", text: `${text}\n${url}` }).catch(() => {}); } else { window.open(`kakaotalk://msg/send?text=${encodeURIComponent(`${text}\n${url}`)}`, "_blank"); }
       }
     } else {
-      if (navigator.share) { navigator.share({ title: "🔮 점운 운세 결과", text: `${text}\n${url}` }).catch(() => {}); } else { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(`${text}\n${url}`)}`; }
+      if (navigator.share) { navigator.share({ title: "🔮 점운 운세 결과", text: `${text}\n${url}` }).catch(() => {}); } else { window.open(`kakaotalk://msg/send?text=${encodeURIComponent(`${text}\n${url}`)}`, "_blank"); }
     }
   };
 
