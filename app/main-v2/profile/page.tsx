@@ -117,7 +117,7 @@ export default function V2Profile() {
         try {
           const p = JSON.parse(saved);
           const sameName = !loggedInName || p.name === loggedInName;
-          if (sameName && p.birthYear && p.gender && p.birthHour) {
+          if (sameName && p.name && p.birthYear && p.gender && p.birthHour) {
             sessionStorage.setItem("v2_profile", JSON.stringify(p));
             const afterGoto = sessionStorage.getItem("v2_after_payment_goto");
             sessionStorage.removeItem("v2_after_payment_goto");
