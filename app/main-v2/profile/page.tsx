@@ -139,7 +139,7 @@ export default function V2Profile() {
     sessionStorage.removeItem("v2_from_app");
     const verifiedPhone = localStorage.getItem("v2_verified_phone");
     const saved = localStorage.getItem("v2_saved_profile");
-    if (!fromApp && !verifiedPhone && !saved) {
+    if (!fromApp) {
       router.replace("/main-v2");
       return;
     }
