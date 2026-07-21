@@ -74,6 +74,7 @@ export default function KakaoShareClient({ id }: { id: string }) {
   const [speaking, setSpeaking] = useState(false);
   const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
   const [isMob, setIsMob] = useState(false);
+  const [showGuideModal, setShowGuideModal] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
@@ -241,7 +242,37 @@ export default function KakaoShareClient({ id }: { id: string }) {
         </div>
       </header>
 
+      {showGuideModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGuideModal(false)}>
+          <div style={{ background: "white", borderRadius: 20, padding: "20px 18px", maxWidth: 360, width: "100%", maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#dc2626", margin: "0 0 14px" }}>📌 결과지 맨 밑에 버튼을 꼭 확인하세요!</p>
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 결과지를 나가면 내용이 모두 사라져요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>반드시 <strong>보관함 저장</strong><br />또는 <strong>공유하기</strong> 버튼을 눌러 저장해두세요.<br /><span style={{ color: "#dc2626", fontWeight: 700 }}>나가서 내용이 사라진 경우 환불은 불가합니다.</span></p>
+            </div>
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 전화번호 안 넣으면 결과 사라져요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>결제 시 전화번호 미입력하면<br />브라우저 닫는 순간 결과가 영구 삭제됩니다.<br />바로 <strong>보관함</strong>에 저장하세요.</p>
+            </div>
+            <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#dc2626", margin: "0 0 4px" }}>⚠️ 보관함은 이 기기·브라우저에서만 보여요!</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.7 }}>다른 브라우저나 기기로 접속하면<br />보관함에 저장된 목록이 보이지 않아요.<br />결과는 반드시 <strong>공유하기</strong>로 따로 보관하세요.</p>
+            </div>
+            <div style={{ background: "#f5f3ff", border: "1.5px solid #ddd6fe", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#6d28d9", margin: "0 0 4px" }}>🔊 읽어주기 팁</p>
+              <p style={{ fontSize: 12, color: "#4b5563", margin: 0, lineHeight: 1.8 }}>카카오톡에서는 읽기가 안 돼요.<br />⋮ → 다른 브라우저로 열기 → 🔊 읽기를 눌러요.<br />화면이 꺼지면 끊길 수 있어요.<br />설정 → 화면 자동 꺼짐 시간을 늘리세요.</p>
+            </div>
+            <button onClick={() => setShowGuideModal(false)} style={{ width: "100%", padding: "12px 0", background: "#dc2626", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer" }}>확인</button>
+          </div>
+        </div>
+      )}
+
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
+
+        {/* 꼭읽어보세요 버튼 */}
+        <button onClick={() => setShowGuideModal(true)} style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}>
+          📌 꼭 읽어보세요 · 자세히 보기 →
+        </button>
 
         {/* 쿠폰 배너 1 */}
         {!entry.businessName && <KakaoShareCouponBanner />}

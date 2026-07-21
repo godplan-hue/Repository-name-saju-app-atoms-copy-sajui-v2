@@ -193,6 +193,12 @@ export default function HistoryDetail() {
   useEffect(() => {
     if (!params.id) return;
     const decodedId = decodeURIComponent(String(params.id));
+    // share-xxx 아이템은 share 페이지로 바로 이동 (크롬에서 열었을 때 보관함 목록으로 튕기는 버그 방지)
+    if (decodedId.startsWith("share-")) {
+      const shareId = decodedId.replace(/^share-/, "");
+      window.location.replace(`/main-v2/share/${shareId}`);
+      return;
+    }
     const hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
     const found = hist.find(h => String(h.id) === decodedId);
     if (found) { setItem(found); return; }

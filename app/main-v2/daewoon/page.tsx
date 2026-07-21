@@ -438,15 +438,35 @@ function DaewoonInner() {
           health:  Math.min(99, Math.max(40, base + 1)),
           success: Math.min(99, Math.max(40, base + 4)),
         };
-        hist.unshift({
+        const newItem = {
           id, date: new Date().toISOString(),
           name: profile.name,
           category: `🌌 대운 ${b.ganHanja}${b.jiHanja} (${b.startAge}~${b.endAge}세)`,
           analysis: buildCategories(b).map(c => `${c.icon} ${c.label}\n${c.text}`).join("\n\n"),
           scores: daeunScores,
           isPaid: true, planType: "daeun", birthYear: profile.birthYear ?? "",
-        });
+        };
+        hist.unshift(newItem);
         localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
+        // Firebase에도 저장 — 다른 브라우저/기기에서 보관함 로드 가능하게
+        const name = profile.name;
+        if (name) {
+          try {
+            const _prof = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+            const _phone = (_prof.phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+            fetch("/api/v2/history", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, phone: _phone || undefined, item: newItem }),
+            }).catch(() => {});
+          } catch {
+            fetch("/api/v2/history", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, item: newItem }),
+            }).catch(() => {});
+          }
+        }
       }
       setHistorySaved(true);
     } catch { }
