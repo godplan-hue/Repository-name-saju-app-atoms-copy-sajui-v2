@@ -93,6 +93,7 @@ export default function V2Profile() {
   const [phoneStep, setPhoneStep] = useState(true);
   const [phoneInput, setPhoneInput] = useState("");
   const [phoneLoading, setPhoneLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
     const loggedInName = localStorage.getItem("v2_user_name") ?? "";
@@ -131,6 +132,7 @@ export default function V2Profile() {
           }
         } catch {}
       }
+      setChecking(false);
       return; // 저장 정보 없음 → 5단계 마법사 표시
     }
 
@@ -141,7 +143,7 @@ export default function V2Profile() {
     const saved = localStorage.getItem("v2_saved_profile");
     if (!fromApp) {
       router.replace("/main-v2");
-      return;
+      return; // 리다이렉트 — checking 풀지 않음 (깜박임 방지)
     }
 
     // 유료 or 일반 플로우: 전화번호로 본인 확인
@@ -153,11 +155,12 @@ export default function V2Profile() {
           setForm(prev => ({ ...prev, ...p, relationship: p.relationship || "나" }));
           setSavedMode(true);
           setPhoneStep(false);
+          setChecking(false);
           return;
         }
       } catch {}
     }
-    // 처음 방문 or 다른 기기 → 전화번호 입력 화면 표시 (phoneStep = true)
+    setChecking(false); // 처음 방문 or 다른 기기 → 전화번호 입력 화면 표시
   }, []);
 
   const TOTAL = 5;
@@ -267,6 +270,9 @@ export default function V2Profile() {
     if (step < TOTAL) { setStep(s => s + 1); return; }
     finish();
   };
+
+  // 직접 접근 여부 확인 중 → 아무것도 렌더링하지 않음 (깜박임 방지)
+  if (checking) return null;
 
   // ── 전화번호 본인 확인 화면 ──────────────────
   if (phoneStep && !isFreeFlow) {
