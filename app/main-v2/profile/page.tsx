@@ -265,7 +265,13 @@ export default function V2Profile() {
     return (
       <main style={{ minHeight: "100vh", backgroundImage: "url('https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
         <div style={{ position: "fixed", inset: 0, background: "rgba(20,5,50,0.68)", zIndex: 1, pointerEvents: "none" }} />
-        <div style={{ position: "relative", zIndex: 10, maxWidth: 480, margin: "0 auto", padding: "80px 20px 40px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <header style={{ position: "sticky", top: 0, zIndex: 100, height: 52, padding: "0 16px", display: "flex", alignItems: "center", background: "rgba(20,5,50,0.7)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+          <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, padding: 0 }}>
+            <span style={{ fontSize: 16, color: "rgba(255,255,255,0.8)" }}>←</span>
+            <span style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24" }}>🐱 점운 메인으로</span>
+          </button>
+        </header>
+        <div style={{ position: "relative", zIndex: 10, maxWidth: 480, margin: "0 auto", padding: "40px 20px 40px", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>🔮</div>
           <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>점운 사주 분석</h1>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", margin: "0 0 32px", textAlign: "center" }}>전화번호로 본인 확인 후 시작합니다</p>
