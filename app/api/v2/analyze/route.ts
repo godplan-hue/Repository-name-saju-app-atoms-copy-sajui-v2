@@ -2021,9 +2021,10 @@ function reduceRepetition(text: string): string {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, birth, birthHour, gender, relationship, category, planType, partnerName, partnerBirth, partnerGender, partnerBirthHour, daeunPaid } = body;
+    const { name: rawName, birth, birthHour, gender, relationship, category, planType, partnerName, partnerBirth, partnerGender, partnerBirthHour, daeunPaid } = body;
+    const name = rawName || "고객님";
 
-    if (!birth || !name || !category) {
+    if (!birth || !category) {
       return NextResponse.json({ error: "필수 정보가 누락되었습니다" }, { status: 400 });
     }
 
