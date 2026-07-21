@@ -393,6 +393,7 @@ export default function V2Profile() {
 
             <button
               onClick={() => {
+                if (!form.name.trim()) { alert("이름을 입력해주세요"); return; }
                 if (!form.birthYear || !form.birthMonth || !form.birthDay) { alert("생년월일을 입력해주세요"); return; }
                 if (!form.birthHour) { alert("태어난 시를 선택해주세요"); return; }
                 finish();
