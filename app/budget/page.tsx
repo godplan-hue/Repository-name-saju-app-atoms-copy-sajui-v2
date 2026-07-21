@@ -204,17 +204,84 @@ export default function BudgetPage() {
 
   // 미결제 시 전체 잠금 화면
   if (budgetLocked && budgetNeverPaid) {
+    const budgetShareText = "💰 일기처럼 쓰는 가계부!\n수입·지출 기록 + 오행 재물운 연결\n전화번호로 영구 보관 👉 jeomun.com/budget";
+    const handleBudgetShare = () => {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        navigator.share({ title: "점운 가계부", text: budgetShareText, url: "https://jeomun.com/budget" })
+          .catch(() => { window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(budgetShareText)}`; });
+      } else {
+        window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(budgetShareText)}`;
+      }
+    };
     return (
-      <div style={{ minHeight: "100vh", background: "#0f172a", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", textAlign: "center" }}>
-        <div style={{ fontSize: 64, marginBottom: 16 }}>🔒</div>
-        <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.4 }}>🔒 이용권이 필요해요</h2>
-        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 28px" }}>
-          990원 단독권 또는 7개앱 4,900원 풀패스로 이용해요<br />꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어<br />7개를 5개 가격으로!
-        </p>
-        <a href="/budget/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none" }}>
-          이용권 구매하기 →
-        </a>
-        <a href="/main-v2" style={{ display: "block", marginTop: 18, fontSize: 13, color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>← 점운 홈으로</a>
+      <div style={{ minHeight: "100vh", background: "#0f172a", color: "#f5f5f5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
+        <nav style={{ background: "rgba(0,0,0,0.4)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <a href="/main-v2" style={{ fontSize: 14, color: "#fbbf24", textDecoration: "none" }}>← 점운 홈</a>
+          <button onClick={handleBudgetShare} style={{ fontSize: 12, color: "#fbbf24", fontWeight: 700, background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 20, padding: "5px 14px", cursor: "pointer" }}>🔗 공유하기</button>
+        </nav>
+
+        <div style={{ maxWidth: 420, margin: "0 auto", padding: "36px 20px 0", textAlign: "center" }}>
+          <div style={{ fontSize: 60, marginBottom: 12 }}>💰</div>
+          <h1 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px" }}>점운 가계부</h1>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", margin: "0 0 28px", lineHeight: 1.6 }}>일기처럼 쓰는 수입·지출 기록</p>
+
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, marginBottom: 36, textAlign: "left" }}>
+            {[
+              { e: "📋", t: "카테고리별 수입·지출 빠른 기록" },
+              { e: "📊", t: "월별 지출 분석 차트" },
+              { e: "💰", t: "오행 재물운과 연결 — 돈 흐름 파악" },
+            ].map(f => (
+              <div key={f.t} style={{ background: "rgba(255,255,255,0.06)", borderRadius: 12, padding: "12px 16px", display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ fontSize: 20 }}>{f.e}</span>
+                <span style={{ fontSize: 14, color: "rgba(255,255,255,0.85)" }}>{f.t}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 32, display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
+            <div style={{ fontSize: 40, marginBottom: 10 }}>🔒</div>
+            <h2 style={{ fontSize: 20, fontWeight: 900, margin: "0 0 8px" }}>이용권이 필요해요</h2>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 24px" }}>
+              990원 단독권 또는 7개앱 4,900원 풀패스로 이용해요<br />꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어
+            </p>
+            <a href="/budget/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none", marginBottom: 24 }}>
+              이용권 구매하기 →
+            </a>
+
+            <div style={{ width: "100%", maxWidth: 320, borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 16 }}>
+              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", margin: "0 0 8px" }}>📱 이미 결제하셨나요? 전화번호 입력 → 자동 복원</p>
+              <div style={{ display: "flex", gap: 8 }}>
+                <input type="tel" value={restorePhone} onChange={e => setRestorePhone(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" style={{ flex: 1, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "10px 12px", color: "white", fontSize: 13, outline: "none" }} inputMode="numeric" />
+                <button onClick={handleRestore} disabled={restoring} style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 10, padding: "10px 16px", color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>{restoring ? "확인중..." : "복원"}</button>
+              </div>
+              {restoreMsg && <p style={{ fontSize: 12, margin: "8px 0 0", color: restoreMsg.startsWith("✅") ? "#4ade80" : "#f87171" }}>{restoreMsg}</p>}
+            </div>
+          </div>
+        </div>
+
+        <footer style={{ padding: "32px 20px 40px", textAlign: "center" }}>
+          <div style={{ maxWidth: 380, margin: "0 auto", padding: "20px 18px", borderRadius: 20, background: "#0a0020", border: "1px solid rgba(255,255,255,0.15)" }}>
+            <p style={{ color: "#a78bfa", fontSize: 11, fontWeight: 700, margin: "0 0 10px" }}>© 2026 점운 · Powered by 점운</p>
+            <div style={{ color: "#94a3b8", fontSize: 10.5, lineHeight: 1.9, marginBottom: 14 }}>
+              <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
+              <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
+              <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
+              <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38,<br />7층 7017호(대치동)</p>
+              <p style={{ margin: "4px 0 0", color: "#f87171", fontWeight: 900, fontSize: 11 }}>※ 전화 문의는 받지 않습니다.<br />카카오톡으로 문의해 주세요.</p>
+            </div>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, justifyContent: "center", marginBottom: 12 }}>
+              <a href="http://pf.kakao.com/_xbwtPX/chat" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "7px 18px", background: "#FEE500", color: "#1a1a1a", borderRadius: 20, textDecoration: "none", fontWeight: 900, fontSize: 12 }}>💬 카카오톡 문의</a>
+              <a href="mailto:info@jeomun.com?subject=점운 문의" style={{ display: "inline-block", padding: "7px 18px", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 20, color: "#e2e8f0", textDecoration: "none", fontWeight: 700, fontSize: 12 }}>📧 이메일 문의</a>
+            </div>
+            <div style={{ fontSize: 11, display: "flex", justifyContent: "center", gap: 12 }}>
+              <a href="/terms" style={{ color: "#94a3b8", textDecoration: "none" }}>이용약관</a>
+              <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+              <a href="/privacy" style={{ color: "#94a3b8", textDecoration: "none" }}>개인정보처리방침</a>
+              <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+              <a href="/refund" style={{ color: "#94a3b8", textDecoration: "none" }}>환불정책</a>
+            </div>
+          </div>
+        </footer>
       </div>
     );
   }
