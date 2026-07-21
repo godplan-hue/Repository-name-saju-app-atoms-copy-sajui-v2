@@ -36,13 +36,32 @@ function PayInner() {
   const displayAmount = discountPct > 0 ? Math.round(amount * (1 - discountPct / 100)) : amount;
 
   useEffect(() => {
-    try {
-      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-      if (p.name) setName(p.name);
-      if (p.phone) setMobile(p.phone);
-      if (p.email) setEmail(p.email);
-    } catch {}
-  }, []);
+    // 택일은 별도 입력 폼 있으므로 생년월일 체크 불필요
+    if (!isTaegil) {
+      try {
+        const sp = localStorage.getItem("v2_saved_profile");
+        const p = sp ? JSON.parse(sp) : {};
+        if (!p.birthYear || !p.gender || !p.birthHour) {
+          // 생년월일 없으면 프로필 먼저 → 완료 후 이 결제 페이지로 복귀
+          sessionStorage.setItem("v2_profile_next_url", window.location.href);
+          sessionStorage.setItem("v2_from_app", "1");
+          document.cookie = "jeomun_from_app=1; path=/; max-age=30";
+          window.location.href = "/main-v2/profile";
+          return;
+        }
+        if (p.name) setName(p.name);
+        if (p.phone) setMobile(p.phone);
+        if (p.email) setEmail(p.email);
+      } catch {}
+    } else {
+      try {
+        const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+        if (p.name) setName(p.name);
+        if (p.phone) setMobile(p.phone);
+        if (p.email) setEmail(p.email);
+      } catch {}
+    }
+  }, [isTaegil]);
 
   useEffect(() => {
     try {

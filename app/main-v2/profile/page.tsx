@@ -228,7 +228,20 @@ export default function V2Profile() {
     }).catch(() => {});
     // 재방문자(savedMode)는 매번 분석 재실행 없이 메인으로 (보관함·결과는 메인에서 이동)
     if (savedMode) {
+      const pendingPayUrl = sessionStorage.getItem("v2_profile_next_url");
+      if (pendingPayUrl) {
+        sessionStorage.removeItem("v2_profile_next_url");
+        window.location.href = pendingPayUrl;
+        return;
+      }
       router.push("/main-v2");
+      return;
+    }
+    // 결제 전 프로필 먼저 수집했을 때 → 결제 페이지로 복귀
+    const pendingPayUrl = sessionStorage.getItem("v2_profile_next_url");
+    if (pendingPayUrl) {
+      sessionStorage.removeItem("v2_profile_next_url");
+      window.location.href = pendingPayUrl;
       return;
     }
     // 유료 결제가 있으면 분석 재실행 없이 결과지로 (결과지에서 필요 시 자동 재호출함)

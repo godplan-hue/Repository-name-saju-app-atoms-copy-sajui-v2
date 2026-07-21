@@ -778,7 +778,20 @@ export default function MainV2() {
     } else {
       sessionStorage.setItem("selectedPackage", c.packageName ?? "");
       const _pkgPreselect: Record<string, string> = { "기본 분석": "basic", "베이직": "standard", "프리미엄": "premium", "VIP 커플팩": "vip" };
-      window.location.href = `/main-v2/payment?preselect=${_pkgPreselect[c.packageName ?? ""] || "basic"}`;
+      const payUrl = `/main-v2/payment?preselect=${_pkgPreselect[c.packageName ?? ""] || "basic"}`;
+      // 생년월일 없으면 프로필 먼저 수집 → 완료 후 결제 페이지로 복귀
+      try {
+        const sp = localStorage.getItem("v2_saved_profile");
+        const p = sp ? JSON.parse(sp) : {};
+        if (p.birthYear && p.gender && p.birthHour) {
+          window.location.href = payUrl;
+          return;
+        }
+      } catch {}
+      sessionStorage.setItem("v2_profile_next_url", payUrl);
+      sessionStorage.setItem("v2_from_app", "1");
+      document.cookie = "jeomun_from_app=1; path=/; max-age=30";
+      window.location.href = "/main-v2/profile";
     }
   };
 
