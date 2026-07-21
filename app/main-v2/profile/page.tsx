@@ -281,7 +281,7 @@ export default function V2Profile() {
 
   const next = () => {
     const ok: Record<number, boolean> = {
-      1: !!form.name.trim() && !!form.relationship,
+      1: !!form.relationship,
       2: !!(form.birthYear && form.birthMonth && form.birthDay),
       3: !!form.gender,
       4: !!form.birthHour,
@@ -449,16 +449,6 @@ export default function V2Profile() {
 
           {step === 1 && (
             <div>
-              <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>이름 (별명도 괜찮아요)</label>
-              <input
-                autoFocus
-                type="text" value={form.name}
-                onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                placeholder="홍길동"
-                style={{ ...inp, marginBottom: 18 }}
-                onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
-                onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")}
-              />
               <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>누구의 운세인가요?</label>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 9 }}>
               {RELS.map(r => (
@@ -527,7 +517,19 @@ export default function V2Profile() {
 
           {step === 5 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <input autoFocus type="tel" value={form.phone}
+              <div>
+                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>이름 (별명도 괜찮아요) <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
+                <input
+                  autoFocus
+                  type="text" value={form.name}
+                  onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                  placeholder="홍길동"
+                  style={inp}
+                  onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
+                  onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")}
+                />
+              </div>
+              <input type="tel" value={form.phone}
                 onChange={e => {
                   const digits = e.target.value.replace(/\D/g, "").slice(0, 11);
                   let formatted = digits;
@@ -564,6 +566,7 @@ export default function V2Profile() {
               </div>
               <button
                 onClick={() => {
+                  if (!form.name.trim()) { alert("이름을 입력해주세요"); return; }
                   if (!agreed) { alert("개인정보 수집·이용에 동의해주세요."); return; }
                   if (form.phone && !/^01[0-9]-?\d{3,4}-?\d{4}$/.test(form.phone.replace(/\s/g, ""))) {
                     alert("전화번호 형식을 다시 확인해주세요 (예: 010-1234-5678)"); return;
