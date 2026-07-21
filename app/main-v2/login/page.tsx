@@ -29,6 +29,7 @@ export default function V2Login() {
     // 입력 화면을 건너뛰고, 로그아웃 후 다시 로그인하면 그 예쁜 화면을 한 번 더
     // 보여주기 위한 기준값(main-v2/profile에서 사용)
     localStorage.setItem("v2_login_session_id", String(Date.now()));
+    sessionStorage.setItem("v2_from_app", "1");
     router.push("/main-v2/profile");
   };
 

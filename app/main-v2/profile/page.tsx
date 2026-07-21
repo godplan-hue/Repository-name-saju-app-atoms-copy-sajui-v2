@@ -134,10 +134,18 @@ export default function V2Profile() {
       return; // 저장 정보 없음 → 5단계 마법사 표시
     }
 
-    // 유료 or 일반 플로우: 전화번호로 본인 확인
-    // 이전에 본인 확인한 전화번호가 있으면 → 바로 savedMode (다음 한 번만)
+    // 직접 URL 접근(구글, URL 공유 등) 감지 → 메인으로 리다이렉트
+    const fromApp = sessionStorage.getItem("v2_from_app");
+    sessionStorage.removeItem("v2_from_app");
     const verifiedPhone = localStorage.getItem("v2_verified_phone");
     const saved = localStorage.getItem("v2_saved_profile");
+    if (!fromApp && !verifiedPhone && !saved) {
+      router.replace("/main-v2");
+      return;
+    }
+
+    // 유료 or 일반 플로우: 전화번호로 본인 확인
+    // 이전에 본인 확인한 전화번호가 있으면 → 바로 savedMode (다음 한 번만)
     if (verifiedPhone && saved) {
       try {
         const p = JSON.parse(saved);

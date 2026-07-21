@@ -80,6 +80,7 @@ export default function V2Analysis() {
         p = saved;
         sessionStorage.setItem("v2_profile", saved);
       } else {
+        sessionStorage.setItem("v2_from_app", "1");
         window.location.replace("/main-v2/profile");
         return;
       }
@@ -87,6 +88,7 @@ export default function V2Analysis() {
     try {
       setProfile(JSON.parse(p));
     } catch {
+      sessionStorage.setItem("v2_from_app", "1");
       window.location.replace("/main-v2/profile");
     }
   }, []);
