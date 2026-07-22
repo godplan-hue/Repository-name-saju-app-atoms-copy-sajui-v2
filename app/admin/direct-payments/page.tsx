@@ -278,14 +278,6 @@ export default function AdminDirectPayments() {
                 🗑️ 전체 삭제
               </button>
             </div>
-            {/* 임시 디버그: 이름 원본값 확인 */}
-            {leads.length > 0 && (
-              <div style={{background:"#1e1e1e",color:"#4ade80",fontFamily:"monospace",fontSize:11,padding:10,borderRadius:8,marginBottom:12,lineHeight:1.8}}>
-                {leads.slice(0,5).map((l,i) => (
-                  <div key={i}>#{i+1} name="{l.name}" type={typeof l.name} phone={String(l.phone||"").slice(-4)}</div>
-                ))}
-              </div>
-            )}
             {leads.length === 0 ? (
               <p style={{ textAlign: "center", color: "#888", padding: "40px 0" }}>아직 신청 데이터가 없어요.</p>
             ) : (
@@ -300,7 +292,7 @@ export default function AdminDirectPayments() {
                 <tbody>
                   {leads.filter(l => sourceFilter === "all" || (l.sources ?? [l.source ?? "free"]).includes(sourceFilter)).map((lead, i) => (
                     <tr key={lead.id} style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}>
-                      <td style={{ padding: "10px 12px", fontWeight: 900, color: "#111", background: lead.name ? "transparent" : "#fee2e2" }}>{lead.name || <span style={{color:"#e11d48",fontWeight:900}}>❌이름없음</span>}</td>
+                      <td style={{ padding: "10px 12px", fontWeight: 700, color: "#111" }}>{lead.name || <span style={{color:"#aaa",fontWeight:400}}>—</span>}</td>
                       <td style={{ padding: "10px 12px", color: "#374151" }}>{lead.phone || "-"}</td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.email || "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
