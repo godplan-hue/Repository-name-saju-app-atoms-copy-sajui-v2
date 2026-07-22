@@ -159,9 +159,11 @@ export default function ShareClient({ id }: { id: string }) {
   const saveImage = async () => {
     if (!contentRef.current || saving) return;
     setSaving(true);
+    const scrollY = window.scrollY || window.pageYOffset;
     try {
       const html2canvas = (await import("html2canvas")).default;
       const canvas = await html2canvas(contentRef.current, { backgroundColor: "#fdf2f8", scale: 1.5, useCORS: true });
+      window.scrollTo({ top: scrollY, behavior: "instant" as ScrollBehavior });
       canvas.toBlob(blob => {
         if (!blob) { setSaving(false); return; }
         const url = URL.createObjectURL(blob);
@@ -356,18 +358,14 @@ export default function ShareClient({ id }: { id: string }) {
             {speaking ? "⏸ 멈추기" : "🔊 읽기"}
           </button>
           <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺ 처음부터 듣기</button>
+          <button onClick={saveImage} disabled={saving} style={{ padding: "5px 10px", background: saving ? "#f3f4f6" : "#fef3c7", color: saving ? "#9ca3af" : "#92400e", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: saving ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
+            {saving ? "⏳..." : "🖼️ 저장"}
+          </button>
         </div>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* 꼭 읽어보세요 버튼 */}
-        <button
-          onClick={() => setShowGuideModal(true)}
-          style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
-        >
-          📌 꼭 읽어보세요 · 자세히 보기 →
-        </button>
 
         {isOwner && !entry.businessName && <KakaoShareCouponBanner />}
         {isOwner && !entry.businessName && (

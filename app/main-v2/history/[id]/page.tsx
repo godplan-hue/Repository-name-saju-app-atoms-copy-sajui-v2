@@ -143,7 +143,16 @@ function fmtDate(iso: string) {
 export default function HistoryDetail() {
   const params = useParams();
   const cardRef = useRef<HTMLDivElement>(null);
-  const [item, setItem] = useState<any>(null);
+  const [item, setItem] = useState<any>(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      const pathParts = window.location.pathname.split("/");
+      const id = decodeURIComponent(pathParts[pathParts.length - 1] || "");
+      if (!id) return null;
+      const hist: any[] = JSON.parse(localStorage.getItem("v2_history") || "[]");
+      return hist.find(h => String(h.id) === id) || null;
+    } catch { return null; }
+  });
   const [saving, setSaving] = useState(false);
   const [showSelect, setShowSelect] = useState(false);
   const [paying, setPaying] = useState(false);
@@ -324,8 +333,12 @@ export default function HistoryDetail() {
       return;
     }
     if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent)) {
-      setTipModal({ text: "지금 브라우저에서는 읽기가 원활하지 않아요.\n\n📱 카카오톡으로 공유 후 읽거나\n💻 PC·크롬 브라우저에서 jeomun.com → 보관함에서 이용하세요.\n(전화번호로 자동 복원돼요)" });
-      return;
+      const mobTipKey = "v2_hist_mob_browser_tip_date";
+      if (localStorage.getItem(mobTipKey) !== new Date().toDateString()) {
+        localStorage.setItem(mobTipKey, new Date().toDateString());
+        setTipModal({ text: "지금 브라우저에서는 읽기가 원활하지 않아요.\n\n📱 카카오톡으로 공유 후 읽거나\n💻 PC·크롬 브라우저에서 jeomun.com → 보관함에서 이용하세요.\n(전화번호로 자동 복원돼요)" });
+        return;
+      }
     }
     if (!("speechSynthesis" in window)) return;
     if (speaking) {
@@ -418,6 +431,7 @@ export default function HistoryDetail() {
   const saveImage = async () => {
     if (!cardRef.current || saving) return;
     setSaving(true);
+    const scrollY = window.scrollY || window.pageYOffset;
     try {
       if (/KAKAOTALK|kakaoBrowser/i.test(navigator.userAgent)) {
         setSaving(false);
@@ -447,6 +461,7 @@ export default function HistoryDetail() {
       });
       el.style.overflow = prevOv;
       el.style.maxHeight = prevMH;
+      window.scrollTo({ top: scrollY, behavior: "instant" as ScrollBehavior });
       const name = `점운_${item?.name ?? "운세"}_${item?.category?.replace(/\S+\s/, "") ?? ""}.png`;
       const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
       canvas.toBlob(async blob => {
