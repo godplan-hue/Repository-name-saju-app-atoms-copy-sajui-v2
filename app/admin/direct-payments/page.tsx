@@ -54,7 +54,7 @@ export default function AdminDirectPayments() {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"payments" | "leads" | "sns">("payments");
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti">("all");
+  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"|"haemong">("all");
   const [snsPending, setSnsPending] = useState<{phone: string; postUrl: string; createdAt: number}[]>([]);
   const [snsLoading, setSnsLoading] = useState(false);
   const [approvedCodes, setApprovedCodes] = useState<{phone: string; codes: string[]} | null>(null);
@@ -239,7 +239,8 @@ export default function AdminDirectPayments() {
                 { key: "diet",    label: "다이어트", emoji: "🥗", activeBg: "#16a34a", inactiveBg: "#dcfce7", activeText: "white", inactiveText: "#15803d" },
                 { key: "budget",   label: "가계부",    emoji: "💰", activeBg: "#b45309", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#92400e" },
                 { key: "toss-mbti", label: "토스MBTI", emoji: "🟦", activeBg: "#0064FF", inactiveBg: "#e0eaff", activeText: "white", inactiveText: "#0064FF" },
-              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
+                { key: "haemong",  label: "꿈해몽",   emoji: "🌙", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
+              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"|"haemong"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.source ?? "free") === f.key).length;
                 const active = sourceFilter === f.key;
                 return (

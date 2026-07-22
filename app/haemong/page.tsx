@@ -37,6 +37,37 @@ export default function HaemongPage() {
   const [searched, setSearched] = useState(false);
   const [slide, setSlide] = useState(0);
 
+  // 전화번호 게이트
+  const [gateDone, setGateDone] = useState(false);
+  const [gateName, setGateName] = useState("");
+  const [gatePhone, setGatePhone] = useState("");
+  const [gatePrivacy, setGatePrivacy] = useState(false);
+  const [gateMarketing, setGateMarketing] = useState(false);
+  const [gateSaving, setGateSaving] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && localStorage.getItem("haemong_phone")) {
+      setGateDone(true);
+    }
+  }, []);
+
+  async function submitGate() {
+    const clean = gatePhone.replace(/\D/g, "");
+    if (clean.length < 10) { alert("전화번호를 입력해주세요."); return; }
+    if (!gatePrivacy) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
+    setGateSaving(true);
+    try {
+      await fetch("/api/haemong/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: gateName.trim(), phone: clean, marketing: gateMarketing }),
+      });
+    } catch {}
+    localStorage.setItem("haemong_phone", clean);
+    setGateDone(true);
+    setGateSaving(false);
+  }
+
   useEffect(() => {
     const t = setInterval(() => setSlide(s => (s + 1) % BANNER.length), 3200);
     return () => clearInterval(t);
@@ -69,6 +100,53 @@ export default function HaemongPage() {
 
   return (
     <main style={{ minHeight: "100vh", background: BG, backgroundImage: `url('https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
+
+      {/* 전화번호 게이트 */}
+      {!gateDone && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(10,0,20,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+          <div style={{ background: "#fff", borderRadius: 24, padding: "32px 24px", maxWidth: 360, width: "100%", boxShadow: "0 20px 60px rgba(139,92,246,0.3)" }}>
+            <div style={{ textAlign: "center", marginBottom: 20 }}>
+              <div style={{ fontSize: 36, marginBottom: 8 }}>🌙</div>
+              <div style={{ fontWeight: 900, fontSize: 20, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", marginBottom: 6 }}>꿈해몽 무료 시작</div>
+              <div style={{ fontSize: 13, color: "#6b7280" }}>전화번호를 입력하면 무료로 꿈해몽을 볼 수 있어요</div>
+            </div>
+            <input
+              value={gateName}
+              onChange={e => setGateName(e.target.value)}
+              placeholder="이름 또는 별명 (선택)"
+              style={{ width: "100%", border: "1.5px solid #e5e7eb", borderRadius: 12, padding: "12px 14px", fontSize: 14, marginBottom: 10, boxSizing: "border-box", outline: "none" }}
+            />
+            <input
+              value={gatePhone}
+              onChange={e => setGatePhone(e.target.value)}
+              placeholder="전화번호 (필수) 010-0000-0000"
+              type="tel"
+              style={{ width: "100%", border: "1.5px solid #e5e7eb", borderRadius: 12, padding: "12px 14px", fontSize: 14, marginBottom: 14, boxSizing: "border-box", outline: "none" }}
+            />
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, cursor: "pointer" }}>
+              <input type="checkbox" checked={gatePrivacy} onChange={e => setGatePrivacy(e.target.checked)} style={{ marginTop: 2, accentColor: "#ec4899", width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ fontSize: 12, color: "#6b7280", lineHeight: 1.7 }}>
+                <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 동의</strong><br />
+                수집 항목: 이름(선택), 전화번호(필수) / 목적: 꿈해몽 서비스 제공 / 보관: 3년 후 파기
+              </span>
+            </label>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 20, cursor: "pointer" }}>
+              <input type="checkbox" checked={gateMarketing} onChange={e => setGateMarketing(e.target.checked)} style={{ marginTop: 2, accentColor: "#ec4899", width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ fontSize: 12, color: "#6b7280", lineHeight: 1.7 }}>
+                <strong style={{ color: "#374151" }}>[선택] 마케팅 수신 동의</strong><br />
+                점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
+              </span>
+            </label>
+            <button
+              onClick={submitGate}
+              disabled={gateSaving}
+              style={{ width: "100%", padding: "14px 0", background: G, color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: gateSaving ? "not-allowed" : "pointer", opacity: gateSaving ? 0.7 : 1 }}
+            >
+              {gateSaving ? "저장 중..." : "🌙 무료 꿈해몽 시작하기 →"}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 헤더 */}
       <header style={{ height: 52, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.12)", position: "sticky", top: 0, zIndex: 200 }}>
