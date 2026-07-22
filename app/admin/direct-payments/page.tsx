@@ -9,10 +9,32 @@ interface Lead {
   email?: string;
   birthYear?: string;
   source?: string;
+  sources?: string[];
   code?: string;
   used?: boolean;
   marketing?: boolean;
   createdAt: number;
+}
+
+const SOURCE_CFG: Record<string, [string, string, string]> = {
+  jigun:      ["#ede9fe","#6d28d9","💼직운"],
+  resume:     ["#dbeafe","#1d4ed8","📄합격자소서"],
+  mbti:       ["#f3e8ff","#7c3aed","🔮MBTI"],
+  lotto:      ["#fef3c7","#d97706","🎱행운번호"],
+  gunghap:    ["#fce7f3","#be185d","💞궁합"],
+  petun:      ["#ecfeff","#0e7490","🐾펫운"],
+  tarot:      ["#ede9fe","#4c1d95","🃏타로"],
+  zodiac:     ["#dbeafe","#1e40af","⭐별자리"],
+  gamjung:    ["#d1fae5","#065f46","😊감정일기"],
+  diet:       ["#dcfce7","#15803d","🥗다이어트"],
+  budget:     ["#fef3c7","#92400e","💰가계부"],
+  "toss-mbti":["#e0eaff","#0064FF","🟦토스MBTI"],
+  haemong:    ["#fce7f3","#be185d","🌙꿈해몽"],
+  free:       ["#fef3c7","#92400e","🎁재물운"],
+};
+function SourceBadge({ source }: { source: string }) {
+  const [bg, color, label] = SOURCE_CFG[source] ?? ["#f3f4f6","#374151",source];
+  return <span style={{ background: bg, color, padding: "2px 7px", borderRadius: 6, fontSize: 11, fontWeight: 700, marginRight: 3, display: "inline-block" }}>{label}</span>;
 }
 
 interface Payment {
@@ -241,7 +263,7 @@ export default function AdminDirectPayments() {
                 { key: "toss-mbti", label: "토스MBTI", emoji: "🟦", activeBg: "#0064FF", inactiveBg: "#e0eaff", activeText: "white", inactiveText: "#0064FF" },
                 { key: "haemong",  label: "꿈해몽",   emoji: "🌙", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
               ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"|"haemong"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
-                const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.source ?? "free") === f.key).length;
+                const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.sources ?? [l.source ?? "free"]).includes(f.key)).length;
                 const active = sourceFilter === f.key;
                 return (
                   <button key={f.key} onClick={() => setSourceFilter(f.key)}
@@ -268,19 +290,13 @@ export default function AdminDirectPayments() {
                   </tr>
                 </thead>
                 <tbody>
-                  {leads.filter(l => sourceFilter === "all" || (l.source ?? "free") === sourceFilter).map((lead, i) => (
+                  {leads.filter(l => sourceFilter === "all" || (l.sources ?? [l.source ?? "free"]).includes(sourceFilter)).map((lead, i) => (
                     <tr key={lead.id} style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}>
                       <td style={{ padding: "10px 12px", fontWeight: 700 }}>{lead.name}</td>
                       <td style={{ padding: "10px 12px", color: "#374151" }}>{lead.phone || "-"}</td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.email || "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
-                        <span style={{
-                          background: lead.source === "jigun" ? "#ede9fe" : lead.source === "resume" ? "#dbeafe" : lead.source === "mbti" ? "#f3e8ff" : lead.source === "lotto" ? "#fef3c7" : lead.source === "gunghap" ? "#fce7f3" : lead.source === "petun" ? "#ecfeff" : lead.source === "tarot" ? "#ede9fe" : lead.source === "zodiac" ? "#dbeafe" : lead.source === "gamjung" ? "#d1fae5" : lead.source === "diet" ? "#dcfce7" : lead.source === "budget" ? "#fef3c7" : lead.source === "haemong" ? "#fce7f3" : "#fef3c7",
-                          color: lead.source === "jigun" ? "#6d28d9" : lead.source === "resume" ? "#1d4ed8" : lead.source === "mbti" ? "#7c3aed" : lead.source === "lotto" ? "#d97706" : lead.source === "gunghap" ? "#be185d" : lead.source === "petun" ? "#0e7490" : lead.source === "tarot" ? "#4c1d95" : lead.source === "zodiac" ? "#1e40af" : lead.source === "gamjung" ? "#065f46" : lead.source === "diet" ? "#15803d" : lead.source === "budget" ? "#92400e" : lead.source === "haemong" ? "#be185d" : "#92400e",
-                          padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700
-                        }}>
-                          {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : lead.source === "mbti" ? "🔮MBTI" : lead.source === "lotto" ? "🎱행운번호" : lead.source === "gunghap" ? "💞궁합" : lead.source === "petun" ? "🐾펫운" : lead.source === "tarot" ? "🃏타로" : lead.source === "zodiac" ? "⭐별자리" : lead.source === "gamjung" ? "😊감정일기" : lead.source === "diet" ? "🥗다이어트" : lead.source === "budget" ? "💰가계부" : lead.source === "toss-mbti" ? "🟦토스MBTI" : lead.source === "haemong" ? "🌙꿈해몽" : "🎁재물운"}
-                        </span>
+                        {(lead.sources ?? [lead.source ?? "free"]).map(s => <SourceBadge key={s} source={s} />)}
                       </td>
                       <td style={{ padding: "10px 12px" }}>
                         {lead.marketing === true

@@ -166,34 +166,38 @@ export async function GET(request: NextRequest) {
   });
   for (const item of dedupByPhone(haemongItems, "haemong")) leads.push(item);
 
-  // 같은 전화번호 + 같은 출처 조합으로만 중복 제거 — 다른 앱 이용 이력은 각각 별도 행으로 표시
-  // 이름 있는 항목 우선 선택, 둘 다 이름 있으면 최신 우선
-  const finalByPhoneSource = new Map<string, any>();
+  // 최종 dedup: 전화번호 기준 한 항목으로 묶기 + sources 배열로 모든 앱 기록
+  // 이름 있는 항목 우선, 둘 다 이름 있으면 최신 기준
+  const finalByPhone = new Map<string, any>();
   const finalNoPhone: any[] = [];
   for (const lead of leads) {
     const p = lead.phone ? String(lead.phone).replace(/\D/g, "") : "";
     const s = lead.source ?? "free";
     if (p.length >= 10) {
-      const key = `${p}__${s}`;
-      const ex = finalByPhoneSource.get(key);
+      const ex = finalByPhone.get(p);
       if (!ex) {
-        finalByPhoneSource.set(key, lead);
+        finalByPhone.set(p, { ...lead, phone: p, sources: [s] });
       } else {
+        const sources = ex.sources.includes(s) ? ex.sources : [...ex.sources, s];
         const newHasName = hasName(lead);
         const exHasName = hasName(ex);
+        let merged: any;
         if (newHasName && !exHasName) {
-          finalByPhoneSource.set(key, lead);
+          merged = { ...lead, phone: p, sources, email: lead.email || ex.email || "" };
         } else if (newHasName === exHasName && (lead.createdAt || 0) > (ex.createdAt || 0)) {
-          finalByPhoneSource.set(key, lead);
+          merged = { ...lead, phone: p, sources, email: lead.email || ex.email || "" };
+        } else {
+          merged = { ...ex, sources };
         }
+        finalByPhone.set(p, merged);
       }
     } else {
-      finalNoPhone.push(lead);
+      finalNoPhone.push({ ...lead, sources: [s] });
     }
   }
   // 전화번호도 없고 이름도 없는 유령 항목 제거
   const validNoPhone = finalNoPhone.filter((l: any) => hasName(l));
-  const finalLeads = [...finalByPhoneSource.values(), ...validNoPhone];
+  const finalLeads: any[] = [...finalByPhone.values(), ...validNoPhone];
   finalLeads.sort((a: any, b: any) => (b.createdAt || 0) - (a.createdAt || 0));
 
   // 이름이 없는 항목은 일반회원 DB(consumerCustomers)에서 같은 전화번호로 이름 조회
