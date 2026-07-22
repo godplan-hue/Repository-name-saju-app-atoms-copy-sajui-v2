@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
   const mbtiItems: any[] = [];
   mbtiSnap.forEach(child => {
     const v = child.val();
-    if (v && v.phone) mbtiItems.push({ id: child.key, name: v.userName || v.name || "", ...v });
+    if (v && v.phone) mbtiItems.push({ id: child.key, ...v, name: v.userName || "" });
   });
   for (const item of dedupByPhone(mbtiItems, "mbti")) leads.push(item);
 

@@ -11,6 +11,7 @@ interface Lead {
   source?: string;
   code?: string;
   used?: boolean;
+  marketing?: boolean;
   createdAt: number;
 }
 
@@ -260,7 +261,7 @@ export default function AdminDirectPayments() {
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                 <thead>
                   <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
-                    {["이름", "전화번호", "이메일", "출처", "생년", "쿠폰코드", "사용여부", "신청일"].map(h => (
+                    {["이름", "전화번호", "이메일", "출처", "마케팅", "생년", "쿠폰코드", "사용여부", "신청일"].map(h => (
                       <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontWeight: 900, color: "#374151" }}>{h}</th>
                     ))}
                   </tr>
@@ -279,6 +280,11 @@ export default function AdminDirectPayments() {
                         }}>
                           {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : lead.source === "mbti" ? "🔮MBTI" : lead.source === "lotto" ? "🎱행운번호" : lead.source === "gunghap" ? "💞궁합" : lead.source === "petun" ? "🐾펫운" : lead.source === "tarot" ? "🃏타로" : lead.source === "zodiac" ? "⭐별자리" : lead.source === "gamjung" ? "😊감정일기" : lead.source === "diet" ? "🥗다이어트" : lead.source === "budget" ? "💰가계부" : lead.source === "toss-mbti" ? "🟦토스MBTI" : "🎁재물운"}
                         </span>
+                      </td>
+                      <td style={{ padding: "10px 12px" }}>
+                        {lead.marketing === true
+                          ? <span style={{ background: "#dcfce7", color: "#166534", padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700 }}>✅ 동의</span>
+                          : <span style={{ color: "#d1d5db" }}>—</span>}
                       </td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.birthYear ? `${lead.birthYear}년` : "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
