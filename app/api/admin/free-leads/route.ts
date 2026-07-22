@@ -192,11 +192,10 @@ export async function GET(request: NextRequest) {
   if (missingPhones.length > 0) {
     const nameMap: Record<string, string> = {};
     await Promise.all(missingPhones.map(async (phone: string) => {
-      const snap = await db.ref("consumerCustomers")
-        .orderByChild("phone")
-        .equalTo(phone)
-        .limitToFirst(1)
-        .once("value");
+      const withDash = phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+      // 숫자 형식과 대시 형식 둘 다 조회 (저장 형식 불일치 대응)
+      let snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(phone).limitToFirst(1).once("value");
+      if (!snap.exists()) snap = await db.ref("consumerCustomers").orderByChild("phone").equalTo(withDash).limitToFirst(1).once("value");
       snap.forEach((child) => {
         const v = child.val();
         if (v?.name) nameMap[phone] = v.name;

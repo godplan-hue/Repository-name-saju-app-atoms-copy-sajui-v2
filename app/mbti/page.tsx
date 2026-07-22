@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -58,6 +58,7 @@ export default function MbtiPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     try {
@@ -242,6 +243,7 @@ export default function MbtiPage() {
           <div style={{ marginBottom: 10 }}>
             <input
               style={{ width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", boxSizing: "border-box" as const }}
+              ref={nameInputRef}
               placeholder="이름 또는 별명 (선택)"
               value={userName}
               onChange={e => setUserName(e.target.value)}
@@ -281,6 +283,9 @@ export default function MbtiPage() {
             const clean = phone.replace(/\D/g, "");
             if (clean.length < 10) { setError("전화번호를 입력해주세요."); return; }
             if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
+            // 한글 IME 미확정 버그 방지: DOM 값 직접 읽어서 state 강제 업데이트
+            const domName = nameInputRef.current?.value?.trim() || "";
+            if (domName) setUserName(domName);
             setStep("quiz");
           }} style={S.btn}>
             테스트 시작하기 (2분) →
