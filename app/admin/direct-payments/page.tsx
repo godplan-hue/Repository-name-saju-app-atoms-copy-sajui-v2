@@ -292,7 +292,7 @@ export default function AdminDirectPayments() {
                 <tbody>
                   {leads.filter(l => sourceFilter === "all" || (l.sources ?? [l.source ?? "free"]).includes(sourceFilter)).map((lead, i) => (
                     <tr key={lead.id} style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}>
-                      <td style={{ padding: "10px 12px", fontWeight: 700 }}>{lead.name}</td>
+                      <td style={{ padding: "10px 12px", fontWeight: 700 }}>{lead.name || <span style={{color:"#f00",fontSize:10}}>{JSON.stringify({n:lead.name,k:Object.keys(lead)})}</span>}</td>
                       <td style={{ padding: "10px 12px", color: "#374151" }}>{lead.phone || "-"}</td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.email || "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
