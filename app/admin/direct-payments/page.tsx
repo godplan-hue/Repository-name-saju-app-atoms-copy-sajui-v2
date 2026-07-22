@@ -53,7 +53,7 @@ export default function AdminDirectPayments() {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"payments" | "leads" | "sns">("payments");
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget">("all");
+  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti">("all");
   const [snsPending, setSnsPending] = useState<{phone: string; postUrl: string; createdAt: number}[]>([]);
   const [snsLoading, setSnsLoading] = useState(false);
   const [approvedCodes, setApprovedCodes] = useState<{phone: string; codes: string[]} | null>(null);
@@ -236,8 +236,9 @@ export default function AdminDirectPayments() {
                 { key: "zodiac",  label: "별자리",   emoji: "⭐", activeBg: "#1d4ed8", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#1e40af" },
                 { key: "gamjung", label: "감정일기", emoji: "😊", activeBg: "#059669", inactiveBg: "#d1fae5", activeText: "white", inactiveText: "#065f46" },
                 { key: "diet",    label: "다이어트", emoji: "🥗", activeBg: "#16a34a", inactiveBg: "#dcfce7", activeText: "white", inactiveText: "#15803d" },
-                { key: "budget",  label: "가계부",   emoji: "💰", activeBg: "#b45309", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#92400e" },
-              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
+                { key: "budget",   label: "가계부",    emoji: "💰", activeBg: "#b45309", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#92400e" },
+                { key: "toss-mbti", label: "토스MBTI", emoji: "🟦", activeBg: "#0064FF", inactiveBg: "#e0eaff", activeText: "white", inactiveText: "#0064FF" },
+              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.source ?? "free") === f.key).length;
                 const active = sourceFilter === f.key;
                 return (
@@ -276,7 +277,7 @@ export default function AdminDirectPayments() {
                           color: lead.source === "jigun" ? "#6d28d9" : lead.source === "resume" ? "#1d4ed8" : lead.source === "mbti" ? "#7c3aed" : lead.source === "lotto" ? "#d97706" : lead.source === "gunghap" ? "#be185d" : lead.source === "petun" ? "#0e7490" : lead.source === "tarot" ? "#4c1d95" : lead.source === "zodiac" ? "#1e40af" : lead.source === "gamjung" ? "#065f46" : lead.source === "diet" ? "#15803d" : lead.source === "budget" ? "#92400e" : "#92400e",
                           padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700
                         }}>
-                          {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : lead.source === "mbti" ? "🔮MBTI" : lead.source === "lotto" ? "🎱행운번호" : lead.source === "gunghap" ? "💞궁합" : lead.source === "petun" ? "🐾펫운" : lead.source === "tarot" ? "🃏타로" : lead.source === "zodiac" ? "⭐별자리" : lead.source === "gamjung" ? "😊감정일기" : lead.source === "diet" ? "🥗다이어트" : lead.source === "budget" ? "💰가계부" : "🎁재물운"}
+                          {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : lead.source === "mbti" ? "🔮MBTI" : lead.source === "lotto" ? "🎱행운번호" : lead.source === "gunghap" ? "💞궁합" : lead.source === "petun" ? "🐾펫운" : lead.source === "tarot" ? "🃏타로" : lead.source === "zodiac" ? "⭐별자리" : lead.source === "gamjung" ? "😊감정일기" : lead.source === "diet" ? "🥗다이어트" : lead.source === "budget" ? "💰가계부" : lead.source === "toss-mbti" ? "🟦토스MBTI" : "🎁재물운"}
                         </span>
                       </td>
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.birthYear ? `${lead.birthYear}년` : "-"}</td>
