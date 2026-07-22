@@ -153,7 +153,7 @@ export async function GET(request: NextRequest) {
   const tossItems: any[] = [];
   tossSnap.forEach(child => {
     const v = child.val();
-    if (v && (v.phone || v.email)) tossItems.push({ id: child.key, ...v });
+    if (v) tossItems.push({ id: child.key, ...v });
   });
   for (const item of tossItems) leads.push(item);
 

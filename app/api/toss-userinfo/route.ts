@@ -21,17 +21,20 @@ export async function POST(req: NextRequest) {
     const email = body.email || body.emailAddress || "";
     const source = body.source || "toss-mbti";
 
-    if (!phone && !email) {
+    if (!name && !phone && !email) {
       return NextResponse.json({ ok: false, error: "no data" }, { status: 400, headers: CORS });
     }
 
-    const entry = {
+    const mbtiType = body.mbtiType || "";
+
+    const entry: Record<string, string | number> = {
       name,
-      phone,
-      email,
       source,
       createdAt: Date.now(),
     };
+    if (phone) entry.phone = phone;
+    if (email) entry.email = email;
+    if (mbtiType) entry.mbtiType = mbtiType;
 
     const newRef = db.ref("free_leads/toss").push();
     await newRef.set(entry);
