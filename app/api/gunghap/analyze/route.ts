@@ -122,6 +122,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { phone, email, name1, birthYear1, birthMonth1, birthDay1, gender1,
             name2, birthYear2, birthMonth2, birthDay2, gender2 } = body;
+    const marketing = body.marketing === true;
 
     if (!birthYear1 || !birthYear2) {
       return NextResponse.json({ error: "생년월일을 입력해주세요" }, { status: 400 });
@@ -138,6 +139,7 @@ export async function POST(request: NextRequest) {
     const result = {
       phone: phone || "",
       email: email || "",
+      marketing,
       name: name1 || "나",
       name1: name1 || "나", birthYear1, birthMonth1, birthDay1, gender1,
       name2: name2 || "상대방", birthYear2, birthMonth2, birthDay2, gender2,

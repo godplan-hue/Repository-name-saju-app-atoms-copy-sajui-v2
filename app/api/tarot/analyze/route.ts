@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { name, phone, email, birthYear, birthMonth, birthDay, topic } = body;
+    const marketing = body.marketing === true;
 
     const cleanPhone = String(phone || "").replace(/\D/g, "");
     if (cleanPhone.length < 10) return NextResponse.json({ error: "전화번호를 입력해주세요" }, { status: 400 });
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
       name: name || "",
       phone: cleanPhone,
       email: email || "",
+      marketing,
       birthYear: Number(birthYear),
       birthMonth: Number(birthMonth || 1),
       birthDay: Number(birthDay || 1),

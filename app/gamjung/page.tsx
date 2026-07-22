@@ -39,6 +39,7 @@ export default function GamjungPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [marketingAgreed, setMarketingAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -112,7 +113,7 @@ export default function GamjungPage() {
       const res = await fetch("/api/gamjung/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone: cleanPhone, email, moodScore, activities: selectedActivities, memo }),
+        body: JSON.stringify({ name, phone: cleanPhone, email, moodScore, activities: selectedActivities, memo, marketing: marketingAgreed }),
       });
       const data = await res.json();
       if (data.id) {
@@ -402,8 +403,16 @@ export default function GamjungPage() {
             <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
               style={{ marginTop: 2, accentColor: "#4ade80", width: 18, height: 18, flexShrink: 0 }} />
             <span style={{ fontSize: 12, color: "#d1d5db", lineHeight: 1.7 }}>
-              <strong style={{ color: "#4ade80", fontSize: 13 }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
-              점운(jeomun.com)이 전화번호·이메일을 수집하여 운세 정보 및 혜택 안내에 활용하며, 3년간 보유 후 파기합니다. 언제든지 수신거부 가능합니다.
+              <strong style={{ color: "#4ade80", fontSize: 13 }}>[필수] 개인정보 수집·이용 동의</strong><br />
+              점운(jeomun.com)이 전화번호·이메일을 서비스 제공에 활용하며, 3년간 보유 후 파기합니다.
+            </span>
+          </label>
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer", marginTop: 8 }}>
+            <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)}
+              style={{ marginTop: 2, accentColor: "#4ade80", width: 18, height: 18, flexShrink: 0 }} />
+            <span style={{ fontSize: 12, color: "#d1d5db", lineHeight: 1.7 }}>
+              <strong style={{ color: "#4ade80", fontSize: 13 }}>[선택] 마케팅 수신 동의</strong><br />
+              이벤트·할인·운세 소식을 문자·카카오로 받습니다. 언제든지 수신거부 가능합니다.
             </span>
           </label>
         </div>

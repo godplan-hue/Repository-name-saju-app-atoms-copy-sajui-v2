@@ -45,6 +45,7 @@ export default function ZodiacPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [marketingAgreed, setMarketingAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -75,7 +76,7 @@ export default function ZodiacPage() {
       };
       const res = await fetch("/api/zodiac/analyze", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ ...body, marketing: marketingAgreed }),
       });
       const data = await res.json();
       if (data.id) {
@@ -296,8 +297,16 @@ export default function ZodiacPage() {
             <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
               style={{ marginTop: 3, accentColor: "#93c5fd", width: 16, height: 16, flexShrink: 0 }} />
             <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
-              <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 및 마케팅 수신 동의</strong><br />
-              점운(jeomun.com)이 전화번호·이메일을 수집하여 운세 정보 및 혜택 안내에 활용하며, 3년간 보유 후 파기합니다. 언제든지 수신거부 가능합니다.
+              <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 동의</strong><br />
+              점운(jeomun.com)이 전화번호·이메일을 서비스 제공에 활용하며, 3년간 보유 후 파기합니다.
+            </span>
+          </label>
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginTop: 8 }}>
+            <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)}
+              style={{ marginTop: 3, accentColor: "#93c5fd", width: 16, height: 16, flexShrink: 0 }} />
+            <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
+              <strong style={{ color: "#e5e7eb" }}>[선택] 마케팅 수신 동의</strong><br />
+              이벤트·할인·운세 소식을 문자·카카오로 받습니다. 언제든지 수신거부 가능합니다.
             </span>
           </label>
         </div>
