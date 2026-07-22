@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 type Dim = "EI" | "SN" | "TF" | "JP";
 
 const DIMS: Array<{ dim: Dim; dir: 1 | -1 }> = [
@@ -222,11 +228,15 @@ export async function POST(req: NextRequest) {
 
     const ref = db.ref("mbti_analyses").push();
     await ref.set(result);
-    return NextResponse.json({ id: ref.key, ...result });
+    return NextResponse.json({ id: ref.key, ...result }, { headers: CORS_HEADERS });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "서버 오류" }, { status: 500 });
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: CORS_HEADERS });
 }
 
 export async function GET(req: NextRequest) {
@@ -235,7 +245,7 @@ export async function GET(req: NextRequest) {
     if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
     const snap = await db.ref(`mbti_analyses/${id}`).get();
     if (!snap.exists()) return NextResponse.json({ error: "not found" }, { status: 404 });
-    return NextResponse.json({ id, ...snap.val() });
+    return NextResponse.json({ id, ...snap.val() }, { headers: CORS_HEADERS });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "서버 오류" }, { status: 500 });
