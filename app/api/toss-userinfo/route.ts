@@ -26,11 +26,13 @@ export async function POST(req: NextRequest) {
     }
 
     const mbtiType = body.mbtiType || "";
+    const marketing = body.marketing === true;
 
-    const entry: Record<string, string | number> = {
+    const entry: Record<string, string | number | boolean> = {
       name,
       source,
       createdAt: Date.now(),
+      marketing,
     };
     if (phone) entry.phone = phone;
     if (email) entry.email = email;
