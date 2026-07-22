@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const entry = {
-      name, phone: phone || "", email: email || "",
+      name, phone: phone ? phone.replace(/[^0-9]/g, "") : "", email: email || "",
       birthYear: birthYear || "", birthMonth: birthMonth || "", birthDay: birthDay || "",
       gender: gender || "", birthHour: birthHour || "", relationship: relationship || "",
       referredBy: referredBy || "",
