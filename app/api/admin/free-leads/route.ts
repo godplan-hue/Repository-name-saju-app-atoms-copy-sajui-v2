@@ -166,30 +166,34 @@ export async function GET(request: NextRequest) {
   });
   for (const item of dedupByPhone(haemongItems, "haemong")) leads.push(item);
 
-  // 출처가 달라도 같은 전화번호가 중복될 수 있으므로 (free_leads+career_analyses 동시 저장 등) 최종 전체 중복 제거
+  // 같은 전화번호 + 같은 출처 조합으로만 중복 제거 — 다른 앱 이용 이력은 각각 별도 행으로 표시
   // 이름 있는 항목 우선 선택, 둘 다 이름 있으면 최신 우선
-  const finalByPhone = new Map<string, any>();
+  const finalByPhoneSource = new Map<string, any>();
   const finalNoPhone: any[] = [];
   for (const lead of leads) {
     const p = lead.phone ? String(lead.phone).replace(/\D/g, "") : "";
+    const s = lead.source ?? "free";
     if (p.length >= 10) {
-      const ex = finalByPhone.get(p);
+      const key = `${p}__${s}`;
+      const ex = finalByPhoneSource.get(key);
       if (!ex) {
-        finalByPhone.set(p, lead);
+        finalByPhoneSource.set(key, lead);
       } else {
         const newHasName = hasName(lead);
         const exHasName = hasName(ex);
         if (newHasName && !exHasName) {
-          finalByPhone.set(p, lead);
+          finalByPhoneSource.set(key, lead);
         } else if (newHasName === exHasName && (lead.createdAt || 0) > (ex.createdAt || 0)) {
-          finalByPhone.set(p, lead);
+          finalByPhoneSource.set(key, lead);
         }
       }
     } else {
       finalNoPhone.push(lead);
     }
   }
-  const finalLeads = [...finalByPhone.values(), ...finalNoPhone];
+  // 전화번호도 없고 이름도 없는 유령 항목 제거
+  const validNoPhone = finalNoPhone.filter((l: any) => hasName(l));
+  const finalLeads = [...finalByPhoneSource.values(), ...validNoPhone];
   finalLeads.sort((a: any, b: any) => (b.createdAt || 0) - (a.createdAt || 0));
 
   // 이름이 없는 항목은 일반회원 DB(consumerCustomers)에서 같은 전화번호로 이름 조회
