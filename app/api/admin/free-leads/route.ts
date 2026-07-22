@@ -247,6 +247,7 @@ export async function DELETE(request: NextRequest) {
     db.ref("tarot_analyses").remove(),
     db.ref("zodiac_analyses").remove(),
     db.ref("diet_leads").remove(),
+    db.ref("haemong_leads").remove(),
   ]);
   return NextResponse.json({ ok: true });
 }
