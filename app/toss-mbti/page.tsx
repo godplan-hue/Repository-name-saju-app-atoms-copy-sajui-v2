@@ -43,6 +43,7 @@ export default function TossMbtiPage() {
   const [userName, setUserName] = useState("");
   const [phone, setPhone] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [marketingAgreed, setMarketingAgreed] = useState(false);
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<number[]>(Array(16).fill(99));
   const [selected, setSelected] = useState<number | null>(null);
@@ -71,7 +72,7 @@ export default function TossMbtiPage() {
       const res = await fetch("/api/mbti/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers: finalAnswers, userName, phone: phone.replace(/\D/g, ""), email: "" }),
+        body: JSON.stringify({ answers: finalAnswers, userName, phone: phone.replace(/\D/g, ""), email: "", marketing: marketingAgreed }),
       });
       const data = await res.json();
       if (data.id) {
@@ -208,13 +209,21 @@ export default function TossMbtiPage() {
               inputMode="tel"
             />
           </div>
-          <div style={{ marginBottom: 14 }}>
-            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
+          <div style={{ marginBottom: 8 }}>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 8 }}>
               <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
                 style={{ marginTop: 3, accentColor: "#a855f7", width: 16, height: 16, flexShrink: 0 }} />
               <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
                 <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 동의</strong><br />
                 점운이 제공하는 MBTI 서비스 이용을 위해 동의합니다.
+              </span>
+            </label>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
+              <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)}
+                style={{ marginTop: 3, accentColor: "#a855f7", width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
+                <strong style={{ color: "#e5e7eb" }}>[선택] 마케팅 수신 동의</strong><br />
+                점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
               </span>
             </label>
           </div>

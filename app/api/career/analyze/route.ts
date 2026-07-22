@@ -103,6 +103,7 @@ export async function POST(req: NextRequest) {
       timeAvail, skill, speed, career,
       recommended,
       details: recommended.map((id: string) => CAREER_DETAIL[id] ?? CAREER_DETAIL["content"]),
+      marketing: body.marketing ?? false,
       createdAt: Date.now(),
     };
 

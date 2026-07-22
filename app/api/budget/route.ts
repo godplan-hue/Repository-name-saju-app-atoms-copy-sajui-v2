@@ -9,13 +9,14 @@ export async function POST(req: NextRequest) {
     const safeId = userId.replace(/[.#$[\]]/g, "_");
 
     if (action === "lead") {
-      const { name, phone, email, createdAt } = body;
+      const { name, phone, email, marketing, createdAt } = body;
       const existingSnap = await db.ref(`budget_leads/${safeId}`).once("value");
       const existing = existingSnap.val() || {};
       await db.ref(`budget_leads/${safeId}`).set({
         name: name || existing.name || "",
         phone: phone || existing.phone || "",
         email: email || existing.email || "",
+        marketing: marketing ?? existing.marketing ?? false,
         createdAt: existing.createdAt || createdAt || Date.now(),
       });
       return NextResponse.json({ ok: true });

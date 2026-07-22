@@ -112,6 +112,7 @@ export async function POST(req: NextRequest) {
       fieldStrategy: fieldData.strategy,
       interview: fieldData.interview,
       sizeStrategy: sizeTip,
+      marketing: body.marketing ?? false,
       createdAt: Date.now(),
       ...(prepaid === true ? { paid: true } : {}),
     };

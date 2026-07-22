@@ -9,8 +9,8 @@ export async function POST(req: NextRequest) {
     const safeId = userId.replace(/[.#$[\]]/g, "_");
 
     if (action === "lead") {
-      const { name, phone, email, birthYear, createdAt } = body;
-      await db.ref(`diet_leads/${safeId}`).set({ name: name || "", phone: phone || "", email: email || "", birthYear: birthYear || null, createdAt: createdAt || Date.now() });
+      const { name, phone, email, birthYear, marketing, createdAt } = body;
+      await db.ref(`diet_leads/${safeId}`).set({ name: name || "", phone: phone || "", email: email || "", birthYear: birthYear || null, marketing: marketing ?? false, createdAt: createdAt || Date.now() });
       return NextResponse.json({ ok: true });
     }
 

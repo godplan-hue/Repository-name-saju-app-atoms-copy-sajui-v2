@@ -23,6 +23,8 @@ export default function DietPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [hasPhone, setHasPhone] = useState(false);
+  const [dietPrivacyAgreed, setDietPrivacyAgreed] = useState(false);
+  const [dietMarketingAgreed, setDietMarketingAgreed] = useState(false);
   const [mcUserId, setMcUserId] = useState("");
   const [dietLocked, setDietLocked] = useState(false);
   const [restorePhone, setRestorePhone] = useState("");
@@ -123,6 +125,7 @@ export default function DietPage() {
   function removeMeal(id: string) { saveToday(meals.filter(m => m.id !== id)); }
 
   function saveSetup() {
+    if (!dietPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
     const yr = parseInt(birthYear);
     if (!yr || yr < 1940 || yr > 2015) { alert("올바른 출생연도를 입력해주세요 (1940~2015)"); return; }
     const cleanPhone = phone.replace(/\D/g, "");
@@ -139,6 +142,12 @@ export default function DietPage() {
     const uid = `phone_${cleanPhone}`;
     setMcUserId(uid);
     setHasPhone(true);
+    // 리드 저장 (마케팅 동의 포함)
+    fetch("/api/diet", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "lead", userId: uid, name, phone: cleanPhone, email, marketing: dietMarketingAgreed }),
+    }).catch(() => {});
     setSetupDone(true);
   }
 
@@ -305,9 +314,26 @@ export default function DietPage() {
               style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 18, color: "white", fontWeight: 700, outline: "none", boxSizing: "border-box" as const }}
             />
           </div>
-          <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "10px 14px", marginBottom: 24, fontSize: 12, color: "#fbbf24", lineHeight: 1.6 }}>
+          <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#fbbf24", lineHeight: 1.6 }}>
             ⚠️ 전화번호 필수 — 입력하지 않으면 다른 기기에서 기록을 불러올 수 없어요.
           </div>
+
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, cursor: "pointer" }}>
+            <input type="checkbox" checked={dietPrivacyAgreed} onChange={e => setDietPrivacyAgreed(e.target.checked)}
+              style={{ marginTop: 2, accentColor: "#6366f1", width: 16, height: 16, flexShrink: 0 }} />
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
+              <strong style={{ color: "rgba(255,255,255,0.8)" }}>[필수] 개인정보 수집·이용 동의</strong><br />
+              수집 항목: 이름(선택), 출생연도(필수), 전화번호(필수), 이메일(선택) / 보관: 3년 후 파기
+            </span>
+          </label>
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 24, cursor: "pointer" }}>
+            <input type="checkbox" checked={dietMarketingAgreed} onChange={e => setDietMarketingAgreed(e.target.checked)}
+              style={{ marginTop: 2, accentColor: "#6366f1", width: 16, height: 16, flexShrink: 0 }} />
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
+              <strong style={{ color: "rgba(255,255,255,0.8)" }}>[선택] 마케팅 수신 동의</strong><br />
+              점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
+            </span>
+          </label>
 
           <button onClick={saveSetup} style={{ width: "100%", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", border: "none", borderRadius: 14, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer", boxShadow: "0 4px 16px rgba(99,102,241,0.4)" }}>
             오행 체질 분석 시작 →

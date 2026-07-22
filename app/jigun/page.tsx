@@ -143,6 +143,7 @@ export default function JigunPage() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [marketingAgreed, setMarketingAgreed] = useState(false);
 
   useEffect(() => {
     try {
@@ -193,6 +194,7 @@ export default function JigunPage() {
           speed: answers[6] === "A" ? 0 : 1,
           career: ["A", "B", "C"].indexOf(answers[4]),
           recommended,
+          marketing: marketingAgreed,
         }),
       });
       const data = await res.json();
@@ -391,7 +393,7 @@ export default function JigunPage() {
 
             {err && <p style={{ color: "#ef4444", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{err}</p>}
 
-            <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 16, cursor: "pointer" }}>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, cursor: "pointer" }}>
               <input
                 type="checkbox"
                 checked={agreed}
@@ -401,6 +403,18 @@ export default function JigunPage() {
               <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
                 <strong style={{ color: "rgba(255,255,255,0.75)" }}>[필수] 개인정보 수집·이용 동의</strong><br />
                 수집 항목: 이름(선택), 출생연도, 전화번호(필수), 이메일(선택) /<br />목적: 부업 추천 서비스 제공 / 보관 기간: 3년 후 파기
+              </span>
+            </label>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 16, cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={marketingAgreed}
+                onChange={e => setMarketingAgreed(e.target.checked)}
+                style={{ marginTop: 2, accentColor: "#7c3aed", width: 16, height: 16, flexShrink: 0 }}
+              />
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
+                <strong style={{ color: "rgba(255,255,255,0.75)" }}>[선택] 마케팅 수신 동의</strong><br />
+                점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
               </span>
             </label>
 

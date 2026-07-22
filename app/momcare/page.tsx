@@ -68,6 +68,8 @@ export default function MomcarePage() {
   const [momcareDaysLeft, setMomcareDaysLeft] = useState(0);
   const [hasPhone, setHasPhone] = useState(true);
   const [phoneGate, setPhoneGate] = useState("");
+  const [mcPrivacyAgreed, setMcPrivacyAgreed] = useState(false);
+  const [mcMarketingAgreed, setMcMarketingAgreed] = useState(false);
 
   useEffect(() => {
     try {
@@ -112,7 +114,24 @@ export default function MomcarePage() {
           type="tel"
           style={{ width: "100%", border: "2px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 16, outline: "none", boxSizing: "border-box", marginBottom: 12, textAlign: "center", letterSpacing: 1 }}
         />
+        <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 8, textAlign: "left" }}>
+          <input type="checkbox" checked={mcPrivacyAgreed} onChange={e => setMcPrivacyAgreed(e.target.checked)}
+            style={{ marginTop: 3, accentColor: "#0891b2", width: 16, height: 16, flexShrink: 0 }} />
+          <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
+            <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 동의</strong><br />
+            수집 항목: 전화번호(필수) / 목적: 맘케어 서비스 제공 / 보관: 3년 후 파기
+          </span>
+        </label>
+        <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 12, textAlign: "left" }}>
+          <input type="checkbox" checked={mcMarketingAgreed} onChange={e => setMcMarketingAgreed(e.target.checked)}
+            style={{ marginTop: 3, accentColor: "#0891b2", width: 16, height: 16, flexShrink: 0 }} />
+          <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
+            <strong style={{ color: "#374151" }}>[선택] 마케팅 수신 동의</strong><br />
+            점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
+          </span>
+        </label>
         <button id="mc-login-btn" onClick={async () => {
+          if (!mcPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
           const ph = phoneGate.replace(/\D/g, "");
           if (ph.length < 10) { alert("전화번호를 정확히 입력해주세요."); return; }
           try { const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); p.phone = ph; localStorage.setItem("v2_saved_profile", JSON.stringify(p)); localStorage.setItem("v2_saved_phone", ph); } catch {}

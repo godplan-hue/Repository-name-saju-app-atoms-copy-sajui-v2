@@ -32,6 +32,8 @@ export default function BudgetPage() {
   const [setupName, setSetupName] = useState("");
   const [setupPhone, setSetupPhone] = useState("");
   const [setupEmail, setSetupEmail] = useState("");
+  const [setupMarketingAgreed, setSetupMarketingAgreed] = useState(false);
+  const [setupPrivacyAgreed, setSetupPrivacyAgreed] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(thisMonth());
   const [form, setForm] = useState<{ type: EntryType; date: string; category: string; amount: string; memo: string }>({
     type: "expense", date: todayStr(), category: "식비", amount: "", memo: "",
@@ -107,6 +109,7 @@ export default function BudgetPage() {
   }, []);
 
   function saveBudgetSetup() {
+    if (!setupPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
     const cleanPhone = setupPhone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { alert("전화번호를 입력해주세요."); return; }
     try {
@@ -121,6 +124,12 @@ export default function BudgetPage() {
     setMcUserId(uid);
     setHasPhone(true);
     localStorage.setItem("budget_setup_done", "1");
+    // 리드 저장 (마케팅 동의 포함)
+    fetch("/api/budget", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "lead", userId: uid, name: setupName, phone: cleanPhone, email: setupEmail, marketing: setupMarketingAgreed }),
+    }).catch(() => {});
     // Firebase에서 기존 데이터 로드
     fetch(`/api/budget?userId=${uid}`)
       .then(r => r.json())
@@ -317,9 +326,26 @@ export default function BudgetPage() {
               <input type="email" inputMode="email" value={setupEmail} onChange={e => setSetupEmail(e.target.value)} placeholder="example@email.com" style={inp} />
             </div>
           </div>
-          <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "10px 14px", marginBottom: 24, fontSize: 12, color: "#fbbf24", lineHeight: 1.6 }}>
+          <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 10, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#fbbf24", lineHeight: 1.6 }}>
             ⚠️ 전화번호 필수 —<br />다른 기기에서 기록을 불러오려면 반드시 입력해주세요.
           </div>
+
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, cursor: "pointer" }}>
+            <input type="checkbox" checked={setupPrivacyAgreed} onChange={e => setSetupPrivacyAgreed(e.target.checked)}
+              style={{ marginTop: 2, accentColor: "#f59e0b", width: 16, height: 16, flexShrink: 0 }} />
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
+              <strong style={{ color: "rgba(255,255,255,0.8)" }}>[필수] 개인정보 수집·이용 동의</strong><br />
+              수집 항목: 이름(선택), 전화번호(필수), 이메일(선택) / 목적: 가계부 서비스 제공 / 보관: 3년 후 파기
+            </span>
+          </label>
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 24, cursor: "pointer" }}>
+            <input type="checkbox" checked={setupMarketingAgreed} onChange={e => setSetupMarketingAgreed(e.target.checked)}
+              style={{ marginTop: 2, accentColor: "#f59e0b", width: 16, height: 16, flexShrink: 0 }} />
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
+              <strong style={{ color: "rgba(255,255,255,0.8)" }}>[선택] 마케팅 수신 동의</strong><br />
+              점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
+            </span>
+          </label>
 
           <button onClick={saveBudgetSetup} style={{ width: "100%", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#0f172a", border: "none", borderRadius: 14, padding: "16px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
             가계부 시작하기 →

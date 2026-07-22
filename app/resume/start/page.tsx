@@ -16,6 +16,7 @@ export default function ResumeStartPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [marketingAgreed, setMarketingAgreed] = useState(false);
 
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function ResumeStartPage() {
       const res = await fetch("/api/resume/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, ...(localStorage.getItem("resume_paid_token") === "1" ? { prepaid: true } : {}) }),
+        body: JSON.stringify({ ...form, marketing: marketingAgreed, ...(localStorage.getItem("resume_paid_token") === "1" ? { prepaid: true } : {}) }),
       });
       const data = await res.json();
       if (data.id) {
@@ -132,7 +133,7 @@ export default function ResumeStartPage() {
 
           {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
-          <label className="flex items-start gap-3 cursor-pointer">
+          <label className="flex items-start gap-3 cursor-pointer mb-2">
             <input
               type="checkbox"
               checked={agreed}
@@ -143,6 +144,18 @@ export default function ResumeStartPage() {
               <strong className="text-gray-300">[필수] 개인정보 수집·이용 동의</strong><br />
               수집 항목: 이름, 생년월일, 전화번호(필수), 이메일(선택) /<br />
               목적: 합격 전략 분석 서비스 제공 / 보관 기간: 3년 후 파기
+            </span>
+          </label>
+          <label className="flex items-start gap-3 cursor-pointer mb-2">
+            <input
+              type="checkbox"
+              checked={marketingAgreed}
+              onChange={e => setMarketingAgreed(e.target.checked)}
+              className="mt-0.5 w-4 h-4 shrink-0 accent-purple-500"
+            />
+            <span className="text-xs text-gray-400 leading-relaxed">
+              <strong className="text-gray-300">[선택] 마케팅 수신 동의</strong><br />
+              점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
             </span>
           </label>
 
