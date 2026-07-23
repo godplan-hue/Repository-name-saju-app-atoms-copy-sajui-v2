@@ -298,7 +298,14 @@ export default function MbtiResultPage() {
           <p style={{ fontSize: 11, color: "rgba(196,181,253,0.5)", margin: "8px 0 0" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
 
-        <p style={{ textAlign: "center" as const, fontSize: 11, color: "#374151", marginTop: 20 }}>© 점운 jeomun.com</p>
+        <div style={{ textAlign: "center" as const, fontSize: 11, color: "#6b7280", marginTop: 20, marginBottom: 8, lineHeight: 2 }}>
+          <p style={{ margin: "0 0 4px", fontSize: 15 }}>🐱 점운</p>
+          <p style={{ margin: 0 }}>© 2026 점운 · 기획의신 에스더가 만든 앱</p>
+          <p style={{ margin: 0 }}>대표: 장문정 · 상호: 기획의신</p>
+          <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
+          <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>
+          <p style={{ margin: 0 }}>서울특별시 강남구 선릉로86길 38, 7층 7017호(대치동)</p>
+        </div>
       </div>
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"
         onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
