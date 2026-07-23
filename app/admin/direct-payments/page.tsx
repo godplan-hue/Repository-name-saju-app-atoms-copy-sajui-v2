@@ -28,7 +28,8 @@ const SOURCE_CFG: Record<string, [string, string, string]> = {
   gamjung:    ["#d1fae5","#065f46","😊감정일기"],
   diet:       ["#dcfce7","#15803d","🥗다이어트"],
   budget:     ["#fef3c7","#92400e","💰가계부"],
-  "toss-mbti":["#e0eaff","#0064FF","🟦토스MBTI"],
+  "toss-mbti": ["#e0eaff","#0064FF","🟦토스MBTI"],
+  "toss-diet": ["#dcfce7","#15803d","🥗토스다이어트"],
   haemong:    ["#fce7f3","#be185d","🌙꿈해몽"],
   free:       ["#fef3c7","#92400e","🎁재물운"],
 };
@@ -76,7 +77,7 @@ export default function AdminDirectPayments() {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"payments" | "leads" | "sns">("payments");
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"|"haemong">("all");
+  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"|"toss-diet"|"haemong">("all");
   const [snsPending, setSnsPending] = useState<{phone: string; postUrl: string; createdAt: number}[]>([]);
   const [snsLoading, setSnsLoading] = useState(false);
   const [approvedCodes, setApprovedCodes] = useState<{phone: string; codes: string[]} | null>(null);
@@ -261,8 +262,9 @@ export default function AdminDirectPayments() {
                 { key: "diet",    label: "다이어트", emoji: "🥗", activeBg: "#16a34a", inactiveBg: "#dcfce7", activeText: "white", inactiveText: "#15803d" },
                 { key: "budget",   label: "가계부",    emoji: "💰", activeBg: "#b45309", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#92400e" },
                 { key: "toss-mbti", label: "토스MBTI", emoji: "🟦", activeBg: "#0064FF", inactiveBg: "#e0eaff", activeText: "white", inactiveText: "#0064FF" },
+                { key: "toss-diet", label: "토스다이어트", emoji: "🥗", activeBg: "#15803d", inactiveBg: "#dcfce7", activeText: "white", inactiveText: "#15803d" },
                 { key: "haemong",  label: "꿈해몽",   emoji: "🌙", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
-              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"|"haemong"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
+              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"|"toss-diet"|"haemong"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.sources ?? [l.source ?? "free"]).includes(f.key)).length;
                 const active = sourceFilter === f.key;
                 return (
