@@ -191,7 +191,7 @@ export default function GamjungResultPage() {
           content: {
             title: `오늘 기분: ${result.moodLabel} ${result.moodEmoji} — ${result.oh}오행 에너지`,
             description: `${result.ohMessages[0].slice(0, 60)}... 점운 감정일기에서 내 감정을 분석해봐!`,
-            imageUrl: "https://i.pinimg.com/1200x/a6/ed/26/a6ed26f97fc86e6cf74de5e3e3e64c11.jpg",
+            imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
           buttons: [
