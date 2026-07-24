@@ -64,6 +64,11 @@ export default function GamjungPage() {
       if (p.phone) setPhone(p.phone);
       if (p.phone) setRestorePhone(p.phone);
       if (p.email) setEmail(p.email);
+      // 이전 동의 상태 복원 (30일 이용권 동안 다시 묻지 않음)
+      if (localStorage.getItem("gamjung_consented") === "true") {
+        setAgreed(true);
+        setMarketingAgreed(localStorage.getItem("gamjung_marketing") === "true");
+      }
       // 전화번호 있으면 Firebase에서 이력 복원 (다른 브라우저에서도 목록 보임)
       const cleanPh = (p.phone || "").replace(/\D/g, "");
       if (cleanPh) {
@@ -117,6 +122,16 @@ export default function GamjungPage() {
       });
       const data = await res.json();
       if (data.id) {
+        // 프로필·동의 상태 저장 (다음 일기 때 폼 건너뜀)
+        try {
+          const savedP = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+          savedP.phone = cleanPhone;
+          if (name) savedP.name = name;
+          if (email) savedP.email = email;
+          localStorage.setItem("v2_saved_profile", JSON.stringify(savedP));
+          localStorage.setItem("gamjung_consented", "true");
+          localStorage.setItem("gamjung_marketing", String(marketingAgreed));
+        } catch {}
         if (typeof sessionStorage !== "undefined") {
           sessionStorage.setItem(`gamjung_result_${data.id}`, JSON.stringify(data.result));
         }
@@ -384,7 +399,14 @@ export default function GamjungPage() {
               );
             })}
           </div>
-          <button onClick={() => setStep("form")} style={S.btn}>
+          <button onClick={() => {
+            // 이미 전화번호+동의 저장되어 있으면 폼 건너뛰고 바로 분석
+            if (phone.replace(/\D/g,"").length >= 10 && agreed) {
+              analyze();
+            } else {
+              setStep("form");
+            }
+          }} style={S.btn}>
             {selectedActivities.length > 0 ? `${selectedActivities.length}개 선택 완료 →` : "다음으로 →"}
           </button>
         </div>
