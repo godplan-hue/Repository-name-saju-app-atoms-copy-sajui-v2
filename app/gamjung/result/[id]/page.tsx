@@ -65,6 +65,37 @@ const OH_CARE: Record<string, { music: string; food: string; action: string }> =
   금: { music: "감성적인 발라드 or 클래식", food: "배, 무, 흰 살 생선", action: "일기 쓰기 or 심호흡 10번" },
 };
 
+const COMFORT_LETTERS: Record<string, string> = {
+  화: `오늘 기분 정말 좋으셨군요 😊\n\n화(火)의 에너지가 온몸에 넘치는 날이에요. 이런 날이 찾아왔다는 건 그냥 운이 아니에요. 당신이 그만큼 빛날 준비가 된 사람이기 때문입니다.\n\n이 기쁨을 마음껏 누리세요. 오늘의 좋은 순간들을 하나씩 떠올리며 잠들면, 내일도 좋은 에너지로 깨어날 거예요.\n\n당신이 빛날수록 주변도 따뜻해져요. 오늘도 잘 살아줘서 고마워요. 🔥`,
+  목: `오늘 괜찮은 하루를 보내셨군요 🌱\n\n목(木)의 성장 에너지가 흐르는 날이에요. 눈에 띄진 않지만 오늘도 조금씩 앞으로 나아가고 있는 당신, 그 꾸준함이 제일 대단합니다.\n\n씨앗은 땅 위로 나오기 전까지 아무것도 안 하는 것처럼 보이지만, 사실 가장 열심히 자라고 있어요. 지금 당신이 꼭 그래요.\n\n오늘의 한 걸음을 기억해주세요. 분명히 크게 자랄 거예요. 진심으로 응원합니다. 🌿`,
+  토: `평범한 하루, 충분히 잘하셨어요 🌍\n\n토(土)의 고요한 하루를 보내셨군요. '그냥 보통이었어'라고 느끼는 날도 사실 굉장히 소중해요. 특별한 것 없어도 하루를 통과한 것, 그게 이미 대단한 일입니다.\n\n흙처럼 조용하지만 단단한 당신. 모든 생명은 결국 땅에서 자라요. 당신의 평범한 하루가 누군가에게는 든든한 기반이 됩니다.\n\n오늘도 수고 많으셨어요. 충분히 잘 살았습니다. 🌻`,
+  수: `오늘 많이 힘드셨죠 💧\n\n수(水)의 날이에요. 물이 낮은 곳으로 흐르듯, 감정도 때론 아래로 내려가요. 그게 자연스러운 거예요. 지금 이 무거움, 억지로 떨쳐내려 하지 않아도 됩니다.\n\n물은 결국 흘러요. 오늘의 감정도 반드시 흘러갑니다. 지금 당신에게 필요한 건 판단이 아니라 따뜻한 쉼이에요.\n\n오늘 충분히 쉬세요. 당신은 쉬어도 될 자격이 있어요. 내일 다시 흘러갈 거예요. 🌊`,
+  금: `오늘 정말 많이 버티셨어요 ⚡\n\n금(金)이 불에서 단련되듯, 지금 당신도 가장 힘든 과정을 통과하고 있어요. 무너지지 않으려는 그 자체가 이미 용기예요.\n\n오늘 하루 버텨줘서 정말 고마워요. 당신이 느끼는 이 고통은 당신이 약해서가 아니에요. 오히려 너무 많은 것을 혼자 짊어졌기 때문이에요.\n\n내일은 꼭 더 나아질 거예요. 오늘 밤은 그냥 쉬어도 됩니다. 당신 편이 여기 있어요. 🌸`,
+};
+
+const WEATHER_MAP: Record<string, { emoji: string; label: string; desc: string }> = {
+  화: { emoji: "☀️", label: "맑음", desc: "에너지가 넘치는 화창한 날" },
+  목: { emoji: "🌤️", label: "맑다가 구름", desc: "성장하는 봄날의 따스함" },
+  토: { emoji: "⛅", label: "구름 조금", desc: "차분하고 안정된 하루" },
+  수: { emoji: "🌧️", label: "비", desc: "감성이 깊어지는 조용한 날" },
+  금: { emoji: "🌫️", label: "흐림", desc: "내면을 단련하는 깊은 날" },
+};
+
+const OH_TYPE: Record<string, { emoji: string; name: string; desc: string }> = {
+  화: { emoji: "🔥", name: "열정 불꽃형", desc: "감정이 풍부하고 표현력이 강해요. 주변을 밝히는 에너지의 소유자." },
+  목: { emoji: "🌱", name: "성장 새싹형", desc: "꾸준하고 진취적이에요. 어떤 환경에서도 자라는 힘이 있어요." },
+  토: { emoji: "🌍", name: "안정 대지형", desc: "균형감 있고 신중해요. 주변 사람들의 든든한 기반이 돼요." },
+  수: { emoji: "💧", name: "깊은 강물형", desc: "감성이 깊고 직관력이 뛰어나요. 조용하지만 강한 내면을 가졌어요." },
+  금: { emoji: "⚡", name: "단련 강철형", desc: "강인하고 내성적이에요. 힘든 시간을 통해 더 빛나는 사람." },
+};
+
+const LABEL_TO_OH: Record<string, string> = {
+  "최고!": "화", "좋음": "목", "보통": "토", "나쁨": "수", "끔찍함": "금",
+};
+const MOOD_COLOR: Record<string, string> = {
+  "최고!": "#fbbf24", "좋음": "#4ade80", "보통": "#93c5fd", "나쁨": "#a78bfa", "끔찍함": "#f87171",
+};
+
 interface GResult {
   name: string;
   moodScore: number;
@@ -111,6 +142,9 @@ export default function GamjungResultPage() {
   const [loading, setLoading] = useState(true);
   const [card, setCard] = useState<{ emoji: string; title: string; msg: string } | null>(null);
   const [cardFlipped, setCardFlipped] = useState(false);
+  const [letterOpen, setLetterOpen] = useState(false);
+  const [showWeather, setShowWeather] = useState(false);
+  const [history, setHistory] = useState<Array<{ id: string; moodLabel: string; moodEmoji: string; createdAt: number }>>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -131,7 +165,7 @@ export default function GamjungResultPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  // result 로드 완료 시 기록 저장 — early return 전에 위치해야 Rules of Hooks 준수
+  // result 로드 완료 시 기록 저장 + 히스토리 읽기 — early return 전에 위치해야 Rules of Hooks 준수
   useEffect(() => {
     if (!result || !id) return;
     try {
@@ -139,6 +173,9 @@ export default function GamjungResultPage() {
       if (!h.some((e: {id: string}) => e.id === id)) {
         h.unshift({ id, moodLabel: result.moodLabel, moodEmoji: result.moodEmoji, createdAt: result.createdAt });
         localStorage.setItem("gamjung_history", JSON.stringify(h.slice(0, 50)));
+        setHistory(h.slice(0, 50));
+      } else {
+        setHistory(h);
       }
     } catch {}
   }, [result, id]);
@@ -303,6 +340,138 @@ export default function GamjungResultPage() {
           </div>
         )}
 
+        {/* 💌 나에게 쓰는 위로 편지 */}
+        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 18, padding: "20px 18px", marginBottom: 16 }}>
+          <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 4px" }}>💌 나에게 쓰는 위로 편지</p>
+          <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px" }}>오늘 기분을 기반으로 작성된 편지예요</p>
+          {!letterOpen ? (
+            <button onClick={() => setLetterOpen(true)} style={{ background: "linear-gradient(135deg,#065f46,#4ade80)", border: "none", borderRadius: 16, padding: "11px 28px", color: "white", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+              편지 열어보기 💌
+            </button>
+          ) : (
+            <div style={{ background: "rgba(74,222,128,0.07)", border: "1px solid rgba(74,222,128,0.25)", borderRadius: 14, padding: "20px 16px" }}>
+              <p style={{ fontSize: 14, color: "#d1d5db", margin: 0, lineHeight: 1.9, whiteSpace: "pre-line" }}>
+                {COMFORT_LETTERS[result.oh] || COMFORT_LETTERS["토"]}
+              </p>
+              <p style={{ fontSize: 12, color: "#4ade80", margin: "14px 0 0", textAlign: "right", fontWeight: 700 }}>— 점운 감정일기 🌿</p>
+            </div>
+          )}
+        </div>
+
+        {/* ☀️ 오늘 내 마음 날씨 */}
+        {(() => {
+          const w = WEATHER_MAP[result.oh];
+          if (!w) return null;
+          return (
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 18, padding: "20px 18px", marginBottom: 16, textAlign: "center" }}>
+              <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 4px" }}>🌤️ 오늘 내 마음 날씨</p>
+              <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px" }}>인스타 스토리에 공유해보세요</p>
+              {!showWeather ? (
+                <button onClick={() => setShowWeather(true)} style={{ background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 16, padding: "11px 28px", color: "#4ade80", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                  날씨 확인하기 🌈
+                </button>
+              ) : (
+                <div>
+                  <div style={{ background: "linear-gradient(135deg,rgba(74,222,128,0.1),rgba(74,222,128,0.05))", border: "2px solid rgba(74,222,128,0.3)", borderRadius: 20, padding: "28px 20px", marginBottom: 12 }}>
+                    <div style={{ fontSize: 56, marginBottom: 8 }}>{w.emoji}</div>
+                    <p style={{ fontSize: 22, fontWeight: 900, color: "#f3f4f6", margin: "0 0 4px" }}>{w.label}</p>
+                    <p style={{ fontSize: 13, color: "#9ca3af", margin: 0 }}>{w.desc}</p>
+                    <div style={{ marginTop: 14, padding: "10px 16px", background: "rgba(0,0,0,0.25)", borderRadius: 12, display: "inline-block" }}>
+                      <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 2px" }}>오늘 내 마음 날씨</p>
+                      <p style={{ fontSize: 14, fontWeight: 900, color: "#4ade80", margin: 0 }}>{w.emoji} {result.oh}오행 {w.label} · 점운</p>
+                    </div>
+                  </div>
+                  <button onClick={share} style={{ background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 12, padding: "9px 20px", color: "#4ade80", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                    📤 카카오톡에 공유하기
+                  </button>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+
+        {/* 📅 30일 감정 히트맵 캘린더 */}
+        {(() => {
+          if (history.length < 2) return null;
+          const today = new Date();
+          const days: { date: string; color: string | null }[] = [];
+          for (let i = 29; i >= 0; i--) {
+            const d = new Date(today);
+            d.setDate(today.getDate() - i);
+            const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+            const entry = history.find(h => {
+              const hd = new Date(h.createdAt);
+              const hk = `${hd.getFullYear()}-${String(hd.getMonth()+1).padStart(2,"0")}-${String(hd.getDate()).padStart(2,"0")}`;
+              return hk === key;
+            });
+            days.push({ date: key, color: entry ? (MOOD_COLOR[entry.moodLabel] || "#4ade80") : null });
+          }
+          return (
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 18, padding: "20px 18px", marginBottom: 16 }}>
+              <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 4px" }}>📅 내 마음 히트맵</p>
+              <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px" }}>최근 30일 감정 기록</p>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(10, 1fr)", gap: 4 }}>
+                {days.map((d, i) => (
+                  <div key={i} title={d.date} style={{ aspectRatio: "1", borderRadius: 4, background: d.color || "rgba(255,255,255,0.06)", border: d.color ? "none" : "1px solid rgba(255,255,255,0.08)" }} />
+                ))}
+              </div>
+              <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" as const }}>
+                {[["#fbbf24","최고"], ["#4ade80","좋음"], ["#93c5fd","보통"], ["#a78bfa","나쁨"], ["#f87171","힘듦"]].map(([c,l]) => (
+                  <div key={l} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: 2, background: c }} />
+                    <span style={{ fontSize: 10, color: "#6b7280" }}>{l}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontSize: 11, color: "#4ade80", margin: "10px 0 0", fontWeight: 700 }}>총 {history.length}일 기록 중 🌿</p>
+            </div>
+          );
+        })()}
+
+        {/* 🌿 오행 감정 유형 진단 */}
+        {(() => {
+          const NEED = 5;
+          if (history.length < NEED) {
+            return (
+              <div style={{ background: "rgba(74,222,128,0.04)", border: "1px dashed rgba(74,222,128,0.25)", borderRadius: 18, padding: "18px 18px", marginBottom: 16, textAlign: "center" }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: "#4ade80", margin: "0 0 6px" }}>🌿 나의 오행 감정 유형</p>
+                <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 10px", lineHeight: 1.6 }}>
+                  {NEED - history.length}일 더 기록하면<br />나의 감정 유형을 알 수 있어요!
+                </p>
+                <div style={{ display: "flex", justifyContent: "center", gap: 6 }}>
+                  {Array.from({ length: NEED }).map((_, i) => (
+                    <div key={i} style={{ width: 24, height: 24, borderRadius: "50%", background: i < history.length ? "#4ade80" : "rgba(255,255,255,0.08)", border: i < history.length ? "none" : "1px solid rgba(255,255,255,0.15)" }} />
+                  ))}
+                </div>
+              </div>
+            );
+          }
+          const counts: Record<string, number> = {};
+          history.forEach(h => {
+            const oh = LABEL_TO_OH[h.moodLabel] || "토";
+            counts[oh] = (counts[oh] || 0) + 1;
+          });
+          const dominant = Object.entries(counts).sort((a,b) => b[1]-a[1])[0]?.[0] || result.oh;
+          const type = OH_TYPE[dominant];
+          return (
+            <div style={{ background: `rgba(74,222,128,0.08)`, border: "1.5px solid rgba(74,222,128,0.35)", borderRadius: 18, padding: "20px 18px", marginBottom: 16 }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: "#4ade80", margin: "0 0 12px" }}>🌿 나의 오행 감정 유형</p>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: 48, marginBottom: 8 }}>{type?.emoji}</div>
+                <p style={{ fontSize: 20, fontWeight: 900, color: "#f3f4f6", margin: "0 0 8px" }}>{dominant}오행 {type?.name}</p>
+                <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px", lineHeight: 1.6 }}>{type?.desc}</p>
+                <div style={{ display: "flex", justifyContent: "center", gap: 8, flexWrap: "wrap" as const }}>
+                  {Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([oh, cnt]) => (
+                    <div key={oh} style={{ background: "rgba(255,255,255,0.06)", borderRadius: 20, padding: "5px 12px", fontSize: 12, color: oh === dominant ? "#4ade80" : "#6b7280", fontWeight: oh === dominant ? 900 : 400 }}>
+                      {oh}오행 {cnt}일
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
         {/* 공유 + 다시 기록 */}
         <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
           <button onClick={share} style={{ flex: 1, background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 14, padding: "13px", color: "#4ade80", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
@@ -334,6 +503,9 @@ export default function GamjungResultPage() {
           </Link>
           <p style={{ fontSize: 11, color: "#4b5563", marginTop: 8 }}>오행 감정 분석 · 치유 카드 · 셀프케어 루틴</p>
         </div>
+
+        {/* 광고 여백 */}
+        <div style={{ minHeight: 200, marginTop: 24 }} />
       </div>
       <Script
         src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"

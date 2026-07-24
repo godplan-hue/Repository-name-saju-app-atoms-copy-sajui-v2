@@ -157,11 +157,36 @@ export default function GamjungPage() {
   };
 
   if (step === "intro") {
+    // 연속 기록 스트릭 계산
+    const streak = (() => {
+      if (!history.length) return 0;
+      let count = 0;
+      const check = new Date();
+      check.setHours(0,0,0,0);
+      while (true) {
+        const hasEntry = history.some(h => {
+          const d = new Date(h.createdAt);
+          d.setHours(0,0,0,0);
+          return d.getTime() === check.getTime();
+        });
+        if (!hasEntry) break;
+        count++;
+        check.setDate(check.getDate() - 1);
+      }
+      return count;
+    })();
+
     return (
       <div style={S.wrap}>
-        <style>{`@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}`}</style>
+        <style>{`@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}} @keyframes flicker{0%,100%{opacity:1}50%{opacity:0.8}}`}</style>
         <div style={{ background: "linear-gradient(180deg,#0a2010 0%,#0f1a14 100%)", paddingBottom: 40 }}>
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
+            {streak >= 2 && (
+              <div style={{ background: "linear-gradient(135deg,rgba(251,146,60,0.15),rgba(239,68,68,0.1))", border: "1px solid rgba(251,146,60,0.4)", borderRadius: 14, padding: "10px 16px", marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                <span style={{ fontSize: 22, animation: "flicker 1s ease-in-out infinite" }}>🔥</span>
+                <p style={{ fontSize: 14, fontWeight: 900, color: "#fb923c", margin: 0 }}>{streak}일 연속 기록 중! 대단해요</p>
+              </div>
+            )}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
               <Link href="/main-v2" style={{ color: "#4ade80", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
               <button onClick={() => { const d = { title: "점운 감정일기 — 감정 기록 · 치유 일기", text: "오행으로 감정 흐름을 기록하고 치유해요 📔", url: "https://jeomun.com/gamjung" }; const _k=(window as any).Kakao; if(_k?.isInitialized()&&_k?.Share){_k.Share.sendDefault({objectType:"feed",content:{title:d.title,description:d.text,imageUrl:"https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",link:{mobileWebUrl:d.url,webUrl:d.url}},buttons:[{title:"바로 보기",link:{mobileWebUrl:d.url,webUrl:d.url}},{title:"나도 해보기 →",link:{mobileWebUrl:d.url,webUrl:d.url}}]});}else{window.location.href=`kakaotalk://msg/send?text=${encodeURIComponent(d.text+'\n'+d.url)}`;}; }} style={{ fontSize: 12, color: "#4ade80", fontWeight: 700, background: "rgba(74,222,128,0.15)", border: "1px solid rgba(74,222,128,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
