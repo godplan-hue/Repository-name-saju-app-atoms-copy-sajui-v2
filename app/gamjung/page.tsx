@@ -64,8 +64,10 @@ export default function GamjungPage() {
       if (p.phone) setPhone(p.phone);
       if (p.phone) setRestorePhone(p.phone);
       if (p.email) setEmail(p.email);
-      // 이전 동의 상태 복원 (30일 이용권 동안 다시 묻지 않음)
-      if (localStorage.getItem("gamjung_consented") === "true") {
+      // 이전 동의 상태 복원 — 이용권 보유자 또는 이전 제출자는 다시 묻지 않음
+      const hasActivePass = Number(localStorage.getItem("gamjung_unlock_until") || 0) > Date.now();
+      const hasConsented = localStorage.getItem("gamjung_consented") === "true";
+      if (hasActivePass || hasConsented) {
         setAgreed(true);
         setMarketingAgreed(localStorage.getItem("gamjung_marketing") === "true");
       }
