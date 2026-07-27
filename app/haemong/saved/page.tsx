@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -97,7 +97,7 @@ export default function SavedDreamsPage() {
                 <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 11 }}>꿈해몽도 포함</span>
               </div>
               <div style={{ background: "#fffbeb", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <p style={{ fontSize: 11, color: "#92400e", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어</p>
+                <p style={{ fontSize: 11, color: "#92400e", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·육아일기</p>
                 <span style={{ flexShrink: 0, fontSize: 13, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#f59e0b,#ef4444)", padding: "5px 14px", borderRadius: 20, marginLeft: 8 }}>₩4,900 →</span>
               </div>
             </a>

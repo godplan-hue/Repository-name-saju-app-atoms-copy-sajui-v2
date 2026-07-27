@@ -1,10 +1,10 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 export default function TermsPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#f0f7ff", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
       <nav style={{ background: "white", borderBottom: "1px solid #e5e7eb", padding: "14px 24px", display: "flex", gap: 16, alignItems: "center" }}>
-        <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: "#f97316", textDecoration: "none" }}>맘케어</Link>
+        <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: "#f97316", textDecoration: "none" }}>육아일기</Link>
         <span style={{ fontSize: 14, color: "#6b7280" }}>이용약관</span>
       </nav>
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px" }}>
@@ -13,7 +13,7 @@ export default function TermsPage() {
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 32px" }}>시행일: 2026년 7월 1일 | 최종 수정: 2026년 7월 9일</p>
 
           <h2 style={{ fontSize: 17, fontWeight: 800, color: "#1a1a2e", margin: "24px 0 10px" }}>제1조 (목적)</h2>
-          <p>이 약관은 맘케어(MomCare, 이하 "회사")가 제공하는 AI 육아 앱 서비스(이하 "서비스")의 이용과 관련하여 회사와 이용자의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+          <p>이 약관은 육아일기(MomCare, 이하 "회사")가 제공하는 AI 육아 앱 서비스(이하 "서비스")의 이용과 관련하여 회사와 이용자의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
 
           <h2 style={{ fontSize: 17, fontWeight: 800, color: "#1a1a2e", margin: "24px 0 10px" }}>제2조 (정의)</h2>
           <ul style={{ paddingLeft: 20, margin: "8px 0 16px" }}>

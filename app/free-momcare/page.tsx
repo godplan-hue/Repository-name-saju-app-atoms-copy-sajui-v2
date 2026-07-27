@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 
 const AGE_GROUPS = [
@@ -70,7 +70,7 @@ export default function FreeMomcarePage() {
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#fdf2f8 0%,#fff7ed 100%)", fontFamily: "sans-serif" }}>
       <div style={{ background: "linear-gradient(135deg,#be185d,#f97316)", padding: "20px 20px 16px", textAlign: "center" }}>
         <div style={{ fontSize: 36, marginBottom: 4 }}>👶</div>
-        <h1 style={{ color: "#fff", fontSize: 22, fontWeight: 900, margin: "0 0 4px" }}>점운 맘케어</h1>
+        <h1 style={{ color: "#fff", fontSize: 22, fontWeight: 900, margin: "0 0 4px" }}>점운 육아일기</h1>
         <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 13, margin: 0 }}>사주 육아 케어 · 1회 무료 체험</p>
       </div>
 
@@ -127,10 +127,10 @@ export default function FreeMomcarePage() {
               <div style={{ background: "#fff", borderRadius: 16, padding: "24px 20px", marginBottom: 20, textAlign: "center", border: "2px solid #fde047" }}>
                 <div style={{ fontSize: 40, marginBottom: 10 }}>⚠️</div>
                 <p style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>이미 무료 체험을 사용하셨어요</p>
-                <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 20px" }}>해당 전화번호로 맘케어 무료 체험이 완료됐어요.</p>
+                <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 20px" }}>해당 전화번호로 육아일기 무료 체험이 완료됐어요.</p>
                 <button onClick={() => window.open("/momcare/pay", "_blank")}
                   style={{ width: "100%", background: "linear-gradient(135deg,#be185d,#f97316)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>
-                  👶 맘케어 30일 이용권 ₩990
+                  👶 육아일기 30일 이용권 ₩990
                 </button>
                 <button onClick={() => window.open("/pass", "_blank")}
                   style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer" }}>
@@ -165,15 +165,15 @@ export default function FreeMomcarePage() {
             )}
 
             <div style={{ background: "#fff", borderRadius: 16, padding: "20px", border: "2px solid #be185d", boxShadow: "0 4px 20px rgba(190,24,93,0.2)", marginBottom: 12 }}>
-              <p style={{ fontSize: 14, fontWeight: 900, color: "#be185d", margin: "0 0 4px", textAlign: "center" }}>👶 맘케어 전체 이용하기</p>
+              <p style={{ fontSize: 14, fontWeight: 900, color: "#be185d", margin: "0 0 4px", textAlign: "center" }}>👶 육아일기 전체 이용하기</p>
               <p style={{ fontSize: 12, color: "#6b7280", textAlign: "center", margin: "0 0 14px" }}>육아일기 · 성장기록 · 태몽해석 · 30일 무제한</p>
               <button onClick={() => window.open("/momcare/pay", "_blank")}
                 style={{ width: "100%", background: "linear-gradient(135deg,#be185d,#f97316)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>
-                👶 맘케어 30일 이용권 ₩990
+                👶 육아일기 30일 이용권 ₩990
               </button>
               <button onClick={() => window.open("/pass", "_blank")}
                 style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
-                🔥 맘케어+6개앱 풀패스 ₩4,900/30일
+                🔥 육아일기+6개앱 풀패스 ₩4,900/30일
               </button>
             </div>
 

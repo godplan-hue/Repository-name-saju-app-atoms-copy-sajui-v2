@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 const TOP_APPS = [
   {
@@ -15,7 +15,7 @@ const TOP_APPS = [
   {
     href: "/momcare",
     img: "https://i.pinimg.com/736x/19/f1/9c/19f19c6326262bd03985e28c1c45226c.jpg",
-    title: "👶 맘케어",
+    title: "👶 육아일기",
     sub: "AI 육아 · 아기 기록",
     desc: "일기 · 타임캡슐 · 아기말",
     badge: "30일",
@@ -63,7 +63,7 @@ export default function AppsPage() {
             <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>₩4,900</span>
           </div>
           <div style={{ background: "#fff5f5", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·맘케어 전부 30일 이용</p>
+            <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·육아일기 전부 30일 이용</p>
             <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
           </div>
         </div>

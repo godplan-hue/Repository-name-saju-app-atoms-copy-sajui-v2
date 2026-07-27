@@ -157,7 +157,7 @@ export default function PetunPage() {
               <div style={{ background: "rgba(251,191,36,0.1)", border: "1.5px solid rgba(251,191,36,0.5)", borderRadius: 18, padding: "20px", textAlign: "left" }}>
                 <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>🔒 이용권이 필요해요</p>
                 <p style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", margin: "0 0 14px", lineHeight: 1.7 }}>
-                  990원 단독권 또는 7개앱 4,900원 풀패스로 이용해요<br />꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어<br />7개를 5개 가격으로!
+                  990원 단독권 또는 7개앱 4,900원 풀패스로 이용해요<br />꿈해몽·감정일기·다이어트·가계부·타로·펫운·육아일기<br />7개를 5개 가격으로!
                 </p>
                 <a href="/petun/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 14, fontWeight: 900, padding: "13px 28px", borderRadius: 22, textDecoration: "none" }}>
                   이용권 구매하기 →

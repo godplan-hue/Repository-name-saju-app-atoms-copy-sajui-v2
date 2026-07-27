@@ -188,7 +188,7 @@ export default async function GamjungSeoPage({ params }: { params: Promise<{ slu
         <div style={{ marginTop: 20, display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>
           <Link href="/gamjung" style={{ color: "#34d399", fontSize: 13, textDecoration: "none" }}>← 감정일기 홈</Link>
           <Link href="/main-v2" style={{ color: "#34d399", fontSize: 13, textDecoration: "none" }}>사주 보기</Link>
-          <Link href="/momcare" style={{ color: "#34d399", fontSize: 13, textDecoration: "none" }}>맘케어 보기</Link>
+          <Link href="/momcare" style={{ color: "#34d399", fontSize: 13, textDecoration: "none" }}>육아일기 보기</Link>
         </div>
       </section>
     </main>

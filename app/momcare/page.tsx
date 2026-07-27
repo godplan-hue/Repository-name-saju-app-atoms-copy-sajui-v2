@@ -42,9 +42,9 @@ const REVIEWS = [
 ];
 
 const FAQ_ITEMS = [
-  { q: "성장 위기란 무엇인가요?", a: "출생부터 3세까지 아이는\n여러 번의 성장 및 발달 위기를 겪습니다.\n이는 신경계와 뇌가 발달하고\n아이가 새로운 능력을 보이기 시작하는\n자연스러운 과정입니다.\n이 시기에 아이는 보채거나\n잠을 잘 못 잘 수도 있어요.\n맘케어가 이 시기를 미리 알려드립니다." },
+  { q: "성장 위기란 무엇인가요?", a: "출생부터 3세까지 아이는\n여러 번의 성장 및 발달 위기를 겪습니다.\n이는 신경계와 뇌가 발달하고\n아이가 새로운 능력을 보이기 시작하는\n자연스러운 과정입니다.\n이 시기에 아이는 보채거나\n잠을 잘 못 잘 수도 있어요.\n육아일기가 이 시기를 미리 알려드립니다." },
   { q: "앱 정보를 신뢰할 수 있는 이유는 무엇인가요?", a: "앱에 있는 모든 글, 설명, 발달 운동은\n현직 소아과 의사들과\n협력하여 제작되었습니다.\nAI가 근거 기반 의학 데이터를 바탕으로\n아이의 성장을 분석합니다." },
-  { q: "어떻게 이용하나요?", a: "맘케어 7가지 기능 전체는 990원 결제 후 30일간 이용 가능해요.\n\n점운에서 사주 990원을 결제하시면\n맘케어도 함께 이용하실 수 있어요." },
+  { q: "어떻게 이용하나요?", a: "육아일기 7가지 기능 전체는 990원 결제 후 30일간 이용 가능해요.\n\n점운에서 사주 990원을 결제하시면\n육아일기도 함께 이용하실 수 있어요." },
   { q: "아이가 여러 명이어도 사용할 수 있나요?", a: "현재는 아이 1명 기준으로 기록하는 방식이에요.\n형제자매 각각 기록하고 싶다면\n브라우저를 나눠 사용하시거나\n기기를 따로 사용하시면 됩니다." },
   { q: "WHO 성장 기준과 어떻게 비교하나요?", a: "세계보건기구(WHO)의\n공식 성장 기준 데이터를 기반으로\n아이의 키, 몸무게, 머리둘레를\n백분위수로 비교해 드립니다.\n또래 평균과의 차이를\n한눈에 확인할 수 있습니다." },
 ];
@@ -53,9 +53,9 @@ function shareApp() {
   const url = "https://jeomun.com/momcare";
   const kakao = typeof window !== "undefined" ? (window as any).Kakao : null;
   if (kakao?.isInitialized() && kakao?.Share) {
-    kakao.Share.sendDefault({ objectType: "feed", content: { title: "👶 점운 맘케어 — AI 육아 앱", description: "소아과 전문의가 함께하는 AI 육아 앱! 무료로 시작해요 👶", imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "맘케어 보기 👶", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 해보기 →", link: { mobileWebUrl: url, webUrl: url } }] });
+    kakao.Share.sendDefault({ objectType: "feed", content: { title: "👶 점운 육아일기 — AI 육아 앱", description: "소아과 전문의가 함께하는 AI 육아 앱! 무료로 시작해요 👶", imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg", link: { mobileWebUrl: url, webUrl: url } }, buttons: [{ title: "육아일기 보기 👶", link: { mobileWebUrl: url, webUrl: url } }, { title: "나도 해보기 →", link: { mobileWebUrl: url, webUrl: url } }] });
   } else {
-    window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent("소아과 전문의가 함께하는 AI 육아 앱 맘케어! 무료 👶\n" + url)}`;
+    window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent("소아과 전문의가 함께하는 AI 육아 앱 육아일기! 무료 👶\n" + url)}`;
   }
 }
 
@@ -101,7 +101,7 @@ export default function MomcarePage() {
   if (!hasPhone) return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0c2340 0%, #0284c7 60%, #0891b2 100%)", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
       <div style={{ fontSize: 64, marginBottom: 8 }}>👶</div>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "white", margin: "0 0 6px", letterSpacing: -0.5 }}>맘케어</h1>
+      <h1 style={{ fontSize: 26, fontWeight: 900, color: "white", margin: "0 0 6px", letterSpacing: -0.5 }}>육아일기</h1>
       <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", margin: "0 0 36px" }}>AI 육아 플랫폼</p>
       <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", maxWidth: 360, width: "100%", boxShadow: "0 16px 60px rgba(0,0,0,0.25)" }}>
         <h2 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 6px" }}>전화번호로 시작하기</h2>
@@ -119,7 +119,7 @@ export default function MomcarePage() {
             style={{ marginTop: 3, accentColor: "#0891b2", width: 16, height: 16, flexShrink: 0 }} />
           <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
             <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 동의</strong><br />
-            수집 항목: 전화번호(필수) / 목적: 맘케어 서비스 제공 / 보관: 3년 후 파기
+            수집 항목: 전화번호(필수) / 목적: 육아일기 서비스 제공 / 보관: 3년 후 파기
           </span>
         </label>
         <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 12, textAlign: "left" }}>
@@ -143,7 +143,7 @@ export default function MomcarePage() {
             }
           } catch {}
           setHasPhone(true);
-        }} style={{ width: "100%", background: TEAL_GRAD, color: "white", border: "none", borderRadius: 14, padding: "15px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>맘케어 시작하기 →</button>
+        }} style={{ width: "100%", background: TEAL_GRAD, color: "white", border: "none", borderRadius: 14, padding: "15px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>육아일기 시작하기 →</button>
         <p style={{ fontSize: 11, color: LIGHT, textAlign: "center", margin: "14px 0 0", lineHeight: 1.6 }}>새 기기에서도 이용권·기록 자동 복원돼요.</p>
       </div>
     </div>
@@ -154,7 +154,7 @@ export default function MomcarePage() {
 
       {/* 네비게이션 */}
       <nav style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${BORDER}`, padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 50 }}>
-        <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: TEAL, textDecoration: "none" }}>맘케어</Link>
+        <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: TEAL, textDecoration: "none" }}>육아일기</Link>
         <div style={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
           <Link href="/momcare/growth-calendar" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>캘린더</Link>
           <Link href="/momcare/daily-tracker" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>트래커</Link>
@@ -168,7 +168,7 @@ export default function MomcarePage() {
       {/* 3일 전 만료 경고 배너 */}
       {momcareExpiringSoon && (
         <div style={{ background: "#fff7ed", borderBottom: "1px solid #fed7aa", padding: "12px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#c2410c" }}>⏰ {momcareDaysLeft}일 후 맘케어 이용권이 만료돼요.</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#c2410c" }}>⏰ {momcareDaysLeft}일 후 육아일기 이용권이 만료돼요.</span>
           <a href="/momcare/pay" style={{ display: "inline-block", background: "#f97316", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 16px", borderRadius: 20, textDecoration: "none" }}>
             만료일부터 30일 연장 →
           </a>
@@ -179,9 +179,9 @@ export default function MomcarePage() {
       {momcareExpired && (
         <div style={{ background: "#fef3c7", borderBottom: "1px solid #f59e0b", padding: "12px 20px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 700, color: "#92400e" }}>⏰ 맘케어 30일 이용권이 만료됐어요.</span>
+            <span style={{ fontSize: 13, fontWeight: 700, color: "#92400e" }}>⏰ 육아일기 30일 이용권이 만료됐어요.</span>
             <a href="/momcare/pay" style={{ display: "inline-block", background: "#f59e0b", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 16px", borderRadius: 20, textDecoration: "none" }}>
-              맘케어 990원으로 재활성화 →
+              육아일기 990원으로 재활성화 →
             </a>
           </div>
         </div>
@@ -197,7 +197,7 @@ export default function MomcarePage() {
         <div style={{ maxWidth: 800, margin: "0 auto", padding: "40px 24px 36px", display: "flex", alignItems: "center", gap: 28, flexWrap: "wrap" }}>
           {/* 텍스트 */}
           <div style={{ flex: 1, minWidth: 240 }}>
-            <span style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "3px 14px", fontSize: 11, fontWeight: 700, marginBottom: 12 }}>👶 맘케어</span>
+            <span style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "3px 14px", fontSize: 11, fontWeight: 700, marginBottom: 12 }}>👶 육아일기</span>
             <h1 style={{ fontSize: "clamp(22px, 4vw, 36px)", fontWeight: 900, lineHeight: 1.25, margin: "0 0 12px", color: DARK, wordBreak: "keep-all" }}>
               부모가 만든,<br />
               <span style={{ color: TEAL }}>소아과 전문의</span>가 함께하는<br />
@@ -211,13 +211,13 @@ export default function MomcarePage() {
               <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>성장 캘린더 →</Link>
               <button onClick={shareApp} style={{ background: "#f3e8ff", color: "#7c3aed", border: "1.5px solid rgba(124,58,237,0.3)", borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>🔗 공유하기</button>
             </div>
-            <p style={{ fontSize: 11, color: MID, margin: "10px 0 0", lineHeight: 1.8 }}>맘케어 990원 결제 후 30일 전체 이용 가능해요</p>
+            <p style={{ fontSize: 11, color: MID, margin: "10px 0 0", lineHeight: 1.8 }}>육아일기 990원 결제 후 30일 전체 이용 가능해요</p>
           </div>
           {/* 엄마 이미지 */}
           <div style={{ flexShrink: 0 }}>
             <img
               src="https://i.pinimg.com/vwebp/1200x/50/73/a5/5073a503cb18b1cd3459fba8e402c389.webp"
-              alt="맘케어 육아 앱"
+              alt="육아일기 육아 앱"
               style={{ width: 240, height: 300, objectFit: "cover", borderRadius: 24, boxShadow: "0 12px 40px rgba(2,132,199,0.2)", display: "block" }}
             />
           </div>
@@ -227,7 +227,7 @@ export default function MomcarePage() {
       {/* 4가지 핵심 기능 — 캐러셀 */}
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "56px 24px 0" }}>
         <h2 style={{ textAlign: "center", fontSize: 24, fontWeight: 900, marginBottom: 8, color: DARK }}>함께 성장해요. <span style={{ color: TEAL }}>매 순간마다.</span></h2>
-        <p style={{ textAlign: "center", fontSize: 14, color: "#f97316", fontWeight: 700, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 맘케어 기능들</p>
+        <p style={{ textAlign: "center", fontSize: 14, color: "#f97316", fontWeight: 700, marginBottom: 28 }}>클릭하면 실제로 사용할 수 있는 육아일기 기능들</p>
 
         {/* 캐러셀 카드 */}
         <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 24, overflow: "hidden", boxShadow: "0 4px 24px rgba(2,132,199,0.12)" }}>
@@ -314,7 +314,7 @@ export default function MomcarePage() {
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
         <div style={{ background: "linear-gradient(135deg, #0c2340 0%, #0d3b6e 100%)", borderRadius: 24, padding: "40px 28px", color: "white" }}>
           <div style={{ textAlign: "center", marginBottom: 28 }}>
-            <span style={{ background: "rgba(255,255,255,0.15)", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 11, fontWeight: 700 }}>점운 × 맘케어 연결</span>
+            <span style={{ background: "rgba(255,255,255,0.15)", color: "white", borderRadius: 20, padding: "4px 14px", fontSize: 11, fontWeight: 700 }}>점운 × 육아일기 연결</span>
             <h2 style={{ fontSize: 20, fontWeight: 900, margin: "12px 0 6px" }}>아이를 키우다 보면 이런 생각 드시죠?</h2>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", margin: 0 }}>엄마들이 가장 많이 찾는 사주·꿈해몽 질문들</p>
           </div>
@@ -328,8 +328,8 @@ export default function MomcarePage() {
             <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "14px 12px", border: "1px solid rgba(255,255,255,0.12)", display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: 24, marginBottom: 6 }}>🔮</div>
               <h3 style={{ fontSize: 12, fontWeight: 800, margin: "0 0 6px", wordBreak: "keep-all" }}>아이 재능·건강운</h3>
-              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.5, flex: 1, wordBreak: "keep-all" }}>아이 잘 키우고 싶다면?<br /><span style={{ color: "rgba(255,255,255,0.4)", fontSize: 10 }}>맘케어 결제 후 30일 이용</span></p>
-              <Link href="/momcare/pay" style={{ display: "block", textAlign: "center", background: TEAL_GRAD, color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>맘케어 결제하기 →</Link>
+              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.5, flex: 1, wordBreak: "keep-all" }}>아이 잘 키우고 싶다면?<br /><span style={{ color: "rgba(255,255,255,0.4)", fontSize: 10 }}>육아일기 결제 후 30일 이용</span></p>
+              <Link href="/momcare/pay" style={{ display: "block", textAlign: "center", background: TEAL_GRAD, color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>육아일기 결제하기 →</Link>
             </div>
             <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "14px 12px", border: "1px solid rgba(255,255,255,0.12)", display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: 24, marginBottom: 6 }}>🌸</div>
@@ -339,7 +339,7 @@ export default function MomcarePage() {
             </div>
           </div>
           <div style={{ textAlign: "center", marginTop: 20, fontSize: 11, color: "rgba(255,255,255,0.35)" }}>
-            점운(jeomun.com) — 대한민국 AI 사주 플랫폼 × 맘케어 공식 연계 서비스
+            점운(jeomun.com) — 대한민국 AI 사주 플랫폼 × 육아일기 공식 연계 서비스
           </div>
         </div>
       </div>
@@ -394,7 +394,7 @@ export default function MomcarePage() {
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
         <div style={{ background: TEAL_GRAD, borderRadius: 20, padding: "32px 24px", textAlign: "center", boxShadow: "0 4px 24px rgba(2,132,199,0.25)" }}>
           <div style={{ fontSize: 36, marginBottom: 8 }}>🎁</div>
-          <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>맘케어 7가지 기능</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>육아일기 7가지 기능</h2>
           <p style={{ fontSize: 13, color: "#fbbf24", margin: "0 0 10px", fontWeight: 900 }}>🔒 990원 결제 후 30일 이용</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 10 }}>
             {["📅 성장 위기 캘린더", "🍼 일일 트래커", "📏 성장 일기", "📔 육아 일기", "💌 타임캡슐", "🗣️ 말 사전"].map(item => (
@@ -408,7 +408,7 @@ export default function MomcarePage() {
             ))}
           </div>
           <Link href="/momcare/pay" style={{ display: "inline-block", background: "white", color: TEAL, borderRadius: 24, padding: "12px 32px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>
-            맘케어 990원으로 시작하기 →
+            육아일기 990원으로 시작하기 →
           </Link>
         </div>
       </div>
@@ -439,7 +439,7 @@ export default function MomcarePage() {
       {/* CTA */}
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
         <div style={{ background: TEAL_GRAD, borderRadius: 20, padding: "40px 24px", textAlign: "center", boxShadow: "0 8px 32px rgba(2,132,199,0.3)" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>지금 바로<br />맘케어를 시작하세요</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>지금 바로<br />육아일기를 시작하세요</h2>
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: "0 0 24px" }}>990원으로 시작하세요.</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <button onClick={() => alert("앱스토어 출시 준비 중입니다!")} style={{ background: "white", color: TEAL, border: "none", borderRadius: 12, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>App Store 다운로드</button>
@@ -451,7 +451,7 @@ export default function MomcarePage() {
       {/* 푸터 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
         <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#e0f2fe", border: "2px solid #7dd3fc" }}>
-          <p style={{ color: "#0369a1", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 맘케어 · Powered by 점운</p>
+          <p style={{ color: "#0369a1", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 육아일기 · Powered by 점운</p>
           <div style={{ color: "#0284c7", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
             <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
             <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>

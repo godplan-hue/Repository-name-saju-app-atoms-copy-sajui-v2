@@ -219,7 +219,7 @@ export default function DietPage() {
             <div style={{ fontSize: 40, marginBottom: 10 }}>🔒</div>
             <h2 style={{ fontSize: 20, fontWeight: 900, margin: "0 0 8px" }}>이용권이 필요해요</h2>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, margin: "0 0 24px" }}>
-              990원 단독권 또는 7개앱 4,900원 풀패스로 이용해요<br />꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어
+              990원 단독권 또는 7개앱 4,900원 풀패스로 이용해요<br />꿈해몽·감정일기·다이어트·가계부·타로·펫운·육아일기
             </p>
             <a href="/diet/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#6366f1,#a855f7)", color: "white", fontSize: 15, fontWeight: 900, padding: "15px 36px", borderRadius: 26, textDecoration: "none", marginBottom: 24 }}>
               이용권 구매하기 →

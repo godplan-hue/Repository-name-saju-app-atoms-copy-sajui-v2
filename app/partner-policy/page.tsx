@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRouter } from "next/navigation";
 
@@ -63,7 +63,7 @@ export default function PartnerPolicy() {
               <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#fcd34d" }}>💎 유료 앱 — 단품 990원 / 7개앱 묶음 4,900원</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
                 🌙 점운 꿈해몽 — 꿈 해석·태몽 분석.<br />
-                👶 점운 맘케어 — AI 육아 기록·아기일기·타임캡슐.<br />
+                👶 점운 육아일기 — AI 육아 기록·아기일기·타임캡슐.<br />
                 🐾 점운 펫운 — 반려동물 운세·궁합·음식 안전도.<br />
                 🃏 점운 타로 — AI 타로카드 해석.<br />
                 📔 점운 감정일기 — 감정 기록·치유 일기.<br />
@@ -97,7 +97,7 @@ export default function PartnerPolicy() {
             <div style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.35)", borderRadius: 12, padding: "14px 16px" }}>
               <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#6ee7b7" }}>🔥 7개앱 30일 풀패스 — ₩4,900</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
-                꿈해몽 · 맘케어 · 펫운 · 타로 · 감정일기 · 다이어트 · 가계부.<br />
+                꿈해몽 · 육아일기 · 펫운 · 타로 · 감정일기 · 다이어트 · 가계부.<br />
                 30일 동안 7개 앱 전체 이용 가능.
               </p>
             </div>

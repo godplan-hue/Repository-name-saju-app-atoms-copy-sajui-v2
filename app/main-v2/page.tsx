@@ -251,7 +251,7 @@ const BANNERS = [
     badgeBg: "#7c3aed",
     icon: "✨",
     tagline: "14개 앱 한 곳에서 전부",
-    desc: "사주·꿈운·직운·합운·궁합·MBTI·행운번호·펫운·맘케어·감정일기·타로·별자리·다이어트·가계부",
+    desc: "사주·꿈운·직운·합운·궁합·MBTI·행운번호·펫운·육아일기·감정일기·타로·별자리·다이어트·가계부",
     cta: "전체앱 보기 →",
     ctaColor: "#c4b5fd",
     route: "free" as const,
@@ -265,7 +265,7 @@ const BANNERS = [
     badgeBg: "#dc2626",
     icon: "🔥",
     tagline: "7개앱 30일 전체 이용",
-    desc: "꿈해몽·감정일기·다이어트·가계부\n타로·펫운·맘케어 7개앱\n₩4,900 / 30일",
+    desc: "꿈해몽·감정일기·다이어트·가계부\n타로·펫운·육아일기 7개앱\n₩4,900 / 30일",
     cta: "풀패스 보러가기 →",
     ctaColor: "#fff",
     route: "free" as const,
@@ -996,7 +996,7 @@ export default function MainV2() {
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>₩4,900</span>
             </div>
             <div style={{ background: "#fff5f5", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·맘케어 전부 30일 이용</p>
+              <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·육아일기 전부 30일 이용</p>
               <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
             </div>
           </div>

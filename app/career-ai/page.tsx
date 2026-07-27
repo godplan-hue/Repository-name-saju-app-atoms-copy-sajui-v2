@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -284,7 +284,7 @@ export default function CareerAIPage() {
         <div style={{ marginTop: 48, borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 28, display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
           <Link href="/main-v2" style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>사주 보러가기</Link>
           <Link href="/haemong" style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>꿈해몽</Link>
-          <Link href="/momcare" style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>맘케어</Link>
+          <Link href="/momcare" style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>육아일기</Link>
           <Link href="/resume" style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, textDecoration: "none" }}>합격자소서</Link>
         </div>
       </div>

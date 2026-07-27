@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState, useEffect } from "react";
 
 const AMOUNT = 990;
@@ -130,7 +130,7 @@ export default function PetunPayPage() {
               <span style={{ background:"linear-gradient(135deg,#f59e0b,#ef4444)", color:"white", fontSize:11, fontWeight:900, padding:"3px 10px", borderRadius:20 }}>🔥 추천</span>
             </div>
             <p style={{ fontSize:14, color:"#fcd34d", margin:"0 0 4px", fontWeight:700 }}>7개앱 30일 풀패스</p>
-            <p style={{ fontSize:12, color:"#d97706", margin:0 }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어</p>
+            <p style={{ fontSize:12, color:"#d97706", margin:0 }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·육아일기</p>
             <p style={{ fontSize:12, color:"#9ca3af", margin:"6px 0 0" }}>앱 하나 값으로 7개앱 전부 30일 이용</p>
           </div>
           <p style={{ fontSize:11, color:"#6b7280", textAlign:"center" }}>990원 이용권은 펫운 앱 하나만 30일 이용 가능합니다.</p>

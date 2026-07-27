@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState, useEffect } from "react";
 
 const AMOUNT = 990;
@@ -57,7 +57,7 @@ export default function MomcarePayPage() {
           : {momcare_unlock_until:_until};
         Object.entries(_unlocks).forEach(([k,v])=>{try{localStorage.setItem(k,String(v));}catch{}});
         if(_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
-        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`momcare_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"맘케어 쿠폰",source:"momcare"})}).catch(()=>{});
+        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`momcare_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"육아일기 쿠폰",source:"momcare"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         window.location.href = "/momcare";
       } finally { setLoading(false); }
@@ -74,7 +74,7 @@ export default function MomcarePayPage() {
       const res = await fetch("/api/payup/charge", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardNo: clean, expireMonth: expM.padStart(2,"0"), expireYear: expY.slice(-2), birthday: birth, cardPw: pw, amount: finalAmount, itemName: "점운 맘케어 30일권", userName: name.trim(), mobileNumber: mobile.replace(/\D/g,"") }),
+        body: JSON.stringify({ cardNo: clean, expireMonth: expM.padStart(2,"0"), expireYear: expY.slice(-2), birthday: birth, cardPw: pw, amount: finalAmount, itemName: "점운 육아일기 30일권", userName: name.trim(), mobileNumber: mobile.replace(/\D/g,"") }),
       });
       const data = await res.json();
       if (data.success) {
@@ -87,7 +87,7 @@ export default function MomcarePayPage() {
         const _until = (_p>Date.now()?_p:Date.now())+30*24*60*60*1000;
         try { localStorage.setItem("momcare_unlock_until", String(_until)); } catch {}
         if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:{momcare_unlock_until:_until}})}).catch(()=>{});
-        fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `momcare_${Date.now()}`, phone: _ph||"", name: name.trim(), amount: finalAmount, category: "맘케어 30일권", source: "momcare" }) }).catch(()=>{});
+        fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `momcare_${Date.now()}`, phone: _ph||"", name: name.trim(), amount: finalAmount, category: "육아일기 30일권", source: "momcare" }) }).catch(()=>{});
         window.location.href = "/momcare";
       } else {
         setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");
@@ -115,14 +115,14 @@ export default function MomcarePayPage() {
             <span style={{ fontSize:13, color:"#6b7280" }}>이용권 선택</span>
           </div>
           <p style={{ textAlign:"center", fontSize:18, fontWeight:900, color:"white", margin:"0 0 6px" }}>이용권을 선택해 주세요</p>
-          <p style={{ textAlign:"center", fontSize:13, color:"#9ca3af", margin:"0 0 24px" }}>맘케어 단독권 또는 7개앱 풀패스</p>
+          <p style={{ textAlign:"center", fontSize:13, color:"#9ca3af", margin:"0 0 24px" }}>육아일기 단독권 또는 7개앱 풀패스</p>
           <div onClick={()=>{ window.location.href="/pass"; }} style={{ cursor:"pointer", border:"2px solid #f59e0b", borderRadius:18, padding:"20px 18px", marginBottom:14, background:"rgba(245,158,11,0.06)" }}>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
               <span style={{ fontSize:20, fontWeight:900, color:"#fbbf24" }}>₩4,900</span>
               <span style={{ background:"linear-gradient(135deg,#f59e0b,#ef4444)", color:"white", fontSize:11, fontWeight:900, padding:"3px 10px", borderRadius:20 }}>🔥 추천</span>
             </div>
             <p style={{ fontSize:14, color:"#fcd34d", margin:"0 0 4px", fontWeight:700 }}>7개앱 30일 풀패스</p>
-            <p style={{ fontSize:12, color:"#d97706", margin:0 }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·맘케어</p>
+            <p style={{ fontSize:12, color:"#d97706", margin:0 }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·육아일기</p>
             <p style={{ fontSize:12, color:"#9ca3af", margin:"6px 0 0" }}>앱 하나 값으로 7개앱 전부 30일 이용</p>
           </div>
           <div onClick={()=>setShowForm(true)} style={{ cursor:"pointer", border:"1px solid rgba(255,255,255,0.18)", borderRadius:18, padding:"20px 18px", marginBottom:24, background:"rgba(255,255,255,0.04)" }}>
@@ -130,10 +130,10 @@ export default function MomcarePayPage() {
               <span style={{ fontSize:20, fontWeight:900, color:"white" }}>₩990</span>
               <span style={{ fontSize:12, color:"#9ca3af" }}>이 앱만 30일</span>
             </div>
-            <p style={{ fontSize:14, color:"#d1d5db", margin:0 }}>👶 맘케어 30일권</p>
-            <p style={{ fontSize:12, color:"#6b7280", margin:"4px 0 0" }}>결제 완료 후 맘케어 30일 이용 가능</p>
+            <p style={{ fontSize:14, color:"#d1d5db", margin:0 }}>👶 육아일기 30일권</p>
+            <p style={{ fontSize:12, color:"#6b7280", margin:"4px 0 0" }}>결제 완료 후 육아일기 30일 이용 가능</p>
           </div>
-          <p style={{ fontSize:11, color:"#6b7280", textAlign:"center" }}>990원 이용권은 맘케어 앱 하나만 30일 이용 가능합니다.</p>
+          <p style={{ fontSize:11, color:"#6b7280", textAlign:"center" }}>990원 이용권은 육아일기 앱 하나만 30일 이용 가능합니다.</p>
         </div>
       </div>
     );
@@ -144,11 +144,11 @@ export default function MomcarePayPage() {
       <div style={S.inner}>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
           <button onClick={()=>setShowForm(false)} style={{ background:"none", border:"none", color:"#a78bfa", fontSize:13, cursor:"pointer", padding:0 }}>← 이용권 선택으로</button>
-          <span style={{ fontSize:13, color:"#6b7280" }}>맘케어 30일 이용권</span>
+          <span style={{ fontSize:13, color:"#6b7280" }}>육아일기 30일 이용권</span>
         </div>
         <div style={{ background:"linear-gradient(135deg,#2e0a20,#4a0a30)", border:"1px solid rgba(190,24,93,0.4)", borderRadius:18, padding:"20px 18px", marginBottom:16, textAlign:"center" }}>
           <p style={{ fontSize:24, margin:"0 0 4px" }}>👶</p>
-          <p style={{ fontSize:16, fontWeight:900, color:"white", margin:"0 0 6px" }}>점운 맘케어</p>
+          <p style={{ fontSize:16, fontWeight:900, color:"white", margin:"0 0 6px" }}>점운 육아일기</p>
           <p style={{ fontSize:13, color:"#9ca3af", margin:"0 0 14px", lineHeight:1.6 }}>AI 육아 · 아기 일기 · 타임캡슐<br />30일 동안 마음껏 이용</p>
           <p style={{ fontSize:28, fontWeight:900, color:"white", margin:0 }}>₩{AMOUNT.toLocaleString()}</p>
         </div>
@@ -213,7 +213,7 @@ export default function MomcarePayPage() {
             · 이미 이용 중이라면 남은 기간에 자동으로 연장돼요.
           </p>
         </div>
-        <p style={{ fontSize:11, color:"#6b7280", textAlign:"center", lineHeight:1.6 }}>결제 후 맘케어 30일 이용권이 즉시 적용돼요.<br />카드 정보는 결제 후 저장되지 않습니다.</p>
+        <p style={{ fontSize:11, color:"#6b7280", textAlign:"center", lineHeight:1.6 }}>결제 후 육아일기 30일 이용권이 즉시 적용돼요.<br />카드 정보는 결제 후 저장되지 않습니다.</p>
       </div>
     </div>
   );

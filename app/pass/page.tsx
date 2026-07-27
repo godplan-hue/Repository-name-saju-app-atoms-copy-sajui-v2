@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState, useEffect } from "react";
 
 const AMOUNT = 4900;
@@ -10,7 +10,7 @@ const PASS_APPS = [
   { emoji: "💰", label: "가계부", key: "budget_unlock_until" },
   { emoji: "🃏", label: "타로", key: "tarot_unlock_until" },
   { emoji: "🐾", label: "펫운", key: "petun_unlock_until" },
-  { emoji: "👶", label: "맘케어", key: "momcare_unlock_until" },
+  { emoji: "👶", label: "육아일기", key: "momcare_unlock_until" },
 ];
 
 export default function PassPage() {
