@@ -4,8 +4,10 @@
 - [⭐ 토스 앱 워터마크 전략](project_toss_watermark_strategy.md) — 메인 결과 카드 안 하단 고정. 앱별 문구 확정. 새 앱마다 동일 적용
 - [⭐ 토스 사주 앱 파트너 모집 전략](project_toss_saju_partner_strategy.md) — 블로그 콘텐츠 링크 방식으로 심사 우회. 사주 앱 만들 때 반드시 읽을 것
 - [⭐⭐⭐ 토스 미니앱 빌드 완전 가이드](toss_app_build_guide.md) — 새 앱 만들기 전 반드시 읽기. 시장현황+체크리스트+코드패턴+항상 에스더님께 먼저 계획 확인 후 코딩
-- [⭐ 토스 네이티브 광고 집행 계획](project_toss_native_ad.md) — 2026-07-28 오후2시 오픈. 미니앱 제약(MMP/AppScheme), 3개앱 각5만원 테스트, 내일2시 직접확인 필요
-- [⭐⭐ 토스애즈 MBTI+다이어트 광고 현황](project_toss_ads_campaign_status.md) — 2026-07-27 MBTI+다이어트 둘 다 승인✅. 타겟 14.8M, 일5만원, CPC200원. 반려→승인 과정+실 SDK ID 전부 저장
+- [⚠️ 토스애즈 실패 교훈](project_toss_ads_lesson.md) — 4만원 날림. 미니앱 직접 연결 안 됨. 잔여 5만9천원 유지. 웹사이트 광고는 픽셀 연동 후 가능
+- [⭐⭐⭐ 비즈 월렛 프로모션 전략](project_biz_wallet_strategy.md) — 미니앱 홍보 핵심. 30만원→혜택탭 노출→가입시100원→광고수익상쇄→무료홍보. 승인 후 진행
+- [토스 네이티브 광고 집행 계획](project_toss_native_ad.md) — 미니앱 제약(MMP/AppScheme). 실패 확인됨. 웹사이트 광고 시 픽셀 필수
+- [토스애즈 MBTI+다이어트 광고 현황](project_toss_ads_campaign_status.md) — 2026-07-27 승인. 실패 경험. 잔여 5만9천원 유지
 
 - [⚠️ 다음 세션 첫 번째 할 것](project_next_session_upload.md) — ‼️7/29 바이브챌린지 마감. 1순위:출품신청, 2순위:네이티브광고(내일2시오픈), 3순위:광고성과확인, 4순위:감정일기 출시
 
