@@ -3,6 +3,7 @@
 - [⭐⭐⭐ 매일 읽기 마스터 가이드 (절대 삭제 금지)](daily_master_guide.md) — 토스결제/광고/수익화/홍보전략 전부 한 곳에. 새 세션마다 반드시 읽을 것
 - [⭐ 토스 앱 워터마크 전략](project_toss_watermark_strategy.md) — 메인 결과 카드 안 하단 고정. 앱별 문구 확정. 새 앱마다 동일 적용
 - [⭐ 토스 사주 앱 파트너 모집 전략](project_toss_saju_partner_strategy.md) — 블로그 콘텐츠 링크 방식으로 심사 우회. 사주 앱 만들 때 반드시 읽을 것
+- [⭐⭐⭐ 토스 앱인토스 비게임 출시 가이드 전문](reference_toss_appintoss_release_guide.md) — 심사 전 필수 체크. 광고/결제/UX/보안 전항목. window.replace 금지·배너 스크롤화면만·광고 사전로딩 필수
 - [⭐⭐⭐ 토스 미니앱 빌드 완전 가이드](toss_app_build_guide.md) — 새 앱 만들기 전 반드시 읽기. 시장현황+체크리스트+코드패턴+항상 에스더님께 먼저 계획 확인 후 코딩
 - [⚠️ 토스애즈 실패 교훈](project_toss_ads_lesson.md) — 4만원 날림. 미니앱 직접 연결 안 됨. 잔여 5만9천원 유지. 웹사이트 광고는 픽셀 연동 후 가능
 - [⭐⭐⭐ 비즈 월렛 프로모션 전략](project_biz_wallet_strategy.md) — 미니앱 홍보 핵심. 30만원→혜택탭 노출→가입시100원→광고수익상쇄→무료홍보. 승인 후 진행
