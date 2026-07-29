@@ -28,8 +28,15 @@ const SOURCE_CFG: Record<string, [string, string, string]> = {
   gamjung:    ["#d1fae5","#065f46","😊감정일기"],
   diet:       ["#dcfce7","#15803d","🥗다이어트"],
   budget:     ["#fef3c7","#92400e","💰가계부"],
-  "toss-mbti": ["#e0eaff","#0064FF","🟦토스MBTI"],
-  "toss-diet": ["#dcfce7","#15803d","🥗토스다이어트"],
+  "toss-mbti":    ["#e0eaff","#0064FF","🟦토스MBTI"],
+  "toss-diet":    ["#dcfce7","#15803d","🥗토스다이어트"],
+  "toss-daewoon": ["#dbeafe","#1d4ed8","🌊토스대운"],
+  "toss-taegil":  ["#ede9fe","#5b21b6","📅토스택일"],
+  "toss-fortune": ["#fef9c3","#a16207","☀️토스오늘운세"],
+  "toss-gamjung": ["#d1fae5","#065f46","😊토스감정일기"],
+  "toss-haemong": ["#fdf4ff","#7e22ce","🌙토스꿈해몽"],
+  "toss-momcare": ["#ffe4e6","#be123c","👶토스맘케어"],
+  "toss-budget":  ["#fef3c7","#78350f","💰토스가계부"],
   haemong:    ["#fce7f3","#be185d","🌙꿈해몽"],
   free:       ["#fef3c7","#92400e","🎁재물운"],
 };
@@ -77,7 +84,7 @@ export default function AdminDirectPayments() {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"payments" | "leads" | "sns">("payments");
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [sourceFilter, setSourceFilter] = useState<"all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"|"toss-diet"|"haemong">("all");
+  const [sourceFilter, setSourceFilter] = useState<string>("all");
   const [snsPending, setSnsPending] = useState<{phone: string; postUrl: string; createdAt: number}[]>([]);
   const [snsLoading, setSnsLoading] = useState(false);
   const [approvedCodes, setApprovedCodes] = useState<{phone: string; codes: string[]} | null>(null);
@@ -261,10 +268,17 @@ export default function AdminDirectPayments() {
                 { key: "gamjung", label: "감정일기", emoji: "😊", activeBg: "#059669", inactiveBg: "#d1fae5", activeText: "white", inactiveText: "#065f46" },
                 { key: "diet",    label: "다이어트", emoji: "🥗", activeBg: "#16a34a", inactiveBg: "#dcfce7", activeText: "white", inactiveText: "#15803d" },
                 { key: "budget",   label: "가계부",    emoji: "💰", activeBg: "#b45309", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#92400e" },
-                { key: "toss-mbti", label: "토스MBTI", emoji: "🟦", activeBg: "#0064FF", inactiveBg: "#e0eaff", activeText: "white", inactiveText: "#0064FF" },
-                { key: "toss-diet", label: "토스다이어트", emoji: "🥗", activeBg: "#15803d", inactiveBg: "#dcfce7", activeText: "white", inactiveText: "#15803d" },
-                { key: "haemong",  label: "꿈해몽",   emoji: "🌙", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
-              ] as { key: "all"|"free"|"jigun"|"resume"|"mbti"|"lotto"|"gunghap"|"petun"|"tarot"|"zodiac"|"gamjung"|"diet"|"budget"|"toss-mbti"|"toss-diet"|"haemong"; label: string; emoji: string; activeBg: string; inactiveBg: string; activeText: string; inactiveText: string }[]).map(f => {
+                { key: "toss-mbti",    label: "토스MBTI",    emoji: "🟦", activeBg: "#0064FF", inactiveBg: "#e0eaff", activeText: "white", inactiveText: "#0064FF" },
+                { key: "toss-diet",    label: "토스다이어트", emoji: "🥗", activeBg: "#15803d", inactiveBg: "#dcfce7", activeText: "white", inactiveText: "#15803d" },
+                { key: "toss-daewoon", label: "토스대운",     emoji: "🌊", activeBg: "#1d4ed8", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#1d4ed8" },
+                { key: "toss-taegil",  label: "토스택일",     emoji: "📅", activeBg: "#5b21b6", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#5b21b6" },
+                { key: "toss-fortune", label: "토스오늘운세",  emoji: "☀️", activeBg: "#a16207", inactiveBg: "#fef9c3", activeText: "white", inactiveText: "#a16207" },
+                { key: "toss-gamjung", label: "토스감정일기",  emoji: "😊", activeBg: "#065f46", inactiveBg: "#d1fae5", activeText: "white", inactiveText: "#065f46" },
+                { key: "toss-haemong", label: "토스꿈해몽",   emoji: "🌙", activeBg: "#7e22ce", inactiveBg: "#fdf4ff", activeText: "white", inactiveText: "#7e22ce" },
+                { key: "toss-momcare", label: "토스맘케어",   emoji: "👶", activeBg: "#be123c", inactiveBg: "#ffe4e6", activeText: "white", inactiveText: "#be123c" },
+                { key: "toss-budget",  label: "토스가계부",   emoji: "💰", activeBg: "#78350f", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#78350f" },
+                { key: "haemong",      label: "꿈해몽",       emoji: "🌙", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
+              ]).map(f => {
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.sources ?? [l.source ?? "free"]).includes(f.key)).length;
                 const active = sourceFilter === f.key;
                 return (

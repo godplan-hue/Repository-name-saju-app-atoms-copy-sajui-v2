@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap] = await Promise.all([
+  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap] = await Promise.all([
     db.ref("free_leads").orderByChild("createdAt").once("value"),
     db.ref("career_analyses").orderByChild("createdAt").once("value"),
     db.ref("resume_analyses").orderByChild("createdAt").once("value"),
@@ -53,6 +53,13 @@ export async function GET(request: NextRequest) {
     db.ref("budget_leads").orderByChild("createdAt").once("value"),
     db.ref("free_leads/toss").orderByChild("createdAt").once("value"),
     db.ref("haemong_leads").orderByChild("createdAt").once("value"),
+    db.ref("daewoon_toss_users").once("value"),
+    db.ref("taegil_toss_users").once("value"),
+    db.ref("fortune_toss_users").once("value"),
+    db.ref("gamjung_toss_users").once("value"),
+    db.ref("haemong_toss_users").once("value"),
+    db.ref("momcare_toss_users").once("value"),
+    db.ref("budget_toss_users").once("value"),
   ]);
 
   const leads: any[] = [];
@@ -165,6 +172,48 @@ export async function GET(request: NextRequest) {
     if (v && v.phone) haemongItems.push({ id: child.key, ...v });
   });
   for (const item of dedupByPhone(haemongItems, "haemong")) leads.push(item);
+
+  // 토스대운 — daewoon_toss_users
+  tDaewoonSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스택일 — taegil_toss_users
+  tTaegilSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스오늘운세 — fortune_toss_users
+  tFortuneSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스감정일기 — gamjung_toss_users
+  tGamjungSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스꿈해몽 — haemong_toss_users
+  tHaemongSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스맘케어 — momcare_toss_users
+  tMomcareSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스가계부 — budget_toss_users
+  tBudgetSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, createdAt: v.createdAt || v.agreedAt || 0 });
+  });
 
   // 최종 dedup: 전화번호 기준 한 항목으로 묶기 + sources 배열로 모든 앱 기록
   // 이름 있는 항목 우선, 둘 다 이름 있으면 최신 기준
