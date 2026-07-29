@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap] = await Promise.all([
+  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, momcareSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap] = await Promise.all([
     db.ref("free_leads").orderByChild("createdAt").once("value"),
     db.ref("career_analyses").orderByChild("createdAt").once("value"),
     db.ref("resume_analyses").orderByChild("createdAt").once("value"),
@@ -53,6 +53,7 @@ export async function GET(request: NextRequest) {
     db.ref("budget_leads").orderByChild("createdAt").once("value"),
     db.ref("free_leads/toss").orderByChild("createdAt").once("value"),
     db.ref("haemong_leads").orderByChild("createdAt").once("value"),
+    db.ref("momcare_leads").orderByChild("agreedAt").once("value"),
     db.ref("daewoon_toss_users").once("value"),
     db.ref("taegil_toss_users").once("value"),
     db.ref("fortune_toss_users").once("value"),
@@ -172,6 +173,14 @@ export async function GET(request: NextRequest) {
     if (v && v.phone) haemongItems.push({ id: child.key, ...v });
   });
   for (const item of dedupByPhone(haemongItems, "haemong")) leads.push(item);
+
+  // 맘케어 (웹앱) — momcare_leads
+  const momcareItems: any[] = [];
+  momcareSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) momcareItems.push({ id: child.key, ...v, createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+  for (const item of dedupByPhone(momcareItems, "momcare")) leads.push(item);
 
   // 토스대운 — daewoon_toss_users
   tDaewoonSnap.forEach(child => {
