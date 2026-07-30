@@ -86,3 +86,4 @@
 - [⭐ 토스 성공 무료 비법 (통합)](reference_toss_success_secrets.md) — 4개 성공사례 핵심 모음. 마케팅 0원 노출 구조, 당장 할 것, 앱 이름 규칙 전체. 토스 작업 시 반드시 먼저 읽을 것
 - [⭐ 로빈 앱인토스 웨비나 전체](reference_robin_appintoss_webinar.md) — 스마트 발송 비법+세그먼트 레시피+소거법+수익화 전체. 점운 앱별 세그먼트 레시피 포함. 스마트 발송 설정 전 반드시 읽을 것
 - [⛔ memory 저장은 항상 GitHub에](feedback_memory_save_to_github.md) — 로컬만 저장 금지. 반드시 프로젝트 memory/에 복사 후 commit+push까지 완료해야 저장 완료
+- [⚠️ 토스 앱 수정 순서 규칙](feedback_toss_app_edit_approach.md) — 1개씩 수정→빌드확인→다음앱. 한꺼번에 9개 수정 절대 금지 (21시간 삽질 경험). 잠금마다 🪙300원 버튼 필수
