@@ -733,6 +733,43 @@ getPastLifeCard(oh, z)                         — 전생 이야기 (오행×띠
 - **퍼널 필수**: 광고 → 무료사주 → 결과 → 결제 (홈페이지 직접연결 ❌)
 - 상세 전략: 메모리 `project_ad_strategy.md` 참조
 
+### 토스 미니앱 9개 전수 감사 + 버그 수정 (2026-07-30)
+
+#### 전수 감사 결과 — 9개 앱 전체 확인 완료
+> **앱 목록**: jeomun-mbti / jeomun-haemong / jeomun-gamjung / jeomun-fortune / jeomun-taegil / jeomun-daewoon / jeomun-diet / jeomun-budget / jeomun-momcare
+
+| 항목 | 결과 |
+|---|---|
+| 첫 진입 전면광고 (앱 열 때) | ✅ 9개 전체 있음 |
+| 저장/결과 전 전면광고 | ✅ 9개 전체 있음 |
+| 일기형 앱 영구저장 (tossSet+Firebase) | ✅ gamjung/diet/budget/momcare 전체 있음 |
+| 배너 슬롯 | ✅ 9개 전체 있음 |
+| 크로스프로모 (9개 앱 그리드) | ✅ 9개 전체 있음 (수정 후) |
+
+#### 수정 내용
+
+**MBTI (`jeomun-mbti/src/App.tsx`)**
+- 첫 진입 전면광고 추가: `useEffect([], [])` → `showFullScreenAd` 즉시 호출
+- 결과지 전 전면광고 추가: contact 폼 "결과 보기" 버튼 → 광고 → onEvent dismissed → `setStep("result")`
+- **올바른 흐름**: 정보 입력 → 광고 → 광고 닫힘 → 결과지 (이전엔 광고 없이 바로 결과지)
+- "시작하기" 버튼: 항상 16문항 퀴즈 시작 (재방문/첫방문 동일)
+
+**감정일기 (`jeomun-gamjung/src/App.tsx`)**
+- 결과 화면(step="result")에 9개 앱 크로스프로모 그리드 추가 (이전엔 인트로 화면에만 있었음)
+
+**오늘의운세 (`jeomun-fortune/src/App.tsx`)**
+- 결과 화면에 9개 앱 크로스프로모 그리드 추가 (이전엔 폼 화면에만 있었음)
+
+**맘케어 (`jeomun-momcare/src/App.tsx`)**
+- `saveTracker()`: tossSet만 있던 것 → Firebase `momcare_toss/{phone}/tracker` PUT 영구저장 추가
+- `addTrackerEntry()`: 트래커 저장 후 전면광고 추가 (일기 저장은 이미 있었음, 트래커만 누락)
+
+#### 광고앱 세션잠금 — 의도적 설계 (변경 금지)
+- 꿈해몽/오늘의운세/택일/대운: 세션 기반 boolean 잠금 — 앱 종료 시 초기화 (정상)
+- 감정일기/다이어트/가계부/맘케어: tossSet 영구저장 + Firebase 이중저장 (정상)
+
+---
+
 ### 포트원 PG 현황 (2026-07-21 업데이트)
 
 #### 포트원 V2 테스트 연동 — ✅ 완료 (2026-07-10)
