@@ -1,9 +1,9 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
 - [⭐⭐⭐ 매일 읽기 마스터 가이드 (절대 삭제 금지)](daily_master_guide.md) — 토스결제/광고/수익화/홍보전략 전부 한 곳에. 새 세션마다 반드시 읽을 것
+- [⭐⭐ 토스 홍보 비법 (경쟁사 분석)](project_toss_promo_secrets.md) — N명 카운터+나갈때광고2번+코인시스템+광고2개연속. 2026-07-30 에스더님 직접 분석. 토스 작업 시 반드시 읽을 것
 - [⭐ 토스 앱 워터마크 전략](project_toss_watermark_strategy.md) — 메인 결과 카드 안 하단 고정. 앱별 문구 확정. 새 앱마다 동일 적용
 - [⭐ 토스 사주 앱 파트너 모집 전략](project_toss_saju_partner_strategy.md) — 블로그 콘텐츠 링크 방식으로 심사 우회. 사주 앱 만들 때 반드시 읽을 것
-- [⭐⭐⭐ 토스 앱인토스 비게임 출시 가이드 전문](reference_toss_appintoss_release_guide.md) — 심사 전 필수 체크. 광고/결제/UX/보안 전항목. window.replace 금지·배너 스크롤화면만·광고 사전로딩 필수
 - [⭐⭐⭐ 토스 미니앱 빌드 완전 가이드](toss_app_build_guide.md) — 새 앱 만들기 전 반드시 읽기. 시장현황+체크리스트+코드패턴+항상 에스더님께 먼저 계획 확인 후 코딩
 - [⚠️ 토스애즈 실패 교훈](project_toss_ads_lesson.md) — 4만원 날림. 미니앱 직접 연결 안 됨. 잔여 5만9천원 유지. 웹사이트 광고는 픽셀 연동 후 가능
 - [⭐⭐⭐ 비즈 월렛 프로모션 전략](project_biz_wallet_strategy.md) — 미니앱 홍보 핵심. 30만원→혜택탭 노출→가입시100원→광고수익상쇄→무료홍보. 승인 후 진행
@@ -85,5 +85,4 @@
 - [토스 앱인토스 성공사례 자몽다](reference_toss_jamond_case.md) — 대학생 3명, 사주·타로 심리상담 앱, 6개월 만에 35만 사용자, 창업경진대회 대상. 사주카테고리 시장 검증됨
 - [⭐ 토스 성공 무료 비법 (통합)](reference_toss_success_secrets.md) — 4개 성공사례 핵심 모음. 마케팅 0원 노출 구조, 당장 할 것, 앱 이름 규칙 전체. 토스 작업 시 반드시 먼저 읽을 것
 - [⭐ 로빈 앱인토스 웨비나 전체](reference_robin_appintoss_webinar.md) — 스마트 발송 비법+세그먼트 레시피+소거법+수익화 전체. 점운 앱별 세그먼트 레시피 포함. 스마트 발송 설정 전 반드시 읽을 것
-- [⭐⭐⭐ 토스 스마트 발송 무료 홍보 전략](project_toss_smart_push.md) — 앱당 10만건 무료. 신규 미사용자+재방문 유도. 광고비 환산 앱당 50만~100만원 효과. 퀴즈순서 바꾼 후 바로 설정할 것
 - [⛔ memory 저장은 항상 GitHub에](feedback_memory_save_to_github.md) — 로컬만 저장 금지. 반드시 프로젝트 memory/에 복사 후 commit+push까지 완료해야 저장 완료
