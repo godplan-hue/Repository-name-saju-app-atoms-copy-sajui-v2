@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, momcareSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap] = await Promise.all([
+  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, momcareSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap, tSajuSnap, tTarotSnap, tZodiacSnap, tGunghapSnap, tPetunSnap, tJigunSnap, tResumeSnap] = await Promise.all([
     db.ref("free_leads").orderByChild("createdAt").once("value"),
     db.ref("career_analyses").orderByChild("createdAt").once("value"),
     db.ref("resume_analyses").orderByChild("createdAt").once("value"),
@@ -61,6 +61,13 @@ export async function GET(request: NextRequest) {
     db.ref("haemong_toss_users").once("value"),
     db.ref("momcare_toss_users").once("value"),
     db.ref("budget_toss_users").once("value"),
+    db.ref("saju_leads").orderByChild("createdAt").once("value"),
+    db.ref("tarot_toss_users").once("value"),
+    db.ref("zodiac_toss_users").once("value"),
+    db.ref("gunghap_toss_users").once("value"),
+    db.ref("petun_toss_users").once("value"),
+    db.ref("jigun_toss_users").once("value"),
+    db.ref("resume_toss_users").once("value"),
   ]);
 
   const leads: any[] = [];
@@ -222,6 +229,48 @@ export async function GET(request: NextRequest) {
   tBudgetSnap.forEach(child => {
     const v = child.val();
     if (v) leads.push({ id: child.key, ...v, createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스사주 — saju_leads
+  tSajuSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, source: "toss-saju", createdAt: v.createdAt || 0 });
+  });
+
+  // 토스타로 — tarot_toss_users
+  tTarotSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, source: "toss-tarot", createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스별자리 — zodiac_toss_users
+  tZodiacSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, source: "toss-zodiac", createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스궁합 — gunghap_toss_users
+  tGunghapSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, source: "toss-gunghap", createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스펫운 — petun_toss_users
+  tPetunSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, source: "toss-petun", createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스직운 — jigun_toss_users
+  tJigunSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, source: "toss-jigun", createdAt: v.createdAt || v.agreedAt || 0 });
+  });
+
+  // 토스합격 — resume_toss_users
+  tResumeSnap.forEach(child => {
+    const v = child.val();
+    if (v) leads.push({ id: child.key, ...v, source: "toss-resume", createdAt: v.createdAt || v.agreedAt || 0 });
   });
 
   // 최종 dedup: 전화번호 기준 한 항목으로 묶기 + sources 배열로 모든 앱 기록
