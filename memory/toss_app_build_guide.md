@@ -40,14 +40,32 @@ metadata:
 
 ---
 
-## 2. ⛔ 앱 이름 절대 원칙
+## 2. ⛔ 앱 이름 절대 원칙 (2026-08-02 확정)
 
-**형식: [키워드] 점운** (키워드 먼저, 점운 나중)
-
-- ✅ 올바름: "MBTI 점운", "다이어트 점운", "궁합 점운", "감정일기 점운"
+### 한국어 앱 이름
+**형식: [키워드] 점운 무료** (키워드 먼저, 점운 나중, 무료 붙이기)
+- ✅ 올바름: "오늘의운세 점운 무료", "MBTI 점운 무료", "사주 점운 무료"
 - ❌ 잘못됨: "점운 MBTI", "점운 다이어트"
+- **이유**: 토스 검색에서 키워드가 앞에 있어야 상단 노출됨
 
-**이유**: 토스 검색에서 키워드가 앞에 있어야 상단 노출됨
+### appName (Toss 콘솔 등록용)
+**형식: [keyword]-jeomun** (소문자, 하이픈, 키워드 먼저)
+- ✅ 올바름: `fortune-jeomun`, `saju-jeomun`, `mbti-jeomun`, `diet-jeomun`
+- ❌ 잘못됨: `jeomun-mbti` ← MBTI 앱이 반대로 등록된 실수 사례
+- **실제 확인**: fortune-jeomun (오늘의운세), saju-jeomun (사주)
+
+### 영어 앱 이름 (English App Name)
+**형식: [Keyword] Jeomun** (각 단어 첫 글자만 대문자, 타이틀 케이스)
+- ✅ 올바름: `Fortune Jeomun`, `Saju Jeomun`, `Diet Jeomun`
+- ❌ 잘못됨: `SAJU Jeomun`, `fortune jeomun`
+- **실제 확인**: Fortune Jeomun (오늘의운세 앱에서 확인됨)
+
+### 세 가지 형식 비교 (예: 오늘의운세 앱)
+| 항목 | 형식 | 예시 |
+|---|---|---|
+| 한국어 앱 이름 | [키워드] 점운 무료 | 오늘의운세 점운 무료 |
+| appName | [keyword]-jeomun | fortune-jeomun |
+| 영어 앱 이름 | [Keyword] Jeomun | Fortune Jeomun |
 
 ---
 
