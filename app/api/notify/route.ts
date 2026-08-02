@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
       .digest("hex");
 
     const resultLink = link || "https://jeomun.com/main-v2/history";
-    const sender = partnerName || "점운";
 
     const body = {
       message: {
@@ -35,7 +34,6 @@ export async function POST(req: NextRequest) {
           pfId,
           templateId,
           variables: {
-            "#{파트너명}": sender,
             "#{금액}": String(amount || ""),
             "#{링크}": resultLink,
           },
