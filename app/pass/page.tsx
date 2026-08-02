@@ -84,7 +84,7 @@ export default function PassPage() {
       await unlockApps(ph);
       fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:ph,name:name.trim()||"",amount:0,category:"풀패스 쿠폰",source:"pass"})}).catch(()=>{});
       fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-      fetch("/api/notify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:ph,amount:0,link:"https://jeomun.com/apps"})}).catch(()=>{});
+      await fetch("/api/notify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:ph,amount:0,link:"https://jeomun.com/apps"})}).catch(()=>{});
       window.location.href = "/apps";
     } finally { setLoading(false); }
   };
@@ -119,7 +119,7 @@ export default function PassPage() {
       if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
       await unlockApps(cleanMobile);
       fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:cleanMobile,name:name.trim()||"",amount:finalAmount,category:"풀패스 7개앱 30일권",source:"pass"})}).catch(()=>{});
-      fetch("/api/notify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,amount:finalAmount,link:"https://jeomun.com/apps"})}).catch(()=>{});
+      await fetch("/api/notify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,amount:finalAmount,link:"https://jeomun.com/apps"})}).catch(()=>{});
       window.location.href = "/apps";
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
     finally { setLoading(false); }
