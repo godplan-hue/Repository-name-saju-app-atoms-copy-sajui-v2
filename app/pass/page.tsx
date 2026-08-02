@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useState, useEffect } from "react";
 
 const AMOUNT = 4900;
@@ -14,11 +14,6 @@ const PASS_APPS = [
 ];
 
 export default function PassPage() {
-  const [cardNo, setCardNo] = useState("");
-  const [expM, setExpM] = useState("");
-  const [expY, setExpY] = useState("");
-  const [birth, setBirth] = useState("");
-  const [pw, setPw] = useState("");
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,6 +29,7 @@ export default function PassPage() {
   useEffect(() => {
     try {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.name) setName(p.name);
       if (p.phone) setMobile(p.phone.replace(/\D/g,"").slice(0,11));
     } catch {}
   }, []);
@@ -55,74 +51,75 @@ export default function PassPage() {
   const isFree = couponData && (Math.round(AMOUNT*(1-couponData.discountPercent/100))===0 || couponData.fullAccess);
   const finalAmount = couponData ? Math.round(AMOUNT*(1-couponData.discountPercent/100)) : AMOUNT;
 
-  const pay = async () => {
-    if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
-    if (mobile.replace(/\D/g,"").length < 10) { setError("다른 기기에서도 이용하시려면 휴대폰 번호를 입력해주세요."); return; }
-    if (isFree) {
-      setLoading(true);
+  const unlockApps = async (phone: string) => {
+    const baseUntil = Date.now()+30*24*60*60*1000;
+    let fbUnlocks: Record<string,number> = {};
+    try {
+      if (phone) {
+        const r = await fetch(`/api/phone-unlock?phone=${phone}`);
+        const d = await r.json();
+        if (d.ok) fbUnlocks = d.unlocks || {};
+      }
+    } catch {}
+    const unlocks: Record<string,number> = {};
+    PASS_APPS.forEach(app => {
       try {
-        const _ph = mobile.replace(/\D/g,"");
-        const _baseUntil = Date.now()+30*24*60*60*1000;
-        const _unlocks: Record<string,number> = {};
-        PASS_APPS.forEach(app => {
-          try {
-            const _local = Number(localStorage.getItem(app.key)||0);
-            const p = _local > Date.now() ? _local : 0;
-            const u = p > 0 ? p+30*24*60*60*1000 : _baseUntil;
-            localStorage.setItem(app.key, String(u));
-            _unlocks[app.key] = u;
-          } catch {}
-        });
-        if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
-        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"풀패스 쿠폰",source:"pass"})}).catch(()=>{});
-        fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-        window.location.href = "/apps";
-      } finally { setLoading(false); }
-      return;
-    }
-    const clean = cardNo.replace(/\s/g,"");
-    if (clean.length < 14) { setError("카드번호를 확인해주세요."); return; }
-    if (!expM || !expY) { setError("유효기간을 입력해주세요."); return; }
-    if (birth.length !== 6) { setError("생년월일 앞 6자리(YYMMDD)를 입력해주세요."); return; }
-    if (pw.length !== 2) { setError("카드 비밀번호 앞 2자리를 입력해주세요."); return; }
-    if (!name.trim()) { setError("이름을 입력해주세요."); return; }
+        const local = Number(localStorage.getItem(app.key)||0);
+        const fb = Number(fbUnlocks[app.key]||0);
+        const prev = Math.max(local, fb);
+        const u = prev > Date.now() ? prev+30*24*60*60*1000 : baseUntil;
+        localStorage.setItem(app.key, String(u));
+        unlocks[app.key] = u;
+      } catch {}
+    });
+    if (phone) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone,unlocks})}).catch(()=>{});
+    return unlocks;
+  };
+
+  const payFree = async () => {
+    const ph = mobile.replace(/\D/g,"");
+    if (ph.length < 10) { setError("휴대폰 번호를 입력해주세요."); return; }
+    setLoading(true);
+    try {
+      await unlockApps(ph);
+      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:ph,name:name.trim()||"",amount:0,category:"풀패스 쿠폰",source:"pass"})}).catch(()=>{});
+      fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
+      window.location.href = "/apps";
+    } finally { setLoading(false); }
+  };
+
+  const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {
+    if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
+    const cleanMobile = mobile.replace(/\D/g,"");
+    if (cleanMobile.length < 10) { setError("휴대폰 번호를 입력해주세요."); return; }
+    if (isFree) { await payFree(); return; }
     setLoading(true); setError("");
     try {
-      const res = await fetch("/api/payup/charge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardNo: clean, expireMonth: expM.padStart(2,"0"), expireYear: expY.slice(-2), birthday: birth, cardPw: pw, amount: finalAmount, itemName: "점운 풀패스 7개앱 30일권", userName: name.trim(), mobileNumber: mobile.replace(/\D/g,"") }),
+      const channelKey = method === "KAKAOPAY"
+        ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
+        : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
+      const portone = await import("@portone/browser-sdk/v2");
+      const res = await portone.requestPayment({
+        storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
+        channelKey,
+        paymentId: `pass_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+        orderName: "점운 풀패스 7개앱 30일권",
+        totalAmount: finalAmount,
+        currency: "KRW",
+        payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
+        ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
+        customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile },
       });
-      const data = await res.json();
-      if (data.success) {
-        if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-        const _ph = mobile.replace(/\D/g,"");
-        const _baseUntil = Date.now()+30*24*60*60*1000;
-        const _unlocks: Record<string,number> = {};
-        let _fbUnlocks: Record<string,number> = {};
-        try {
-          if (_ph) {
-            const _fbRes = await fetch(`/api/phone-unlock?phone=${_ph}`);
-            const _fbData = await _fbRes.json();
-            if (_fbData.ok) _fbUnlocks = _fbData.unlocks || {};
-          }
-        } catch {}
-        PASS_APPS.forEach(app => {
-          try {
-            const _local = Number(localStorage.getItem(app.key)||0);
-            const _fb = Number(_fbUnlocks[app.key]||0);
-            const p = Math.max(_local, _fb);
-            const u = p>Date.now()?p+30*24*60*60*1000:_baseUntil;
-            localStorage.setItem(app.key, String(u));
-            _unlocks[app.key] = u;
-          } catch {}
-        });
-        if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
-        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:_ph||"",name:name.trim(),amount:finalAmount,category:"풀패스 7개앱 30일권",source:"pass"})}).catch(()=>{});
-        window.location.href = "/apps";
-      } else {
-        setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");
+      if (res && "code" in res) {
+        setError(res.message || "결제에 실패했습니다.");
+        return;
       }
+      // 결제 성공
+      if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
+      await unlockApps(cleanMobile);
+      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:cleanMobile,name:name.trim()||"",amount:finalAmount,category:"풀패스 7개앱 30일권",source:"pass"})}).catch(()=>{});
+      fetch("/api/notify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,amount:finalAmount,link:"https://jeomun.com/apps"})}).catch(()=>{});
+      window.location.href = "/apps";
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
     finally { setLoading(false); }
   };
@@ -171,29 +168,11 @@ export default function PassPage() {
           {couponData && <p style={{ fontSize:12, color:"#4ade80", marginTop:8, marginBottom:0 }}>✅ {isFree?"무료 이용권 — 카드 없이 바로 이용 가능!":`${couponData.discountPercent}% 할인 → ₩${finalAmount.toLocaleString()}`}</p>}
         </div>
 
-        {/* 카드 결제 폼 */}
-        {!isFree && (
-          <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:18, padding:"20px 18px", marginBottom:16 }}>
-            <p style={{ fontSize:13, fontWeight:900, color:"#a78bfa", margin:"0 0 16px" }}>💳 카드 정보 입력</p>
-            <div style={S.row}><label style={S.label}>카드번호</label><input style={S.input} placeholder="0000 0000 0000 0000" value={cardNo} onChange={e=>setCardNo(fmt(e.target.value))} inputMode="numeric" /></div>
-            <div style={{ display:"flex", gap:10, marginBottom:16 }}>
-              <div style={{ flex:1 }}><label style={S.label}>유효기간 월 (MM)</label><input style={S.input} placeholder="MM" maxLength={2} value={expM} onChange={e=>setExpM(e.target.value.replace(/\D/g,"").slice(0,2))} inputMode="numeric" /></div>
-              <div style={{ flex:1 }}><label style={S.label}>유효기간 년 (YY)</label><input style={S.input} placeholder="YY" maxLength={2} value={expY} onChange={e=>setExpY(e.target.value.replace(/\D/g,"").slice(0,2))} inputMode="numeric" /></div>
-            </div>
-            <div style={{ display:"flex", gap:10, marginBottom:16 }}>
-              <div style={{ flex:1 }}><label style={S.label}>생년월일 앞 6자리</label><input style={S.input} placeholder="YYMMDD" maxLength={6} value={birth} onChange={e=>setBirth(e.target.value.replace(/\D/g,"").slice(0,6))} inputMode="numeric" /></div>
-              <div style={{ flex:1 }}><label style={S.label}>카드 비밀번호 앞 2자리</label><input style={S.input} placeholder="••" maxLength={2} type="password" value={pw} onChange={e=>setPw(e.target.value.replace(/\D/g,"").slice(0,2))} inputMode="numeric" /></div>
-            </div>
-            <div style={S.row}><label style={S.label}>이름</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
-            <div style={S.row}><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
-          </div>
-        )}
-        {isFree && (
-          <div style={{ marginBottom:16 }}>
-            <div style={S.row}><label style={S.label}>이름 (선택)</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
-            <div style={S.row}><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
-          </div>
-        )}
+        {/* 이름/전화번호 */}
+        <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:18, padding:"20px 18px", marginBottom:16 }}>
+          <div style={S.row}><label style={S.label}>이름 (선택)</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
+          <div><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
+        </div>
 
         <div style={{ marginBottom:12 }}>
           <button type="button" onClick={()=>setShowRefund(v=>!v)} style={{ background:"none", border:"none", color:"#9ca3af", fontSize:12, cursor:"pointer", padding:"4px 0", display:"flex", alignItems:"center", gap:4 }}>
@@ -211,15 +190,27 @@ export default function PassPage() {
         </div>
         {error && <p style={{ color:"#f87171", fontSize:13, textAlign:"center", marginBottom:12 }}>{error}</p>}
 
-        <button onClick={pay} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"rgba(124,58,237,0.5)":"linear-gradient(135deg,#7c3aed,#a855f7)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer", marginBottom:16 }}>
-          {loading?"결제 처리 중...":isFree?"🎟 무료로 이용하기":`₩${finalAmount.toLocaleString()} 결제하기 (7개앱 30일)`}
-        </button>
+        {/* 결제 버튼 */}
+        {isFree ? (
+          <button onClick={()=>pay()} disabled={loading} style={{ width:"100%", background:loading?"rgba(124,58,237,0.5)":"linear-gradient(135deg,#7c3aed,#a855f7)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:loading?"not-allowed":"pointer", marginBottom:10 }}>
+            {loading?"처리 중...":"🎟 무료로 이용하기"}
+          </button>
+        ) : (
+          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:16 }}>
+            <button onClick={()=>pay("CARD")} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"rgba(124,58,237,0.5)":"linear-gradient(135deg,#7c3aed,#a855f7)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer" }}>
+              {loading?"결제 처리 중...":"💳 신용카드로 결제"}
+            </button>
+            <button onClick={()=>pay("KAKAOPAY")} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"#bba000":"#FEE500", color:(loading||!refundAgreed)?"rgba(0,0,0,0.4)":"#3C1E1E", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer" }}>
+              💛 카카오페이로 결제
+            </button>
+          </div>
+        )}
 
         {/* 꼭 확인하세요 */}
         <div style={{ marginBottom:16, padding:"12px 14px", background:"rgba(251,191,36,0.08)", borderRadius:12, border:"1px solid rgba(251,191,36,0.3)" }}>
           <p style={{ margin:"0 0 6px", fontSize:12, fontWeight:900, color:"#fbbf24" }}>⚠️ 꼭 확인하세요</p>
           <p style={{ margin:0, fontSize:11, color:"rgba(255,255,255,0.7)", lineHeight:1.9 }}>
-            · 전화번호를 입력하시면 PC·모바일 어떤 기기에서도 이용 가능해요.<br />
+            · 인앱브라우저(카카오톡 등)에서는 PC 기기에서 결제가 안 될 수 있어요.<br />
             (앱 목록 /apps → 이용권 불러오기)<br />
             · 이미 이용 중인 앱이 있다면 남은 기간에 30일이 자동으로 추가 연장돼요.
           </p>
