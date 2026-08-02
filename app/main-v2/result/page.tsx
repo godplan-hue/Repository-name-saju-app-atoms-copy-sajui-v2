@@ -310,12 +310,23 @@ function V2ResultInner() {
   }, []);
 
   // 스크롤 위치 저장/복원 — 버튼 눌렀다 돌아올 때 같은 자리로 복원
+  // 새로고침(reload) 시에는 복원 안 함 — 꼭읽어보세요 버튼이 항상 맨 위에 보이도록
   useEffect(() => {
     const KEY = 'rp_scroll';
-    const saved = sessionStorage.getItem(KEY);
-    if (saved) {
-      const y = parseInt(saved, 10);
-      if (y > 0) setTimeout(() => window.scrollTo({ top: y, behavior: 'instant' }), 300);
+    const navType = (() => {
+      try {
+        const entry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+        return entry?.type ?? "navigate";
+      } catch { return "navigate"; }
+    })();
+    if (navType !== "reload") {
+      const saved = sessionStorage.getItem(KEY);
+      if (saved) {
+        const y = parseInt(saved, 10);
+        if (y > 0) setTimeout(() => window.scrollTo({ top: y, behavior: 'instant' }), 300);
+      }
+    } else {
+      sessionStorage.removeItem(KEY);
     }
     let rafId: number;
     const onScroll = () => {
