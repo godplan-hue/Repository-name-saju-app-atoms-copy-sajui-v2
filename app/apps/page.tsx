@@ -28,7 +28,7 @@ const TOP_APPS = [
     title: "🌙 꿈해몽",
     sub: "꿈의 의미를 오행으로",
     desc: "태몽 · 흉몽 · 길몽 전부 해석",
-    badge: "30일",
+    badge: "990원·24h",
     badgeBg: "#7c3aed",
     overlay: "linear-gradient(to top, rgba(30,10,70,0.88) 0%, rgba(60,20,120,0.45) 55%, rgba(0,0,0,0) 100%)",
     border: "rgba(167,139,250,0.35)",
@@ -52,8 +52,8 @@ const GRID_APPS = [
   { href: "/gunghap", emoji: "💑", label: "궁합",    sub: "두 사람의 오행 궁합",   desc: "연애 패턴 · 갈등 · 조언",     badge: "무료", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)", img: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg" },
   { href: "/mbti",    emoji: "🧠", label: "MBTI",    sub: "오행 기질 분석",         desc: "16가지 유형 전부 무료",        badge: "무료", color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)", img: "https://i.pinimg.com/1200x/aa/7a/e3/aa7ae3b66dc315f01fedf552b101f033.jpg" },
   { href: "/lotto",   emoji: "🍀", label: "행운번호", sub: "오행 행운번호 6개",     desc: "생년월일 기반 행운 번호",      badge: "무료", color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)", img: "https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg" },
-  { href: "/petun",   emoji: "🐾", label: "펫운",    sub: "반려동물 운세 · 궁합",  desc: "음식 안전도 · 오늘 뽑기",     badge: "30일", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)", img: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg" },
-  { href: "/tarot",   emoji: "🃏", label: "타로",    sub: "AI 타로카드 해석",       desc: "연애 · 직업 · 재물 상담",     badge: "30일", color: "#7e22ce", bg: "linear-gradient(145deg,#f3e8ff,#d8b4fe)", img: "https://i.pinimg.com/1200x/0c/27/99/0c27999149b93230b696dce0918a4e8e.jpg" },
+  { href: "/petun",   emoji: "🐾", label: "펫운",    sub: "반려동물 운세 · 궁합",  desc: "음식 안전도 · 오늘 뽑기",     badge: "990원·24h", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)", img: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg" },
+  { href: "/tarot",   emoji: "🃏", label: "타로",    sub: "AI 타로카드 해석",       desc: "연애 · 직업 · 재물 상담",     badge: "990원·24h", color: "#7e22ce", bg: "linear-gradient(145deg,#f3e8ff,#d8b4fe)", img: "https://i.pinimg.com/1200x/0c/27/99/0c27999149b93230b696dce0918a4e8e.jpg" },
   { href: "/zodiac",  emoji: "⭐", label: "별자리",  sub: "12별자리 오늘 운세",     desc: "궁합 · 월별 · 오행 분석",     badge: "무료", color: "#1d4ed8", bg: "linear-gradient(145deg,#eff6ff,#93c5fd)", img: "https://i.pinimg.com/736x/3a/36/30/3a3630aa53fc14c5076ab4851d783b6e.jpg" },
   { href: "/gamjung", emoji: "📔", label: "감정일기", sub: "감정 기록 · 치유 일기", desc: "오행 감정 흐름 분석",          badge: "30일", color: "#be185d", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)", img: "https://i.pinimg.com/736x/7e/ad/71/7ead71fd8ff5c3d3d57abab4b5b01347.jpg" },
   { href: "/diet",    emoji: "🥗", label: "다이어트", sub: "오행 체질 식단 추천",   desc: "칼로리 계산 + 맞춤 음식",     badge: "30일", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)", img: "https://i.pinimg.com/1200x/f1/11/77/f11177335015269c22af426b13f423bc.jpg" },
@@ -109,7 +109,7 @@ export default function AppsPage() {
         <div style={{ textAlign: "center", marginBottom: 20 }}>
           <a href="/main-v2" style={{ display: "inline-block", marginBottom: 12, fontSize: 12, color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>← 메인으로</a>
           <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 4 }}>✨ 점운 전체앱</div>
-          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>무료 7개 · 이용권으로 7개앱 30일</div>
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>무료앱 다수 · 일기류 4개앱 30일권</div>
         </div>
 
         {/* 풀패스 배너 */}
@@ -119,7 +119,7 @@ export default function AppsPage() {
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>✅ 풀패스 이용 중</span>
             </div>
             <div style={{ background: "#f0fdf4", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <p style={{ fontSize: 12, color: "#14532d", margin: 0, lineHeight: 1.6 }}>7개 앱 전체 이용 가능 · 만료 후 자동 잠금</p>
+              <p style={{ fontSize: 12, color: "#14532d", margin: 0, lineHeight: 1.6 }}>일기류 4개 앱 이용 가능 · 만료 후 자동 잠금</p>
               <span onClick={()=>{ window.location.href="/pass"; }} style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#16a34a", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", cursor: "pointer" }}>연장하기 →</span>
             </div>
           </div>
@@ -129,11 +129,11 @@ export default function AppsPage() {
             style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(239,68,68,0.35)", border: "2px solid #ef4444", marginBottom: 14 }}
           >
             <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>🔥 7개앱 30일 풀패스</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>₩4,900</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>🔥 4개앱 30일 풀패스</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>₩5,900</span>
             </div>
             <div style={{ background: "#fff5f5", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·육아일기 전부 30일 이용</p>
+              <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>감정일기·다이어트·가계부·육아일기<br />일기류 4개 앱 30일 이용</p>
               <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
             </div>
           </div>

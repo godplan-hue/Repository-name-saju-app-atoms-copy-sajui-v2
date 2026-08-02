@@ -1,16 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const AMOUNT = 4900;
+const AMOUNT = 5900;
 
 const PASS_APPS = [
-  { emoji: "🌙", label: "꿈해몽", key: "haemong_unlock_until" },
-  { emoji: "📔", label: "감정일기", key: "gamjung_unlock_until" },
-  { emoji: "🥗", label: "다이어트", key: "diet_unlock_until" },
-  { emoji: "💰", label: "가계부", key: "budget_unlock_until" },
-  { emoji: "🃏", label: "타로", key: "tarot_unlock_until" },
-  { emoji: "🐾", label: "펫운", key: "petun_unlock_until" },
-  { emoji: "👶", label: "육아일기", key: "momcare_unlock_until" },
+  { emoji: "📔", label: "감정일기", key: "gamjung_unlock_until", diary: true },
+  { emoji: "🥗", label: "다이어트", key: "diet_unlock_until", diary: true },
+  { emoji: "💰", label: "가계부", key: "budget_unlock_until", diary: true },
+  { emoji: "👶", label: "육아일기", key: "momcare_unlock_until", diary: true },
 ];
 
 export default function PassPage() {
@@ -102,7 +99,7 @@ export default function PassPage() {
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
         paymentId: `pass_${Date.now()}_${Math.random().toString(36).slice(2)}`,
-        orderName: "점운 풀패스 7개앱 30일권",
+        orderName: "점운 일기류 4개앱 30일 풀패스",
         totalAmount: finalAmount,
         currency: "KRW",
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
@@ -116,7 +113,7 @@ export default function PassPage() {
       // 결제 성공
       if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
       await unlockApps(cleanMobile);
-      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:cleanMobile,name:name.trim()||"",amount:finalAmount,category:"풀패스 7개앱 30일권",source:"pass"})}).catch(()=>{});
+      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:cleanMobile,name:name.trim()||"",amount:finalAmount,category:"풀패스 4개앱 30일권",source:"pass"})}).catch(()=>{});
       await fetch("/api/notify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,amount:finalAmount,link:"https://jeomun.com/apps"})}).catch(()=>{});
       window.location.href = "/apps";
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
@@ -139,7 +136,7 @@ export default function PassPage() {
         <div style={{ textAlign:"center", marginBottom:28 }}>
           <div style={{ fontSize:44, marginBottom:10 }}>✨</div>
           <div style={{ fontSize:24, fontWeight:900, color:"#fff", marginBottom:6 }}>점운 풀패스</div>
-          <div style={{ fontSize:14, color:"rgba(255,255,255,0.6)", lineHeight:1.6 }}>7개 앱 전체를 30일 동안<br />마음껏 이용하세요</div>
+          <div style={{ fontSize:14, color:"rgba(255,255,255,0.6)", lineHeight:1.6 }}>일기류 4개 앱을 30일 동안<br />마음껏 이용하세요</div>
         </div>
 
         {/* 가격 카드 */}
@@ -150,7 +147,7 @@ export default function PassPage() {
               <><span style={{ textDecoration:"line-through", fontSize:24, opacity:0.5 }}>₩{AMOUNT.toLocaleString()}</span> ₩{finalAmount.toLocaleString()}</>
             ) : `₩${AMOUNT.toLocaleString()}`}
           </div>
-          <div style={{ fontSize:12, color:"rgba(255,255,255,0.6)", marginBottom:8 }}>7개 앱 전체 · 30일 무제한</div>
+          <div style={{ fontSize:12, color:"rgba(255,255,255,0.6)", marginBottom:8 }}>4개 앱 전체 · 30일 무제한</div>
           <div style={{ fontSize:11, color:"rgba(255,255,255,0.45)" }}>자동갱신 없음 · 일회성 결제</div>
         </div>
 
@@ -217,7 +214,7 @@ export default function PassPage() {
 
         {/* 포함 앱 목록 */}
         <div style={{ background:"rgba(255,255,255,0.05)", borderRadius:18, padding:"4px 0", marginBottom:20, border:"1px solid rgba(255,255,255,0.08)" }}>
-          <div style={{ fontSize:12, color:"rgba(255,255,255,0.4)", textAlign:"center", padding:"14px 0 8px", fontWeight:700, letterSpacing:1 }}>포함된 앱 7가지</div>
+          <div style={{ fontSize:12, color:"rgba(255,255,255,0.4)", textAlign:"center", padding:"14px 0 8px", fontWeight:700, letterSpacing:1 }}>포함된 앱 4가지</div>
           {PASS_APPS.map((app, i) => (
             <div key={app.key} style={{ display:"flex", alignItems:"center", gap:14, padding:"14px 18px", borderTop:i===0?"none":"1px solid rgba(255,255,255,0.06)" }}>
               <span style={{ fontSize:28, flexShrink:0 }}>{app.emoji}</span>

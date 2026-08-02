@@ -1,7 +1,7 @@
 ﻿"use client";
 import { useState, useEffect } from "react";
 
-const AMOUNT = 990;
+const AMOUNT = 1980;
 
 export default function DietPayPage() {
   const [showForm, setShowForm] = useState(false);
@@ -36,7 +36,7 @@ export default function DietPayPage() {
       const r = await fetch(`/api/promo-codes?code=${coupon.trim().toUpperCase()}`);
       const d = await r.json();
       if (d.found) {
-        if (d.maxAmount && 990 > d.maxAmount) { setError(`이 쿠폰은 ₩${d.maxAmount.toLocaleString()} 이하 상품에만 사용 가능해요.`); setCouponData(null); }
+        if (d.maxAmount && AMOUNT > d.maxAmount) { setError(`이 쿠폰은 ₩${d.maxAmount.toLocaleString()} 이하 상품에만 사용 가능해요.`); setCouponData(null); }
         else { setCouponData(d); setError(""); }
       } else { setError("유효하지 않은 쿠폰이에요."); setCouponData(null); }
     } catch { setError("쿠폰 확인 중 오류가 발생했어요."); }
@@ -51,10 +51,11 @@ export default function DietPayPage() {
       setLoading(true);
       try {
         const _ph = mobile.replace(/\D/g,"");
-        const _until = Date.now()+30*24*60*60*1000;
+        const _until24 = Date.now()+24*60*60*1000;
+        const _until30 = Date.now()+30*24*60*60*1000;
         const _unlocks: Record<string,number> = couponData.fullAccess
-          ? {haemong_unlock_until:_until,gamjung_unlock_until:_until,budget_unlock_until:_until,tarot_unlock_until:_until,petun_unlock_until:_until,diet_unlock_until:_until,momcare_unlock_until:_until}
-          : {diet_unlock_until:_until};
+          ? {haemong_unlock_until:_until24,gamjung_unlock_until:_until30,budget_unlock_until:_until30,tarot_unlock_until:_until24,petun_unlock_until:_until24,diet_unlock_until:_until30,momcare_unlock_until:_until30}
+          : {diet_unlock_until:_until30};
         Object.entries(_unlocks).forEach(([k,v])=>{try{localStorage.setItem(k,String(v));}catch{}});
         if(_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
         fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`diet_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"다이어트 쿠폰",source:"diet"})}).catch(()=>{});
@@ -115,25 +116,25 @@ export default function DietPayPage() {
             <span style={{ fontSize:13, color:"#6b7280" }}>이용권 선택</span>
           </div>
           <p style={{ textAlign:"center", fontSize:18, fontWeight:900, color:"white", margin:"0 0 6px" }}>이용권을 선택해 주세요</p>
-          <p style={{ textAlign:"center", fontSize:13, color:"#9ca3af", margin:"0 0 24px" }}>다이어트 단독권 또는 7개앱 풀패스</p>
+          <p style={{ textAlign:"center", fontSize:13, color:"#9ca3af", margin:"0 0 24px" }}>다이어트 단독권 또는 4개앱 풀패스</p>
           <div onClick={()=>setShowForm(true)} style={{ cursor:"pointer", border:"1px solid rgba(255,255,255,0.18)", borderRadius:18, padding:"20px 18px", marginBottom:14, background:"rgba(255,255,255,0.04)" }}>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
-              <span style={{ fontSize:20, fontWeight:900, color:"white" }}>₩990</span>
+              <span style={{ fontSize:20, fontWeight:900, color:"white" }}>₩1,980</span>
               <span style={{ fontSize:12, color:"#9ca3af" }}>이 앱만 30일</span>
             </div>
             <p style={{ fontSize:14, color:"#d1d5db", margin:0 }}>🥗 다이어트 30일권</p>
-            <p style={{ fontSize:12, color:"#6b7280", margin:"4px 0 0" }}>결제 완료 후 다이어트 앱 30일 이용 가능</p>
+            <p style={{ fontSize:12, color:"#6b7280", margin:"4px 0 0" }}>추가 결제 시 기간 연장</p>
           </div>
           <div onClick={()=>{ window.location.href="/pass"; }} style={{ cursor:"pointer", border:"2px solid #f59e0b", borderRadius:18, padding:"20px 18px", marginBottom:24, background:"rgba(245,158,11,0.06)" }}>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
-              <span style={{ fontSize:20, fontWeight:900, color:"#fbbf24" }}>₩4,900</span>
+              <span style={{ fontSize:20, fontWeight:900, color:"#fbbf24" }}>₩5,900</span>
               <span style={{ background:"linear-gradient(135deg,#f59e0b,#ef4444)", color:"white", fontSize:11, fontWeight:900, padding:"3px 10px", borderRadius:20 }}>🔥 추천</span>
             </div>
-            <p style={{ fontSize:14, color:"#fcd34d", margin:"0 0 4px", fontWeight:700 }}>7개앱 30일 풀패스</p>
-            <p style={{ fontSize:12, color:"#d97706", margin:0 }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·육아일기</p>
-            <p style={{ fontSize:12, color:"#9ca3af", margin:"6px 0 0" }}>앱 하나 값으로 7개앱 전부 30일 이용</p>
+            <p style={{ fontSize:14, color:"#fcd34d", margin:"0 0 4px", fontWeight:700 }}>4개앱 30일 풀패스</p>
+            <p style={{ fontSize:12, color:"#d97706", margin:0 }}>감정일기·다이어트·가계부·육아일기</p>
+            <p style={{ fontSize:12, color:"#9ca3af", margin:"6px 0 0" }}>일기류 4개 앱 전부 30일 이용</p>
           </div>
-          <p style={{ fontSize:11, color:"#6b7280", textAlign:"center" }}>990원 이용권은 다이어트 앱 하나만 30일 이용 가능합니다.</p>
+          <p style={{ fontSize:11, color:"#6b7280", textAlign:"center" }}>1,980원 이용권은 다이어트 앱 하나만 30일 이용 가능합니다.</p>
         </div>
       </div>
     );
