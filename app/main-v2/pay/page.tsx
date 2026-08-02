@@ -237,8 +237,7 @@ function PayInner() {
         } catch {}
       }
       try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({...sp, phone: cleanMobile, email: email.trim()})); } catch {}
-      try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); } catch {}
-      try { localStorage.setItem("momcare_unlock_until", String(Date.now() + 30 * 24 * 60 * 60 * 1000)); } catch {}
+      try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); localStorage.setItem("haemong_unlock_until", String(_h)); } catch {}
       if (displayAmount > 0 && name.trim()) {
         fetch("/api/v2/save-payment", {
           method: "POST",
