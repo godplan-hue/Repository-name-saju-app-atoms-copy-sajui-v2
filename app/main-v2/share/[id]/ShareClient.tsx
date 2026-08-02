@@ -366,14 +366,6 @@ export default function ShareClient({ id }: { id: string }) {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
 
-        {/* ── 꼭 읽어보세요 버튼 ── */}
-        <button
-          onClick={() => setShowGuideModal(true)}
-          style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
-        >
-          📌 꼭 읽어보세요 · 자세히 보기 →
-        </button>
-
         {isOwner && !entry.businessName && <KakaoShareCouponBanner />}
         {isOwner && !entry.businessName && (
           <div onClick={() => nav("/share-coupon")} style={{ margin: "0 0 8px", borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(220,38,38,0.15)", border: "1.5px solid #fca5a5" }}>
