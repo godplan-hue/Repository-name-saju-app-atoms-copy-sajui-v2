@@ -11,12 +11,14 @@ const UNLOCK_KEYS: Record<string, string> = {
   "/budget":   "budget_unlock_until",
 };
 
-function daysLeft(key: string): number {
+function getUnlockStatus(key: string): { days: number; expired: boolean } {
   try {
-    const until = Number(localStorage.getItem(key) || 0);
-    if (!until || until < Date.now()) return 0;
-    return Math.ceil((until - Date.now()) / (24 * 60 * 60 * 1000));
-  } catch { return 0; }
+    const val = localStorage.getItem(key);
+    if (!val) return { days: 0, expired: false };
+    const until = Number(val);
+    if (until < Date.now()) return { days: 0, expired: true };
+    return { days: Math.ceil((until - Date.now()) / (24 * 60 * 60 * 1000)), expired: false };
+  } catch { return { days: 0, expired: false }; }
 }
 
 const TOP_APPS = [
@@ -61,14 +63,27 @@ const GRID_APPS = [
 
 export default function AppsPage() {
   const [unlocks, setUnlocks] = useState<Record<string, number>>({});
+  const [expired, setExpired] = useState<Record<string, boolean>>({});
+  const [showExpiredModal, setShowExpiredModal] = useState(false);
 
   useEffect(() => {
-    const map: Record<string, number> = {};
+    const daysMap: Record<string, number> = {};
+    const expiredMap: Record<string, boolean> = {};
     Object.entries(UNLOCK_KEYS).forEach(([href, key]) => {
-      map[href] = daysLeft(key);
+      const s = getUnlockStatus(key);
+      daysMap[href] = s.days;
+      expiredMap[href] = s.expired;
     });
-    setUnlocks(map);
+    setUnlocks(daysMap);
+    setExpired(expiredMap);
   }, []);
+
+  const handleAppClick = (e: React.MouseEvent, href: string) => {
+    if (expired[href]) {
+      e.preventDefault();
+      setShowExpiredModal(true);
+    }
+  };
 
   // 이용 중인 앱 목록 (남은 날짜 있는 것)
   const activeApps = Object.entries(unlocks).filter(([, d]) => d > 0);
@@ -76,6 +91,19 @@ export default function AppsPage() {
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0f0520 0%, #1e1040 50%, #0a0818 100%)", padding: "20px 14px 48px" }}>
       <div style={{ maxWidth: 480, margin: "0 auto" }}>
+
+        {/* 만료 모달 */}
+        {showExpiredModal && (
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 20px" }} onClick={() => setShowExpiredModal(false)}>
+            <div style={{ background: "#1e1040", border: "1.5px solid rgba(167,139,250,0.4)", borderRadius: 20, padding: "28px 22px", maxWidth: 320, width: "100%", textAlign: "center" }} onClick={e => e.stopPropagation()}>
+              <div style={{ fontSize: 36, marginBottom: 12 }}>😢</div>
+              <div style={{ fontSize: 17, fontWeight: 900, color: "#fff", marginBottom: 8 }}>이용 기간이 종료됐어요</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginBottom: 24, lineHeight: 1.6 }}>재결제 후 다시 이용하실 수 있어요.</div>
+              <button onClick={() => { window.location.href = "/pass"; }} style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#a855f7)", color: "#fff", border: "none", borderRadius: 50, padding: "13px 0", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>재결제하기 →</button>
+              <button onClick={() => setShowExpiredModal(false)} style={{ width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.6)", borderRadius: 50, padding: "11px 0", fontSize: 14, cursor: "pointer" }}>닫기</button>
+            </div>
+          </div>
+        )}
 
         {/* 헤더 */}
         <div style={{ textAlign: "center", marginBottom: 20 }}>
@@ -122,6 +150,7 @@ export default function AppsPage() {
               <a
                 key={app.href}
                 href={app.href}
+                onClick={(e) => handleAppClick(e, app.href)}
                 style={{ position: "relative", height: 180, borderRadius: 20, overflow: "hidden", border: d > 0 ? "2px solid #4ade80" : `1.5px solid ${app.border}`, textDecoration: "none", display: "block" }}
               >
                 <img src={app.img} alt={app.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
@@ -147,6 +176,7 @@ export default function AppsPage() {
               <a
                 key={app.href}
                 href={app.href}
+                onClick={(e) => handleAppClick(e, app.href)}
                 style={{ position: "relative", borderRadius: 20, overflow: "hidden", textDecoration: "none", aspectRatio: "1/1", display: "block", outline: d > 0 ? "2px solid #4ade80" : "none" }}
               >
                 {app.img ? (
