@@ -64,12 +64,8 @@ export default function PassPage() {
     const unlocks: Record<string,number> = {};
     PASS_APPS.forEach(app => {
       try {
-        const local = Number(localStorage.getItem(app.key)||0);
-        const fb = Number(fbUnlocks[app.key]||0);
-        const prev = Math.max(local, fb);
-        const u = prev > Date.now() ? prev+30*24*60*60*1000 : baseUntil;
-        localStorage.setItem(app.key, String(u));
-        unlocks[app.key] = u;
+        localStorage.setItem(app.key, String(baseUntil));
+        unlocks[app.key] = baseUntil;
       } catch {}
     });
     if (phone) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone,unlocks})}).catch(()=>{});
