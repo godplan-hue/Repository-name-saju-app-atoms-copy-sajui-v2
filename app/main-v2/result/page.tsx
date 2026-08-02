@@ -526,16 +526,18 @@ function V2ResultInner() {
           setShareId(data.id ?? "");
           // URL에 ?sid 추가 — KakaoTalk 탭 전환 후 복원용 (localStorage 단절 방어)
           if (data.id) { try { history.replaceState(null, "", `/main-v2/result?sid=${data.id}`); } catch {} }
-          // 결제 시 입력한 번호로 영구 결과 링크 SMS 발송
+          // 결제 시 입력한 번호로 결과지 링크 카카오 알림톡 발송
           try {
-            const phone = sessionStorage.getItem("v2_payment_phone");
-            if (phone) {
-              fetch("/api/v2/send-sms", {
+            const phone = sessionStorage.getItem("v2_payment_phone") || localStorage.getItem("v2_saved_phone") || "";
+            const amount = localStorage.getItem("price") || "";
+            if (phone && data.id) {
+              fetch("/api/notify", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                  to: phone,
-                  text: `[점운] 사주 분석이 완료됐어요 🔮\n언제든 다시 확인하세요!\nhttps://jeomun.com/main-v2/result?sid=${data.id}`,
+                  phone,
+                  amount,
+                  link: `https://jeomun.com/main-v2/result?sid=${data.id}`,
                 }),
               }).catch(() => {});
               sessionStorage.removeItem("v2_payment_phone");

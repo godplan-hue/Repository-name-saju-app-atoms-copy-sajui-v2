@@ -265,9 +265,7 @@ function PayInner() {
           localStorage.removeItem("referred_by");
         }
       } catch {}
-      if (cleanMobile) {
-        await fetch("/api/notify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: cleanMobile, amount: displayAmount }) }).catch(() => {});
-      }
+
       if (!isTaegil) {
         localStorage.setItem("v2_paid", "1");
         localStorage.setItem("price", String(amount));
