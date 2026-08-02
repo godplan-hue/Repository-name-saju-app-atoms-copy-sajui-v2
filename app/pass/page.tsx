@@ -84,6 +84,7 @@ export default function PassPage() {
       await unlockApps(ph);
       fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:ph,name:name.trim()||"",amount:0,category:"풀패스 쿠폰",source:"pass"})}).catch(()=>{});
       fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
+      fetch("/api/notify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:ph,amount:0,link:"https://jeomun.com/apps"})}).catch(()=>{});
       window.location.href = "/apps";
     } finally { setLoading(false); }
   };
