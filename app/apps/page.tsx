@@ -117,7 +117,6 @@ export default function AppsPage() {
           <div style={{ borderRadius: 16, overflow: "hidden", marginBottom: 14, border: "2px solid #4ade80", boxShadow: "0 2px 14px rgba(74,222,128,0.25)" }}>
             <div style={{ background: "linear-gradient(135deg,#14532d,#16a34a)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>✅ 풀패스 이용 중</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>{Math.max(...activeApps.map(([,d])=>d))}일 남음</span>
             </div>
             <div style={{ background: "#f0fdf4", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <p style={{ fontSize: 12, color: "#14532d", margin: 0, lineHeight: 1.6 }}>7개 앱 전체 이용 가능 · 만료 후 자동 잠금</p>
