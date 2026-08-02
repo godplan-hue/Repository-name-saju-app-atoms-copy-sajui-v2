@@ -64,13 +64,8 @@ export default function AppsPage() {
 
   useEffect(() => {
     const map: Record<string, number> = {};
-    const maxUntil = Date.now() + 30 * 24 * 60 * 60 * 1000;
     Object.entries(UNLOCK_KEYS).forEach(([href, key]) => {
-      const d = daysLeft(key);
-      if (d > 30) {
-        try { localStorage.setItem(key, String(maxUntil)); } catch {}
-      }
-      map[href] = Math.min(30, d);
+      map[href] = daysLeft(key);
     });
     setUnlocks(map);
   }, []);

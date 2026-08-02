@@ -64,8 +64,10 @@ export default function PassPage() {
     const unlocks: Record<string,number> = {};
     PASS_APPS.forEach(app => {
       try {
-        localStorage.setItem(app.key, String(baseUntil));
-        unlocks[app.key] = baseUntil;
+        const prev = Number(localStorage.getItem(app.key) || 0);
+        const until = prev > Date.now() ? prev + 30*24*60*60*1000 : baseUntil;
+        localStorage.setItem(app.key, String(until));
+        unlocks[app.key] = until;
       } catch {}
     });
     if (phone) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone,unlocks})}).catch(()=>{});
@@ -209,7 +211,7 @@ export default function PassPage() {
           <p style={{ margin:0, fontSize:11, color:"rgba(255,255,255,0.7)", lineHeight:1.9 }}>
             · 인앱브라우저(카카오톡 등)에서는 PC 기기에서 결제가 안 될 수 있어요.<br />
             (앱 목록 /apps → 이용권 불러오기)<br />
-            · 결제 시 이용 기간은 항상 오늘부터 30일로 새로 시작돼요.
+            · 이미 이용 중인 앱이 있다면 남은 기간에 30일이 자동으로 추가 연장돼요.
           </p>
         </div>
 
