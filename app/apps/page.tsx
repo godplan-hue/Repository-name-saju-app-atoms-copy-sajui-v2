@@ -34,15 +34,15 @@ const TOP_APPS = [
     border: "rgba(167,139,250,0.35)",
   },
   {
-    href: "/momcare",
-    img: "https://i.pinimg.com/736x/19/f1/9c/19f19c6326262bd03985e28c1c45226c.jpg",
-    title: "👶 육아일기",
-    sub: "AI 육아 · 아기 기록",
-    desc: "일기 · 타임캡슐 · 아기말",
-    badge: "30일",
-    badgeBg: "#be185d",
-    overlay: "linear-gradient(to top, rgba(131,24,67,0.88) 0%, rgba(190,24,93,0.35) 55%, rgba(0,0,0,0) 100%)",
-    border: "rgba(251,113,133,0.35)",
+    href: "/partner",
+    img: "https://i.pinimg.com/736x/6f/69/94/6f699457d35927bd3ea33cb6f789dd6e.jpg",
+    title: "🤝 파트너",
+    sub: "내 브랜드로 판매",
+    desc: "탈잉 · 크몽 · SNS 판매 OK",
+    badge: "신청",
+    badgeBg: "#a21caf",
+    overlay: "linear-gradient(to top, rgba(80,10,100,0.88) 0%, rgba(162,28,175,0.45) 55%, rgba(0,0,0,0) 100%)",
+    border: "rgba(240,171,252,0.35)",
   },
 ];
 
@@ -58,7 +58,7 @@ const GRID_APPS = [
   { href: "/gamjung", emoji: "📔", label: "감정일기", sub: "감정 기록 · 치유 일기", desc: "오행 감정 흐름 분석",          badge: "30일", color: "#be185d", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)", img: "https://i.pinimg.com/736x/7e/ad/71/7ead71fd8ff5c3d3d57abab4b5b01347.jpg" },
   { href: "/diet",    emoji: "🥗", label: "다이어트", sub: "오행 체질 식단 추천",   desc: "칼로리 계산 + 맞춤 음식",     badge: "30일", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)", img: "https://i.pinimg.com/1200x/f1/11/77/f11177335015269c22af426b13f423bc.jpg" },
   { href: "/budget",  emoji: "💰", label: "가계부",  sub: "일기식 재물 기록",       desc: "지출 · 수입 · 재물운 연결",   badge: "30일", color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)", img: "https://i.pinimg.com/736x/73/84/95/738495640e6c2d69d0632c59be89818f.jpg" },
-  { href: "/partner", emoji: "🤝", label: "파트너",  sub: "내 브랜드로 판매",       desc: "탈잉 · 크몽 · SNS 판매 OK",  badge: "신청", color: "#a21caf", bg: "linear-gradient(145deg,#fdf4ff,#f0abfc)", img: "https://i.pinimg.com/736x/6f/69/94/6f699457d35927bd3ea33cb6f789dd6e.jpg" },
+  { href: "/momcare", emoji: "👶", label: "육아일기", sub: "AI 육아 · 아기 기록",    desc: "일기 · 타임캡슐 · 아기말",   badge: "30일", color: "#be185d", bg: "linear-gradient(145deg,#fce7f3,#fbcfe8)", img: "https://i.pinimg.com/736x/19/f1/9c/19f19c6326262bd03985e28c1c45226c.jpg" },
 ];
 
 export default function AppsPage() {

@@ -385,6 +385,11 @@ export default function ShareClient({ id }: { id: string }) {
           </button>
         )}
 
+        {/* 꼭읽어보세요 버튼 — PC·모바일 공통 */}
+        <button onClick={() => setShowGuideModal(true)} style={{ width:"100%", padding:"13px 16px", marginBottom:14, background:"#dc2626", color:"white", border:"none", borderRadius:50, fontWeight:900, fontSize:14, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:6, boxShadow:"0 2px 10px rgba(220,38,38,0.35)" }}>
+          📌 꼭 읽어보세요 · 자세히 보기 →
+        </button>
+
         {/* 분석 내용 캡처 영역 — 이미지 저장 시 이 범위만 캡처 */}
         <div ref={contentRef}>
 

@@ -1,15 +1,10 @@
-﻿"use client";
+"use client";
 import { useState, useEffect } from "react";
 
 const AMOUNT = 1980;
 
 export default function DietPayPage() {
   const [showForm, setShowForm] = useState(false);
-  const [cardNo, setCardNo] = useState("");
-  const [expM, setExpM] = useState("");
-  const [expY, setExpY] = useState("");
-  const [birth, setBirth] = useState("");
-  const [pw, setPw] = useState("");
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,11 +15,10 @@ export default function DietPayPage() {
   const [refundAgreed, setRefundAgreed] = useState(false);
   const [showRefund, setShowRefund] = useState(false);
 
-  const fmt = (v: string) => { const d = v.replace(/\D/g,"").slice(0,19); return d.match(/.{1,4}/g)?.join(" ")??d; };
-
   useEffect(() => {
     try {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.name) setName(p.name);
       if (p.phone) setMobile(p.phone.replace(/\D/g,"").slice(0,11));
     } catch {}
   }, []);
@@ -43,11 +37,13 @@ export default function DietPayPage() {
     finally { setCouponLoading(false); }
   };
 
-  const pay = async () => {
+  const isFree = couponData && (Math.round(AMOUNT*(1-couponData.discountPercent/100))===0 || couponData.fullAccess);
+  const finalAmount = couponData ? Math.round(AMOUNT*(1-couponData.discountPercent/100)) : AMOUNT;
+
+  const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {
     if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
-    if (mobile.replace(/\D/g,"").length < 10) { setError("다른 기기에서도 이용하시려면 휴대폰 번호를 입력해주세요."); return; }
-    const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
-    if (couponData && (finalAmount === 0 || couponData.fullAccess)) {
+    if (mobile.replace(/\D/g,"").length < 10) { setError("휴대폰 번호를 입력해주세요."); return; }
+    if (isFree) {
       setLoading(true);
       try {
         const _ph = mobile.replace(/\D/g,"");
@@ -64,35 +60,35 @@ export default function DietPayPage() {
       } finally { setLoading(false); }
       return;
     }
-    const clean = cardNo.replace(/\s/g,"");
-    if (clean.length < 14) { setError("카드번호를 확인해주세요."); return; }
-    if (!expM || !expY) { setError("유효기간을 입력해주세요."); return; }
-    if (birth.length !== 6) { setError("생년월일 앞 6자리(YYMMDD)를 입력해주세요."); return; }
-    if (pw.length !== 2) { setError("카드 비밀번호 앞 2자리를 입력해주세요."); return; }
-    if (!name.trim()) { setError("이름을 입력해주세요."); return; }
     setLoading(true); setError("");
     try {
-      const res = await fetch("/api/payup/charge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardNo: clean, expireMonth: expM.padStart(2,"0"), expireYear: expY.slice(-2), birthday: birth, cardPw: pw, amount: finalAmount, itemName: "점운 다이어트 30일권", userName: name.trim(), mobileNumber: mobile.replace(/\D/g,"") }),
+      const cleanMobile = mobile.replace(/\D/g,"");
+      const channelKey = method === "KAKAOPAY"
+        ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
+        : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
+      const portone = await import("@portone/browser-sdk/v2");
+      const res = await portone.requestPayment({
+        storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
+        channelKey,
+        paymentId: `diet_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+        orderName: "점운 다이어트 30일권",
+        totalAmount: finalAmount,
+        currency: "KRW",
+        payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
+        ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
+        customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile },
       });
-      const data = await res.json();
-      if (data.success) {
-        if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-        const _ph = mobile.replace(/\D/g,"");
-        let _fbUntil = 0;
-        if (_ph) { try { const _r = await fetch(`/api/phone-unlock?phone=${_ph}`); const _d = await _r.json(); if (_d.ok) _fbUntil = Number(_d.unlocks?.diet_unlock_until||0); } catch {} }
-        const _local = Number(localStorage.getItem("diet_unlock_until")||0);
-        const _p = Math.max(_local, _fbUntil);
-        const _until = (_p>Date.now()?_p:Date.now())+30*24*60*60*1000;
-        try { localStorage.setItem("diet_unlock_until", String(_until)); } catch {}
-        if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:{diet_unlock_until:_until}})}).catch(()=>{});
-        fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: `diet_${Date.now()}`, phone: _ph||"", name: name.trim(), amount: finalAmount, category: "다이어트 30일권", source: "diet" }) }).catch(()=>{});
-        window.location.href = "/diet";
-      } else {
-        setError(data.message || data.error || "결제에 실패했습니다. 카드 정보를 확인해주세요.");
-      }
+      if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); return; }
+      if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
+      let _fbUntil = 0;
+      if (cleanMobile) { try { const _r = await fetch(`/api/phone-unlock?phone=${cleanMobile}`); const _d = await _r.json(); if (_d.ok) _fbUntil = Number(_d.unlocks?.diet_unlock_until||0); } catch {} }
+      const _local = Number(localStorage.getItem("diet_unlock_until")||0);
+      const _p = Math.max(_local, _fbUntil);
+      const _until = (_p>Date.now()?_p:Date.now())+30*24*60*60*1000;
+      try { localStorage.setItem("diet_unlock_until", String(_until)); } catch {}
+      if (cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,unlocks:{diet_unlock_until:_until}})}).catch(()=>{});
+      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`diet_${Date.now()}`,phone:cleanMobile||"",name:name.trim()||"",amount:finalAmount,category:"다이어트 30일권",source:"diet"})}).catch(()=>{});
+      window.location.href = "/diet";
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
     finally { setLoading(false); }
   };
@@ -104,8 +100,6 @@ export default function DietPayPage() {
     input: { width:"100%", background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:12, padding:"13px 14px", color:"white", fontSize:15, outline:"none", boxSizing:"border-box" as const },
     row: { marginBottom:16 },
   };
-
-  const isFree = couponData && (Math.round(AMOUNT*(1-couponData.discountPercent/100))===0 || couponData.fullAccess);
 
   if (!showForm) {
     return (
@@ -163,58 +157,55 @@ export default function DietPayPage() {
               {couponLoading?"...":"적용"}
             </button>
           </div>
-          {couponData && <p style={{ fontSize:12, color:"#4ade80", marginTop:8, marginBottom:0 }}>✅ {isFree?"무료 이용권 — 카드 없이 바로 이용 가능!":`${couponData.discountPercent}% 할인 → ₩${Math.round(AMOUNT*(1-couponData.discountPercent/100)).toLocaleString()}`}</p>}
+          {couponData && <p style={{ fontSize:12, color:"#4ade80", marginTop:8, marginBottom:0 }}>✅ {isFree?"무료 이용권 — 카드 없이 바로 이용 가능!":`${couponData.discountPercent}% 할인 → ₩${finalAmount.toLocaleString()}`}</p>}
+        </div>
+
+        <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:18, padding:"20px 18px", marginBottom:16 }}>
+          <div style={S.row}><label style={S.label}>이름 (선택)</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
+          <div><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
         </div>
 
         {!isFree && (
-          <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:18, padding:"20px 18px", marginBottom:16 }}>
-            <p style={{ fontSize:13, fontWeight:900, color:"#a78bfa", margin:"0 0 16px" }}>💳 카드 정보 입력</p>
-            <div style={S.row}><label style={S.label}>카드번호</label><input style={S.input} placeholder="0000 0000 0000 0000" value={cardNo} onChange={e=>setCardNo(fmt(e.target.value))} inputMode="numeric" /></div>
-            <div style={{ display:"flex", gap:10, marginBottom:16 }}>
-              <div style={{ flex:1 }}><label style={S.label}>유효기간 월 (MM)</label><input style={S.input} placeholder="MM" maxLength={2} value={expM} onChange={e=>setExpM(e.target.value.replace(/\D/g,"").slice(0,2))} inputMode="numeric" /></div>
-              <div style={{ flex:1 }}><label style={S.label}>유효기간 년 (YY)</label><input style={S.input} placeholder="YY" maxLength={2} value={expY} onChange={e=>setExpY(e.target.value.replace(/\D/g,"").slice(0,2))} inputMode="numeric" /></div>
+          <div style={{ marginBottom:12 }}>
+            <button type="button" onClick={()=>setShowRefund(v=>!v)} style={{ background:"none", border:"none", color:"#9ca3af", fontSize:12, cursor:"pointer", padding:"4px 0", display:"flex", alignItems:"center", gap:4 }}>
+              📋 결제 전 확인사항 {showRefund?"▲":"▼"}
+            </button>
+            {showRefund && (
+              <div style={{ marginTop:8, background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"12px 14px" }}>
+                <p style={{ fontSize:12, color:"#9ca3af", margin:0, lineHeight:1.6 }}>디지털 콘텐츠 특성상, 이용이 시작된 후에는 취소가 어렵습니다.</p>
+              </div>
+            )}
+            <div onClick={()=>setRefundAgreed(v=>!v)} style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", userSelect:"none" as const, marginTop:8 }}>
+              <span style={{ fontSize:18, color:refundAgreed?"#4ade80":"#9ca3af", lineHeight:1 }}>{refundAgreed?"✅":"⬜"}</span>
+              <span style={{ fontSize:12, color:refundAgreed?"#4ade80":"rgba(255,255,255,0.6)", fontWeight:refundAgreed?700:400 }}>네, 확인했어요!</span>
             </div>
-            <div style={{ display:"flex", gap:10, marginBottom:16 }}>
-              <div style={{ flex:1 }}><label style={S.label}>생년월일 앞 6자리</label><input style={S.input} placeholder="YYMMDD" maxLength={6} value={birth} onChange={e=>setBirth(e.target.value.replace(/\D/g,"").slice(0,6))} inputMode="numeric" /></div>
-              <div style={{ flex:1 }}><label style={S.label}>카드 비밀번호 앞 2자리</label><input style={S.input} placeholder="••" maxLength={2} type="password" value={pw} onChange={e=>setPw(e.target.value.replace(/\D/g,"").slice(0,2))} inputMode="numeric" /></div>
-            </div>
-            <div style={S.row}><label style={S.label}>이름</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
-            <div style={S.row}><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
           </div>
         )}
-        {isFree && (
-          <div style={{ marginBottom:16 }}>
-            <div style={S.row}><label style={S.label}>이름 (선택)</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
-            <div style={S.row}><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
-          </div>
-        )}
-        <div style={{ marginBottom:12 }}>
-          <button type="button" onClick={()=>setShowRefund(v=>!v)} style={{ background:"none", border:"none", color:"#9ca3af", fontSize:12, cursor:"pointer", padding:"4px 0", display:"flex", alignItems:"center", gap:4 }}>
-            📋 결제 전 확인사항 {showRefund?"▲":"▼"}
-          </button>
-          {showRefund && (
-            <div style={{ marginTop:8, background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"12px 14px" }}>
-              <p style={{ fontSize:12, color:"#9ca3af", margin:0, lineHeight:1.6 }}>디지털 콘텐츠 특성상, 이용이 시작된 후에는 취소가 어렵습니다.</p>
-            </div>
-          )}
-          <div onClick={()=>setRefundAgreed(v=>!v)} style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", userSelect:"none" as const, marginTop:8 }}>
-            <span style={{ fontSize:18, color:refundAgreed?"#4ade80":"#9ca3af", lineHeight:1 }}>{refundAgreed?"✅":"⬜"}</span>
-            <span style={{ fontSize:12, color:refundAgreed?"#4ade80":"rgba(255,255,255,0.6)", fontWeight:refundAgreed?700:400 }}>네, 확인했어요!</span>
-          </div>
-        </div>
         {error && <p style={{ color:"#f87171", fontSize:13, textAlign:"center", marginBottom:12 }}>{error}</p>}
-        <button onClick={pay} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"rgba(101,163,13,0.5)":"linear-gradient(135deg,#65a30d,#16a34a)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer", marginBottom:12 }}>
-          {loading?"처리 중...":isFree?"🎟 무료로 이용하기":couponData?`₩${Math.round(AMOUNT*(1-couponData.discountPercent/100)).toLocaleString()} 결제하기`:`₩${AMOUNT.toLocaleString()} 결제하기`}
-        </button>
+
+        {isFree ? (
+          <button onClick={()=>pay()} disabled={loading} style={{ width:"100%", background:loading?"rgba(101,163,13,0.5)":"linear-gradient(135deg,#65a30d,#16a34a)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:loading?"not-allowed":"pointer", marginBottom:12 }}>
+            {loading?"처리 중...":"🎟 무료로 이용하기"}
+          </button>
+        ) : (
+          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:16 }}>
+            <button onClick={()=>pay("CARD")} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"rgba(101,163,13,0.5)":"linear-gradient(135deg,#65a30d,#16a34a)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer" }}>
+              {loading?"결제 처리 중...":"💳 신용카드로 결제"}
+            </button>
+            <button onClick={()=>pay("KAKAOPAY")} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"#bba000":"#FEE500", color:(loading||!refundAgreed)?"rgba(0,0,0,0.4)":"#3C1E1E", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer" }}>
+              💛 카카오페이로 결제
+            </button>
+          </div>
+        )}
+
         <div style={{ marginBottom:16, padding:"12px 14px", background:"rgba(251,191,36,0.08)", borderRadius:12, border:"1px solid rgba(251,191,36,0.3)" }}>
           <p style={{ margin:"0 0 6px", fontSize:12, fontWeight:900, color:"#fbbf24" }}>⚠️ 꼭 확인하세요</p>
           <p style={{ margin:0, fontSize:11, color:"rgba(255,255,255,0.7)", lineHeight:1.7 }}>
             · 전화번호를 입력하시면 PC·모바일 어떤 기기에서도 이용 가능해요.<br />
-            (앱 목록 /apps → 이용권 불러오기)<br />
             · 이미 이용 중이라면 남은 기간에 자동으로 연장돼요.
           </p>
         </div>
-        <p style={{ fontSize:11, color:"#6b7280", textAlign:"center", lineHeight:1.6 }}>결제 후 다이어트 앱 30일 이용권이 즉시 적용돼요.<br />카드 정보는 결제 후 저장되지 않습니다.</p>
+        <p style={{ fontSize:11, color:"#6b7280", textAlign:"center", lineHeight:1.6 }}>결제 후 다이어트 앱 30일 이용권이 즉시 적용돼요.</p>
       </div>
     </div>
   );
