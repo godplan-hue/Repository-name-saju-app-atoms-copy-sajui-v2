@@ -209,7 +209,7 @@ export default function PassPage() {
           <p style={{ margin:0, fontSize:11, color:"rgba(255,255,255,0.7)", lineHeight:1.9 }}>
             · 인앱브라우저(카카오톡 등)에서는 PC 기기에서 결제가 안 될 수 있어요.<br />
             (앱 목록 /apps → 이용권 불러오기)<br />
-            · 이미 이용 중인 앱이 있다면 남은 기간에 30일이 자동으로 추가 연장돼요.
+            · 결제 시 이용 기간은 항상 오늘부터 30일로 새로 시작돼요.
           </p>
         </div>
 
