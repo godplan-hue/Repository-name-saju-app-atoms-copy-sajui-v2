@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
@@ -33,7 +33,6 @@ function PaymentInner() {
   };
   const preselectInfo = preselectId ? PRESELECT_INFO[preselectId] : undefined;
   const selectedPackage = highlightWealthLove ? "기본 분석" : preselectInfo ? preselectInfo.name : "기본 분석";
-  const selectedFeatures = highlightWealthLove ? ["wealthLuck", "loveLuck"] : preselectInfo ? preselectInfo.features : ["wealthLuck", "loveLuck"];
   const [isPartner, setIsPartner] = useState(false);
   const [brand, setBrand] = useState<{ businessName: string; logoUrl: string; customPriceBasic?: string; customPriceStandard?: string; customPricePremium?: string; customPriceVip?: string } | null>(null);
   useEffect(() => {
@@ -47,6 +46,10 @@ function PaymentInner() {
         .then(data => { if (data) setBrand(data); })
         .catch(() => {});
     }
+    try {
+      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      if (p.phone) setModalMobile(p.phone.replace(/\D/g,"").slice(0,11));
+    } catch {}
   }, []);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -76,7 +79,6 @@ function PaymentInner() {
     }
   };
 
-  // 쿠폰 소진은 결제 성공 후에만 — 여기선 로컬 계산만
   const finalPrice = (originalPrice: number): number => {
     if (!appliedDiscount) return originalPrice;
     if (appliedDiscount.maxAmount && originalPrice > appliedDiscount.maxAmount) return originalPrice;
@@ -94,109 +96,80 @@ function PaymentInner() {
     } catch {}
   };
 
-
-  const [analysisName, setAnalysisName] = useState("");
+  const [_analysisName, setAnalysisName] = useState("");
   const [awaitOther, setAwaitOther] = useState<{ id: string; label: string } | null>(null);
   const [otherInput, setOtherInput] = useState("");
 
-  // PayUp 카드결제 모달 상태
-  const [puPending, setPuPending] = useState<{ price: number; nextUrl: string } | null>(null);
-  const [puCardNo, setPuCardNo] = useState("");
-  const [puExpM, setPuExpM] = useState("");
-  const [puExpY, setPuExpY] = useState("");
-  const [puBirth, setPuBirth] = useState("");
-  const [puPw, setPuPw] = useState("");
-  const [puName, setPuName] = useState("");
-  const [puMobile, setPuMobile] = useState("");
-  const [puLoading, setPuLoading] = useState(false);
-  const [puError, setPuError] = useState("");
+  // PortOne 결제 모달 상태
+  const [showPayModal, setShowPayModal] = useState(false);
+  const [modalPrice, setModalPrice] = useState(0);
+  const [modalNextUrl, setModalNextUrl] = useState("");
+  const [modalName, setModalName] = useState("");
+  const [modalMobile, setModalMobile] = useState("");
+  const [modalLoading, setModalLoading] = useState(false);
+  const [modalError, setModalError] = useState("");
+  const [refundAgreed, setRefundAgreed] = useState(false);
+  const [showRefund, setShowRefund] = useState(false);
 
-  const formatCardNo = (v: string) => {
-    const d = v.replace(/\D/g, "").slice(0, 19);
-    return d.match(/.{1,4}/g)?.join(" ") ?? d;
+  const closePayModal = () => {
+    setShowPayModal(false);
+    setModalError(""); setModalLoading(false);
   };
 
-  const closePuModal = () => {
-    setPuPending(null);
-    setPuCardNo(""); setPuExpM(""); setPuExpY("");
-    setPuBirth(""); setPuPw(""); setPuName(""); setPuMobile(""); setPuError("");
-  };
-
-  const openPuModal = async (price: number, nextUrl: string) => {
-    // 100% 쿠폰으로 0원이 되면 쿠폰 소진 완료 후 이동 (await 필수 — fire-and-forget시 소진 전 이탈 버그)
+  const openPortoneModal = async (price: number, nextUrl: string) => {
     if (price === 0) {
       await consumeCoupon();
       window.location.href = nextUrl;
       return;
     }
-    setPuError("");
-    setPuPending({ price, nextUrl });
+    setModalPrice(price);
+    setModalNextUrl(nextUrl);
+    setModalError("");
+    setShowPayModal(true);
   };
 
-  const payupPay = async () => {
-    if (!puPending) return;
-    const clean = puCardNo.replace(/\s/g, "");
-    if (clean.length < 14) { setPuError("카드번호를 확인해주세요."); return; }
-    if (!puExpM || !puExpY) { setPuError("유효기간을 입력해주세요."); return; }
-    if (puBirth.length !== 6) { setPuError("생년월일 앞 6자리(YYMMDD)를 입력해주세요."); return; }
-    if (puPw.length !== 2) { setPuError("카드 비밀번호 앞 2자리를 입력해주세요."); return; }
-    if (!puName.trim()) { setPuError("이름을 입력해주세요."); return; }
-    setPuLoading(true); setPuError("");
+  const portoneModalPay = async (method: "CARD" | "KAKAOPAY") => {
+    if (!refundAgreed) { setShowRefund(true); setModalError("결제 전 확인사항을 먼저 확인해주세요."); return; }
+    setModalLoading(true); setModalError("");
     try {
-      const res = await fetch("/api/payup/charge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cardNo: clean,
-          expireMonth: puExpM.padStart(2, "0"),
-          expireYear: puExpY.slice(-2),
-          birthday: puBirth,
-          cardPw: puPw,
-          amount: puPending.price,
-          itemName: "점운 운세",
-          userName: puName.trim(),
-          mobileNumber: puMobile.replace(/\D/g, ""),
-        }),
+      const cleanMobile = modalMobile.replace(/\D/g, "");
+      const channelKey = method === "KAKAOPAY"
+        ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
+        : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
+      const portone = await import("@portone/browser-sdk/v2");
+      const _params = new URLSearchParams(modalNextUrl.split("?")[1] || "");
+      const _orderName = _params.get("package") || _params.get("special") || "점운 운세";
+      const res = await portone.requestPayment({
+        storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
+        channelKey,
+        paymentId: `pay_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+        orderName: `점운 ${_orderName}`,
+        totalAmount: modalPrice,
+        currency: "KRW",
+        payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
+        ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
+        customer: { fullName: modalName.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
       });
-      const data = await res.json();
-      if (data.success) {
-        const url = puPending.nextUrl;
-        // 결제 기록 저장 (분석 성공 여부 무관하게 항상 기록)
-        const _puPhone = puMobile.replace(/\D/g, "");
-        if (puPending.price > 0 && puName.trim()) {
-          const _paidParam = new URLSearchParams(url.split("?")[1] || "").get("paid");
-          fetch("/api/v2/save-payment", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id: `pu_${Date.now()}`,
-              date: new Date().toISOString(),
-              name: puName.trim(),
-              phone: _puPhone,
-              amount: puPending.price,
-              package: new URLSearchParams(url.split("?")[1] || "").get("package") || "운세",
-              categories: [],
-              plan: "select",
-              discountCode: "",
-              discountPercent: 0,
-              originalAmount: Number(_paidParam || puPending.price),
-            }),
-          }).catch(() => {});
-          if (_puPhone) {
-            try { localStorage.setItem("v2_saved_phone", _puPhone); sessionStorage.setItem("v2_payment_phone", _puPhone); } catch {}
-          }
-        }
-        await consumeCoupon();
-        closePuModal();
-        window.location.href = url;
-      } else {
-        setPuError(data.error || "결제에 실패했습니다. 다시 시도해주세요.");
+      if (res && "code" in res) { setModalError(res.message || "결제에 실패했습니다."); return; }
+      await consumeCoupon();
+      fetch("/api/v2/save-payment", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: `pay_${Date.now()}`,
+          phone: cleanMobile || "",
+          name: modalName.trim() || "",
+          amount: modalPrice,
+          category: _orderName,
+          source: "payment",
+        }),
+      }).catch(() => {});
+      if (cleanMobile) {
+        try { localStorage.setItem("v2_saved_phone", cleanMobile); } catch {}
       }
-    } catch {
-      setPuError("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
-    } finally {
-      setPuLoading(false);
-    }
+      closePayModal();
+      window.location.href = modalNextUrl;
+    } catch { setModalError("결제 처리 중 오류가 발생했습니다."); }
+    finally { setModalLoading(false); }
   };
 
   useEffect(() => {
@@ -214,63 +187,23 @@ function PaymentInner() {
   }, [highlightWealthLove, searchParams]);
 
   const packages = [
-    {
-      id: "basic",
-      name: "기본 분석",
-      price: "₩9,900",
-      pages: 30,
-      features: ["wealthLuck", "loveLuck"],
-      count: 2,
-      chars: "전문가급 심층 분석",
-      desc: "재물운 + 연애운"
-    },
-    {
-      id: "standard",
-      name: "베이직",
-      price: "₩19,900",
-      pages: 75,
-      features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"],
-      count: 4,
-      chars: "전문가급 심층 분석",
-      desc: "올해 운세 + 재물운 + 연애운 + 월별 운세"
-    },
-    {
-      id: "premium",
-      name: "프리미엄",
-      price: "₩24,900",
-      pages: 100,
-      features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"],
-      count: 5,
-      chars: "전문가급 심층 분석",
-      desc: "올해 운세 + 재물운 + 연애운 + 월별 운세 + 건강운"
-    },
-    {
-      id: "vip",
-      name: "VIP 커플팩",
-      price: "₩29,900",
-      pages: 150,
-      features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"],
-      count: 8,
-      chars: "전문가급 심층 분석",
-      desc: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)"
-    }
+    { id: "basic",    name: "기본 분석",  price: "₩9,900",  pages: 30,  features: ["wealthLuck", "loveLuck"],                                                            count: 2, chars: "전문가급 심층 분석", desc: "재물운 + 연애운" },
+    { id: "standard", name: "베이직",     price: "₩19,900", pages: 75,  features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"],                               count: 4, chars: "전문가급 심층 분석", desc: "올해 운세 + 재물운 + 연애운 + 월별 운세" },
+    { id: "premium",  name: "프리미엄",   price: "₩24,900", pages: 100, features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck", "healthLuck"],                 count: 5, chars: "전문가급 심층 분석", desc: "올해 운세 + 재물운 + 연애운 + 월별 운세 + 건강운" },
+    { id: "vip",      name: "VIP 커플팩", price: "₩29,900", pages: 150, features: ["name", "yearlyLuck", "wealthLuck", "loveLuck", "healthLuck", "couple", "monthlyLuck", "analysis"], count: 8, chars: "전문가급 심층 분석", desc: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)" },
   ];
 
   const fortuneItems = [
-    { id: "name", icon: "📝", name: "이름분석" },
-    { id: "yearlyLuck", icon: "☀️", name: "올해 운세" },
+    { id: "name",        icon: "📝", name: "이름분석" },
+    { id: "yearlyLuck",  icon: "☀️", name: "올해 운세" },
     { id: "monthlyLuck", icon: "🌙", name: "월별 운세" },
-    { id: "analysis", icon: "✨", name: "전체 사주분석" },
-    { id: "wealthLuck", icon: "💎", name: "재물운" },
-    { id: "loveLuck", icon: "💕", name: "연애운" },
-    { id: "healthLuck", icon: "🌿", name: "건강운" },
-    { id: "couple", icon: "👫", name: "궁합분석" }
+    { id: "analysis",    icon: "✨", name: "전체 사주분석" },
+    { id: "wealthLuck",  icon: "💎", name: "재물운" },
+    { id: "loveLuck",    icon: "💕", name: "연애운" },
+    { id: "healthLuck",  icon: "🌿", name: "건강운" },
+    { id: "couple",      icon: "👫", name: "궁합분석" },
   ];
 
-
-  const currentPackage = packages.find(p => p.name === selectedPackage);
-  const currentPages = currentPackage?.pages || 30;
-  const currentCount = currentPackage?.count || 2;
 
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://images.unsplash.com/photo-1719399184315-5ffab4006e18?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fCVFQyVCQiVBOCVFQyU4NSU4OSUyMCVFQyU5NSU4NCVFRCU4QSVCOHxlbnwwfHwwfHx8MA%3D%3D')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "scroll", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden", WebkitTapHighlightColor: "transparent" }}>
@@ -290,7 +223,7 @@ function PaymentInner() {
               sessionStorage.setItem("specialOtherName", otherInput.trim());
               const paidPrice = finalPrice(2900);
               setAwaitOther(null);
-              openPuModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`);
+              openPortoneModal(paidPrice, `/payment-complete?special=${cur.id}&paid=${paidPrice}`);
             }}>
               <input
                 value={otherInput}
@@ -304,62 +237,57 @@ function PaymentInner() {
                 type="submit"
                 style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", marginBottom: 40 }}
               >
-                💳 결제하기 · ₩2,900
+                결제하기 · ₩2,900
               </button>
             </form>
           </div>
         </>
       )}
 
-      {/* PayUp 카드결제 모달 */}
-      {puPending && (
+      {/* PortOne 결제 모달 */}
+      {showPayModal && (
         <>
-          <div onClick={closePuModal} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.82)", zIndex: 500 }} />
+          <div onClick={closePayModal} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.82)", zIndex: 500 }} />
           <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 501, background: "linear-gradient(180deg,#1a0835,#0d0520)", borderRadius: "22px 22px 0 0", padding: "24px 20px 40px", maxWidth: 500, margin: "0 auto", boxShadow: "0 -8px 40px rgba(0,0,0,0.6)", overflowY: "auto", maxHeight: "90vh" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
               <div>
-                <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 16, margin: 0 }}>💳 카드 결제</p>
-                <p style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 13, margin: "2px 0 0" }}>₩{puPending.price.toLocaleString()}</p>
+                <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 16, margin: 0 }}>결제</p>
+                <p style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 13, margin: "2px 0 0" }}>₩{modalPrice.toLocaleString()}</p>
               </div>
-              <button onClick={closePuModal} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: 22, cursor: "pointer", padding: "4px 8px" }}>✕</button>
+              <button onClick={closePayModal} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: 22, cursor: "pointer", padding: "4px 8px" }}>✕</button>
             </div>
             <div style={{ marginBottom: 10 }}>
-              <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>카드번호</label>
-              <input value={puCardNo} onChange={e => setPuCardNo(formatCardNo(e.target.value))} placeholder="0000 0000 0000 0000" inputMode="numeric" style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box", letterSpacing: "0.08em" }} />
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
-              <div>
-                <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>유효기간 월 (MM)</label>
-                <input value={puExpM} onChange={e => setPuExpM(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="01" inputMode="numeric" maxLength={2} style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
-              </div>
-              <div>
-                <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>유효기간 년 (YY)</label>
-                <input value={puExpY} onChange={e => setPuExpY(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="27" inputMode="numeric" maxLength={2} style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
-              </div>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 10 }}>
-              <div>
-                <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>생년월일 앞 6자리</label>
-                <input value={puBirth} onChange={e => setPuBirth(e.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="예: 901225" inputMode="numeric" maxLength={6} style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 14, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
-              </div>
-              <div>
-                <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>비밀번호 앞 2자리</label>
-                <input type="password" value={puPw} onChange={e => setPuPw(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="••" inputMode="numeric" maxLength={2} style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 20, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
-              </div>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>이름 (카드 명의자)</label>
-              <input value={puName} onChange={e => setPuName(e.target.value)} placeholder="홍길동" style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
+              <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>이름 (선택)</label>
+              <input value={modalName} onChange={e => setModalName(e.target.value)} placeholder="홍길동" style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
             </div>
             <div style={{ marginBottom: 14 }}>
-              <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>핸드폰번호 (선택 — 카카오 결제알림)</label>
-              <input value={puMobile} onChange={e => setPuMobile(e.target.value.replace(/\D/g, "").slice(0, 11))} placeholder="01012345678" inputMode="numeric" style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
+              <label style={{ display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 }}>휴대폰번호 (선택)</label>
+              <input value={modalMobile} onChange={e => setModalMobile(e.target.value.replace(/\D/g,"").slice(0,11))} placeholder="01012345678" inputMode="numeric" style={{ width: "100%", padding: "11px 14px", borderRadius: 10, border: "1.5px solid rgba(251,191,36,0.4)", background: "rgba(255,255,255,0.07)", color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box" }} />
             </div>
-            {puError && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>⚠️ {puError}</p>}
-            <button onClick={payupPay} disabled={puLoading} style={{ width: "100%", padding: "15px 0", background: puLoading ? "rgba(251,191,36,0.4)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: puLoading ? "not-allowed" : "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.3)" }}>
-              {puLoading ? "결제 중..." : `💳 ₩${puPending.price.toLocaleString()} 결제하기`}
+            <div style={{ marginBottom: 12 }}>
+              <button type="button" onClick={() => setShowRefund(v => !v)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: 11, cursor: "pointer", padding: "2px 0", display: "flex", alignItems: "center", gap: 4 }}>
+                📋 결제 전 확인사항 {showRefund ? "▲" : "▼"}
+              </button>
+              {showRefund && (
+                <div style={{ marginTop: 6, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 12px" }}>
+                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.6 }}>디지털 콘텐츠 특성상, 이용이 시작된 후에는 취소가 어렵습니다.</p>
+                </div>
+              )}
+              <div onClick={() => setRefundAgreed(v => !v)} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", userSelect: "none", marginTop: 8 }}>
+                <span style={{ fontSize: 18, color: refundAgreed ? "#4ade80" : "rgba(255,255,255,0.4)", lineHeight: 1 }}>{refundAgreed ? "✅" : "⬜"}</span>
+                <span style={{ fontSize: 12, color: refundAgreed ? "#4ade80" : "rgba(255,255,255,0.5)", fontWeight: refundAgreed ? 700 : 400 }}>네, 확인했어요!</span>
+              </div>
+            </div>
+            {modalError && <p style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>⚠️ {modalError}</p>}
+            <button onClick={() => portoneModalPay("CARD")} disabled={modalLoading || !refundAgreed}
+              style={{ width: "100%", padding: "15px 0", background: (modalLoading || !refundAgreed) ? "rgba(251,191,36,0.4)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: (modalLoading || !refundAgreed) ? "not-allowed" : "pointer", marginBottom: 10, boxShadow: (modalLoading || !refundAgreed) ? "none" : "0 6px 22px rgba(251,191,36,0.3)" }}>
+              {modalLoading ? "결제 중..." : `💳 신용카드 ₩${modalPrice.toLocaleString()}`}
             </button>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "10px 0 0" }}>SSL 보안 결제 · 페이업㈜ 제공</p>
+            <button onClick={() => portoneModalPay("KAKAOPAY")} disabled={modalLoading || !refundAgreed}
+              style={{ width: "100%", padding: "15px 0", background: (modalLoading || !refundAgreed) ? "#bba000" : "#FEE500", color: (modalLoading || !refundAgreed) ? "rgba(0,0,0,0.4)" : "#3C1E1E", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: (modalLoading || !refundAgreed) ? "not-allowed" : "pointer" }}>
+              💛 카카오페이
+            </button>
+            <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, textAlign: "center", margin: "10px 0 0" }}>SSL 보안 결제 · PortOne 제공</p>
           </div>
         </>
       )}
@@ -374,7 +302,7 @@ function PaymentInner() {
 
         <h2 style={{ textAlign: "center", color: "#fbbf24", marginBottom: 12, fontSize: "clamp(18px, 5vw, 26px)", fontWeight: 900 }}>💎 운세 구매</h2>
 
-        {/* 할인코드 — 상단 고정 (구매 전 미리 입력) */}
+        {/* 할인코드 */}
         <div style={{ maxWidth: 480, margin: "0 auto 20px", background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 12, padding: "12px 14px" }}>
           <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 900, margin: "0 0 8px" }}>🎟️ 할인코드 (있으면 먼저 입력하세요)</p>
           <div style={{ display: "flex", gap: 8 }}>
@@ -410,9 +338,9 @@ function PaymentInner() {
               { id: "sinyeon_premium", emoji: "📅", label: "신년+월별 12달", sub: "신년+12달 월별 상세",  price: 4900, accent: "#ef4444", bdColor: "rgba(239,68,68,0.8)",   bg: "rgba(40,5,5,0.75)"   },
             ].map(s => (
               <button key={s.id}
-                onClick={async () => {
+                onClick={() => {
                   const paidPrice = finalPrice(s.price);
-                  openPuModal(paidPrice, `/payment-complete?special=${s.id}&paid=${paidPrice}`);
+                  openPortoneModal(paidPrice, `/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}
                 style={{ padding: "10px 4px", background: s.bg, backdropFilter: "blur(10px)", border: `1.5px solid ${s.bdColor}`, borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
               >
@@ -437,7 +365,7 @@ function PaymentInner() {
               { id: "pet_compat", emoji: "🐾", label: "반려동물 궁합", sub: "나와 우리 아이 궁합" },
             ].map(s => (
               <button key={s.id}
-                onClick={async () => {
+                onClick={() => {
                   if ((s as any).daeun) { window.location.href = `/main-v2/daewoon`; return; }
                   if ((s as any).yearly) { window.location.href = `/main-v2/yearly`; return; }
                   if (s.id === "taegil") { window.location.href = `/main-v2/taegil`; return; }
@@ -447,7 +375,7 @@ function PaymentInner() {
                     return;
                   }
                   const paidPrice = finalPrice(2900);
-                  openPuModal(paidPrice, `/payment-complete?special=${s.id}&paid=${paidPrice}`);
+                  openPortoneModal(paidPrice, `/payment-complete?special=${s.id}&paid=${paidPrice}`);
                 }}
                 style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
               >
@@ -473,10 +401,10 @@ function PaymentInner() {
                 { id: "총운",   emoji: "✨", label: "총운",   catKey: "✨ 총운"   },
               ].map(s => (
                 <button key={s.id}
-                  onClick={async () => {
+                  onClick={() => {
                     const paidPrice = finalPrice(3900);
                     localStorage.setItem("v2_paid_cats", JSON.stringify([s.catKey]));
-                    openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=${paidPrice}`);
+                    openPortoneModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=${paidPrice}`);
                   }}
                   style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
                 >
@@ -488,7 +416,6 @@ function PaymentInner() {
             </div>
           </div>
         )}
-
 
         {/* 패키지 빠른 선택 (9900원~) */}
         {!isPartner && (
@@ -502,9 +429,9 @@ function PaymentInner() {
                 { id: "vip",      emoji: "👑", label: "VIP 커플팩", sub: "본인 분석(8개) +<br/>이름+전체사주+궁합포함<br/>(상대방 정보 입력)", pages: 150, price: 29900 },
               ].map(s => (
                 <button key={s.id}
-                  onClick={async () => {
+                  onClick={() => {
                     const paidPrice = finalPrice(s.price);
-                    openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=${s.pages}&paid=${paidPrice}`);
+                    openPortoneModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=${s.pages}&paid=${paidPrice}`);
                   }}
                   style={{ padding: "10px 4px", background: "rgba(20,10,40,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(139,92,246,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
                 >
@@ -518,7 +445,7 @@ function PaymentInner() {
           </div>
         )}
 
-        {/* 만세력 신뢰 문구 — 패키지 구매 직전 신뢰 형성용 */}
+        {/* 만세력 신뢰 문구 */}
         <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "rgba(20,10,40,0.5)", backdropFilter: "blur(10px)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 14, padding: "18px 20px", textAlign: "center" }}>
           <p style={{ color: "#fbbf24", fontSize: 14, fontWeight: 900, margin: "0 0 6px" }}>🔮 정확한 사주 원국 분석</p>
           <p style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 700, margin: "0 0 3px", lineHeight: 1.7 }}>만세력 기반 · 음양오행 · 천간지지 · 십성 완벽 분석</p>
@@ -528,13 +455,11 @@ function PaymentInner() {
 
         <h2 style={{ textAlign: "center", color: "#d4af37", marginBottom: 16, fontSize: "clamp(16px, 4vw, 22px)", fontWeight: 900 }}>📦 패키지 (더 저렴해!)</h2>
 
-        {/* 헤더 배너 */}
         <div style={{ maxWidth: 600, margin: "0 auto 16px", background: "linear-gradient(135deg, rgba(20,10,40,0.6), rgba(74,26,84,0.45))", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", borderRadius: 14, padding: "12px 20px", textAlign: "center" }}>
           <p style={{ color: "#fbbf24", fontSize: 15, fontWeight: 900, margin: "0 0 3px" }}>🔓 전체 AI 심층 분석</p>
           <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, margin: "0 0 3px" }}>운세를 완전히 해석해드립니다</p>
           <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: 0 }}>₩990부터 시작 · 이미지 저장&amp;보관함 포함</p>
         </div>
-
 
         <div id="packages-section" style={{ maxWidth: 600, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10, marginBottom: 30 }}>
           {packages.map(pkg => {
@@ -555,10 +480,10 @@ function PaymentInner() {
             };
             const displayPrice2 = (isPartner && customPriceMap2[pkg.id]) ? customPriceMap2[pkg.id]! : pkg.price;
             return (
-              <div key={pkg.id + "_large"} onClick={async () => {
+              <div key={pkg.id + "_large"} onClick={() => {
                 const originalPrice = Number(pkg.price.replace(/[^0-9]/g, ""));
                 const paidPrice = finalPrice(originalPrice);
-                openPuModal(paidPrice, `/payment-complete?package=${encodeURIComponent(pkg.name)}&pages=${pkg.pages}&paid=${paidPrice}`);
+                openPortoneModal(paidPrice, `/payment-complete?package=${encodeURIComponent(pkg.name)}&pages=${pkg.pages}&paid=${paidPrice}`);
               }} style={{ background: cardBg2, backdropFilter: "blur(10px)", border: wlBadge ? "2px solid rgba(236,72,153,0.7)" : "1px solid rgba(196,181,253,0.45)", borderRadius: 12, padding: 12, cursor: "pointer", transition: "all 0.3s", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
                 {wlBadge && (
                   <p style={{ fontSize: 9, fontWeight: 900, margin: "0 0 4px 0", textShadow: "0 1px 3px rgba(0,0,0,0.5)", wordBreak: "keep-all", lineHeight: 1.4 }}>
@@ -584,11 +509,8 @@ function PaymentInner() {
           })}
         </div>
 
-        
-
         <div style={{ maxWidth: 320, margin: "0 auto", marginBottom: 20, background: "rgba(20,10,40,0.55)", backdropFilter: "blur(12px)", border: "1px solid rgba(251,191,36,0.35)", padding: 16, borderRadius: 18, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
           <h3 style={{ color: "#fbbf24", fontSize: 17, fontWeight: 900, marginBottom: 20, letterSpacing: "-0.3px" }}>✨ 포함된 운세</h3>
-
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 16 }}>
             {fortuneItems.map(item => (
               <div key={item.id} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "8px 4px", textAlign: "center" }}>
@@ -606,7 +528,6 @@ function PaymentInner() {
               <p style={{ color: "#f5f5f5", fontSize: 12, fontWeight: 700, margin: 0, lineHeight: 1.6 }}>이 가격은 안내용이며, 결제·상담은 {brand?.businessName || "담당자"}에게 직접 문의해주세요.</p>
             </div>
           )}
-
           <a href="/main-v2" style={{ display: "inline-block", padding: 12, background: "rgba(139,92,246,0.3)", color: "#fbbf24", border: "1px solid rgba(139,92,246,0.8)", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: "pointer", textDecoration: "none" }}>
             ← 돌아가기
           </a>
