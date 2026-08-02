@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
     const body = {
       message: {
         to: cleanPhone,
+        type: "ATA",
         kakaoOptions: {
           pfId,
           templateId,
