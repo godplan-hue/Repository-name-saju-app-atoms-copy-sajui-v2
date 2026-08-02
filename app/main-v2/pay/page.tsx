@@ -196,27 +196,32 @@ function PayInner() {
     } finally { setLoading(false); }
   };
 
-  const pay = async () => {
+  const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {
     if (!refundAgreed) { setError("아래 체크박스를 먼저 체크해주세요. ✅"); return; }
     if (!mobile.replace(/\D/g, "") || mobile.replace(/\D/g, "").length < 10) { setError("전화번호를 입력해주세요."); return; }
     setLoading(true); setError("");
     try {
       const PortOne = await import("@portone/browser-sdk/v2");
       const paymentId = `jeomun-${Date.now()}`;
-      const response = await PortOne.requestPayment({
+      const channelKey = method === "KAKAOPAY"
+        ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
+        : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
+      const paymentRequest: Parameters<typeof PortOne.requestPayment>[0] = {
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
-        channelKey: "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7",
+        channelKey,
         paymentId,
         orderName: "점운 사주 분석",
         totalAmount: displayAmount,
         currency: "KRW",
-        payMethod: "CARD",
+        payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         customer: {
           fullName: name.trim() || "고객",
           phoneNumber: mobile.replace(/\D/g, ""),
           email: email.trim() || undefined,
         },
-      });
+        ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
+      };
+      const response = await PortOne.requestPayment(paymentRequest);
       if (response?.code) {
         setError(response.message || "결제에 실패했습니다. 다시 시도해주세요.");
         return;
@@ -333,7 +338,7 @@ function PayInner() {
 
         {!couponFree && (<>
         <div style={{ marginBottom: 12, padding: "10px 14px", background: "rgba(251,191,36,0.08)", borderRadius: 10, border: "1px solid rgba(251,191,36,0.2)" }}>
-          <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>💳 결제하기 버튼을 누르면 <b style={{color:"#fbbf24"}}>KCP 신용카드 결제창</b>이 열립니다.</p>
+          <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>💳 <b style={{color:"#fbbf24"}}>신용카드</b> 또는 <b style={{color:"#FEE500"}}>카카오페이</b>로 결제하세요.</p>
         </div>
         <div style={{ marginBottom: 12 }}>
           <label style={lbl}>이름 (선택)</label>
@@ -368,14 +373,23 @@ function PayInner() {
         </div>
 
         <button
-          onClick={pay}
+          onClick={() => pay("CARD")}
           disabled={loading}
-          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(251,191,36,0.3)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 6px 22px rgba(251,191,36,0.3)", marginBottom: 8 }}
+          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(251,191,36,0.3)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 6px 22px rgba(251,191,36,0.3)", marginBottom: 10 }}
         >
-          {loading ? "결제 중..." : `💳 ₩${displayAmount.toLocaleString()} 결제하기`}
+          {loading ? "결제 중..." : `💳 신용카드 ₩${displayAmount.toLocaleString()}`}
         </button>
 
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "8px 0 0" }}>SSL 보안 결제 · NHN KCP 제공</p>
+        <button
+          onClick={() => pay("KAKAOPAY")}
+          disabled={loading}
+          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(254,229,0,0.3)" : "#FEE500", color: "#191600", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 6px 22px rgba(254,229,0,0.35)", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}
+        >
+          <span style={{ fontSize: 18 }}>💛</span>
+          {loading ? "결제 중..." : `카카오페이 ₩${displayAmount.toLocaleString()}`}
+        </button>
+
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "8px 0 0" }}>SSL 보안 결제 · NHN KCP · 카카오페이</p>
         </>)}
       </div>
     </main>
