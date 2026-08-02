@@ -319,13 +319,15 @@ function V2ResultInner() {
         return entry?.type ?? "navigate";
       } catch { return "navigate"; }
     })();
-    if (navType !== "reload") {
+    if (navType === "back_forward") {
+      // 뒤로가기로 돌아올 때만 이전 스크롤 위치 복원
       const saved = sessionStorage.getItem(KEY);
       if (saved) {
         const y = parseInt(saved, 10);
         if (y > 0) setTimeout(() => window.scrollTo({ top: y, behavior: 'instant' }), 300);
       }
     } else {
+      // 결제 후 첫 진입(navigate) / 새로고침(reload) → 항상 맨 위 (꼭읽어보세요 버튼 보임)
       sessionStorage.removeItem(KEY);
     }
     let rafId: number;
