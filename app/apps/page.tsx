@@ -1,4 +1,23 @@
 ﻿"use client";
+import { useState, useEffect } from "react";
+
+const UNLOCK_KEYS: Record<string, string> = {
+  "/haemong":  "haemong_unlock_until",
+  "/momcare":  "momcare_unlock_until",
+  "/tarot":    "tarot_unlock_until",
+  "/petun":    "petun_unlock_until",
+  "/gamjung":  "gamjung_unlock_until",
+  "/diet":     "diet_unlock_until",
+  "/budget":   "budget_unlock_until",
+};
+
+function daysLeft(key: string): number {
+  try {
+    const until = Number(localStorage.getItem(key) || 0);
+    if (!until || until < Date.now()) return 0;
+    return Math.ceil((until - Date.now()) / (24 * 60 * 60 * 1000));
+  } catch { return 0; }
+}
 
 const TOP_APPS = [
   {
@@ -41,6 +60,18 @@ const GRID_APPS = [
 ];
 
 export default function AppsPage() {
+  const [unlocks, setUnlocks] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const map: Record<string, number> = {};
+    Object.entries(UNLOCK_KEYS).forEach(([href, key]) => {
+      map[href] = daysLeft(key);
+    });
+    setUnlocks(map);
+  }, []);
+
+  // 이용 중인 앱 목록 (남은 날짜 있는 것)
+  const activeApps = Object.entries(unlocks).filter(([, d]) => d > 0);
 
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0f0520 0%, #1e1040 50%, #0a0818 100%)", padding: "20px 14px 48px" }}>
@@ -54,69 +85,92 @@ export default function AppsPage() {
         </div>
 
         {/* 풀패스 배너 */}
-        <div
-          onClick={() => { window.location.href = "/pass"; }}
-          style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(239,68,68,0.35)", border: "2px solid #ef4444", marginBottom: 14 }}
-        >
-          <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>🔥 7개앱 30일 풀패스</span>
-            <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>₩4,900</span>
+        {activeApps.length > 0 ? (
+          <div style={{ borderRadius: 16, overflow: "hidden", marginBottom: 14, border: "2px solid #4ade80", boxShadow: "0 2px 14px rgba(74,222,128,0.25)" }}>
+            <div style={{ background: "linear-gradient(135deg,#14532d,#16a34a)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>✅ 풀패스 이용 중</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>{Math.min(...activeApps.map(([,d])=>d))}일 남음</span>
+            </div>
+            <div style={{ background: "#f0fdf4", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <p style={{ fontSize: 12, color: "#14532d", margin: 0, lineHeight: 1.6 }}>7개 앱 전체 이용 가능 · 만료 후 자동 잠금</p>
+              <span onClick={()=>{ window.location.href="/pass"; }} style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#16a34a", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap", cursor: "pointer" }}>연장하기 →</span>
+            </div>
           </div>
-          <div style={{ background: "#fff5f5", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·육아일기 전부 30일 이용</p>
-            <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
+        ) : (
+          <div
+            onClick={() => { window.location.href = "/pass"; }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(239,68,68,0.35)", border: "2px solid #ef4444", marginBottom: 14 }}
+          >
+            <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>🔥 7개앱 30일 풀패스</span>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>₩4,900</span>
+            </div>
+            <div style={{ background: "#fff5f5", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>꿈해몽·감정일기·다이어트·가계부<br />타로·펫운·육아일기 전부 30일 이용</p>
+              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* 상단 2단 큰 카드 */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
-          {TOP_APPS.map(app => (
-            <a
-              key={app.href}
-              href={app.href}
-              style={{ position: "relative", height: 180, borderRadius: 20, overflow: "hidden", border: `1.5px solid ${app.border}`, textDecoration: "none", display: "block" }}
-            >
-              <img src={app.img} alt={app.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", inset: 0, background: app.overlay }} />
-              <span style={{ position: "absolute", top: 10, right: 10, background: app.badgeBg, color: "#fff", fontSize: 9, fontWeight: 900, padding: "3px 8px", borderRadius: 20 }}>{app.badge}</span>
-              <div style={{ position: "absolute", bottom: 12, left: 12, right: 12 }}>
-                <div style={{ fontSize: 16, fontWeight: 900, color: "#fff", marginBottom: 2 }}>{app.title}</div>
-                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.8)", marginBottom: 1 }}>{app.sub}</div>
-                <div style={{ fontSize: 9, color: "rgba(255,255,255,0.6)" }}>{app.desc}</div>
-              </div>
-            </a>
-          ))}
+          {TOP_APPS.map(app => {
+            const d = unlocks[app.href] || 0;
+            const badgeText = d > 0 ? `D-${d}` : app.badge;
+            const badgeColor = d > 0 ? "#16a34a" : app.badgeBg;
+            return (
+              <a
+                key={app.href}
+                href={app.href}
+                style={{ position: "relative", height: 180, borderRadius: 20, overflow: "hidden", border: d > 0 ? "2px solid #4ade80" : `1.5px solid ${app.border}`, textDecoration: "none", display: "block" }}
+              >
+                <img src={app.img} alt={app.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                <div style={{ position: "absolute", inset: 0, background: app.overlay }} />
+                <span style={{ position: "absolute", top: 10, right: 10, background: badgeColor, color: "#fff", fontSize: 9, fontWeight: 900, padding: "3px 8px", borderRadius: 20 }}>{badgeText}</span>
+                <div style={{ position: "absolute", bottom: 12, left: 12, right: 12 }}>
+                  <div style={{ fontSize: 16, fontWeight: 900, color: "#fff", marginBottom: 2 }}>{app.title}</div>
+                  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.8)", marginBottom: 1 }}>{app.sub}</div>
+                  <div style={{ fontSize: 9, color: "rgba(255,255,255,0.6)" }}>{app.desc}</div>
+                </div>
+              </a>
+            );
+          })}
         </div>
 
         {/* 하단 2×6 그리드 */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
-          {GRID_APPS.map(app => (
-            <a
-              key={app.href}
-              href={app.href}
-              style={{ position: "relative", borderRadius: 20, overflow: "hidden", textDecoration: "none", aspectRatio: "1/1", display: "block" }}
-            >
-              {app.img ? (
-                <>
-                  <img src={app.img} alt={app.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 100%)" }} />
-                  <span style={{ position: "absolute", top: 10, right: 10, background: "rgba(0,0,0,0.55)", color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{app.badge}</span>
-                  <div style={{ position: "absolute", bottom: 12, left: 6, right: 6, textAlign: "center" }}>
-                    <div style={{ fontSize: 24, marginBottom: 3 }}>{app.emoji}</div>
-                    <div style={{ fontSize: 14, fontWeight: 900, color: "#fff", marginBottom: 2 }}>{app.label}</div>
-                    {"sub" in app && <div style={{ fontSize: 9, color: "rgba(255,255,255,0.75)", marginBottom: 1 }}>{(app as {sub:string}).sub}</div>}
-                    {"desc" in app && <div style={{ fontSize: 8, color: "rgba(255,255,255,0.5)" }}>{(app as {desc:string}).desc}</div>}
+          {GRID_APPS.map(app => {
+            const d = unlocks[app.href] || 0;
+            const badgeText = d > 0 ? `D-${d}` : app.badge;
+            const badgeBg = d > 0 ? "#16a34a" : ("color" in app ? app.color : "rgba(0,0,0,0.55)");
+            return (
+              <a
+                key={app.href}
+                href={app.href}
+                style={{ position: "relative", borderRadius: 20, overflow: "hidden", textDecoration: "none", aspectRatio: "1/1", display: "block", outline: d > 0 ? "2px solid #4ade80" : "none" }}
+              >
+                {app.img ? (
+                  <>
+                    <img src={app.img} alt={app.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 100%)" }} />
+                    <span style={{ position: "absolute", top: 10, right: 10, background: badgeBg, color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{badgeText}</span>
+                    <div style={{ position: "absolute", bottom: 12, left: 6, right: 6, textAlign: "center" }}>
+                      <div style={{ fontSize: 24, marginBottom: 3 }}>{app.emoji}</div>
+                      <div style={{ fontSize: 14, fontWeight: 900, color: "#fff", marginBottom: 2 }}>{app.label}</div>
+                      {"sub" in app && <div style={{ fontSize: 9, color: "rgba(255,255,255,0.75)", marginBottom: 1 }}>{(app as {sub:string}).sub}</div>}
+                      {"desc" in app && <div style={{ fontSize: 8, color: "rgba(255,255,255,0.5)" }}>{(app as {desc:string}).desc}</div>}
+                    </div>
+                  </>
+                ) : (
+                  <div style={{ width: "100%", height: "100%", background: app.bg, border: `1px solid ${app.color}22`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                    <span style={{ position: "absolute", top: 10, right: 10, background: badgeBg, color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{badgeText}</span>
+                    <span style={{ fontSize: 42 }}>{app.emoji}</span>
+                    <span style={{ fontSize: 15, fontWeight: 800, color: app.color }}>{app.label}</span>
                   </div>
-                </>
-              ) : (
-                <div style={{ width: "100%", height: "100%", background: app.bg, border: `1px solid ${app.color}22`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                  <span style={{ position: "absolute", top: 10, right: 10, background: app.color, color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{app.badge}</span>
-                  <span style={{ fontSize: 42 }}>{app.emoji}</span>
-                  <span style={{ fontSize: 15, fontWeight: 800, color: app.color }}>{app.label}</span>
-                </div>
-              )}
-            </a>
-          ))}
+                )}
+              </a>
+            );
+          })}
         </div>
 
       </div>
