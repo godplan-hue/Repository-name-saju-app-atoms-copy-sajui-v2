@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
           pfId,
           templateId,
           variables: {
+            "#{파트너명}": partnerName || "점운",
             "#{금액}": String(amount || ""),
             "#{링크}": resultLink,
           },
