@@ -247,11 +247,11 @@ const BANNERS = [
     directUrl: "/apps",
     bg: "linear-gradient(135deg,#0f0520 0%,#2d1b69 50%,#1a0533 100%)",
     bgImg: "https://i.pinimg.com/736x/3a/16/a2/3a16a2d6ec404d61ea7e416fc5603c4c.jpg",
-    badge: "✨ 점운 전체앱 14개",
+    badge: "✨ 점운 전체앱 18개",
     badgeBg: "#7c3aed",
     icon: "✨",
-    tagline: "14개 앱 한 곳에서 전부",
-    desc: "사주·꿈운·직운·합운·궁합·MBTI·행운번호·펫운·육아일기·감정일기·타로·별자리·다이어트·가계부",
+    tagline: "18개 앱 한 곳에서 전부",
+    desc: "사주·꿈운·직운·합운·궁합·MBTI·행운번호·펫운·육아일기·감정일기·타로·별자리·다이어트·가계부·핑계·나쁜운세·귀찮음·뭐먹지",
     cta: "전체앱 보기 →",
     ctaColor: "#c4b5fd",
     route: "free" as const,
@@ -292,10 +292,10 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
           <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
             <a href="/apps" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
-                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 무료 14개<br />점운 전체앱</span>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 무료 18개<br />점운 전체앱</span>
               </div>
               <div style={{ background: "#f0fdf4", padding: "10px 12px", textAlign: "center" }}>
-                <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>14개 계열앱<br />무료로 이용</p>
+                <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>18개 계열앱<br />무료로 이용</p>
                 <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#22c55e", padding: "4px 12px", borderRadius: 20 }}>전체보기 →</span>
               </div>
             </a>
