@@ -90,6 +90,8 @@ export default function WorkPage() {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
+  const [agreed, setAgreed] = useState(false)
+  const [marketing, setMarketing] = useState(false)
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
   const count = getTodayCount()
@@ -115,13 +117,17 @@ export default function WorkPage() {
       setError('전화번호를 정확히 입력해주세요.')
       return
     }
+    if (!agreed) {
+      setError('개인정보 수집·이용에 동의해주세요.')
+      return
+    }
     setSaving(true)
     const boss = BOSS_TYPES.find(b => b.key === bossKey)
     try {
       await fetch('/api/save-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ app: 'work', name, phone, email, result: `${boss?.label} / ${score}점` }),
+        body: JSON.stringify({ app: 'work', name, phone, email, result: `${boss?.label} / ${score}점`, marketing }),
       })
     } catch {}
     setSaving(false)
@@ -244,12 +250,19 @@ export default function WorkPage() {
               <input value={email} onChange={e => setEmail(e.target.value)} placeholder="example@email.com" type="email"
                 style={{ width: '100%', border: '1.5px solid #bfdbfe', borderRadius: 12, padding: '12px 14px', fontSize: 15, outline: 'none', boxSizing: 'border-box' }} />
             </div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+              <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} style={{ marginTop: 2, flexShrink: 0 }} />
+              <span style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6 }}>[필수] 개인정보 수집·이용 동의 — 서비스 제공 목적으로 전화번호를 수집합니다</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 16 }}>
+              <input type="checkbox" checked={marketing} onChange={e => setMarketing(e.target.checked)} style={{ marginTop: 2, flexShrink: 0 }} />
+              <span style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6 }}>[선택] 마케팅 정보 수신 동의</span>
+            </div>
             {error && <p style={{ color: '#2563eb', fontSize: 13, marginBottom: 10 }}>{error}</p>}
             <button onClick={submit} disabled={saving}
               style={{ width: '100%', background: 'linear-gradient(135deg,#2563eb,#3b82f6)', border: 'none', borderRadius: 14, padding: '16px', fontSize: 16, color: 'white', fontWeight: 800, cursor: 'pointer' }}>
               {saving ? '저장 중...' : '💪 생존 결과 보기'}
             </button>
-            <p style={{ fontSize: 10, color: '#9ca3af', textAlign: 'center', marginTop: 10 }}>수집: 이름(선택), 전화번호, 이메일(선택) / 보관: 3년 후 파기</p>
           </div>
         )}
 
