@@ -28,7 +28,7 @@ const TOP_APPS = [
     title: "🌙 꿈해몽",
     sub: "꿈의 의미를 오행으로",
     desc: "태몽 · 흉몽 · 길몽 전부 해석",
-    badge: "990원·24h",
+    badge: "무료/990원·24h",
     badgeBg: "#7c3aed",
     overlay: "linear-gradient(to top, rgba(30,10,70,0.88) 0%, rgba(60,20,120,0.45) 55%, rgba(0,0,0,0) 100%)",
     border: "rgba(167,139,250,0.35)",
@@ -47,18 +47,22 @@ const TOP_APPS = [
 ];
 
 const GRID_APPS = [
-  { href: "/jigun",   emoji: "💼", label: "직운",    sub: "AI 진로 · 부업 추천",   desc: "오행 천직 + 부업 TOP3",       badge: "무료", color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)", img: "https://i.pinimg.com/736x/bc/7c/f6/bc7cf6c186ee2e763c4bd7230098eba3.jpg" },
-  { href: "/resume",  emoji: "🎯", label: "합격",    sub: "합격운 · 자소서 분석",  desc: "직무별 합격 전략 + 면접 질문", badge: "무료", color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)", img: "https://i.pinimg.com/736x/7c/b2/22/7cb22262844ff11bc8c1800a309f0b99.jpg" },
-  { href: "/gunghap", emoji: "💑", label: "궁합",    sub: "두 사람의 오행 궁합",   desc: "연애 패턴 · 갈등 · 조언",     badge: "무료", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)", img: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg" },
-  { href: "/mbti",    emoji: "🧠", label: "MBTI",    sub: "오행 기질 분석",         desc: "16가지 유형 전부 무료",        badge: "무료", color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)", img: "https://i.pinimg.com/1200x/aa/7a/e3/aa7ae3b66dc315f01fedf552b101f033.jpg" },
-  { href: "/lotto",   emoji: "🍀", label: "행운번호", sub: "오행 행운번호 6개",     desc: "생년월일 기반 행운 번호",      badge: "무료", color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)", img: "https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg" },
-  { href: "/petun",   emoji: "🐾", label: "펫운",    sub: "반려동물 운세 · 궁합",  desc: "음식 안전도 · 오늘 뽑기",     badge: "990원·24h", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)", img: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg" },
-  { href: "/tarot",   emoji: "🃏", label: "타로",    sub: "AI 타로카드 해석",       desc: "연애 · 직업 · 재물 상담",     badge: "990원·24h", color: "#7e22ce", bg: "linear-gradient(145deg,#f3e8ff,#d8b4fe)", img: "https://i.pinimg.com/1200x/0c/27/99/0c27999149b93230b696dce0918a4e8e.jpg" },
-  { href: "/zodiac",  emoji: "⭐", label: "별자리",  sub: "12별자리 오늘 운세",     desc: "궁합 · 월별 · 오행 분석",     badge: "무료", color: "#1d4ed8", bg: "linear-gradient(145deg,#eff6ff,#93c5fd)", img: "https://i.pinimg.com/736x/3a/36/30/3a3630aa53fc14c5076ab4851d783b6e.jpg" },
-  { href: "/gamjung", emoji: "📔", label: "감정일기", sub: "감정 기록 · 치유 일기", desc: "오행 감정 흐름 분석",          badge: "30일", color: "#be185d", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)", img: "https://i.pinimg.com/736x/7e/ad/71/7ead71fd8ff5c3d3d57abab4b5b01347.jpg" },
-  { href: "/diet",    emoji: "🥗", label: "다이어트", sub: "오행 체질 식단 추천",   desc: "칼로리 계산 + 맞춤 음식",     badge: "30일", color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)", img: "https://i.pinimg.com/1200x/f1/11/77/f11177335015269c22af426b13f423bc.jpg" },
-  { href: "/budget",  emoji: "💰", label: "가계부",  sub: "일기식 재물 기록",       desc: "지출 · 수입 · 재물운 연결",   badge: "30일", color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)", img: "https://i.pinimg.com/736x/73/84/95/738495640e6c2d69d0632c59be89818f.jpg" },
-  { href: "/momcare", emoji: "👶", label: "육아일기", sub: "AI 육아 · 아기 기록",    desc: "일기 · 타임캡슐 · 아기말",   badge: "30일", color: "#be185d", bg: "linear-gradient(145deg,#fce7f3,#fbcfe8)", img: "https://i.pinimg.com/736x/19/f1/9c/19f19c6326262bd03985e28c1c45226c.jpg" },
+  { href: "/jigun",      emoji: "💼", label: "직운",     sub: "AI 진로 · 부업 추천",   desc: "오행 천직 + 부업 TOP3",       badge: "무료/990원·24h", color: "#0d9488", bg: "linear-gradient(145deg,#ccfbf1,#99f6e4)", img: "https://i.pinimg.com/736x/bc/7c/f6/bc7cf6c186ee2e763c4bd7230098eba3.jpg" },
+  { href: "/resume",     emoji: "🎯", label: "합격",     sub: "합격운 · 자소서 분석",  desc: "직무별 합격 전략 + 면접 질문", badge: "무료/990원·24h", color: "#b45309", bg: "linear-gradient(145deg,#fef3c7,#fde68a)", img: "https://i.pinimg.com/736x/7c/b2/22/7cb22262844ff11bc8c1800a309f0b99.jpg" },
+  { href: "/gunghap",   emoji: "💑", label: "궁합",     sub: "두 사람의 오행 궁합",   desc: "연애 패턴 · 갈등 · 조언",     badge: "무료/990원·24h", color: "#e11d48", bg: "linear-gradient(145deg,#ffe4e6,#fecdd3)", img: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg" },
+  { href: "/mbti",      emoji: "🧠", label: "MBTI",     sub: "오행 기질 분석",         desc: "16가지 유형 전부 무료",        badge: "무료/990원·24h", color: "#4338ca", bg: "linear-gradient(145deg,#e0e7ff,#c7d2fe)", img: "https://i.pinimg.com/1200x/aa/7a/e3/aa7ae3b66dc315f01fedf552b101f033.jpg" },
+  { href: "/lotto",     emoji: "🍀", label: "행운번호",  sub: "오행 행운번호 6개",     desc: "생년월일 기반 행운 번호",      badge: "무료",           color: "#ca8a04", bg: "linear-gradient(145deg,#fefce8,#fef08a)", img: "https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg" },
+  { href: "/petun",     emoji: "🐾", label: "펫운",     sub: "반려동물 운세 · 궁합",  desc: "음식 안전도 · 오늘 뽑기",     badge: "무료/990원·24h", color: "#ea580c", bg: "linear-gradient(145deg,#fff7ed,#fed7aa)", img: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg" },
+  { href: "/tarot",     emoji: "🃏", label: "타로",     sub: "AI 타로카드 해석",       desc: "연애 · 직업 · 재물 상담",     badge: "무료/990원·24h", color: "#7e22ce", bg: "linear-gradient(145deg,#f3e8ff,#d8b4fe)", img: "https://i.pinimg.com/1200x/0c/27/99/0c27999149b93230b696dce0918a4e8e.jpg" },
+  { href: "/zodiac",    emoji: "⭐", label: "별자리",   sub: "12별자리 오늘 운세",     desc: "궁합 · 월별 · 오행 분석",     badge: "무료/990원·24h", color: "#1d4ed8", bg: "linear-gradient(145deg,#eff6ff,#93c5fd)", img: "https://i.pinimg.com/736x/3a/36/30/3a3630aa53fc14c5076ab4851d783b6e.jpg" },
+  { href: "/excuse",     emoji: "🙈", label: "핑계생성기", sub: "상황별 완벽한 핑계",   desc: "설득력 점수 + N명 살아남음", badge: "무료/990원·24h", color: "#dc2626", bg: "linear-gradient(145deg,#fee2e2,#fca5a5)", img: "" },
+  { href: "/badfortune", emoji: "😈", label: "나쁜운세",  sub: "오늘의 나쁜 운세",    desc: "의도적 나쁜 운세 카드",      badge: "무료/990원·24h", color: "#7c3aed", bg: "linear-gradient(145deg,#1e1b4b,#4c1d95)", img: "" },
+  { href: "/lazy",       emoji: "😴", label: "귀찮음지수", sub: "5문항 귀찮음 측정기", desc: "1~100점 귀찮음 점수",        badge: "무료/990원·24h", color: "#7c3aed", bg: "linear-gradient(145deg,#f3e8ff,#ddd6fe)", img: "" },
+  { href: "/food",       emoji: "🍜", label: "뭐먹지",    sub: "오늘 뭐 먹지?",       desc: "기분·날씨 → 음식 추천",     badge: "무료/990원·24h", color: "#16a34a", bg: "linear-gradient(145deg,#f0fdf4,#bbf7d0)", img: "" },
+  { href: "/gamjung",   emoji: "📔", label: "감정일기",  sub: "감정 기록 · 치유 일기", desc: "오행 감정 흐름 분석",         badge: "1,980원·30일",  color: "#be185d", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)", img: "https://i.pinimg.com/736x/7e/ad/71/7ead71fd8ff5c3d3d57abab4b5b01347.jpg" },
+  { href: "/diet",      emoji: "🥗", label: "다이어트",  sub: "오행 체질 식단 추천",   desc: "칼로리 계산 + 맞춤 음식",    badge: "1,980원·30일",  color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)", img: "https://i.pinimg.com/1200x/f1/11/77/f11177335015269c22af426b13f423bc.jpg" },
+  { href: "/budget",    emoji: "💰", label: "가계부",    sub: "일기식 재물 기록",       desc: "지출 · 수입 · 재물운 연결",  badge: "1,980원·30일",  color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)", img: "https://i.pinimg.com/736x/73/84/95/738495640e6c2d69d0632c59be89818f.jpg" },
+  { href: "/momcare",   emoji: "👶", label: "육아일기",  sub: "AI 육아 · 아기 기록",   desc: "일기 · 타임캡슐 · 아기말",   badge: "1,980원·30일",  color: "#be185d", bg: "linear-gradient(145deg,#fce7f3,#fbcfe8)", img: "https://i.pinimg.com/736x/19/f1/9c/19f19c6326262bd03985e28c1c45226c.jpg" },
 ];
 
 export default function AppsPage() {
@@ -191,10 +195,11 @@ export default function AppsPage() {
                     </div>
                   </>
                 ) : (
-                  <div style={{ width: "100%", height: "100%", background: app.bg, border: `1px solid ${app.color}22`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                  <div style={{ width: "100%", height: "100%", background: app.bg, border: `1px solid ${app.color}22`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6, padding: "8px" }}>
                     <span style={{ position: "absolute", top: 10, right: 10, background: badgeBg, color: "#fff", fontSize: 9, fontWeight: 900, padding: "2px 8px", borderRadius: 12 }}>{badgeText}</span>
-                    <span style={{ fontSize: 42 }}>{app.emoji}</span>
-                    <span style={{ fontSize: 15, fontWeight: 800, color: app.color }}>{app.label}</span>
+                    <span style={{ fontSize: 38 }}>{app.emoji}</span>
+                    <span style={{ fontSize: 15, fontWeight: 800, color: app.color, textAlign: "center" }}>{app.label}</span>
+                    {"sub" in app && <span style={{ fontSize: 9, color: app.color, opacity: 0.7, textAlign: "center", lineHeight: 1.3 }}>{(app as {sub:string}).sub}</span>}
                   </div>
                 )}
               </a>
