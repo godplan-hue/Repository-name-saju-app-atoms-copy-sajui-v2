@@ -45,6 +45,10 @@ const SOURCE_CFG: Record<string, [string, string, string]> = {
   "toss-petun":  ["#ecfeff","#0e7490","🐾토스펫운"],
   "toss-jigun":  ["#ede9fe","#6d28d9","💼토스직운"],
   "toss-resume": ["#dbeafe","#1d4ed8","📄토스합격"],
+  "toss-work":   ["#fee2e2","#dc2626","💪토스직장버티기"],
+  "toss-battle": ["#fce7f3","#e11d48","❤️토스이상형"],
+  "toss-style":  ["#ede9fe","#7c3aed","✨토스추구미"],
+  "toss-movie":  ["#fef3c7","#d97706","🎬토스인생영화"],
   haemong:    ["#fce7f3","#be185d","🌙꿈해몽"],
   free:       ["#fef3c7","#92400e","🎁재물운"],
 };
@@ -292,7 +296,11 @@ export default function AdminDirectPayments() {
                 { key: "toss-gunghap",label: "토스궁합",     emoji: "💞", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
                 { key: "toss-petun",  label: "토스펫운",     emoji: "🐾", activeBg: "#0e7490", inactiveBg: "#ecfeff", activeText: "white", inactiveText: "#0e7490" },
                 { key: "toss-jigun",  label: "토스직운",     emoji: "💼", activeBg: "#6d28d9", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#6d28d9" },
-                { key: "toss-resume", label: "토스합격",     emoji: "📄", activeBg: "#1d4ed8", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#1d4ed8" },
+                { key: "toss-resume", label: "토스합격",       emoji: "📄", activeBg: "#1d4ed8", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#1d4ed8" },
+                { key: "toss-work",   label: "토스직장버티기", emoji: "💪", activeBg: "#dc2626", inactiveBg: "#fee2e2", activeText: "white", inactiveText: "#dc2626" },
+                { key: "toss-battle", label: "토스이상형",    emoji: "❤️", activeBg: "#e11d48", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#e11d48" },
+                { key: "toss-style",  label: "토스추구미",    emoji: "✨", activeBg: "#7c3aed", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#7c3aed" },
+                { key: "toss-movie",  label: "토스인생영화",  emoji: "🎬", activeBg: "#d97706", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#d97706" },
                 { key: "haemong",      label: "꿈해몽",       emoji: "🌙", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
               ]).map(f => {
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.sources ?? [l.source ?? "free"]).includes(f.key)).length;
