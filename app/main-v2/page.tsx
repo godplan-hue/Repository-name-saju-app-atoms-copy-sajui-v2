@@ -984,39 +984,36 @@ export default function MainV2() {
         }} />
       )}
 
-      {/* ── 4개앱 풀패스 배너 ── */}
+      {/* ── 4개앱 풀패스 + SNS후기 나란히 ── */}
       {!isPartner && (
-        <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          {/* 풀패스 — 녹색 */}
           <div
             onClick={() => { router.push("/pass"); }}
-            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(239,68,68,0.35)", border: "2px solid #ef4444" }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(22,163,74,0.3)", border: "2px solid #4ade80" }}
           >
-            <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 14 }}>🔥 4개앱 30일 풀패스</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 16 }}>₩5,900</span>
+            <div style={{ background: "linear-gradient(135deg,#14532d,#16a34a)", padding: "10px 12px" }}>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.75)", marginBottom: 2 }}>🔥 4개앱 30일 풀패스</div>
+              <div style={{ fontSize: 18, fontWeight: 900, color: "#fff" }}>₩5,900</div>
             </div>
-            <div style={{ background: "#fff5f5", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>감정일기·다이어트·가계부·육아일기<br />일기류 4개 앱 30일 이용</p>
-              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#dc2626", padding: "5px 14px", borderRadius: 20, whiteSpace: "nowrap" }}>바로 가기 →</span>
+            <div style={{ background: "#f0fdf4", padding: "8px 12px 10px" }}>
+              <p style={{ fontSize: 10, color: "#14532d", margin: "0 0 8px", lineHeight: 1.5 }}>감정일기·다이어트<br />가계부·육아일기<br />30일 이용</p>
+              <div style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "#16a34a", padding: "5px 0", borderRadius: 20, textAlign: "center" }}>전체보기 →</div>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* SNS 후기 쿠폰 배너 */}
-      {!isPartner && (
-        <div style={{ padding: "0 14px 10px", maxWidth: 480, margin: "0 auto" }}>
+          {/* SNS후기 — 보라 */}
           <div
             onClick={() => { router.push("/share-coupon"); }}
-            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(249,115,22,0.2)", border: "1.5px solid #fed7aa" }}
+            style={{ borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(124,58,237,0.3)", border: "2px solid #a78bfa" }}
           >
-            <div style={{ background: "linear-gradient(135deg,#f97316,#f59e0b)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 18 }}>📸</span>
-              <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>SNS에 후기 올리면 쿠폰 10장!</span>
+            <div style={{ background: "linear-gradient(135deg,#4c1d95,#7c3aed)", padding: "10px 12px" }}>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.75)", marginBottom: 2 }}>📸 SNS 후기 쿠폰</div>
+              <div style={{ fontSize: 18, fontWeight: 900, color: "#fff" }}>10장!</div>
             </div>
-            <div style={{ background: "#fff7ed", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 11, color: "#c2410c", margin: 0, lineHeight: 1.6, fontWeight: 600 }}>1,000자 이상 + 사진 3장 올리면<br /><strong>990원 쿠폰 10장(9,900원 상당)</strong> 🎁</p>
-              <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#f97316,#f59e0b)", padding: "6px 14px", borderRadius: 20, whiteSpace: "nowrap", marginLeft: 10 }}>받기 →</span>
+            <div style={{ background: "#f5f3ff", padding: "8px 12px 10px" }}>
+              <p style={{ fontSize: 10, color: "#4c1d95", margin: "0 0 8px", lineHeight: 1.5 }}>1,000자+사진 3장<br />990원 쿠폰 10장<br />(9,900원 상당)</p>
+              <div style={{ fontSize: 11, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "5px 0", borderRadius: 20, textAlign: "center" }}>바로보기 →</div>
             </div>
           </div>
         </div>
