@@ -11,6 +11,7 @@
 - [토스애즈 MBTI+다이어트 광고 현황](project_toss_ads_campaign_status.md) — 2026-07-27 승인. 실패 경험. 잔여 5만9천원 유지
 
 - [⚠️ 다음 세션 첫 번째 할 것](project_next_session_upload.md) — ‼️7/29 바이브챌린지 마감. 1순위:출품신청, 2순위:네이티브광고(내일2시오픈), 3순위:광고성과확인, 4순위:감정일기 출시
+- [⭐ 세션 2026-08-02 — 알림톡 완전 수정](project_session_2026_08_02.md) — type:ATA 누락+파트너명버그 수정, 결과지 직접 링크 알림톡 발송, 꼭읽어보세요 스크롤 버그 수정
 
 - [⭐⭐⭐ 토스 앱 수익화 최종 확정 (2026-07-28)](project_toss_app_monetization_final.md) — 990원앱 vs 광고앱 분류 확정. 모든앱 배너+잠금. 광고앱=세션잠금(앱끄면초기화). 절대 변경 금지
 - [⭐⭐ 광고+리뷰 구조 최종 v4 (2026-07-27)](project_toss_ad_structure_v2_final.md) — 다이어트 프리미엄탭 무료=매번/유료=하루1번 추가. reviewClaimed 영구차단(테스트초기화에서 제외). 신규앱도 동일 적용
@@ -88,4 +89,8 @@
 - [⭐⭐ 토스 첫진입 광고 flicker 수정 (2026-07-31)](project_toss_ad_firstentry_fix.md) — loaded 이벤트 방식 확정+카운터 8시간블록. 9개앱 전부 적용. 새 앱도 동일 패턴 필수
 - [⛔ memory 저장은 항상 GitHub에](feedback_memory_save_to_github.md) — 로컬만 저장 금지. 반드시 프로젝트 memory/에 복사 후 commit+push까지 완료해야 저장 완료
 - [세션 작업 2026-08-01](project_session_2026_08_01.md) — 16개 앱 카운터 공식 통일(jigun/petun/saju 수정)+배지+흰푸터 5개 앱 추가+전체 빌드 완료
+- [⛔⛔⛔ 요청한 것만 수정 — ShareClient 사건](feedback_no_extra_edits.md) — ShareClient.tsx(카톡공유, 버튼 위2개 아래1개 총3개 구조)를 요청 없이 건드려 에스더님 3일 작업 망침. 꼭읽어보세요는 result/page.tsx에만. 절대 다른 파일 건드리지 말 것
+- [세션 작업 2026-08-02](project_session_2026_08_02.md) — 카카오 알림톡 3종 버그 수정(type:ATA/변수/결과지링크)+꼭읽어보세요 첫진입 버그 수정
 - [⭐⭐ 앱인토스 8월 바이브코딩 챌린지 + 신규앱 4개](project_session_2026_08_03.md) — 하찮아도괜찮아 테마. 실제앱=이상형월드컵/인생이영화라면/추구미/직장버티기. jeomun.com /battle·/movie·/style·/work 생성완료. 8/26마감
+- [⚠️ 토스 크로스프로모 + 앱이름 수정 대기](project_toss_cross_promo_pending.md) — 모든앱 이름 "무료" 제거(콘솔), CROSS배열서 꿈해몽/별자리/펫운/행운번호 제거(코드). 4개신규앱은이미추가됨
+- [⭐ 세션 2026-08-05 — 사주앱 꿈해몽/별자리/펫운 3단계잠금+17개앱 크로스프로모+전체빌드](project_session_2026_08_05.md) — MINI_DREAM_DB 20개 완성, 3탭 잠금구조, 전화번호차단, 17개.ait빌드완료, 부제/키워드/스크린샷프롬프트 확정
