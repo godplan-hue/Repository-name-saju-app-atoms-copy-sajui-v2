@@ -255,7 +255,7 @@ export default function BattlePage() {
               <div style={{ fontSize: 14, fontWeight: 700, color: '#e11d48', marginBottom: 6 }}>사주로 보는 연애운 · 배우자운</div>
               <div style={{ fontSize: 12, color: '#9f1239', marginBottom: 14 }}>오행으로 보는 진짜 이상형 + 올해 연애운</div>
               <a href="/main-v2" style={{ display: 'block', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', borderRadius: 12, padding: '13px', fontSize: 14, color: 'white', fontWeight: 700, textDecoration: 'none' }}>
-                🔮 사주 연애운 보기 → 990원·24h
+                🔮 사주 연애운 보기 →
               </a>
             </div>
 

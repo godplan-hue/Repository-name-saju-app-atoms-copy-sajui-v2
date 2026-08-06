@@ -318,7 +318,7 @@ export default function WorkPage() {
               <div style={{ fontSize: 14, fontWeight: 700, color: '#1e40af', marginBottom: 6 }}>사주로 보는 직업운 · 성공운</div>
               <div style={{ fontSize: 12, color: '#1e3a8a', marginBottom: 14 }}>오행으로 보는 나에게 맞는 직업 + 올해 직장운</div>
               <a href="/main-v2" style={{ display: 'block', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', borderRadius: 12, padding: '13px', fontSize: 14, color: 'white', fontWeight: 700, textDecoration: 'none' }}>
-                🔮 사주 직업운 보기 → 990원·24h
+                🔮 사주 직업운 보기 →
               </a>
             </div>
 

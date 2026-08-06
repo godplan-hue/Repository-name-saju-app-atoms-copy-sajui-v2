@@ -269,7 +269,7 @@ export default function StylePage() {
               <div style={{ fontSize: 14, fontWeight: 700, color: '#7c3aed', marginBottom: 6 }}>사주로 보는 오행 기질 · 성공운</div>
               <div style={{ fontSize: 12, color: '#6d28d9', marginBottom: 14 }}>나의 오행 타입 + 올해 운세 흐름</div>
               <a href="/main-v2" style={{ display: 'block', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', borderRadius: 12, padding: '13px', fontSize: 14, color: 'white', fontWeight: 700, textDecoration: 'none' }}>
-                🔮 사주 오행 기질 보기 → 990원·24h
+                🔮 사주 오행 기질 보기 →
               </a>
             </div>
 

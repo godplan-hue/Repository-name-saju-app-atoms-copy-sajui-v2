@@ -148,7 +148,7 @@ export default function MoviePage() {
             <div style={{ marginTop: 24, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               {[
                 { href: '/battle', icon: '❤️', label: '이상형월드컵', badge: '무료' },
-                { href: '/work', icon: '💪', label: '직장버티기', badge: '무료/990원' },
+                { href: '/work', icon: '💪', label: '직장버티기', badge: '무료' },
                 { href: '/main-v2', icon: '☯️', label: '사주 운세', badge: '990원~' },
                 { href: '/mbti', icon: '🧠', label: 'MBTI', badge: '무료' },
               ].map(a => (
@@ -260,7 +260,7 @@ export default function MoviePage() {
               <div style={{ fontSize: 14, fontWeight: 700, color: '#b45309', marginBottom: 6 }}>사주로 보는 올해 운세 · 성공운</div>
               <div style={{ fontSize: 12, color: '#92400e', marginBottom: 14 }}>오행으로 보는 직업운 + 재물운 + 올해 흐름</div>
               <a href="/main-v2" style={{ display: 'block', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', borderRadius: 12, padding: '13px', fontSize: 14, color: 'white', fontWeight: 700, textDecoration: 'none' }}>
-                🔮 사주 운세 보기 → 990원·24h
+                🔮 사주 운세 보기 →
               </a>
             </div>
 
