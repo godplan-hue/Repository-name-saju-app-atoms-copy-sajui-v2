@@ -812,7 +812,7 @@ export default function DietPage() {
                 {([
                   { key: "avoid", label: "🚫 금지 음식" },
                   { key: "exercise", label: "🏃 맞춤 운동" },
-                  { key: "seasonal", label: `${SEASON_EMOJI[selectedSeason]} 이 계절` },
+                  { key: "seasonal", label: "🍽️ 계절별 음식 추천" },
                   { key: "report", label: "📅 월별 리포트" },
                 ] as { key: PremiumSub; label: string }[]).map(s => (
                   <button key={s.key} onClick={() => setPremiumSub(s.key)} style={{ flexShrink: 0, background: premiumSub === s.key ? ohData.color : "rgba(255,255,255,0.08)", color: premiumSub === s.key ? ohData.bg : "rgba(255,255,255,0.7)", border: premiumSub === s.key ? "none" : "1px solid rgba(255,255,255,0.15)", borderRadius: 20, padding: "7px 14px", fontSize: 13, fontWeight: premiumSub === s.key ? 900 : 400, cursor: "pointer", whiteSpace: "nowrap" as const }}>
