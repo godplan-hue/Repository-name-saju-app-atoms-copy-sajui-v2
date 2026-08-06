@@ -69,6 +69,7 @@ interface Payment {
   discountCode?: string;
   discountPercent?: number;
   originalAmount?: number;
+  source?: string;
 }
 
 function fmtDate(iso: string) {
@@ -217,7 +218,7 @@ export default function AdminDirectPayments() {
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
               <thead>
                 <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
-                  {["결제일시", "이름", "전화번호", "상품", "플랜", "결제금액", "쿠폰", "삭제"].map(h => (
+                  {["결제일시", "이름", "전화번호", "상품", "플랜", "결제금액", "쿠폰", "경로", "삭제"].map(h => (
                     <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontWeight: 900, color: "#374151", whiteSpace: "nowrap" }}>{h}</th>
                   ))}
                 </tr>
@@ -246,6 +247,13 @@ export default function AdminDirectPayments() {
                       {p.discountCode ? (
                         <span style={{ fontSize: 11, background: "#fef3c7", color: "#92400e", padding: "2px 8px", borderRadius: 20, fontWeight: 700 }}>
                           🎟 {p.discountCode} ({p.discountPercent}%)
+                        </span>
+                      ) : <span style={{ color: "#d1d5db" }}>—</span>}
+                    </td>
+                    <td style={{ padding: "10px 12px" }}>
+                      {p.source ? (
+                        <span style={{ fontSize: 11, background: p.source.startsWith("파트너") ? "#fef3c7" : p.source === "구글" ? "#dbeafe" : p.source === "네이버" ? "#dcfce7" : p.source === "카카오" ? "#fef9c3" : "#f3f4f6", color: p.source.startsWith("파트너") ? "#92400e" : p.source === "구글" ? "#1d4ed8" : p.source === "네이버" ? "#15803d" : p.source === "카카오" ? "#713f12" : "#374151", padding: "2px 8px", borderRadius: 20, fontWeight: 700, whiteSpace: "nowrap" }}>
+                          {p.source === "구글" ? "🔍 구글" : p.source === "네이버" ? "🟢 네이버" : p.source === "카카오" ? "💛 카카오" : p.source === "인스타" ? "📸 인스타" : p.source === "직접" ? "🔗 직접" : p.source === "점운내부" ? "🐱 내부" : p.source.startsWith("파트너") ? `🤝 ${p.source}` : `🌐 ${p.source}`}
                         </span>
                       ) : <span style={{ color: "#d1d5db" }}>—</span>}
                     </td>
