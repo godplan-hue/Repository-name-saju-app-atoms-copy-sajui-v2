@@ -312,6 +312,8 @@ function V2ResultInner() {
   // 스크롤 위치 저장/복원 — 버튼 눌렀다 돌아올 때 같은 자리로 복원
   // 새로고침(reload) 시에는 복원 안 함 — 꼭읽어보세요 버튼이 항상 맨 위에 보이도록
   useEffect(() => {
+    // 브라우저 기본 스크롤 복원 완전 차단
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     const KEY = 'rp_scroll';
     const navType = (() => {
       try {
