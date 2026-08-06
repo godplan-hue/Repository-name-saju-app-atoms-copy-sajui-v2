@@ -514,7 +514,7 @@ export default function DietPage() {
         </div>
         <footer style={{ padding: "32px 20px 40px", textAlign: "center" }}>
           <div style={{ maxWidth: 380, margin: "0 auto", padding: "20px 18px", borderRadius: 20, background: "#0a0020", border: "1px solid rgba(255,255,255,0.15)" }}>
-            <p style={{ color: "#a78bfa", fontSize: 11, fontWeight: 700, margin: "0 0 10px" }}>© 2026 점운 · Powered by 점운</p>
+            <p style={{ color: "#a78bfa", fontSize: 11, fontWeight: 700, margin: "0 0 10px" }}>© 2026 점운</p>
             <div style={{ color: "#94a3b8", fontSize: 10.5, lineHeight: 1.9, marginBottom: 14 }}>
               <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
               <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
@@ -1028,7 +1028,7 @@ export default function DietPage() {
       {/* 푸터 */}
       <footer style={{ padding: "24px 20px 110px", textAlign: "center" }}>
         <div style={{ maxWidth: 380, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#0a0020", border: "1px solid rgba(255,255,255,0.15)" }}>
-          <p style={{ color: "#a78bfa", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 · Powered by 점운</p>
+          <p style={{ color: "#a78bfa", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운</p>
           <div style={{ color: "#94a3b8", fontSize: 10, lineHeight: 1.8, marginBottom: 12 }}>
             <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신 · 사업자등록번호 773-60-00359</p>
             <p style={{ margin: 0 }}>통신판매번호 제 2020-서울강남-01681호</p>

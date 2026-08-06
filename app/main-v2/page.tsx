@@ -1034,7 +1034,6 @@ export default function MainV2() {
           <span style={{ fontSize: 13, fontWeight: 900, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>점운</span>
         </div>
         <p style={{ color: "#6d28d9", fontSize: 11, fontWeight: 700, margin: "0 0 4px" }}>© 2026 점운 · AI 동양 사주 분석</p>
-        <p style={{ margin: "0 0 6px", color: "#dc2626", fontSize: 11, fontWeight: 900 }}>🗓️ 카드결제 정식 오픈 2026년 8월 예정</p>
         <div style={{ color: "#581c87", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
           <p style={{ margin: 0 }}>대표:장문정 · 상호 기획의신</p>
           <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>

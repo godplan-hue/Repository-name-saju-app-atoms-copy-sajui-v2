@@ -1318,11 +1318,8 @@ function V2ResultInner() {
     )}
     {/* 헤더 — main 밖에 있어야 iOS Safari에서 position:sticky 작동 */}
     <header style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-      {/* ── 꼭 읽어보세요 — 헤더 맨 위 첫 번째 줄 (항상 보임) ── */}
-      <button
-        onClick={() => setShowGuideModal(true)}
-        style={{ display: "block", width: "100%", padding: "9px 16px", background: "#dc2626", color: "white", border: "none", fontWeight: 900, fontSize: 13, cursor: "pointer", textAlign: "left" }}
-      >
+      {/* ── 꼭 읽어보세요 — 헤더 맨 위 (항상 보임) ── */}
+      <button onClick={() => setShowGuideModal(true)} style={{ display: "block", width: "100%", padding: "9px 16px", background: "#dc2626", color: "white", border: "none", fontWeight: 900, fontSize: 13, cursor: "pointer", textAlign: "left" }}>
         📌 꼭 읽어보세요 · 자세히 보기 →
       </button>
       {/* ── 나머지 버튼 행 ── */}
@@ -1865,9 +1862,11 @@ function V2ResultInner() {
             </div>
             <div onClick={() => { window.open("/pass", "_blank"); }} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
               <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "7px 10px", textAlign: "center" }}>
-                <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🌿 4개앱 30일 풀패스</span>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔥 4개앱 30일 풀패스</span>
               </div>
               <div style={{ padding: "10px" }}>
+                <p style={{ fontSize: 10, color: "#9ca3af", margin: "0 0 1px", textDecoration: "line-through" }}>정가 ₩7,920 (개당 ₩1,980)</p>
+                <p style={{ fontSize: 11, fontWeight: 900, color: "#dc2626", margin: "0 0 1px" }}>↓ 25% 할인</p>
                 <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>₩5,900<span style={{ fontSize: 10, color: "#6b7280", fontWeight: 400 }}>/30일</span></p>
                 <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>감정일기·다이어트<br />가계부·육아일기</p>
                 <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>풀패스 구매 →</div>

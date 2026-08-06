@@ -119,6 +119,8 @@ export default function BudgetPayPage() {
             <p style={{ fontSize:12, color:"#6b7280", margin:"4px 0 0" }}>추가 결제 시 기간 연장</p>
           </div>
           <div onClick={()=>{ window.location.href="/pass"; }} style={{ cursor:"pointer", border:"2px solid #f59e0b", borderRadius:18, padding:"20px 18px", marginBottom:24, background:"rgba(245,158,11,0.06)" }}>
+            <p style={{ fontSize:11, color:"#9ca3af", margin:"0 0 4px", textDecoration:"line-through" }}>정가 ₩7,920 (개당 ₩1,980)</p>
+            <p style={{ fontSize:11, fontWeight:900, color:"#ef4444", margin:"0 0 6px" }}>↓ 25% 할인</p>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
               <span style={{ fontSize:20, fontWeight:900, color:"#fbbf24" }}>₩5,900</span>
               <span style={{ background:"linear-gradient(135deg,#f59e0b,#ef4444)", color:"white", fontSize:11, fontWeight:900, padding:"3px 10px", borderRadius:20 }}>🔥 추천</span>
