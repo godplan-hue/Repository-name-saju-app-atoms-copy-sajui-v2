@@ -146,12 +146,8 @@ export default function FreeHaemongPage() {
                   해당 전화번호로 꿈해몽 무료 체험이<br />이미 완료됐어요.
                 </p>
                 <button onClick={() => window.open("/haemong/pay", "_blank")}
-                  style={{ width: "100%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>
+                  style={{ width: "100%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer" }}>
                   🌙 꿈해몽 30일 이용권 ₩990
-                </button>
-                <button onClick={() => window.open("/pass", "_blank")}
-                  style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer" }}>
-                  🔥 7개앱 풀패스 ₩4,900/30일
                 </button>
               </div>
             )}
@@ -227,12 +223,8 @@ export default function FreeHaemongPage() {
                 300개+ 꿈 해석 · 재물·연애·건강·성공운 전체<br />30일 무제한 이용
               </p>
               <button onClick={() => window.open("/haemong/pay", "_blank")}
-                style={{ width: "100%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>
+                style={{ width: "100%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
                 🌙 꿈해몽 30일 이용권 ₩990
-              </button>
-              <button onClick={() => window.open("/pass", "_blank")}
-                style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
-                🔥 꿈해몽+6개앱 풀패스 ₩4,900/30일
               </button>
             </div>
 

@@ -128,12 +128,8 @@ export default function FreePetunPage() {
                 <p style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>이미 무료 체험을 사용하셨어요</p>
                 <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 20px" }}>해당 전화번호로 펫운 무료 체험이 완료됐어요.</p>
                 <button onClick={() => window.open("/petun/pay", "_blank")}
-                  style={{ width: "100%", background: "linear-gradient(135deg,#f97316,#ec4899)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>
+                  style={{ width: "100%", background: "linear-gradient(135deg,#f97316,#ec4899)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer" }}>
                   🐾 펫운 30일 이용권 ₩990
-                </button>
-                <button onClick={() => window.open("/pass", "_blank")}
-                  style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer" }}>
-                  🔥 7개앱 풀패스 ₩4,900/30일
                 </button>
               </div>
             ) : (
@@ -161,12 +157,8 @@ export default function FreePetunPage() {
               <p style={{ fontSize: 14, fontWeight: 900, color: "#ea580c", margin: "0 0 4px", textAlign: "center" }}>🐾 펫운 전체 이용하기</p>
               <p style={{ fontSize: 12, color: "#6b7280", textAlign: "center", margin: "0 0 14px" }}>매일 운세 · 궁합 · 건강 · 30일 무제한</p>
               <button onClick={() => window.open("/petun/pay", "_blank")}
-                style={{ width: "100%", background: "linear-gradient(135deg,#f97316,#ec4899)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>
+                style={{ width: "100%", background: "linear-gradient(135deg,#f97316,#ec4899)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
                 🐾 펫운 30일 이용권 ₩990
-              </button>
-              <button onClick={() => window.open("/pass", "_blank")}
-                style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
-                🔥 펫운+6개앱 풀패스 ₩4,900/30일
               </button>
             </div>
 

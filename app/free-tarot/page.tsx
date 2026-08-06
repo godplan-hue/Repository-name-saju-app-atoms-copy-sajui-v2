@@ -106,12 +106,8 @@ export default function FreeTarotPage() {
                 <p style={{ fontSize: 16, fontWeight: 900, color: "#fff", margin: "0 0 8px" }}>이미 무료 체험을 사용하셨어요</p>
                 <p style={{ fontSize: 13, color: "#a78bfa", margin: "0 0 20px" }}>해당 전화번호로 타로 무료 체험이 완료됐어요.</p>
                 <button onClick={() => window.open("/tarot/pay", "_blank")}
-                  style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>
+                  style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer" }}>
                   🃏 타로 30일 이용권 ₩990
-                </button>
-                <button onClick={() => window.open("/pass", "_blank")}
-                  style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer" }}>
-                  🔥 7개앱 풀패스 ₩4,900/30일
                 </button>
               </div>
             ) : (
@@ -144,12 +140,8 @@ export default function FreeTarotPage() {
               <p style={{ fontSize: 14, fontWeight: 900, color: "#c4b5fd", margin: "0 0 4px", textAlign: "center" }}>🃏 타로 전체 이용하기</p>
               <p style={{ fontSize: 12, color: "#a78bfa", textAlign: "center", margin: "0 0 14px" }}>5주제 타로 · 사주 연동 소울카드 · 30일 무제한</p>
               <button onClick={() => window.open("/tarot/pay", "_blank")}
-                style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>
+                style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
                 🃏 타로 30일 이용권 ₩990
-              </button>
-              <button onClick={() => window.open("/pass", "_blank")}
-                style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
-                🔥 타로+6개앱 풀패스 ₩4,900/30일
               </button>
             </div>
 

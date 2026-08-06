@@ -377,7 +377,7 @@ export default function HaemongPage() {
           );
         })()}
 
-        {/* 사주 + 7개앱 풀패스 카드 */}
+        {/* 사주 + 꿈해몽 이용권 카드 */}
         <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
           <div onClick={() => window.open("/main-v2", "_blank")} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #8b5cf6", overflow: "hidden", boxShadow: "0 3px 12px rgba(139,92,246,0.15)" }}>
             <div style={{ background: "#8b5cf6", padding: "7px 10px", textAlign: "center" }}>
@@ -394,8 +394,8 @@ export default function HaemongPage() {
               <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🌙 꿈해몽 이용권</span>
             </div>
             <div style={{ padding: "10px" }}>
-              <p style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>₩990 또는 ₩4,900</p>
-              <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>단독권 또는<br />7개앱 풀패스 선택</p>
+              <p style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>₩990</p>
+              <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>24시간 단독<br />이용권</p>
               <div style={{ background: "linear-gradient(135deg,#f59e0b,#ef4444)", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>이용권 보기 →</div>
             </div>
           </div>

@@ -134,7 +134,7 @@ export default function FreeMomcarePage() {
                 </button>
                 <button onClick={() => window.open("/pass", "_blank")}
                   style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "14px 0", fontSize: 15, fontWeight: 900, cursor: "pointer" }}>
-                  🔥 7개앱 풀패스 ₩4,900/30일
+                  🔥 4개앱 30일 풀패스 ₩5,900
                 </button>
               </div>
             ) : tip && (
@@ -173,7 +173,7 @@ export default function FreeMomcarePage() {
               </button>
               <button onClick={() => window.open("/pass", "_blank")}
                 style={{ width: "100%", background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", border: "none", borderRadius: 12, padding: "15px 0", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>
-                🔥 육아일기+6개앱 풀패스 ₩4,900/30일
+                🔥 4개앱 30일 풀패스 ₩5,900
               </button>
             </div>
 

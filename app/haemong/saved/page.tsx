@@ -90,15 +90,15 @@ export default function SavedDreamsPage() {
               </Link>
             </div>
 
-            {/* 7개앱 풀패스 버튼 */}
+            {/* 꿈해몽 이용권 버튼 */}
             <a href="/haemong/pay" style={{ display: "block", borderRadius: 16, overflow: "hidden", marginTop: 14, boxShadow: "0 2px 14px rgba(245,158,11,0.2)", border: "2px solid #f59e0b", textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(135deg,#f59e0b,#ef4444)", padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🔥 7개앱 30일 풀패스</span>
-                <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 11 }}>꿈해몽도 포함</span>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>🌙 꿈해몽 24시간 이용권</span>
+                <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 11 }}>꿈해몽 단독</span>
               </div>
               <div style={{ background: "#fffbeb", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <p style={{ fontSize: 11, color: "#92400e", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>꿈해몽·감정일기·다이어트·가계부·타로·펫운·육아일기</p>
-                <span style={{ flexShrink: 0, fontSize: 13, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#f59e0b,#ef4444)", padding: "5px 14px", borderRadius: 20, marginLeft: 8 }}>₩4,900 →</span>
+                <p style={{ fontSize: 11, color: "#92400e", margin: 0, lineHeight: 1.5, fontWeight: 600 }}>꿈해몽 전체 해석 · 재물·연애·건강·성공운</p>
+                <span style={{ flexShrink: 0, fontSize: 13, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#f59e0b,#ef4444)", padding: "5px 14px", borderRadius: 20, marginLeft: 8 }}>₩990 →</span>
               </div>
             </a>
           </>
