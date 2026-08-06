@@ -1353,17 +1353,18 @@ function V2ResultInner() {
             📱 공유
           </button>
         </div>
+        {/* ── 꼭 읽어보세요 — 헤더 두 번째 줄 (sticky라 항상 보임) ── */}
+        <div style={{ width: "100%", padding: "2px 0 4px" }}>
+          <button
+            onClick={() => setShowGuideModal(true)}
+            style={{ display: "block", width: "100%", padding: "8px 14px", background: "#dc2626", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", textAlign: "left" }}
+          >
+            📌 꼭 읽어보세요 · 자세히 보기 →
+          </button>
+        </div>
       </header>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
-
-        {/* ── 꼭 읽어보세요 버튼 ── */}
-        <button
-          onClick={() => setShowGuideModal(true)}
-          style={{ display: "block", width: "100%", padding: "13px 16px", marginBottom: 10, background: "#dc2626", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 14, cursor: "pointer", textAlign: "left", boxShadow: "0 2px 10px rgba(220,38,38,0.35)" }}
-        >
-          📌 꼭 읽어보세요 · 자세히 보기 →
-        </button>
 
 
 

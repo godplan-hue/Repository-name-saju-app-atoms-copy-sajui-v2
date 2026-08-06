@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
     const templateId = process.env.SOLAPI_TEMPLATE_ID;
 
     if (!apiKey || !apiSecret || !pfId || !templateId) {
+      console.error("[notify] 환경변수 누락:", { apiKey: !!apiKey, apiSecret: !!apiSecret, pfId: !!pfId, templateId: !!templateId });
       return NextResponse.json({ ok: false, error: "missing env" });
     }
 
