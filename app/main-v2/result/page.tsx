@@ -1318,11 +1318,6 @@ function V2ResultInner() {
     )}
     {/* 헤더 — main 밖에 있어야 iOS Safari에서 position:sticky 작동 */}
     <header style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-      {/* ── 꼭 읽어보세요 — 헤더 맨 위 (항상 보임) ── */}
-      <button onClick={() => setShowGuideModal(true)} style={{ display: "block", width: "100%", padding: "9px 16px", background: "#dc2626", color: "white", border: "none", fontWeight: 900, fontSize: 13, cursor: "pointer", textAlign: "left" }}>
-        📌 꼭 읽어보세요 · 자세히 보기 →
-      </button>
-      {/* ── 나머지 버튼 행 ── */}
       <div style={{ padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
           <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
@@ -1334,6 +1329,9 @@ function V2ResultInner() {
           </button>
         </div>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
+          <button onClick={() => setShowGuideModal(true)} style={{ padding: "5px 12px", background: "#fef2f2", color: "#dc2626", border: "1px solid rgba(220,38,38,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+            📌 꼭 읽어보세요
+          </button>
           <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             {speaking ? "⏸ 멈추기" : "🔊 읽기"}
           </button>
