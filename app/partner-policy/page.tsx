@@ -97,8 +97,8 @@ export default function PartnerPolicy() {
             <div style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.35)", borderRadius: 12, padding: "14px 16px" }}>
               <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900, color: "#6ee7b7" }}>🔥 4개앱 30일 풀패스 — ₩5,900</p>
               <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)", lineHeight: 2 }}>
-                꿈해몽 · 육아일기 · 펫운 · 타로 · 감정일기 · 다이어트 · 가계부.<br />
-                30일 동안 7개 앱 전체 이용 가능.
+                감정일기 · 다이어트 · 가계부 · 육아일기(맘케어).<br />
+                30일 동안 4개 앱 전체 이용 가능.
               </p>
             </div>
 

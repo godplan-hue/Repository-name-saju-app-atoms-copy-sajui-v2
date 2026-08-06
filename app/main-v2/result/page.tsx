@@ -1329,38 +1329,39 @@ function V2ResultInner() {
       </div>
 
       {/* 헤더 */}
-      <header style={{ minHeight: 52, padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", rowGap: 6, columnGap: 6, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-          <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
-            {musicOn ? "🎵 ON" : "🎵"}
-          </button>
-          <button onClick={() => { window.location.href = "/main-v2"; }} style={{ background: isMob ? "none" : "linear-gradient(135deg,#ec4899,#8b5cf6)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", borderRadius: isMob ? 0 : 20, padding: isMob ? 0 : "6px 12px" }}>
-            <span style={{ fontSize: 18, color: isMob ? undefined : "white" }}>←</span>
-            <span style={{ fontSize: 14, fontWeight: 900, ...(isMob ? { background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" } : { color: "white" }), whiteSpace: "nowrap" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
-          </button>
-        </div>
-        <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
-          <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
-            {speaking ? "⏸ 멈추기" : "🔊 읽기"}
-          </button>
-          <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺ 처음부터 듣기</button>
-          {tier !== "free" && (
-            <button onClick={() => { window.open("/main-v2/history", "_blank"); }} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
-              📂 보관함
+      <header style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
+        {/* ── 꼭 읽어보세요 — 헤더 맨 위 첫 번째 줄 (항상 보임) ── */}
+        <button
+          onClick={() => setShowGuideModal(true)}
+          style={{ display: "block", width: "100%", padding: "9px 16px", background: "#dc2626", color: "white", border: "none", fontWeight: 900, fontSize: 13, cursor: "pointer", textAlign: "left" }}
+        >
+          📌 꼭 읽어보세요 · 자세히 보기 →
+        </button>
+        {/* ── 나머지 버튼 행 ── */}
+        <div style={{ padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+            <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
+              {musicOn ? "🎵 ON" : "🎵"}
             </button>
-          )}
-          <button onClick={() => setShowShareModal(true)} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
-            📱 공유
-          </button>
-        </div>
-        {/* ── 꼭 읽어보세요 — 헤더 두 번째 줄 (sticky라 항상 보임) ── */}
-        <div style={{ width: "100%", padding: "2px 0 4px" }}>
-          <button
-            onClick={() => setShowGuideModal(true)}
-            style={{ display: "block", width: "100%", padding: "8px 14px", background: "#dc2626", color: "white", border: "none", borderRadius: 8, fontWeight: 900, fontSize: 13, cursor: "pointer", textAlign: "left" }}
-          >
-            📌 꼭 읽어보세요 · 자세히 보기 →
-          </button>
+            <button onClick={() => { window.location.href = "/main-v2"; }} style={{ background: isMob ? "none" : "linear-gradient(135deg,#ec4899,#8b5cf6)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", borderRadius: isMob ? 0 : 20, padding: isMob ? 0 : "6px 12px" }}>
+              <span style={{ fontSize: 18, color: isMob ? undefined : "white" }}>←</span>
+              <span style={{ fontSize: 14, fontWeight: 900, ...(isMob ? { background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" } : { color: "white" }), whiteSpace: "nowrap" }}>{brand?.businessName ? `🐱 ${brand.businessName}` : "🐱 점운"}</span>
+            </button>
+          </div>
+          <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
+            <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+              {speaking ? "⏸ 멈추기" : "🔊 읽기"}
+            </button>
+            <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "5px 9px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>↺</button>
+            {tier !== "free" && (
+              <button onClick={() => { window.open("/main-v2/history", "_blank"); }} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+                📂 보관함
+              </button>
+            )}
+            <button onClick={() => setShowShareModal(true)} style={{ padding: "5px 12px", background: "#fdf2f8", color: "#ec4899", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
+              📱 공유
+            </button>
+          </div>
         </div>
       </header>
 
