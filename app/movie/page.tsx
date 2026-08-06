@@ -123,7 +123,6 @@ export default function MoviePage() {
           <p style={{ color: '#92400e', fontSize: 14, margin: '6px 0 0' }}>오늘 내 하루는 어떤 장르 영화일까요?</p>
           <div style={{ display: 'inline-flex', gap: 6, marginTop: 10 }}>
             <span style={{ background: '#fef3c7', borderRadius: 20, padding: '4px 12px', fontSize: 12, color: '#b45309', fontWeight: 700 }}>🆓 무료</span>
-            <span style={{ background: '#fef3c7', borderRadius: 20, padding: '4px 12px', fontSize: 12, color: '#b45309', fontWeight: 700 }}>🔮 990원·24h</span>
           </div>
         </div>
 

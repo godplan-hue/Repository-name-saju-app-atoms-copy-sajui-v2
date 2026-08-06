@@ -148,7 +148,6 @@ export default function WorkPage() {
           <p style={{ color: '#1e3a8a', fontSize: 14, margin: '6px 0 0' }}>오늘 직장 생존 점수를 계산해드려요</p>
           <div style={{ display: 'inline-flex', gap: 6, marginTop: 10 }}>
             <span style={{ background: '#dbeafe', borderRadius: 20, padding: '4px 12px', fontSize: 12, color: '#2563eb', fontWeight: 700 }}>🆓 무료</span>
-            <span style={{ background: '#dbeafe', borderRadius: 20, padding: '4px 12px', fontSize: 12, color: '#2563eb', fontWeight: 700 }}>🔮 990원·24h</span>
           </div>
         </div>
 

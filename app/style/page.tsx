@@ -127,7 +127,6 @@ export default function StylePage() {
           <p style={{ color: '#6d28d9', fontSize: 14, margin: '6px 0 0' }}>8문항으로 나의 패션 코어를 찾아드려요</p>
           <div style={{ display: 'inline-flex', gap: 6, marginTop: 10 }}>
             <span style={{ background: '#ede9fe', borderRadius: 20, padding: '4px 12px', fontSize: 12, color: '#7c3aed', fontWeight: 700 }}>🆓 무료</span>
-            <span style={{ background: '#ede9fe', borderRadius: 20, padding: '4px 12px', fontSize: 12, color: '#7c3aed', fontWeight: 700 }}>🔮 990원·24h</span>
           </div>
         </div>
 

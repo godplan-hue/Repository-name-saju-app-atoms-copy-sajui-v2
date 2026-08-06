@@ -128,7 +128,6 @@ export default function BattlePage() {
           <p style={{ color: '#9f1239', fontSize: 14, margin: '6px 0 0' }}>8라운드 배틀로 나의 이상형 유형을 찾아드려요</p>
           <div style={{ display: 'inline-flex', gap: 6, marginTop: 10 }}>
             <span style={{ background: '#ffe4e6', borderRadius: 20, padding: '4px 12px', fontSize: 12, color: '#e11d48', fontWeight: 700 }}>🆓 무료</span>
-            <span style={{ background: '#ffe4e6', borderRadius: 20, padding: '4px 12px', fontSize: 12, color: '#e11d48', fontWeight: 700 }}>🔮 990원·24h</span>
           </div>
         </div>
 
