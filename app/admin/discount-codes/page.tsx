@@ -36,7 +36,7 @@ export default function AdminDiscountCodes() {
   const [codeTab, setCodeTab] = useState<"mine"|"auto">("mine");
   const [couponPreview, setCouponPreview] = useState<{ code: string; discountPercent: number; note: string; maxUses: number; fullAccess: boolean; maxAmount: number } | null>(null);
   const [copied, setCopied] = useState(false);
-  const isAutoCode = (c: PromoCode) => c.note === "카카오공유무료쿠폰";
+  const isAutoCode = (c: PromoCode) => c.code.startsWith("FREE") || c.code.startsWith("KAKAO") || c.note === "카카오공유무료쿠폰" || c.note === "SNS후기쿠폰(990원)" || c.note === "무료재물운쿠폰";
 
   const loadAll = () => {
     fetch("/api/promo-codes").then(res => res.json()).then(data => setCodes(data.codes || []));
