@@ -1298,6 +1298,8 @@ function V2ResultInner() {
 
   return (
     <>
+    {/* 페이지 진입 즉시 맨 위로 — useEffect보다 먼저 실행 */}
+    <script dangerouslySetInnerHTML={{ __html: "if(history.scrollRestoration)history.scrollRestoration='manual';window.scrollTo(0,0);" }} />
     <Script
       src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
       strategy="afterInteractive"
