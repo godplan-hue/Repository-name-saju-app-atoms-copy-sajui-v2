@@ -594,11 +594,11 @@ export default function ShareClient({ id }: { id: string }) {
               </div>
               <div onClick={() => nav("/pass")} style={{ flex: 1, borderRadius: 14, cursor: "pointer", background: "#fff", border: "2px solid #ef4444", overflow: "hidden", boxShadow: "0 3px 12px rgba(239,68,68,0.2)" }}>
                 <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", padding: "7px 10px", textAlign: "center" }}>
-                  <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🔥 7개앱 풀패스</span>
+                  <span style={{ color: "#fff", fontWeight: 900, fontSize: 11 }}>🌿 4개앱 30일 풀패스</span>
                 </div>
                 <div style={{ padding: "10px" }}>
-                  <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>₩4,900<span style={{ fontSize: 10, color: "#6b7280", fontWeight: 400 }}>/30일</span></p>
-                  <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>꿈해몽·타로·펫운<br />감정일기 등 7개앱</p>
+                  <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>₩5,900<span style={{ fontSize: 10, color: "#6b7280", fontWeight: 400 }}>/30일</span></p>
+                  <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>감정일기·다이어트<br />가계부·육아일기</p>
                   <div style={{ background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>풀패스 구매 →</div>
                 </div>
               </div>
