@@ -13,6 +13,9 @@ const QUIZ_LIST = [
   { q: '오늘 상사한테 혼났나요?', yes: -15, no: 10 },
   { q: '점심은 제대로 먹었나요?', yes: 5, no: -5 },
   { q: '퇴근 후 업무 연락이 왔나요?', yes: -10, no: 5 },
+  { q: '오늘 칼퇴(정시 퇴근)했나요?', yes: 10, no: -8 },
+  { q: '오늘 화나는 일이 있었나요?', yes: -10, no: 8 },
+  { q: '내일도 출근할 수 있을 것 같나요?', yes: 8, no: -5 },
 ]
 
 const BOSS_MIND: Record<string, string> = {
@@ -42,9 +45,7 @@ const RECOVERY_TIPS: Record<string, string[]> = {
 function calcScore(bossKey: string, quizAns: boolean[]): number {
   const boss = BOSS_TYPES.find(b => b.key === bossKey)!
   let s = 60 + boss.penalty
-  s += quizAns[0] ? QUIZ_LIST[0].yes : QUIZ_LIST[0].no
-  s += quizAns[1] ? QUIZ_LIST[1].yes : QUIZ_LIST[1].no
-  s += quizAns[2] ? QUIZ_LIST[2].yes : QUIZ_LIST[2].no
+  QUIZ_LIST.forEach((q, i) => { s += quizAns[i] ? q.yes : q.no })
   return Math.max(0, Math.min(100, s))
 }
 
@@ -156,7 +157,7 @@ export default function WorkPage() {
             <div style={{ background: 'white', borderRadius: 24, padding: '28px 24px', marginBottom: 20, boxShadow: '0 4px 20px rgba(37,99,235,0.1)' }}>
               <div style={{ fontSize: 56, marginBottom: 12 }}>🏢</div>
               <p style={{ color: '#374151', fontSize: 15, lineHeight: 1.7, margin: 0 }}>
-                상사 유형 선택 + 3가지 질문으로<br />오늘의 직장 생존 점수가 나와요
+                상사 유형 선택 + 6가지 질문으로<br />오늘의 직장 생존 점수가 나와요
               </p>
               <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 10 }}>오늘 <strong>{count}명</strong>이 생존 점수를 확인했어요</p>
             </div>
@@ -207,7 +208,7 @@ export default function WorkPage() {
             <div style={{ background: '#bfdbfe', borderRadius: 99, height: 8, marginBottom: 8, overflow: 'hidden' }}>
               <div style={{ background: 'linear-gradient(90deg,#2563eb,#3b82f6)', height: '100%', width: `${(quizIdx / QUIZ_LIST.length) * 100}%`, borderRadius: 99, transition: 'width 0.3s' }} />
             </div>
-            <div style={{ fontSize: 12, color: '#2563eb', textAlign: 'right', marginBottom: 20 }}>{quizIdx + 1}/3</div>
+            <div style={{ fontSize: 12, color: '#2563eb', textAlign: 'right', marginBottom: 20 }}>{quizIdx + 1}/{QUIZ_LIST.length}</div>
 
             <div style={{ background: 'white', borderRadius: 20, padding: '28px 24px', marginBottom: 20, boxShadow: '0 4px 20px rgba(37,99,235,0.1)', textAlign: 'center' }}>
               <p style={{ fontSize: 17, fontWeight: 700, color: '#111827', margin: 0 }}>{QUIZ_LIST[quizIdx].q}</p>
