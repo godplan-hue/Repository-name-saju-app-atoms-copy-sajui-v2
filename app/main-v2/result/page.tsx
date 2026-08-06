@@ -1329,9 +1329,6 @@ function V2ResultInner() {
           </button>
         </div>
         <div style={{ display: "flex", gap: 7, flexShrink: 0 }}>
-          <button onClick={() => setShowGuideModal(true)} style={{ padding: "5px 12px", background: "#fef2f2", color: "#dc2626", border: "1px solid rgba(220,38,38,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
-            📌 꼭 읽어보세요
-          </button>
           <button onClick={toggleReadAloud} style={{ padding: "5px 12px", background: "#ede9fe", color: "#8b5cf6", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 20, fontWeight: 700, fontSize: 11, cursor: "pointer", whiteSpace: "nowrap" }}>
             {speaking ? "⏸ 멈추기" : "🔊 읽기"}
           </button>
@@ -1352,6 +1349,7 @@ function V2ResultInner() {
 
       {/* 결과 읽어주기 — 어디로 스크롤하든 항상 누를 수 있게 고정 */}
       <div style={{ position: "fixed", right: 16, bottom: 80, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+        <button onClick={() => setShowGuideModal(true)} style={{ padding: "8px 14px", borderRadius: 50, border: "none", background: "#dc2626", color: "white", fontWeight: 900, fontSize: 13, cursor: "pointer", boxShadow: "0 4px 16px rgba(220,38,38,0.45)", whiteSpace: "nowrap" }}>📌 꼭 읽어보세요</button>
         <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(139,92,246,0.15)", color: "#8b5cf6", fontWeight: 800, fontSize: 16, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺ 처음부터 듣기</button>
         <button onClick={toggleReadAloud}
           style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderRadius: 50, border: "none", background: speaking ? "linear-gradient(135deg, #ef4444, #f97316)" : G, color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.25)" }}>
