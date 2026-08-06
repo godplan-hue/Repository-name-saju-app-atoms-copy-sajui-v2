@@ -1318,6 +1318,10 @@ function V2ResultInner() {
     )}
     {/* 헤더 — main 밖에 있어야 iOS Safari에서 position:sticky 작동 */}
     <header style={{ background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(236,72,153,0.1)", position: "sticky", top: 0, zIndex: 100 }}>
+      {/* ── 꼭 읽어보세요 — 헤더 맨 위 (항상 보임) ── */}
+      <button onClick={() => setShowGuideModal(true)} style={{ display: "block", width: "100%", padding: "9px 16px", background: "#dc2626", color: "white", border: "none", fontWeight: 900, fontSize: 13, cursor: "pointer", textAlign: "left" }}>
+        📌 꼭 읽어보세요 · 자세히 보기 →
+      </button>
       <div style={{ padding: "8px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
           <button onClick={toggleMusic} aria-label="배경음악 켜기/끄기" style={{ background: musicOn ? "linear-gradient(135deg,#ec4899,#8b5cf6)" : "#f3e8ff", border: "none", borderRadius: 50, cursor: "pointer", fontSize: 15, padding: "6px 10px", color: musicOn ? "white" : "#9ca3af", fontWeight: 900, boxShadow: musicOn ? "0 2px 8px rgba(236,72,153,0.4)" : "none" }}>
@@ -1357,10 +1361,6 @@ function V2ResultInner() {
       </div>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px 80px" }}>
-
-        <button onClick={() => setShowGuideModal(true)} style={{ display: "block", width: "100%", padding: "13px 16px", background: "linear-gradient(135deg,#dc2626,#b91c1c)", border: "none", color: "white", fontWeight: 900, fontSize: 14, cursor: "pointer", borderRadius: 14, marginBottom: 14, textAlign: "center", boxShadow: "0 4px 16px rgba(220,38,38,0.35)" }}>
-          📌 꼭 읽어보세요 · 자세히 보기 →
-        </button>
 
         {/* ── 쿠폰·혜택 배너 — 페이지 최상단 ── */}
         {!isPartner && <KakaoShareCouponBanner />}
