@@ -247,6 +247,12 @@ function PayInner() {
           : referer.includes("youtube") ? "유튜브"
           : referer.includes("tiktok") ? "틱톡"
           : referer.includes("facebook") ? "페이스북"
+          : referer.includes("jeomun.com/main-v2/share") ? "공유페이지"
+          : referer.includes("jeomun.com/main-v2/result") ? "결과지"
+          : referer.includes("jeomun.com/free") ? "무료랜딩"
+          : referer.includes("jeomun.com/main-v2/payment") ? "결제선택"
+          : referer.includes("jeomun.com/main-v2") ? "메인"
+          : referer.includes("jeomun.com/love") || referer.includes("jeomun.com/career") || referer.includes("jeomun.com/wealth") || referer.includes("jeomun.com/marriage") || referer.includes("jeomun.com/health") ? "SEO랜딩"
           : referer.includes("jeomun") ? "점운내부"
           : referer ? referer.split("/")[2] || "기타"
           : "직접";
