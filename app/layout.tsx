@@ -17,17 +17,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_TITLE = "🔮 점운 - AI 사주 분석";
-const SITE_DESC = "AI가 정밀하게 읽어내는 사주 분석, 점운에서 무료로 받아보세요";
+const SITE_TITLE = "점운 - AI 사주 분석 | 재물운·연애운·건강운";
+const SITE_DESC = "점운에서 AI 사주 분석 무료로 받아보세요. 재물운·연애운·건강운·성공운 990원부터. 대한민국 AI 사주 플랫폼 점운(jeomun.com)";
 const SITE_IMAGE = "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg";
+const SITE_URL = "https://jeomun.com";
 
 export const metadata: Metadata = {
   title: SITE_TITLE,
   description: SITE_DESC,
+  keywords: "점운, AI사주, 무료사주, 사주분석, 재물운, 연애운, 건강운, 성공운, 오늘의운세, 사주풀이, 만세력, jeomun",
   openGraph: {
     title: SITE_TITLE,
     description: SITE_DESC,
     images: [SITE_IMAGE],
+    url: SITE_URL,
+    siteName: "점운",
+    type: "website",
+    locale: "ko_KR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESC,
+    images: [SITE_IMAGE],
+  },
+  alternates: {
+    canonical: SITE_URL,
   },
 };
 
@@ -38,7 +53,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="ko"
       className={`${geistSans.variable} ${geistMono.variable}`}
       translate="no"
     >
@@ -48,13 +63,26 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="naver-site-verification" content="3d2048299405b51629792c9344b06287da0b184e" />
         <meta name="msvalidate.01" content="417C086BA7FE5A50231C28C3C9875B10" />
-        {/* LCP 개선: 이미지 CDN 연결 미리 열기 */}
         <link rel="preconnect" href="https://i.pinimg.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://i.pinimg.com" />
         <link rel="preconnect" href="https://images.pexels.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.pexels.com" />
-        {/* /main-v2 첫 번째 배너 이미지 미리 로드 */}
         <link rel="preload" as="image" href="https://i.pinimg.com/736x/43/62/22/436222b26a1aeebae92aaa7eaa2f5ea3.jpg" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "점운",
+          "alternateName": ["jeomun", "점운 사주", "AI 사주 점운"],
+          "url": "https://jeomun.com",
+          "logo": SITE_IMAGE,
+          "description": SITE_DESC,
+          "sameAs": ["https://pf.kakao.com/_xbwtPX"],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "availableLanguage": "Korean"
+          }
+        })}} />
       </head>
       <body style={{ margin: 0, padding: 0 }}>
         <RefTracker />
