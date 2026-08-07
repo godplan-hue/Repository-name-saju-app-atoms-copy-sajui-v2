@@ -1,6 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
 - [⭐⭐⭐ 매일 읽기 마스터 가이드 (절대 삭제 금지)](daily_master_guide.md) — 토스결제/광고/수익화/홍보전략 전부 한 곳에. 새 세션마다 반드시 읽을 것
+- [⛔ 빌드는 명확히 요청할 때만](feedback_build_only_when_asked.md) — "다시" 등 애매한 말에 자의적 빌드 절대 금지. 이미 올라간 앱 불필요하게 재빌드 금지
 - [⭐⭐ 토스 홍보 비법 (경쟁사 분석)](project_toss_promo_secrets.md) — N명 카운터+나갈때광고2번+코인시스템+광고2개연속. 2026-07-30 에스더님 직접 분석. 토스 작업 시 반드시 읽을 것
 - [⭐ 토스 앱 워터마크 전략](project_toss_watermark_strategy.md) — 메인 결과 카드 안 하단 고정. 앱별 문구 확정. 새 앱마다 동일 적용
 - [⭐ 토스 사주 앱 파트너 모집 전략](project_toss_saju_partner_strategy.md) — 블로그 콘텐츠 링크 방식으로 심사 우회. 사주 앱 만들 때 반드시 읽을 것
@@ -89,10 +90,12 @@
 - [⭐⭐ 토스 첫진입 광고 flicker 수정 (2026-07-31)](project_toss_ad_firstentry_fix.md) — loaded 이벤트 방식 확정+카운터 8시간블록. 9개앱 전부 적용. 새 앱도 동일 패턴 필수
 - [⛔ memory 저장은 항상 GitHub에](feedback_memory_save_to_github.md) — 로컬만 저장 금지. 반드시 프로젝트 memory/에 복사 후 commit+push까지 완료해야 저장 완료
 - [세션 작업 2026-08-01](project_session_2026_08_01.md) — 16개 앱 카운터 공식 통일(jigun/petun/saju 수정)+배지+흰푸터 5개 앱 추가+전체 빌드 완료
+- [⛔ 코드 직접 확인 — 저장된 문서만 보고 답하지 말 것](feedback_check_code_not_docs.md) — 상태 질문엔 반드시 App.tsx 직접 읽기. 문서는 참고만
 - [⛔⛔⛔ 요청한 것만 수정 — ShareClient 사건](feedback_no_extra_edits.md) — ShareClient.tsx(카톡공유, 버튼 위2개 아래1개 총3개 구조)를 요청 없이 건드려 에스더님 3일 작업 망침. 꼭읽어보세요는 result/page.tsx에만. 절대 다른 파일 건드리지 말 것
 - [세션 작업 2026-08-02](project_session_2026_08_02.md) — 카카오 알림톡 3종 버그 수정(type:ATA/변수/결과지링크)+꼭읽어보세요 첫진입 버그 수정
+- [⚠️ MBTI 이름 변경 승인 후 수정 대기](project_mbti_name_change_pending.md) — 승인 이메일 오면 즉시: ①App.tsx 756줄 워터마크 문구 변경 ②16개앱 크로스프로모 전체 변경+빌드
 - [⭐⭐ 앱인토스 8월 바이브코딩 챌린지 + 신규앱 4개](project_session_2026_08_03.md) — 하찮아도괜찮아 테마. 실제앱=이상형월드컵/인생이영화라면/추구미/직장버티기. jeomun.com /battle·/movie·/style·/work 생성완료. 8/26마감
 - [⚠️ 토스 크로스프로모 + 앱이름 수정 대기](project_toss_cross_promo_pending.md) — 모든앱 이름 "무료" 제거(콘솔), CROSS배열서 꿈해몽/별자리/펫운/행운번호 제거(코드). 4개신규앱은이미추가됨
 - [⭐ 세션 2026-08-05 — 사주앱 꿈해몽/별자리/펫운 3단계잠금+17개앱 크로스프로모+전체빌드](project_session_2026_08_05.md) — MINI_DREAM_DB 20개 완성, 3탭 잠금구조, 전화번호차단, 17개.ait빌드완료, 부제/키워드/스크린샷프롬프트 확정
-- [⚠️ MBTI 이름 변경 승인 후 수정 대기](project_mbti_name_change_pending.md) — 승인 이메일 오면 즉시: ①App.tsx 756줄 워터마크 문구 변경 ②16개앱 크로스프로모 전체 변경+빌드
-- [⭐ 앱인토스 출시·승인 가이드](reference_toss_appintoss_release_guide.md) — 검토요청/CORS/업데이트/롤백 전체. 반려시: 취소→새번들→재요청. 다이어트 통과 경험 포함
+- [⭐ 토스 인앱 광고 가이드 v2 (2026-08-06 공식 캡처)](project_toss_inapp_ad_guide_v2.md) — 배너/전면/리워드 수익공식+배치원칙+정책위반제재+분석탭활용+배너분석미지원이유
+- [⭐⭐ 세션 2026-08-07 — 토스앱 5개 수정+빌드+육아일기 전면수정](project_session_2026_08_07.md) — momcare/budget/gunghap/fortune/daewoon .ait빌드완료. 핵심: 태몽잠금 isHistoryUnlocked 분리버그수정, 탭광고세션1회, 태몽입력후잠금구조, 크로스프로모16개, 초기화버튼제거
