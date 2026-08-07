@@ -49,6 +49,10 @@ const SOURCE_CFG: Record<string, [string, string, string]> = {
   "toss-battle": ["#fce7f3","#e11d48","❤️토스이상형"],
   "toss-style":  ["#ede9fe","#7c3aed","✨토스추구미"],
   "toss-movie":  ["#fef3c7","#d97706","🎬토스인생영화"],
+  battle:     ["#fce7f3","#e11d48","❤️이상형"],
+  movie:      ["#fef3c7","#d97706","🎬인생영화"],
+  style:      ["#ede9fe","#7c3aed","✨추구미"],
+  work:       ["#dbeafe","#2563eb","💪직장버티기"],
   haemong:    ["#fce7f3","#be185d","🌙꿈해몽"],
   free:       ["#fef3c7","#92400e","🎁재물운"],
 };
@@ -309,6 +313,10 @@ export default function AdminDirectPayments() {
                 { key: "toss-battle", label: "토스이상형",    emoji: "❤️", activeBg: "#e11d48", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#e11d48" },
                 { key: "toss-style",  label: "토스추구미",    emoji: "✨", activeBg: "#7c3aed", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#7c3aed" },
                 { key: "toss-movie",  label: "토스인생영화",  emoji: "🎬", activeBg: "#d97706", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#d97706" },
+                { key: "battle", label: "이상형월드컵",  emoji: "❤️", activeBg: "#e11d48", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#e11d48" },
+                { key: "movie",  label: "인생이영화라면", emoji: "🎬", activeBg: "#d97706", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#d97706" },
+                { key: "style",  label: "추구미",        emoji: "✨", activeBg: "#7c3aed", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#7c3aed" },
+                { key: "work",   label: "직장버티기",    emoji: "💪", activeBg: "#2563eb", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#2563eb" },
                 { key: "haemong",      label: "꿈해몽",       emoji: "🌙", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
               ]).map(f => {
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.sources ?? [l.source ?? "free"]).includes(f.key)).length;

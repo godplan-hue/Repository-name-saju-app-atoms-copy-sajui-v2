@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
   const adminId = request.headers.get("x-admin-id");
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, momcareSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap, tSajuSnap, tTarotSnap, tZodiacSnap, tGunghapSnap, tPetunSnap, tJigunSnap, tResumeSnap] = await Promise.all([
+  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, momcareSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap, tSajuSnap, tTarotSnap, tZodiacSnap, tGunghapSnap, tPetunSnap, tJigunSnap, tResumeSnap, battleSnap, movieSnap, styleSnap, workSnap] = await Promise.all([
     db.ref("free_leads").orderByChild("createdAt").once("value"),
     db.ref("career_analyses").orderByChild("createdAt").once("value"),
     db.ref("resume_analyses").orderByChild("createdAt").once("value"),
@@ -68,6 +68,10 @@ export async function GET(request: NextRequest) {
     db.ref("petun_toss_users").once("value"),
     db.ref("jigun_toss_users").once("value"),
     db.ref("resume_toss_users").once("value"),
+    db.ref("battle_leads").orderByChild("createdAt").once("value"),
+    db.ref("movie_leads").orderByChild("createdAt").once("value"),
+    db.ref("style_leads").orderByChild("createdAt").once("value"),
+    db.ref("work_leads").orderByChild("createdAt").once("value"),
   ]);
 
   const leads: any[] = [];
@@ -272,6 +276,38 @@ export async function GET(request: NextRequest) {
     const v = child.val();
     if (v) leads.push({ id: child.key, ...v, source: "toss-resume", createdAt: v.createdAt || v.agreedAt || 0 });
   });
+
+  // 이상형월드컵 — battle_leads
+  const battleItems: any[] = [];
+  battleSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) battleItems.push({ id: child.key, ...v });
+  });
+  for (const item of dedupByPhone(battleItems, "battle")) leads.push(item);
+
+  // 인생이영화라면 — movie_leads
+  const movieItems: any[] = [];
+  movieSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) movieItems.push({ id: child.key, ...v });
+  });
+  for (const item of dedupByPhone(movieItems, "movie")) leads.push(item);
+
+  // 추구미 — style_leads
+  const styleItems: any[] = [];
+  styleSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) styleItems.push({ id: child.key, ...v });
+  });
+  for (const item of dedupByPhone(styleItems, "style")) leads.push(item);
+
+  // 직장버티기 — work_leads
+  const workItems: any[] = [];
+  workSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) workItems.push({ id: child.key, ...v });
+  });
+  for (const item of dedupByPhone(workItems, "work")) leads.push(item);
 
   // 최종 dedup: 전화번호 기준 한 항목으로 묶기 + sources 배열로 모든 앱 기록
   // 이름 있는 항목 우선, 둘 다 이름 있으면 최신 기준
