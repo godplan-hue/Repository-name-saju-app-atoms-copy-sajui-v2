@@ -278,6 +278,10 @@ export default function StylePage() {
             </div>
           </div>
         )}
+        <div style={{ textAlign: 'center', fontSize: 11, color: '#9ca3af', padding: '24px 16px 12px', lineHeight: 1.8 }}>
+          <p style={{ margin: '0 0 2px' }}>© 2026 점운 · Powered by 점운</p>
+          <p style={{ margin: 0 }}>대표: 장문정 · 사업자등록번호 773-60-00359</p>
+        </div>
       </div>
     </div>
   )
