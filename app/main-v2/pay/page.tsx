@@ -242,6 +242,8 @@ function PayInner() {
         const referer = document.referrer || "";
         const sourceLabel = referer.includes("google") ? "구글"
           : referer.includes("naver") ? "네이버"
+          : referer.includes("daum") ? "다음"
+          : referer.includes("bing") ? "빙"
           : referer.includes("kakao") || referer.includes("kakaotalk") ? "카카오"
           : referer.includes("instagram") ? "인스타"
           : referer.includes("youtube") ? "유튜브"
