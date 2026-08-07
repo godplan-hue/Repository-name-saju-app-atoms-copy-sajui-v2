@@ -67,10 +67,13 @@ const isMissionUnlocked = missionUnlocked;
 - 주차 클릭 → 증상·발달·팁 드롭다운으로 표시
 - `selectedCrisisWeek` state로 관리 (같은 주차 재클릭 시 닫힘)
 
-### 푸터 수정
-- W 스타일에 `overflowY:"auto"` 추가 (WebView 스크롤 보장)
+### 푸터 수정 (최종 — 2차 수정)
+- W 스타일: `minHeight:"100vh"` → `height:"100vh"` + `overflowY:"auto"` 로 변경
+  - `minHeight`는 div가 내용에 맞게 커져서 scroll container가 안 됨 → 푸터 잘림
+  - `height:"100vh"` + `overflowY:"auto"` = 진짜 scroll container → 내용 넘치면 스크롤
 - 메인 뷰 하단 패딩: 160px (고정 탭바 덮임 방지)
 - contact 폼 하단 패딩: 40px (탭바 없음)
+- 커밋: `0ee01df` (jeomun-momcare 로컬)
 
 ## 주의사항 (다음 세션)
 - 감정일기(gamjung) / MBTI / 다이어트 — 승인신청중, 절대 건드리지 말 것
