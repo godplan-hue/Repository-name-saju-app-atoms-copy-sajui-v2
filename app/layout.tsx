@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 const SITE_TITLE = "점운 - AI 사주 분석 | 재물운·연애운·건강운";
 const SITE_DESC = "점운에서 AI 사주 분석 무료로 받아보세요. 재물운·연애운·건강운·성공운 990원부터. 대한민국 AI 사주 플랫폼 점운(jeomun.com)";
 const SITE_IMAGE = "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg";
-const SITE_URL = "https://jeomun.com";
+const SITE_URL = "https://www.jeomun.com";
 
 export const metadata: Metadata = {
   title: SITE_TITLE,
