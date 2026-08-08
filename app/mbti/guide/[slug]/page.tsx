@@ -104,6 +104,53 @@ const DATA: Entry[] = [
   { slug:"mbti-parent-child", title:"부모 자녀 MBTI 궁합 | 점운 MBTI", desc:"부모-자녀 MBTI 궁합 — 부모와 자녀의 MBTI 유형 차이를 이해하고 오행 기질로 관계를 개선하는 가이드입니다.", h1:"부모 자녀 MBTI 궁합 — 오행 기질로 이해하기", sub:"부모와 자녀의 MBTI·오행 기질 차이 이해와 관계 개선", emoji:"👨‍👩‍👧" },
   { slug:"mbti-perfect-match", title:"MBTI 완벽한 궁합 | 점운 MBTI", desc:"MBTI 완벽한 궁합 — 내 MBTI 유형과 오행 기질을 기반으로 가장 잘 맞는 이상형의 유형을 분석합니다.", h1:"MBTI 완벽한 궁합 — 내 유형과 가장 잘 맞는 상대는?", sub:"MBTI 유형별 최적 이상형과 오행 기질 궁합 분석", emoji:"💑" },
   { slug:"mbti-vs-disc", title:"MBTI vs DISC 비교 | 점운 MBTI", desc:"MBTI vs DISC 성격 도구 비교 — 두 도구의 차이점과 오행 기질과의 연결점, 활용 방법을 비교합니다.", h1:"MBTI vs DISC — 성격 도구 비교와 오행 연결", sub:"MBTI와 DISC 성격 도구 비교, 오행 기질과 연결 분석", emoji:"🆚" },
+  { slug:"mbti-love-infj", title:"INFJ 연애 유형 | 점운 MBTI", desc:"INFJ 연애 유형 분析 — 옹호자 INFJ의 연애 스타일, 이상형, 갈등 원인과 오행 기질 연결.", h1:"INFJ 연애 — 선의의 옹호자의 연애 스타일", sub:"INFJ 연애 스타일·이상형·갈등 원인 오행 분析", emoji:"🌙" },
+  { slug:"mbti-love-infp", title:"INFP 연애 유형 | 점운 MBTI", desc:"INFP 연애 유형 분析 — 중재자 INFP의 연애 스타일, 이상형, 갈등 원인과 오행 기질 연결.", h1:"INFP 연애 — 이상적 중재자의 연애 스타일", sub:"INFP 연애 스타일·이상형·갈등 원인 오행 분析", emoji:"🌿" },
+  { slug:"mbti-love-intj", title:"INTJ 연애 유형 | 점운 MBTI", desc:"INTJ 연애 유형 분析 — 전략가 INTJ의 연애 스타일, 이상형, 갈등 원인과 오행 기질 연결.", h1:"INTJ 연애 — 전략적 사색가의 연애 스타일", sub:"INTJ 연애 스타일·이상형·갈등 원인 오행 분析", emoji:"♟️" },
+  { slug:"mbti-love-entp", title:"ENTP 연애 유형 | 점운 MBTI", desc:"ENTP 연애 유형 분析 — 토론가 ENTP의 연애 스타일, 이상형, 갈등 원인과 오행 기질 연결.", h1:"ENTP 연애 — 논쟁 즐기는 토론가의 연애 스타일", sub:"ENTP 연애 스타일·이상형·갈등 원인 오행 분析", emoji:"💡" },
+  { slug:"mbti-love-enfj", title:"ENFJ 연애 유형 | 점운 MBTI", desc:"ENFJ 연애 유형 분析 — 사회운동가 ENFJ의 연애 스타일, 이상형, 갈등 원인과 오행 기질 연결.", h1:"ENFJ 연애 — 정의로운 사회운동가의 연애 스타일", sub:"ENFJ 연애 스타일·이상형·갈등 원인 오행 분析", emoji:"🌟" },
+  { slug:"mbti-love-istp", title:"ISTP 연애 유형 | 점운 MBTI", desc:"ISTP 연애 유형 분析 — 만능재주꾼 ISTP의 연애 스타일, 이상형, 갈등 원인과 오행 기질 연결.", h1:"ISTP 연애 — 만능재주꾼의 연애 스타일", sub:"ISTP 연애 스타일·이상형·갈등 원인 오행 분析", emoji:"🔧" },
+  { slug:"mbti-love-isfj", title:"ISFJ 연애 유형 | 점운 MBTI", desc:"ISFJ 연애 유형 분析 — 수호자 ISFJ의 연애 스타일, 이상형, 갈등 원인과 오행 기질 연결.", h1:"ISFJ 연애 — 용감한 수호자의 연애 스타일", sub:"ISFJ 연애 스타일·이상형·갈등 원인 오행 분析", emoji:"🛡️" },
+  { slug:"mbti-love-estj", title:"ESTJ 연애 유형 | 점운 MBTI", desc:"ESTJ 연애 유형 분析 — 관리자 ESTJ의 연애 스타일, 이상형, 갈등 원인과 오행 기질 연결.", h1:"ESTJ 연애 — 엄격한 관리자의 연애 스타일", sub:"ESTJ 연애 스타일·이상형·갈등 원인 오행 분析", emoji:"📊" },
+  { slug:"mbti-love-esfp", title:"ESFP 연애 유형 | 점운 MBTI", desc:"ESFP 연애 유형 분析 — 연예인 ESFP의 연애 스타일, 이상형, 갈등 원인과 오행 기질 연결.", h1:"ESFP 연애 — 자유로운 연예인의 연애 스타일", sub:"ESFP 연애 스타일·이상형·갈등 원인 오행 분析", emoji:"🎭" },
+  { slug:"mbti-self-esteem", title:"MBTI 자존감 | 점운 MBTI", desc:"MBTI 유형별 자존감 특성 — 각 유형이 자존감과 자기 가치를 인식하는 방식을 오행으로 분析합니다.", h1:"MBTI 자존감 — 유형별 자기 가치 인식 방식", sub:"MBTI 유형별 자존감 특성과 오행 기질 자아 분析", emoji:"💎" },
+  { slug:"mbti-anxiety-type", title:"MBTI 불안 유형 | 점운 MBTI", desc:"MBTI 유형별 불안 유형 — 각 유형이 불안을 경험하는 방식과 극복 방법을 오행으로 분析합니다.", h1:"MBTI 불안 유형 — 유형별 불안 원인과 극복법", sub:"MBTI 유형별 불안 경험 방식과 오행 기질 극복법", emoji:"😰" },
+  { slug:"mbti-break-up", title:"MBTI 이별 방식 | 점운 MBTI", desc:"MBTI 유형별 이별 방식 — 각 유형이 이별을 겪을 때 나타나는 반응과 회복 방법을 분析합니다.", h1:"MBTI 이별 방식 — 유형별 이별 반응과 회복법", sub:"MBTI 유형별 이별 반응 패턴과 오행 기질 회복법", emoji:"💔" },
+  { slug:"mbti-marriage-style", title:"MBTI 결혼 스타일 | 점운 MBTI", desc:"MBTI 유형별 결혼 스타일 — 각 유형이 결혼에 임하는 방식과 배우자 선택 기준을 분析합니다.", h1:"MBTI 결혼 스타일 — 유형별 배우자 선택 기준", sub:"MBTI 유형별 결혼 방식과 배우자 선택 기준 분析", emoji:"💍" },
+  { slug:"mbti-first-impression", title:"MBTI 첫인상 | 점운 MBTI", desc:"MBTI 유형별 첫인상 — 각 유형이 처음 만나는 사람에게 주는 첫인상과 실제 모습의 차이를 분析합니다.", h1:"MBTI 첫인상 — 유형별 첫인상과 실제 모습 차이", sub:"MBTI 유형별 첫인상과 실제 성격의 차이 분析", emoji:"👋" },
+  { slug:"mbti-conflict-style", title:"MBTI 갈등 해결 | 점운 MBTI", desc:"MBTI 유형별 갈등 해결 스타일 — 각 유형이 갈등 상황에서 보이는 반응과 해결 방법을 분析합니다.", h1:"MBTI 갈등 해결 — 유형별 갈등 대처 방식", sub:"MBTI 유형별 갈등 반응과 해결 방식 오행 분析", emoji:"🤝" },
+  { slug:"mbti-love-language-type", title:"MBTI 사랑의 언어 | 점운 MBTI", desc:"MBTI 유형별 사랑의 언어 — 각 유형이 사랑을 표현하고 받고 싶은 방식을 오행으로 분析합니다.", h1:"MBTI 사랑의 언어 — 유형별 사랑 표현 방식", sub:"MBTI 유형별 사랑 표현·수용 방식 오행 기질 분析", emoji:"💝" },
+  { slug:"mbti-procrastination", title:"MBTI 미루기 습관 | 점운 MBTI", desc:"MBTI 유형별 미루기 습관 — 각 유형이 미루는 이유와 극복하는 방법을 오행으로 분析합니다.", h1:"MBTI 미루기 습관 — 유형별 미루는 이유와 극복", sub:"MBTI 유형별 미루기 원인과 극복 방법 오행 분析", emoji:"⏰" },
+  { slug:"mbti-perfectionism-type", title:"MBTI 완벽주의 | 점운 MBTI", desc:"MBTI 유형별 완벽주의 성향 — 어떤 유형이 완벽주의적 성향이 강하고 어떻게 관리하는지 분析합니다.", h1:"MBTI 완벽주의 — 유형별 완벽주의 성향 분析", sub:"MBTI 유형별 완벽주의 성향과 오행 기질 관리법", emoji:"🎯" },
+  { slug:"mbti-success-pattern", title:"MBTI 성공 패턴 | 점운 MBTI", desc:"MBTI 유형별 성공 패턴 — 각 유형이 성공에 이르는 방식과 오행 기질에서 나오는 성공 비결.", h1:"MBTI 성공 패턴 — 유형별 성공 방식과 비결", sub:"MBTI 유형별 성공 패턴과 오행 기질 성공 비결", emoji:"🏆" },
+  { slug:"mbti-social-battery", title:"MBTI 사회적 에너지 | 점운 MBTI", desc:"MBTI 유형별 사회적 배터리 — 사람을 만날 때 에너지가 충전되는 유형 vs 소진되는 유형을 분析합니다.", h1:"MBTI 사회적 배터리 — 에너지 충전 vs 소진 유형", sub:"사람 만남으로 에너지 충전·소진되는 MBTI 유형 분析", emoji:"🔋" },
+  { slug:"mbti-toxic-trait", title:"MBTI 독성 특성 | 점운 MBTI", desc:"MBTI 유형별 독성 특성 — 각 유형이 스트레스를 받을 때 나타나는 부정적인 측면을 솔직하게 분析합니다.", h1:"MBTI 독성 특성 — 유형별 부정적 면 솔직 분析", sub:"MBTI 유형별 스트레스 시 독성 특성 오행 분析", emoji:"⚠️" },
+  { slug:"infp-vs-infj-diff", title:"INFP INFJ 차이 | 점운 MBTI", desc:"INFP와 INFJ의 차이 — 비슷해 보이는 두 유형의 결정적 차이점과 오행 기질을 분析합니다.", h1:"INFP vs INFJ — 두 유형의 결정적 차이", sub:"INFP와 INFJ의 결정적 차이점과 오행 기질 비교", emoji:"🔍" },
+  { slug:"intj-vs-intp-diff", title:"INTJ INTP 차이 | 점운 MBTI", desc:"INTJ와 INTP의 차이 — 전략가와 사색가의 결정적 차이점과 오행 기질을 분析합니다.", h1:"INTJ vs INTP — 전략가와 사색가의 차이", sub:"INTJ와 INTP의 결정적 차이점과 오행 기질 비교", emoji:"🔬" },
+  { slug:"enfp-vs-enfj-diff", title:"ENFP ENFJ 차이 | 점운 MBTI", desc:"ENFP와 ENFJ의 차이 — 활동가와 사회운동가의 결정적 차이점과 오행 기질을 분析합니다.", h1:"ENFP vs ENFJ — 활동가와 사회운동가의 차이", sub:"ENFP와 ENFJ의 결정적 차이점과 오행 기질 비교", emoji:"🌈" },
+  { slug:"istj-vs-isfj-diff", title:"ISTJ ISFJ 차이 | 점운 MBTI", desc:"ISTJ와 ISFJ의 차이 — 논리주의자와 수호자의 결정적 차이점과 오행 기질을 분析합니다.", h1:"ISTJ vs ISFJ — 논리주의자와 수호자의 차이", sub:"ISTJ와 ISFJ의 결정적 차이점과 오행 기질 비교", emoji:"📋" },
+  { slug:"mbti-gen-z-trend", title:"Z세대 MBTI | 점운 MBTI", desc:"Z세대 MBTI 트렌드 — Z세대가 선호하는 MBTI 유형과 오행 기질의 시대적 특성을 분析합니다.", h1:"Z세대 MBTI 트렌드 — Z세대 MBTI 특성 분析", sub:"Z세대 선호 MBTI 유형과 오행 기질 시대 특성", emoji:"📱" },
+  { slug:"mbti-social-media-type", title:"MBTI SNS 사용법 | 점운 MBTI", desc:"MBTI 유형별 SNS 사용 패턴 — 어떤 유형이 어떤 SNS를 주로 사용하는지 오행과 함께 분析합니다.", h1:"MBTI SNS 사용 패턴 — 유형별 SNS 선택 방식", sub:"MBTI 유형별 SNS 사용 패턴과 오행 기질 연결", emoji:"📲" },
+  { slug:"mbti-music-type", title:"MBTI 음악 취향 | 점운 MBTI", desc:"MBTI 유형별 음악 취향 — 각 유형이 선호하는 음악 장르와 오행 기질의 연결을 분析합니다.", h1:"MBTI 음악 취향 — 유형별 선호 음악 장르 분析", sub:"MBTI 유형별 선호 음악 장르와 오행 기질 연결", emoji:"🎵" },
+  { slug:"mbti-book-genre", title:"MBTI 독서 취향 | 점운 MBTI", desc:"MBTI 유형별 독서 취향 — 각 유형이 선호하는 책 장르와 독서 방식을 오행과 함께 분析합니다.", h1:"MBTI 독서 취향 — 유형별 선호 책 장르 분析", sub:"MBTI 유형별 선호 독서 장르와 오행 기질 연결", emoji:"📚" },
+  { slug:"mbti-spending-habit", title:"MBTI 소비 습관 | 점운 MBTI", desc:"MBTI 유형별 소비 습관 — 각 유형의 소비 패턴과 저축 방식, 돈을 쓰는 방식을 분析합니다.", h1:"MBTI 소비 습관 — 유형별 돈 쓰는 방식 분析", sub:"MBTI 유형별 소비 패턴과 저축 방식 오행 분析", emoji:"💳" },
+  { slug:"mbti-diet-style", title:"MBTI 식습관 | 점운 MBTI", desc:"MBTI 유형별 식습관 — 각 유형의 음식 선택 방식과 오행 기질에 맞는 건강한 식습관을 분析합니다.", h1:"MBTI 식습관 — 유형별 음식 선택과 식사 방식", sub:"MBTI 유형별 음식 선택 방식과 오행 기질 식습관", emoji:"🍽️" },
+  { slug:"mbti-exercise-type", title:"MBTI 운동 유형 | 점운 MBTI", desc:"MBTI 유형별 운동 스타일 — 각 유형에게 맞는 운동 방법과 오행 체질 운동 조합을 분析합니다.", h1:"MBTI 운동 유형 — 내 유형에 맞는 운동 방식", sub:"MBTI 유형별 운동 스타일과 오행 체질 운동 가이드", emoji:"🏃" },
+  { slug:"mbti-vacation-type", title:"MBTI 휴가 스타일 | 점운 MBTI", desc:"MBTI 유형별 휴가 스타일 — 여행·홈스테이·활동적 휴가 중 각 유형에게 맞는 방식을 분析합니다.", h1:"MBTI 휴가 스타일 — 유형별 최적 휴식 방식", sub:"MBTI 유형별 최적 휴가 스타일과 오행 기질 연결", emoji:"🏖️" },
+  { slug:"mbti-goal-achievement", title:"MBTI 목표 달성 | 점운 MBTI", desc:"MBTI 유형별 목표 달성 방식 — 각 유형이 목표를 세우고 달성하는 방식을 오행과 함께 분析합니다.", h1:"MBTI 목표 달성 — 유형별 목표 달성 방식 分析", sub:"MBTI 유형별 목표 설정·달성 방식 오행 기질 분析", emoji:"🎯" },
+  { slug:"mbti-apology-style", title:"MBTI 사과 방식 | 점운 MBTI", desc:"MBTI 유형별 사과 방식 — 각 유형이 실수했을 때 사과하는 방식과 오행 기질 분析입니다.", h1:"MBTI 사과 방식 — 유형별 사과하는 방식 분析", sub:"MBTI 유형별 사과 방식과 오행 기질 반성 패턴", emoji:"🙏" },
+  { slug:"mbti-ghosting-type", title:"MBTI 잠수 유형 | 점운 MBTI", desc:"MBTI 유형별 잠수 패턴 — 어떤 유형이 잠수를 타는지, 그 이유와 오행 기질 연결을 분析합니다.", h1:"MBTI 잠수 패턴 — 잠수 타는 유형과 이유 분析", sub:"MBTI 유형별 잠수 원인과 오행 기질 회피 패턴", emoji:"👻" },
+  { slug:"mbti-long-distance-love", title:"MBTI 장거리 연애 | 점운 MBTI", desc:"MBTI 유형별 장거리 연애 적합도 — 각 유형이 장거리 연애에 잘 맞는지 오행과 함께 분析합니다.", h1:"MBTI 장거리 연애 — 유형별 적합도와 극복법", sub:"MBTI 유형별 장거리 연애 적합도와 오행 극복법", emoji:"✈️" },
+  { slug:"mbti-introvert-recharge", title:"MBTI 내향인 충전법 | 점운 MBTI", desc:"내향형 MBTI 에너지 충전법 — I유형이 사람들과의 만남 후 에너지를 회복하는 방법을 분析합니다.", h1:"내향인 에너지 충전법 — I유형의 회복 방식", sub:"내향형 MBTI I유형의 에너지 회복과 충전 방法", emoji:"🔋" },
+  { slug:"mbti-extrovert-tips", title:"MBTI 외향인 팁 | 점운 MBTI", desc:"외향형 MBTI 에너지 관리 팁 — E유형이 혼자 있는 시간을 활용하고 내향인과 소통하는 방法.", h1:"외향인 에너지 팁 — E유형 혼자 시간 활용법", sub:"외향형 MBTI E유형의 에너지 관리와 내향인 소통법", emoji:"☀️" },
+  { slug:"mbti-couple-habits", title:"MBTI 커플 습관 | 점운 MBTI", desc:"MBTI 유형별 커플 습관 — 연애 중인 커플의 MBTI 조합별 행동 패턴과 갈등을 오행으로 분析합니다.", h1:"MBTI 커플 습관 — 유형 조합별 관계 패턴 분析", sub:"MBTI 유형 조합별 커플 습관과 오행 갈등 분析", emoji:"💑" },
+  { slug:"mbti-child-raising", title:"MBTI 자녀 양육 | 점운 MBTI", desc:"MBTI 유형별 자녀 양육 방식 — 부모의 MBTI와 아이의 MBTI 조합이 육아에 미치는 영향을 분析합니다.", h1:"MBTI 자녀 양육 — 부모·아이 유형 조합 분析", sub:"부모·아이 MBTI 조합과 오행 기질 육아 방向", emoji:"👨‍👩‍👧" },
+  { slug:"mbti-confidence-build", title:"MBTI 자신감 키우기 | 점운 MBTI", desc:"MBTI 유형별 자신감 키우는 법 — 각 유형에 맞는 자신감 향상 방법을 오행 기질과 함께 분析합니다.", h1:"MBTI 자신감 — 유형별 자신감 키우는 방法", sub:"MBTI 유형별 자신감 향상법과 오행 기질 강점化", emoji:"💪" },
+  { slug:"mbti-morning-habit", title:"MBTI 아침 루틴 | 점운 MBTI", desc:"MBTI 유형별 최적 아침 루틴 — 각 유형에게 맞는 아침 습관과 하루 시작 방법을 오행으로 분析합니다.", h1:"MBTI 아침 루틴 — 유형별 최적 하루 시작법", sub:"MBTI 유형별 최적 아침 루틴과 오행 에너지 活用", emoji:"🌅" },
+  { slug:"mbti-study-method", title:"MBTI 공부법 | 점운 MBTI", desc:"MBTI 유형별 최적 공부법 — 각 유형에게 맞는 학습 방법과 집중력 향상 전략을 분析합니다.", h1:"MBTI 공부법 — 유형별 최적 학습 전략 분析", sub:"MBTI 유형별 최적 공부법과 집중력 향상 전략", emoji:"📖" },
+  { slug:"mbti-hidden-trait", title:"MBTI 숨겨진 특성 | 점운 MBTI", desc:"MBTI 유형별 숨겨진 특성 — 겉으로 잘 드러나지 않는 각 유형의 숨겨진 면을 오행으로 분析합니다.", h1:"MBTI 숨겨진 특성 — 유형별 알려지지 않은 면", sub:"MBTI 유형별 숨겨진 특성과 오행 기질 내면 分析", emoji:"🔍" },
+  { slug:"mbti-spending-type", title:"MBTI 씀씀이 유형 | 점운 MBTI", desc:"MBTI 유형별 씀씀이 — 각 유형이 돈을 어디에 가장 먼저 쓰는지 오행 기질로 분析합니다.", h1:"MBTI 씀씀이 — 유형별 돈 우선순위 분析", sub:"MBTI 유형별 씀씀이 우선순위와 오행 기질 연결", emoji:"💰" },
+  { slug:"mbti-creative-type", title:"MBTI 창작 유형 | 점운 MBTI", desc:"MBTI 유형별 창작 방식 — 예술·글쓰기·음악 등 창작 활동에서 각 유형이 보이는 특성을 분析합니다.", h1:"MBTI 창작 유형 — 유형별 창작 활동 방식 분析", sub:"MBTI 유형별 창작 방식과 오행 기질 예술성 분析", emoji:"🎨" },
 ];
 
 export async function generateStaticParams() {
@@ -185,7 +232,11 @@ export default async function MbtiSeoPage({ params }: { params: Promise<{ slug: 
             무료 MBTI 테스트 →
           </Link>
         </div>
-        <div style={{ marginTop: 20, display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>
+        <div style={{ marginTop: 16, textAlign: "center" }}>
+          <a href="https://minion.toss.im/pht8Fcyp" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", background: "#1b64da", color: "white", fontWeight: 900, fontSize: 14, padding: "12px 28px", borderRadius: 30, textDecoration: "none" }}>토스에서 바로 열기 ↗</a>
+          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 6 }}>앱 설치 없이 토스에서 바로 이용</p>
+        </div>
+        <div style={{ marginTop: 16, display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>
           <Link href="/mbti" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>← MBTI 홈</Link>
           <Link href="/main-v2" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>사주 보기</Link>
           <Link href="/gunghap" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>궁합 보기</Link>
