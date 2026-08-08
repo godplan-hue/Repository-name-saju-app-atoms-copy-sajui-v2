@@ -232,7 +232,8 @@ export default async function MbtiSeoPage({ params }: { params: Promise<{ slug: 
             무료 MBTI 테스트 →
           </Link>
         </div>
-        <div style={{ marginTop: 16, textAlign: "center" }}>
+        <style>{`.toss-mobile-only{display:none}@media(max-width:767px){.toss-mobile-only{display:block}}`}</style>
+        <div className="toss-mobile-only" style={{ marginTop: 16, textAlign: "center" }}>
           <a href="https://minion.toss.im/pht8Fcyp" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", background: "#1b64da", color: "white", fontWeight: 900, fontSize: 14, padding: "12px 28px", borderRadius: 30, textDecoration: "none" }}>토스에서 바로 열기 ↗</a>
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 6 }}>앱 설치 없이 토스에서 바로 이용</p>
         </div>
