@@ -109,6 +109,7 @@ export default function GunghapResultPage() {
   const [tarotFlipped, setTarotFlipped] = useState(false);
   const [tarotUsed, setTarotUsed] = useState(false);
   const [todayCount, setTodayCount] = useState(0);
+  const [unlockRemain, setUnlockRemain] = useState("");
 
   useEffect(() => {
     setTodayCount(getTodayCount(1847));
@@ -119,6 +120,23 @@ export default function GunghapResultPage() {
       .then(r => r.json())
       .then(data => { if (data.result) setResult(data.result); setLoading(false); })
       .catch(() => setLoading(false));
+
+    let timerId: ReturnType<typeof setInterval>;
+    const updateCountdown = () => {
+      const u = localStorage.getItem("gunghap_unlock_until");
+      if (!u) { setPaid(false); setUnlockRemain(""); clearInterval(timerId); return; }
+      const ms = Number(u) - Date.now();
+      if (ms <= 0) {
+        localStorage.removeItem("gunghap_unlock_until");
+        setPaid(false); setUnlockRemain(""); clearInterval(timerId); return;
+      }
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      setUnlockRemain(h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 ${s}초 남음`);
+    };
+    timerId = setInterval(updateCountdown, 1000);
+    return () => clearInterval(timerId);
   }, [id]);
 
   const drawTarot = () => {
@@ -192,6 +210,7 @@ export default function GunghapResultPage() {
   const stem2 = getYearStem(Number(result.birthYear2));
   const stemDesc1 = getStemDesc(stem1);
   const stemDesc2 = getStemDesc(stem2);
+  const marriageScore = Math.min(99, result.score + (Number(result.birthYear1) + Number(result.birthYear2)) % 15);
 
   return (
     <div style={S.wrap}>
@@ -362,6 +381,12 @@ export default function GunghapResultPage() {
           </div>
         ) : (
           <>
+            {unlockRemain && (
+              <div style={{ background: "rgba(74,222,128,0.08)", border: "1px solid rgba(74,222,128,0.25)", borderRadius: 10, padding: "8px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 14 }}>⏱️</span>
+                <span style={{ fontSize: 12, color: "#4ade80" }}>이용 가능: <b>{unlockRemain}</b></span>
+              </div>
+            )}
             <div style={S.card}>
               <p style={S.secTitle}>💬 성격 & 기질</p>
               <p style={S.body}>{result.personality}</p>
@@ -384,6 +409,20 @@ export default function GunghapResultPage() {
             </div>
             <div style={S.card}>
               <p style={S.secTitle}>💍 결혼 궁합</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 14 }}>
+                <div style={{ fontSize: 38, fontWeight: 900, color: "#ec4899", minWidth: 52, textAlign: "center" as const, lineHeight: 1 }}>{marriageScore}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+                    <span style={{ fontSize: 11, color: "#9ca3af" }}>결혼 오행 점수</span>
+                    <span style={{ fontSize: 11, color: "#ec4899", fontWeight: 700 }}>
+                      {marriageScore >= 88 ? "최상궁합" : marriageScore >= 75 ? "좋은궁합" : marriageScore >= 60 ? "보통궁합" : "신중히"}
+                    </span>
+                  </div>
+                  <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 99, height: 8, overflow: "hidden" }}>
+                    <div style={{ background: "linear-gradient(90deg,#ec4899,#a855f7)", borderRadius: 99, height: 8, width: `${marriageScore}%` }} />
+                  </div>
+                </div>
+              </div>
               <p style={S.body}>{result.marriage}</p>
             </div>
           </>
