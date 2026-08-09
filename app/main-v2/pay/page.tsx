@@ -293,6 +293,14 @@ function PayInner() {
         localStorage.setItem("price", String(amount));
         localStorage.setItem("v2_plan", "select");
       }
+      try {
+        if (typeof (window as any).gtag === "function") {
+          (window as any).gtag("event", "conversion", {
+            send_to: "AW-459070148/D7-4CKip7e0BEMS189oB",
+            transaction_id: paymentId,
+          });
+        }
+      } catch {}
       window.location.href = isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next;
     } catch {
       setError("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
