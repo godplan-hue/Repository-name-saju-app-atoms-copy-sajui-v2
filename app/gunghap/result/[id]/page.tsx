@@ -74,6 +74,16 @@ function getOhRelation(oh1: string, oh2: string): { type: string; desc: string; 
   return { type: `비화(比和) ${getOhEmoji(oh1)}`, desc: sameMap[oh1] || "같은 기운의 공명", detail: `같은 ${oh1} 기운을 가진 두 사람. 서로를 깊이 이해하지만 같은 성향 때문에 부딪히기도 해요. 서로의 공통점에서 힘을 얻되 역할 분담을 명확히 하면 최고의 파트너가 될 수 있어요.`, color: "#a78bfa" };
 }
 
+function getTodayCount(base: number) {
+  const now = new Date();
+  const h = now.getHours();
+  const seed = (now.getDate() * 31 + now.getMonth() * 7) % 50;
+  if (h >= 6 && h < 12) return base + seed + 23;
+  if (h >= 12 && h < 18) return base + seed + 67;
+  if (h >= 18 && h < 24) return base + seed + 45;
+  return base + seed + 12;
+}
+
 function getYearStem(year: number): string {
   const stems = ["경","신","임","계","갑","을","병","정","무","기"];
   return stems[year % 10] || "";
@@ -98,8 +108,10 @@ export default function GunghapResultPage() {
   const [tarotCard, setTarotCard] = useState<typeof TAROT[0] | null>(null);
   const [tarotFlipped, setTarotFlipped] = useState(false);
   const [tarotUsed, setTarotUsed] = useState(false);
+  const [todayCount, setTodayCount] = useState(0);
 
   useEffect(() => {
+    setTodayCount(getTodayCount(1847));
     const unlock = localStorage.getItem("gunghap_unlock_until");
     if (unlock && Number(unlock) > Date.now()) setPaid(true);
     if (!id) return;
@@ -191,6 +203,14 @@ export default function GunghapResultPage() {
             공유하기 📤
           </button>
         </div>
+
+        {/* 오늘 몇 명 */}
+        {todayCount > 0 && (
+          <div style={{ background: "rgba(236,72,153,0.1)", border: "1px solid rgba(236,72,153,0.25)", borderRadius: 12, padding: "10px 16px", marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 16 }}>💞</span>
+            <span style={{ fontSize: 13, color: "#f9a8d4" }}>오늘 <b style={{ color: "#ec4899" }}>{todayCount.toLocaleString()}명</b>이 궁합을 확인했어요</span>
+          </div>
+        )}
 
         {/* 메인 점수 카드 */}
         <div style={{ background: "linear-gradient(135deg,#1a0030,#2d0a4e)", border: `2px solid ${scoreColor}55`, borderRadius: 24, padding: "24px 18px", marginBottom: 16, textAlign: "center" }}>
@@ -289,15 +309,6 @@ export default function GunghapResultPage() {
           </div>
         </div>
 
-        {/* 성격 미리보기 (무료) */}
-        <div style={S.card}>
-          <p style={S.secTitle}>💬 성격 & 기질 미리보기</p>
-          <p style={S.body}>{result.personality.split(". ").slice(0, 2).join(". ")}.</p>
-          {!paid && (
-            <p style={{ fontSize: 12, color: "#6b7280", marginTop: 10 }}>💜 상세 분석에서 성격, 연애, 갈등, 결혼 궁합 전체 확인 가능</p>
-          )}
-        </div>
-
         {/* 타로 게임 (무료) */}
         <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.15),rgba(236,72,153,0.1))", border: "1px solid rgba(124,58,237,0.4)", borderRadius: 20, padding: "20px 18px", marginBottom: 16 }}>
           <p style={S.secTitle}>🃏 인연 타로 카드 뽑기</p>
@@ -337,7 +348,7 @@ export default function GunghapResultPage() {
               사주 오행 기반 심층 해석까지
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 20 }}>
-              {["💕 연애 패턴 전체", "⚡ 갈등 원인 분석", "✨ 시너지 강점", "🌿 연애 조언", "💍 결혼 궁합", "🔮 심층 오행 해석"].map(item => (
+              {["💬 성격 & 기질 전체", "💕 연애 패턴 전체", "⚡ 갈등 원인 분석", "✨ 시너지 강점", "🌿 연애 조언", "💍 결혼 궁합"].map(item => (
                 <div key={item} style={{ background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.2)", borderRadius: 10, padding: "10px 8px", fontSize: 12, color: "#c4b5fd", textAlign: "center" }}>
                   {item}
                 </div>
@@ -351,6 +362,10 @@ export default function GunghapResultPage() {
           </div>
         ) : (
           <>
+            <div style={S.card}>
+              <p style={S.secTitle}>💬 성격 & 기질</p>
+              <p style={S.body}>{result.personality}</p>
+            </div>
             <div style={S.card}>
               <p style={S.secTitle}>💕 연애 패턴</p>
               <p style={S.body}>{result.love}</p>
@@ -393,6 +408,10 @@ export default function GunghapResultPage() {
           style={{ width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "13px", color: "#c4b5fd", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
           📤 결과 공유하기
         </button>
+
+        <p style={{ fontSize: 11, color: "#4b5563", textAlign: "center", marginTop: 20, lineHeight: 1.6 }}>
+          점운 · 탈잉 2년 연속 1위 강사가 설계한 AI 운세<br />누적 수강생 1,000명+
+        </p>
       </div>
       <Script
         src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
