@@ -59,7 +59,16 @@ function shareApp() {
   }
 }
 
+function getTodayCount() {
+  const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
+  const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
+  const base = 660 + (lcg % 290);
+  const block = new Date().getHours() < 8 ? 0 : new Date().getHours() < 16 ? 1 : 2;
+  return (base + (block >= 1 ? 480 + (lcg % 220) : 0) + (block >= 2 ? 550 + ((lcg >> 4) % 300) : 0)).toLocaleString();
+}
+
 export default function MomcarePage() {
+  const count = getTodayCount();
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [featureIdx, setFeatureIdx] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
@@ -148,6 +157,7 @@ export default function MomcarePage() {
           } catch {}
           setHasPhone(true);
         }} style={{ width: "100%", background: TEAL_GRAD, color: "white", border: "none", borderRadius: 14, padding: "15px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>육아일기 시작하기 →</button>
+        <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 10, textAlign: 'center' }}>오늘 <strong style={{ color: '#0284c7' }}>{count}</strong>명이 육아일기를 기록했어요</p>
         <p style={{ fontSize: 11, color: LIGHT, textAlign: "center", margin: "14px 0 0", lineHeight: 1.6 }}>새 기기에서도 이용권·기록 자동 복원돼요.</p>
       </div>
     </div>

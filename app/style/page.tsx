@@ -149,6 +149,10 @@ export default function StylePage() {
               ✨ 추구미 찾기
             </button>
 
+            <p style={{ textAlign: 'center', fontSize: 11, color: '#9ca3af', marginTop: 12, lineHeight: 1.6 }}>
+              🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
+            </p>
+
             <div style={{ marginTop: 24, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               {[
                 { href: '/battle', icon: '❤️', label: '이상형월드컵', badge: '무료' },

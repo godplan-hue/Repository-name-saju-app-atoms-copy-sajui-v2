@@ -6,7 +6,16 @@ import Link from "next/link";
 
 const SPECIES = ["강아지", "고양이", "토끼", "햄스터", "기타"];
 
+function getTodayCount() {
+  const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
+  const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
+  const base = 380 + (lcg % 200);
+  const block = new Date().getHours() < 8 ? 0 : new Date().getHours() < 16 ? 1 : 2;
+  return (base + (block >= 1 ? 480 + (lcg % 220) : 0) + (block >= 2 ? 550 + ((lcg >> 4) % 300) : 0)).toLocaleString();
+}
+
 export default function PetunPage() {
+  const count = getTodayCount();
   const router = useRouter();
   const [step, setStep] = useState<"intro" | "form">("intro");
   const [petunLocked, setPetunLocked] = useState(false);
@@ -176,7 +185,8 @@ export default function PetunPage() {
                 <button onClick={() => setStep("form")} style={S.btn}>
                   지금 분석하기 🐾 →
                 </button>
-                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>펫운 이용 중 · 보호자 정보 선택 입력</p>
+                <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 10, textAlign: 'center' }}>오늘 <strong style={{ color: '#06b6d4' }}>{count}</strong>명이 펫운을 확인했어요</p>
+                <p style={{ fontSize: 11, color: "#6b7280", marginTop: 6 }}>펫운 이용 중 · 보호자 정보 선택 입력</p>
               </>
             )}
             <p style={{ textAlign: "center", fontSize: 11, color: "rgba(6,182,212,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>

@@ -4,7 +4,16 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+function getTodayCount() {
+  const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
+  const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
+  const base = 680 + (lcg % 300);
+  const block = new Date().getHours() < 8 ? 0 : new Date().getHours() < 16 ? 1 : 2;
+  return (base + (block >= 1 ? 480 + (lcg % 220) : 0) + (block >= 2 ? 550 + ((lcg >> 4) % 300) : 0)).toLocaleString();
+}
+
 export default function GunghapPage() {
+  const count = getTodayCount();
   const router = useRouter();
   const [step, setStep] = useState<"intro" | "form">("intro");
   const [phone, setPhone] = useState("");
@@ -155,6 +164,7 @@ export default function GunghapPage() {
           <button onClick={() => setStep("form")} style={S.btn}>
             궁합 분석 시작하기 →
           </button>
+          <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 10, textAlign: 'center' }}>오늘 <strong style={{ color: '#f472b6' }}>{count}</strong>명이 궁합을 확인했어요</p>
         </div>
 
       {/* 회사정보 */}

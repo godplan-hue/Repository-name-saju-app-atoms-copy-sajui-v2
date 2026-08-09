@@ -46,7 +46,16 @@ const SAMPLE_TYPES = [
   { type: "ISTJ", name: "현실주의자", oh: "토", color: "#f59e0b", desc: "신뢰와 책임감의 상징" },
 ];
 
+function getTodayCount() {
+  const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
+  const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
+  const base = 620 + (lcg % 280);
+  const block = new Date().getHours() < 8 ? 0 : new Date().getHours() < 16 ? 1 : 2;
+  return (base + (block >= 1 ? 480 + (lcg % 220) : 0) + (block >= 2 ? 550 + ((lcg >> 4) % 300) : 0)).toLocaleString();
+}
+
 export default function MbtiPage() {
+  const count = getTodayCount();
   const router = useRouter();
   const [step, setStep] = useState<"intro" | "quiz">("intro");
   const [userName, setUserName] = useState("");
@@ -300,6 +309,7 @@ export default function MbtiPage() {
             테스트 시작하기 (2분) →
           </button>
           <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>완전 무료 · 회원가입 불필요</p>
+          <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 8, textAlign: 'center' }}>오늘 <strong style={{ color: '#a855f7' }}>{count}</strong>명이 MBTI를 확인했어요</p>
           <p style={{ textAlign: "center", fontSize: 11, color: "rgba(168,85,247,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
             🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
           </p>

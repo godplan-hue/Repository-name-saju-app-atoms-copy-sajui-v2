@@ -145,6 +145,9 @@ export default function BattlePage() {
               style={{ width: '100%', background: 'linear-gradient(135deg,#e11d48,#f43f5e)', border: 'none', borderRadius: 16, padding: '18px', fontSize: 17, cursor: 'pointer', color: 'white', fontWeight: 800 }}>
               ❤️ 배틀 시작하기
             </button>
+            <p style={{ textAlign: 'center', fontSize: 11, color: '#9ca3af', marginTop: 12, lineHeight: 1.6 }}>
+              🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
+            </p>
           </div>
         )}
 

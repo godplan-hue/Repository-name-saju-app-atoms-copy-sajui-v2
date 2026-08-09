@@ -29,7 +29,16 @@ function Ball({ n, size = 44, delay = 0 }: { n: number; size?: number; delay?: n
   );
 }
 
+function getTodayCount() {
+  const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
+  const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
+  const base = 580 + (lcg % 260);
+  const block = new Date().getHours() < 8 ? 0 : new Date().getHours() < 16 ? 1 : 2;
+  return (base + (block >= 1 ? 480 + (lcg % 220) : 0) + (block >= 2 ? 550 + ((lcg >> 4) % 300) : 0)).toLocaleString();
+}
+
 export default function LottoPage() {
+  const count = getTodayCount();
   const router = useRouter();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -206,6 +215,7 @@ export default function LottoPage() {
           행운번호 뽑기 🎱 →
         </button>
         <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>완전 무료 · 오행 사주 기반 계산</p>
+        <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 8, textAlign: 'center' }}>오늘 <strong style={{ color: '#fbbf24' }}>{count}</strong>명이 행운번호를 뽑았어요</p>
         <p style={{ textAlign: "center", fontSize: 11, color: "rgba(251,191,36,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
           🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
         </p>

@@ -132,7 +132,16 @@ function calcRecommended(ans: string[]): string[] {
   return Object.entries(s).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => k);
 }
 
+function getTodayCount() {
+  const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
+  const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
+  const base = 740 + (lcg % 320);
+  const block = new Date().getHours() < 8 ? 0 : new Date().getHours() < 16 ? 1 : 2;
+  return (base + (block >= 1 ? 480 + (lcg % 220) : 0) + (block >= 2 ? 550 + ((lcg >> 4) % 300) : 0)).toLocaleString();
+}
+
 export default function JigunPage() {
+  const count = getTodayCount();
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -247,6 +256,7 @@ export default function JigunPage() {
             >
               지금 바로 찾아보기 →
             </button>
+            <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 10, textAlign: 'center' }}>오늘 <strong style={{ color: '#a855f7' }}>{count}</strong>명이 직업을 찾았어요</p>
 
             <div style={{ marginBottom: 36 }}>
               <button

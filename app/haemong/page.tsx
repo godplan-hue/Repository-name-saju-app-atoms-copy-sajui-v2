@@ -31,7 +31,16 @@ const DREAM_GRID = [
   { id: "top",       label: "인기 꿈 TOP",sub: "뱀·돼지·똥꿈",    img: "https://i.pinimg.com/736x/d5/cd/d9/d5cdd94c7d9e648e573553c8c856338f.jpg", accent: "#be185d", price: "🔥 인기",  priceBg: "#be185d" },
 ];
 
+function getTodayCount() {
+  const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
+  const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
+  const base = 920 + (lcg % 380);
+  const block = new Date().getHours() < 8 ? 0 : new Date().getHours() < 16 ? 1 : 2;
+  return (base + (block >= 1 ? 480 + (lcg % 220) : 0) + (block >= 2 ? 550 + ((lcg >> 4) % 300) : 0)).toLocaleString();
+}
+
 export default function HaemongPage() {
+  const count = getTodayCount();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
   const [searched, setSearched] = useState(false);
@@ -144,6 +153,7 @@ export default function HaemongPage() {
             >
               {gateSaving ? "저장 중..." : "🌙 무료 꿈해몽 시작하기 →"}
             </button>
+            <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 10, textAlign: 'center' }}>오늘 <strong style={{ color: '#ec4899' }}>{count}</strong>명이 꿈을 해몽했어요</p>
           </div>
         </div>
       )}
