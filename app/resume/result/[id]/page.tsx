@@ -18,7 +18,7 @@ const ohColor: Record<string,string> = { 목:"#22c55e", 화:"#ef4444", 토:"#f59
 const S = {
   wrap: { minHeight:"100vh", background:"#030014", color:"#F5F5F5", fontFamily:"'Apple SD Gothic Neo','Malgun Gothic',sans-serif", wordBreak:"keep-all" as const },
   inner: { maxWidth:480, margin:"0 auto", padding:"32px 16px 60px" },
-  card: { background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:18, padding:"20px 18px", marginBottom:14 },
+  card: { background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:18, padding:"24px 22px", marginBottom:14 },
 };
 
 export default function ResumeResultPage() {
@@ -152,41 +152,41 @@ export default function ResumeResultPage() {
           <>
             {/* 오행 기질 */}
             <div style={S.card}>
-              <div style={{display:"flex", gap:12, alignItems:"center", marginBottom:10}}>
-                <span style={{fontSize:30}}>{ohE}</span>
+              <div style={{display:"flex", gap:14, alignItems:"center", marginBottom:14}}>
+                <span style={{fontSize:36}}>{ohE}</span>
                 <div>
-                  <p style={{fontSize:12, fontWeight:700, color:ohC, margin:"0 0 2px"}}>오행 {result.oh} — {result.trait}</p>
-                  <p style={{fontSize:11, color:"#6b7280", margin:0}}>{result.ohKeyword}</p>
+                  <p style={{fontSize:16, fontWeight:700, color:ohC, margin:"0 0 4px"}}>오행 {result.oh} — {result.trait}</p>
+                  <p style={{fontSize:13, color:"#6b7280", margin:0}}>{result.ohKeyword}</p>
                 </div>
               </div>
-              <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{result.ohAdvice}</p>
+              <p style={{fontSize:15, color:"#d1d5db", lineHeight:1.85, margin:0}}>{result.ohAdvice}</p>
             </div>
 
             {/* 직무 핵심 키워드 */}
             <div style={S.card}>
-              <p style={{fontSize:13, fontWeight:900, color:"#a78bfa", margin:"0 0 12px"}}>🎯 {result.field} 직무 합격 키워드 TOP 5</p>
-              <div style={{display:"flex", flexWrap:"wrap", gap:6, marginBottom:12}}>
+              <p style={{fontSize:15, fontWeight:900, color:"#a78bfa", margin:"0 0 14px"}}>🎯 {result.field} 직무 합격 키워드 TOP 5</p>
+              <div style={{display:"flex", flexWrap:"wrap", gap:8, marginBottom:14}}>
                 {result.fieldKeywords.map((k:string, i:number) => (
-                  <span key={i} style={{background:"rgba(124,58,237,0.25)", border:"1px solid rgba(124,58,237,0.4)", color:"#c4b5fd", fontSize:11, padding:"5px 12px", borderRadius:20, fontWeight:700}}>{k}</span>
+                  <span key={i} style={{background:"rgba(124,58,237,0.25)", border:"1px solid rgba(124,58,237,0.4)", color:"#c4b5fd", fontSize:13, padding:"7px 14px", borderRadius:20, fontWeight:700}}>{k}</span>
                 ))}
               </div>
-              <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{result.fieldStrategy}</p>
+              <p style={{fontSize:15, color:"#d1d5db", lineHeight:1.85, margin:0}}>{result.fieldStrategy}</p>
             </div>
 
             {/* 기업 규모별 전략 */}
             <div style={S.card}>
-              <p style={{fontSize:13, fontWeight:900, color:"#fbbf24", margin:"0 0 10px"}}>🏢 {result.companySize} 합격 전략</p>
-              <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{result.sizeStrategy}</p>
+              <p style={{fontSize:15, fontWeight:900, color:"#fbbf24", margin:"0 0 12px"}}>🏢 {result.companySize} 합격 전략</p>
+              <p style={{fontSize:15, color:"#d1d5db", lineHeight:1.85, margin:0}}>{result.sizeStrategy}</p>
             </div>
 
             {/* 면접 예상 질문 */}
             <div style={S.card}>
-              <p style={{fontSize:13, fontWeight:900, color:"#4ade80", margin:"0 0 12px"}}>💬 면접 예상 질문 TOP 5</p>
-              <div style={{display:"flex", flexDirection:"column", gap:12}}>
+              <p style={{fontSize:15, fontWeight:900, color:"#4ade80", margin:"0 0 14px"}}>💬 면접 예상 질문 TOP 5</p>
+              <div style={{display:"flex", flexDirection:"column", gap:14}}>
                 {result.interview.map((q:string, i:number) => (
-                  <div key={i} style={{display:"flex", gap:10}}>
-                    <span style={{color:"#4ade80", fontWeight:900, fontSize:13, flexShrink:0}}>Q{i+1}.</span>
-                    <p style={{fontSize:13, color:"#d1d5db", lineHeight:1.7, margin:0}}>{q}</p>
+                  <div key={i} style={{display:"flex", gap:12}}>
+                    <span style={{color:"#4ade80", fontWeight:900, fontSize:15, flexShrink:0}}>Q{i+1}.</span>
+                    <p style={{fontSize:15, color:"#d1d5db", lineHeight:1.85, margin:0}}>{q}</p>
                   </div>
                 ))}
               </div>

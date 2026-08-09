@@ -25,6 +25,12 @@ interface MbtiData {
   tfPct: number;
   jpPct: number;
   userName: string;
+  compat?: { best: string; worst: string };
+  loveDetail?: string;
+  careerDetail?: string;
+  stressTip?: string;
+  relationTip?: string;
+  growthMsg?: string;
 }
 
 const OH_COLOR: Record<string, string> = {
@@ -79,8 +85,14 @@ export default function MbtiResultPage() {
   const [card, setCard] = useState<{ emoji: string; title: string; msg: string } | null>(null);
   const [cardFlipped, setCardFlipped] = useState(false);
   const [shared, setShared] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const exp = localStorage.getItem("mbti_unlock_until");
+      if (exp && Date.now() < parseInt(exp)) setUnlocked(true);
+      if (new URLSearchParams(window.location.search).get("paid") === "1") setUnlocked(true);
+    }
     fetch(`/api/mbti/analyze?id=${id}`)
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false); })
@@ -221,6 +233,23 @@ export default function MbtiResultPage() {
           <p style={{ fontSize: 14, color: "#d1d5db", lineHeight: 1.8, margin: 0 }}>{data.love}</p>
         </div>
 
+        {/* 궁합 잘 맞는/안 맞는 유형 — 무료 */}
+        {data.compat && (
+          <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: "20px 18px", marginBottom: 14 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#f9a8d4", margin: "0 0 14px" }}>💞 궁합 유형</p>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
+              <div style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.25)", borderRadius: 12, padding: "12px 14px" }}>
+                <p style={{ fontSize: 12, color: "#4ade80", fontWeight: 700, margin: "0 0 4px" }}>✅ 잘 맞는 유형</p>
+                <p style={{ fontSize: 14, color: "#d1d5db", margin: 0, lineHeight: 1.7 }}>{data.compat.best}</p>
+              </div>
+              <div style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 12, padding: "12px 14px" }}>
+                <p style={{ fontSize: 12, color: "#f87171", fontWeight: 700, margin: "0 0 4px" }}>⚠️ 주의할 유형</p>
+                <p style={{ fontSize: 14, color: "#d1d5db", margin: 0, lineHeight: 1.7 }}>{data.compat.worst}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* 커리어 + 유명인 */}
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: "20px 18px", marginBottom: 14 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "#60a5fa", margin: "0 0 10px" }}>💼 잘 맞는 직업</p>
@@ -252,6 +281,51 @@ export default function MbtiResultPage() {
             <br /><span style={{ fontSize: 11, color: "#9ca3af" }}>오행 에너지 × 사주 원국 결합 분석</span>
           </Link>
         </div>
+
+        {/* 심층 분석 — 유료 잠금 */}
+        {!unlocked ? (
+          <div style={{ background: "linear-gradient(135deg,#1a0a2e,#2d1269)", border: "2px solid rgba(167,139,250,0.5)", borderRadius: 20, padding: "28px 22px", marginBottom: 14, textAlign: "center" as const }}>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
+            <p style={{ fontSize: 18, fontWeight: 900, color: "white", margin: "0 0 10px" }}>심층 성격 분석</p>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.85, margin: "0 0 8px" }}>
+              연애 심층 분석 · 커리어 심층 분석<br />
+              스트레스 & 회복법 · 인간관계 팁<br />
+              성장 메시지
+            </p>
+            <p style={{ fontSize: 13, color: "#a78bfa", margin: "0 0 20px" }}>결제 후 24시간 열람 가능합니다</p>
+            <Link href={`/mbti/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#a855f7)", color: "white", borderRadius: 24, padding: "14px 32px", fontSize: 15, fontWeight: 900, textDecoration: "none", boxShadow: "0 4px 20px rgba(124,58,237,0.5)" }}>
+              ₩990으로 심층 분석 열기 →
+            </Link>
+          </div>
+        ) : (
+          <>
+            {/* 연애 심층 분석 */}
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+              <p style={{ fontSize: 15, fontWeight: 900, color: "#ec4899", margin: "0 0 14px" }}>💕 연애 심층 분석</p>
+              <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.loveDetail}</p>
+            </div>
+            {/* 커리어 심층 분석 */}
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(96,165,250,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+              <p style={{ fontSize: 15, fontWeight: 900, color: "#60a5fa", margin: "0 0 14px" }}>💼 커리어 심층 분석</p>
+              <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.careerDetail}</p>
+            </div>
+            {/* 스트레스 & 회복 */}
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+              <p style={{ fontSize: 15, fontWeight: 900, color: "#fbbf24", margin: "0 0 14px" }}>⚡ 스트레스 & 회복법</p>
+              <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.stressTip}</p>
+            </div>
+            {/* 인간관계 팁 */}
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+              <p style={{ fontSize: 15, fontWeight: 900, color: "#34d399", margin: "0 0 14px" }}>🤝 인간관계 팁</p>
+              <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.relationTip}</p>
+            </div>
+            {/* 성장 메시지 */}
+            <div style={{ background: `linear-gradient(135deg,${ohColor}15,${ohColor}07)`, border: `2px solid ${ohColor}40`, borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+              <p style={{ fontSize: 15, fontWeight: 900, color: ohColor, margin: "0 0 14px" }}>🌱 성장 메시지</p>
+              <p style={{ fontSize: 16, color: "#e9d5ff", lineHeight: 1.9, fontStyle: "italic" as const, margin: 0 }}>{data.growthMsg}</p>
+            </div>
+          </>
+        )}
 
         {/* 카드 뽑기 */}
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 18, padding: "20px 18px", marginBottom: 14, textAlign: "center" as const }}>
