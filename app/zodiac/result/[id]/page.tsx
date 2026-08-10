@@ -167,6 +167,40 @@ const CROSS_DESC: Record<string, Record<string, string>> = {
   },
 };
 
+const AURA_BY_ELEMENT: Record<string, { color: string; name: string; desc: string }> = {
+  "불": { color: "#ef4444", name: "빨강 오라", desc: "열정과 생동감의 에너지. 강한 카리스마와 추진력을 상징합니다." },
+  "흙": { color: "#f59e0b", name: "황금 오라", desc: "안정과 신뢰의 에너지. 대지처럼 든든한 존재감을 가집니다." },
+  "바람": { color: "#60a5fa", name: "하늘 오라", desc: "자유와 지성의 에너지. 밝고 신선한 아이디어가 넘칩니다." },
+  "물": { color: "#818cf8", name: "보라 오라", desc: "직감과 공감의 에너지. 깊은 감성과 신비로운 매력을 가집니다." },
+};
+const SOUL_MEANINGS: Record<number, { meaning: string; desc: string }> = {
+  1:{meaning:"리더·선구자",desc:"독립적이고 강한 의지력을 가진 타고난 리더입니다."},
+  2:{meaning:"협력자·평화주의자",desc:"섬세한 감각으로 주변과 조화를 이루는 협력자입니다."},
+  3:{meaning:"창조자·표현가",desc:"창의적이고 표현력이 풍부한 예술적 영혼입니다."},
+  4:{meaning:"건축가·안정주의자",desc:"체계적이고 안정적인 기반을 만드는 현실주의자입니다."},
+  5:{meaning:"자유인·모험가",desc:"변화와 자유를 사랑하는 다재다능한 모험가입니다."},
+  6:{meaning:"양육자·치유자",desc:"따뜻한 마음으로 주변을 돌보는 치유자입니다."},
+  7:{meaning:"탐구자·철학자",desc:"깊은 내면을 탐구하는 지혜로운 철학자입니다."},
+  8:{meaning:"성취자·관리자",desc:"물질적 성공을 이루는 강력한 추진력을 가졌습니다."},
+  9:{meaning:"인도주의자·완성자",desc:"모든 것을 완성하고 세상에 기여하는 박애주의자입니다."},
+  11:{meaning:"영적 메신저",desc:"높은 직감력으로 영적 진실을 전달하는 특별한 존재입니다."},
+  22:{meaning:"마스터 빌더",desc:"원대한 꿈을 현실로 만드는 최고의 창조자입니다."},
+};
+function getSoulNum(year: number): { num: number; meaning: string; desc: string } {
+  let sum = String(year).split("").map(Number).reduce((a,b) => a+b, 0);
+  while (sum > 9 && sum !== 11 && sum !== 22) {
+    sum = String(sum).split("").map(Number).reduce((a,b) => a+b, 0);
+  }
+  return { num: sum, ...(SOUL_MEANINGS[sum] || SOUL_MEANINGS[1]) };
+}
+function getBallColor(n: number): string {
+  if (n <= 10) return "#fbbf24";
+  if (n <= 20) return "#60a5fa";
+  if (n <= 30) return "#f97316";
+  if (n <= 40) return "#9ca3af";
+  return "#4ade80";
+}
+
 function ScoreBar({ label, score, color }: { label: string; score: number; color: string }) {
   const [width, setWidth] = useState(0);
   useEffect(() => { setTimeout(() => setWidth(score), 300); }, [score]);
@@ -190,6 +224,8 @@ export default function ZodiacResultPage() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<"today" | "week" | "month">("today");
   const [sharing, setSharing] = useState(false);
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [unlockRemain, setUnlockRemain] = useState("");
 
   useEffect(() => {
     fetch(`/api/zodiac/analyze?id=${id}`)
@@ -197,6 +233,28 @@ export default function ZodiacResultPage() {
       .then(d => { if (d.result) setResult(d.result); setLoading(false); })
       .catch(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    const checkUnlock = () => {
+      const u = localStorage.getItem("zodiac_unlock_until");
+      setIsUnlocked(!!u && Number(u) > Date.now());
+    };
+    checkUnlock();
+    let timerId: ReturnType<typeof setInterval>;
+    const updateCountdown = () => {
+      const u = localStorage.getItem("zodiac_unlock_until");
+      if (!u) { setIsUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return; }
+      const ms = Number(u) - Date.now();
+      if (ms <= 0) { localStorage.removeItem("zodiac_unlock_until"); setIsUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return; }
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      setUnlockRemain(h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 ${s}초 남음`);
+    };
+    timerId = setInterval(updateCountdown, 1000);
+    updateCountdown();
+    return () => clearInterval(timerId);
+  }, []);
 
   const share = () => {
     const url = `https://jeomun.com/zodiac/result/${id}`;
@@ -253,6 +311,8 @@ export default function ZodiacResultPage() {
   const crossDesc = result.oh ? (CROSS_DESC[result.oh]?.[result.zodiac] || "") : "";
   const today = new Date();
   const dateStr = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  const soulNum = result.birthYear ? getSoulNum(result.birthYear) : null;
+  const aura = AURA_BY_ELEMENT[info.element] || AURA_BY_ELEMENT["불"];
 
   return (
     <div style={S.wrap}>
@@ -360,6 +420,80 @@ export default function ZodiacResultPage() {
         <Link href="/zodiac" style={{ display: "block", textAlign: "center" as const, background: "rgba(147,197,253,0.08)", border: "1.5px solid rgba(147,197,253,0.35)", borderRadius: 16, padding: "14px", color: "#93c5fd", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
           나도 별자리 운세 보기 (무료) →
         </Link>
+
+        {/* 별자리 심층 분석 24h paywall */}
+        {!isUnlocked ? (
+          <div style={{ background:"linear-gradient(135deg,#0a0f2e,#1a1060)", border:"2px solid rgba(129,140,248,0.5)", borderRadius:20, padding:"24px 20px", marginBottom:16, textAlign:"center" as const }}>
+            <div style={{ fontSize:36, marginBottom:10 }}>🔒</div>
+            <p style={{ fontSize:16, fontWeight:900, color:"white", margin:"0 0 8px" }}>별자리 심층 분석</p>
+            <p style={{ fontSize:13, color:"rgba(255,255,255,0.65)", lineHeight:1.75, margin:"0 0 6px" }}>
+              💕 오늘의 연애·직업·건강 상세<br/>
+              🍀 행운번호 6개 · 🔢 소울넘버<br/>
+              ✨ 나의 오라 색깔
+            </p>
+            <p style={{ fontSize:12, color:"#818cf8", margin:"0 0 18px" }}>결제 후 24시간 열람 가능합니다</p>
+            <Link href={`/zodiac/pay?id=${id}`} style={{ display:"inline-block", background:"linear-gradient(135deg,#667eea,#764ba2)", color:"white", borderRadius:22, padding:"13px 28px", fontSize:14, fontWeight:900, textDecoration:"none" }}>
+              ₩990으로 전체 분석 보기 →
+            </Link>
+          </div>
+        ) : (
+          <>
+            {unlockRemain && (
+              <div style={{background:"rgba(74,222,128,0.08)",border:"1px solid rgba(74,222,128,0.25)",borderRadius:10,padding:"8px 14px",marginBottom:14,display:"flex",alignItems:"center",gap:8}}>
+                <span style={{fontSize:14}}>⏱️</span>
+                <span style={{fontSize:12,color:"#4ade80"}}>이용 가능: <b>{unlockRemain}</b></span>
+              </div>
+            )}
+            {/* 1. 오늘의 상세 운세 */}
+            <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(129,140,248,0.2)", borderRadius:20, padding:"18px 16px", marginBottom:14 }}>
+              <p style={{ fontSize:13, fontWeight:900, margin:"0 0 12px", color:"#e0e7ff" }}>오늘의 상세 운세</p>
+              {[
+                { icon:"💕", label:"연애운", value:readings.love.today },
+                { icon:"💼", label:"직업운", value:readings.work.today },
+                { icon:"🌿", label:"건강운", value:readings.health.today },
+              ].map(item => (
+                <div key={item.label} style={{ display:"flex", gap:12, marginBottom:10, padding:"10px 12px", background:"rgba(255,255,255,0.05)", borderRadius:10 }}>
+                  <span style={{ fontSize:20, flexShrink:0 }}>{item.icon}</span>
+                  <div>
+                    <p style={{ margin:"0 0 2px", fontSize:11, color:"rgba(255,255,255,0.48)", fontWeight:700 }}>{item.label}</p>
+                    <p style={{ margin:0, fontSize:14, lineHeight:1.5, color:"#e2e8f0" }}>{item.value}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* 2. 행운번호 6개 */}
+            <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(251,191,36,0.2)", borderRadius:20, padding:"18px 16px", marginBottom:14 }}>
+              <p style={{ fontSize:13, fontWeight:900, margin:"0 0 14px", color:"#fbbf24" }}>🍀 나만의 행운번호</p>
+              <div style={{ display:"flex", gap:8, justifyContent:"center", flexWrap:"wrap" as const, marginBottom:8 }}>
+                {result.luckyNumbers.map(n => (
+                  <div key={n} style={{ width:46, height:46, borderRadius:"50%", background:getBallColor(n), display:"flex", alignItems:"center", justifyContent:"center", fontSize:15, fontWeight:900, color:"#1a1060", boxShadow:`0 4px 12px ${getBallColor(n)}70` }}>{n}</div>
+                ))}
+              </div>
+              <p style={{ fontSize:12, color:"rgba(255,255,255,0.4)", textAlign:"center" as const, margin:0 }}>{result.zodiac}의 에너지로 계산된 나만의 번호예요</p>
+            </div>
+            {/* 3. 소울넘버 */}
+            {soulNum && (
+              <div style={{ background:"linear-gradient(135deg,rgba(129,140,248,0.1),rgba(196,132,252,0.1))", border:"1px solid rgba(196,132,252,0.28)", borderRadius:20, padding:"20px 16px", marginBottom:14, textAlign:"center" as const }}>
+                <p style={{ fontSize:13, fontWeight:900, margin:"0 0 12px", color:"#e0e7ff" }}>🔢 나의 소울넘버</p>
+                <div style={{ fontSize:72, fontWeight:900, background:"linear-gradient(135deg,#818cf8,#c084fc)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", lineHeight:1, marginBottom:10 }}>{soulNum.num}</div>
+                <div style={{ background:"rgba(255,255,255,0.1)", borderRadius:20, padding:"6px 16px", display:"inline-block", marginBottom:10 }}>
+                  <span style={{ fontSize:14, fontWeight:700 }}>{soulNum.meaning}</span>
+                </div>
+                <p style={{ fontSize:13, color:"rgba(255,255,255,0.82)", lineHeight:1.75, margin:0 }}>{soulNum.desc}</p>
+              </div>
+            )}
+            {/* 4. 오라 색깔 */}
+            <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:20, padding:"20px 16px", marginBottom:14, textAlign:"center" as const }}>
+              <p style={{ fontSize:13, fontWeight:900, margin:"0 0 16px", color:"#e0e7ff" }}>✨ 나의 오라</p>
+              <div style={{ width:80, height:80, borderRadius:"50%", background:aura.color, margin:"0 auto 12px", boxShadow:`0 0 32px ${aura.color}90, 0 0 64px ${aura.color}40` }} />
+              <div style={{ background:"rgba(255,255,255,0.1)", borderRadius:20, padding:"6px 16px", display:"inline-block", marginBottom:10 }}>
+                <span style={{ fontSize:15, fontWeight:700 }}>{aura.name}</span>
+              </div>
+              <p style={{ fontSize:13, color:"rgba(255,255,255,0.82)", lineHeight:1.75, margin:"0 0 6px" }}>{aura.desc}</p>
+              <p style={{ fontSize:11, color:"rgba(255,255,255,0.4)", margin:0 }}>원소: {info.element} · {result.zodiac}</p>
+            </div>
+          </>
+        )}
 
         {/* 사주 연결 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(29,78,216,0.18),rgba(124,58,237,0.12))", border: "1px solid rgba(147,197,253,0.3)", borderRadius: 20, padding: "22px 18px" }}>
