@@ -597,7 +597,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
                 <span style={{ color: "#15803d" }}>오늘의 운세</span>{" "}
                 <span style={{ color: "#be185d" }}>매일 무료</span>
               </span>
-              {!isPartner && <span style={{ fontSize: 9, fontWeight: 900, color: "#7c3aed", marginTop: 3, textAlign: "center" as const }}>🎁 꿈해몽·복냥이·Q&amp;A 3종 무료</span>}
+              {!isPartner && <span style={{ fontSize: 9, fontWeight: 900, color: "#7c3aed", marginTop: 3, textAlign: "center" as const }}>🎁 꿈해몽·복냥이·Q&amp;A 3종 24시간 무료</span>}
             </div>
           </div>
         ) : (

@@ -334,7 +334,7 @@ function PayInner() {
         {!isTaegil && (
           <div style={{ marginBottom: 14, padding: "10px 14px", background: "rgba(139,92,246,0.12)", borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)", textAlign: "center" }}>
             <p style={{ margin: 0, fontSize: 12, color: "#c4b5fd", fontWeight: 700, lineHeight: 1.8 }}>
-              🎁 결제하면 3종 하루 무료!<br />
+              🎁 결제하면 3종 24시간 무료!<br />
               <b style={{ color: "#f9a8d4" }}>꿈해몽 전체</b> · <b style={{ color: "#f9a8d4" }}>복냥이 채팅</b> · <b style={{ color: "#f9a8d4" }}>Q&A 전체</b><br />
               <span style={{ color: "rgba(196,181,253,0.7)", fontSize: 11 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
             </p>

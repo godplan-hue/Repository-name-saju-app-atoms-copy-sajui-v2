@@ -596,7 +596,7 @@ export default function ShareClient({ id }: { id: string }) {
                 </div>
                 <div style={{ padding: "10px" }}>
                   <p style={{ fontSize: 13, fontWeight: 900, color: "#1a1a2e", margin: "0 0 4px" }}>🌙 꿈해몽 <span style={{ background: "#dc2626", color: "#fff", borderRadius: 4, padding: "1px 6px", fontSize: 10 }}>무료</span></p>
-                  <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>사주 결제하면<br />꿈해몽+복냥이+Q&amp;A 3종 무료</p>
+                  <p style={{ fontSize: 10, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>사주 결제하면<br />꿈해몽+복냥이+Q&amp;A 3종 24시간 무료</p>
                   <div style={{ background: "#dc2626", color: "#fff", textAlign: "center", padding: "7px 0", borderRadius: 8, fontWeight: 800, fontSize: 11 }}>꿈해몽 보기 →</div>
                 </div>
               </div>
