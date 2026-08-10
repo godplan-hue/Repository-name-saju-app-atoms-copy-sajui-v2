@@ -157,7 +157,7 @@ function PayInner() {
 
         {isFree ? (
           <button onClick={()=>pay()} disabled={loading} style={{ width:"100%", background:loading?"rgba(124,58,237,0.5)":"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:loading?"not-allowed":"pointer", marginBottom:12 }}>
-            {loading?"처리 중...":"🎟 무료로 이용하기"}
+            {loading?"처리 중...":"결제하기"}
           </button>
         ) : (
           <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:16 }}>
