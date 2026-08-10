@@ -69,6 +69,7 @@ export default function AppsPage() {
   const [unlocks, setUnlocks] = useState<Record<string, number>>({});
   const [expired, setExpired] = useState<Record<string, boolean>>({});
   const [showExpiredModal, setShowExpiredModal] = useState(false);
+  const [pendingHref, setPendingHref] = useState("");
 
   useEffect(() => {
     const daysMap: Record<string, number> = {};
@@ -84,8 +85,22 @@ export default function AppsPage() {
 
   const handleAppClick = (e: React.MouseEvent, href: string) => {
     if (expired[href]) {
-      e.preventDefault();
-      setShowExpiredModal(true);
+      const warned = sessionStorage.getItem(`expired_warned_${href}`);
+      if (!warned) {
+        e.preventDefault();
+        sessionStorage.setItem(`expired_warned_${href}`, "1");
+        setPendingHref(href);
+        setShowExpiredModal(true);
+      }
+      // 이미 한 번 경고했으면 그냥 통과 (앱 내에서 잠금 처리)
+    }
+  };
+
+  const closeExpiredModal = () => {
+    setShowExpiredModal(false);
+    if (pendingHref) {
+      window.location.href = pendingHref;
+      setPendingHref("");
     }
   };
 
@@ -98,13 +113,13 @@ export default function AppsPage() {
 
         {/* 만료 모달 */}
         {showExpiredModal && (
-          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 20px" }} onClick={() => setShowExpiredModal(false)}>
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 20px" }} onClick={closeExpiredModal}>
             <div style={{ background: "#1e1040", border: "1.5px solid rgba(167,139,250,0.4)", borderRadius: 20, padding: "28px 22px", maxWidth: 320, width: "100%", textAlign: "center" }} onClick={e => e.stopPropagation()}>
               <div style={{ fontSize: 36, marginBottom: 12 }}>😢</div>
               <div style={{ fontSize: 17, fontWeight: 900, color: "#fff", marginBottom: 8 }}>이용 기간이 종료됐어요</div>
-              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginBottom: 24, lineHeight: 1.6 }}>재결제 후 다시 이용하실 수 있어요.</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginBottom: 24, lineHeight: 1.6 }}>재결제하거나 그냥 입장해도 돼요.</div>
               <button onClick={() => { window.location.href = "/pass"; }} style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#a855f7)", color: "#fff", border: "none", borderRadius: 50, padding: "13px 0", fontSize: 15, fontWeight: 900, cursor: "pointer", marginBottom: 10 }}>재결제하기 →</button>
-              <button onClick={() => setShowExpiredModal(false)} style={{ width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.6)", borderRadius: 50, padding: "11px 0", fontSize: 14, cursor: "pointer" }}>닫기</button>
+              <button onClick={closeExpiredModal} style={{ width: "100%", background: "none", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.6)", borderRadius: 50, padding: "11px 0", fontSize: 14, cursor: "pointer" }}>그냥 들어가기</button>
             </div>
           </div>
         )}
