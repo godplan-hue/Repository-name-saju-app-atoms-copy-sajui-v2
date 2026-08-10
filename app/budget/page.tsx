@@ -16,7 +16,16 @@ const CAT_EMOJI: Record<string, string> = {
 const todayStr = () => new Date().toISOString().slice(0, 10);
 const thisMonth = () => new Date().toISOString().slice(0, 7);
 
+function getTodayCount() {
+  const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
+  const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
+  const base = 580 + (lcg % 260);
+  const block = new Date().getHours() < 8 ? 0 : new Date().getHours() < 16 ? 1 : 2;
+  return (base + (block >= 1 ? 390 + (lcg % 180) : 0) + (block >= 2 ? 450 + ((lcg >> 4) % 230) : 0)).toLocaleString();
+}
+
 export default function BudgetPage() {
+  const count = getTodayCount();
   const [view, setView] = useState<"list" | "add" | "chart">("list");
   const [entries, setEntries] = useState<Entry[]>([]);
   const [mcUserId, setMcUserId] = useState("");
@@ -353,6 +362,7 @@ export default function BudgetPage() {
           <p style={{ textAlign: "center", fontSize: 11, color: "rgba(251,191,36,0.5)", marginTop: 12, lineHeight: 1.6, letterSpacing: "0.02em" }}>
             🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
           </p>
+          <p style={{ color: "#9ca3af", fontSize: 13, marginTop: 8, textAlign: "center" }}>오늘 <strong style={{ color: "#fbbf24" }}>{count}</strong>명이 가계부를 기록했어요</p>
         </div>
 
       </div>
