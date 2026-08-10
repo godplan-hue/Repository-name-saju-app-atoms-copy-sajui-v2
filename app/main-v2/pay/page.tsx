@@ -330,6 +330,16 @@ function PayInner() {
           <p style={{ color: "#c4b5fd", fontWeight: 900, fontSize: 20, margin: 0 }}>결제금액 ₩{displayAmount.toLocaleString()}</p>
         </div>
 
+        {/* 결제 혜택 배너 */}
+        {!isTaegil && (
+          <div style={{ marginBottom: 14, padding: "10px 14px", background: "rgba(139,92,246,0.12)", borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)", textAlign: "center" }}>
+            <p style={{ margin: 0, fontSize: 12, color: "#c4b5fd", fontWeight: 700, lineHeight: 1.7 }}>
+              🎁 결제하면 <b style={{ color: "#f9a8d4" }}>꿈해몽 전체</b> + <b style={{ color: "#f9a8d4" }}>복냥이 Q&A 무제한</b><br />
+              <span style={{ color: "rgba(196,181,253,0.7)", fontSize: 11 }}>하루 동안 무료로 이용할 수 있어요</span>
+            </p>
+          </div>
+        )}
+
         {/* 무료 쿠폰 */}
         <div style={{ marginBottom: 16, padding: "12px 14px", background: "rgba(255,255,255,0.06)", borderRadius: 12, border: "1px solid rgba(251,191,36,0.25)" }}>
           <label style={{ ...lbl, marginBottom: 8 }}>🎟 쿠폰 코드</label>
