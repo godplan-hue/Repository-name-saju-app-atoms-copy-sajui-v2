@@ -50,6 +50,10 @@ function PayInner() {
   const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
   const isFree = couponData && (finalAmount === 0 || couponData.fullAccess);
 
+  const setUnlock = () => {
+    localStorage.setItem("jigun_unlock_until", String(Date.now() + 24*60*60*1000));
+  };
+
   const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {
     if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
     if (isFree) {
@@ -58,8 +62,8 @@ function PayInner() {
         const _ph = mobile.replace(/\D/g,"");
         fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`jigun_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"직운 쿠폰",source:"jigun"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-        if (id) fetch("/api/career/analyze",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id})}).catch(()=>{});
-        window.location.href = id ? `/jigun/result/${id}?paid=1` : "/jigun";
+        setUnlock();
+        window.location.href = id ? `/jigun/result/${id}` : "/jigun";
       } finally { setLoading(false); }
       return;
     }
@@ -84,8 +88,8 @@ function PayInner() {
       if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); return; }
       if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
       fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`jigun_${Date.now()}`,phone:cleanMobile||"",name:name.trim()||"",amount:finalAmount,category:"직운 부업추천",source:"jigun"})}).catch(()=>{});
-      if (id) fetch("/api/career/analyze",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id})}).catch(()=>{});
-      window.location.href = id ? `/jigun/result/${id}?paid=1` : "/jigun";
+      setUnlock();
+      window.location.href = id ? `/jigun/result/${id}` : "/jigun";
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
     finally { setLoading(false); }
   };
@@ -113,7 +117,7 @@ function PayInner() {
             부업 TOP 3 상세 분석 · 수입 범위<br />
             3단계 시작법 · 플랫폼 · 함정 주의
           </p>
-          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 바로 열림 · 해당 결과 영구 이용 가능</p>
+          <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 24시간 열람 가능</p>
           <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: 0 }}>₩{AMOUNT.toLocaleString()}</p>
         </div>
 

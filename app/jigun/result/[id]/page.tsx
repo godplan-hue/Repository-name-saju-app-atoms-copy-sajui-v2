@@ -31,18 +31,20 @@ export default function JigunResultPage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [unlockRemain, setUnlockRemain] = useState("");
 
   useEffect(() => {
     if (!id) return;
-    // 결제 직후 리다이렉트 시 즉시 열기
-    if (new URLSearchParams(window.location.search).get("paid") === "1") setIsUnlocked(true);
+    // 결제 직후 URL param으로 즉시 열기 + localStorage 설정
+    if (new URLSearchParams(window.location.search).get("paid") === "1") {
+      localStorage.setItem("jigun_unlock_until", String(Date.now() + 24*60*60*1000));
+    }
 
     fetch(`/api/career/analyze?id=${id}`)
       .then(r => r.json())
       .then(d => {
         if (d.result) {
           setResult(d.result);
-          if (d.result.paid === true) setIsUnlocked(true);
         } else {
           setErr("결과를 찾을 수 없어요.");
         }
@@ -50,6 +52,24 @@ export default function JigunResultPage() {
       .catch(() => setErr("불러오기 실패"))
       .finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    let timerId: ReturnType<typeof setInterval>;
+    const update = () => {
+      const u = localStorage.getItem("jigun_unlock_until");
+      if (!u) { setIsUnlocked(false); setUnlockRemain(""); return; }
+      const ms = Number(u) - Date.now();
+      if (ms <= 0) { localStorage.removeItem("jigun_unlock_until"); setIsUnlocked(false); setUnlockRemain(""); return; }
+      setIsUnlocked(true);
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      setUnlockRemain(h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 ${s}초 남음`);
+    };
+    update();
+    timerId = setInterval(update, 1000);
+    return () => clearInterval(timerId);
+  }, []);
 
   function share() {
     const url = window.location.href.split("?")[0];
@@ -137,6 +157,13 @@ export default function JigunResultPage() {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* 잠금 해제 타이머 */}
+        {isUnlocked && unlockRemain && (
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(74,222,128,0.12)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 99, padding: "6px 14px", fontSize: 12, color: "#4ade80", fontWeight: 700, marginBottom: 14 }}>
+            ✅ 잠금해제 · {unlockRemain}
           </div>
         )}
 
