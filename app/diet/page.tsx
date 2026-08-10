@@ -268,6 +268,7 @@ export default function DietPage() {
     try {
       const until = Number(localStorage.getItem("diet_unlock_until") || 0);
       if (!until || until < Date.now()) setDietLocked(true);
+      else setAvoidShowAll(true);
     } catch {}
     let uid = "";
     let yr = "";
@@ -836,7 +837,7 @@ export default function DietPage() {
                 ))}
                 {!avoidShowAll && (
                   <button onClick={() => setAvoidShowAll(true)} style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, padding: "12px", color: ohData.color, fontSize: 14, fontWeight: 700, cursor: "pointer", marginTop: 4 }}>
-                    🔓 나머지 {OH_AVOID[oh].length - 5}개 더 보기 →
+                    ▼ 나머지 {OH_AVOID[oh].length - 5}개 더 보기
                   </button>
                 )}
               </div>

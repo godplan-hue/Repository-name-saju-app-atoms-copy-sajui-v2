@@ -163,9 +163,9 @@ export default function ResumeResultPage() {
               면접 예상 질문 TOP 5 · 합격 에너지 분석
             </p>
             <p style={{fontSize:12, color:"#a78bfa", margin:"0 0 18px"}}>결제 후 바로 열람 가능합니다</p>
-            <Link href={`/resume/pay?id=${id}`} style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", borderRadius:22, padding:"13px 28px", fontSize:14, fontWeight:900, textDecoration:"none"}}>
+            <a href={`/resume/pay?id=${id}`} style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", borderRadius:22, padding:"13px 28px", fontSize:14, fontWeight:900, textDecoration:"none"}}>
               ₩990으로 전체 분석 보기 →
-            </Link>
+            </a>
           </div>
         )}
 

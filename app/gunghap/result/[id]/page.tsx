@@ -373,7 +373,7 @@ export default function GunghapResultPage() {
                 </div>
               ))}
             </div>
-            <button onClick={() => router.push(`/gunghap/pay?id=${id}`)}
+            <button onClick={() => { window.location.href = `/gunghap/pay?id=${id}`; }}
               style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 18, padding: "15px", fontSize: 15, fontWeight: 900, cursor: "pointer" }}>
               ₩990 · 지금 바로 전체 보기 →
             </button>

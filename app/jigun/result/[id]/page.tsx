@@ -232,9 +232,9 @@ export default function JigunResultPage() {
                   <div style={{ fontSize: 32, marginBottom: 10 }}>🔒</div>
                   <p style={{ fontSize: 14, fontWeight: 900, color: "white", margin: "0 0 4px", textAlign: "center" }}>{RANK_BADGE[i]} 잠금</p>
                   <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 14px", textAlign: "center" }}>990원 결제 후 24시간 전체 열람 가능</p>
-                  <Link href={`/jigun/pay?id=${id}`} style={{ background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 20, padding: "10px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+                  <a href={`/jigun/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 20, padding: "10px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
                     ₩990 결제하고 전체 보기 →
-                  </Link>
+                  </a>
                 </div>
               )}
             </div>
