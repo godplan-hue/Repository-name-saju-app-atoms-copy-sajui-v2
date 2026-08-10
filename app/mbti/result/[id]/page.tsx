@@ -86,6 +86,7 @@ export default function MbtiResultPage() {
   const [cardFlipped, setCardFlipped] = useState(false);
   const [shared, setShared] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
+  const [unlockRemain, setUnlockRemain] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -97,6 +98,23 @@ export default function MbtiResultPage() {
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
+
+    let timerId: ReturnType<typeof setInterval>;
+    const updateCountdown = () => {
+      const u = localStorage.getItem("mbti_unlock_until");
+      if (!u) { setUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return; }
+      const ms = Number(u) - Date.now();
+      if (ms <= 0) {
+        localStorage.removeItem("mbti_unlock_until");
+        setUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return;
+      }
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      setUnlockRemain(h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 ${s}초 남음`);
+    };
+    timerId = setInterval(updateCountdown, 1000);
+    return () => clearInterval(timerId);
   }, [id]);
 
   const drawCard = () => {
@@ -299,6 +317,12 @@ export default function MbtiResultPage() {
           </div>
         ) : (
           <>
+            {unlockRemain && (
+              <div style={{ background: "rgba(74,222,128,0.08)", border: "1px solid rgba(74,222,128,0.25)", borderRadius: 10, padding: "8px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 14 }}>⏱️</span>
+                <span style={{ fontSize: 12, color: "#4ade80" }}>이용 가능: <b>{unlockRemain}</b></span>
+              </div>
+            )}
             {/* 연애 심층 분석 */}
             <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
               <p style={{ fontSize: 15, fontWeight: 900, color: "#ec4899", margin: "0 0 14px" }}>💕 연애 심층 분석</p>
