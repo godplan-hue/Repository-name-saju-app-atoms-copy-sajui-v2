@@ -59,7 +59,8 @@ function PayInner() {
         fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`resume_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"합격자소서 쿠폰",source:"resume"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         if (id) fetch("/api/resume/analyze",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id})}).catch(()=>{});
-        window.location.href = id ? `/resume/result/${id}?paid=1` : "/resume/start";
+        localStorage.setItem("resume_unlock_until", String(Date.now() + 24*60*60*1000));
+        window.location.href = id ? `/resume/result/${id}` : "/resume/start";
       } finally { setLoading(false); }
       return;
     }
@@ -86,7 +87,8 @@ function PayInner() {
       fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`resume_${Date.now()}`,phone:cleanMobile||"",name:name.trim()||"",amount:finalAmount,category:"합격자소서 1회권",source:"resume"})}).catch(()=>{});
       if (id) {
         fetch("/api/resume/analyze",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id})}).catch(()=>{});
-        window.location.href = `/resume/result/${id}?paid=1`;
+        localStorage.setItem("resume_unlock_until", String(Date.now() + 24*60*60*1000));
+        window.location.href = `/resume/result/${id}`;
       } else {
         window.location.href = "/resume/start";
       }

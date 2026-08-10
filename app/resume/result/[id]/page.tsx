@@ -27,26 +27,48 @@ export default function ResumeResultPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [unlockRemain, setUnlockRemain] = useState("");
 
   useEffect(() => {
     if (!id) return;
-    // ?paid=1 파라미터 — 합격자소서 전용 결제 직후 리다이렉트 시
-    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("paid") === "1") {
-      setIsUnlocked(true);
-    }
+
+    // localStorage 24시간 잠금 확인 및 카운트다운
+    const checkUnlock = () => {
+      const u = localStorage.getItem("resume_unlock_until");
+      if (u && Number(u) > Date.now()) { setIsUnlocked(true); } else { setIsUnlocked(false); }
+    };
+    checkUnlock();
+
+    let timerId: ReturnType<typeof setInterval>;
+    const updateCountdown = () => {
+      const u = localStorage.getItem("resume_unlock_until");
+      if (!u) { setIsUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return; }
+      const ms = Number(u) - Date.now();
+      if (ms <= 0) {
+        localStorage.removeItem("resume_unlock_until");
+        setIsUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return;
+      }
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      setUnlockRemain(h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 ${s}초 남음`);
+    };
+    timerId = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
     fetch(`/api/resume/analyze?id=${id}`)
       .then(r => r.json())
       .then(d => {
         if (d.result) {
           setResult(d.result);
-          // Firebase에 paid:true 저장된 경우 영구 잠금 해제
-          if (d.result?.paid === true) setIsUnlocked(true);
         } else {
           setError("결과를 찾을 수 없어요.");
         }
       })
       .catch(() => setError("불러오기 실패"))
       .finally(() => setLoading(false));
+
+    return () => clearInterval(timerId);
   }, [id]);
 
   function share() {
@@ -150,6 +172,12 @@ export default function ResumeResultPage() {
         {/* 분석 카드들 — 결제 후 공개 */}
         {isUnlocked && (
           <>
+            {unlockRemain && (
+              <div style={{background:"rgba(74,222,128,0.08)", border:"1px solid rgba(74,222,128,0.25)", borderRadius:10, padding:"8px 14px", marginBottom:14, display:"flex", alignItems:"center", gap:8}}>
+                <span style={{fontSize:14}}>⏱️</span>
+                <span style={{fontSize:12, color:"#4ade80"}}>이용 가능: <b>{unlockRemain}</b></span>
+              </div>
+            )}
             {/* 오행 기질 */}
             <div style={S.card}>
               <div style={{display:"flex", gap:14, alignItems:"center", marginBottom:14}}>
