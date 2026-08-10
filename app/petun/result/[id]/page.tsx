@@ -216,6 +216,8 @@ export default function PetunResultPage() {
   const [petCard, setPetCard] = useState<typeof PET_CARDS[0] | null>(null);
   const [petCardFlipped, setPetCardFlipped] = useState(false);
   const [petCardUsed, setPetCardUsed] = useState(false);
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [unlockRemain, setUnlockRemain] = useState("");
 
   useEffect(() => {
     if (!id) return;
@@ -224,6 +226,24 @@ export default function PetunResultPage() {
       .then(data => { if (data.result) setResult(data.result); setLoading(false); })
       .catch(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    let timerId: ReturnType<typeof setInterval>;
+    const update = () => {
+      const u = localStorage.getItem("petun_unlock_until");
+      if (!u) { setIsUnlocked(false); setUnlockRemain(""); return; }
+      const ms = Number(u) - Date.now();
+      if (ms <= 0) { localStorage.removeItem("petun_unlock_until"); setIsUnlocked(false); setUnlockRemain(""); return; }
+      setIsUnlocked(true);
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      setUnlockRemain(h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 ${s}초 남음`);
+    };
+    update();
+    timerId = setInterval(update, 1000);
+    return () => clearInterval(timerId);
+  }, []);
 
   const searchFood = () => {
     const q = foodQuery.trim().toLowerCase();
@@ -340,41 +360,50 @@ export default function PetunResultPage() {
         </button>
 
         {/* 오늘 강아지 운세 뽑기 */}
-        <div style={{ background: "linear-gradient(135deg,rgba(6,182,212,0.12),rgba(124,58,237,0.08))", border: "1px solid rgba(6,182,212,0.35)", borderRadius: 20, padding: "18px 16px", marginBottom: 14 }}>
-          <p style={{ fontSize: 12, fontWeight: 900, color: "#06b6d4", margin: "0 0 6px", letterSpacing: "0.08em", textTransform: "uppercase" as const }}>🎴 오늘 강아지 운세 뽑기</p>
-          <p style={{ fontSize: 13, color: "#a5f3fc", margin: "0 0 14px", lineHeight: 1.6 }}>
-            오늘 {result.petName}에게 어떤 에너지가 필요한지 카드로 확인해보세요
-          </p>
-          {!petCardUsed ? (
-            <button
-              onClick={() => {
-                const card = PET_CARDS[Math.floor(Math.random() * PET_CARDS.length)];
-                setPetCard(card);
-                setPetCardUsed(true);
-                setTimeout(() => setPetCardFlipped(true), 50);
-              }}
-              style={{ width: "100%", background: "linear-gradient(135deg,#0e4e6a,#1e3a5f)", border: "2px solid rgba(6,182,212,0.5)", borderRadius: 16, padding: "20px", cursor: "pointer", color: "white" }}
-            >
-              <div style={{ fontSize: 36, marginBottom: 8 }}>🎴</div>
-              <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 4px" }}>오늘의 카드 뽑기</p>
-              <p style={{ fontSize: 11, color: "#a5f3fc", margin: 0 }}>탭해서 {result.petName}의 오늘 운세 확인하기</p>
-            </button>
-          ) : (
-            <div style={{ textAlign: "center" }}>
-              <div style={{ background: "linear-gradient(135deg,#0e4e6a,#1a3a5f)", border: "2px solid #06b6d4", borderRadius: 16, padding: "22px 18px", opacity: petCardFlipped ? 1 : 0, transform: petCardFlipped ? "scale(1)" : "scale(0.92)", transition: "all 0.4s ease" }}>
-                <div style={{ fontSize: 32, marginBottom: 10 }}>✨</div>
-                <p style={{ fontSize: 16, fontWeight: 900, color: "#a5f3fc", margin: "0 0 10px" }}>{petCard?.name}</p>
-                <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.7, margin: 0 }}>{petCard?.meaning}</p>
-              </div>
+        {isUnlocked ? (
+          <div style={{ background: "linear-gradient(135deg,rgba(6,182,212,0.12),rgba(124,58,237,0.08))", border: "1px solid rgba(6,182,212,0.35)", borderRadius: 20, padding: "18px 16px", marginBottom: 14 }}>
+            <p style={{ fontSize: 12, fontWeight: 900, color: "#06b6d4", margin: "0 0 6px", letterSpacing: "0.08em", textTransform: "uppercase" as const }}>🎴 오늘 강아지 운세 뽑기</p>
+            <p style={{ fontSize: 13, color: "#a5f3fc", margin: "0 0 14px", lineHeight: 1.6 }}>
+              오늘 {result.petName}에게 어떤 에너지가 필요한지 카드로 확인해보세요
+            </p>
+            {!petCardUsed ? (
               <button
-                onClick={() => { setPetCardFlipped(false); setTimeout(() => { setPetCard(null); setPetCardUsed(false); }, 300); }}
-                style={{ marginTop: 10, background: "none", border: "1px solid rgba(6,182,212,0.4)", borderRadius: 12, padding: "7px 18px", color: "#06b6d4", fontSize: 12, cursor: "pointer" }}
+                onClick={() => {
+                  const card = PET_CARDS[Math.floor(Math.random() * PET_CARDS.length)];
+                  setPetCard(card);
+                  setPetCardUsed(true);
+                  setTimeout(() => setPetCardFlipped(true), 50);
+                }}
+                style={{ width: "100%", background: "linear-gradient(135deg,#0e4e6a,#1e3a5f)", border: "2px solid rgba(6,182,212,0.5)", borderRadius: 16, padding: "20px", cursor: "pointer", color: "white" }}
               >
-                ↺ 다시 뽑기
+                <div style={{ fontSize: 36, marginBottom: 8 }}>🎴</div>
+                <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 4px" }}>오늘의 카드 뽑기</p>
+                <p style={{ fontSize: 11, color: "#a5f3fc", margin: 0 }}>탭해서 {result.petName}의 오늘 운세 확인하기</p>
               </button>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div style={{ textAlign: "center" }}>
+                <div style={{ background: "linear-gradient(135deg,#0e4e6a,#1a3a5f)", border: "2px solid #06b6d4", borderRadius: 16, padding: "22px 18px", opacity: petCardFlipped ? 1 : 0, transform: petCardFlipped ? "scale(1)" : "scale(0.92)", transition: "all 0.4s ease" }}>
+                  <div style={{ fontSize: 32, marginBottom: 10 }}>✨</div>
+                  <p style={{ fontSize: 16, fontWeight: 900, color: "#a5f3fc", margin: "0 0 10px" }}>{petCard?.name}</p>
+                  <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.7, margin: 0 }}>{petCard?.meaning}</p>
+                </div>
+                <button
+                  onClick={() => { setPetCardFlipped(false); setTimeout(() => { setPetCard(null); setPetCardUsed(false); }, 300); }}
+                  style={{ marginTop: 10, background: "none", border: "1px solid rgba(6,182,212,0.4)", borderRadius: 12, padding: "7px 18px", color: "#06b6d4", fontSize: 12, cursor: "pointer" }}
+                >
+                  ↺ 다시 뽑기
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div style={{ background: "rgba(6,182,212,0.06)", border: "1.5px dashed rgba(6,182,212,0.35)", borderRadius: 20, padding: "18px 16px", marginBottom: 14, textAlign: "center" }}>
+            <p style={{ fontSize: 24, margin: "0 0 8px" }}>🎴</p>
+            <p style={{ fontSize: 14, fontWeight: 900, color: "#06b6d4", margin: "0 0 4px" }}>오늘 {result.petName}의 운세 카드</p>
+            <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 14px" }}>잠금 해제 후 오늘의 운세 카드를 뽑을 수 있어요</p>
+            <a href={`/petun/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#0891b2,#06b6d4)", borderRadius: 14, padding: "10px 22px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900 }}>🔓 지금 열어보기 →</a>
+          </div>
+        )}
 
         {/* 오행 기질 특징 */}
         <div style={S.card}>
@@ -421,7 +450,15 @@ export default function PetunResultPage() {
         )}
 
         {/* 건강운 탭 */}
-        {activeTab === "health" && (
+        {activeTab === "health" && !isUnlocked && (
+          <div style={{ background: "rgba(6,182,212,0.06)", border: "1.5px dashed rgba(6,182,212,0.35)", borderRadius: 18, padding: "28px 18px", marginBottom: 14, textAlign: "center" }}>
+            <p style={{ fontSize: 28, margin: "0 0 10px" }}>🏥</p>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#06b6d4", margin: "0 0 6px" }}>건강운 심층 분석</p>
+            <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>오래 사는 법 · 절대 금지 행동 · 건강 주의사항<br/>오행별 추천 음식 — 잠금 해제 후 확인하세요</p>
+            <a href={`/petun/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#0891b2,#06b6d4)", borderRadius: 14, padding: "10px 22px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900 }}>🔓 지금 열어보기 →</a>
+          </div>
+        )}
+        {activeTab === "health" && isUnlocked && (
           <>
             <div style={S.card}>
               <p style={S.secTitle}>✅ 오래 사는 법</p>
@@ -566,26 +603,40 @@ export default function PetunResultPage() {
         )}
 
         {/* 보호자-강아지 궁합 */}
-        {result.compatScore && result.compatDesc && (
-          <div style={{ background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 18, padding: "18px 16px", marginBottom: 14 }}>
-            <p style={{ ...S.secTitle, color: "#a78bfa" }}>💜 보호자-반려동물 궁합</p>
-            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
-              <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 2px" }}>{result.ownerName}</p>
-                <p style={{ fontSize: 12, color: "#a78bfa", margin: 0 }}>{result.ownerOh}오행</p>
+        {isUnlocked ? (
+          result.compatScore && result.compatDesc ? (
+            <div style={{ background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 18, padding: "18px 16px", marginBottom: 14 }}>
+              {unlockRemain && (
+                <div style={{ display: "inline-block", background: "rgba(74,222,128,0.15)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 99, padding: "4px 12px", fontSize: 11, color: "#4ade80", fontWeight: 700, marginBottom: 10 }}>
+                  ✅ 잠금해제 · {unlockRemain}
+                </div>
+              )}
+              <p style={{ ...S.secTitle, color: "#a78bfa" }}>💜 보호자-반려동물 궁합</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 2px" }}>{result.ownerName}</p>
+                  <p style={{ fontSize: 12, color: "#a78bfa", margin: 0 }}>{result.ownerOh}오행</p>
+                </div>
+                <div style={{ flex: 1, textAlign: "center" }}>
+                  <p style={{ fontSize: 40, fontWeight: 900, color: "#a78bfa", margin: 0 }}>{result.compatScore}</p>
+                  <p style={{ fontSize: 12, color: "#c4b5fd", margin: "2px 0 0" }}>점</p>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 2px" }}>{result.petName}</p>
+                  <p style={{ fontSize: 12, color: ohColor, margin: 0 }}>{result.petOh}오행</p>
+                </div>
               </div>
-              <div style={{ flex: 1, textAlign: "center" }}>
-                <p style={{ fontSize: 40, fontWeight: 900, color: "#a78bfa", margin: 0 }}>{result.compatScore}</p>
-                <p style={{ fontSize: 12, color: "#c4b5fd", margin: "2px 0 0" }}>점</p>
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 2px" }}>{result.petName}</p>
-                <p style={{ fontSize: 12, color: ohColor, margin: 0 }}>{result.petOh}오행</p>
-              </div>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#c4b5fd", margin: "0 0 6px" }}>{result.compatDesc.grade}</p>
+              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px" }}>{result.compatDesc.summary}</p>
+              <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.7, margin: 0 }}>{result.compatDesc.detail}</p>
             </div>
-            <p style={{ fontSize: 13, fontWeight: 700, color: "#c4b5fd", margin: "0 0 6px" }}>{result.compatDesc.grade}</p>
-            <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px" }}>{result.compatDesc.summary}</p>
-            <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.7, margin: 0 }}>{result.compatDesc.detail}</p>
+          ) : null
+        ) : (
+          <div style={{ background: "rgba(124,58,237,0.08)", border: "1.5px dashed rgba(124,58,237,0.4)", borderRadius: 18, padding: "24px 18px", marginBottom: 14, textAlign: "center" }}>
+            <p style={{ fontSize: 26, margin: "0 0 8px" }}>💜</p>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#a78bfa", margin: "0 0 6px" }}>보호자-{result.petName} 궁합</p>
+            <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 14px", lineHeight: 1.6 }}>두 사람의 오행 궁합 점수와 케어 조언<br/>잠금 해제 후 바로 확인할 수 있어요</p>
+            <a href={`/petun/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#a78bfa)", borderRadius: 14, padding: "10px 22px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900 }}>🔓 지금 열어보기 →</a>
           </div>
         )}
 
