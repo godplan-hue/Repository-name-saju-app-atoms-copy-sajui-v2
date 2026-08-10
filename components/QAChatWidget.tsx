@@ -292,7 +292,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
 
         {/* 입력창 */}
         <div style={{ background: "white", padding: "4px 14px 0", textAlign: "center" }}>
-          <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>💳 결제 시 하루 동안 무제한 이용 가능</span>
+          <span style={{ fontSize: 10, color: "#a78bfa", fontWeight: 700 }}>💳 결제 시 3종 24시간 무료 이용 가능</span>
         </div>
         <div style={{ background: "white", padding: "6px 10px 8px", display: "flex", gap: 6 }}>
           <input
@@ -358,7 +358,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
           <div ref={buyModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", maxHeight: "88vh", overflowY: "auto", overscrollBehavior: "contain", padding: "12px 14px 20px", zIndex: 301, willChange: "transform", transform: "translateZ(0)" }}>
             <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 12px" }} />
             <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 2px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
-            <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 14px", textAlign: "center" }}>결제하면 복냥이 무제한 + Q&amp;A 전체 열람 하루 동안 가능!</p>
+            <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 14px", textAlign: "center" }}>결제하면 꿈해몽+복냥이+Q&amp;A 3종 24시간 무료!</p>
 
             {/* 신규 990원 — 신년+월별 12달(4900) 포함 6개, 빨간 카드 */}
             <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>⚡ 신규 990원</p>
