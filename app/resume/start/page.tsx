@@ -70,65 +70,65 @@ export default function ResumeStartPage() {
           <p className="text-xs mt-2" style={{color:"#a78bfa"}}>점수 무료 · 전략·키워드·면접질문은 결제 후 공개</p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* 이름 */}
           <div>
-            <label className="text-xs text-purple-400 font-bold block mb-1">이름 *</label>
-            <input value={form.name} onChange={e => set("name", e.target.value)} placeholder="홍길동" className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
+            <label className="text-sm text-purple-400 font-bold block mb-2">이름 *</label>
+            <input value={form.name} onChange={e => set("name", e.target.value)} placeholder="홍길동" className="w-full bg-white/8 border border-white/15 rounded-xl px-5 py-4 text-white text-base placeholder-gray-500 outline-none focus:border-purple-400" />
           </div>
 
           {/* 생년월일 */}
           <div>
-            <label className="text-xs text-purple-400 font-bold block mb-1">생년월일 *</label>
+            <label className="text-sm text-purple-400 font-bold block mb-2">생년월일 *</label>
             <div className="grid grid-cols-3 gap-2">
-              <input value={form.birthYear} onChange={e => set("birthYear", e.target.value)} placeholder="출생년도" maxLength={4} className="bg-white/8 border border-white/15 rounded-xl px-3 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
-              <input value={form.birthMonth} onChange={e => set("birthMonth", e.target.value)} placeholder="월" maxLength={2} className="bg-white/8 border border-white/15 rounded-xl px-3 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
-              <input value={form.birthDay} onChange={e => set("birthDay", e.target.value)} placeholder="일" maxLength={2} className="bg-white/8 border border-white/15 rounded-xl px-3 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
+              <input value={form.birthYear} onChange={e => set("birthYear", e.target.value)} placeholder="출생년도" maxLength={4} className="bg-white/8 border border-white/15 rounded-xl px-3 py-4 text-white text-base placeholder-gray-500 outline-none focus:border-purple-400" />
+              <input value={form.birthMonth} onChange={e => set("birthMonth", e.target.value)} placeholder="월" maxLength={2} className="bg-white/8 border border-white/15 rounded-xl px-3 py-4 text-white text-base placeholder-gray-500 outline-none focus:border-purple-400" />
+              <input value={form.birthDay} onChange={e => set("birthDay", e.target.value)} placeholder="일" maxLength={2} className="bg-white/8 border border-white/15 rounded-xl px-3 py-4 text-white text-base placeholder-gray-500 outline-none focus:border-purple-400" />
             </div>
           </div>
 
           {/* 지원 직무 */}
           <div>
-            <label className="text-xs text-purple-400 font-bold block mb-1">지원 직무 *</label>
+            <label className="text-sm text-purple-400 font-bold block mb-2">지원 직무 *</label>
             <div className="flex flex-wrap gap-2">
               {FIELDS.map(f => (
-                <button key={f} onClick={() => set("field", f)} className={`px-4 py-2 rounded-full text-sm font-bold border transition-all ${form.field === f ? "bg-purple-600 border-purple-400 text-white" : "bg-white/8 border-white/15 text-gray-300"}`}>{f}</button>
+                <button key={f} onClick={() => set("field", f)} className={`px-5 py-2.5 rounded-full text-base font-bold border transition-all ${form.field === f ? "bg-purple-600 border-purple-400 text-white" : "bg-white/8 border-white/15 text-gray-300"}`}>{f}</button>
               ))}
             </div>
           </div>
 
           {/* 기업 규모 */}
           <div>
-            <label className="text-xs text-purple-400 font-bold block mb-1">기업 규모 *</label>
+            <label className="text-sm text-purple-400 font-bold block mb-2">기업 규모 *</label>
             <div className="flex flex-wrap gap-2">
               {SIZES.map(s => (
-                <button key={s} onClick={() => set("companySize", s)} className={`px-4 py-2 rounded-full text-sm font-bold border transition-all ${form.companySize === s ? "bg-pink-600 border-pink-400 text-white" : "bg-white/8 border-white/15 text-gray-300"}`}>{s}</button>
+                <button key={s} onClick={() => set("companySize", s)} className={`px-5 py-2.5 rounded-full text-base font-bold border transition-all ${form.companySize === s ? "bg-pink-600 border-pink-400 text-white" : "bg-white/8 border-white/15 text-gray-300"}`}>{s}</button>
               ))}
             </div>
           </div>
 
           {/* 지원 회사명 (선택) */}
           <div>
-            <label className="text-xs text-gray-400 font-bold block mb-1">지원 회사명 (선택)</label>
-            <input value={form.company} onChange={e => set("company", e.target.value)} placeholder="예: 삼성전자, 카카오" className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
+            <label className="text-sm text-gray-400 font-bold block mb-2">지원 회사명 (선택)</label>
+            <input value={form.company} onChange={e => set("company", e.target.value)} placeholder="예: 삼성전자, 카카오" className="w-full bg-white/8 border border-white/15 rounded-xl px-5 py-4 text-white text-base placeholder-gray-500 outline-none focus:border-purple-400" />
           </div>
 
           {/* 나의 강점 키워드 (선택) */}
           <div>
-            <label className="text-xs text-gray-400 font-bold block mb-1">나의 강점 키워드 (선택)</label>
-            <input value={form.keywords} onChange={e => set("keywords", e.target.value)} placeholder="예: 데이터 분석, 팀 리더십, 코딩" className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
+            <label className="text-sm text-gray-400 font-bold block mb-2">나의 강점 키워드 (선택)</label>
+            <input value={form.keywords} onChange={e => set("keywords", e.target.value)} placeholder="예: 데이터 분석, 팀 리더십, 코딩" className="w-full bg-white/8 border border-white/15 rounded-xl px-5 py-4 text-white text-base placeholder-gray-500 outline-none focus:border-purple-400" />
           </div>
 
-          {/* 연락처 (선택, 나중에 재열람 위해) */}
+          {/* 연락처 */}
           <div>
-            <label className="text-xs text-purple-400 font-bold block mb-1">전화번호 <span className="text-pink-400">★ 필수사항</span></label>
-            <input value={form.phone} onChange={e => set("phone", e.target.value)} placeholder="010-0000-0000" className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
+            <label className="text-sm text-purple-400 font-bold block mb-2">전화번호 <span className="text-pink-400">★ 필수사항</span></label>
+            <input value={form.phone} onChange={e => set("phone", e.target.value)} placeholder="010-0000-0000" className="w-full bg-white/8 border border-white/15 rounded-xl px-5 py-4 text-white text-base placeholder-gray-500 outline-none focus:border-purple-400" />
           </div>
 
           {/* 이메일 (선택) */}
           <div>
-            <label className="text-xs text-gray-400 font-bold block mb-1">이메일 (선택 — 합격 전략 뉴스레터 수신)</label>
-            <input value={form.email} onChange={e => set("email", e.target.value)} placeholder="example@email.com" type="email" className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-500 outline-none focus:border-purple-400" />
+            <label className="text-sm text-gray-400 font-bold block mb-2">이메일 (선택 — 합격 전략 뉴스레터 수신)</label>
+            <input value={form.email} onChange={e => set("email", e.target.value)} placeholder="example@email.com" type="email" className="w-full bg-white/8 border border-white/15 rounded-xl px-5 py-4 text-white text-base placeholder-gray-500 outline-none focus:border-purple-400" />
           </div>
 
           {error && <p className="text-red-400 text-sm text-center">{error}</p>}
