@@ -174,8 +174,11 @@ function PayInner() {
         _faKeys.forEach(k => { try { const _p=Number(localStorage.getItem(k)||0); const _u=(_p>Date.now()?_p:Date.now())+30*24*60*60*1000; localStorage.setItem(k,String(_u)); _faUnlocks[k]=_u; } catch {} });
         try {
           const _ph = (mobile||"").replace(/\D/g,"");
-          if (_ph && Object.keys(_faUnlocks).length > 0) {
-            fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_faUnlocks})}).catch(()=>{});
+          if (_ph) {
+            if (Object.keys(_faUnlocks).length > 0) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_faUnlocks})}).catch(()=>{});
+            localStorage.setItem("haemong_unlock_phone", _ph);
+            localStorage.setItem("tarot_unlock_phone", _ph);
+            localStorage.setItem("petun_unlock_phone", _ph);
           }
         } catch {}
       }
@@ -237,7 +240,7 @@ function PayInner() {
         } catch {}
       }
       try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({...sp, phone: cleanMobile, email: email.trim()})); } catch {}
-      try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); const _existH = Number(localStorage.getItem("haemong_unlock_until")||0); localStorage.setItem("haemong_unlock_until", String(Math.max(_existH, _h))); } catch {}
+      try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); const _existH = Number(localStorage.getItem("haemong_unlock_until")||0); localStorage.setItem("haemong_unlock_until", String(Math.max(_existH, _h))); if (cleanMobile) localStorage.setItem("haemong_unlock_phone", cleanMobile); } catch {}
       if (displayAmount > 0 && name.trim()) {
         const referer = document.referrer || "";
         const sourceLabel = referer.includes("google") ? "구글"

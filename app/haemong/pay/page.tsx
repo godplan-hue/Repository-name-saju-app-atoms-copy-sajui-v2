@@ -52,6 +52,7 @@ export default function HaemongPayPage() {
           ? {haemong_unlock_until:_until24,gamjung_unlock_until:_until30,budget_unlock_until:_until30,tarot_unlock_until:_until24,petun_unlock_until:_until24,diet_unlock_until:_until30,momcare_unlock_until:_until30}
           : {haemong_unlock_until:_until24};
         Object.entries(_unlocks).forEach(([k,v])=>{try{localStorage.setItem(k,String(v));}catch{}});
+        if(_ph) try { localStorage.setItem("haemong_unlock_phone", _ph); } catch {}
         if(_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
         try { const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:_ph,email:email.trim()})); if(_ph) localStorage.setItem("v2_saved_phone",_ph); } catch {}
         fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`haemong_${Date.now()}`,phone:_ph||"",name:name.trim()||"",email:email.trim()||"",amount:0,category:"꿈해몽 쿠폰",source:"haemong"})}).catch(()=>{});
@@ -83,6 +84,7 @@ export default function HaemongPayPage() {
       if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
       const _until = Date.now()+24*60*60*1000;
       try { localStorage.setItem("haemong_unlock_until", String(_until)); } catch {}
+      if (cleanMobile) try { localStorage.setItem("haemong_unlock_phone", cleanMobile); } catch {}
       if (cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,unlocks:{haemong_unlock_until:_until}})}).catch(()=>{});
       try { const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:cleanMobile,email:email.trim()})); if(cleanMobile) localStorage.setItem("v2_saved_phone",cleanMobile); } catch {}
       fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`haemong_${Date.now()}`,phone:cleanMobile||"",name:name.trim()||"",email:email.trim()||"",amount:finalAmount,category:"꿈해몽 24시간 이용권",source:"haemong"})}).catch(()=>{});

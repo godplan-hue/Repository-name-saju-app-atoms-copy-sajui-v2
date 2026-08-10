@@ -35,7 +35,10 @@ export default function ResumeResultPage() {
     // localStorage 24시간 잠금 확인 및 카운트다운
     const checkUnlock = () => {
       const u = localStorage.getItem("resume_unlock_until");
-      if (u && Number(u) > Date.now()) { setIsUnlocked(true); } else { setIsUnlocked(false); }
+      if (u && Number(u) > Date.now()) {
+        const _up = localStorage.getItem("resume_unlock_phone")||""; const _pp=(()=>{try{return(JSON.parse(localStorage.getItem("v2_saved_profile")||"{}").phone||"").replace(/\D/g,"");}catch{return "";}})();
+        setIsUnlocked(!_up || !_pp || _up === _pp);
+      } else { setIsUnlocked(false); }
     };
     checkUnlock();
 

@@ -51,7 +51,12 @@ function PayInner() {
   const isFree = couponData && (finalAmount === 0 || couponData.fullAccess);
 
   const setUnlock = () => {
+    const ph = mobile.replace(/\D/g,"");
     localStorage.setItem("jigun_unlock_until", String(Date.now() + 24*60*60*1000));
+    if (ph) {
+      localStorage.setItem("jigun_unlock_phone", ph);
+      try { const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:ph})); } catch {}
+    }
   };
 
   const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {

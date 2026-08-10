@@ -114,7 +114,10 @@ export default function GunghapResultPage() {
   useEffect(() => {
     setTodayCount(getTodayCount(1847));
     const unlock = localStorage.getItem("gunghap_unlock_until");
-    if (unlock && Number(unlock) > Date.now()) setPaid(true);
+    if (unlock && Number(unlock) > Date.now()) {
+      const _up = localStorage.getItem("gunghap_unlock_phone")||""; const _pp=(()=>{try{return(JSON.parse(localStorage.getItem("v2_saved_profile")||"{}").phone||"").replace(/\D/g,"");}catch{return "";}})();
+      if (!_up || !_pp || _up === _pp) setPaid(true); else setPaid(false);
+    }
     if (!id) return;
     fetch(`/api/gunghap/analyze?id=${id}`)
       .then(r => r.json())

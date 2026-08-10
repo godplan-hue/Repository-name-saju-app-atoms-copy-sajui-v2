@@ -60,6 +60,10 @@ function PayInner() {
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         if (id) fetch("/api/resume/analyze",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id})}).catch(()=>{});
         localStorage.setItem("resume_unlock_until", String(Date.now() + 24*60*60*1000));
+        if (_ph) {
+          localStorage.setItem("resume_unlock_phone", _ph);
+          try { const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:_ph})); } catch {}
+        }
         window.location.href = id ? `/resume/result/${id}` : "/resume/start";
       } finally { setLoading(false); }
       return;
@@ -88,6 +92,10 @@ function PayInner() {
       if (id) {
         fetch("/api/resume/analyze",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id})}).catch(()=>{});
         localStorage.setItem("resume_unlock_until", String(Date.now() + 24*60*60*1000));
+        if (cleanMobile) {
+          localStorage.setItem("resume_unlock_phone", cleanMobile);
+          try { const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:cleanMobile})); } catch {}
+        }
         window.location.href = `/resume/result/${id}`;
       } else {
         window.location.href = "/resume/start";

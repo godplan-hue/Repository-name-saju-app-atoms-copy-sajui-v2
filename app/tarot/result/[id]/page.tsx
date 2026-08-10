@@ -337,7 +337,9 @@ export default function TarotResultPage() {
   useEffect(() => {
     const checkUnlock = () => {
       const u = localStorage.getItem("tarot_unlock_until");
-      setIsUnlocked(!!u && Number(u) > Date.now());
+      if (!u || Number(u) <= Date.now()) { setIsUnlocked(false); return; }
+      const _up = localStorage.getItem("tarot_unlock_phone")||""; const _pp=(()=>{try{return(JSON.parse(localStorage.getItem("v2_saved_profile")||"{}").phone||"").replace(/\D/g,"");}catch{return "";}})();
+      setIsUnlocked(!_up || !_pp || _up === _pp);
     };
     checkUnlock();
     let timerId: ReturnType<typeof setInterval>;

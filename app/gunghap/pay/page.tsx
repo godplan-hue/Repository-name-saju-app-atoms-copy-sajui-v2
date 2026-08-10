@@ -58,6 +58,7 @@ function PayInner() {
         const _ph = mobile.replace(/\D/g,"");
         const _until = Date.now() + 24*60*60*1000;
         try { localStorage.setItem("gunghap_unlock_until", String(_until)); } catch {}
+        if (_ph) try { localStorage.setItem("gunghap_unlock_phone", _ph); const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:_ph})); } catch {}
         if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:{gunghap_unlock_until:_until}})}).catch(()=>{});
         fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`gunghap_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"궁합 쿠폰",source:"gunghap"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
@@ -88,6 +89,7 @@ function PayInner() {
       fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`gunghap_${Date.now()}`,phone:cleanMobile||"",name:name.trim()||"",amount:finalAmount,category:"궁합 상세 분석",source:"gunghap"})}).catch(()=>{});
       const _untilG = Date.now() + 24 * 60 * 60 * 1000;
       try { localStorage.setItem("gunghap_unlock_until", String(_untilG)); } catch {}
+      if (cleanMobile) try { localStorage.setItem("gunghap_unlock_phone", cleanMobile); const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:cleanMobile})); } catch {}
       if (cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,unlocks:{gunghap_unlock_until:_untilG}})}).catch(()=>{});
       window.location.href = id ? `/gunghap/result/${id}?paid=1` : "/gunghap";
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
