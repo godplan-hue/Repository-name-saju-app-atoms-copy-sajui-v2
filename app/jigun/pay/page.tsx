@@ -170,7 +170,7 @@ function PayInner() {
         )}
 
         <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", lineHeight: 1.6 }}>
-          결제 후 해당 결과를 영구적으로 이용하실 수 있어요.
+          결제 후 24시간 동안 전체 분석을 볼 수 있어요.
         </p>
       </div>
     </div>
