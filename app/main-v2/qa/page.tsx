@@ -345,7 +345,7 @@ export default function QAPage() {
             <div ref={qaModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", height: 280, overflowY: "auto", overscrollBehavior: "contain", padding: "12px 12px 16px", zIndex: 101, willChange: "transform", transform: "translateZ(0)" }}>
               <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 14px" }} />
               <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 3px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
-              <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>결제하면 복냥이 무제한 + Q&amp;A 전체 열람 하루 동안 가능!</p>
+              <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 10px", textAlign: "center" }}>결제하면 꿈해몽 전체 + 복냥이 무제한 + Q&amp;A 전체 — 3종 하루 무료!</p>
               {/* 단품 5개 ₩990 — 3열 */}
               <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>⚡ 단품 구매 · 1개 ₩990</p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, marginBottom: 12 }}>
