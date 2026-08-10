@@ -1,9 +1,21 @@
 "use client";
-import { useState, useEffect } from "react";
 
-const AMOUNT = 990;
+import { useState, Suspense, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function TarotPayPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#0f0320" }} />}>
+      <PayInner />
+    </Suspense>
+  );
+}
+
+function PayInner() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") || "";
+  const AMOUNT = 990;
+
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +29,6 @@ export default function TarotPayPage() {
   useEffect(() => {
     try {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-      if (p.name) setName(p.name);
       if (p.phone) setMobile(p.phone.replace(/\D/g,"").slice(0,11));
     } catch {}
   }, []);
@@ -36,29 +47,26 @@ export default function TarotPayPage() {
     finally { setCouponLoading(false); }
   };
 
-  const isFree = couponData && (Math.round(AMOUNT*(1-couponData.discountPercent/100))===0 || couponData.fullAccess);
-  const finalAmount = couponData ? Math.round(AMOUNT*(1-couponData.discountPercent/100)) : AMOUNT;
+  const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
+  const isFree = couponData && (finalAmount === 0 || couponData.fullAccess);
+
+  const setUnlock = () => {
+    localStorage.setItem("tarot_unlock_until", String(Date.now() + 24*60*60*1000));
+  };
 
   const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {
-    if (!mobile.replace(/\D/g,"") || mobile.replace(/\D/g,"").length < 10) { setError("전화번호를 입력해주세요. (필수사항)"); return; }
+    if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
     if (isFree) {
       setLoading(true);
       try {
         const _ph = mobile.replace(/\D/g,"");
-        const _until24 = Date.now()+24*60*60*1000;
-        const _until30 = Date.now()+30*24*60*60*1000;
-        const _unlocks: Record<string,number> = couponData.fullAccess
-          ? {haemong_unlock_until:_until24,gamjung_unlock_until:_until30,budget_unlock_until:_until30,tarot_unlock_until:_until24,petun_unlock_until:_until24,diet_unlock_until:_until30,momcare_unlock_until:_until30}
-          : {tarot_unlock_until:_until24};
-        Object.entries(_unlocks).forEach(([k,v])=>{try{localStorage.setItem(k,String(v));}catch{}});
-        if(_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
         fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`tarot_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"타로 쿠폰",source:"tarot"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-        window.location.href = "/tarot";
+        setUnlock();
+        window.location.href = id ? `/tarot/result/${id}` : "/tarot";
       } finally { setLoading(false); }
       return;
     }
-    if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
     setLoading(true); setError("");
     try {
       const cleanMobile = mobile.replace(/\D/g,"");
@@ -70,44 +78,47 @@ export default function TarotPayPage() {
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
         paymentId: `tarot_${Date.now()}_${Math.random().toString(36).slice(2)}`,
-        orderName: "점운 타로 24시간 이용권",
+        orderName: "점운 타로 심층 분석",
         totalAmount: finalAmount,
         currency: "KRW",
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
-        customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile },
+        customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
       });
       if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); return; }
       if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-      const _until = Date.now()+24*60*60*1000;
-      try { localStorage.setItem("tarot_unlock_until", String(_until)); } catch {}
-      if (cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,unlocks:{tarot_unlock_until:_until}})}).catch(()=>{});
-      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`tarot_${Date.now()}`,phone:cleanMobile||"",name:name.trim()||"",amount:finalAmount,category:"타로 24시간 이용권",source:"tarot"})}).catch(()=>{});
-      window.location.href = "/tarot";
+      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`tarot_${Date.now()}`,phone:cleanMobile||"",name:name.trim()||"",amount:finalAmount,category:"타로 심층 분석",source:"tarot"})}).catch(()=>{});
+      setUnlock();
+      window.location.href = id ? `/tarot/result/${id}` : "/tarot";
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
     finally { setLoading(false); }
   };
 
   const S = {
-    wrap: { minHeight:"100vh", background:"#030014", color:"#F5F5F5", fontFamily:"'Apple SD Gothic Neo','Malgun Gothic',sans-serif" },
-    inner: { maxWidth:440, margin:"0 auto", padding:"32px 16px 60px" },
-    label: { fontSize:12, color:"#9ca3af", marginBottom:6, display:"block" as const },
-    input: { width:"100%", background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:12, padding:"13px 14px", color:"white", fontSize:15, outline:"none", boxSizing:"border-box" as const },
-    row: { marginBottom:16 },
+    wrap: { minHeight: "100vh", background: "#0f0320", color: "#F5F5F5", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" },
+    inner: { maxWidth: 440, margin: "0 auto", padding: "32px 16px 60px" },
+    label: { fontSize: 12, color: "#9ca3af", marginBottom: 6, display: "block" as const },
+    input: { width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", boxSizing: "border-box" as const },
+    row: { marginBottom: 16 },
   };
 
   return (
     <div style={S.wrap}>
       <div style={S.inner}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
-          <a href="/tarot" style={{ color:"#a78bfa", fontSize:13, textDecoration:"none" }}>← 돌아가기</a>
-          <span style={{ fontSize:13, color:"#6b7280" }}>타로 24시간 이용권</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+          <a href={id ? `/tarot/result/${id}` : "/tarot"} style={{ color: "#c084fc", fontSize: 13, textDecoration: "none" }}>← 돌아가기</a>
+          <span style={{ fontSize: 13, color: "#6b7280" }}>타로 심층 분석</span>
         </div>
-        <div style={{ background:"linear-gradient(135deg,#1a0a2e,#2d0a50)", border:"1px solid rgba(126,34,206,0.4)", borderRadius:18, padding:"20px 18px", marginBottom:16, textAlign:"center" }}>
-          <p style={{ fontSize:24, margin:"0 0 4px" }}>🃏</p>
-          <p style={{ fontSize:16, fontWeight:900, color:"white", margin:"0 0 6px" }}>점운 타로</p>
-          <p style={{ fontSize:13, color:"#9ca3af", margin:"0 0 14px", lineHeight:1.6 }}>AI 타로카드 · 연애·직업·재물 상담<br />24시간 동안 마음껏 이용</p>
-          <p style={{ fontSize:28, fontWeight:900, color:"white", margin:0 }}>₩{AMOUNT.toLocaleString()}</p>
+
+        <div style={{ background: "linear-gradient(135deg,#1e1b4b,#4c1d95)", border: "1px solid rgba(192,132,252,0.4)", borderRadius: 18, padding: "20px 18px", marginBottom: 24, textAlign: "center" }}>
+          <p style={{ fontSize: 20, margin: "0 0 4px" }}>🃏</p>
+          <p style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px" }}>타로 심층 분석</p>
+          <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>
+            💡 오늘의 조언 · 🎱 오늘의 행운번호<br/>
+            ✨ 오라 색깔 분석 · 🪬 전생 직업
+          </p>
+          <p style={{ fontSize: 12, color: "#c084fc", margin: "0 0 14px" }}>결제 후 24시간 열람 가능</p>
+          <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: 0 }}>₩{AMOUNT.toLocaleString()}</p>
         </div>
 
         <div style={{ marginBottom:16, background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:16, padding:"14px 16px" }}>
@@ -122,36 +133,34 @@ export default function TarotPayPage() {
           {couponData && <p style={{ fontSize:12, color:"#4ade80", marginTop:8, marginBottom:0 }}>✅ {isFree?"무료 이용권 — 카드 없이 바로 이용 가능!":`${couponData.discountPercent}% 할인 → ₩${finalAmount.toLocaleString()}`}</p>}
         </div>
 
-        <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:18, padding:"20px 18px", marginBottom:16 }}>
+        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 18, padding: "20px 18px", marginBottom: 16 }}>
           <div style={S.row}><label style={S.label}>이름 (선택)</label><input style={S.input} placeholder="홍길동" value={name} onChange={e=>setName(e.target.value)} /></div>
-          <div><label style={S.label}>휴대폰 번호 ★ 필수</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
+          <div><label style={S.label}>휴대폰 번호 (선택)</label><input style={S.input} placeholder="01012345678" value={mobile} onChange={e=>setMobile(e.target.value.replace(/\D/g,"").slice(0,11))} inputMode="numeric" /></div>
         </div>
 
-        {!isFree && (
-          <div style={{ marginBottom:12 }}>
-            <button type="button" onClick={()=>setShowRefund(v=>!v)} style={{ background:"none", border:"none", color:"#9ca3af", fontSize:12, cursor:"pointer", padding:"4px 0", display:"flex", alignItems:"center", gap:4 }}>
-              📋 결제 전 확인사항 {showRefund?"▲":"▼"}
-            </button>
-            {showRefund && (
-              <div style={{ marginTop:8, background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"12px 14px" }}>
-                <p style={{ fontSize:12, color:"#9ca3af", margin:0, lineHeight:1.6 }}>디지털 콘텐츠 특성상, 이용이 시작된 후에는 취소가 어렵습니다.</p>
-              </div>
-            )}
-            <div onClick={()=>setRefundAgreed(v=>!v)} style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", userSelect:"none" as const, marginTop:8 }}>
-              <span style={{ fontSize:18, color:refundAgreed?"#4ade80":"#9ca3af", lineHeight:1 }}>{refundAgreed?"✅":"⬜"}</span>
-              <span style={{ fontSize:12, color:refundAgreed?"#4ade80":"rgba(255,255,255,0.6)", fontWeight:refundAgreed?700:400 }}>네, 확인했어요!</span>
+        <div style={{ marginBottom:12 }}>
+          <button type="button" onClick={()=>setShowRefund(v=>!v)} style={{ background:"none", border:"none", color:"#9ca3af", fontSize:12, cursor:"pointer", padding:"4px 0", display:"flex", alignItems:"center", gap:4 }}>
+            📋 결제 전 확인사항 {showRefund?"▲":"▼"}
+          </button>
+          {showRefund && (
+            <div style={{ marginTop:8, background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"12px 14px" }}>
+              <p style={{ fontSize:12, color:"#9ca3af", margin:0, lineHeight:1.6 }}>디지털 콘텐츠 특성상, 이용이 시작된 후에는 취소가 어렵습니다.</p>
             </div>
+          )}
+          <div onClick={()=>setRefundAgreed(v=>!v)} style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", userSelect:"none" as const, marginTop:8 }}>
+            <span style={{ fontSize:18, color:refundAgreed?"#4ade80":"#9ca3af", lineHeight:1 }}>{refundAgreed?"✅":"⬜"}</span>
+            <span style={{ fontSize:12, color:refundAgreed?"#4ade80":"rgba(255,255,255,0.6)", fontWeight:refundAgreed?700:400 }}>네, 확인했어요!</span>
           </div>
-        )}
-        {error && <p style={{ color:"#f87171", fontSize:13, textAlign:"center", marginBottom:12 }}>{error}</p>}
+        </div>
+        {error && <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>}
 
         {isFree ? (
-          <button onClick={()=>pay()} disabled={loading} style={{ width:"100%", background:loading?"rgba(126,34,206,0.5)":"linear-gradient(135deg,#7e22ce,#a855f7)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:loading?"not-allowed":"pointer", marginBottom:12 }}>
+          <button onClick={()=>pay()} disabled={loading} style={{ width:"100%", background:loading?"rgba(124,58,237,0.5)":"linear-gradient(135deg,#7c3aed,#c084fc)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:loading?"not-allowed":"pointer", marginBottom:12 }}>
             {loading?"처리 중...":"🎟 무료로 이용하기"}
           </button>
         ) : (
           <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:16 }}>
-            <button onClick={()=>pay("CARD")} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"rgba(126,34,206,0.5)":"linear-gradient(135deg,#7e22ce,#a855f7)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer" }}>
+            <button onClick={()=>pay("CARD")} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"rgba(124,58,237,0.5)":"linear-gradient(135deg,#7c3aed,#c084fc)", color:"white", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer" }}>
               {loading?"결제 처리 중...":"💳 신용카드로 결제"}
             </button>
             <button onClick={()=>pay("KAKAOPAY")} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"#bba000":"#FEE500", color:(loading||!refundAgreed)?"rgba(0,0,0,0.4)":"#3C1E1E", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer" }}>
@@ -160,15 +169,9 @@ export default function TarotPayPage() {
           </div>
         )}
 
-        <div style={{ marginBottom:16, padding:"12px 14px", background:"rgba(251,191,36,0.08)", borderRadius:12, border:"1px solid rgba(251,191,36,0.3)" }}>
-          <p style={{ margin:"0 0 6px", fontSize:12, fontWeight:900, color:"#fbbf24" }}>⚠️ 꼭 확인하세요</p>
-          <p style={{ margin:0, fontSize:11, color:"rgba(255,255,255,0.7)", lineHeight:1.7 }}>
-            · 전화번호를 입력하시면 PC·모바일 어떤 기기에서도 이용 가능해요.<br />
-            (앱 목록 /apps → 이용권 불러오기)<br />
-            · 디지털 콘텐츠 특성상 환불이 불가합니다.
-          </p>
-        </div>
-        <p style={{ fontSize:11, color:"#6b7280", textAlign:"center", lineHeight:1.6 }}>결제 후 타로 24시간 이용권이 즉시 적용돼요.</p>
+        <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", lineHeight: 1.6 }}>
+          결제 후 24시간 동안 전체 분석을 볼 수 있어요.
+        </p>
       </div>
     </div>
   );

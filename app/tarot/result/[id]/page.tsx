@@ -30,6 +30,65 @@ const OH_DESC: Record<string, string> = {
   수: "수오행 수호카드는 여사제예요. 깊은 직관과 지혜의 에너지예요.",
 };
 
+// ─── Lucky numbers ───────────────────────────────────────────────────────────
+function getLuckyNumbers(y: number, m: number, d: number): number[] {
+  let s = y * 10000 + m * 100 + d;
+  const nums = new Set<number>();
+  while (nums.size < 6) {
+    s = (s * 1664525 + 1013904223) & 0x7fffffff;
+    nums.add((Math.abs(s) % 45) + 1);
+  }
+  return Array.from(nums).sort((a, b) => a - b);
+}
+
+// ─── Aura colors ─────────────────────────────────────────────────────────────
+const AURA: Record<string, { color: string; name: string; desc: string }> = {
+  목: { color: "#22c55e", name: "초록 오라", desc: "성장과 생명력의 에너지. 치유력이 강하고 주변에 안정감을 줍니다." },
+  화: { color: "#ef4444", name: "빨강 오라", desc: "열정과 생동감의 에너지. 강한 리더십과 추진력을 상징합니다." },
+  토: { color: "#f59e0b", name: "황금 오라", desc: "안정과 신뢰의 에너지. 대지처럼 든든하고 신뢰받는 존재입니다." },
+  금: { color: "#94a3b8", name: "은빛 오라", desc: "명확함과 정밀함의 에너지. 논리적이고 탁월한 분석력을 가집니다." },
+  수: { color: "#3b82f6", name: "파랑 오라", desc: "직감과 지혜의 에너지. 깊은 통찰력으로 숨겨진 진실을 봅니다." },
+};
+
+// ─── Past life (오행×띠 60조합) ───────────────────────────────────────────────
+function getPastLife(oh: string, birthYear: number): { job: string; era: string; story: string } {
+  const zodiac = ["원숭이","닭","개","돼지","쥐","소","호랑이","토끼","용","뱀","말","양"][(birthYear - 4) % 12];
+  const data: Record<string, Record<string, { job: string; era: string; story: string }>> = {
+    목: { 쥐:{job:"점술가",era:"고려시대",story:"별의 움직임으로 나라의 운명을 예언했던 국사였습니다."}, 소:{job:"농업 개혁가",era:"조선시대",story:"새로운 농법을 개발해 수많은 백성을 기아에서 구했습니다."}, 호랑이:{job:"선발대 장수",era:"삼국시대",story:"군대의 선봉에 서서 두려움 없이 전진했던 용맹한 장군이었습니다."}, 토끼:{job:"서예가",era:"신라시대",story:"아름다운 붓글씨로 왕실의 문서를 기록했습니다."}, 용:{job:"탐험가",era:"조선시대",story:"미지의 땅을 개척하고 새로운 교역로를 발견했습니다."}, 뱀:{job:"의학자",era:"고려시대",story:"약초를 연구하여 당시 불치병이던 질환의 치료법을 발견했습니다."}, 말:{job:"전령사",era:"삼국시대",story:"말을 타고 전국을 누비며 중요한 왕명을 전달했습니다."}, 양:{job:"목동 시인",era:"고구려",story:"양떼를 키우며 별을 바라보고 아름다운 시를 썼습니다."}, 원숭이:{job:"외교관",era:"조선시대",story:"외국 사신들을 맞이하고 평화로운 외교를 이끌었습니다."}, 닭:{job:"새벽 알리미",era:"신라시대",story:"새벽마다 마을을 깨워 하루를 시작하게 해주는 중요한 역할을 했습니다."}, 개:{job:"충직한 경호원",era:"고려시대",story:"왕을 평생 지킨 충신으로 역사에 기록되었습니다."}, 돼지:{job:"부유한 상인",era:"조선시대",story:"정직한 거래로 전국에 이름을 날린 대상인이었습니다."} },
+    화: { 쥐:{job:"궁중 음악가",era:"조선시대",story:"왕 앞에서 연주하며 나라의 경사를 음악으로 기록했습니다."}, 소:{job:"대장장이",era:"삼국시대",story:"불을 다루며 나라 최고의 무기를 만들었던 장인이었습니다."}, 호랑이:{job:"혁명가",era:"근대",story:"새로운 세상을 꿈꾸며 시대의 변화를 이끌었습니다."}, 토끼:{job:"궁녀",era:"조선시대",story:"왕실의 비밀을 가슴에 품고 조용히 역사의 뒤편에서 살았습니다."}, 용:{job:"화가",era:"고려시대",story:"당대 최고의 그림을 그려 왕실에 헌납했습니다."}, 뱀:{job:"무당",era:"신라시대",story:"신과 인간을 연결하는 영적 중재자였습니다."}, 말:{job:"가수",era:"조선시대",story:"아름다운 목소리로 전국을 유랑하며 백성들의 마음을 달랬습니다."}, 양:{job:"난중일기 작가",era:"조선시대",story:"전쟁 속에서도 꾸준히 일기를 써 역사를 기록했습니다."}, 원숭이:{job:"광대",era:"고려시대",story:"왕 앞에서 재주를 부리며 웃음을 선사했던 예능인이었습니다."}, 닭:{job:"봉황 사육사",era:"신화시대",story:"신성한 새를 돌보며 왕실의 복을 기원했습니다."}, 개:{job:"의협인",era:"조선시대",story:"약자를 위해 싸운 의로운 협객으로 많은 이의 존경을 받았습니다."}, 돼지:{job:"연회 준비자",era:"고구려",story:"왕실 잔치를 기획하고 준비했던 행사 전문가였습니다."} },
+    토: { 쥐:{job:"창고지기",era:"조선시대",story:"나라의 곡식을 관리하며 기근을 막는 중요한 역할을 했습니다."}, 소:{job:"촌장",era:"삼국시대",story:"마을 주민들을 이끌고 분쟁을 조정했던 신망받는 리더였습니다."}, 호랑이:{job:"무인",era:"고려시대",story:"강직하고 용맹한 무사로 나라의 기둥이 되었습니다."}, 토끼:{job:"산파",era:"조선시대",story:"수많은 아이의 탄생을 도운 따뜻한 조력자였습니다."}, 용:{job:"건축가",era:"신라시대",story:"불국사와 같은 웅장한 건물을 설계했습니다."}, 뱀:{job:"약재상",era:"고려시대",story:"전국의 약재를 수집하고 판매하며 의료에 기여했습니다."}, 말:{job:"역참 관리자",era:"조선시대",story:"전국의 역참을 관리하며 원활한 물류를 책임졌습니다."}, 양:{job:"목동",era:"신화시대",story:"드넓은 초원에서 양떼를 키우며 평화롭게 살았습니다."}, 원숭이:{job:"중개상인",era:"조선시대",story:"생산자와 소비자를 연결하며 경제 흐름을 만들었습니다."}, 닭:{job:"새벽 기도사",era:"고려시대",story:"매일 새벽 신에게 마을의 평안을 빌었던 경건한 분이었습니다."}, 개:{job:"경비대장",era:"삼국시대",story:"성문을 지키며 침략자로부터 백성을 보호했습니다."}, 돼지:{job:"재산관리인",era:"조선시대",story:"귀족의 재산을 믿음직스럽게 관리했던 충신이었습니다."} },
+    금: { 쥐:{job:"야간 탐정",era:"근대",story:"밤을 누비며 범죄를 해결했던 날카로운 수사관이었습니다."}, 소:{job:"판관",era:"조선시대",story:"공정하고 엄격한 심판으로 억울한 백성의 원통함을 풀었습니다."}, 호랑이:{job:"전략가",era:"삼국시대",story:"뛰어난 전술로 적군을 물리쳤던 전략의 귀재였습니다."}, 토끼:{job:"수학자",era:"조선시대",story:"복잡한 계산으로 천문과 지리를 연구했습니다."}, 용:{job:"갑옷 제작자",era:"고려시대",story:"가장 단단하고 아름다운 갑옷을 만들었던 장인이었습니다."}, 뱀:{job:"암행어사",era:"조선시대",story:"비밀리에 전국을 누비며 부정부패를 척결했습니다."}, 말:{job:"검술사",era:"고려시대",story:"빠르고 정확한 검술로 이름을 떨쳤던 무사였습니다."}, 양:{job:"도자기 장인",era:"신라시대",story:"세상에서 가장 아름다운 도자기를 빚었습니다."}, 원숭이:{job:"정보 수집가",era:"조선시대",story:"민간에 숨어 중요한 정보를 수집해 왕에게 보고했습니다."}, 닭:{job:"시험관",era:"조선시대",story:"과거시험을 관리하며 인재를 선발했습니다."}, 개:{job:"법관",era:"고려시대",story:"법을 엄격히 집행하여 사회 질서를 유지했습니다."}, 돼지:{job:"금은방 주인",era:"조선시대",story:"귀금속을 다루며 부를 축적했습니다."} },
+    수: { 쥐:{job:"점술가",era:"조선시대",story:"사람의 운명을 읽고 미래를 예언했던 신비로운 현인이었습니다."}, 소:{job:"서당 훈장",era:"조선시대",story:"아이들에게 지식을 전달하며 다음 세대를 키웠습니다."}, 호랑이:{job:"해적",era:"고려시대",story:"바다를 누비며 자유롭게 살았던 모험가였습니다."}, 토끼:{job:"시인",era:"신라시대",story:"달을 바라보며 아름다운 시를 써 많은 이의 마음을 울렸습니다."}, 용:{job:"철학자",era:"삼국시대",story:"삶과 죽음, 우주의 이치를 탐구했던 심오한 사상가였습니다."}, 뱀:{job:"독약 전문가",era:"고려시대",story:"독과 해독제를 연구하여 의학 발전에 기여했습니다."}, 말:{job:"뱃사공",era:"조선시대",story:"강과 바다를 오가며 사람과 물자를 실어 날랐습니다."}, 양:{job:"몽상가",era:"신화시대",story:"꿈속에서 신의 계시를 받아 예언을 전했습니다."}, 원숭이:{job:"첩자",era:"삼국시대",story:"적진에 숨어들어 중요한 비밀을 알아냈습니다."}, 닭:{job:"새벽 예언자",era:"고구려",story:"새벽닭의 소리를 듣고 그날의 운세를 예언했습니다."}, 개:{job:"탐정",era:"조선시대",story:"숨겨진 진실을 파헤치는 능력으로 수많은 사건을 해결했습니다."}, 돼지:{job:"해몽가",era:"고려시대",story:"꿈의 의미를 해석하여 왕실에 조언했던 신비로운 현자였습니다."} },
+  };
+  return data[oh]?.[zodiac] || { job:"신비로운 현자", era:"고대", story:"역사의 기록에는 없지만 많은 이의 마음속에 남아있는 전설적인 존재였습니다." };
+}
+
+// ─── Card advice ──────────────────────────────────────────────────────────────
+const CARD_ADVICE: Record<number, string> = {
+  0:"직감을 믿고 행동하세요. 완벽한 때를 기다리면 아무것도 시작할 수 없어요.",
+  1:"가진 자원을 최대한 활용하세요. 당신에게 필요한 모든 것은 이미 손 안에 있습니다.",
+  2:"서두르지 마세요. 모든 정보가 드러날 때까지 기다리는 것이 현명합니다.",
+  3:"자연과 함께하고 몸의 감각을 살리세요. 풍요는 이미 당신 곁에 와 있습니다.",
+  4:"구조와 계획을 중시하세요. 체계적인 접근이 목표를 이루는 최단 경로입니다.",
+  5:"경험이 많은 분의 조언을 구해보세요. 전통적인 방법 안에 지혜가 담겨 있습니다.",
+  6:"이분법적 사고를 버리세요. 진정한 사랑은 선택과 함께 책임도 요구합니다.",
+  7:"집중력을 유지하고 목표에서 눈을 떼지 마세요. 승리는 당신의 것입니다.",
+  8:"부드러운 힘이 강한 힘보다 오래갑니다. 인내심을 가지고 밀어붙이세요.",
+  9:"내면의 빛을 따라가세요. 고독 속에서 진정한 지혜를 찾을 수 있습니다.",
+  10:"흐름에 몸을 맡기세요. 당신이 통제할 수 없는 것들을 받아들이는 지혜가 필요합니다.",
+  11:"솔직함과 공정함을 유지하세요. 지금 내린 결정이 오랜 영향을 미칩니다.",
+  12:"희생이 결국 더 큰 것을 가져다줍니다. 지금의 기다림은 의미가 있습니다.",
+  13:"과거를 놓아주어야 새것이 들어옵니다. 지금이 바로 그 전환점입니다.",
+  14:"인내심을 가지세요. 서로 다른 요소들이 조화를 이룰 때 최고의 결과가 나옵니다.",
+  15:"당신을 제한하는 것들을 직시하세요. 속박은 생각보다 훨씬 쉽게 벗어날 수 있습니다.",
+  16:"무너지는 것들이 있다면 그것은 무너져야 할 것들입니다. 더 강한 것을 세울 기회입니다.",
+  17:"꿈을 크게 품으세요. 우주는 당신의 소망에 귀 기울이고 있습니다.",
+  18:"두려움과 불안을 정면으로 바라보세요. 알 수 없는 것들에 대한 공포가 가장 큰 걸림돌입니다.",
+  19:"오늘 하루를 기쁨으로 채우세요. 당신의 빛이 주변 사람들도 밝혀줍니다.",
+  20:"과거의 잘못을 용서하고 새롭게 시작할 준비가 되어 있나요? 지금이 그 순간입니다.",
+  21:"성취를 충분히 즐기세요. 그리고 다음 여정을 위한 준비를 시작하세요.",
+};
+
 const TOPIC_LABEL: Record<string, string> = {
   today: "🌅 오늘 운세",
   love: "💞 연애·인연",
@@ -272,6 +331,30 @@ export default function TarotResultPage() {
   const [flipped, setFlipped] = useState(false);
   const [soulFlipped, setSoulFlipped] = useState(false);
   const [sharing, setSharing] = useState(false);
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [unlockRemain, setUnlockRemain] = useState("");
+
+  useEffect(() => {
+    const checkUnlock = () => {
+      const u = localStorage.getItem("tarot_unlock_until");
+      setIsUnlocked(!!u && Number(u) > Date.now());
+    };
+    checkUnlock();
+    let timerId: ReturnType<typeof setInterval>;
+    const updateCountdown = () => {
+      const u = localStorage.getItem("tarot_unlock_until");
+      if (!u) { setIsUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return; }
+      const ms = Number(u) - Date.now();
+      if (ms <= 0) { localStorage.removeItem("tarot_unlock_until"); setIsUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return; }
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      setUnlockRemain(h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 ${s}초 남음`);
+    };
+    timerId = setInterval(updateCountdown, 1000);
+    updateCountdown();
+    return () => clearInterval(timerId);
+  }, []);
 
   useEffect(() => {
     fetch(`/api/tarot/analyze?id=${id}`)
@@ -459,9 +542,94 @@ export default function TarotResultPage() {
         </div>
 
         {/* 나도 해보기 */}
-        <Link href="/tarot" style={{ display: "block", textAlign: "center" as const, background: "rgba(192,132,252,0.08)", border: "1.5px solid rgba(192,132,252,0.35)", borderRadius: 16, padding: "14px", color: "#c084fc", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
+        <Link href="/tarot" style={{ display: "block", textAlign: "center" as const, background: "rgba(192,132,252,0.08)", border: "1.5px solid rgba(192,132,252,0.35)", borderRadius: 16, padding: "14px", color: "#c084fc", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>
           나도 타로 뽑기 (무료) →
         </Link>
+
+        {/* 유료 잠금 or 심층 분석 */}
+        {!isUnlocked ? (
+          <div style={{ background:"linear-gradient(135deg,#1e1b4b,#0f0320)", border:"2px solid rgba(192,132,252,0.5)", borderRadius:20, padding:"24px 20px", marginBottom:16, textAlign:"center" }}>
+            <div style={{ fontSize:36, marginBottom:10 }}>🔒</div>
+            <p style={{ fontSize:16, fontWeight:900, color:"white", margin:"0 0 8px" }}>심층 타로 분석</p>
+            <p style={{ fontSize:13, color:"rgba(255,255,255,0.65)", lineHeight:1.75, margin:"0 0 6px" }}>
+              💡 오늘의 조언 · 🎱 오늘의 행운번호<br/>
+              ✨ 오라 색깔 분석 · 🪬 전생 직업
+            </p>
+            <p style={{ fontSize:12, color:"#c084fc", margin:"0 0 18px" }}>결제 후 24시간 열람 가능합니다</p>
+            <Link href={`/tarot/pay?id=${id}`} style={{ display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#c084fc)", color:"white", borderRadius:22, padding:"13px 28px", fontSize:14, fontWeight:900, textDecoration:"none" }}>
+              ₩990으로 전체 분석 보기 →
+            </Link>
+          </div>
+        ) : (
+          <>
+            {unlockRemain && (
+              <div style={{ background:"rgba(74,222,128,0.08)", border:"1px solid rgba(74,222,128,0.25)", borderRadius:10, padding:"8px 14px", marginBottom:14, display:"flex", alignItems:"center", gap:8 }}>
+                <span style={{ fontSize:14 }}>⏱️</span>
+                <span style={{ fontSize:12, color:"#4ade80" }}>이용 가능: <b>{unlockRemain}</b></span>
+              </div>
+            )}
+
+            {/* 오늘의 조언 */}
+            <div style={{ background:"rgba(124,58,237,0.1)", border:"1px solid rgba(124,58,237,0.3)", borderRadius:16, padding:"20px 18px", marginBottom:14 }}>
+              <p style={{ fontSize:13, fontWeight:900, color:"#c084fc", margin:"0 0 10px" }}>💡 오늘의 조언</p>
+              <p style={{ fontSize:15, color:"#e9d5ff", lineHeight:1.8, margin:0 }}>
+                {CARD_ADVICE[drawnCard.idx] || "오늘 하루도 자신을 믿고 나아가세요."}
+              </p>
+            </div>
+
+            {/* 행운번호 */}
+            {(() => {
+              const today = new Date();
+              const nums = getLuckyNumbers(result.birthYear || 1990, today.getMonth()+1, today.getDate());
+              const numColors = ["#fbbf24","#60a5fa","#f97316","#9ca3af","#4ade80"];
+              return (
+                <div style={{ background:"rgba(99,102,241,0.1)", border:"1px solid rgba(99,102,241,0.3)", borderRadius:16, padding:"20px 18px", marginBottom:14 }}>
+                  <p style={{ fontSize:13, fontWeight:900, color:"#a5b4fc", margin:"0 0 14px" }}>🎱 오늘의 행운번호</p>
+                  <div style={{ display:"flex", gap:10, flexWrap:"wrap" as const, justifyContent:"center" }}>
+                    {nums.map((n, i) => (
+                      <div key={i} style={{ width:46, height:46, borderRadius:"50%", background:numColors[Math.floor(n/9)%numColors.length], display:"flex", alignItems:"center", justifyContent:"center", fontWeight:900, fontSize:16, color:"white", boxShadow:"0 2px 8px rgba(0,0,0,0.4)" }}>
+                        {n}
+                      </div>
+                    ))}
+                  </div>
+                  <p style={{ fontSize:11, color:"#6b7280", textAlign:"center" as const, marginTop:10, marginBottom:0 }}>오행 에너지로 계산된 오늘의 숫자</p>
+                </div>
+              );
+            })()}
+
+            {/* 오라 색깔 */}
+            {(() => {
+              const aura = AURA[result.oh];
+              if (!aura) return null;
+              return (
+                <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:16, padding:"20px 18px", marginBottom:14 }}>
+                  <p style={{ fontSize:13, fontWeight:900, color:aura.color, margin:"0 0 14px" }}>✨ {displayName}의 오라</p>
+                  <div style={{ display:"flex", alignItems:"center", gap:16, marginBottom:12 }}>
+                    <div style={{ width:56, height:56, borderRadius:"50%", background:aura.color, boxShadow:`0 0 24px ${aura.color}88`, flexShrink:0 }} />
+                    <div>
+                      <p style={{ fontSize:18, fontWeight:900, color:aura.color, margin:"0 0 2px" }}>{aura.name}</p>
+                      <p style={{ fontSize:12, color:"#9ca3af", margin:0 }}>{result.oh}오행 에너지</p>
+                    </div>
+                  </div>
+                  <p style={{ fontSize:14, color:"#d1d5db", lineHeight:1.8, margin:0 }}>{aura.desc}</p>
+                </div>
+              );
+            })()}
+
+            {/* 전생 직업 */}
+            {(() => {
+              const past = getPastLife(result.oh, result.birthYear || 1990);
+              return (
+                <div style={{ background:"linear-gradient(135deg,rgba(124,58,237,0.12),rgba(192,132,252,0.06))", border:"1px solid rgba(192,132,252,0.25)", borderRadius:16, padding:"20px 18px", marginBottom:16 }}>
+                  <p style={{ fontSize:13, fontWeight:900, color:"#c084fc", margin:"0 0 12px" }}>🪬 전생 직업</p>
+                  <p style={{ fontSize:20, fontWeight:900, color:"white", margin:"0 0 4px" }}>{past.job}</p>
+                  <p style={{ fontSize:12, color:"#9ca3af", margin:"0 0 10px" }}>{past.era}</p>
+                  <p style={{ fontSize:14, color:"#d1d5db", lineHeight:1.8, margin:0 }}>{past.story}</p>
+                </div>
+              );
+            })()}
+          </>
+        )}
 
         {/* 사주 연결 CTA */}
         <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.18),rgba(192,132,252,0.1))", border: "1px solid rgba(192,132,252,0.35)", borderRadius: 20, padding: "22px 18px" }}>
