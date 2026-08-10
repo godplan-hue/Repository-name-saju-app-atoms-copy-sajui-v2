@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "사주 풀이를 쉽게 받아보세요. 어려운 한자 용어 없이 AI가 내 사주를 쉽고 정확하게 풀어드려요. 990원부터.",
   keywords: ["사주 풀이", "사주 해석", "사주 보기", "내 사주", "사주 분석", "사주 설명"],
   openGraph: { title: "사주 풀이 — 점운", description: "어렵지 않게, AI가 내 사주를 쉽게 풀어드려요. 990원부터.", url: "https://jeomun.com/saju-guide" },
+  alternates: { canonical: "https://jeomun.com/saju-guide" },
 };
 
 const faqs = [

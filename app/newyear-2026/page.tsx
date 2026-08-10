@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "2026년 신년운세를 AI 사주로 확인해보세요. 올해 재물·연애·건강·직업 흐름을 월별로 상세히 분석해드려요.",
   keywords: ["신년운세 2026", "2026 운세", "2026 사주", "올해의 운세", "병오년 운세", "2026 신년운세"],
   openGraph: { title: "신년운세 2026 — 점운", description: "2026년 한 해 운세를 AI가 월별로 분석. 990원부터.", url: "https://jeomun.com/newyear-2026" },
+  alternates: { canonical: "https://jeomun.com/newyear-2026" },
 };
 
 const faqs = [

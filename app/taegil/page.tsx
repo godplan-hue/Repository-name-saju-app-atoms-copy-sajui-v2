@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "택일(擇日)로 중요한 날을 골라보세요. 결혼·이사·개업·수술 등 중요한 일을 하기 좋은 날을 AI가 사주로 분석해드려요.",
   keywords: ["택일", "택일 사주", "결혼 택일", "이사 택일", "개업 택일", "좋은 날 고르기"],
   openGraph: { title: "택일 사주 — 점운", description: "결혼·이사·개업에 좋은 날 고르기. AI 사주 택일 분석.", url: "https://jeomun.com/taegil" },
+  alternates: { canonical: "https://jeomun.com/taegil" },
 };
 
 const faqs = [

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "별자리 궁합을 AI로 확인해보세요. 12별자리 조합으로 연애·결혼 궁합을 분석해드려요.",
   keywords: ["별자리궁합", "별자리 궁합", "12별자리 궁합", "별자리 커플", "별자리 연애궁합"],
   openGraph: { title: "별자리 궁합 — 점운", description: "별자리로 보는 커플 궁합 AI 분석.", url: "https://jeomun.com/star-couple" },
+  alternates: { canonical: "https://jeomun.com/star-couple" },
 };
 export default function StarCouplePage() {
   return (

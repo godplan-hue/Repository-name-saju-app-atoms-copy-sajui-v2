@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "아이 사주로 성격, 재능, 적성을 파악해 맞춤 육아를 해보세요. 강요 말고 타고난 기질에 맞게 키우는 사주 육아법을 AI가 알려드려요.",
   keywords: ["아이 사주", "육아 사주", "아이 성격 사주", "아이 재능", "태어난 사주", "자녀 사주", "육아법"],
   openGraph: { title: "우리 아이 사주 — 맞춤 육아의 시작", description: "사주로 보는 아이 성격·재능·기질 맞춤 육아법.", url: "https://jeomun.com/parenting-saju" },
+  alternates: { canonical: "https://jeomun.com/parenting-saju" },
 };
 
 const tips = [

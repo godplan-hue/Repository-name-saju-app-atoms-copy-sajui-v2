@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "취업운을 사주로 확인해보세요. 취업이 잘 되는 시기, 면접 운, 합격 기운을 AI가 분석해드려요.",
   keywords: ["취업운", "취업 사주", "취업운 사주", "취업 시기", "면접운", "합격운 사주"],
   openGraph: { title: "취업운 사주 — 점운", description: "취업이 잘 되는 시기 AI 사주로 확인. 990원~", url: "https://jeomun.com/job-fortune" },
+  alternates: { canonical: "https://jeomun.com/job-fortune" },
 };
 export default function JobFortunePage() {
   const faqs = [

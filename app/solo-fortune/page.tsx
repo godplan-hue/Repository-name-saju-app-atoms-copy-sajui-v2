@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "솔로 운세를 사주로 확인해보세요. 언제 연인이 생기는지, 이성 인연 시기를 AI가 분석해드려요.",
   keywords: ["솔로 운세", "솔로 탈출 사주", "이성 인연 사주", "연인 생기는 시기", "싱글 운세", "연애운"],
   openGraph: { title: "솔로 운세 — 점운", description: "싱글 탈출 기운 AI 분석. 언제 연인이 생기나?", url: "https://jeomun.com/solo-fortune" },
+  alternates: { canonical: "https://jeomun.com/solo-fortune" },
 };
 export default function SoloFortunePage() {
   return (

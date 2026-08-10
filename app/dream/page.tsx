@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "꿈해몽을 AI로 확인해보세요. 간밤에 꾼 꿈이 무슨 의미인지 AI가 쉽고 정확하게 풀어드려요.",
   keywords: ["꿈해몽", "꿈 해몽", "꿈 풀이", "AI 꿈해몽", "무료 꿈해몽", "꿈 의미"],
   openGraph: { title: "꿈해몽 — 점운", description: "AI가 풀어주는 꿈의 의미. 간밤의 꿈이 뭘 말하는지 확인.", url: "https://jeomun.com/dream" },
+  alternates: { canonical: "https://jeomun.com/dream" },
 };
 
 const faqs = [

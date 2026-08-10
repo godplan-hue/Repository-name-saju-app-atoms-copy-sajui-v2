@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "혈액형 궁합을 AI로 확인해보세요. A·B·O·AB형 조합의 연애·결혼 궁합을 분석해드려요.",
   keywords: ["혈액형궁합", "혈액형 궁합", "AB형궁합", "A형B형궁합", "혈액형 커플", "혈액형 연애"],
   openGraph: { title: "혈액형 궁합 — 점운", description: "혈액형 커플 궁합 AI 분석.", url: "https://jeomun.com/blood-couple" },
+  alternates: { canonical: "https://jeomun.com/blood-couple" },
 };
 export default function BloodCouplePage() {
   const combos = [["A♥A", "#ef4444"], ["A♥B", "#f97316"], ["A♥O", "#eab308"], ["A♥AB", "#8b5cf6"], ["B♥B", "#f97316"], ["B♥O", "#22c55e"], ["B♥AB", "#3b82f6"], ["O♥O", "#eab308"], ["O♥AB", "#ec4899"], ["AB♥AB", "#8b5cf6"]];

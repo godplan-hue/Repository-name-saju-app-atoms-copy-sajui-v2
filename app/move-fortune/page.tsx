@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "이사운을 사주로 확인해보세요. 이사하기 좋은 날, 이사 방향, 이사 후 운세 변화를 AI가 분석해드려요.",
   keywords: ["이사운", "이사 사주", "이사 날짜", "이사 방향", "이사 좋은 날", "이사 운세"],
   openGraph: { title: "이사운 사주 — 점운", description: "이사 날짜·방향 AI 분석.", url: "https://jeomun.com/move-fortune" },
+  alternates: { canonical: "https://jeomun.com/move-fortune" },
 };
 export default function MoveFortunePage() {
   return (

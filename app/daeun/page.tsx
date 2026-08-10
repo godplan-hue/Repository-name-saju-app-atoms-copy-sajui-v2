@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "대운(大運)으로 내 인생의 10년 큰 흐름을 확인해보세요. 언제 기회가 오고, 언제 조심해야 하는지 AI가 분석해드려요.",
   keywords: ["대운 사주", "대운 보기", "사주 대운", "10년 운세", "대운 분석", "인생 흐름 사주"],
   openGraph: { title: "대운 사주 — 점운", description: "10년 단위 인생 큰 흐름. AI가 대운을 분석해드려요.", url: "https://jeomun.com/daeun" },
+  alternates: { canonical: "https://jeomun.com/daeun" },
 };
 
 const faqs = [

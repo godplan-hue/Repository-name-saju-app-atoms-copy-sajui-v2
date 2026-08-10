@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "내 사주의 강점과 적성을 파악해 합격 자기소개서를 써보세요. 사주로 보는 나의 직업 적성, 강점, 면접 운까지 AI가 분석해드려요.",
   keywords: ["합격 자소서", "자기소개서 사주", "취업 사주", "면접 운", "직업 적성 사주", "취업운"],
   openGraph: { title: "합격 자소서 — 내 사주 강점으로", description: "사주로 보는 나의 강점과 적성으로 합격 자소서 써보기.", url: "https://jeomun.com/resume-saju" },
+  alternates: { canonical: "https://jeomun.com/resume-saju" },
 };
 
 const tips = [

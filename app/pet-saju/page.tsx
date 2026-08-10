@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "반려동물 궁합을 사주로 확인해보세요. 내 사주와 강아지·고양이의 띠 궁합, 애견 궁합을 AI가 분석해드려요.",
   keywords: ["반려동물 궁합", "애견 궁합", "강아지 궁합", "고양이 궁합", "동물 궁합", "펫 사주"],
   openGraph: { title: "반려동물 궁합 — 점운", description: "나와 반려동물의 사주 궁합. 강아지·고양이 띠 궁합 분석.", url: "https://jeomun.com/pet-saju" },
+  alternates: { canonical: "https://jeomun.com/pet-saju" },
 };
 
 const faqs = [

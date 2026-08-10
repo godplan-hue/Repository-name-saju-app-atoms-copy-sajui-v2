@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "올해 돈 들어오는 시기와 재물 체질을 AI 사주로. 990원.",
     url: "https://jeomun.com/wealth",
   },
+  alternates: { canonical: "https://jeomun.com/wealth" },
 };
 
 const faqs = [

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "내 사주로 행운의 번호를 확인해보세요. 재물 기운이 강한 날 행운번호를 AI가 분석해드려요.",
   keywords: ["행운의번호", "행운번호", "사주 행운번호", "로또 행운번호", "행운 숫자", "사주 번호"],
   openGraph: { title: "행운의 번호 — 점운", description: "내 사주 행운 번호 AI 분석.", url: "https://jeomun.com/lucky-number" },
+  alternates: { canonical: "https://jeomun.com/lucky-number" },
 };
 export default function LuckyNumberPage() {
   return (

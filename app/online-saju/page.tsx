@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "온라인 사주를 집에서 편하게 받아보세요. 생년월일 입력만 하면 AI가 즉시 분석해드려요. 990원부터 시작.",
   keywords: ["온라인사주", "온라인 사주", "인터넷 사주", "집에서 사주", "모바일 사주", "사주 보기"],
   openGraph: { title: "온라인 사주 — 점운", description: "집에서 보는 AI 사주 분석. 즉시 결과 확인.", url: "https://jeomun.com/online-saju" },
+  alternates: { canonical: "https://jeomun.com/online-saju" },
 };
 export default function OnlineSajuPage() {
   return (

@@ -41,9 +41,6 @@ export const metadata: Metadata = {
     description: SITE_DESC,
     images: [SITE_IMAGE],
   },
-  alternates: {
-    canonical: SITE_URL,
-  },
 };
 
 export default function RootLayout({

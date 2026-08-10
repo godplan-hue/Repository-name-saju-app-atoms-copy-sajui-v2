@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "사업운을 사주로 확인해보세요. 창업 타이밍, 사업 확장 시기, 동업 궁합을 AI가 분석해드려요.",
   keywords: ["사업운", "사업운 사주", "창업 사주", "사업 기운", "동업 사주", "자영업 운세"],
   openGraph: { title: "사업운 사주 — 점운", description: "창업·사업 기운 AI 분석. 사업하기 좋은 시기 확인.", url: "https://jeomun.com/business-fortune" },
+  alternates: { canonical: "https://jeomun.com/business-fortune" },
 };
 export default function BusinessFortunePage() {
   return (

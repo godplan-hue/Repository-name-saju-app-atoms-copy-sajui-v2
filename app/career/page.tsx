@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "이직 타이밍 · 사업 시작 · 승진운을 AI 사주로. 990원.",
     url: "https://jeomun.com/career",
   },
+  alternates: { canonical: "https://jeomun.com/career" },
 };
 
 const faqs = [

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "토정비결을 AI로 확인해보세요. 전통 토정비결의 지혜와 AI 사주 분석을 결합한 새로운 운세 서비스.",
   keywords: ["토정비결", "무료 토정비결", "2026 토정비결", "온라인 토정비결", "AI 토정비결"],
   openGraph: { title: "토정비결 — 점운", description: "AI로 보는 토정비결. 전통 운세의 지혜를 현대적으로.", url: "https://jeomun.com/tojeong" },
+  alternates: { canonical: "https://jeomun.com/tojeong" },
 };
 const faqs = [
   { q: "토정비결이 뭔가요?", a: "조선시대 토정 이지함 선생이 만든 전통 운세 체계예요. 생년월일로 한 해의 운을 12달로 풀어주는 방식이에요." },

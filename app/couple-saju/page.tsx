@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "궁합 사주를 AI로 확인해보세요. 연인·배우자 후보와의 사주 궁합, 합충(合沖) 분석까지. 990원부터 시작.",
   keywords: ["궁합 사주", "사주 궁합", "궁합 보기", "연인 궁합", "결혼 궁합", "AI 궁합"],
   openGraph: { title: "궁합 사주 — 점운", description: "AI가 분석하는 두 사람의 사주 궁합. 990원부터.", url: "https://jeomun.com/couple-saju" },
+  alternates: { canonical: "https://jeomun.com/couple-saju" },
 };
 
 const faqs = [

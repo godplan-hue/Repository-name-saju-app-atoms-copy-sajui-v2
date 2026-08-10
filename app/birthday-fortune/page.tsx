@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "생년월일로 운세를 확인해보세요. 생년월일 입력만 하면 AI가 재물·연애·건강·직업운을 분석해드려요.",
   keywords: ["생년월일운세", "생년월일 운세", "생년월일 사주", "생일 운세", "생년월일로 보는 운세"],
   openGraph: { title: "생년월일 운세 — 점운", description: "생년월일로 보는 AI 운세 분석.", url: "https://jeomun.com/birthday-fortune" },
+  alternates: { canonical: "https://jeomun.com/birthday-fortune" },
 };
 export default function BirthdayFortunePage() {
   return (

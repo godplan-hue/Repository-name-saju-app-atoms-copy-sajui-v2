@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "사주팔자를 AI로 분석해보세요. 8글자 사주팔자가 말하는 내 타고난 운명과 운세 흐름을 확인하세요.",
   keywords: ["사주팔자", "사주 팔자", "팔자 보기", "내 팔자", "사주팔자 분석", "무료 사주팔자"],
   openGraph: { title: "사주팔자 — 점운", description: "내 사주팔자 8글자 완전 분석. AI가 풀어드려요.", url: "https://jeomun.com/saju-paljja" },
+  alternates: { canonical: "https://jeomun.com/saju-paljja" },
 };
 const faqs = [
   { q: "사주팔자가 뭔가요?", a: "태어난 연·월·일·시의 네 기둥(四柱)에서 나온 여덟 글자(八字)를 사주팔자라고 해요. 이 8글자가 내 운명의 틀이에요." },

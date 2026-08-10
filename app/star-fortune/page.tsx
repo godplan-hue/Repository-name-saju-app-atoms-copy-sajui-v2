@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "별자리 운세와 AI 사주를 함께 확인해보세요. 양자리부터 물고기자리까지 2026년 별자리 운세.",
   keywords: ["별자리 운세", "별자리 사주", "12별자리 운세", "2026 별자리운세", "별자리 운세 보기"],
   openGraph: { title: "별자리 운세 — 점운", description: "별자리 운세 + AI 사주 분석. 더 정확한 개인 운세.", url: "https://jeomun.com/star-fortune" },
+  alternates: { canonical: "https://jeomun.com/star-fortune" },
 };
 export default function StarFortunePage() {
   const stars = ["♈ 양자리", "♉ 황소자리", "♊ 쌍둥이자리", "♋ 게자리", "♌ 사자자리", "♍ 처녀자리", "♎ 천칭자리", "♏ 전갈자리", "♐ 사수자리", "♑ 염소자리", "♒ 물병자리", "♓ 물고기자리"];

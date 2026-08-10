@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "띠별 운세를 확인해보세요. 쥐·소·호랑이·토끼·용·뱀·말·양·원숭이·닭·개·돼지 띠별 2026년 운세를 AI로 분석해드려요.",
   keywords: ["띠별 운세", "띠 운세", "2026 띠별운세", "띠 사주", "12띠 운세", "띠별 사주"],
   openGraph: { title: "띠별 운세 — 점운", description: "내 띠로 보는 2026년 운세. AI 사주 정밀 분석.", url: "https://jeomun.com/zodiac-fortune" },
+  alternates: { canonical: "https://jeomun.com/zodiac-fortune" },
 };
 
 const zodiacList = [

@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "총운(總運)으로 내 전체 운세 흐름을 확인해보세요. 재물·연애·건강·직업을 통합해 내 운의 전체 그림을 AI가 그려드려요.",
   keywords: ["총운 사주", "총운 보기", "전체 운세", "사주 총운", "종합 운세", "AI 총운"],
   openGraph: { title: "총운 사주 — 점운", description: "내 전체 운세를 통합 분석. 재물·연애·건강·직업 총운.", url: "https://jeomun.com/total-saju" },
+  alternates: { canonical: "https://jeomun.com/total-saju" },
 };
 
 const faqs = [

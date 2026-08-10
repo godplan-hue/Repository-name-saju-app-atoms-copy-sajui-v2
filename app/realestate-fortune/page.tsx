@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "부동산운을 사주로 확인해보세요. 집 매매 타이밍, 이사 시기, 부동산 투자 기운을 AI가 분석해드려요.",
   keywords: ["부동산운", "부동산 사주", "집 매매 사주", "이사 사주", "부동산 투자 운세", "집 사는 타이밍"],
   openGraph: { title: "부동산운 사주 — 점운", description: "집 매매·이사 기운 AI 분석.", url: "https://jeomun.com/realestate-fortune" },
+  alternates: { canonical: "https://jeomun.com/realestate-fortune" },
 };
 export default function RealEstateFortunePage() {
   return (

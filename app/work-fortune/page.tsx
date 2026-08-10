@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "직장운을 사주로 확인해보세요. 직장생활 기운, 상사와의 관계, 이직 타이밍을 AI가 분석해드려요.",
   keywords: ["직장운", "직장운 사주", "직장 기운", "직장생활 운세", "회사운", "취업운세"],
   openGraph: { title: "직장운 사주 — 점운", description: "직장생활·승진·이직 AI 분석.", url: "https://jeomun.com/work-fortune" },
+  alternates: { canonical: "https://jeomun.com/work-fortune" },
 };
 export default function WorkFortunePage() {
   return (

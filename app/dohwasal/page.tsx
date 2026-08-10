@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "도화살 사주를 확인해보세요. 도화살이 있으면 매력이 넘치고 이성에게 인기가 많아요. AI가 분석해드려요.",
   keywords: ["도화살", "도화살 사주", "도화살 뜻", "도화살 있는 사람", "사주 도화살", "도화살 연애"],
   openGraph: { title: "도화살 사주 — 점운", description: "내 사주에 도화살 있나? AI가 신살 분석.", url: "https://jeomun.com/dohwasal" },
+  alternates: { canonical: "https://jeomun.com/dohwasal" },
 };
 export default function DohwasalPage() {
   return (

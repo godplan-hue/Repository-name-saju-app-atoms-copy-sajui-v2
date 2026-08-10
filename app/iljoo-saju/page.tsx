@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "일주별 사주를 확인해보세요. 60갑자 일주(日柱)로 보는 나의 타고난 성격·적성·운명. AI가 내 일주를 정밀 분석해드려요.",
   keywords: ["일주별 사주", "일주 사주", "일주 풀이", "60갑자 사주", "일주 운세", "사주 일주"],
   openGraph: { title: "일주별 사주 — 점운", description: "내 일주(日柱)로 보는 타고난 성격과 운명. AI 정밀 분석.", url: "https://jeomun.com/iljoo-saju" },
+  alternates: { canonical: "https://jeomun.com/iljoo-saju" },
 };
 
 const faqs = [

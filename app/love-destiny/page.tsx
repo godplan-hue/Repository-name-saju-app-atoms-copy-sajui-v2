@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "나의 인연 운세를 사주로 확인해보세요. 배우자 인연, 이성 기운, 결혼 시기를 AI가 분석해드려요.",
   keywords: ["인연운세", "나의인연", "배우자운", "이성인연사주", "결혼인연", "배우자 사주"],
   openGraph: { title: "나의 인연 운세 — 점운", description: "배우자·이성 인연 AI 분석.", url: "https://jeomun.com/love-destiny" },
+  alternates: { canonical: "https://jeomun.com/love-destiny" },
 };
 export default function LoveDestinyPage() {
   return (

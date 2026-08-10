@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "살풀이와 액운을 사주로 확인해보세요. 삼재·조심해야 할 시기·액운 예방법을 AI가 분석해드려요.",
   keywords: ["살풀이", "액운", "삼재", "액운 방지", "살풀이 사주", "삼재 풀기"],
   openGraph: { title: "살풀이 액운 — 점운", description: "내 사주 액운·삼재 AI 분석.", url: "https://jeomun.com/salpuri" },
+  alternates: { canonical: "https://jeomun.com/salpuri" },
 };
 export default function SalpuriPage() {
   return (

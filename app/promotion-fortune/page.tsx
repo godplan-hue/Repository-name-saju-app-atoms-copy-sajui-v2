@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "승진운을 사주로 확인해보세요. 승진 타이밍, 상사와의 관계, 진급 기운을 AI가 분석해드려요.",
   keywords: ["승진운", "승진운 사주", "승진 기운", "진급 운세", "직장 승진", "승진 타이밍"],
   openGraph: { title: "승진운 사주 — 점운", description: "승진·진급 기운 AI 분석.", url: "https://jeomun.com/promotion-fortune" },
+  alternates: { canonical: "https://jeomun.com/promotion-fortune" },
 };
 export default function PromotionFortunePage() {
   return (

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "태어난 계절로 운세를 확인해보세요. 봄·여름·가을·겨울 태생의 성격·운명을 AI가 분석해드려요.",
   keywords: ["태어난계절운세", "계절운세", "봄생 운세", "여름생 운세", "계절 사주", "태어난 계절 사주"],
   openGraph: { title: "태어난 계절 운세 — 점운", description: "태어난 계절로 보는 운명 AI 분석.", url: "https://jeomun.com/season-fortune" },
+  alternates: { canonical: "https://jeomun.com/season-fortune" },
 };
 export default function SeasonFortunePage() {
   const seasons = [

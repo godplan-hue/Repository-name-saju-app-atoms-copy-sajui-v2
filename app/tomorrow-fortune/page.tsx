@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "내일의 운세를 AI 사주로 미리 확인해보세요. 내일 재물·연애·건강 기운을 분석해드려요.",
   keywords: ["내일운세", "내일의운세", "내일 운세 보기", "내일 사주", "명일 운세", "내일 기운"],
   openGraph: { title: "내일의 운세 — 점운", description: "내일 운세 AI 분석. 미리 준비하세요.", url: "https://jeomun.com/tomorrow-fortune" },
+  alternates: { canonical: "https://jeomun.com/tomorrow-fortune" },
 };
 export default function TomorrowFortunePage() {
   return (

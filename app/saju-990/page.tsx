@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "AI 사주 단돈 990원. 재물운·연애운·직업운 전부 다 볼 수 있어요.",
     url: "https://jeomun.com/saju-990",
   },
+  alternates: { canonical: "https://jeomun.com/saju-990" },
 };
 
 const faqs = [

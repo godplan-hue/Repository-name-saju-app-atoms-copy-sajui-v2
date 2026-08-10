@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "탄생석과 사주를 함께 확인해보세요. 내 탄생석의 의미와 행운 기운을 AI가 분석해드려요.",
   keywords: ["탄생석", "탄생석 운세", "탄생석 의미", "탄생석 사주", "생일 탄생석", "월별 탄생석"],
   openGraph: { title: "탄생석 운세 — 점운", description: "생년월일 탄생석 의미 + AI 사주 분석.", url: "https://jeomun.com/birthstone" },
+  alternates: { canonical: "https://jeomun.com/birthstone" },
 };
 export default function BirthstonePage() {
   const stones = [

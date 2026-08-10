@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "오늘의 운세를 AI 사주로 확인해보세요. 생년월일 입력만으로 오늘 내 운기 흐름을 무료로 받아볼 수 있어요.",
   keywords: ["오늘의 운세", "오늘 운세", "무료 오늘의 운세", "일일 운세", "오늘 사주", "오늘 운세 무료"],
   openGraph: { title: "오늘의 운세 — 점운", description: "AI 사주로 보는 오늘 운세. 무료로 즉시 확인.", url: "https://jeomun.com/today-fortune" },
+  alternates: { canonical: "https://jeomun.com/today-fortune" },
 };
 
 const faqs = [

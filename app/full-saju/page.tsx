@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "전체 사주를 한번에 받아보세요. 재물·연애·건강·직업·배우자·자녀운까지 모든 운세를 AI가 완전 분석해드려요.",
   keywords: ["전체 사주", "사주 전체 분석", "완전 사주", "모든 운세", "VIP 사주", "사주 풀패키지"],
   openGraph: { title: "전체 사주 — 점운", description: "모든 운세 한번에. 재물·연애·건강·직업 완전 분석.", url: "https://jeomun.com/full-saju" },
+  alternates: { canonical: "https://jeomun.com/full-saju" },
 };
 
 const faqs = [

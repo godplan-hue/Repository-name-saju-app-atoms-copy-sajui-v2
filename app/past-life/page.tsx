@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "전생 사주를 확인해보세요. 전생에 어떤 사람이었는지, 전생에서 이어진 운명을 AI가 분석해드려요.",
   keywords: ["전생사주", "전생 운세", "전생운", "전생 직업", "전생 확인", "나의 전생"],
   openGraph: { title: "전생 사주 — 점운", description: "전생운·전생 직업 AI 분석.", url: "https://jeomun.com/past-life" },
+  alternates: { canonical: "https://jeomun.com/past-life" },
 };
 export default function PastLifePage() {
   return (

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "역마살 사주를 확인해보세요. 역마살이 있으면 이동·변화·해외 기운이 강해요. AI가 신살을 분석해드려요.",
   keywords: ["역마살", "역마살 사주", "역마살 뜻", "역마살 있는 사람", "사주 역마살", "역마살 해외"],
   openGraph: { title: "역마살 사주 — 점운", description: "내 사주에 역마살 있나? AI가 신살 분석.", url: "https://jeomun.com/yeokmasal" },
+  alternates: { canonical: "https://jeomun.com/yeokmasal" },
 };
 export default function YeokmasalPage() {
   return (

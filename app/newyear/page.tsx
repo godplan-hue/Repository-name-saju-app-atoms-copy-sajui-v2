@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "2027년 한 해 운세 흐름을 AI 사주로. 990원.",
     url: "https://jeomun.com/newyear",
   },
+  alternates: { canonical: "https://jeomun.com/newyear" },
 };
 
 const faqs = [

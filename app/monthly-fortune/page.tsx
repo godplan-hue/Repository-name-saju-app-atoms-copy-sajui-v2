@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "월간 운세를 AI 사주로 확인해보세요. 이번 달 기운 흐름, 좋은 날, 조심할 시기를 분석해드려요.",
   keywords: ["월간운세", "이번달 운세", "월간 사주", "월별 운세", "한달 운세", "월운"],
   openGraph: { title: "월간 운세 — 점운", description: "이번 달 내 운세 AI 분석. 월별 기운 흐름 확인.", url: "https://jeomun.com/monthly-fortune" },
+  alternates: { canonical: "https://jeomun.com/monthly-fortune" },
 };
 export default function MonthlyFortunePage() {
   return (

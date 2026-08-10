@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "짝궁합을 AI로 확인해보세요. 좋아하는 사람과 우리 궁합이 맞는지 간단하게 확인해드려요.",
   keywords: ["짝궁합", "간단궁합", "궁합 보기", "사주 궁합", "커플 궁합", "연인 궁합"],
   openGraph: { title: "짝궁합 — 점운", description: "우리 궁합 간단 AI 분석. 맞는지 확인해보세요.", url: "https://jeomun.com/simple-couple" },
+  alternates: { canonical: "https://jeomun.com/simple-couple" },
 };
 export default function SimpleCuplePage() {
   return (

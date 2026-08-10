@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "인공지능이 분석하는 내 사주. 만세력 + AI 엔진으로 정밀 분석.",
     url: "https://jeomun.com/ai-saju",
   },
+  alternates: { canonical: "https://jeomun.com/ai-saju" },
 };
 
 const faqs = [

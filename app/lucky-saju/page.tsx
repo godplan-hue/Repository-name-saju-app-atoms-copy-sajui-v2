@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "행운 사주로 내 행운의 날, 색깔, 방향, 숫자를 확인해보세요. AI가 내 사주에서 행운 요소를 뽑아 알려드려요.",
   keywords: ["행운 사주", "사주 행운", "행운의 날", "행운색", "사주 행운색", "행운 방향"],
   openGraph: { title: "행운 사주 — 점운", description: "내 사주에서 찾는 행운의 날·색·방향·숫자. AI 분석.", url: "https://jeomun.com/lucky-saju" },
+  alternates: { canonical: "https://jeomun.com/lucky-saju" },
 };
 
 const faqs = [

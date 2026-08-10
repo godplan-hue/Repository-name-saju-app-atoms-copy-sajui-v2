@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "창업운을 사주로 확인해보세요. 창업 성공 기운, 사업 아이템, 창업 시기를 AI가 분석해드려요.",
   keywords: ["창업운", "창업 사주", "창업 타이밍", "창업운세", "스타트업 사주", "창업 성공 사주"],
   openGraph: { title: "창업운 사주 — 점운", description: "창업 타이밍·성공 기운 AI 분석.", url: "https://jeomun.com/startup-fortune" },
+  alternates: { canonical: "https://jeomun.com/startup-fortune" },
 };
 export default function StartupFortunePage() {
   return (

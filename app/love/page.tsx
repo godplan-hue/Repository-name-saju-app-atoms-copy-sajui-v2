@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "AI가 분석하는 내 연애 기운. 990원으로 시작해요.",
     url: "https://jeomun.com/love",
   },
+  alternates: { canonical: "https://jeomun.com/love" },
 };
 
 const faqs = [

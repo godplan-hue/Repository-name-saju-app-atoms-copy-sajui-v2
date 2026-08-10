@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "이름과 사주를 함께 분석해보세요. 이름의 한자 오행과 사주 오행의 조화를 AI가 분석해드려요.",
   keywords: ["이름 사주", "사주 이름", "이름 분석 사주", "이름 운세", "이름 오행", "작명 사주"],
   openGraph: { title: "이름 사주 — 점운", description: "이름과 사주 오행의 조화. AI가 내 이름 기운을 분석.", url: "https://jeomun.com/name-saju" },
+  alternates: { canonical: "https://jeomun.com/name-saju" },
 };
 
 const faqs = [

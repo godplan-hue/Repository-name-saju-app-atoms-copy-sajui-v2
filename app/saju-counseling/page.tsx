@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "사주 상담을 AI로 받아보세요. 궁금한 모든 것을 사주로 분석해드려요. 990원부터 시작.",
   keywords: ["사주상담", "사주 상담", "온라인 사주 상담", "사주 질문", "AI 사주 상담", "사주 풀이 상담"],
   openGraph: { title: "사주 상담 — 점운", description: "AI 사주 1:1 분석. 궁금한 모든 것 분석.", url: "https://jeomun.com/saju-counseling" },
+  alternates: { canonical: "https://jeomun.com/saju-counseling" },
 };
 export default function SajuCounselingPage() {
   return (

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "무료 운세를 지금 바로 받아보세요. 생년월일 입력만으로 오늘의 운세를 무료로 확인할 수 있어요.",
   keywords: ["무료운세", "무료 운세", "운세 무료", "공짜 운세", "무료 사주 운세", "오늘 무료 운세"],
   openGraph: { title: "무료 운세 — 점운", description: "완전 무료 AI 운세. 생년월일만 입력하면 끝.", url: "https://jeomun.com/free-fortune" },
+  alternates: { canonical: "https://jeomun.com/free-fortune" },
 };
 export default function FreeFortunePage() {
   return (

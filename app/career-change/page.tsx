@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "이직운을 사주로 확인해보세요. 이직 타이밍, 새 직장 기운, 이직 후 성공 가능성을 AI가 분석해드려요.",
   keywords: ["이직운", "이직 사주", "이직 타이밍", "이직운세", "직장 이직", "이직 시기"],
   openGraph: { title: "이직운 사주 — 점운", description: "이직 타이밍 AI 분석. 지금 이직해도 될까?", url: "https://jeomun.com/career-change" },
+  alternates: { canonical: "https://jeomun.com/career-change" },
 };
 export default function CareerChangePage() {
   return (

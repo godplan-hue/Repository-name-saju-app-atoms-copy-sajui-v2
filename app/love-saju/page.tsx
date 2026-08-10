@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "연애운을 사주로 확인해보세요. 솔로 탈출 시기, 현재 연애 진단, 이상형 분석까지 AI가 내 연애 기운을 분석해드려요.",
   keywords: ["연애운 사주", "연애 사주", "사주 연애운", "솔로 탈출 사주", "연애운 보기", "연애 운세"],
   openGraph: { title: "연애운 사주 — 점운", description: "AI가 분석하는 내 연애 기운. 솔로 탈출 시기부터 궁합까지.", url: "https://jeomun.com/love-saju" },
+  alternates: { canonical: "https://jeomun.com/love-saju" },
 };
 
 const faqs = [

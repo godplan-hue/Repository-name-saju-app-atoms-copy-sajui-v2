@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "만세력으로 내 사주를 계산해보세요. 생년월일시를 입력하면 연·월·일·시주 8글자를 AI가 정밀하게 계산해드려요.",
   keywords: ["만세력", "사주 만세력", "만세력 계산", "만세력 보기", "온라인 만세력", "무료 만세력"],
   openGraph: { title: "만세력 — 점운", description: "AI 만세력으로 내 사주 8글자 정밀 계산. 무료.", url: "https://jeomun.com/mansei" },
+  alternates: { canonical: "https://jeomun.com/mansei" },
 };
 
 const faqs = [

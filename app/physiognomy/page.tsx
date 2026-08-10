@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "관상으로 운명을 확인해보세요. 이마·눈·코·입·턱으로 재물운·연애운·직업운을 AI가 분석해드려요.",
   keywords: ["관상", "관상 보기", "관상 운세", "관상 보는법", "얼굴 관상", "관상학"],
   openGraph: { title: "관상 보기 — 점운", description: "얼굴로 보는 운명 분석. 관상으로 재물·연애운 확인.", url: "https://jeomun.com/physiognomy" },
+  alternates: { canonical: "https://jeomun.com/physiognomy" },
 };
 export default function PhysiognomyPage() {
   return (

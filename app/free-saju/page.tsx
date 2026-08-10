@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "생년월일만 입력하면 오늘의 운세 무료로 확인 가능. AI 사주 점운.",
     url: "https://jeomun.com/free-saju",
   },
+  alternates: { canonical: "https://jeomun.com/free-saju" },
 };
 
 const faqs = [

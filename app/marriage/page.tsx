@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "AI가 분석하는 내 결혼 시기와 배우자 인연. 990원으로 시작해요.",
     url: "https://jeomun.com/marriage",
   },
+  alternates: { canonical: "https://jeomun.com/marriage" },
 };
 
 const faqs = [

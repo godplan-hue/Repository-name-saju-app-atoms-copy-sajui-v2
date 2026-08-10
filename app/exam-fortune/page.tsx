@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "시험운·합격운을 사주로 확인해보세요. 수능·공무원·자격증 시험에서 합격 기운이 오는 시기를 AI가 분석해드려요.",
   keywords: ["시험운", "합격운", "시험운 사주", "합격 사주", "수능운", "공무원 합격운"],
   openGraph: { title: "시험운 합격운 — 점운", description: "합격 기운이 오는 시기 AI 사주로 확인. 990원~", url: "https://jeomun.com/exam-fortune" },
+  alternates: { canonical: "https://jeomun.com/exam-fortune" },
 };
 export default function ExamFortunePage() {
   const faqs = [

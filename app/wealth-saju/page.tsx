@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "재물운을 사주로 확인해보세요. 올해 돈이 들어오는지, 투자는 언제 해야 하는지 AI 사주가 분석해드려요. 990원부터.",
   keywords: ["재물운 사주", "사주 재물운", "돈 운세", "재물운 보기", "AI 재물운", "재물운 2026"],
   openGraph: { title: "재물운 사주 — 점운", description: "AI가 분석하는 내 재물운. 돈이 들어오는 시기 확인. 990원~", url: "https://jeomun.com/wealth-saju" },
+  alternates: { canonical: "https://jeomun.com/wealth-saju" },
 };
 
 const faqs = [

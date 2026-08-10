@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "임신운을 사주로 확인해보세요. 임신이 잘 되는 시기, 태몽 해석, 출산 기운을 AI가 분석해드려요.",
   keywords: ["임신운", "임신 사주", "임신운 사주", "출산운", "태몽", "임신 시기 사주"],
   openGraph: { title: "임신운 사주 — 점운", description: "임신·출산 기운 AI 사주 분석. 시기와 태몽 확인.", url: "https://jeomun.com/pregnancy-fortune" },
+  alternates: { canonical: "https://jeomun.com/pregnancy-fortune" },
 };
 export default function PregnancyFortunePage() {
   const faqs = [

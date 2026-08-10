@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "주간 운세를 AI 사주로 확인해보세요. 이번 주 좋은 날, 조심할 날, 집중해야 할 것을 알려드려요.",
   keywords: ["주간운세", "이번주 운세", "주간 사주", "주간 운세 보기", "이번 주 운세", "7일 운세"],
   openGraph: { title: "주간 운세 — 점운", description: "이번 주 내 운세 AI 분석. 좋은 날·조심할 날 확인.", url: "https://jeomun.com/weekly-fortune" },
+  alternates: { canonical: "https://jeomun.com/weekly-fortune" },
 };
 export default function WeeklyFortunePage() {
   return (

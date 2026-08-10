@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "사주로 보는 심리테스트. 내 진짜 성격·숨겨진 욕구·스트레스 방식을 AI가 분석해드려요.",
   keywords: ["사주 심리테스트", "심리풀이", "성격 사주", "MBTI 사주", "심리 분석 사주", "사주 성격"],
   openGraph: { title: "사주 심리테스트 — 점운", description: "사주로 보는 내 진짜 성격 분석.", url: "https://jeomun.com/psychology-test" },
+  alternates: { canonical: "https://jeomun.com/psychology-test" },
 };
 export default function PsychologyTestPage() {
   return (

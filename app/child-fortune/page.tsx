@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "자녀운을 사주로 확인해보세요. 임신 기운, 출산 시기, 자녀와의 인연을 AI가 분석해드려요.",
   keywords: ["자녀운", "자녀운 사주", "임신 사주", "출산 기운", "아이 사주", "자녀 인연"],
   openGraph: { title: "자녀운 사주 — 점운", description: "임신·출산·자녀 기운 AI 분석.", url: "https://jeomun.com/child-fortune" },
+  alternates: { canonical: "https://jeomun.com/child-fortune" },
 };
 export default function ChildFortunePage() {
   return (

@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "연도별 운세를 확인해보세요. 2024·2025·2026·2027년 내 운세 흐름을 AI가 연도별로 분석해드려요.",
   keywords: ["연도별 운세", "연도별 사주", "년도별 운세", "매년 운세", "연간 운세", "연도 사주"],
   openGraph: { title: "연도별 운세 — 점운", description: "연도별 내 운세 흐름. 과거·현재·미래 연도별 분석.", url: "https://jeomun.com/yearly-fortune" },
+  alternates: { canonical: "https://jeomun.com/yearly-fortune" },
 };
 
 const faqs = [

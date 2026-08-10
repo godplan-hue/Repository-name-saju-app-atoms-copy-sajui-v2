@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "좋아하는 연예인과의 궁합을 확인해보세요. 연예인 생년월일로 나와의 사주 궁합을 분석해드려요.",
   keywords: ["연예인궁합", "연예인 궁합", "아이돌 궁합", "스타 궁합", "연예인 사주 궁합"],
   openGraph: { title: "연예인 궁합 — 점운", description: "좋아하는 연예인과 나의 궁합 AI 분석.", url: "https://jeomun.com/celebrity-couple" },
+  alternates: { canonical: "https://jeomun.com/celebrity-couple" },
 };
 export default function CelebrityCouplePage() {
   return (

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "사주 계산기로 내 사주팔자를 확인해보세요. 생년월일시 입력만 하면 사주 원국을 즉시 계산해드려요.",
   keywords: ["사주계산기", "사주 계산기", "사주팔자 계산", "만세력 계산기", "생년월일 사주", "사주 원국 계산"],
   openGraph: { title: "사주 계산기 — 점운", description: "생년월일로 사주팔자 즉시 계산.", url: "https://jeomun.com/saju-calc" },
+  alternates: { canonical: "https://jeomun.com/saju-calc" },
 };
 export default function SajuCalcPage() {
   return (

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "헤어진 연인과 재회할 수 있을지 AI 사주로 분석. 990원.",
     url: "https://jeomun.com/reunion",
   },
+  alternates: { canonical: "https://jeomun.com/reunion" },
 };
 
 const faqs = [

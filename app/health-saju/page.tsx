@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "건강운을 사주로 확인해보세요. 내 몸에 취약한 부분, 조심해야 할 시기를 AI 사주로 미리 알 수 있어요.",
   keywords: ["건강운 사주", "건강 운세", "사주 건강운", "몸 사주", "건강 사주 풀이", "AI 건강운"],
   openGraph: { title: "건강운 사주 — 점운", description: "AI 사주로 보는 내 건강 기운. 취약한 부분과 조심할 시기 확인.", url: "https://jeomun.com/health-saju" },
+  alternates: { canonical: "https://jeomun.com/health-saju" },
 };
 
 const faqs = [

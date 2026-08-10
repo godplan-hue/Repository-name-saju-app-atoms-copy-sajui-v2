@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "로또운·횡재수를 사주로 확인해보세요. 갑자기 큰돈이 들어오는 기운이 있는 시기를 AI가 분석해드려요.",
   keywords: ["로또운", "로또 사주", "횡재수", "횡재운", "로또 기운", "돈 들어오는 사주"],
   openGraph: { title: "로또운 사주 — 점운", description: "횡재수·로또 기운 AI 사주 분석. 언제 운이 터지는지 확인.", url: "https://jeomun.com/lotto-fortune" },
+  alternates: { canonical: "https://jeomun.com/lotto-fortune" },
 };
 export default function LottoFortunePage() {
   return (

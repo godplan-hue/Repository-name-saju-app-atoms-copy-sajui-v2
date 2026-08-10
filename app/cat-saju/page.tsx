@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     description: "귀여운 고양이가 알려주는 AI 사주. 쉽고 재미있게 내 운세 확인.",
     url: "https://jeomun.com/cat-saju",
   },
+  alternates: { canonical: "https://jeomun.com/cat-saju" },
 };
 
 const faqs = [

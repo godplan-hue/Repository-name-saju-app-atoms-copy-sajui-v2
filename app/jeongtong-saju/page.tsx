@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "정통사주를 AI로 확인해보세요. 사주 원국 분석부터 오행·십성까지 정통 방식으로 풀이해드려요.",
   keywords: ["정통사주", "정통 사주풀이", "사주 원국", "정통 사주 보기", "전통 사주", "사주 풀이"],
   openGraph: { title: "정통사주 — 점운", description: "AI 정통 사주풀이. 오행·십성 분석.", url: "https://jeomun.com/jeongtong-saju" },
+  alternates: { canonical: "https://jeomun.com/jeongtong-saju" },
 };
 export default function JeongtongSajuPage() {
   return (

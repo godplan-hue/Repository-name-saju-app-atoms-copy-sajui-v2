@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "혈액형 운세를 확인해보세요. A형·B형·O형·AB형 혈액형별 2026년 운세와 AI 사주 분석.",
   keywords: ["혈액형 운세", "혈액형 사주", "A형 운세", "B형 운세", "O형 운세", "AB형 운세"],
   openGraph: { title: "혈액형 운세 — 점운", description: "A·B·O·AB 혈액형별 운세. AI 사주 정밀 분석.", url: "https://jeomun.com/blood-fortune" },
+  alternates: { canonical: "https://jeomun.com/blood-fortune" },
 };
 export default function BloodFortunePage() {
   return (

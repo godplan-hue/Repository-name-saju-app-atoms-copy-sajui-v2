@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "2026년 사주를 AI로 분석해보세요. 2026 병오년(丙午年) 내 운세 흐름을 재물·연애·건강·직업별로 상세히 확인하세요.",
   keywords: ["2026 사주", "2026년 사주", "병오년 사주", "2026 운세", "2026 신년사주", "2026 사주 분석"],
   openGraph: { title: "2026 사주 — 점운", description: "2026 병오년 내 사주 완전 분석. AI가 재물·연애·건강·직업 전체 분석.", url: "https://jeomun.com/saju-2026" },
+  alternates: { canonical: "https://jeomun.com/saju-2026" },
 };
 
 const faqs = [

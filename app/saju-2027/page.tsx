@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   description: "2027년 운세를 AI 사주로 확인해보세요. 정미년(丁未年) 나의 재물·연애·직업·건강 운세 총정리.",
   keywords: ["2027년 운세", "2027 사주", "정미년 운세", "2027 신년운세", "2027년 사주", "2027 운세 보기"],
   openGraph: { title: "2027년 운세 — 점운", description: "2027 정미년 AI 사주 분석. 내년 운세 미리 확인.", url: "https://jeomun.com/saju-2027" },
+  alternates: { canonical: "https://jeomun.com/saju-2027" },
 };
 export default function Saju2027Page() {
   return (
