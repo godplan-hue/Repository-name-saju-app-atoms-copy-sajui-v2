@@ -5,6 +5,7 @@
 - [⭐⭐ 2026-08-11 최신 상태 업데이트](project_status_2026_08_11_update.md) — 토스 17개중 3개만 출시(14개 순차출시 필요), jeomun.com 카카오페이+신용카드만 연결, SEO 오늘 대량 제출완료
 - [⭐ 세션 2026-08-11 — SEO 5700개 완성+구글/빙 사이트맵 제출+감정일기 약관 등록](project_session_2026_08_11_seo.md) — 19개앱 ×300개 가이드페이지 완성, sitemap 4906개 추가, BingSiteAuth.xml, 감정일기 약관 URL등록 완료
 - [⭐⭐ 세션 2026-08-11 — 노마드코더+브런치+링크드인 홍보](project_session_2026_08_11_promo_brunch_linkedin.md) — 브런치 작가신청 제출(승인대기,다음세션확인), 링크드인 리브랜딩+게시글 발행(공개확인됨), 노마드코더 #portfolio 게시완료
+- [⚠️ 토스앱 유사카테고리 반려 경고 (Trinity 인터뷰)](reference_nomadcoders_trinity_toss_interview.md) — 사주/타로처럼 겹치는 앱 개발후 심사넣으면 반려됨. 심사 먼저 문의 or 기존앱 내부통합으로 우회. 점운 17개 토스앱 출시 시 필독
 
 - [⭐⭐⭐ 전화번호 일치 잠금 구현 (미완료 — 다음 세션 바로 시작)](project_phone_match_pending.md) — 결제한 번호만 24시간 열림, 다른 번호 잠금. jigun pay만 완료, 나머지 11개 파일 미완료. 구현 코드+파일목록 전부 저장됨
 
