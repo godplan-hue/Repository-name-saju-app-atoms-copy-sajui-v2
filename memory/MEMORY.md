@@ -1,6 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐ 사주아이 강의 성장비법 전체정리 (5개 파일 완독)](reference_sajaui_course_growth_secrets.md) — 니치Fit프레임워크/초기유저·PoC/정부지원508개/글로벌진출3경로/웨비나트렌드 + 점운 액션아이템 (2026-08-11)
+- [⭐⭐⭐ 사주아이 강의 성장비법+PART6 홍보법+비용관리+프롬프트세트+Figma워크플로](reference_sajaui_course_growth_secrets.md) — 니치Fit/글로벌진출/PART6 홍보광고·SEO·AEO·SNS전략(가장중요)/운영비용관리/랜딩~토스PG 프롬프트5개/FigJam+Claude MCP 부록 (2026-08-11)
 - [⭐⭐⭐ 부드러운 존댓말 톤 사용](feedback_warm_tone_esther.md) — "에스더님" 호칭+존댓말+친구처럼 응원. 반말/건조체 금지 (2026-08-11 직접 교정)
 - [⭐⭐ 2026-08-11 최신 상태 업데이트](project_status_2026_08_11_update.md) — 토스 17개중 3개만 출시(14개 순차출시 필요), jeomun.com 카카오페이+신용카드만 연결, SEO 오늘 대량 제출완료
 - [⭐ 세션 2026-08-11 — SEO 5700개 완성+구글/빙 사이트맵 제출+감정일기 약관 등록](project_session_2026_08_11_seo.md) — 19개앱 ×300개 가이드페이지 완성, sitemap 4906개 추가, BingSiteAuth.xml, 감정일기 약관 URL등록 완료
