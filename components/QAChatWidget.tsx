@@ -101,7 +101,7 @@ interface Props { name: string; birthYear: number; unlocked?: boolean; storagePr
 export default function QAChatWidget({ name, birthYear, unlocked=false, storagePrefix="v2_qa" }: Props) {
   const ohaeng: Ohaeng = getOhaeng(birthYear);
   const [messages, setMessages] = useState<Msg[]>([
-    { from: "cat", text: `안녕하세요, ${name}님!\n복냥이가 사주를 보고 있어요.\n아래 질문을 눌러봐도 되고,\n직접 물어봐도 돼요!` }
+    { from: "cat", text: `안녕하세요, ${name}님!\n점냥이가 사주를 보고 있어요.\n아래 질문을 눌러봐도 되고,\n직접 물어봐도 돼요!` }
   ]);
   const [input, setInput] = useState("");
   const [remaining, setRemaining] = useState(FREE_QUESTIONS);
@@ -233,7 +233,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
         <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg,#ec4899,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, flexShrink: 0 }}>🐱</div>
           <div style={{ flex: 1 }}>
-            <p style={{ margin: 0, fontSize: 13, fontWeight: 900, background: "linear-gradient(135deg, #ec4899, #8b5cf6, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "qaSparkle 1.8s ease-in-out infinite" }}>복냥이 사주 상담</p>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 900, background: "linear-gradient(135deg, #ec4899, #8b5cf6, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "qaSparkle 1.8s ease-in-out infinite" }}>점냥이 사주 상담</p>
             <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: remaining > 0 || effectiveUnlocked ? "#8b5cf6" : "#ef4444" }}>
               {effectiveUnlocked ? "무제한 질문 가능 🔓" : `오늘 남은 질문 ${remaining}회 (매일 무료)`}
             </p>
@@ -358,7 +358,7 @@ export default function QAChatWidget({ name, birthYear, unlocked=false, storageP
           <div ref={buyModalRef} style={{ position: "fixed", bottom: 0, left: 0, right: 0, margin: "0 auto", maxWidth: 480, background: "white", borderRadius: "20px 20px 0 0", maxHeight: "88vh", overflowY: "auto", overscrollBehavior: "contain", padding: "12px 14px 20px", zIndex: 301, willChange: "transform", transform: "translateZ(0)" }}>
             <div style={{ width: 36, height: 4, background: "#e5e7eb", borderRadius: 2, margin: "0 auto 12px" }} />
             <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1a1a2e", margin: "0 0 2px", textAlign: "center" }}>운세를 구매하고 더 알아봐! 🔮</h3>
-            <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 14px", textAlign: "center" }}>결제하면 꿈해몽+복냥이+Q&amp;A 3종 24시간 무료!</p>
+            <p style={{ fontSize: 11, color: "#6b7280", fontWeight: 700, margin: "0 0 14px", textAlign: "center" }}>결제하면 꿈해몽+점냥이+Q&amp;A 3종 24시간 무료!</p>
 
             {/* 신규 990원 — 신년+월별 12달(4900) 포함 6개, 빨간 카드 */}
             <p style={{ fontSize: 11, fontWeight: 900, color: "#6d28d9", margin: "0 0 6px" }}>⚡ 신규 990원</p>

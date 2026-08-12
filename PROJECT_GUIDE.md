@@ -72,7 +72,7 @@ DB 템플릿 조회
 ### 무료 기능
 - 사주 원국 계산 (만세력 기반, 일·월·연·시주 표시)
 - 오늘의 운세 (무료 결과)
-- Q&A 챗봇 (복냥이 채팅 형식, 오행 맞춤 답변)
+- Q&A 챗봇 (점냥이 채팅 형식, 오행 맞춤 답변)
 - 고민 검색창 (FortuneSearch — 키워드 → 운세 결제 페이지 연결)
 
 ### 유료 운세 (개별 구매)
@@ -299,7 +299,7 @@ lib/
 
 components/
   QASection.tsx         # Q&A 섹션 (탭+검색+오행 답변)
-  QAChatWidget.tsx      # 복냥이 채팅 위젯
+  QAChatWidget.tsx      # 점냥이 채팅 위젯
 
 public/
   sitemap.xml           # 83개 SEO 랜딩 등록

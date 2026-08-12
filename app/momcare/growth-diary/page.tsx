@@ -101,7 +101,7 @@ export default function GrowthDiaryPage() {
         </Link>
         <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 14, padding: "14px", fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 12 }}>사주 990원 결제하기 →</Link>
         <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 10, padding: "12px 14px", fontSize: 12, color: "#166534", fontWeight: 700, lineHeight: 1.8 }}>
-          🎁 덤으로 24시간 추가 혜택!<br />🌙 꿈해몽 · 🐱 복냥이상담 · ❓ 360개 질문
+          🎁 덤으로 24시간 추가 혜택!<br />🌙 꿈해몽 · 🐱 점냥이상담 · ❓ 360개 질문
         </div>
       </div>
     </div>

@@ -556,7 +556,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
             <span style={{ position: "absolute", top: 16, left: 16, background: "#ec4899", color: "white", fontSize: 12, fontWeight: 900, padding: "5px 13px", borderRadius: 20, zIndex: 2 }}>AI 사주 상담</span>
             <div style={{ position: "absolute", bottom: 20, left: 18, zIndex: 3 }}>
               <p style={{ margin: "0 0 14px", fontSize: 17, fontWeight: 900, lineHeight: 1.35, letterSpacing: "-0.3px" }}>
-                <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>복냥이에게 당신의 운명을{"\n"}</span><br/>
+                <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>점냥이에게 당신의 운명을{"\n"}</span><br/>
                 <span style={{ color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>무엇이든 직접 물어봐요!</span>
               </p>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -572,7 +572,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
             <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.55)" }} />
             <div style={{ position: "relative", textAlign: "center", width: "100%" }}>
               <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", color: "#9f1239", textShadow: "1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff, 1.5px 1.5px 0 #fff, -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 0 0 2px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>
-                복냥이가 읽는 나의 운명
+                점냥이가 읽는 나의 운명
               </h1>
               <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 14px", color: "#b76e79", textShadow: "1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
               <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
@@ -597,7 +597,7 @@ function BannerSlider({ onStart, onModal, isPartner, chatProfile }: { onStart: (
                 <span style={{ color: "#15803d" }}>오늘의 운세</span>{" "}
                 <span style={{ color: "#be185d" }}>매일 무료</span>
               </span>
-              {!isPartner && <span style={{ fontSize: 9, fontWeight: 900, color: "#7c3aed", marginTop: 3, textAlign: "center" as const }}>🎁 꿈해몽·복냥이·Q&amp;A 3종 24시간 무료</span>}
+              {!isPartner && <span style={{ fontSize: 9, fontWeight: 900, color: "#7c3aed", marginTop: 3, textAlign: "center" as const }}>🎁 꿈해몽·점냥이·Q&amp;A 3종 24시간 무료</span>}
             </div>
           </div>
         ) : (
@@ -860,7 +860,7 @@ export default function MainV2() {
       {/* 헤드라인 */}
       <section style={{ padding: "20px 16px 4px", textAlign: "center" }}>
         <h1 style={{ fontSize: 25, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3, letterSpacing: "-0.3px", color: "#9f1239", textShadow: "1.5px 0 0 #fff, -1.5px 0 0 #fff, 0 1.5px 0 #fff, 0 -1.5px 0 #fff, 1.5px 1.5px 0 #fff, -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 0 0 2px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>
-          복냥이가 읽는 나의 운명
+          점냥이가 읽는 나의 운명
         </h1>
         <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px", color: "#b76e79", textShadow: "1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 0 1.5px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
@@ -968,7 +968,7 @@ export default function MainV2() {
         <div style={{ textAlign: "center", padding: "32px 20px", borderRadius: 20, background: `linear-gradient(135deg, rgba(236,72,153,0.76), rgba(139,92,246,0.76)), url(https://i.pinimg.com/736x/4d/19/ba/4d19bac9e87e2f3d28505b6e59992c02.jpg)`, backgroundSize: "cover", backgroundPosition: "center", boxShadow: "0 8px 24px rgba(139,92,246,0.25)" }}>
           <div style={{ fontSize: 56, marginBottom: 10, display: "inline-block", animation: "animalFloat 3s ease-in-out infinite" }}>😺</div>
           <h2 style={{ fontSize: 20, fontWeight: 900, color: "white", margin: "0 0 8px" }}>지금 운명을 확인하세요</h2>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>복냥이가 당신의 길을 안내합니다 🐾</p>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", margin: "0 0 18px" }}>점냥이가 당신의 길을 안내합니다 🐾</p>
           <a href="/main-v2/qa-list"
             style={{ display: "block", width: "100%", maxWidth: 300, margin: "0 auto", padding: "14px 0", background: "white", color: "#ec4899", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 18px rgba(0,0,0,0.15)", textDecoration: "none", textAlign: "center" }}>
             💬 사주 Q&amp;A 바로 확인하기
@@ -1020,7 +1020,7 @@ export default function MainV2() {
         </div>
       )}
 
-      {/* 복냥이 상담창 — 내정보(푸터) 바로 위 */}
+      {/* 점냥이 상담창 — 내정보(푸터) 바로 위 */}
       {!isPartner && (
         <div id="chat-widget" style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto", width: "100%", boxSizing: "border-box" }} onClick={() => { try { if (!(window as any).__chatPushed) { (window as any).__chatPushed = true; history.pushState(null, "", window.location.href); } } catch {} }}>
           <QAChatWidget name={(user && !["카카오 사용자","네이버 사용자","Google 사용자"].includes(user)) ? user : (savedProfile?.name || "고객님")} birthYear={savedProfile?.birthYear || 1990} />

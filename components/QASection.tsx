@@ -238,7 +238,7 @@ export default function QASection({ name, birthYear, unlocked = false, onBuyClic
             <p style={{ fontSize: 13, margin: "0 0 1px", fontWeight: 900 }}>
               결제하면<br />
               🔓 Q&amp;A 전체 (360개 질문)<br />
-              + 복냥이 채팅<br />
+              + 점냥이 채팅<br />
               + 꿈해몽 전체<br />
               1+1+1 올인원<br />
               하루 동안 무제한 이용 가능!

@@ -289,7 +289,7 @@ getPastLifeCard(oh, z)                         — 전생 이야기 (오행×띠
 ### Q&A 시스템 — ✅ 완성
 - 11개 카테고리 × ~33문항 × 5오행 = 약 1800개 맞춤 답변 (`lib/qa/`)
 - QASection 컴포넌트: `components/QASection.tsx` (카테고리 탭, 검색, 오행 맞춤 답변)
-- QAChatWidget 컴포넌트: `components/QAChatWidget.tsx` (복냥이 채팅 형식)
+- QAChatWidget 컴포넌트: `components/QAChatWidget.tsx` (점냥이 채팅 형식)
 - 전용 페이지: `/main-v2/qa-list` (QASection 단독 페이지)
 - 결과지에서 Q&A 버튼/배너 → `/main-v2/qa-list` 이동
 - **⛔ QASection을 결과지에 인라인으로 다시 추가하지 말 것 — 이미 qa-list에 있음**
@@ -510,7 +510,7 @@ getPastLifeCard(oh, z)                         — 전생 이야기 (오행×띠
 | 파일 | 수정 내용 | 커밋 |
 |------|---------|------|
 | `app/main-v2/result/page.tsx` | "🔮 AI 사주 990원부터 시작" + "🏠 홈으로" 버튼 새 탭으로 변경 | `c65b304` |
-| `components/QAChatWidget.tsx` | 복냥이 모달 구매버튼 7개 전부 새 탭으로 변경 | `459e59b` |
+| `components/QAChatWidget.tsx` | 점냥이 모달 구매버튼 7개 전부 새 탭으로 변경 | `459e59b` |
 
 #### 결제 페이지 인앱브라우저 안내 추가 (`app/main-v2/pay/page.tsx`)
 - 결제 버튼 바로 위에 노란 "⚠️ 꼭 확인하세요" 박스 추가 (PC·모바일 공통)

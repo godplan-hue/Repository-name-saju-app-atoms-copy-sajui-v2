@@ -417,7 +417,7 @@ export default function MomcarePage() {
           </div>
           <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 8px", fontWeight: 800 }}>✨ 사주 990원 결제하면 덤으로 24h!</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 20 }}>
-            {["🌙 꿈해몽", "🐱 복냥이상담", "❓ 360개 질문"].map(item => (
+            {["🌙 꿈해몽", "🐱 점냥이상담", "❓ 360개 질문"].map(item => (
               <div key={item} style={{ background: "rgba(255,255,255,0.15)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
             ))}
           </div>

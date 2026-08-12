@@ -113,7 +113,7 @@ export default async function KeywordPage({ params }: Props) {
           <div style={{ background: G, padding: "14px 18px", display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 28 }}>🐱</span>
             <div>
-              <p style={{ color: "#fff", fontWeight: 900, fontSize: 14, margin: 0 }}>사주 결제하면 꿈해몽+복냥이+Q&amp;A 3종 24시간 무료!</p>
+              <p style={{ color: "#fff", fontWeight: 900, fontSize: 14, margin: 0 }}>사주 결제하면 꿈해몽+점냥이+Q&amp;A 3종 24시간 무료!</p>
               <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, margin: "2px 0 0" }}>990원 결제 후 이 페이지로 돌아오면 전체 해석이 24시간 열려요</p>
             </div>
           </div>
