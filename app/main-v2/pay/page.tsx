@@ -296,15 +296,27 @@ function PayInner() {
         localStorage.setItem("price", String(amount));
         localStorage.setItem("v2_plan", "select");
       }
+      const targetUrl = isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next;
       try {
         if (typeof (window as any).gtag === "function") {
+          let navigated = false;
+          const goNow = () => {
+            if (navigated) return;
+            navigated = true;
+            window.location.href = targetUrl;
+          };
           (window as any).gtag("event", "conversion", {
             send_to: "AW-459070148/D7-4CKip7e0BEMS189oB",
             transaction_id: paymentId,
+            event_callback: goNow,
           });
+          setTimeout(goNow, 1000);
+        } else {
+          window.location.href = targetUrl;
         }
-      } catch {}
-      window.location.href = isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next;
+      } catch {
+        window.location.href = targetUrl;
+      }
     } catch {
       setError("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
