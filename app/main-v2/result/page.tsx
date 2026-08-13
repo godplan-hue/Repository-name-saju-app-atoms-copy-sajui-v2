@@ -450,9 +450,16 @@ function V2ResultInner() {
               const { entry } = await res.json();
               if (entry?.fullResult) {
                 localStorage.setItem("v2_result", JSON.stringify(entry.fullResult));
-                localStorage.setItem("v2_paid", "1");
-                localStorage.setItem("v2_plan", entry.fullResult.plan || "select");
-                localStorage.setItem("price", entry.fullResult.price || "990");
+                const wasPaid = !!entry.fullResult.plan;
+                if (wasPaid) {
+                  localStorage.setItem("v2_paid", "1");
+                  localStorage.setItem("v2_plan", entry.fullResult.plan);
+                  localStorage.setItem("price", entry.fullResult.price || "990");
+                } else {
+                  localStorage.removeItem("v2_paid");
+                  localStorage.removeItem("v2_plan");
+                  localStorage.removeItem("price");
+                }
                 window.location.replace("/main-v2/result");
                 return;
               }
