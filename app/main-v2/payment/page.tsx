@@ -143,17 +143,6 @@ function PaymentInner() {
         body: JSON.stringify({ code: info.couponCode }),
       }).catch(() => {});
     }
-    fetch("/api/v2/save-payment", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: `pay_${Date.now()}`,
-        phone: cleanMobile || "",
-        name: info.modalName.trim() || "",
-        amount: info.modalPrice,
-        category: info.orderName,
-        source: "payment",
-      }),
-    }).catch(() => {});
     if (cleanMobile) {
       try { localStorage.setItem("v2_saved_phone", cleanMobile); } catch {}
     }
