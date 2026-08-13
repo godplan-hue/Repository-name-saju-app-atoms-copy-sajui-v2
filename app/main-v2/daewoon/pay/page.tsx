@@ -79,7 +79,11 @@ function DaewoonPayInner() {
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
-        redirectUrl: `${window.location.origin}${window.location.pathname}${window.location.search}`,
+        // 이 페이지는 항상 ?price=...&count=... 물음표가 붙어서 열리는데,
+        // 그게 redirectUrl에 그대로 들어가면 카카오페이가 돌아올 때 자기
+        // 파라미터를 또 붙이면서 주소가 깨져 결제 후 사이트로 못 돌아오는
+        // 문제가 있었음 → pathname만 남겨 항상 깨끗한 주소로 되돌아오게 함
+        redirectUrl: `${window.location.origin}${window.location.pathname}`,
       });
       // 리디렉션 방식이면 여기 도달하지 않고 페이지가 이동함 — 아래는 PC 팝업 등
       // 리디렉션 없이 바로 결과를 돌려받는 경우에만 실행됨
