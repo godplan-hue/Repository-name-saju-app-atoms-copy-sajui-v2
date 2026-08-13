@@ -566,8 +566,8 @@ export default function V2Profile() {
                 </label>
                 <label style={{ display: "flex", alignItems: "flex-start", gap: 9, cursor: "pointer" }}>
                   <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)} style={{ marginTop: 2, width: 16, height: 16, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
-                  <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
-                    <strong style={{ color: "rgba(255,255,255,0.85)" }}>[선택] 마케팅 수신 동의</strong><br />
+                  <span style={{ fontSize: 12, color: "#4b5563", lineHeight: 1.6 }}>
+                    <strong style={{ color: "#1a1a2e" }}>[선택] 마케팅 수신 동의</strong><br />
                     점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
                   </span>
                 </label>
