@@ -379,7 +379,7 @@ function V2ResultInner() {
   const [couponCode, setCouponCode] = useState("");
   const [speaking, setSpeaking] = useState(false);
   const [shareId, setShareId] = useState<string>("");
-  const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void } | null>(null);
+  const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void; confirmLabel?: string } | null>(null);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
   const restartingRef = useRef(false);
@@ -496,7 +496,20 @@ function V2ResultInner() {
         const res = await fetch("/api/v2/share", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: r.profile?.name, scores: r.scores, luckyColor: r.luckyColor, luckyNumber: r.luckyNumber, luckyDirection: r.luckyDirection, categories: validCats, tier: isPackage ? "package" : isPaid ? "select" : "free", birthYear: r.profile?.birthYear, fullResult: { ...r, plan: isPackage ? "package" : isPaid ? "select" : "", price: price } }),
+          body: JSON.stringify({
+            name: r.profile?.name, scores: r.scores, luckyColor: r.luckyColor, luckyNumber: r.luckyNumber, luckyDirection: r.luckyDirection, categories: validCats,
+            tier: isPackage ? "package" : isPaid ? "select" : "free", birthYear: r.profile?.birthYear,
+            fullResult: {
+              ...r,
+              plan: isPackage ? "package" : isPaid ? "select" : "",
+              price: price,
+              // 백엔드는 결제 여부와 무관하게 5개 카테고리 텍스트를 항상 다 만들어두므로
+              // allAnalyses의 key만으로는 "실제로 구매한 카테고리"를 알 수 없음 —
+              // 다른 브라우저에서 열어도 정확히 복원되도록 실제 구매 목록을 명시 저장
+              paidCats: isPaid && !isPackage ? cats : undefined,
+              pkgName: isPackage ? (sessionStorage.getItem("selectedPackage") ?? "") : undefined,
+            },
+          }),
         });
         if (res.ok) {
           const data = await res.json();
@@ -547,10 +560,14 @@ function V2ResultInner() {
                   localStorage.setItem("price", entry.fullResult.price || "990");
                   // select(개별 구매) 결과를 다른 브라우저에서 열 때, 그 브라우저엔
                   // v2_paid_cats가 없어서 전체 카테고리가 뜨는 버그 수정 —
-                  // 실제로 결제 시 분석된 카테고리(allAnalyses의 key)로 명시 저장
+                  // 저장해둔 실제 구매 목록(paidCats)으로 명시 복원. 옛날 공유
+                  // 데이터라 paidCats가 없으면(이 수정 이전 것) 최후 수단으로만 전체 표시
                   if (entry.fullResult.plan === "select") {
-                    const purchasedCats = Object.keys(entry.fullResult.allAnalyses || {});
+                    const purchasedCats = entry.fullResult.paidCats ?? SELECT_CATS.map(c => c.key);
                     localStorage.setItem("v2_paid_cats", JSON.stringify(purchasedCats));
+                  } else if (entry.fullResult.plan === "package") {
+                    if (entry.fullResult.pkgName) sessionStorage.setItem("selectedPackage", entry.fullResult.pkgName);
+                    localStorage.removeItem("v2_paid_cats");
                   } else {
                     localStorage.removeItem("v2_paid_cats");
                   }
@@ -1191,10 +1208,16 @@ function V2ResultInner() {
       });
       return;
     }
-    if (!("speechSynthesis" in window)) {
-      setTipModal({ text: "이 브라우저에서는 읽어주기가 지원되지 않아요.\n\nChrome이나 Safari 같은 다른 브라우저에서 열어주시면\n🔊 읽기 버튼이 정상 작동해요." });
+    const _isNaverInApp = /NAVER\(inapp/i.test(navigator.userAgent);
+    if (_isNaverInApp) {
+      setTipModal({
+        text: "이 링크를 복사해서 크롬 또는 구글 창에 붙여넣으면 읽기가 돼요.",
+        confirmLabel: "링크 복사하기",
+        onConfirm: () => { try { navigator.clipboard?.writeText(window.location.href); } catch {} },
+      });
       return;
     }
+    if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
@@ -1349,7 +1372,7 @@ function V2ResultInner() {
       <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setTipModal(null)}>
         <div style={{ background: "white", borderRadius: 20, padding: "28px 24px 20px", maxWidth: 340, width: "100%", boxShadow: "0 8px 40px rgba(0,0,0,0.25)" }} onClick={e => e.stopPropagation()}>
           <p style={{ fontSize: 15, fontWeight: 900, color: "#333", margin: "0 0 16px", lineHeight: 1.7, whiteSpace: "pre-line" }}>{tipModal.text}</p>
-          <button onClick={() => { const cb = tipModal.onConfirm; setTipModal(null); if (cb) cb(); }} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>확인</button>
+          <button onClick={() => { const cb = tipModal.onConfirm; setTipModal(null); if (cb) cb(); }} style={{ width: "100%", padding: "13px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>{tipModal.confirmLabel ?? "확인"}</button>
         </div>
       </div>
     )}
