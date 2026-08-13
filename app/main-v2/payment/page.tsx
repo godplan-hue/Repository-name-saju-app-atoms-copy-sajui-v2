@@ -224,7 +224,12 @@ function PaymentInner() {
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
         customer: { fullName: modalName.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
-        redirectUrl: `${window.location.origin}${window.location.pathname}${window.location.search}`,
+        // 이 페이지는 ?preselect=... 같은 물음표가 붙은 채로 열리는 경우가 많은데,
+        // 그 물음표가 redirectUrl에 그대로 들어가면 카카오페이가 돌아올 때 자기
+        // 파라미터(paymentId 등)를 또 붙이면서 주소가 깨져 "직접 이동하기"가
+        // 우리 사이트로 안 돌아오고 카카오톡 홈으로 튕기는 문제가 있었음 →
+        // pathname만 남겨서 항상 물음표 없는 깨끗한 주소로 되돌아오게 함
+        redirectUrl: `${window.location.origin}${window.location.pathname}`,
       });
       // 리디렉션 방식이면 여기 도달하지 않고 페이지가 이동함 — 아래는 PC 팝업 등
       // 리디렉션 없이 바로 결과를 돌려받는 경우에만 실행됨
