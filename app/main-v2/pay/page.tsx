@@ -17,7 +17,6 @@ function PayInner() {
   const amount = urlAmount || 990;
   const next = searchParams.get("next") || "/main-v2";
   const isTaegil = searchParams.get("taegil") === "1";
-  const isFreeCat = searchParams.get("freeCat") === "1";
 
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
@@ -134,7 +133,7 @@ function PayInner() {
         const savedProfile = localStorage.getItem("v2_saved_profile");
         const profile = rawResult ? JSON.parse(rawResult).profile : (savedProfile ? JSON.parse(savedProfile) : null);
         if (profile?.name && profile?.birthYear) {
-          const cat = isFreeCat ? "💰 재물운" : "💰 재물운";
+          const cat = "💰 재물운";
           const res = await fetch("/api/v2/analyze", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

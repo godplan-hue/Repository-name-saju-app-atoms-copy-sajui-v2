@@ -363,7 +363,7 @@ function PaymentCompleteInner() {
         const _payPhone = (() => { try { return sessionStorage.getItem("v2_payment_phone") || localStorage.getItem("v2_saved_phone") || ""; } catch { return ""; } })();
         const _payAmt = Number(pricePaid || paidAmount || "0") || 0;
         if (p.name && _payAmt > 0 && result.histId) {
-          const _payCats = (() => { try { const r = sessionStorage.getItem("v2_paid_cats"); return r ? JSON.parse(r) : []; } catch { return []; } })();
+          const _payCats = (() => { try { const ls = localStorage.getItem("v2_paid_cats"); if (ls) return JSON.parse(ls); const ss = sessionStorage.getItem("v2_paid_cats"); return ss ? JSON.parse(ss) : []; } catch { return []; } })();
           fetch("/api/v2/save-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
