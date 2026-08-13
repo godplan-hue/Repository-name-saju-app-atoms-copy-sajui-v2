@@ -545,10 +545,20 @@ function V2ResultInner() {
                   localStorage.setItem("v2_paid", "1");
                   localStorage.setItem("v2_plan", entry.fullResult.plan);
                   localStorage.setItem("price", entry.fullResult.price || "990");
+                  // select(개별 구매) 결과를 다른 브라우저에서 열 때, 그 브라우저엔
+                  // v2_paid_cats가 없어서 전체 카테고리가 뜨는 버그 수정 —
+                  // 실제로 결제 시 분석된 카테고리(allAnalyses의 key)로 명시 저장
+                  if (entry.fullResult.plan === "select") {
+                    const purchasedCats = Object.keys(entry.fullResult.allAnalyses || {});
+                    localStorage.setItem("v2_paid_cats", JSON.stringify(purchasedCats));
+                  } else {
+                    localStorage.removeItem("v2_paid_cats");
+                  }
                 } else {
                   localStorage.removeItem("v2_paid");
                   localStorage.removeItem("v2_plan");
                   localStorage.removeItem("price");
+                  localStorage.removeItem("v2_paid_cats");
                 }
                 window.location.replace(`/main-v2/result?sid=${sid}`);
                 return;
@@ -1181,7 +1191,10 @@ function V2ResultInner() {
       });
       return;
     }
-    if (!("speechSynthesis" in window)) return;
+    if (!("speechSynthesis" in window)) {
+      setTipModal({ text: "이 브라우저에서는 읽어주기가 지원되지 않아요.\n\nChrome이나 Safari 같은 다른 브라우저에서 열어주시면\n🔊 읽기 버튼이 정상 작동해요." });
+      return;
+    }
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
