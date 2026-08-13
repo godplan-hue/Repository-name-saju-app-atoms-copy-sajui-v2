@@ -49,7 +49,6 @@ export default function PassPage() {
   const finalAmount = couponData ? Math.round(AMOUNT*(1-couponData.discountPercent/100)) : AMOUNT;
 
   const unlockApps = async (phone: string) => {
-    const baseUntil = Date.now()+30*24*60*60*1000;
     let fbUnlocks: Record<string,number> = {};
     try {
       if (phone) {
@@ -61,8 +60,9 @@ export default function PassPage() {
     const unlocks: Record<string,number> = {};
     PASS_APPS.forEach(app => {
       try {
-        const prev = Number(localStorage.getItem(app.key) || 0);
-        const until = prev > Date.now() ? prev + 30*24*60*60*1000 : baseUntil;
+        const local = Number(localStorage.getItem(app.key) || 0);
+        const prev = Math.max(local, Number(fbUnlocks[app.key] || 0));
+        const until = (prev > Date.now() ? prev : Date.now()) + 30*24*60*60*1000;
         localStorage.setItem(app.key, String(until));
         unlocks[app.key] = until;
       } catch {}
