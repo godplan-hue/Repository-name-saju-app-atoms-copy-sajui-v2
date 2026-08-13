@@ -440,42 +440,9 @@ function V2ResultInner() {
   useEffect(() => {
     const sid = searchParams.get("sid");
     const raw = localStorage.getItem("v2_result");
-    if (!raw) {
-      // sid 있으면 Firebase에서 fullResult 복원 시도 (Toss 외부 브라우저로 localStorage 단절된 경우)
-      if (sid) {
-        (async () => {
-          try {
-            const res = await fetch(`/api/v2/share?id=${sid}`);
-            if (res.ok) {
-              const { entry } = await res.json();
-              if (entry?.fullResult) {
-                localStorage.setItem("v2_result", JSON.stringify(entry.fullResult));
-                const wasPaid = !!entry.fullResult.plan;
-                if (wasPaid) {
-                  localStorage.setItem("v2_paid", "1");
-                  localStorage.setItem("v2_plan", entry.fullResult.plan);
-                  localStorage.setItem("price", entry.fullResult.price || "990");
-                } else {
-                  localStorage.removeItem("v2_paid");
-                  localStorage.removeItem("v2_plan");
-                  localStorage.removeItem("price");
-                }
-                window.location.replace("/main-v2/result");
-                return;
-              }
-            }
-          } catch {}
-          // 복원 실패 시 — 자동이동 없이 그 자리에서 안내
-          setShowNoData(true);
-        })();
-        return;
-      }
-      // 데이터 없음 — localStorage 초기화 후 메인으로 자동이동
-      ["v2_saved_profile","v2_paid_cats","v2_plan","v2_paid","v2_price","haemong_unlock_until","momcare_unlock_until","jigun_unlock_until","resume_unlock_until"].forEach(k => localStorage.removeItem(k));
-      window.location.replace("/main-v2");
-      return;
-    }
-    const r = JSON.parse(raw);
+
+    const renderFromRaw = (rawStr: string) => {
+    const r = JSON.parse(rawStr);
     if (!r.histId) {
       r.histId = Date.now();
       r.savedAt = new Date().toISOString();
@@ -556,6 +523,56 @@ function V2ResultInner() {
         }
       } catch {}
     })();
+    };
+
+    if (sid) {
+      // sid가 있으면 로컬 v2_result가 이 sid와 같은 결과인지 histId로 확인 —
+      // 다르면(예: 외부 브라우저에 예전 세션의 낡은 결과가 남아있는 경우) 무시하고
+      // 공유된 결과로 덮어씀. "다른 브라우저로 열기"로 열었을 때 예전 유료 결과가
+      // 무료 결과 대신 뜨던 버그 수정 — 기존엔 raw가 조금이라도 있으면 sid를 아예
+      // 무시했음
+      const localHistId = (() => { if (!raw) return null; try { return JSON.parse(raw)?.histId ?? null; } catch { return null; } })();
+      (async () => {
+        try {
+          const res = await fetch(`/api/v2/share?id=${sid}`);
+          if (res.ok) {
+            const { entry } = await res.json();
+            if (entry?.fullResult) {
+              if (entry.fullResult.histId !== localHistId) {
+                localStorage.setItem("v2_result", JSON.stringify(entry.fullResult));
+                const wasPaid = !!entry.fullResult.plan;
+                if (wasPaid) {
+                  localStorage.setItem("v2_paid", "1");
+                  localStorage.setItem("v2_plan", entry.fullResult.plan);
+                  localStorage.setItem("price", entry.fullResult.price || "990");
+                } else {
+                  localStorage.removeItem("v2_paid");
+                  localStorage.removeItem("v2_plan");
+                  localStorage.removeItem("price");
+                }
+                window.location.replace("/main-v2/result");
+                return;
+              }
+              // 이미 로컬 데이터와 같은 결과 — 그대로 진행
+              renderFromRaw(raw as string);
+              return;
+            }
+          }
+        } catch {}
+        // 공유 데이터 조회 실패 — 로컬에 뭔가 있으면 그거라도 보여주고, 없으면 안내
+        if (raw) renderFromRaw(raw);
+        else setShowNoData(true);
+      })();
+      return;
+    }
+
+    if (!raw) {
+      // 데이터 없음 — localStorage 초기화 후 메인으로 자동이동
+      ["v2_saved_profile","v2_paid_cats","v2_plan","v2_paid","v2_price","haemong_unlock_until","momcare_unlock_until","jigun_unlock_until","resume_unlock_until"].forEach(k => localStorage.removeItem(k));
+      window.location.replace("/main-v2");
+      return;
+    }
+    renderFromRaw(raw);
   }, []);
 
   // select tier인데 allAnalyses가 비어있으면(payFree API 호출 실패 등)
