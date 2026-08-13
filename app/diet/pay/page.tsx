@@ -23,6 +23,26 @@ export default function DietPayPage() {
     } catch {}
   }, []);
 
+  // 모바일에서 카카오페이/카드 인증 후 redirectUrl로 되돌아온 경우 감지 → 결제완료 처리 이어서 진행
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    const pgPaymentId = sp.get("paymentId");
+    if (!pgPaymentId) return;
+    const pendingRaw = sessionStorage.getItem("pay_pending");
+    if (!pendingRaw) return;
+    sessionStorage.removeItem("pay_pending");
+    const pgCode = sp.get("code");
+    if (pgCode) {
+      setError(sp.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+    try {
+      const info = JSON.parse(pendingRaw);
+      finalizeSuccess(info);
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const applyCoupon = async () => {
     if (!coupon.trim()) return;
     setCouponLoading(true);
@@ -39,6 +59,21 @@ export default function DietPayPage() {
 
   const isFree = couponData && (Math.round(AMOUNT*(1-couponData.discountPercent/100))===0 || couponData.fullAccess);
   const finalAmount = couponData ? Math.round(AMOUNT*(1-couponData.discountPercent/100)) : AMOUNT;
+
+  // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
+  // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
+  const finalizeSuccess = async (info: { paymentId: string; finalAmount: number; name: string; cleanMobile: string; coupon: string; hasCoupon: boolean }) => {
+    if (info.coupon && info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.coupon.trim().toUpperCase()})}).catch(()=>{});
+    let _fbUntil = 0;
+    if (info.cleanMobile) { try { const _r = await fetch(`/api/phone-unlock?phone=${info.cleanMobile}`); const _d = await _r.json(); if (_d.ok) _fbUntil = Number(_d.unlocks?.diet_unlock_until||0); } catch {} }
+    const _local = Number(localStorage.getItem("diet_unlock_until")||0);
+    const _p = Math.max(_local, _fbUntil);
+    const _until = (_p>Date.now()?_p:Date.now())+30*24*60*60*1000;
+    try { localStorage.setItem("diet_unlock_until", String(_until)); } catch {}
+    if (info.cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:info.cleanMobile,unlocks:{diet_unlock_until:_until}})}).catch(()=>{});
+    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:info.paymentId,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"다이어트 30일권",source:"diet"})}).catch(()=>{});
+    window.location.href = "/diet";
+  };
 
   const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {
     if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
@@ -67,28 +102,28 @@ export default function DietPayPage() {
         ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
       const portone = await import("@portone/browser-sdk/v2");
+      const paymentId = `diet_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const pendingInfo = { paymentId, finalAmount, name, cleanMobile, coupon, hasCoupon: !!couponData };
+      // 모바일 카카오페이는 PG 인증 후 이 페이지로 리디렉션되며 새로 로드되므로,
+      // 완료 처리에 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
+      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
       const res = await portone.requestPayment({
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
-        paymentId: `diet_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+        paymentId,
         orderName: "점운 다이어트 30일권",
         totalAmount: finalAmount,
         currency: "KRW",
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile },
+        redirectUrl: `${window.location.origin}${window.location.pathname}${window.location.search}`,
       });
-      if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); return; }
-      if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-      let _fbUntil = 0;
-      if (cleanMobile) { try { const _r = await fetch(`/api/phone-unlock?phone=${cleanMobile}`); const _d = await _r.json(); if (_d.ok) _fbUntil = Number(_d.unlocks?.diet_unlock_until||0); } catch {} }
-      const _local = Number(localStorage.getItem("diet_unlock_until")||0);
-      const _p = Math.max(_local, _fbUntil);
-      const _until = (_p>Date.now()?_p:Date.now())+30*24*60*60*1000;
-      try { localStorage.setItem("diet_unlock_until", String(_until)); } catch {}
-      if (cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,unlocks:{diet_unlock_until:_until}})}).catch(()=>{});
-      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`diet_${Date.now()}`,phone:cleanMobile||"",name:name.trim()||"",amount:finalAmount,category:"다이어트 30일권",source:"diet"})}).catch(()=>{});
-      window.location.href = "/diet";
+      // 리디렉션 방식이면 여기 도달하지 않고 페이지가 이동함 — 아래는 리디렉션 없이
+      // 바로 결과를 돌려받는 경우(PC 등)에만 실행됨
+      if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); try { sessionStorage.removeItem("pay_pending"); } catch {} return; }
+      try { sessionStorage.removeItem("pay_pending"); } catch {}
+      await finalizeSuccess(pendingInfo);
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
     finally { setLoading(false); }
   };

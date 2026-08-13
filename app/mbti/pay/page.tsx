@@ -50,6 +50,37 @@ function PayInner() {
   const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
   const isFree = couponData && (finalAmount === 0 || couponData.fullAccess);
 
+  // 모바일 카카오페이/카드 결제는 PG사 인증 후 이 페이지로 "새로 돌아오는" 방식이라
+  // requestPayment()가 프로미스로 끝나지 않는 경우가 많음 — 결제 시작 전에 완료 처리에
+  // 필요한 정보를 sessionStorage에 저장해두고, 돌아왔을 때 그 정보로 이어서 처리함
+  const finalizeSuccess = (info: { id: string; cleanMobile: string; name: string; finalAmount: number; coupon: string; hasCoupon: boolean }) => {
+    if (info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.coupon.trim().toUpperCase()})}).catch(()=>{});
+    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`mbti_${Date.now()}`,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"MBTI 심층 분석",source:"mbti"})}).catch(()=>{});
+    const _until = Date.now() + 24 * 60 * 60 * 1000;
+    try { localStorage.setItem("mbti_unlock_until", String(_until)); } catch {}
+    if (info.cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:info.cleanMobile,unlocks:{mbti_unlock_until:_until}})}).catch(()=>{});
+    window.location.href = info.id ? `/mbti/result/${info.id}?paid=1` : "/mbti";
+  };
+
+  // 모바일에서 카카오페이/카드 인증 후 redirectUrl로 되돌아온 경우 감지 → 결제완료 처리 이어서 진행
+  useEffect(() => {
+    const pgPaymentId = searchParams.get("paymentId");
+    if (!pgPaymentId) return;
+    const pendingRaw = sessionStorage.getItem("pay_pending");
+    if (!pendingRaw) return;
+    sessionStorage.removeItem("pay_pending");
+    const pgCode = searchParams.get("code");
+    if (pgCode) {
+      setError(searchParams.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+    try {
+      const info = JSON.parse(pendingRaw);
+      finalizeSuccess(info);
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {
     if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
     if (isFree) {
@@ -72,6 +103,10 @@ function PayInner() {
         ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
       const portone = await import("@portone/browser-sdk/v2");
+      const pendingInfo = { id, cleanMobile, name, finalAmount, coupon, hasCoupon: !!(coupon && couponData) };
+      // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
+      // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
+      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
       const res = await portone.requestPayment({
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
@@ -82,14 +117,13 @@ function PayInner() {
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
+        redirectUrl: `${window.location.origin}${window.location.pathname}${window.location.search}`,
       });
-      if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); return; }
-      if (coupon && couponData) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`mbti_${Date.now()}`,phone:cleanMobile||"",name:name.trim()||"",amount:finalAmount,category:"MBTI 심층 분석",source:"mbti"})}).catch(()=>{});
-      const _until = Date.now() + 24 * 60 * 60 * 1000;
-      try { localStorage.setItem("mbti_unlock_until", String(_until)); } catch {}
-      if (cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,unlocks:{mbti_unlock_until:_until}})}).catch(()=>{});
-      window.location.href = id ? `/mbti/result/${id}?paid=1` : "/mbti";
+      // 리디렉션 방식이면 여기 도달하지 않고 페이지가 이동함 — 아래는 리디렉션 없이
+      // 바로 결과를 돌려받는 경우에만 실행됨
+      if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); try { sessionStorage.removeItem("pay_pending"); } catch {} return; }
+      try { sessionStorage.removeItem("pay_pending"); } catch {}
+      finalizeSuccess(pendingInfo);
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
     finally { setLoading(false); }
   };
