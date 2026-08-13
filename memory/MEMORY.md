@@ -4,13 +4,13 @@
 - [⭐⭐⭐ 부드러운 존댓말 톤 사용](feedback_warm_tone_esther.md) — "에스더님" 호칭+존댓말+친구처럼 응원. 반말/건조체 금지 (2026-08-11 직접 교정)
 - [⭐⭐⭐ 답변 핵심만 짧게](feedback_keep_replies_very_short.md) — 화면보며 진행할땐 설명 최소화, 할일만 번호로 짧게 (2026-08-13 직접 교정)
 - [⭐⭐⭐ 17개앱 광고구조 마스터 (2026-08-13)](project_ad_structure_master_2026_08_13.md) — 진입광고+결과직전광고+섹션마다광고, 일기류 히스토리=2천포인트(출석+광고3회), MBTI 이중광고 그대로 유지 결정
-- [⭐⭐⭐ 구글애즈 전환추적 0건 버그 수정 완료 (2026-08-13)](project_google_ads_conversion_fix_2026_08_13.md) — gtag 발송직후 페이지이동으로 신호끊기던 버그, event_callback으로 수정(commit 951e91c). 다른앱 결제 전환추적 넣을 때 이 패턴 필수
-- [⭐⭐⭐ 스마트발송 신규유입 정정 (2026-08-13)](project_smartpush_new_user_acquisition.md) — 방문이력 없어도 발송 가능한 "신규 유입 유도하기" 카테고리 존재, jeomun.com=결제전환/토스앱=재방문 채널전략 분리, MBTI 3회광고·다이어트 광고코드없음 확인
 - [⭐⭐ 2026-08-11 최신 상태 업데이트](project_status_2026_08_11_update.md) — 토스 17개중 3개만 출시(14개 순차출시 필요), jeomun.com 카카오페이+신용카드만 연결, SEO 오늘 대량 제출완료
 - [⭐ 세션 2026-08-11 — SEO 5700개 완성+구글/빙 사이트맵 제출+감정일기 약관 등록](project_session_2026_08_11_seo.md) — 19개앱 ×300개 가이드페이지 완성, sitemap 4906개 추가, BingSiteAuth.xml, 감정일기 약관 URL등록 완료
 - [⭐⭐ 세션 2026-08-11 — 노마드코더+브런치+링크드인 홍보](project_session_2026_08_11_promo_brunch_linkedin.md) — 브런치 작가신청 제출(승인대기,다음세션확인), 링크드인 리브랜딩+게시글 발행(공개확인됨), 노마드코더 #portfolio 게시완료
 - [⚠️ 토스앱 유사카테고리 반려 경고 (Trinity 인터뷰)](reference_nomadcoders_trinity_toss_interview.md) — 사주/타로처럼 겹치는 앱 개발후 심사넣으면 반려됨. 심사 먼저 문의 or 기존앱 내부통합으로 우회. 점운 17개 토스앱 출시 시 필독
 - [⭐ 앱인토스 플랫폼 업데이트 (2026-08-12)](project_appintoss_update_2026_08.md) — 비즈월렛 최소충전 5만원으로 인하+1인일일한도 설정가능, 공유링크개선, 멤버권한분리, SDK3.0, 게임카테고리규정
+- [⭐⭐⭐ 2026-08-11 결제버그 마라톤 6개 원인+수정 총정리](project_session_2026_08_11_payment_bug_marathon.md) — 구글모바일 paymentId유실/storage유실/타임아웃없음/쿼리스트링/팝업방식/DB중복저장, 재발시 여기부터 확인
+- [⛔⛔⛔ 무관한 버그 쫓다 방어코드 무단추가 금지](feedback_no_speculative_defensive_code.md) — 2026-08-11 카톡결제 무단차단 사건(에스더님 격분, 원복). 승인된 흐름은 추측만으로 절대 손대지 말 것
 
 - [⭐⭐⭐ 전화번호 일치 잠금 구현 (미완료 — 다음 세션 바로 시작)](project_phone_match_pending.md) — 결제한 번호만 24시간 열림, 다른 번호 잠금. jigun pay만 완료, 나머지 11개 파일 미완료. 구현 코드+파일목록 전부 저장됨
 
