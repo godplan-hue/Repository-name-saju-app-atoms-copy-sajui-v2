@@ -118,9 +118,6 @@ export default function YearlyPage() {
   const totalScore = scores?.total ?? 0;
   const scoreLabel = totalScore >= 75 ? "강한 길운 ✨" : totalScore >= 60 ? "안정적인 흐름 🌿" : "변화가 필요한 시기 🌱";
 
-  // 무료 미리보기: 첫 1줄만 (결제 유도를 위해 최소한만 공개)
-  const teaserLines = yearlyText.split("\n").filter(l => l.trim()).slice(0, 1).join("\n");
-
   return (
     <>
     {/* 고정 읽기 버튼 */}
@@ -216,11 +213,10 @@ export default function YearlyPage() {
               {paid ? (
                 <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line", wordBreak: "keep-all" }}>{yearlyText}</p>
               ) : (
-                <>
-                  <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: "0 0 10px", whiteSpace: "pre-line", wordBreak: "keep-all" }}>{teaserLines}</p>
-                  <div style={{ borderRadius: 10, background: "linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.95))", height: 60, marginTop: -60, position: "relative", pointerEvents: "none" }} />
-                  <p style={{ fontSize: 12, color: "#9ca3af", textAlign: "center", margin: "8px 0 0" }}>🔒 전체 내용은 결제 후 확인할 수 있어요</p>
-                </>
+                <div style={{ textAlign: "center", padding: "20px 0" }}>
+                  <div style={{ fontSize: 28, marginBottom: 8 }}>🔒</div>
+                  <p style={{ fontSize: 13, color: "#9ca3af", margin: 0 }}>결제 후 전체 내용을 확인할 수 있어요</p>
+                </div>
               )}
             </div>
 
