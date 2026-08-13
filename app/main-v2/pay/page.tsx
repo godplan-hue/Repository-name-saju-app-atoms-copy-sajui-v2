@@ -294,6 +294,12 @@ function PayInner() {
   }, []);
 
   const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {
+    // 카카오톡 인앱 브라우저 안에서는 결제 승인 후 우리 사이트로 돌아오지 못하고
+    // 카카오 화면에 갇히는 문제가 있어서, 결제 전에 외부 브라우저로 나가도록 안내함
+    if (/KAKAOTALK|kakaoBrowser|KAKAO/i.test(navigator.userAgent)) {
+      alert("카카오톡 안에서는 결제가 끝까지 진행되지 않을 수 있어요.\n\n화면 오른쪽 위 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n다시 결제해주세요.");
+      return;
+    }
     if (!refundAgreed) { setError("아래 체크박스를 먼저 체크해주세요. ✅"); return; }
     if (!mobile.replace(/\D/g, "") || mobile.replace(/\D/g, "").length < 10) { setError("전화번호를 입력해주세요."); return; }
     setLoading(true); setError("");
