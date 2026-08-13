@@ -117,6 +117,7 @@ export default function DietPayPage() {
         currency: "KRW",
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
+        windowType: { mobile: "REDIRECTION" },
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile },
         redirectUrl: `${window.location.origin}${window.location.pathname}`,
       });

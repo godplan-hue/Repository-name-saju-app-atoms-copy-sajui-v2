@@ -78,6 +78,7 @@ function DaewoonPayInner() {
         currency: "KRW",
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
+        windowType: { mobile: "REDIRECTION" },
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
         // 이 페이지는 항상 ?price=...&count=... 물음표가 붙어서 열리는데,
         // 그게 redirectUrl에 그대로 들어가면 카카오페이가 돌아올 때 자기

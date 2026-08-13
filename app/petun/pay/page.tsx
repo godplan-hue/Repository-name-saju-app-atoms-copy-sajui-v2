@@ -122,6 +122,7 @@ function PayInner() {
         currency: "KRW",
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
+        windowType: { mobile: "REDIRECTION" },
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
         redirectUrl: `${window.location.origin}${window.location.pathname}`,
       });

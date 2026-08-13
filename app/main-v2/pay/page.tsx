@@ -349,6 +349,7 @@ function PayInner() {
         },
         redirectUrl: `${window.location.origin}${window.location.pathname}`,
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
+        windowType: { mobile: "REDIRECTION" },
       };
       const response = await PortOne.requestPayment(paymentRequest);
       // 리디렉션 방식이면 여기 도달하지 않고 페이지가 이동함 — 아래는 PC 팝업 등

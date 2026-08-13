@@ -223,6 +223,9 @@ function PaymentInner() {
         currency: "KRW",
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
+        // 모바일에서 카카오페이가 팝업 방식으로 뜨면 승인 후 우리 사이트로 안 돌아오고
+        // 멈추는 문제가 있어 — 무조건 페이지 새로고침(리다이렉션) 방식으로 고정
+        windowType: { mobile: "REDIRECTION" },
         customer: { fullName: modalName.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
         // 이 페이지는 ?preselect=... 같은 물음표가 붙은 채로 열리는 경우가 많은데,
         // 그 물음표가 redirectUrl에 그대로 들어가면 카카오페이가 돌아올 때 자기
