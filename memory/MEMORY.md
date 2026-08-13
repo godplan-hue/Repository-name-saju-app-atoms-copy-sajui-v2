@@ -2,6 +2,8 @@
 
 - [⭐⭐⭐ 사주아이 강의 성장비법+PART6 홍보법+비용관리+프롬프트세트+Figma워크플로](reference_sajaui_course_growth_secrets.md) — 니치Fit/글로벌진출/PART6 홍보광고·SEO·AEO·SNS전략(가장중요)/운영비용관리/랜딩~토스PG 프롬프트5개/FigJam+Claude MCP 부록 (2026-08-11)
 - [⭐⭐⭐ 부드러운 존댓말 톤 사용](feedback_warm_tone_esther.md) — "에스더님" 호칭+존댓말+친구처럼 응원. 반말/건조체 금지 (2026-08-11 직접 교정)
+- [⭐⭐⭐ 답변 핵심만 짧게](feedback_keep_replies_very_short.md) — 화면보며 진행할땐 설명 최소화, 할일만 번호로 짧게 (2026-08-13 직접 교정)
+- [⭐⭐⭐ 17개앱 광고구조 마스터 (2026-08-13)](project_ad_structure_master_2026_08_13.md) — 진입광고+결과직전광고+섹션마다광고, 일기류 히스토리=2천포인트(출석+광고3회), MBTI 이중광고 그대로 유지 결정
 - [⭐⭐ 2026-08-11 최신 상태 업데이트](project_status_2026_08_11_update.md) — 토스 17개중 3개만 출시(14개 순차출시 필요), jeomun.com 카카오페이+신용카드만 연결, SEO 오늘 대량 제출완료
 - [⭐ 세션 2026-08-11 — SEO 5700개 완성+구글/빙 사이트맵 제출+감정일기 약관 등록](project_session_2026_08_11_seo.md) — 19개앱 ×300개 가이드페이지 완성, sitemap 4906개 추가, BingSiteAuth.xml, 감정일기 약관 URL등록 완료
 - [⭐⭐ 세션 2026-08-11 — 노마드코더+브런치+링크드인 홍보](project_session_2026_08_11_promo_brunch_linkedin.md) — 브런치 작가신청 제출(승인대기,다음세션확인), 링크드인 리브랜딩+게시글 발행(공개확인됨), 노마드코더 #portfolio 게시완료
