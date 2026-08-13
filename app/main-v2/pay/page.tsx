@@ -297,17 +297,12 @@ function PayInner() {
       return;
     }
 
-    // 일부 모바일 브라우저(구글/크롬 등)는 결제 앱에서 돌아올 때 주소창의 paymentId가
-    // 유실되는 경우가 있음 → 결제 게이트웨이에서 돌아온 것으로 보이고(referrer),
-    // 결제 시작 정보가 20분 이내로 신선하면 저장해둔 정보로 완료 처리를 이어감
-    const referer = document.referrer || "";
-    const fromPaymentGateway = /kakaopay|portone|inicis|kcp|nice|kftc|payapp/i.test(referer);
-    const isFresh = typeof info.savedAt === "number" && Date.now() - info.savedAt < 20 * 60 * 1000;
-    if (fromPaymentGateway && isFresh) {
-      sessionStorage.removeItem("pay_pending");
-      try { localStorage.removeItem("pay_pending"); } catch {}
-      finalizeSuccess(info);
-    }
+    // ⚠️ 실제 결제 확인 없이 referrer만 보고 결제완료 처리하면, 결제가 안 됐는데도
+    // "결제완료"로 잘못 표시되는 위험이 있어 이 방식은 사용하지 않음(가짜 결제완료 버그 원인).
+    // paymentId가 없으면 결제가 완료됐다고 확신할 수 없으므로 안내만 하고 재시도를 유도함.
+    sessionStorage.removeItem("pay_pending");
+    try { localStorage.removeItem("pay_pending"); } catch {}
+    setError("결제 확인이 되지 않았어요. 카카오페이·카드사에서 결제내역을 확인해주세요. 실제로 결제됐는데 결과가 안 나오면 전화번호와 함께 문의해주세요. 결제가 안 됐다면 다시 시도해주세요.");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
