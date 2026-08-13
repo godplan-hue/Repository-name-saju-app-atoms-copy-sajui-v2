@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import ShareActions from "@/app/haemong/_components/ShareActions";
 import FortuneAnglesSection from "@/app/haemong/_components/FortuneAnglesSection";
 import SituationsSection from "@/app/haemong/_components/SituationsSection";
+import SajuUpsellCTA from "@/app/haemong/_components/SajuUpsellCTA";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 
@@ -118,9 +119,7 @@ export default async function KeywordPage({ params }: Props) {
             </div>
           </div>
           <div style={{ padding: "14px 18px" }}>
-            <Link href="/main-v2" style={{ display: "block", textAlign: "center", padding: "13px 0", borderRadius: 12, background: G, color: "#fff", fontSize: 15, fontWeight: 900, textDecoration: "none", boxShadow: "0 4px 14px rgba(236,72,153,0.4)" }}>
-              🐱 990원으로 사주 보기 → 꿈해몽 무료
-            </Link>
+            <SajuUpsellCTA />
             <p style={{ color: "#9ca3af", fontSize: 11, textAlign: "center", margin: "8px 0 0" }}>결제 후 뒤로가기로 돌아오면 잠긴 해석이 전부 열려요</p>
           </div>
         </div>
