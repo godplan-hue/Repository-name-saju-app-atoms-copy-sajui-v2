@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -68,9 +68,10 @@ function PayInner() {
   useEffect(() => {
     const pgPaymentId = searchParams.get("paymentId");
     if (!pgPaymentId) return;
-    const pendingRaw = sessionStorage.getItem("pay_pending");
+    const pendingRaw = (sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending"));
     if (!pendingRaw) return;
     sessionStorage.removeItem("pay_pending");
+    try { localStorage.removeItem("pay_pending"); } catch {}
     const pgCode = searchParams.get("code");
     if (pgCode) {
       setError(searchParams.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
@@ -106,7 +107,7 @@ function PayInner() {
       const pendingInfo = { id, cleanMobile, name, finalAmount, coupon, hasCoupon: !!(coupon && couponData) };
       // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
       // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
-      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
+      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
       const res = await portone.requestPayment({
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
@@ -121,8 +122,8 @@ function PayInner() {
       });
       // 리디렉션 방식이면 여기 도달하지 않고 페이지가 이동함 — 아래는 리디렉션 없이
       // 바로 결과를 돌려받는 경우에만 실행됨
-      if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); try { sessionStorage.removeItem("pay_pending"); } catch {} return; }
-      try { sessionStorage.removeItem("pay_pending"); } catch {}
+      if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {} return; }
+      try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
       finalizeSuccess(pendingInfo);
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
     finally { setLoading(false); }

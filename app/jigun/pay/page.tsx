@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -78,9 +78,10 @@ function PayInner() {
   useEffect(() => {
     const pgPaymentId = searchParams.get("paymentId");
     if (!pgPaymentId) return;
-    const pendingRaw = sessionStorage.getItem("pay_pending");
+    const pendingRaw = (sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending"));
     if (!pendingRaw) return;
     sessionStorage.removeItem("pay_pending");
+    try { localStorage.removeItem("pay_pending"); } catch {}
     const pgCode = searchParams.get("code");
     if (pgCode) {
       setError(searchParams.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
@@ -115,7 +116,7 @@ function PayInner() {
       const portone = await import("@portone/browser-sdk/v2");
       const paymentId = `jigun_${Date.now()}_${Math.random().toString(36).slice(2)}`;
       const pendingInfo = { paymentId, id, finalAmount, name, mobile, couponCode: coupon, hasCoupon: !!(coupon && couponData) };
-      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
+      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
       const res = await portone.requestPayment({
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
@@ -128,8 +129,8 @@ function PayInner() {
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
         redirectUrl: `${window.location.origin}${window.location.pathname}${window.location.search}`,
       });
-      if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); try { sessionStorage.removeItem("pay_pending"); } catch {} return; }
-      try { sessionStorage.removeItem("pay_pending"); } catch {}
+      if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {} return; }
+      try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
       finalizeSuccess(pendingInfo);
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
     finally { setLoading(false); }

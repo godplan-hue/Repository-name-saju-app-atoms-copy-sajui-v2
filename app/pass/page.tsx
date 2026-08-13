@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState, useEffect } from "react";
 
 const AMOUNT = 5900;
@@ -101,9 +101,10 @@ export default function PassPage() {
     const sp = new URLSearchParams(window.location.search);
     const pgPaymentId = sp.get("paymentId");
     if (!pgPaymentId) return;
-    const pendingRaw = sessionStorage.getItem("pay_pending");
+    const pendingRaw = (sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending"));
     if (!pendingRaw) return;
     sessionStorage.removeItem("pay_pending");
+    try { localStorage.removeItem("pay_pending"); } catch {}
     const pgCode = sp.get("code");
     if (pgCode) {
       setError(sp.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
@@ -129,7 +130,7 @@ export default function PassPage() {
       const pendingInfo = { mobile: cleanMobile, name, amount: finalAmount, coupon, hasCoupon: !!couponData };
       // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
       // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
-      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
+      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
       const res = await portone.requestPayment({
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
@@ -146,10 +147,10 @@ export default function PassPage() {
       // 리디렉션 없이 바로 결과를 돌려받는 경우에만 실행됨
       if (res && "code" in res) {
         setError(res.message || "결제에 실패했습니다.");
-        try { sessionStorage.removeItem("pay_pending"); } catch {}
+        try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
         return;
       }
-      try { sessionStorage.removeItem("pay_pending"); } catch {}
+      try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
       // 결제 성공
       await finalizeSuccess(pendingInfo);
     } catch { setError("결제 처리 중 오류가 발생했습니다."); }
