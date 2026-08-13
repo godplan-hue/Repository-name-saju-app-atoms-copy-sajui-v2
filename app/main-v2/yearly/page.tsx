@@ -118,8 +118,8 @@ export default function YearlyPage() {
   const totalScore = scores?.total ?? 0;
   const scoreLabel = totalScore >= 75 ? "강한 길운 ✨" : totalScore >= 60 ? "안정적인 흐름 🌿" : "변화가 필요한 시기 🌱";
 
-  // 무료 미리보기: 첫 3줄만
-  const teaserLines = yearlyText.split("\n").filter(l => l.trim()).slice(0, 4).join("\n");
+  // 무료 미리보기: 첫 1줄만 (결제 유도를 위해 최소한만 공개)
+  const teaserLines = yearlyText.split("\n").filter(l => l.trim()).slice(0, 1).join("\n");
 
   return (
     <>
@@ -238,15 +238,9 @@ export default function YearlyPage() {
                 <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1d4ed8", margin: "0 0 16px" }}>📅 2026년 월별 운세 미리보기</h2>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                   {MONTHS.map((m, i) => (
-                    <div key={m} style={{ background: i < 2 ? "#eff6ff" : "#f9fafb", border: `1px solid ${i < 2 ? "rgba(37,99,235,0.3)" : "#e5e7eb"}`, borderRadius: 10, padding: "10px 12px", filter: i >= 2 ? "blur(1.5px)" : "none", opacity: i >= 2 ? 0.6 : 1 }}>
+                    <div key={m} style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 10, padding: "10px 12px", filter: "blur(1.5px)", opacity: 0.6 }}>
                       <div style={{ fontSize: 13, fontWeight: 700, color: "#374151" }}>{MONTH_EMOJI[i]} {m}</div>
-                      {i < 2 ? (
-                        <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2 }}>
-                          {i === 0 ? "올해 목표 수립의 달" : "새로운 인연이 열리는 달"}
-                        </div>
-                      ) : (
-                        <div style={{ fontSize: 11, color: "#d1d5db", marginTop: 2 }}>🔒 결제 후 공개</div>
-                      )}
+                      <div style={{ fontSize: 11, color: "#d1d5db", marginTop: 2 }}>🔒 결제 후 공개</div>
                     </div>
                   ))}
                 </div>
