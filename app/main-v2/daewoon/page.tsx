@@ -286,6 +286,11 @@ function DaewoonInner() {
       alert("카카오톡에서 바로 읽기가 되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요.");
       return;
     }
+    if (/NAVER\(inapp/i.test(navigator.userAgent)) {
+      try { navigator.clipboard?.writeText(window.location.href); } catch {}
+      alert("이 링크를 복사해서 크롬 또는 구글 창에 붙여넣으면 읽기가 돼요.");
+      return;
+    }
     if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
@@ -492,7 +497,14 @@ function DaewoonInner() {
 
           {/* 헤더 */}
           <div style={{ marginBottom: 24 }}>
-            <button onClick={() => { window.location.href = "/main-v2"; }} style={{ background: "rgba(139,92,246,0.25)", border: "1px solid rgba(139,92,246,0.6)", color: "#fbbf24", padding: "8px 14px", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
+            <button onClick={() => {
+              if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+              releaseWakeLock();
+              sessionStorage.removeItem("daeunPaid");
+              sessionStorage.removeItem("daeunPaidCount");
+              sessionStorage.removeItem("daeunPaidIndices");
+              window.location.href = "/main-v2";
+            }} style={{ background: "rgba(139,92,246,0.25)", border: "1px solid rgba(139,92,246,0.6)", color: "#fbbf24", padding: "8px 14px", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 36, marginBottom: 6 }}>🌌</div>
               <h1 style={{ fontSize: 24, fontWeight: 900, color: "#fbbf24", margin: "0 0 6px" }}>대운(大運)</h1>

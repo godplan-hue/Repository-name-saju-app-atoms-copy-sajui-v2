@@ -27,7 +27,7 @@ function DaewoonPayInner() {
   // 모바일 결제(카카오페이/카드)는 PG사 인증 후 이 페이지로 "새로 돌아오는" 방식이라
   // requestPayment()가 프로미스로 끝나지 않는 경우가 많음 — 결제 시작 전에 정보를
   // sessionStorage에 저장해두고, 돌아왔을 때 그 정보로 완료 처리를 이어감
-  const finalizeSuccess = (info: { count: number; indices: string; mobile: string; name: string }) => {
+  const finalizeSuccess = (info: { count: number; indices: string; mobile: string; name: string; savedAt?: number }) => {
     const cleanMobile = info.mobile.replace(/\D/g, "");
     fetch("/api/v2/save-payment", {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -39,20 +39,39 @@ function DaewoonPayInner() {
   // 모바일에서 카카오페이/카드 인증 후 redirectUrl로 되돌아온 경우 감지 → 결제완료 처리 이어서 진행
   useEffect(() => {
     const pgPaymentId = searchParams.get("paymentId");
-    if (!pgPaymentId) return;
     const pendingRaw = (sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending"));
     if (!pendingRaw) return;
-    sessionStorage.removeItem("pay_pending");
-    try { localStorage.removeItem("pay_pending"); } catch {}
+
     const pgCode = searchParams.get("code");
-    if (pgCode) {
+    if (pgPaymentId && pgCode) {
+      sessionStorage.removeItem("pay_pending");
+      try { localStorage.removeItem("pay_pending"); } catch {}
       setError(searchParams.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
       return;
     }
-    try {
-      const info = JSON.parse(pendingRaw);
+
+    let info: any;
+    try { info = JSON.parse(pendingRaw); } catch { return; }
+
+    if (pgPaymentId) {
+      sessionStorage.removeItem("pay_pending");
+      try { localStorage.removeItem("pay_pending"); } catch {}
       finalizeSuccess(info);
-    } catch {}
+      return;
+    }
+
+    // 일부 모바일 브라우저(네이버/구글/크롬 등)는 결제 앱에서 돌아올 때 주소창의
+    // paymentId가 유실되는 경우가 있음 → 결제 게이트웨이에서 돌아온 것으로
+    // 보이고(referrer), 결제 시작 정보가 20분 이내로 신선하면 저장해둔 정보로
+    // 완료 처리를 이어감 (main-v2/pay/page.tsx와 동일 패턴)
+    const referer = document.referrer || "";
+    const fromPaymentGateway = /kakaopay|portone|inicis|kcp|nice|kftc|payapp/i.test(referer);
+    const isFresh = typeof info.savedAt === "number" && Date.now() - info.savedAt < 20 * 60 * 1000;
+    if (fromPaymentGateway && isFresh) {
+      sessionStorage.removeItem("pay_pending");
+      try { localStorage.removeItem("pay_pending"); } catch {}
+      finalizeSuccess(info);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -65,7 +84,7 @@ function DaewoonPayInner() {
         ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
       const portone = await import("@portone/browser-sdk/v2");
-      const pendingInfo = { count, indices, mobile, name };
+      const pendingInfo = { count, indices, mobile, name, savedAt: Date.now() };
       // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
       // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
       try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
@@ -141,7 +160,7 @@ function DaewoonPayInner() {
 
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "16px 18px", marginBottom: 14 }}>
           <div style={{ marginBottom: 12 }}>
-            <label style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", display: "block", marginBottom: 6 }}>이름 (선택)</label>
+            <label style={{ fontSize: 12, color: "#fbbf24", display: "block", marginBottom: 6 }}>이름 ★ 필수 (안 넣으면 결제 결과가 저장되지 않아요)</label>
             <input style={{ width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "11px 14px", color: "white", fontSize: 14, outline: "none", boxSizing: "border-box" }}
               placeholder="홍길동" value={name} onChange={e => setName(e.target.value)} />
           </div>

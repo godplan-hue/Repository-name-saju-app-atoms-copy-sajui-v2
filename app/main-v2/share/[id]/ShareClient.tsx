@@ -254,6 +254,13 @@ export default function ShareClient({ id }: { id: string }) {
       setTipModal({ text: "카카오톡에서 바로 읽기가 되지 않아요.\n\n화면 오른쪽 아래 점 세 개(⋮) 버튼을 누르고\n[다른 브라우저로 열기]를 선택한 다음\n🔊 읽기 버튼을 누르면 읽어주기가 작동해요." });
       return;
     }
+    if (/NAVER\(inapp/i.test(navigator.userAgent)) {
+      setTipModal({
+        text: "이 링크를 복사해서 크롬 또는 구글 창에 붙여넣으면 읽기가 돼요.",
+        onConfirm: () => { try { navigator.clipboard?.writeText(window.location.href); } catch {} },
+      });
+      return;
+    }
     if (!("speechSynthesis" in window)) return;
     if (speaking) {
       window.speechSynthesis.cancel();
