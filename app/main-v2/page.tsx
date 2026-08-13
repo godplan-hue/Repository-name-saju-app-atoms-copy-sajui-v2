@@ -926,8 +926,8 @@ export default function MainV2() {
           <p style={{ position: "relative", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.5, color: "#ffffff", animation: "textGlow 1.8s ease-in-out infinite" }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
         </div>
         <div style={{ textAlign: "center", marginTop: 16 }}>
-          <button onClick={goFree} style={{ padding: "15px 36px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite" }}>
-            🔮 지금 무료로 시작하기 →
+          <button onClick={() => router.push("/main-v2/payment")} style={{ padding: "15px 36px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite" }}>
+            💎 990원으로 바로 보기 →
           </button>
           <p style={{ fontSize: 11, fontWeight: 700, color: "#7c3aed", margin: "8px 0 0" }}>
             + 꿈해몽·점냥이·Q&A 3종 24시간 무료
