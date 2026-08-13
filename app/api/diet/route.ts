@@ -14,9 +14,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true });
     }
 
-    const { date, meals, totalCal } = body;
+    const { date, meals, totalCal, weight } = body;
     if (!date) return NextResponse.json({ error: "필수 파라미터 없음" }, { status: 400 });
-    await db.ref(`diet_logs/${safeId}/${date}`).set({ meals, totalCal, updatedAt: Date.now() });
+    await db.ref(`diet_logs/${safeId}/${date}`).set({ meals, totalCal, weight: weight ?? null, updatedAt: Date.now() });
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error(e);
