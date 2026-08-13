@@ -118,7 +118,7 @@ function PayInner() {
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
-        redirectUrl: `${window.location.origin}${window.location.pathname}${window.location.search}`,
+        redirectUrl: `${window.location.origin}${window.location.pathname}`,
       });
       // 리디렉션 방식이면 여기 도달하지 않고 페이지가 이동함 — 아래는 리디렉션 없이
       // 바로 결과를 돌려받는 경우에만 실행됨

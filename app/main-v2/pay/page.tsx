@@ -347,7 +347,7 @@ function PayInner() {
           phoneNumber: mobile.replace(/\D/g, ""),
           email: email.trim() || undefined,
         },
-        redirectUrl: `${window.location.origin}${window.location.pathname}${window.location.search}`,
+        redirectUrl: `${window.location.origin}${window.location.pathname}`,
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
       };
       const response = await PortOne.requestPayment(paymentRequest);

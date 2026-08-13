@@ -118,7 +118,7 @@ export default function HaemongPayPage() {
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile },
-        redirectUrl: `${window.location.origin}${window.location.pathname}${window.location.search}`,
+        redirectUrl: `${window.location.origin}${window.location.pathname}`,
       });
       if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {} return; }
       try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
