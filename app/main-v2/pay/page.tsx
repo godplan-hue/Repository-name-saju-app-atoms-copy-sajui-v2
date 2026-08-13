@@ -217,7 +217,7 @@ function PayInner() {
     }
     try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: cleanMobile, email: info.email.trim() })); } catch {}
     try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); const _existH = Number(localStorage.getItem("haemong_unlock_until")||0); localStorage.setItem("haemong_unlock_until", String(Math.max(_existH, _h))); if (cleanMobile) localStorage.setItem("haemong_unlock_phone", cleanMobile); } catch {}
-    if (info.displayAmount > 0 && info.name.trim()) {
+    if (info.displayAmount > 0 && info.name.trim() && !info.next.includes("/payment-complete")) {
       fetch("/api/v2/save-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
