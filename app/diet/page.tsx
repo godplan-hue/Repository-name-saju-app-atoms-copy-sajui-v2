@@ -413,12 +413,13 @@ export default function DietPage() {
     try {
       const r = await fetch(`/api/phone-unlock?phone=${ph}`);
       const d = await r.json();
-      if (d.ok && d.unlocks?.diet_unlock_until > Date.now()) {
+      const hasTicket = d.ok && d.unlocks?.diet_unlock_until > Date.now();
+      if (hasTicket) {
         try { localStorage.setItem("diet_unlock_until", String(d.unlocks.diet_unlock_until)); } catch {}
-        try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
-        setRestoreMsg("✅ 이용권 복원 완료! 새로고침할게요.");
-        setTimeout(() => window.location.reload(), 1000);
-      } else { setRestoreMsg("해당 전화번호로 등록된 이용권이 없어요."); }
+      }
+      try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
+      setRestoreMsg(hasTicket ? "✅ 이용권 복원 완료! 새로고침할게요." : "✅ 기록을 불러올게요. 새로고침할게요.");
+      setTimeout(() => window.location.reload(), 1000);
     } catch { setRestoreMsg("복원 중 오류가 발생했어요."); }
     finally { setRestoring(false); }
   };
