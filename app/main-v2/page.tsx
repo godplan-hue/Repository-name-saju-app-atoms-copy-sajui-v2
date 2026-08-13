@@ -825,12 +825,14 @@ export default function MainV2() {
                   onClick={() => {
                     if (!confirm("로그아웃하시겠어요? 다른 분 정보로 새로 시작할 수 있어요.")) return;
                     localStorage.removeItem("v2_user_name");
-                    // v2_saved_profile, v2_privacy_agreed는 일부러 안 지움 — 같은
-                    // 사람이 로그아웃 후 다시 로그인했을 때 생년월일 등을 또
-                    // 입력하거나 개인정보 동의를 다시 체크하지 않아도 되게 함.
-                    // (main-v2/profile에서 로그인한 이름과 저장된 이름이 다르면 그
-                    // 저장된 정보를 안 쓰도록 이미 따로 체크하고 있어서, "다른 분
-                    // 정보로 새로 시작"도 그쪼에서 정상적으로 처리됨)
+                    // v2_saved_profile/v2_verified_phone을 남겨두면 로그아웃 후에도
+                    // 무료운세 버튼(goFree)과 /main-v2/profile 쪽 "저장된 정보 있으면
+                    // 바로 분석" 단축 로직이 로그인 여부와 무관하게 그대로 재사용해서,
+                    // 정보를 하나도 안 입력해도 곧장 예전 결과가 나오고 "다른 분
+                    // 정보로 새로 시작"이 실제로는 안 되는 문제가 있었음 — 로그아웃 시
+                    // 함께 지워서 진짜로 새 정보를 입력해야 하게 함
+                    localStorage.removeItem("v2_saved_profile");
+                    localStorage.removeItem("v2_verified_phone");
                     localStorage.removeItem("v2_login_session_id");
                     localStorage.removeItem("v2_profile_shown_session");
                     sessionStorage.removeItem("v2_profile");
