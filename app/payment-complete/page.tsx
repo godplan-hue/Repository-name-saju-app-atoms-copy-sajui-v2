@@ -313,6 +313,10 @@ function PaymentCompleteInner() {
       const isPkg = PKG_DISPLAY_NAMES.includes(p.pkg);
       const prePlan = isPkg ? "package" : "select";
 
+      // 카카오톡 인앱 브라우저에서 이 요청이 멈추면 화면이 영원히 "분석 중..."에
+      // 갇히는 문제가 있어서, 20초 넘으면 타임아웃 처리해 에러 안내로 빠져나가게 함
+      const analyzeAc = new AbortController();
+      const analyzeTimeoutId = setTimeout(() => analyzeAc.abort(), 20000);
       const res = await fetch("/api/v2/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -331,7 +335,9 @@ function PaymentCompleteInner() {
             : undefined,
           partnerGender: "N",
         }),
+        signal: analyzeAc.signal,
       });
+      clearTimeout(analyzeTimeoutId);
 
       if (!res.ok) {
         alert("분석 실패. 다시 시도해주세요.");
@@ -398,6 +404,10 @@ function PaymentCompleteInner() {
             text: v,
           }));
         if (shareCats.length > 0) {
+          // 카카오톡 인앱 브라우저에서 이 요청이 느려지거나 멈추면 화면 전환이
+          // 안 되는 문제가 있어서, 5초 넘으면 포기하고 바로 다음으로 진행함
+          const ac = new AbortController();
+          const timeoutId = setTimeout(() => ac.abort(), 5000);
           const shareRes = await fetch("/api/v2/share", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -407,7 +417,9 @@ function PaymentCompleteInner() {
               categories: shareCats, tier: plan, birthYear: p.birthYear,
               fullResult: { ...result, plan, price },
             }),
+            signal: ac.signal,
           });
+          clearTimeout(timeoutId);
           if (shareRes.ok) { const sd = await shareRes.json(); sidParam = sd.id ?? ""; }
         }
       } catch {}
