@@ -276,20 +276,38 @@ function PayInner() {
   // 모바일에서 카카오페이/카드 인증 후 redirectUrl로 되돌아온 경우 감지 → 결제완료 처리 이어서 진행
   useEffect(() => {
     const pgPaymentId = searchParams.get("paymentId");
-    if (!pgPaymentId) return;
     const pendingRaw = sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending");
     if (!pendingRaw) return;
-    sessionStorage.removeItem("pay_pending");
-    try { localStorage.removeItem("pay_pending"); } catch {}
+
     const pgCode = searchParams.get("code");
-    if (pgCode) {
+    if (pgPaymentId && pgCode) {
+      sessionStorage.removeItem("pay_pending");
+      try { localStorage.removeItem("pay_pending"); } catch {}
       setError(searchParams.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
       return;
     }
-    try {
-      const info = JSON.parse(pendingRaw);
+
+    let info: any;
+    try { info = JSON.parse(pendingRaw); } catch { return; }
+
+    if (pgPaymentId) {
+      sessionStorage.removeItem("pay_pending");
+      try { localStorage.removeItem("pay_pending"); } catch {}
       finalizeSuccess(info);
-    } catch {}
+      return;
+    }
+
+    // 일부 모바일 브라우저(구글/크롬 등)는 결제 앱에서 돌아올 때 주소창의 paymentId가
+    // 유실되는 경우가 있음 → 결제 게이트웨이에서 돌아온 것으로 보이고(referrer),
+    // 결제 시작 정보가 20분 이내로 신선하면 저장해둔 정보로 완료 처리를 이어감
+    const referer = document.referrer || "";
+    const fromPaymentGateway = /kakaopay|portone|inicis|kcp|nice|kftc|payapp/i.test(referer);
+    const isFresh = typeof info.savedAt === "number" && Date.now() - info.savedAt < 20 * 60 * 1000;
+    if (fromPaymentGateway && isFresh) {
+      sessionStorage.removeItem("pay_pending");
+      try { localStorage.removeItem("pay_pending"); } catch {}
+      finalizeSuccess(info);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -329,6 +347,7 @@ function PayInner() {
       const pendingInfo = {
         paymentId, amount, displayAmount, name, mobile, email,
         couponCode, discountPct, next, isTaegil, sourceInfo,
+        savedAt: Date.now(),
       };
       // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
       // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
