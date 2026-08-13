@@ -550,7 +550,7 @@ function V2ResultInner() {
                   localStorage.removeItem("v2_plan");
                   localStorage.removeItem("price");
                 }
-                window.location.replace("/main-v2/result");
+                window.location.replace(`/main-v2/result?sid=${sid}`);
                 return;
               }
               // 이미 로컬 데이터와 같은 결과 — 그대로 진행
