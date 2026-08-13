@@ -872,6 +872,12 @@ export default function MainV2() {
             <span key={b.text} style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: b.bg, borderRadius: 20, padding: "6px 12px", boxShadow: "0 3px 8px rgba(0,0,0,0.15)" }}>{b.text}</span>
           ))}
         </div>
+        <button onClick={goFree} style={{ marginTop: 16, padding: "15px 36px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite" }}>
+          🔮 3초만에 무료로 내 사주 보기
+        </button>
+        <p style={{ fontSize: 11, fontWeight: 700, color: "#7c3aed", margin: "8px 0 0" }}>
+          + 꿈해몽·점냥이·Q&A 3종 24시간 무료
+        </p>
       </section>
 
       {/* 슬라이드 배너 */}
@@ -918,6 +924,14 @@ export default function MainV2() {
           <div style={{ position: "absolute", top: 0, left: 0, width: "40%", height: "200%", background: "linear-gradient(100deg, transparent, rgba(255,255,255,0.55), transparent)", animation: "shimmerSweep 3.2s ease-in-out infinite", pointerEvents: "none" }} />
           <p style={{ position: "relative", fontSize: 13, fontWeight: 800, color: "#f9a8d4", margin: "0 0 5px" }}>혹시 소문 듣고 오셨나요?</p>
           <p style={{ position: "relative", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.5, color: "#ffffff", animation: "textGlow 1.8s ease-in-out infinite" }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
+        </div>
+        <div style={{ textAlign: "center", marginTop: 16 }}>
+          <button onClick={goFree} style={{ padding: "15px 36px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite" }}>
+            🔮 지금 무료로 시작하기 →
+          </button>
+          <p style={{ fontSize: 11, fontWeight: 700, color: "#7c3aed", margin: "8px 0 0" }}>
+            + 꿈해몽·점냥이·Q&A 3종 24시간 무료
+          </p>
         </div>
       </div>
 
