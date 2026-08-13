@@ -132,7 +132,7 @@ function PaymentInner() {
   // requestPayment()가 프로미스로 끝나지 않는 경우가 많음 — 결제 시작 전에 정보를
   // sessionStorage에 저장해두고, 돌아왔을 때 그 정보로 완료 처리를 이어감
   const finalizeModalPaymentSuccess = (info: {
-    modalPrice: number; modalNextUrl: string; modalName: string; modalMobile: string;
+    modalPrice: number; modalNextUrl: string; modalName: string; modalMobile: string; paymentId: string;
     orderName: string; couponCode: string;
   }) => {
     const cleanMobile = info.modalMobile.replace(/\D/g, "");
@@ -146,7 +146,27 @@ function PaymentInner() {
     if (cleanMobile) {
       try { localStorage.setItem("v2_saved_phone", cleanMobile); } catch {}
     }
-    window.location.href = info.modalNextUrl;
+    if (info.modalPrice > 0 && info.paymentId) {
+      fetch("/api/v2/save-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: info.paymentId,
+          date: new Date().toISOString(),
+          name: info.modalName,
+          phone: cleanMobile,
+          amount: info.modalPrice,
+          package: info.orderName,
+          categories: [],
+          plan: "select",
+          discountCode: info.couponCode || "",
+        }),
+      }).catch(() => {});
+    }
+    const targetUrl = info.paymentId
+      ? `${info.modalNextUrl}${info.modalNextUrl.includes("?") ? "&" : "?"}pid=${encodeURIComponent(info.paymentId)}`
+      : info.modalNextUrl;
+    window.location.href = targetUrl;
   };
 
   // 모바일에서 카카오페이/카드 인증 후 redirectUrl로 되돌아온 경우 감지 → 결제완료 처리 이어서 진행
@@ -188,9 +208,10 @@ function PaymentInner() {
       const portone = await import("@portone/browser-sdk/v2");
       const _params = new URLSearchParams(modalNextUrl.split("?")[1] || "");
       const _orderName = _params.get("package") || _params.get("special") || "점운 운세";
+      const _paymentId = `pay_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
       const pendingInfo = {
-        modalPrice, modalNextUrl, modalName, modalMobile,
+        modalPrice, modalNextUrl, modalName, modalMobile, paymentId: _paymentId,
         orderName: _orderName, couponCode: appliedDiscount?.code || "",
       };
       // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
@@ -200,7 +221,7 @@ function PaymentInner() {
       const res = await portone.requestPayment({
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
-        paymentId: `pay_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+        paymentId: _paymentId,
         orderName: `점운 ${_orderName}`,
         totalAmount: modalPrice,
         currency: "KRW",

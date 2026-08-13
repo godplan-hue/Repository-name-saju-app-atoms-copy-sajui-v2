@@ -77,6 +77,7 @@ function PaymentCompleteInner() {
   const [ready, setReady] = useState(false);
   const [isPackage, setIsPackage] = useState(false);
   const [paidAmount, setPaidAmount] = useState("");
+  const [paidId, setPaidId] = useState("");
 
   // 사주 정보 폼 — 본인
   const [name, setName] = useState("");
@@ -130,6 +131,8 @@ function PaymentCompleteInner() {
   useEffect(() => {
     const paidParam = searchParams.get("paid") || "";
     if (paidParam) setPaidAmount(paidParam);
+    const pidParam = searchParams.get("pid") || "";
+    if (pidParam) setPaidId(pidParam);
 
     // 이전 세션값 초기화 — 상품 섞임 방지 (v2_paid_cats는 모달에서 직접 세팅하므로 제외)
     sessionStorage.removeItem("specialType");
@@ -374,7 +377,7 @@ function PaymentCompleteInner() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              id: String(result.histId),
+              id: paidId || String(result.histId),
               date: result.savedAt,
               name: p.name,
               phone: _payPhone,
