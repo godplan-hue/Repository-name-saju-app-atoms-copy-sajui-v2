@@ -434,7 +434,7 @@ function PayInner() {
 
         {!couponFree && (<>
         <div style={{ marginBottom: 12, padding: "10px 14px", background: "rgba(251,191,36,0.08)", borderRadius: 10, border: "1px solid rgba(251,191,36,0.2)" }}>
-          <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>💳 <b style={{color:"#fbbf24"}}>신용카드</b> 또는 <b style={{color:"#FEE500"}}>카카오페이</b>로 결제하세요.</p>
+          <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>💛 <b style={{color:"#FEE500"}}>카카오페이</b> 또는 <b style={{color:"#fbbf24"}}>신용카드</b>로 결제하세요.</p>
         </div>
         <div style={{ marginBottom: 12 }}>
           <label style={lbl}>이름 (선택)</label>
@@ -468,24 +468,24 @@ function PayInner() {
           <span style={{ fontSize: 12, color: refundAgreed ? "#4ade80" : "rgba(255,255,255,0.6)", fontWeight: refundAgreed ? 700 : 400 }}>네, 확인했어요!</span>
         </div>
 
+        <button
+          onClick={() => pay("KAKAOPAY")}
+          disabled={loading}
+          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(254,229,0,0.3)" : "#FEE500", color: "#191600", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 6px 22px rgba(254,229,0,0.35)", marginBottom: 10, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}
+        >
+          <span style={{ fontSize: 18 }}>💛</span>
+          {loading ? "결제 중..." : `카카오페이 ₩${displayAmount.toLocaleString()}`}
+        </button>
+
         <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, textAlign: "center", margin: "0 0 8px", lineHeight: 1.5 }}>
           💡 카드 결제는 본인 폰의 카드앱(KB Pay, 삼성카드 앱 등) 인증이 필요해요
         </p>
         <button
           onClick={() => pay("CARD")}
           disabled={loading}
-          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(251,191,36,0.3)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 6px 22px rgba(251,191,36,0.3)", marginBottom: 10 }}
+          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(251,191,36,0.3)" : "linear-gradient(135deg,#fbbf24,#ec4899,#8b5cf6)", color: "#1a0f2e", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 6px 22px rgba(251,191,36,0.3)", marginBottom: 8 }}
         >
           {loading ? "결제 중..." : `💳 신용카드 ₩${displayAmount.toLocaleString()}`}
-        </button>
-
-        <button
-          onClick={() => pay("KAKAOPAY")}
-          disabled={loading}
-          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(254,229,0,0.3)" : "#FEE500", color: "#191600", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 6px 22px rgba(254,229,0,0.35)", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}
-        >
-          <span style={{ fontSize: 18 }}>💛</span>
-          {loading ? "결제 중..." : `카카오페이 ₩${displayAmount.toLocaleString()}`}
         </button>
 
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "8px 0 0" }}>SSL 보안 결제 · NHN KCP · 카카오페이</p>
