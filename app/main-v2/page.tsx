@@ -875,8 +875,10 @@ export default function MainV2() {
         <button onClick={goFree} style={{ marginTop: 16, padding: "15px 36px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite" }}>
           🔮 3초만에 무료로 내 사주 보기
         </button>
-        <p style={{ fontSize: 11, fontWeight: 700, color: "#7c3aed", margin: "8px 0 0" }}>
-          + 꿈해몽·점냥이·Q&A 3종 24시간 무료
+        <p style={{ margin: "10px 0 0" }}>
+          <span style={{ display: "inline-block", fontSize: 12, fontWeight: 800, color: "#7c3aed", background: "#fff", padding: "6px 14px", borderRadius: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.12)" }}>
+            + 꿈해몽·점냥이·Q&A 3종 24시간 무료
+          </span>
         </p>
       </section>
 
@@ -929,8 +931,10 @@ export default function MainV2() {
           <button onClick={() => router.push("/main-v2/payment")} style={{ padding: "15px 36px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite" }}>
             💎 990원으로 바로 보기 →
           </button>
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#7c3aed", margin: "8px 0 0" }}>
-            + 꿈해몽·점냥이·Q&A 3종 24시간 무료
+          <p style={{ margin: "10px 0 0" }}>
+            <span style={{ display: "inline-block", fontSize: 12, fontWeight: 800, color: "#7c3aed", background: "#fff", padding: "6px 14px", borderRadius: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.12)" }}>
+              + 꿈해몽·점냥이·Q&A 3종 24시간 무료
+            </span>
           </p>
         </div>
       </div>
