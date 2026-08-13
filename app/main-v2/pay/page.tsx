@@ -199,6 +199,100 @@ function PayInner() {
     } finally { setLoading(false); }
   };
 
+  // 모바일 결제(카카오페이/카드)는 PG사 인증 후 이 페이지로 "새로 돌아오는" 방식이라
+  // requestPayment()가 프로미스로 끝나지 않는 경우가 많음 — 결제 시작 전에 정보를
+  // sessionStorage에 저장해두고, 돌아왔을 때 그 정보로 완료 처리를 이어감
+  const finalizeSuccess = (info: {
+    paymentId: string; amount: number; displayAmount: number; name: string; mobile: string; email: string;
+    couponCode: string; discountPct: number; next: string; isTaegil: boolean; sourceInfo: string;
+  }) => {
+    if (info.couponCode.trim() && info.discountPct > 0) {
+      fetch("/api/promo-codes", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: info.couponCode.trim().toUpperCase() }) }).catch(() => {});
+    }
+    const cleanMobile = info.mobile.replace(/\D/g, "");
+    if (cleanMobile) {
+      try {
+        localStorage.setItem("v2_saved_phone", cleanMobile);
+        sessionStorage.setItem("v2_payment_phone", cleanMobile);
+      } catch {}
+    }
+    try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: cleanMobile, email: info.email.trim() })); } catch {}
+    try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); const _existH = Number(localStorage.getItem("haemong_unlock_until")||0); localStorage.setItem("haemong_unlock_until", String(Math.max(_existH, _h))); if (cleanMobile) localStorage.setItem("haemong_unlock_phone", cleanMobile); } catch {}
+    if (info.displayAmount > 0 && info.name.trim()) {
+      fetch("/api/v2/save-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: info.paymentId,
+          date: new Date().toISOString(),
+          name: info.name.trim(),
+          phone: cleanMobile,
+          email: info.email.trim(),
+          amount: info.displayAmount,
+          package: "운세",
+          categories: [],
+          plan: "select",
+          discountCode: info.couponCode.trim().toUpperCase() || "",
+          discountPercent: info.discountPct,
+          originalAmount: info.amount,
+          source: info.sourceInfo,
+        }),
+      }).catch(() => {});
+    }
+    try {
+      const refCode = localStorage.getItem("referred_by");
+      if (refCode) {
+        fetch("/api/referral", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ refCode }) }).catch(() => {});
+        localStorage.removeItem("referred_by");
+      }
+    } catch {}
+    if (!info.isTaegil) {
+      localStorage.setItem("v2_paid", "1");
+      localStorage.setItem("price", String(info.amount));
+      localStorage.setItem("v2_plan", "select");
+    }
+    const targetUrl = info.isTaegil ? `${info.next}${info.next.includes("?") ? "&" : "?"}taegilPaid=1` : info.next;
+    try {
+      if (typeof (window as any).gtag === "function") {
+        let navigated = false;
+        const goNow = () => {
+          if (navigated) return;
+          navigated = true;
+          window.location.href = targetUrl;
+        };
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-459070148/D7-4CKip7e0BEMS189oB",
+          transaction_id: info.paymentId,
+          event_callback: goNow,
+        });
+        setTimeout(goNow, 1000);
+      } else {
+        window.location.href = targetUrl;
+      }
+    } catch {
+      window.location.href = targetUrl;
+    }
+  };
+
+  // 모바일에서 카카오페이/카드 인증 후 redirectUrl로 되돌아온 경우 감지 → 결제완료 처리 이어서 진행
+  useEffect(() => {
+    const pgPaymentId = searchParams.get("paymentId");
+    if (!pgPaymentId) return;
+    const pendingRaw = sessionStorage.getItem("pay_pending");
+    if (!pendingRaw) return;
+    sessionStorage.removeItem("pay_pending");
+    const pgCode = searchParams.get("code");
+    if (pgCode) {
+      setError(searchParams.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+    try {
+      const info = JSON.parse(pendingRaw);
+      finalizeSuccess(info);
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const pay = async (method: "CARD" | "KAKAOPAY" = "CARD") => {
     if (!refundAgreed) { setError("아래 체크박스를 먼저 체크해주세요. ✅"); return; }
     if (!mobile.replace(/\D/g, "") || mobile.replace(/\D/g, "").length < 10) { setError("전화번호를 입력해주세요."); return; }
@@ -209,6 +303,37 @@ function PayInner() {
       const channelKey = method === "KAKAOPAY"
         ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
+
+      const referer = document.referrer || "";
+      const sourceLabel = referer.includes("google") ? "구글"
+        : referer.includes("naver") ? "네이버"
+        : referer.includes("daum") ? "다음"
+        : referer.includes("bing") ? "빙"
+        : referer.includes("kakao") || referer.includes("kakaotalk") ? "카카오"
+        : referer.includes("instagram") ? "인스타"
+        : referer.includes("youtube") ? "유튜브"
+        : referer.includes("tiktok") ? "틱톡"
+        : referer.includes("facebook") ? "페이스북"
+        : referer.includes("jeomun.com/main-v2/share") ? "공유페이지"
+        : referer.includes("jeomun.com/main-v2/result") ? "결과지"
+        : referer.includes("jeomun.com/free") ? "무료랜딩"
+        : referer.includes("jeomun.com/main-v2/payment") ? "결제선택"
+        : referer.includes("jeomun.com/main-v2") ? "메인"
+        : referer.includes("jeomun.com/love") || referer.includes("jeomun.com/career") || referer.includes("jeomun.com/wealth") || referer.includes("jeomun.com/marriage") || referer.includes("jeomun.com/health") ? "SEO랜딩"
+        : referer.includes("jeomun") ? "점운내부"
+        : referer ? referer.split("/")[2] || "기타"
+        : "직접";
+      const partnerCode = localStorage.getItem("referred_by");
+      const sourceInfo = partnerCode ? `파트너:${partnerCode}` : sourceLabel;
+
+      const pendingInfo = {
+        paymentId, amount, displayAmount, name, mobile, email,
+        couponCode, discountPct, next, isTaegil, sourceInfo,
+      };
+      // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
+      // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
+      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
+
       const paymentRequest: Parameters<typeof PortOne.requestPayment>[0] = {
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
@@ -222,101 +347,19 @@ function PayInner() {
           phoneNumber: mobile.replace(/\D/g, ""),
           email: email.trim() || undefined,
         },
+        redirectUrl: `${window.location.origin}${window.location.pathname}${window.location.search}`,
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
       };
       const response = await PortOne.requestPayment(paymentRequest);
+      // 리디렉션 방식이면 여기 도달하지 않고 페이지가 이동함 — 아래는 PC 팝업 등
+      // 리디렉션 없이 바로 결과를 돌려받는 경우에만 실행됨
       if (response?.code) {
         setError(response.message || "결제에 실패했습니다. 다시 시도해주세요.");
+        try { sessionStorage.removeItem("pay_pending"); } catch {}
         return;
       }
-      if (couponCode.trim() && discountPct > 0) {
-        fetch("/api/promo-codes", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: couponCode.trim().toUpperCase() }) }).catch(() => {});
-      }
-      const cleanMobile = mobile.replace(/\D/g, "");
-      if (cleanMobile) {
-        try {
-          localStorage.setItem("v2_saved_phone", cleanMobile);
-          sessionStorage.setItem("v2_payment_phone", cleanMobile);
-        } catch {}
-      }
-      try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({...sp, phone: cleanMobile, email: email.trim()})); } catch {}
-      try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); const _existH = Number(localStorage.getItem("haemong_unlock_until")||0); localStorage.setItem("haemong_unlock_until", String(Math.max(_existH, _h))); if (cleanMobile) localStorage.setItem("haemong_unlock_phone", cleanMobile); } catch {}
-      if (displayAmount > 0 && name.trim()) {
-        const referer = document.referrer || "";
-        const sourceLabel = referer.includes("google") ? "구글"
-          : referer.includes("naver") ? "네이버"
-          : referer.includes("daum") ? "다음"
-          : referer.includes("bing") ? "빙"
-          : referer.includes("kakao") || referer.includes("kakaotalk") ? "카카오"
-          : referer.includes("instagram") ? "인스타"
-          : referer.includes("youtube") ? "유튜브"
-          : referer.includes("tiktok") ? "틱톡"
-          : referer.includes("facebook") ? "페이스북"
-          : referer.includes("jeomun.com/main-v2/share") ? "공유페이지"
-          : referer.includes("jeomun.com/main-v2/result") ? "결과지"
-          : referer.includes("jeomun.com/free") ? "무료랜딩"
-          : referer.includes("jeomun.com/main-v2/payment") ? "결제선택"
-          : referer.includes("jeomun.com/main-v2") ? "메인"
-          : referer.includes("jeomun.com/love") || referer.includes("jeomun.com/career") || referer.includes("jeomun.com/wealth") || referer.includes("jeomun.com/marriage") || referer.includes("jeomun.com/health") ? "SEO랜딩"
-          : referer.includes("jeomun") ? "점운내부"
-          : referer ? referer.split("/")[2] || "기타"
-          : "직접";
-        const partnerCode = localStorage.getItem("referred_by");
-        const sourceInfo = partnerCode ? `파트너:${partnerCode}` : sourceLabel;
-        fetch("/api/v2/save-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: paymentId,
-            date: new Date().toISOString(),
-            name: name.trim(),
-            phone: mobile.replace(/\D/g, ""),
-            email: email.trim(),
-            amount: displayAmount,
-            package: "운세",
-            categories: [],
-            plan: "select",
-            discountCode: couponCode.trim().toUpperCase() || "",
-            discountPercent: discountPct,
-            originalAmount: amount,
-            source: sourceInfo,
-          }),
-        }).catch(() => {});
-      }
-      try {
-        const refCode = localStorage.getItem("referred_by");
-        if (refCode) {
-          fetch("/api/referral", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ refCode }) }).catch(() => {});
-          localStorage.removeItem("referred_by");
-        }
-      } catch {}
-
-      if (!isTaegil) {
-        localStorage.setItem("v2_paid", "1");
-        localStorage.setItem("price", String(amount));
-        localStorage.setItem("v2_plan", "select");
-      }
-      const targetUrl = isTaegil ? `${next}${next.includes("?") ? "&" : "?"}taegilPaid=1` : next;
-      try {
-        if (typeof (window as any).gtag === "function") {
-          let navigated = false;
-          const goNow = () => {
-            if (navigated) return;
-            navigated = true;
-            window.location.href = targetUrl;
-          };
-          (window as any).gtag("event", "conversion", {
-            send_to: "AW-459070148/D7-4CKip7e0BEMS189oB",
-            transaction_id: paymentId,
-            event_callback: goNow,
-          });
-          setTimeout(goNow, 1000);
-        } else {
-          window.location.href = targetUrl;
-        }
-      } catch {
-        window.location.href = targetUrl;
-      }
+      try { sessionStorage.removeItem("pay_pending"); } catch {}
+      finalizeSuccess(pendingInfo);
     } catch {
       setError("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
@@ -425,6 +468,9 @@ function PayInner() {
           <span style={{ fontSize: 12, color: refundAgreed ? "#4ade80" : "rgba(255,255,255,0.6)", fontWeight: refundAgreed ? 700 : 400 }}>네, 확인했어요!</span>
         </div>
 
+        <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, textAlign: "center", margin: "0 0 8px", lineHeight: 1.5 }}>
+          💡 카드 결제는 본인 폰의 카드앱(KB Pay, 삼성카드 앱 등) 인증이 필요해요
+        </p>
         <button
           onClick={() => pay("CARD")}
           disabled={loading}
