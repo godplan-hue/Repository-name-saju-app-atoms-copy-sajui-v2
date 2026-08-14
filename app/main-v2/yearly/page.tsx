@@ -26,7 +26,9 @@ export default function YearlyPage() {
     const p = JSON.parse(saved);
     setProfile(p);
 
-    const isPaid = sessionStorage.getItem("yearlyPaid") === "1";
+    const urlPaid = new URLSearchParams(window.location.search).get("yearlyPaid") === "1";
+    const isPaid = sessionStorage.getItem("yearlyPaid") === "1" || urlPaid;
+    if (urlPaid) sessionStorage.setItem("yearlyPaid", "1");
     setPaid(isPaid);
 
     const birth = `${p.birthYear}-${String(p.birthMonth).padStart(2,"0")}-${String(p.birthDay).padStart(2,"0")}`;
@@ -76,7 +78,13 @@ export default function YearlyPage() {
       return;
     }
     if (/NAVER\(inapp/i.test(navigator.userAgent)) {
-      try { navigator.clipboard?.writeText(window.location.href); } catch {}
+      try {
+        const isPaidNow = sessionStorage.getItem("yearlyPaid") === "1";
+        const copyUrl = isPaidNow
+          ? `${window.location.origin}${window.location.pathname}?yearlyPaid=1`
+          : window.location.href;
+        navigator.clipboard?.writeText(copyUrl);
+      } catch {}
       alert("이 링크를 복사해서 크롬 또는 구글 창에 붙여넣으면 읽기가 돼요.");
       return;
     }

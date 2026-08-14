@@ -84,11 +84,11 @@ export default function TaegilPage() {
         sessionStorage.setItem("taegilPaid", "1");
       }
       setIsPaid(true);
-      const et = sessionStorage.getItem("taegilEventType") as EventType;
-      const dtStr = sessionStorage.getItem("taegilDates");
+      const et = (sessionStorage.getItem("taegilEventType") || urlParams.get("taegilEventType") || "") as EventType;
+      const dtStr = sessionStorage.getItem("taegilDates") || decodeURIComponent(urlParams.get("taegilDates") || "");
       const dt = JSON.parse(dtStr || "[]") as string[];
-      if (et) setEventType(et);
-      if (dt.length > 0) setSelectedDates(dt);
+      if (et) { setEventType(et); sessionStorage.setItem("taegilEventType", et); }
+      if (dt.length > 0) { setSelectedDates(dt); sessionStorage.setItem("taegilDates", JSON.stringify(dt)); }
     }
   }, []);
 
@@ -196,7 +196,13 @@ export default function TaegilPage() {
       return;
     }
     if (/NAVER\(inapp/i.test(navigator.userAgent)) {
-      try { navigator.clipboard?.writeText(window.location.href); } catch {}
+      try {
+        const isPaidNow = sessionStorage.getItem("taegilPaid") === "1";
+        const copyUrl = isPaidNow
+          ? `${window.location.origin}${window.location.pathname}?taegilPaid=1&taegilEventType=${encodeURIComponent(sessionStorage.getItem("taegilEventType") || "")}&taegilDates=${encodeURIComponent(sessionStorage.getItem("taegilDates") || "[]")}`
+          : window.location.href;
+        navigator.clipboard?.writeText(copyUrl);
+      } catch {}
       alert("이 링크를 복사해서 크롬 또는 구글 창에 붙여넣으면 읽기가 돼요.");
       return;
     }
