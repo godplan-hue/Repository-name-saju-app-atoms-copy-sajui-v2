@@ -1907,10 +1907,6 @@ function V2ResultInner() {
           </div>
         )}
 
-        <button onClick={() => { nav("/main-v2"); }}
-          style={{ width: "100%", marginTop: 10, padding: "11px 0", background: "transparent", color: "#4b5563", border: "none", fontWeight: 700, fontSize: 12, cursor: "pointer" }}>
-          🏠 홈으로
-        </button>
 
         {/* ── 꿈해몽 배너 (항상 표시) ── */}
         {!isPartner && (
