@@ -27,11 +27,11 @@ function DaewoonPayInner() {
   // 모바일 결제(카카오페이/카드)는 PG사 인증 후 이 페이지로 "새로 돌아오는" 방식이라
   // requestPayment()가 프로미스로 끝나지 않는 경우가 많음 — 결제 시작 전에 정보를
   // sessionStorage에 저장해두고, 돌아왔을 때 그 정보로 완료 처리를 이어감
-  const finalizeSuccess = (info: { count: number; indices: string; mobile: string; name: string; savedAt?: number }) => {
+  const finalizeSuccess = (info: { count: number; indices: string; mobile: string; name: string; price?: number; savedAt?: number }) => {
     const cleanMobile = info.mobile.replace(/\D/g, "");
     fetch("/api/v2/save-payment", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: `daewoon_${Date.now()}`, phone: cleanMobile || "", name: info.name.trim() || "", amount: price, category: `대운 해설 ${info.count}개`, source: "daewoon" }),
+      method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
+      body: JSON.stringify({ id: `daewoon_${Date.now()}`, phone: cleanMobile || "", name: info.name.trim() || "", amount: info.price ?? price, category: `대운 해설 ${info.count}개`, source: "daewoon" }),
     }).catch(() => {});
     window.location.href = `/main-v2/daewoon?daeunPaid=1&daeunCount=${info.count}&daeunIndices=${encodeURIComponent(info.indices)}`;
   };
@@ -84,7 +84,7 @@ function DaewoonPayInner() {
         ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
       const portone = await import("@portone/browser-sdk/v2");
-      const pendingInfo = { count, indices, mobile, name, savedAt: Date.now() };
+      const pendingInfo = { count, indices, mobile, name, price, savedAt: Date.now() };
       // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
       // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
       try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}

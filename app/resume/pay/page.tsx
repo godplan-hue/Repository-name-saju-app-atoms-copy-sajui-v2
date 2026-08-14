@@ -56,7 +56,7 @@ function PayInner() {
   const finalizeSuccess = (info: { paymentId: string; id: string; finalAmount: number; name: string; mobile: string; couponCode: string; hasCoupon: boolean }) => {
     const cleanMobile = info.mobile.replace(/\D/g, "");
     if (info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.couponCode.trim().toUpperCase()})}).catch(()=>{});
-    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`resume_${Date.now()}`,phone:cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"합격자소서 1회권",source:"resume"})}).catch(()=>{});
+    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`resume_${Date.now()}`,phone:cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"합격자소서 1회권",source:"resume"})}).catch(()=>{});
     if (info.id) {
       fetch("/api/resume/analyze",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:info.id})}).catch(()=>{});
       localStorage.setItem("resume_unlock_until", String(Date.now() + 24*60*60*1000));
@@ -96,7 +96,7 @@ function PayInner() {
       setLoading(true);
       try {
         const _ph = mobile.replace(/\D/g,"");
-        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`resume_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"합격자소서 쿠폰",source:"resume"})}).catch(()=>{});
+        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`resume_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"합격자소서 쿠폰",source:"resume"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         if (id) fetch("/api/resume/analyze",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id})}).catch(()=>{});
         localStorage.setItem("resume_unlock_until", String(Date.now() + 24*60*60*1000));

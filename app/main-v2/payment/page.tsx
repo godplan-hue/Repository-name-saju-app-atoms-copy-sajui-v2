@@ -150,6 +150,7 @@ function PaymentInner() {
       fetch("/api/v2/save-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        keepalive: true,
         body: JSON.stringify({
           id: info.paymentId,
           date: new Date().toISOString(),

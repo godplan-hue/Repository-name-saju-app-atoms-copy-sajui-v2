@@ -376,6 +376,7 @@ function PaymentCompleteInner() {
           fetch("/api/v2/save-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            keepalive: true,
             body: JSON.stringify({
               id: paidId || String(result.histId),
               date: result.savedAt,

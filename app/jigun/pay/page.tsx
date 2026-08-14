@@ -65,7 +65,7 @@ function PayInner() {
   const finalizeSuccess = (info: { paymentId: string; id: string; finalAmount: number; name: string; mobile: string; couponCode: string; hasCoupon: boolean }) => {
     const cleanMobile = info.mobile.replace(/\D/g, "");
     if (info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.couponCode.trim().toUpperCase()})}).catch(()=>{});
-    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`jigun_${Date.now()}`,phone:cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"직운 부업추천",source:"jigun"})}).catch(()=>{});
+    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`jigun_${Date.now()}`,phone:cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"직운 부업추천",source:"jigun"})}).catch(()=>{});
     localStorage.setItem("jigun_unlock_until", String(Date.now() + 24*60*60*1000));
     if (cleanMobile) {
       localStorage.setItem("jigun_unlock_phone", cleanMobile);
@@ -100,7 +100,7 @@ function PayInner() {
       setLoading(true);
       try {
         const _ph = mobile.replace(/\D/g,"");
-        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`jigun_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"직운 쿠폰",source:"jigun"})}).catch(()=>{});
+        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`jigun_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"직운 쿠폰",source:"jigun"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         setUnlock();
         window.location.href = id ? `/jigun/result/${id}` : "/jigun";

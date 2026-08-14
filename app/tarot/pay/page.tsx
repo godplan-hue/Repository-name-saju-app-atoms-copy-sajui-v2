@@ -64,7 +64,7 @@ function PayInner() {
   // 필요한 정보를 sessionStorage에 저장해두고, 돌아왔을 때 그 정보로 이어서 처리함
   const finalizeSuccess = (info: { id: string; cleanMobile: string; name: string; finalAmount: number; coupon: string; hasCoupon: boolean }) => {
     if (info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.coupon.trim().toUpperCase()})}).catch(()=>{});
-    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`tarot_${Date.now()}`,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"타로 심층 분석",source:"tarot"})}).catch(()=>{});
+    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`tarot_${Date.now()}`,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"타로 심층 분석",source:"tarot"})}).catch(()=>{});
     setUnlock(info.cleanMobile);
     window.location.href = info.id ? `/tarot/result/${info.id}` : "/tarot";
   };
@@ -95,7 +95,7 @@ function PayInner() {
       setLoading(true);
       try {
         const _ph = mobile.replace(/\D/g,"");
-        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`tarot_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"타로 쿠폰",source:"tarot"})}).catch(()=>{});
+        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`tarot_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"타로 쿠폰",source:"tarot"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         setUnlock();
         window.location.href = id ? `/tarot/result/${id}` : "/tarot";

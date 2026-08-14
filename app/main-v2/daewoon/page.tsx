@@ -287,7 +287,13 @@ function DaewoonInner() {
       return;
     }
     if (/NAVER\(inapp/i.test(navigator.userAgent)) {
-      try { navigator.clipboard?.writeText(window.location.href); } catch {}
+      try {
+        const isPaidNow = sessionStorage.getItem("daeunPaid") === "1";
+        const copyUrl = isPaidNow
+          ? `${window.location.origin}${window.location.pathname}?daeunPaid=1&daeunCount=${sessionStorage.getItem("daeunPaidCount") || "0"}&daeunIndices=${encodeURIComponent(sessionStorage.getItem("daeunPaidIndices") || "[]")}`
+          : window.location.href;
+        navigator.clipboard?.writeText(copyUrl);
+      } catch {}
       alert("이 링크를 복사해서 크롬 또는 구글 창에 붙여넣으면 읽기가 돼요.");
       return;
     }

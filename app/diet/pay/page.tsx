@@ -72,7 +72,7 @@ export default function DietPayPage() {
     const _until = (_p>Date.now()?_p:Date.now())+30*24*60*60*1000;
     try { localStorage.setItem("diet_unlock_until", String(_until)); } catch {}
     if (info.cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:info.cleanMobile,unlocks:{diet_unlock_until:_until}})}).catch(()=>{});
-    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:info.paymentId,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"다이어트 30일권",source:"diet"})}).catch(()=>{});
+    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:info.paymentId,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"다이어트 30일권",source:"diet"})}).catch(()=>{});
     window.location.href = "/diet";
   };
 
@@ -90,7 +90,7 @@ export default function DietPayPage() {
           : {diet_unlock_until:_until30};
         Object.entries(_unlocks).forEach(([k,v])=>{try{localStorage.setItem(k,String(v));}catch{}});
         if(_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:_unlocks})}).catch(()=>{});
-        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`diet_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"다이어트 쿠폰",source:"diet"})}).catch(()=>{});
+        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`diet_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"다이어트 쿠폰",source:"diet"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         window.location.href = "/diet";
       } finally { setLoading(false); }

@@ -55,7 +55,7 @@ function PayInner() {
   // 필요한 정보를 sessionStorage에 저장해두고, 돌아왔을 때 그 정보로 이어서 처리함
   const finalizeSuccess = (info: { id: string; cleanMobile: string; name: string; finalAmount: number; coupon: string; hasCoupon: boolean }) => {
     if (info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.coupon.trim().toUpperCase()})}).catch(()=>{});
-    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`mbti_${Date.now()}`,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"MBTI 심층 분석",source:"mbti"})}).catch(()=>{});
+    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`mbti_${Date.now()}`,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"MBTI 심층 분석",source:"mbti"})}).catch(()=>{});
     const _until = Date.now() + 24 * 60 * 60 * 1000;
     try { localStorage.setItem("mbti_unlock_until", String(_until)); } catch {}
     if (info.cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:info.cleanMobile,unlocks:{mbti_unlock_until:_until}})}).catch(()=>{});
@@ -91,7 +91,7 @@ function PayInner() {
         const _until = Date.now() + 24*60*60*1000;
         try { localStorage.setItem("mbti_unlock_until", String(_until)); } catch {}
         if (_ph) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:_ph,unlocks:{mbti_unlock_until:_until}})}).catch(()=>{});
-        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`mbti_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"MBTI 쿠폰",source:"mbti"})}).catch(()=>{});
+        fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`mbti_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"MBTI 쿠폰",source:"mbti"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
         window.location.href = id ? `/mbti/result/${id}?paid=1` : "/mbti";
       } finally { setLoading(false); }

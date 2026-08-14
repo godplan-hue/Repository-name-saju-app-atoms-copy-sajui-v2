@@ -77,7 +77,7 @@ export default function PassPage() {
     setLoading(true);
     try {
       await unlockApps(ph);
-      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:ph,name:name.trim()||"",amount:0,category:"풀패스 쿠폰",source:"pass"})}).catch(()=>{});
+      fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`pass_${Date.now()}`,phone:ph,name:name.trim()||"",amount:0,category:"풀패스 쿠폰",source:"pass"})}).catch(()=>{});
       fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
       await fetch("/api/notify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:ph,amount:0,link:"https://jeomun.com/apps"})}).catch(()=>{});
       window.location.href = "/apps";
@@ -91,7 +91,7 @@ export default function PassPage() {
     const cleanMobile = info.mobile.replace(/\D/g,"");
     if (info.coupon && info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.coupon.trim().toUpperCase()})}).catch(()=>{});
     await unlockApps(cleanMobile);
-    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:`pass_${Date.now()}`,phone:cleanMobile,name:info.name.trim()||"",amount:info.amount,category:"풀패스 4개앱 30일권",source:"pass"})}).catch(()=>{});
+    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`pass_${Date.now()}`,phone:cleanMobile,name:info.name.trim()||"",amount:info.amount,category:"풀패스 4개앱 30일권",source:"pass"})}).catch(()=>{});
     await fetch("/api/notify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:cleanMobile,amount:info.amount,link:"https://jeomun.com/apps"})}).catch(()=>{});
     window.location.href = "/apps";
   };
