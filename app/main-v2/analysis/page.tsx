@@ -90,27 +90,15 @@ export default function V2Analysis() {
   }, []);
 
   useEffect(() => {
-    // v2_paid와 v2_result 둘 다 있을 때만 결과지로 이동
-    // v2_result 없이 v2_paid만 있으면 result→analysis 무한루프 발생
-    // ⚠️ fresh=1(메인 "무료" 버튼)이어도 이미 결제한 사람이면 절대 건너뛰지 않음 —
-    // 예전엔 fresh=1이 이 리다이렉트를 건너뛰어서, 결제한 사람이 "3초 무료" 버튼을
-    // 다시 누르면 결제 상태(v2_paid/v2_plan/price)가 통째로 지워지고 무료 결과로
-    // 덮어써져서 "분명 결제했는데 무료 결과지가 나오고 다시 결제하라고 뜨는" 버그가 있었음
+    // "3초 무료" 버튼은 항상 새 "오늘의 운세" 무료 화면으로 들어간다 — 결과지는
+    // 보관함/공유를 하지 않으면 나가는 순간 사라지는 게 우리 앱의 정상 동작이고,
+    // 이 버튼을 누르면 그 사라진 자리에 다시 새 무료 분석이 시작돼야 한다.
+    // 기존 유료 결과가 남아있다면 결과지로 돌려보내지 않고, 사라지기 전에
+    // 보관함에만 조용히 백업해서 결제 데이터 자체는 잃어버리지 않게 한다.
     if (localStorage.getItem("v2_paid") === "1" && localStorage.getItem("v2_result")) {
-      // 현재 입력한 이름과 저장된 결과의 이름이 다른 사람이면 이전 결제 데이터 초기화
-      const savedProfile = (() => { try { return JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); } catch { return {}; } })();
-      const existingResult = (() => { try { return JSON.parse(localStorage.getItem("v2_result") || "{}"); } catch { return {}; } })();
-      const nameMatch = !savedProfile.name || !existingResult.profile?.name || savedProfile.name === existingResult.profile.name;
-      if (!nameMatch) {
-        localStorage.removeItem("v2_paid");
-        localStorage.removeItem("v2_result");
-        localStorage.removeItem("v2_plan");
-        localStorage.removeItem("price");
-        localStorage.removeItem("v2_paid_cats");
-      } else {
-        window.location.replace("/main-v2/result");
-        return;
-      }
+      try {
+        backupPaidResultToHistory(JSON.parse(localStorage.getItem("v2_result") || "{}"));
+      } catch {}
     }
     let p = sessionStorage.getItem("v2_profile");
     if (!p) {
