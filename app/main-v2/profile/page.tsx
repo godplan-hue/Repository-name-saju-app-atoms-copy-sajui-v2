@@ -235,6 +235,15 @@ export default function V2Profile() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, marketing: marketingAgreed }),
     }).catch(() => {});
+    // 무료 플로우: savedMode·유료잔여플래그 여부와 무관하게 항상 새 무료 분석으로 강제 이동
+    if (isFreeFlow) {
+      localStorage.removeItem("v2_paid");
+      sessionStorage.removeItem("v2_after_payment_goto");
+      sessionStorage.removeItem("specialPaid");
+      sessionStorage.removeItem("specialType");
+      router.push("/main-v2/analysis?fresh=1");
+      return;
+    }
     // 재방문자(savedMode)는 매번 분석 재실행 없이 메인으로 (보관함·결과는 메인에서 이동)
     if (savedMode) {
       const pendingPayUrl = sessionStorage.getItem("v2_profile_next_url");
@@ -256,14 +265,6 @@ export default function V2Profile() {
     // 유료 결제가 있으면 분석 재실행 없이 결과지로 (결과지에서 필요 시 자동 재호출함)
     if (localStorage.getItem("v2_paid") === "1") {
       router.push("/main-v2/result");
-      return;
-    }
-    // 무료 플로우: 이전 결제 잔여 플래그 전부 제거 후 analysis로 강제 이동
-    if (isFreeFlow) {
-      sessionStorage.removeItem("v2_after_payment_goto");
-      sessionStorage.removeItem("specialPaid");
-      sessionStorage.removeItem("specialType");
-      router.push("/main-v2/analysis");
       return;
     }
     const pendingModal = sessionStorage.getItem("v2_after_profile_modal");
@@ -297,7 +298,7 @@ export default function V2Profile() {
   if (checking) return null;
 
   // ── 전화번호 본인 확인 화면 ──────────────────
-  if (phoneStep && !isFreeFlow) {
+  if (phoneStep) {
     return (
       <main style={{ minHeight: "100vh", backgroundImage: "url('https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
         <div style={{ position: "fixed", inset: 0, background: "rgba(20,5,50,0.68)", zIndex: 1, pointerEvents: "none" }} />
