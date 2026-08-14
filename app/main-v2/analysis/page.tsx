@@ -33,6 +33,44 @@ const LOAD_MSGS = [
 
 type Phase = "cat" | "fu" | "loading";
 
+// "3초 무료" 버튼으로 다시 들어올 때 기존 유료 결과가 있으면, 화면을 결과지로
+// 넘기는 대신(이미 결제한 것 같은 화면이 떠서 혼란을 줌) 잃어버리지 않도록
+// 보관함에 먼저 백업해두기만 한다 — app/main-v2/result/page.tsx의 saveToHistory와 동일한 포맷
+function backupPaidResultToHistory(r: any) {
+  if (!r?.histId) return;
+  try {
+    const price = localStorage.getItem("price") ?? "";
+    const isPackage = ["9900", "19900", "24900", "29900"].includes(price);
+    const planType = isPackage ? "package" : "select";
+    const analyses: Record<string, string> = r.allAnalyses ?? {};
+    const cats = Object.keys(analyses).filter(c => !c.includes("오늘의 운세"));
+    if (cats.length === 0) return;
+    const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
+    const date = r.savedAt ?? new Date().toISOString();
+    const name = r.profile?.name ?? "";
+    cats.forEach((cat, i) => {
+      const id = `${r.histId}-${i}`;
+      if (hist.some((h: any) => h.id === id)) return;
+      const item = {
+        id, date, name, category: cat,
+        scores: r.scores ?? {}, analysis: analyses[cat] ?? "",
+        isPaid: true, planType,
+        birthYear: r.profile?.birthYear ?? "",
+        luckyColor: r.luckyColor ?? "", luckyNumber: r.luckyNumber ?? "", luckyDirection: r.luckyDirection ?? "",
+      };
+      hist.unshift(item);
+      if (name) {
+        try {
+          const _prof = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+          const _phone = (_prof.phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+          fetch("/api/v2/history", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, phone: _phone || undefined, item }) }).catch(() => {});
+        } catch {}
+      }
+    });
+    localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
+  } catch {}
+}
+
 export default function V2Analysis() {
   const [phase, setPhase] = useState<Phase>("cat");
   const [selCat, setSelCat] = useState("");
