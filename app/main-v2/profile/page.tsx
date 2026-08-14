@@ -229,6 +229,7 @@ export default function V2Profile() {
       name: form.name, birthYear: form.birthYear, birthMonth: form.birthMonth, birthDay: form.birthDay,
       gender: form.gender, birthHour: form.birthHour, phone: form.phone, email: form.email,
     }));
+    if (form.name) localStorage.setItem("v2_user_name", form.name);
     if (form.phone) localStorage.setItem("v2_verified_phone", form.phone.replace(/[^0-9]/g, ""));
     fetch("/api/v2/customer", {
       method: "POST",
