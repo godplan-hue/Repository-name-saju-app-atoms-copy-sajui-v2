@@ -485,8 +485,8 @@ function PaymentInner() {
         {!isPartner && (
           <div id="select-section" style={{ maxWidth: 600, margin: "0 auto 20px" }}>
             {isFromYourChange && (
-              <div style={{ background: "rgba(236,72,153,0.12)", border: "1px solid rgba(236,72,153,0.4)", borderRadius: 12, padding: "12px 14px", marginBottom: 12 }}>
-                <p style={{ color: "#ff69b4", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.6 }}>💎 "당신의 변화"는 아래 재물운·연애운·건강운·성공운·총운(₩3,900) 또는 패키지(₩9,900~) 구매 시에만 제공돼요</p>
+              <div style={{ background: "#ec4899", border: "1px solid rgba(236,72,153,0.6)", borderRadius: 12, padding: "12px 14px", marginBottom: 12 }}>
+                <p style={{ color: "#ffffff", fontSize: 12.5, fontWeight: 800, margin: 0, lineHeight: 1.7 }}>💎 "당신의 변화"는<br/>아래 재물운·연애운·건강운·성공운·총운(₩3,900)<br/>또는 패키지(₩9,900~) 구매 시에만 제공돼요</p>
               </div>
             )}
             <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>✨ 심층 분석 3,900원</p>
