@@ -594,8 +594,8 @@ function V2ResultInner() {
     }
 
     if (!raw) {
-      // 데이터 없음 — localStorage 초기화 후 메인으로 자동이동
-      ["v2_saved_profile","v2_paid_cats","v2_plan","v2_paid","v2_price","haemong_unlock_until","momcare_unlock_until","jigun_unlock_until","resume_unlock_until"].forEach(k => localStorage.removeItem(k));
+      // 데이터 없음 — 결제/잠금 상태만 초기화 후 메인으로 자동이동 (프로필 정보는 유지 — 재방문 시 자동 입력용)
+      ["v2_paid_cats","v2_plan","v2_paid","v2_price","haemong_unlock_until","momcare_unlock_until","jigun_unlock_until","resume_unlock_until"].forEach(k => localStorage.removeItem(k));
       window.location.replace("/main-v2");
       return;
     }
@@ -1058,7 +1058,7 @@ function V2ResultInner() {
         <p style={{ fontSize: 40, margin: "0 0 16px" }}>🔮</p>
         <p style={{ fontSize: 17, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>결과를 불러올 수 없어요</p>
         <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 24px", lineHeight: 1.7 }}>분석 결과가 만료되었거나<br/>브라우저 캐시가 초기화되었어요</p>
-        <button onClick={() => { ["v2_saved_profile","v2_paid_cats","v2_plan","v2_paid","v2_price","haemong_unlock_until","momcare_unlock_until","jigun_unlock_until","resume_unlock_until"].forEach(k => localStorage.removeItem(k)); window.location.href = "/main-v2"; }}
+        <button onClick={() => { ["v2_paid_cats","v2_plan","v2_paid","v2_price","haemong_unlock_until","momcare_unlock_until","jigun_unlock_until","resume_unlock_until"].forEach(k => localStorage.removeItem(k)); window.location.href = "/main-v2"; }}
           style={{ width: "100%", padding: "14px 0", background: "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer" }}>
           처음부터 시작하기 →
         </button>
