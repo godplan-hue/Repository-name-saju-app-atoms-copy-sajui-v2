@@ -127,7 +127,7 @@ export default function V2Profile() {
             } else {
               sessionStorage.removeItem("specialPaid");
               sessionStorage.removeItem("specialType");
-              router.replace("/main-v2/analysis");
+              router.replace("/main-v2/analysis?fresh=1");
             }
             return;
           }
