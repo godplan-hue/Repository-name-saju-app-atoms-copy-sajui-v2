@@ -1,5 +1,8 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐ 2026-08-14 관리자인증+알림톡제한+Cloudflare속도제한 수정](project_security_fix_2026_08_14.md) — 관리자API 13개 토큰인증 적용(commit 90e1067), 알림톡 시간당5회제한, Cloudflare속도제한 30→150/10초 상향(무료플랜 규칙1개제한)
+- [⭐⭐ 2026-08-14 3초무료버튼 재입력 버그 수정](project_free_button_profile_wipe_fix.md) — 결과지 홈으로/처음부터 버튼이 v2_saved_profile까지 지워서 기존가입자도 매번 5단계 재입력하던 버그, commit a327637로 수정 (로그인처럼 자동복원되게)
+- [⛔ 인증방식 바꾸는 배포 전엔 재로그인 필요 미리 경고](feedback_warn_before_auth_changes.md) — 관리자토큰 방식변경 후 재로그인 안내 안해서 "DB전부삭제" 오인 소동, 다음부턴 배포전 미리 안내
 - [⭐⭐⭐ 사주아이 강의 성장비법+PART6 홍보법+비용관리+프롬프트세트+Figma워크플로](reference_sajaui_course_growth_secrets.md) — 니치Fit/글로벌진출/PART6 홍보광고·SEO·AEO·SNS전략(가장중요)/운영비용관리/랜딩~토스PG 프롬프트5개/FigJam+Claude MCP 부록 (2026-08-11)
 - [⭐⭐⭐ 부드러운 존댓말 톤 사용](feedback_warm_tone_esther.md) — "에스더님" 호칭+존댓말+친구처럼 응원. 반말/건조체 금지 (2026-08-11 직접 교정)
 - [⭐⭐⭐ 답변 핵심만 짧게](feedback_keep_replies_very_short.md) — 화면보며 진행할땐 설명 최소화, 할일만 번호로 짧게 (2026-08-13 직접 교정)
