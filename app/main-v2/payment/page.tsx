@@ -267,6 +267,13 @@ function PaymentInner() {
     }
   }, [highlightWealthLove, searchParams]);
 
+  useEffect(() => {
+    if (searchParams.get("scrollTo") === "select") {
+      const el = document.getElementById("select-section");
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    }
+  }, [searchParams]);
+
   const packages = [
     { id: "basic",    name: "기본 분석",  price: "₩9,900",  pages: 30,  features: ["wealthLuck", "loveLuck"],                                                            count: 2, chars: "전문가급 심층 분석", desc: "재물운 + 연애운" },
     { id: "standard", name: "베이직",     price: "₩19,900", pages: 75,  features: ["yearlyLuck", "wealthLuck", "loveLuck", "monthlyLuck"],                               count: 4, chars: "전문가급 심층 분석", desc: "올해 운세 + 재물운 + 연애운 + 월별 운세" },
@@ -471,7 +478,7 @@ function PaymentInner() {
 
         {/* 심층 분석 3900원 */}
         {!isPartner && (
-          <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
+          <div id="select-section" style={{ maxWidth: 600, margin: "0 auto 20px" }}>
             <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>✨ 심층 분석 3,900원</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
               {[
