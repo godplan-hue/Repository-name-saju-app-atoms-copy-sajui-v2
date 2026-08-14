@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { verifyAdminToken } from "@/lib/adminAuth";
 
 export async function GET(request: NextRequest) {
   try {
-    const adminId = request.headers.get("x-admin-id");
+    const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
 
     if (!adminId) {
       return NextResponse.json(
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const adminId = request.headers.get("x-admin-id");
+    const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
     if (!adminId) return NextResponse.json({ error: "인증 필요" }, { status: 401 });
     const { partnerId } = await request.json();
     if (!partnerId) return NextResponse.json({ ok: false });

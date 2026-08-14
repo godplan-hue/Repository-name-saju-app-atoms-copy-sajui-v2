@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyAdminToken } from "@/lib/adminAuth";
 
 export async function GET(request: NextRequest) {
   try {
-    const adminId = request.headers.get("x-admin-id");
+    const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
 
     if (!adminId) {
       return NextResponse.json(

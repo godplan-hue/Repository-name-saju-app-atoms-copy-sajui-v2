@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { verifyAdminToken } from "@/lib/adminAuth";
 
 export async function GET(req: NextRequest) {
   try {
-    const adminId = req.headers.get("x-admin-id");
+    const adminId = verifyAdminToken(req.headers.get("x-admin-id"));
     if (!adminId) return NextResponse.json({ error: "인증 필요" }, { status: 401 });
     const snap = await db.ref("v2_direct_payments").once("value");
     const data = snap.val() || {};
@@ -23,7 +24,7 @@ export async function GET(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const adminId = req.headers.get("x-admin-id");
+    const adminId = verifyAdminToken(req.headers.get("x-admin-id"));
     if (!adminId) return NextResponse.json({ error: "인증 필요" }, { status: 401 });
     const { id } = await req.json();
     if (!id) return NextResponse.json({ ok: false });

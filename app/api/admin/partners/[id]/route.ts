@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { verifyAdminToken } from "@/lib/adminAuth";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
+    if (!adminId) {
+      return NextResponse.json({ error: "인증되지 않았습니다" }, { status: 401 });
+    }
     const { id } = await params;
 
     const [partnerSnap, archiveSnap] = await Promise.all([
@@ -43,7 +48,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const adminId = request.headers.get("x-admin-id");
+    const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
     if (!adminId) {
       return NextResponse.json({ error: "인증되지 않았습니다" }, { status: 401 });
     }
@@ -64,7 +69,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const adminId = request.headers.get("x-admin-id");
+    const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
     if (!adminId) {
       return NextResponse.json({ error: "인증되지 않았습니다" }, { status: 401 });
     }

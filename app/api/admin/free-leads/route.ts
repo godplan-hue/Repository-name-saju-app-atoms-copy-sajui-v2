@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { verifyAdminToken } from "@/lib/adminAuth";
 
 // 전화번호 기준으로 중복 제거 — 이름 있는 항목 우선, 둘 다 있으면 최근 항목
 // 전화번호 없고 이름이 "익명"인 항목은 연락 불가 → 어드민 뷰에서 제외
@@ -35,7 +36,7 @@ function dedupByPhone(items: any[], source: string): any[] {
 }
 
 export async function GET(request: NextRequest) {
-  const adminId = request.headers.get("x-admin-id");
+  const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, momcareSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap, tSajuSnap, tTarotSnap, tZodiacSnap, tGunghapSnap, tPetunSnap, tJigunSnap, tResumeSnap, battleSnap, movieSnap, styleSnap, workSnap] = await Promise.all([
@@ -375,7 +376,7 @@ export async function GET(request: NextRequest) {
 
 // 무료DB 전체 삭제 (모든 무료앱 경로)
 export async function DELETE(request: NextRequest) {
-  const adminId = request.headers.get("x-admin-id");
+  const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   await Promise.all([
     db.ref("free_leads").remove(),

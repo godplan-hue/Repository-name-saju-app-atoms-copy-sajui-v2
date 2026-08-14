@@ -1,5 +1,6 @@
 ﻿import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { checkNotifyRateLimit, recordNotifySend } from "@/lib/notifyRateLimiter";
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,6 +9,11 @@ export async function POST(req: NextRequest) {
 
     const cleanPhone = (phone as string).replace(/\D/g, "");
     if (cleanPhone.length < 10) return NextResponse.json({ ok: false });
+
+    const { allowed } = checkNotifyRateLimit(cleanPhone);
+    if (!allowed) {
+      return NextResponse.json({ ok: false, error: "rate limited" }, { status: 429 });
+    }
 
     const apiKey = process.env.SOLAPI_API_KEY;
     const apiSecret = process.env.SOLAPI_API_SECRET;
@@ -54,6 +60,7 @@ export async function POST(req: NextRequest) {
     });
 
     const data = await solapiRes.json();
+    if (solapiRes.ok) recordNotifySend(cleanPhone);
     return NextResponse.json({ ok: solapiRes.ok, data });
   } catch {
     return NextResponse.json({ ok: false });

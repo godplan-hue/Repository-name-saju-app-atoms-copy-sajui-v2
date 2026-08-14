@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { verifyAdminToken } from "@/lib/adminAuth";
 
 // 관리자가 전체 파트너의 고객 보관함을 한 번에 보는 용도.
 // partnerArchive를 전체 다 읽으면(once("value")) 분석이 수만~수십만 건
@@ -7,7 +8,10 @@ import { db } from "@/lib/firebase";
 // (월별 매출 요약은 partnerStats를 따로 읽어서 정확하게 계산함)
 const RECENT_PER_PARTNER = 50;
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
+  if (!adminId) return NextResponse.json({ error: "인증되지 않았습니다" }, { status: 401 });
+
   const [partnersSnap, statsSnap] = await Promise.all([
     db.ref("partners").once("value"),
     db.ref("partnerStats").once("value"),
@@ -55,6 +59,9 @@ export async function GET() {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const adminId = verifyAdminToken(req.headers.get("x-admin-id"));
+    if (!adminId) return NextResponse.json({ error: "인증되지 않았습니다" }, { status: 401 });
+
     const { partnerId, id } = await req.json();
     if (!partnerId || !id) return NextResponse.json({ ok: false });
     await db.ref(`partnerArchive/${partnerId}/${id}`).remove();

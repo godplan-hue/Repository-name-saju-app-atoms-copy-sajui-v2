@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { verifyAdminToken } from "@/lib/adminAuth";
 
 // 일반회원 DB는 시간이 지나면 수십만 건까지 쌓일 수 있어서, partnerArchive처럼
 // 전체를 한 번에 읽어오면(once("value")) 점점 느려지고 Firebase 다운로드
@@ -8,6 +9,9 @@ import { db } from "@/lib/firebase";
 const PAGE_SIZE = 50;
 
 export async function GET(request: NextRequest) {
+  const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
+  if (!adminId) return NextResponse.json({ error: "인증되지 않았습니다" }, { status: 401 });
+
   const cursor = request.nextUrl.searchParams.get("cursor");
 
   let query = db.ref("consumerCustomers").orderByKey();

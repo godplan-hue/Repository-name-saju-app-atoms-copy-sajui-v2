@@ -180,7 +180,8 @@ export default function AdminDirectPayments() {
             <button onClick={() => {
               setTab("sns");
               setSnsLoading(true);
-              fetch("/api/admin/sns-pending").then(r => r.json()).then(d => { setSnsPending(d.list || []); setSnsLoading(false); }).catch(() => setSnsLoading(false));
+              const adminId = localStorage.getItem("adminId") || "";
+              fetch("/api/admin/sns-pending", { headers: { "x-admin-id": adminId } }).then(r => r.json()).then(d => { setSnsPending(d.list || []); setSnsLoading(false); }).catch(() => setSnsLoading(false));
             }} style={{ padding: "10px 20px", borderRadius: 10, border: "none", background: tab === "sns" ? "linear-gradient(135deg,#f59e0b,#ec4899)" : "#f3f4f6", color: tab === "sns" ? "white" : "#6b7280", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>📸 SNS후기신청 {snsPending.length > 0 ? `(${snsPending.length})` : ""}</button>
           </div>
 

@@ -24,7 +24,10 @@ export default function AdminCustomers() {
   const [done, setDone] = useState(false);
 
   const load = async (cur?: string | null) => {
-    const res = await fetch(`/api/admin/customers${cur ? `?cursor=${encodeURIComponent(cur)}` : ""}`);
+    const adminId = localStorage.getItem("adminId") ?? "";
+    const res = await fetch(`/api/admin/customers${cur ? `?cursor=${encodeURIComponent(cur)}` : ""}`, {
+      headers: { "x-admin-id": adminId },
+    });
     const data = await res.json();
     setCustomers(prev => cur ? [...prev, ...data.customers] : data.customers);
     setCursor(data.nextCursor);

@@ -26,7 +26,8 @@ export default function AdminPartnerCustomers() {
   const [backfilling, setBackfilling] = useState(false);
 
   const load = () => {
-    fetch("/api/admin/partner-customers").then(res => res.json()).then(data => {
+    const adminId = localStorage.getItem("adminId") ?? "";
+    fetch("/api/admin/partner-customers", { headers: { "x-admin-id": adminId } }).then(res => res.json()).then(data => {
       setCustomers(data.customers || []);
       setMonthlySummary(data.monthlySummary || []);
       setRecentPerPartner(data.recentPerPartner || 50);
@@ -42,7 +43,8 @@ export default function AdminPartnerCustomers() {
     if (!confirm("이번 달 매출 집계를 보관함 전체 기록으로 다시 정확하게 채워 넣습니다. 계속할까요?")) return;
     setBackfilling(true);
     try {
-      const res = await fetch("/api/admin/backfill-stats", { method: "POST" });
+      const adminId = localStorage.getItem("adminId") ?? "";
+      const res = await fetch("/api/admin/backfill-stats", { method: "POST", headers: { "x-admin-id": adminId } });
       const data = await res.json();
       alert(data.success ? `완료! ${data.partnersUpdated}명의 파트너 집계가 다시 채워졌어요.` : "실패했습니다.");
       load();
@@ -61,9 +63,10 @@ export default function AdminPartnerCustomers() {
 
   const handleDeleteTransaction = async (c: PartnerCustomer) => {
     if (!confirm(`"${c.customerName}" 거래 기록을 삭제할까요?`)) return;
+    const adminId = localStorage.getItem("adminId") ?? "";
     await fetch("/api/admin/partner-customers", {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-admin-id": adminId },
       body: JSON.stringify({ partnerId: c.partnerId, id: c.id }),
     });
     setCustomers(prev => prev.filter(x => !(x.partnerId === c.partnerId && x.id === c.id)));
@@ -72,10 +75,11 @@ export default function AdminPartnerCustomers() {
   const handleDeleteCustomer = async (key: string) => {
     const toDelete = customers.filter(c => (c.customerPhone || c.customerEmail || c.customerName) === key);
     if (!confirm(`"${toDelete[0]?.customerName}" 고객의 기록 ${toDelete.length}건을 모두 삭제할까요?`)) return;
+    const adminId = localStorage.getItem("adminId") ?? "";
     await Promise.all(toDelete.map(c =>
       fetch("/api/admin/partner-customers", {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-admin-id": adminId },
         body: JSON.stringify({ partnerId: c.partnerId, id: c.id }),
       })
     ));
