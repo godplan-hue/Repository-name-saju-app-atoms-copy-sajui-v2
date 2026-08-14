@@ -665,10 +665,17 @@ function V2ResultInner() {
   // "1"로 써버린 직후 다시 렌더링(읽기 등)될 때 카드가 사라져 보였음.
   // 그래서 이 페이지에 처음 들어왔을 때의 값(쓰기 전 값)을 스냅샷으로 고정해둠
   const [paidConsumedSnapshot, setPaidConsumedSnapshot] = useState<boolean | null>(null);
+  const paidConsumedCheckedRef = useRef(false);
   useEffect(() => {
+    // select tier는 결제 직후 allAnalyses가 비어있으면 자동 재조회(위 useEffect)로
+    // result가 한 번 더 바뀌는데, 그때마다 이 효과가 다시 실행되면 방금 자기가 써둔
+    // consumedKey="1"을 다시 읽어 "이미 봤음"으로 스냅샷을 덮어써서 카드가 사용자에게
+    // 한 번도 안 보이고 사라지는 버그가 있었음 — 페이지당 딱 한 번만 판정하도록 고정
+    if (paidConsumedCheckedRef.current) return;
     const p = result?.profile;
     if (!p?.name || !p?.birthYear) return;
     if (tier !== "select" && tier !== "package") return;
+    paidConsumedCheckedRef.current = true;
     const interestOptions = ["💰 돈", "💕 애정", "🎯 성공", "💼 사업", "💍 결혼", "🏢 직장", "👶 자녀", "📖 학업", "💪 건강"];
     const todayKey = new Date().toDateString();
     const interestKey = `v2_change_interest_${p.name}_${p.birthYear}_${Number(p.birthMonth)}_${Number(p.birthDay)}_${todayKey}`;
