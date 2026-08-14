@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBanner";
 
 const MONTHS = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
@@ -17,8 +18,12 @@ export default function YearlyPage() {
   const [loading, setLoading] = useState(true);
   const [speaking, setSpeaking] = useState(false);
   const [showGuideModal, setShowGuideModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [sharing, setSharing] = useState(false);
+  const [historySaved, setHistorySaved] = useState(false);
   const readChunksRef = useRef<string[]>([]);
   const readIdxRef = useRef(0);
+  const cardRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
@@ -124,6 +129,111 @@ export default function YearlyPage() {
     setTimeout(() => toggleReadAloud(), 80);
   };
 
+  // ── 이미지 저장 ──
+  const saveImage = async () => {
+    if (saving || !cardRef.current) return;
+    setSaving(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const el = cardRef.current;
+      const prevOv = el.style.overflow;
+      el.style.overflow = "visible";
+      el.style.maxHeight = "none";
+      await document.fonts.ready;
+      await new Promise(r => setTimeout(r, 80));
+      const isMobile = window.innerWidth < 768;
+      const fullH = el.scrollHeight + 40;
+      const canvas = await html2canvas(el, {
+        backgroundColor: "#eff6ff", scale: isMobile ? 2 : 2.5,
+        useCORS: true, allowTaint: true, logging: false,
+        height: fullH, windowWidth: isMobile ? window.innerWidth : 520, windowHeight: fullH,
+      });
+      el.style.overflow = prevOv;
+      const link = document.createElement("a");
+      link.download = `점운_${profile?.name ?? "운세"}_연도별운세.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch {
+      alert("이미지 저장에 실패했습니다. 스크린샷을 이용해주세요.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // ── 공유 ──
+  const shareResult = async () => {
+    if (sharing) return;
+    setSharing(true);
+    let shareUrl = "";
+    try {
+      const categories = [
+        { icon: "☀️", label: "올해 운세", color: "#2563eb", text: yearlyText },
+        ...(monthlyText ? [{ icon: "📅", label: "월별운세", color: "#2563eb", text: monthlyText }] : []),
+      ].filter(c => c.text && c.text.trim());
+      if (categories.length > 0) {
+        const res = await fetch("/api/v2/share", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: profile?.name, categories, tier: "select" }),
+        });
+        if (res.ok) { const data = await res.json(); shareUrl = `${window.location.origin}/main-v2/share/${data.id}`; }
+      }
+    } catch { }
+    setSharing(false);
+    if (!shareUrl) { alert("공유 링크를 만들지 못했어요. 잠시 후 다시 시도해주세요."); return; }
+    const title = `📅 ${profile?.name}님의 연도별운세`;
+    const desc = `2026년 올해 운세 + 12개월 로드맵`;
+    const kakao = (window as any).Kakao;
+    if (kakao && kakao.isInitialized()) {
+      kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title, description: `${desc} | 점운 AI사주`,
+          imageUrl: "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",
+          link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+        },
+        buttons: [
+          { title: "내 연도별운세 보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
+          { title: "나도 연도별운세 보기", link: { mobileWebUrl: "https://jeomun.com/main-v2", webUrl: "https://jeomun.com/main-v2" } },
+        ],
+      });
+    } else if (navigator.share) {
+      navigator.share({ title, text: `${desc} | 점운 AI사주`, url: shareUrl }).catch(() => {});
+    } else {
+      window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(shareUrl)}`;
+    }
+  };
+
+  // ── 보관함 ──
+  const saveToHistory = () => {
+    if (!profile || !yearlyText) return;
+    try {
+      const id = `yearly-${profile.name}-${new Date().getFullYear()}`;
+      const hist = JSON.parse(localStorage.getItem("v2_history") || "[]");
+      if (!hist.some((h: any) => h.id === id)) {
+        const newItem = {
+          id, date: new Date().toISOString(),
+          name: profile.name,
+          category: `📅 연도별운세 (${new Date().getFullYear()}년)`,
+          analysis: [`☀️ 올해 운세\n${yearlyText}`, monthlyText ? `📅 월별운세\n${monthlyText}` : ""].filter(Boolean).join("\n\n"),
+          scores, isPaid: true, planType: "yearly", birthYear: profile.birthYear ?? "",
+        };
+        hist.unshift(newItem);
+        localStorage.setItem("v2_history", JSON.stringify(hist.slice(0, 50)));
+        // Firebase에도 저장 — 다른 브라우저/기기에서 보관함 로드 가능하게
+        try {
+          const _phone = (profile.phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+          fetch("/api/v2/history", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: profile.name, phone: _phone || undefined, item: newItem }),
+          }).catch(() => {});
+        } catch { }
+      }
+      setHistorySaved(true);
+    } catch { }
+  };
+
   // 점수에서 막대 색 계산
   const scoreColor = (s: number) => s >= 75 ? "#10b981" : s >= 60 ? "#f59e0b" : "#ef4444";
 
@@ -133,6 +243,9 @@ export default function YearlyPage() {
 
   return (
     <>
+    <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"
+      onLoad={() => { const k = (window as any).Kakao; if (k && !k.isInitialized()) k.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY); }} />
+
     {/* 고정 읽기 버튼 */}
     <div style={{ position: "fixed", right: 16, bottom: 80, zIndex: 200, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
       <button onClick={restartReadAloud} title="처음부터 다시 듣기" style={{ padding: "8px 12px", borderRadius: 50, border: "none", background: "rgba(37,99,235,0.15)", color: "#1d4ed8", fontWeight: 800, fontSize: 16, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>↺ 처음부터 듣기</button>
@@ -196,6 +309,7 @@ export default function YearlyPage() {
           </div>
         ) : (
           <>
+            <div ref={cardRef}>
             {/* 운세 점수 요약 */}
             {profile && scores && (
               <div style={{ background: "white", border: "1.5px solid rgba(37,99,235,0.2)", borderRadius: 14, padding: "16px", marginBottom: 20, textAlign: "center", boxShadow: "0 2px 12px rgba(37,99,235,0.08)" }}>
@@ -255,6 +369,30 @@ export default function YearlyPage() {
                 </div>
               </div>
             ) : null}
+            </div>
+
+            {/* 저장/공유 — 유료만 */}
+            {paid && (
+              <>
+                <div style={{ background: "rgba(37,99,235,0.08)", border: "1px solid rgba(37,99,235,0.3)", borderRadius: 10, padding: "8px 12px", marginBottom: 10, fontSize: 11, color: "#4b5563", lineHeight: 1.6 }}>
+                  💡 이 화면을 나가면 결과가 사라져요.<br />아래 [보관함] 버튼을 눌러 저장하면 언제든 다시 볼 수 있어요.
+                </div>
+                <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
+                  <button onClick={shareResult} disabled={sharing}
+                    style={{ flex: 1, padding: "12px 0", background: "linear-gradient(135deg,#2563eb,#6366f1)", color: "white", border: "none", borderRadius: 12, fontWeight: 800, fontSize: 13, cursor: sharing ? "not-allowed" : "pointer" }}>
+                    {sharing ? "⏳..." : "📤 공유하기"}
+                  </button>
+                  <button onClick={saveImage} disabled={saving}
+                    style={{ flex: 1, padding: "12px 0", background: "rgba(37,99,235,0.1)", border: "1px solid rgba(37,99,235,0.3)", color: "#1d4ed8", borderRadius: 12, fontWeight: 700, fontSize: 13, cursor: saving ? "not-allowed" : "pointer" }}>
+                    {saving ? "⏳..." : "🖼️ 이미지 저장"}
+                  </button>
+                  <button onClick={saveToHistory}
+                    style={{ flex: 1, padding: "12px 0", background: historySaved ? "rgba(37,99,235,0.15)" : "white", border: historySaved ? "1px solid rgba(37,99,235,0.4)" : "1px solid #e5e7eb", color: historySaved ? "#1d4ed8" : "#6b7280", borderRadius: 12, fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
+                    {historySaved ? "✅ 저장됨" : "📚 보관함"}
+                  </button>
+                </div>
+              </>
+            )}
 
             {/* 결제 섹션 */}
             {!paid && (
