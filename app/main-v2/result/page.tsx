@@ -1692,7 +1692,7 @@ function V2ResultInner() {
                   </div>
                   <p style={{ fontSize: 12, color: "#dc2626", fontWeight: 800, margin: "12px 0 0", textAlign: "center", fontStyle: "italic" }}>👉 {profile.name}님의 정확한 변화 시점과<br/>구체적인 실행법이 <span style={{ display: "inline-block", background: "#ec4899", color: "white", fontWeight: 900, fontStyle: "normal", padding: "2px 10px", borderRadius: 8, margin: "0 2px" }}>990원 결제</span> 시 모두 공개됩니다</p>
                   <button onClick={() => { window.location.href = "/main-v2/payment?scrollTo=select"; }} style={{ width: "100%", marginTop: 14, padding: "13px 0", background: "linear-gradient(135deg, #ff1493, #ff69b4)", color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 13, cursor: "pointer" }}>💎 {yc.category} 완벽 공략법 보기</button>
-                  <p style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, margin: "8px 0 0", textAlign: "center" }}>* 990원·3,900원 사주 구매 시에만 제공돼요</p>
+                  <p style={{ fontSize: 10, color: "#9ca3af", fontWeight: 600, margin: "8px 0 0", textAlign: "center" }}>* 3,900원 심층분석 또는 9,900원~ 패키지 구매 시에만 제공돼요</p>
                 </div>
               </div>
             );
