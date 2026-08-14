@@ -1697,7 +1697,15 @@ function V2ResultInner() {
           // 사라져 보이는 버그가 있었음
           const savedInterest = typeof window !== "undefined" ? localStorage.getItem(interestKey) : null;
           const alreadyConsumed = paidConsumedSnapshot === true;
-          if (!savedInterest || !interestOptions.includes(savedInterest) || alreadyConsumed) return null;
+          if (!savedInterest || !interestOptions.includes(savedInterest)) return null;
+          if (alreadyConsumed) {
+            return (
+              <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden", padding: "18px", textAlign: "center" }}>
+                <p style={{ fontSize: 13, fontWeight: 800, color: "#f97316", margin: "0 0 6px" }}>🎁 오늘의 "당신의 변화"는 이미 받으셨어요<br />내일 다시 만나요!</p>
+                <p style={{ fontSize: 11, color: "#d4af37", fontWeight: 700, margin: 0 }}>✨ 당신의 변화는 하루에 한 번만 만나볼 수 있는<br/>특별한 메시지예요</p>
+              </div>
+            );
+          }
           const yc = getYourChangeType(profile.name, profile.birthYear, profile.birthMonth, profile.birthDay, undefined, savedInterest);
           return (
             <div style={{ background: "white", borderRadius: 24, border: "1.5px solid rgba(255,215,0,0.4)", marginBottom: 12, overflow: "hidden" }}>
