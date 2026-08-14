@@ -24,6 +24,7 @@ export default function Payment() {
 function PaymentInner() {
   const searchParams = useSearchParams();
   const highlightWealthLove = searchParams.get("highlight") === "wealthlove";
+  const isFromYourChange = searchParams.get("scrollTo") === "select";
   const preselectId = searchParams.get("preselect");
   const PRESELECT_INFO: Record<string, { name: string; features: string[] }> = {
     basic:    { name: "기본 분석", features: ["wealthLuck", "loveLuck"] },
@@ -414,6 +415,7 @@ function PaymentInner() {
         </div>
 
         {/* 신규 990원 */}
+        {!isFromYourChange && (
         <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
           <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>⚡ 신규 990원</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
@@ -440,8 +442,10 @@ function PaymentInner() {
             ))}
           </div>
         </div>
+        )}
 
         {/* 특별 2900원 */}
+        {!isFromYourChange && (
         <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
           <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>💫 특별 2,900원</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
@@ -475,10 +479,16 @@ function PaymentInner() {
             ))}
           </div>
         </div>
+        )}
 
         {/* 심층 분석 3900원 */}
         {!isPartner && (
           <div id="select-section" style={{ maxWidth: 600, margin: "0 auto 20px" }}>
+            {isFromYourChange && (
+              <div style={{ background: "rgba(236,72,153,0.12)", border: "1px solid rgba(236,72,153,0.4)", borderRadius: 12, padding: "12px 14px", marginBottom: 12 }}>
+                <p style={{ color: "#ff69b4", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.6 }}>💎 "당신의 변화"는 아래 재물운·연애운·건강운·성공운·총운(₩3,900) 또는 패키지(₩9,900~) 구매 시에만 제공돼요</p>
+              </div>
+            )}
             <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>✨ 심층 분석 3,900원</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
               {[
