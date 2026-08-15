@@ -44,7 +44,7 @@ const REVIEWS = [
 const FAQ_ITEMS = [
   { q: "성장 위기란 무엇인가요?", a: "출생부터 3세까지 아이는\n여러 번의 성장 및 발달 위기를 겪습니다.\n이는 신경계와 뇌가 발달하고\n아이가 새로운 능력을 보이기 시작하는\n자연스러운 과정입니다.\n이 시기에 아이는 보채거나\n잠을 잘 못 잘 수도 있어요.\n육아일기가 이 시기를 미리 알려드립니다." },
   { q: "앱 정보를 신뢰할 수 있는 이유는 무엇인가요?", a: "앱에 있는 모든 글, 설명, 발달 운동은\n현직 소아과 의사들과\n협력하여 제작되었습니다.\nAI가 근거 기반 의학 데이터를 바탕으로\n아이의 성장을 분석합니다." },
-  { q: "어떻게 이용하나요?", a: "육아일기 7가지 기능 전체는 990원 결제 후 30일간 이용 가능해요.\n\n점운에서 사주 990원을 결제하시면\n육아일기도 함께 이용하실 수 있어요." },
+  { q: "어떻게 이용하나요?", a: "육아일기 7가지 기능 전체는 1,980원 결제 후 30일간 이용 가능해요." },
   { q: "아이가 여러 명이어도 사용할 수 있나요?", a: "현재는 아이 1명 기준으로 기록하는 방식이에요.\n형제자매 각각 기록하고 싶다면\n브라우저를 나눠 사용하시거나\n기기를 따로 사용하시면 됩니다." },
   { q: "WHO 성장 기준과 어떻게 비교하나요?", a: "세계보건기구(WHO)의\n공식 성장 기준 데이터를 기반으로\n아이의 키, 몸무게, 머리둘레를\n백분위수로 비교해 드립니다.\n또래 평균과의 차이를\n한눈에 확인할 수 있습니다." },
 ];
@@ -195,7 +195,7 @@ export default function MomcarePage() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 10 }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: "#92400e" }}>⏰ 육아일기 30일 이용권이 만료됐어요.</span>
             <a href="/momcare/pay" style={{ display: "inline-block", background: "#f59e0b", color: "white", fontSize: 12, fontWeight: 900, padding: "7px 16px", borderRadius: 20, textDecoration: "none" }}>
-              육아일기 990원으로 재활성화 →
+              육아일기 1,980원으로 재활성화 →
             </a>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default function MomcarePage() {
               <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>성장 캘린더 →</Link>
               <button onClick={shareApp} style={{ background: "#f3e8ff", color: "#7c3aed", border: "1.5px solid rgba(124,58,237,0.3)", borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>🔗 공유하기</button>
             </div>
-            <p style={{ fontSize: 11, color: MID, margin: "10px 0 0", lineHeight: 1.8 }}>육아일기 990원 결제 후 30일 전체 이용 가능해요</p>
+            <p style={{ fontSize: 11, color: MID, margin: "10px 0 0", lineHeight: 1.8 }}>육아일기 1,980원 결제 후 30일 전체 이용 가능해요</p>
           </div>
           {/* 엄마 이미지 */}
           <div style={{ flexShrink: 0 }}>
@@ -409,7 +409,7 @@ export default function MomcarePage() {
         <div style={{ background: TEAL_GRAD, borderRadius: 20, padding: "32px 24px", textAlign: "center", boxShadow: "0 4px 24px rgba(2,132,199,0.25)" }}>
           <div style={{ fontSize: 36, marginBottom: 8 }}>🎁</div>
           <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>육아일기 7가지 기능</h2>
-          <p style={{ fontSize: 13, color: "#fbbf24", margin: "0 0 10px", fontWeight: 900 }}>🔒 990원 결제 후 30일 이용</p>
+          <p style={{ fontSize: 13, color: "#fbbf24", margin: "0 0 10px", fontWeight: 900 }}>🔒 1,980원 결제 후 30일 이용</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 10 }}>
             {["📅 성장 위기 캘린더", "🍼 일일 트래커", "📏 성장 일기", "📔 육아 일기", "💌 타임캡슐", "🗣️ 말 사전"].map(item => (
               <div key={item} style={{ background: "rgba(255,255,255,0.2)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "white", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
@@ -422,7 +422,7 @@ export default function MomcarePage() {
             ))}
           </div>
           <Link href="/momcare/pay" style={{ display: "inline-block", background: "white", color: TEAL, borderRadius: 24, padding: "12px 32px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>
-            육아일기 990원으로 시작하기 →
+            육아일기 1,980원으로 시작하기 →
           </Link>
         </div>
       </div>
@@ -454,7 +454,7 @@ export default function MomcarePage() {
       <div style={{ maxWidth: 800, margin: "40px auto 0", padding: "0 24px" }}>
         <div style={{ background: TEAL_GRAD, borderRadius: 20, padding: "40px 24px", textAlign: "center", boxShadow: "0 8px 32px rgba(2,132,199,0.3)" }}>
           <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "white" }}>지금 바로<br />육아일기를 시작하세요</h2>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: "0 0 24px" }}>990원으로 시작하세요.</p>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", margin: "0 0 24px" }}>1,980원으로 시작하세요.</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <button onClick={() => alert("앱스토어 출시 준비 중입니다!")} style={{ background: "white", color: TEAL, border: "none", borderRadius: 12, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>App Store 다운로드</button>
             <button onClick={() => alert("구글플레이 출시 준비 중입니다!")} style={{ background: "rgba(255,255,255,0.2)", color: "white", border: "2px solid rgba(255,255,255,0.5)", borderRadius: 12, padding: "12px 24px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>Google Play 다운로드</button>

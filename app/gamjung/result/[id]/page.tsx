@@ -493,7 +493,7 @@ export default function GamjungResultPage() {
           <Link href="/main-v2" style={{ display: "block", background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "white", textDecoration: "none", borderRadius: 16, padding: "13px 20px", fontWeight: 900, fontSize: 15, boxShadow: "0 4px 16px rgba(124,58,237,0.4)" }}>
             오늘 운세 사주로 확인하기 →
           </Link>
-          <p style={{ fontSize: 11, color: "rgba(192,132,252,0.5)", margin: "8px 0 0" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
+          <p style={{ fontSize: 11, color: "rgba(192,132,252,0.5)", margin: "8px 0 0" }}>1,980원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
 
         {/* 나도 해보기 CTA */}

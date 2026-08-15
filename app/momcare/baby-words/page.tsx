@@ -19,7 +19,7 @@ export default function BabyWordsPage() {
   const [form, setForm] = useState({ babyWord: "", realWord: "", date: new Date().toISOString().slice(0,10), story: "", age: "" });
   const [showForm, setShowForm] = useState(false);
   const [search, setSearch] = useState("");
-  const [unlocked, setUnlocked] = useState(true);
+  const [unlocked, setUnlocked] = useState(false);
   const [expired, setExpired] = useState(false);
   const [mcUserId, setMcUserId] = useState("");
   const router = useRouter();
@@ -112,7 +112,7 @@ export default function BabyWordsPage() {
           <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
             <p style={{ fontSize: 14, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>{expired ? "⏰ 30일 이용권이 만료됐어요" : "🔒 결제 후 새 단어를 추가할 수 있어요"}</p>
             <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 10px", lineHeight: 1.6 }}>{expired ? "기존 단어는 계속 볼 수 있어요. 새 단어를 추가하려면 재활성화해주세요." : "육아일기 결제하면 30일 이용 가능해요."}</p>
-            <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", textAlign: "center" }}>💳 육아일기 결제하기 (990원·5,900원) →</a>
+            <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", textAlign: "center" }}>💳 육아일기 결제하기 (1,980원·5,900원) →</a>
           </div>
         )}
 

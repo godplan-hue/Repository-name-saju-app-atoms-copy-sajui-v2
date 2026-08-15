@@ -54,7 +54,7 @@ export default function GamjungPage() {
 
   const selectedMood = MOODS.find(m => m.score === moodScore);
   const [history, setHistory] = useState<Array<{id: string; moodLabel: string; moodEmoji: string; createdAt: number}>>([]);
-  const [gamjungLocked, setGamjungLocked] = useState(false);
+  const [gamjungLocked, setGamjungLocked] = useState(true);
   const [gamjungNeverPaid, setGamjungNeverPaid] = useState(false);
   const [gamjungExpiringSoon, setGamjungExpiringSoon] = useState(false);
   const [gamjungDaysLeft, setGamjungDaysLeft] = useState(0);
@@ -240,7 +240,7 @@ export default function GamjungPage() {
               <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 16, padding: "16px 20px", marginBottom: 8 }}>
                 <p style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>{gamjungNeverPaid ? "🔒 이용권이 필요해요" : "⏰ 30일 이용권이 만료됐어요"}</p>
                 <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 12px", lineHeight: 1.6 }}>
-                  {gamjungNeverPaid ? "990원 단독권 또는 4개앱 30일 5,900원 풀패스로 이용해요" : "기존 감정일기는 계속 볼 수 있어요. 새 일기를 쓰려면 재활성화해주세요."}
+                  {gamjungNeverPaid ? "1,980원 단독권 또는 4개앱 30일 5,900원 풀패스로 이용해요" : "기존 감정일기는 계속 볼 수 있어요. 새 일기를 쓰려면 재활성화해주세요."}
                 </p>
                 <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg,#f59e0b,#fbbf24)", color: "#1a1a00", fontSize: 13, fontWeight: 900, padding: "11px 24px", borderRadius: 20, textDecoration: "none" }}>
                   {gamjungNeverPaid ? "이용권 구매하기 →" : "30일 재활성화 →"}
@@ -304,7 +304,7 @@ export default function GamjungPage() {
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 12px" }}>
             <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "12px 16px" }}>
               <p style={{ fontSize: 13, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>⏰ {gamjungDaysLeft}일 후 감정일기가 잠겨요</p>
-              <a href="/gamjung/pay" style={{ color: "#ea580c", fontWeight: 700, fontSize: 12, textDecoration: "none" }}>지금 990원 결제하면 만료일부터 30일 자동 연장 →</a>
+              <a href="/gamjung/pay" style={{ color: "#ea580c", fontWeight: 700, fontSize: 12, textDecoration: "none" }}>지금 1,980원 결제하면 만료일부터 30일 자동 연장 →</a>
             </div>
           </div>
         )}
@@ -312,8 +312,8 @@ export default function GamjungPage() {
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 40px" }}>
             <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 14, padding: "20px 18px", textAlign: "center" }}>
               <p style={{ fontSize: 15, fontWeight: 900, color: "#fbbf24", margin: "0 0 8px" }}>{gamjungNeverPaid ? "🔒 이용권이 필요해요" : "⏰ 30일 이용권이 만료됐어요"}</p>
-              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px" }}>{gamjungNeverPaid ? "990원으로 감정일기를 시작해보세요." : "기존 기록은 위에서 계속 볼 수 있어요."}</p>
-              <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>{gamjungNeverPaid ? "이용권 구매하기 →" : "사주 990원으로 30일 재활성화 →"}</a>
+              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 14px" }}>{gamjungNeverPaid ? "1,980원으로 감정일기를 시작해보세요." : "기존 기록은 위에서 계속 볼 수 있어요."}</p>
+              <a href="/gamjung/pay" style={{ display: "inline-block", background: "linear-gradient(135deg, #f97316, #fb923c)", color: "white", borderRadius: 12, padding: "12px 24px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>{gamjungNeverPaid ? "이용권 구매하기 →" : "1,980원으로 30일 재활성화 →"}</a>
               <div style={{ marginTop: 14, borderTop: "1px solid rgba(251,191,36,0.2)", paddingTop: 12 }}>
                 <p style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 8px" }}>📱 PC나 다른 기기에서 이용하시려면 전화번호로 복원해요</p>
                 <div style={{ display: "flex", gap: 8 }}>

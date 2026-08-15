@@ -38,7 +38,7 @@ function calcOpenDate(openAge: string): string {
 export default function TimeCapsulePage() {
   const [letters, setLetters] = useState<Letter[]>([]);
   const [mode, setMode] = useState<"list" | "write" | "view" | "unlock">("list");
-  const [momcareUnlocked, setMomcareUnlocked] = useState(true);
+  const [momcareUnlocked, setMomcareUnlocked] = useState(false);
   const [momcareExpired, setMomcareExpired] = useState(false);
   const [selected, setSelected] = useState<Letter | null>(null);
   const [form, setForm] = useState({ title: "", content: "", openAge: "10살", useTemplate: -1 });
@@ -191,7 +191,7 @@ export default function TimeCapsulePage() {
           <div style={{ fontSize: 48, marginBottom: 12 }}>🔒</div>
           <p style={{ fontSize: 16, fontWeight: 900, color: "#1a1a2e", margin: "0 0 8px" }}>새 편지를 쓰려면 재활성화가 필요해요</p>
           <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 20px", lineHeight: 1.6 }}>기존 편지는 목록에서 계속 읽을 수 있어요</p>
-          <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", padding: "14px", borderRadius: 14, fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 10, textAlign: "center" }}>💳 육아일기 결제하기 (990원·5,900원) →</a>
+          <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", padding: "14px", borderRadius: 14, fontSize: 15, fontWeight: 900, textDecoration: "none", marginBottom: 10, textAlign: "center" }}>💳 육아일기 결제하기 (1,980원·5,900원) →</a>
           <button onClick={() => setMode("list")} style={{ background: "none", border: "none", color: "#9ca3af", fontSize: 13, cursor: "pointer" }}>← 목록으로 돌아가기</button>
         </div>
       </div>
@@ -251,7 +251,7 @@ export default function TimeCapsulePage() {
           <div style={{ background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 12, padding: "14px 16px", marginBottom: 16 }}>
             <p style={{ fontSize: 14, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>{momcareExpired ? "⏰ 30일 이용권이 만료됐어요" : "🔒 결제 후 새 편지를 쓸 수 있어요"}</p>
             <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 10px", lineHeight: 1.6 }}>{momcareExpired ? "기존 편지는 계속 읽을 수 있어요. 새 편지를 쓰려면 재활성화해주세요." : "육아일기 결제하면 30일 이용 가능해요."}</p>
-            <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", textAlign: "center" }}>💳 육아일기 결제하기 (990원·5,900원) →</a>
+            <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", textAlign: "center" }}>💳 육아일기 결제하기 (1,980원·5,900원) →</a>
           </div>
         )}
 
