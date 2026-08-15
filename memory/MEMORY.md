@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐ 2026-08-15 일기류4앱 990→1980원+잠금버그 완료, 토스첫진입광고제거 대기](project_diet_toss_ad_pending_2026_08_15.md) — momcare/gamjung/budget/diet 전부 완료(commit 1cd2721+c51da0c), diet앱 수정금지는 토스미니앱만 해당(웹앱은 자유수정), 토스 첫진입광고 제거(MBTI·diet 제외 전부)는 대상폴더 확인부터 시작할 것
 - [⭐⭐⭐ 2026-08-15 gamjung 미커밋 변경 3개 진행보류](project_gamjung_uncommitted_changes_pending.md) — fromHistory/히스토리잠금조건/코인광고재시도, 에스더님 이해안가서 승인전까지 빌드금지
 - [⭐⭐⭐ 2026-08-15 토스 라이브 전환 리마인더](project_toss_live_switch_reminder.md) — jeomun72su MID로 토스 통합결제 테스트 진행 중, 테스트 성공 후 라이브 전환 3단계 반드시 먼저 안내할 것
 - [⭐ 2026-08-15 가상계좌는 파트너페이지에만](project_toss_virtual_account_scope.md) — main-v2/pay엔 카드+간편결제만, 가상계좌 버튼은 파트너 결제에만 추가할 것
