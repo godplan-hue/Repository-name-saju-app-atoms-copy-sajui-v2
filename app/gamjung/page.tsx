@@ -107,9 +107,12 @@ export default function GamjungPage() {
         setGamjungNeverPaid(true);
       } else if (until < now) {
         setGamjungLocked(true);
-      } else if (until - now < 3 * 24 * 60 * 60 * 1000) {
-        setGamjungExpiringSoon(true);
-        setGamjungDaysLeft(Math.ceil((until - now) / (24 * 60 * 60 * 1000)));
+      } else {
+        setGamjungLocked(false);
+        if (until - now < 3 * 24 * 60 * 60 * 1000) {
+          setGamjungExpiringSoon(true);
+          setGamjungDaysLeft(Math.ceil((until - now) / (24 * 60 * 60 * 1000)));
+        }
       }
     } catch {}
   }, []);

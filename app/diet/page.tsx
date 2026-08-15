@@ -268,7 +268,7 @@ export default function DietPage() {
     try {
       const until = Number(localStorage.getItem("diet_unlock_until") || 0);
       if (!until || until < Date.now()) setDietLocked(true);
-      else setAvoidShowAll(true);
+      else { setDietLocked(false); setAvoidShowAll(true); }
     } catch {}
     let uid = "";
     let yr = "";

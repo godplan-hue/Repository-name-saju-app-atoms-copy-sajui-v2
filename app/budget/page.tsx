@@ -97,9 +97,12 @@ export default function BudgetPage() {
         setBudgetNeverPaid(true);
       } else if (until < now) {
         setBudgetLocked(true);
-      } else if (until - now < 3 * 24 * 60 * 60 * 1000) {
-        setBudgetExpiringSoon(true);
-        setBudgetDaysLeft(Math.ceil((until - now) / (24 * 60 * 60 * 1000)));
+      } else {
+        setBudgetLocked(false);
+        if (until - now < 3 * 24 * 60 * 60 * 1000) {
+          setBudgetExpiringSoon(true);
+          setBudgetDaysLeft(Math.ceil((until - now) / (24 * 60 * 60 * 1000)));
+        }
       }
     } catch {}
 
