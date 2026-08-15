@@ -5,7 +5,9 @@
 - [⛔ 변명부터 하지 말고 솔직하게 바로 답할 것](feedback_answer_honestly_no_defensive_excuses.md) — 확인차 묻는 질문에 방어적 변명 먼저 하지 말 것, 그냥 확인해서 직답 (2026-08-15)
 - [⛔⛔⛔ 2026-08-15 토스앱 개수 17개 확정 — 다시 묻지 말 것](project_toss_17app_count_confirmed.md) — 20개 폴더 중 haemong/zodiac/petun은 사주앱에 흡수돼 제외, 17개 정식 목록 저장됨
 - [⭐⭐⭐ 2026-08-15 일기류4앱 990→1980원+잠금버그 완료, 토스첫진입광고제거 대기](project_diet_toss_ad_pending_2026_08_15.md) — momcare/gamjung/budget/diet 전부 완료(commit 1cd2721+c51da0c), diet앱 수정금지는 토스미니앱만 해당(웹앱은 자유수정), 토스 첫진입광고 제거(MBTI·diet 제외 전부)는 대상폴더 확인부터 시작할 것
-- [⭐⭐⭐ 2026-08-15 gamjung 미커밋 변경 3개 진행보류](project_gamjung_uncommitted_changes_pending.md) — fromHistory/히스토리잠금조건/코인광고재시도, 에스더님 이해안가서 승인전까지 빌드금지
+- [⭐⭐⭐ 2026-08-15 gamjung 섹션잠금×24시간이용권 연동 완료](project_gamjung_section_unlock_history_pass.md) — 광고안본섹션은이용권있어도잠김/본섹션만이용권켜졌을때재열림, commit 0dc21a3(로컬만), .ait빌드완료
+- [2026-08-15 gamjung 미커밋변경3개 보류→해결 기록](project_gamjung_uncommitted_changes_pending.md) — 과거기록용, 최신은 위 항목 참고
+- [2026-08-15 꿈해몽 전화번호게이트 깜빡임버그 수정](bug_haemong_phone_gate_flicker.md) — 이미등록된사용자한테 게이트가 떴다사라지던버그, commit cf02b56(푸시완료)
 - [⭐⭐⭐ 2026-08-15 토스 라이브 전환 리마인더](project_toss_live_switch_reminder.md) — jeomun72su MID로 토스 통합결제 테스트 진행 중, 테스트 성공 후 라이브 전환 3단계 반드시 먼저 안내할 것
 - [⭐ 2026-08-15 가상계좌는 파트너페이지에만](project_toss_virtual_account_scope.md) — main-v2/pay엔 카드+간편결제만, 가상계좌 버튼은 파트너 결제에만 추가할 것
 - [⭐⭐⭐ 2026-08-14 결제 후 무료버튼 재클릭시 유료상태 초기화 버그 수정](bug_paid_status_wiped_by_free_button.md) — "3초무료" fresh=1이 결제자도 새 무료분석 실행해 v2_paid/price/plan 지움, commit 92e95be로 수정. 당신의변화 유료탭 안내문구도 추가
