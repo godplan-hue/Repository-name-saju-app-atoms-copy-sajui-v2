@@ -275,6 +275,47 @@ function PayInner() {
     }
   };
 
+  // 토스페이먼츠 통합결제(카드+간편결제) successUrl/failUrl로 되돌아온 경우 감지 → 결제완료 처리 이어서 진행
+  useEffect(() => {
+    const paymentKey = searchParams.get("paymentKey");
+    const orderId = searchParams.get("orderId");
+    const tossAmount = searchParams.get("amount");
+    if (searchParams.get("tossFail") === "1") {
+      sessionStorage.removeItem("pay_pending");
+      try { localStorage.removeItem("pay_pending"); } catch {}
+      setError(searchParams.get("message") || "결제가 취소됐어요. 다시 시도해주세요.");
+      return;
+    }
+    if (!paymentKey || !orderId) return;
+    const pendingRaw = sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending");
+    let info: any = null;
+    try { info = pendingRaw ? JSON.parse(pendingRaw) : null; } catch {}
+    (async () => {
+      try {
+        const res = await fetch("/api/toss/confirm", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paymentKey, orderId, amount: tossAmount }),
+        });
+        const data = await res.json();
+        sessionStorage.removeItem("pay_pending");
+        try { localStorage.removeItem("pay_pending"); } catch {}
+        if (!res.ok || !data.ok) {
+          setError(data.message || "결제 승인에 실패했어요. 다시 시도해주세요.");
+          return;
+        }
+        const finalInfo = info || {
+          paymentId: orderId, amount, displayAmount: Number(tossAmount) || displayAmount,
+          name, mobile, email, couponCode, discountPct, next, isTaegil, sourceInfo: "토스페이먼츠",
+        };
+        finalizeSuccess(finalInfo);
+      } catch {
+        setError("결제 승인 처리 중 오류가 발생했어요. 다시 시도해주세요.");
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // 모바일에서 카카오페이/카드 인증 후 redirectUrl로 되돌아온 경우 감지 → 결제완료 처리 이어서 진행
   useEffect(() => {
     const pgPaymentId = searchParams.get("paymentId");
@@ -384,6 +425,67 @@ function PayInner() {
       finalizeSuccess(pendingInfo);
     } catch {
       setError("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 토스페이먼츠 통합결제(카드+간편결제+가상계좌) — jeomun72su 직계약 MID
+  const payToss = async () => {
+    if (!refundAgreed) { setError("아래 체크박스를 먼저 체크해주세요. ✅"); return; }
+    if (!mobile.replace(/\D/g, "") || mobile.replace(/\D/g, "").length < 10) { setError("전화번호를 입력해주세요."); return; }
+    setLoading(true); setError("");
+    try {
+      const { loadTossPayments, ANONYMOUS } = await import("@tosspayments/tosspayments-sdk");
+      const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY as string;
+      const orderId = `jeomun-toss-${Date.now()}`;
+
+      const referer = document.referrer || "";
+      const sourceLabel = referer.includes("google") ? "구글"
+        : referer.includes("naver") ? "네이버"
+        : referer.includes("daum") ? "다음"
+        : referer.includes("bing") ? "빙"
+        : referer.includes("kakao") || referer.includes("kakaotalk") ? "카카오"
+        : referer.includes("instagram") ? "인스타"
+        : referer.includes("youtube") ? "유튜브"
+        : referer.includes("tiktok") ? "틱톡"
+        : referer.includes("facebook") ? "페이스북"
+        : referer.includes("jeomun.com/main-v2/share") ? "공유페이지"
+        : referer.includes("jeomun.com/main-v2/result") ? "결과지"
+        : referer.includes("jeomun.com/free") ? "무료랜딩"
+        : referer.includes("jeomun.com/main-v2/payment") ? "결제선택"
+        : referer.includes("jeomun.com/main-v2") ? "메인"
+        : referer.includes("jeomun.com/love") || referer.includes("jeomun.com/career") || referer.includes("jeomun.com/wealth") || referer.includes("jeomun.com/marriage") || referer.includes("jeomun.com/health") ? "SEO랜딩"
+        : referer.includes("jeomun") ? "점운내부"
+        : referer ? referer.split("/")[2] || "기타"
+        : "직접";
+      const partnerCode = localStorage.getItem("referred_by");
+      const sourceInfo = partnerCode ? `파트너:${partnerCode}` : `${sourceLabel}(토스)`;
+
+      const pendingInfo = {
+        paymentId: orderId, amount, displayAmount, name, mobile, email,
+        couponCode, discountPct, next, isTaegil, sourceInfo,
+        savedAt: Date.now(),
+      };
+      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
+
+      const tossPayments = await loadTossPayments(clientKey);
+      const payment = tossPayments.payment({ customerKey: ANONYMOUS });
+      await payment.requestPayment({
+        method: "CARD",
+        amount: { currency: "KRW", value: displayAmount },
+        orderId,
+        orderName: "점운 사주 분석",
+        successUrl: `${window.location.origin}${window.location.pathname}`,
+        failUrl: `${window.location.origin}${window.location.pathname}?tossFail=1`,
+        customerEmail: email.trim() || undefined,
+        customerName: name.trim() || "고객",
+        customerMobilePhone: mobile.replace(/\D/g, ""),
+      });
+      // 성공/실패 모두 successUrl·failUrl로 페이지가 이동하므로 여기 도달하지 않음
+    } catch {
+      setError("결제 중 오류가 발생했어요. 다시 시도해주세요.");
+      try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
     } finally {
       setLoading(false);
     }
@@ -510,7 +612,15 @@ function PayInner() {
           {loading ? "결제 중..." : `💳 신용카드 ₩${displayAmount.toLocaleString()}`}
         </button>
 
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "8px 0 0" }}>SSL 보안 결제 · NHN KCP · 카카오페이</p>
+        <button
+          onClick={payToss}
+          disabled={loading}
+          style={{ width: "100%", padding: "15px 0", background: loading ? "rgba(0,100,255,0.3)" : "#0064FF", color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: loading ? "not-allowed" : "pointer", boxShadow: loading ? "none" : "0 6px 22px rgba(0,100,255,0.35)", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}
+        >
+          {loading ? "결제 중..." : `토스로 결제 ₩${displayAmount.toLocaleString()}`}
+        </button>
+
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center", margin: "8px 0 0" }}>SSL 보안 결제 · NHN KCP · 카카오페이 · 토스페이먼츠</p>
         </>)}
       </div>
     </main>
