@@ -1,5 +1,8 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⛔ 홍보 콘텐츠에 템플릿/API미호출 구조 절대 언급 금지](feedback_never_reveal_template_architecture_publicly.md) — LinkedIn·SNS·소개글에 내부 아키텍처(비법) 노출 금지 (2026-08-15)
+- [⛔ 쉬어라/그만해라/내일해라 절대 금지](feedback_no_rest_suggestions.md) — 화나셨을 때도 쉬라는 말 절대 하지 말 것, 전에도 하지 말라 하셨음 (2026-08-15)
+- [⛔ 변명부터 하지 말고 솔직하게 바로 답할 것](feedback_answer_honestly_no_defensive_excuses.md) — 확인차 묻는 질문에 방어적 변명 먼저 하지 말 것, 그냥 확인해서 직답 (2026-08-15)
 - [⛔⛔⛔ 2026-08-15 토스앱 개수 17개 확정 — 다시 묻지 말 것](project_toss_17app_count_confirmed.md) — 20개 폴더 중 haemong/zodiac/petun은 사주앱에 흡수돼 제외, 17개 정식 목록 저장됨
 - [⭐⭐⭐ 2026-08-15 일기류4앱 990→1980원+잠금버그 완료, 토스첫진입광고제거 대기](project_diet_toss_ad_pending_2026_08_15.md) — momcare/gamjung/budget/diet 전부 완료(commit 1cd2721+c51da0c), diet앱 수정금지는 토스미니앱만 해당(웹앱은 자유수정), 토스 첫진입광고 제거(MBTI·diet 제외 전부)는 대상폴더 확인부터 시작할 것
 - [⭐⭐⭐ 2026-08-15 gamjung 미커밋 변경 3개 진행보류](project_gamjung_uncommitted_changes_pending.md) — fromHistory/히스토리잠금조건/코인광고재시도, 에스더님 이해안가서 승인전까지 빌드금지
