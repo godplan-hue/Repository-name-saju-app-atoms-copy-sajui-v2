@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐ 2026-08-15 gamjung 미커밋 변경 3개 진행보류](project_gamjung_uncommitted_changes_pending.md) — fromHistory/히스토리잠금조건/코인광고재시도, 에스더님 이해안가서 승인전까지 빌드금지
 - [⭐⭐⭐ 2026-08-15 토스 라이브 전환 리마인더](project_toss_live_switch_reminder.md) — jeomun72su MID로 토스 통합결제 테스트 진행 중, 테스트 성공 후 라이브 전환 3단계 반드시 먼저 안내할 것
 - [⭐ 2026-08-15 가상계좌는 파트너페이지에만](project_toss_virtual_account_scope.md) — main-v2/pay엔 카드+간편결제만, 가상계좌 버튼은 파트너 결제에만 추가할 것
 - [⭐⭐⭐ 2026-08-14 결제 후 무료버튼 재클릭시 유료상태 초기화 버그 수정](bug_paid_status_wiped_by_free_button.md) — "3초무료" fresh=1이 결제자도 새 무료분석 실행해 v2_paid/price/plan 지움, commit 92e95be로 수정. 당신의변화 유료탭 안내문구도 추가
