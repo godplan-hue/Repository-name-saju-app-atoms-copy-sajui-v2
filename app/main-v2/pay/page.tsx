@@ -438,6 +438,7 @@ function PayInner() {
     try {
       const { loadTossPayments, ANONYMOUS } = await import("@tosspayments/tosspayments-sdk");
       const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY as string;
+      if (!clientKey) throw new Error("클라이언트 키가 설정되지 않았어요 (NEXT_PUBLIC_TOSS_CLIENT_KEY 없음)");
       const orderId = `jeomun-toss-${Date.now()}`;
 
       const referer = document.referrer || "";
@@ -483,8 +484,8 @@ function PayInner() {
         customerMobilePhone: mobile.replace(/\D/g, ""),
       });
       // 성공/실패 모두 successUrl·failUrl로 페이지가 이동하므로 여기 도달하지 않음
-    } catch {
-      setError("결제 중 오류가 발생했어요. 다시 시도해주세요.");
+    } catch (err: any) {
+      setError(`토스 오류: ${err?.message || err?.code || String(err)}`);
       try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
     } finally {
       setLoading(false);
