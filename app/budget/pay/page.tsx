@@ -43,6 +43,67 @@ export default function BudgetPayPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 토스 결제 후 이 페이지로 돌아온 경우 감지
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    const paymentKey = sp.get("paymentKey");
+    const orderId = sp.get("orderId");
+    const tossAmount = sp.get("amount");
+    if (sp.get("tossFail") === "1") {
+      sessionStorage.removeItem("pay_pending");
+      try { localStorage.removeItem("pay_pending"); } catch {}
+      setError(sp.get("message") || "결제가 취소됐어요. 다시 시도해주세요.");
+      return;
+    }
+    if (!paymentKey || !orderId) return;
+    const pendingRaw2 = sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending");
+    let info: any = null;
+    try { info = pendingRaw2 ? JSON.parse(pendingRaw2) : null; } catch {}
+    (async () => {
+      try {
+        const res = await fetch("/api/toss/confirm", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ paymentKey, orderId, amount: tossAmount }) });
+        const data = await res.json();
+        sessionStorage.removeItem("pay_pending");
+        try { localStorage.removeItem("pay_pending"); } catch {}
+        if (!res.ok || !data.ok) { setError(data.message || "결제 승인에 실패했어요. 다시 시도해주세요."); return; }
+        const cleanMobile = mobile.replace(/\D/g,"");
+        const finalInfo = info || { paymentId: orderId, finalAmount: Number(tossAmount) || finalAmount, name, cleanMobile, coupon, hasCoupon: !!couponData };
+        finalizeSuccess(finalInfo);
+      } catch { setError("결제 승인 처리 중 오류가 발생했어요. 다시 시도해주세요."); }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const payToss = async () => {
+    if (!refundAgreed) { setShowRefund(true); setError("결제 전 확인사항을 먼저 확인해주세요."); return; }
+    if (mobile.replace(/\D/g,"").length < 10) { setError("다른 기기에서도 이용하시려면 휴대폰 번호를 입력해주세요."); return; }
+    setLoading(true); setError("");
+    try {
+      const { loadTossPayments, ANONYMOUS } = await import("@tosspayments/tosspayments-sdk");
+      const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY as string;
+      if (!clientKey) throw new Error("클라이언트 키가 설정되지 않았어요 (NEXT_PUBLIC_TOSS_CLIENT_KEY 없음)");
+      const orderId = `budget-toss-${Date.now()}`;
+      const cleanMobile = mobile.replace(/\D/g,"");
+      const pendingInfo = { paymentId: orderId, finalAmount, name, cleanMobile, coupon, hasCoupon: !!couponData };
+      try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
+      const tossPayments = await loadTossPayments(clientKey);
+      const payment = tossPayments.payment({ customerKey: ANONYMOUS });
+      await payment.requestPayment({
+        method: "CARD",
+        amount: { currency: "KRW", value: finalAmount },
+        orderId,
+        orderName: "점운 가계부 30일권",
+        successUrl: `${window.location.origin}${window.location.pathname}`,
+        failUrl: `${window.location.origin}${window.location.pathname}?tossFail=1`,
+        customerName: name.trim() || "고객",
+        customerMobilePhone: cleanMobile || "01000000000",
+      });
+    } catch (err: any) {
+      setError(`토스 오류: ${err?.message || err?.code || String(err)}`);
+      try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
+    } finally { setLoading(false); }
+  };
+
   const applyCoupon = async () => {
     if (!coupon.trim()) return;
     setCouponLoading(true);
@@ -230,6 +291,9 @@ export default function BudgetPayPage() {
             </button>
             <button onClick={()=>pay("KAKAOPAY")} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"#bba000":"#FEE500", color:(loading||!refundAgreed)?"rgba(0,0,0,0.4)":"#3C1E1E", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer" }}>
               💛 카카오페이로 결제
+            </button>
+            <button onClick={payToss} disabled={loading||!refundAgreed} style={{ width:"100%", background:(loading||!refundAgreed)?"rgba(0,100,255,0.4)":"#0064FF", color:"#fff", border:"none", borderRadius:22, padding:"16px", fontSize:16, fontWeight:900, cursor:(loading||!refundAgreed)?"not-allowed":"pointer" }}>
+              {loading?"결제 처리 중...":`토스로 결제 ₩${finalAmount.toLocaleString()}`}
             </button>
           </div>
         )}
