@@ -46,9 +46,10 @@ export default function HaemongPage() {
   const [searched, setSearched] = useState(false);
   const [slide, setSlide] = useState(0);
 
-  // 전화번호 게이트
+  // 전화번호 게이트 — 들어오자마자 막지 않고, 실제로 꿈 결과를 보려 할 때만 뜸
   const [gateDone, setGateDone] = useState(false);
-  const [gateChecked, setGateChecked] = useState(false);
+  const [showGate, setShowGate] = useState(false);
+  const [pendingKeyword, setPendingKeyword] = useState<string | null>(null);
   const [gateName, setGateName] = useState("");
   const [gatePhone, setGatePhone] = useState("");
   const [gatePrivacy, setGatePrivacy] = useState(false);
@@ -59,7 +60,6 @@ export default function HaemongPage() {
     if (typeof window !== "undefined" && localStorage.getItem("haemong_phone")) {
       setGateDone(true);
     }
-    setGateChecked(true);
   }, []);
 
   async function submitGate() {
@@ -77,6 +77,10 @@ export default function HaemongPage() {
     localStorage.setItem("haemong_phone", clean);
     setGateDone(true);
     setGateSaving(false);
+    setShowGate(false);
+    if (pendingKeyword) {
+      window.location.href = `/haemong/${encodeURIComponent(pendingKeyword)}`;
+    }
   }
 
   useEffect(() => {
@@ -96,6 +100,11 @@ export default function HaemongPage() {
   }
 
   function goTo(keyword: string) {
+    if (!gateDone) {
+      setPendingKeyword(keyword);
+      setShowGate(true);
+      return;
+    }
     window.location.href = `/haemong/${encodeURIComponent(keyword)}`;
   }
 
@@ -112,10 +121,10 @@ export default function HaemongPage() {
   return (
     <main style={{ minHeight: "100vh", background: BG, backgroundImage: `url('https://i.pinimg.com/1200x/31/e5/d0/31e5d07256c46586a7a89977f720b96f.jpg')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
 
-      {/* 전화번호 게이트 */}
-      {gateChecked && !gateDone && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(10,0,20,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-          <div style={{ background: "#fff", borderRadius: 24, padding: "32px 24px", maxWidth: 360, width: "100%", boxShadow: "0 20px 60px rgba(139,92,246,0.3)" }}>
+      {/* 전화번호 게이트 — 꿈 결과를 실제로 보려 할 때만 표시 */}
+      {showGate && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(10,0,20,0.85)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowGate(false)}>
+          <div onClick={e => e.stopPropagation()} style={{ background: "#fff", borderRadius: 24, padding: "32px 24px", maxWidth: 360, width: "100%", boxShadow: "0 20px 60px rgba(139,92,246,0.3)" }}>
             <div style={{ textAlign: "center", marginBottom: 20 }}>
               <div style={{ fontSize: 36, marginBottom: 8 }}>🌙</div>
               <div style={{ fontWeight: 900, fontSize: 20, background: G, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", marginBottom: 6 }}>꿈해몽 무료 시작</div>
