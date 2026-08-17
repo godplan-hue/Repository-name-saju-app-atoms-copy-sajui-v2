@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { postWithRetry } from "@/lib/postWithRetry";
 
 type Measurement = { id: string; date: string; weight: number | null; height: number | null; head: number | null };
 type ActiveTab = "weight" | "height" | "head";
@@ -62,11 +63,7 @@ export default function GrowthDiaryPage() {
     setMeasurements(m);
     localStorage.setItem("momcare_measurements", JSON.stringify(m));
     if (mcUserId) {
-      fetch("/api/momcare/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: mcUserId, type: "measurements", data: m }),
-      }).catch(() => {});
+      postWithRetry("/api/momcare/save", { userId: mcUserId, type: "measurements", data: m });
     }
   }
 

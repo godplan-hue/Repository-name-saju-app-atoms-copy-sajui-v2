@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { postWithRetry } from "@/lib/postWithRetry";
 
 type Category = { key: string; label: string; emoji: string; color: string };
 type Milestone = { id: string; category: string; date: string; title: string; desc: string };
@@ -82,11 +83,7 @@ export default function MemoryJournalPage() {
     setMilestones(m);
     localStorage.setItem("momcare_milestones", JSON.stringify(m));
     if (mcUserId) {
-      fetch("/api/momcare/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: mcUserId, type: "milestones", data: m }),
-      }).catch(() => {});
+      postWithRetry("/api/momcare/save", { userId: mcUserId, type: "milestones", data: m });
     }
   }
 

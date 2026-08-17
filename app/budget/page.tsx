@@ -1,6 +1,7 @@
 ﻿"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { postWithRetry } from "@/lib/postWithRetry";
 
 type EntryType = "expense" | "income";
 type Entry = { id: string; date: string; type: EntryType; category: string; amount: number; memo: string; createdAt: number };
@@ -154,11 +155,7 @@ export default function BudgetPage() {
     setEntries(e);
     localStorage.setItem("budget_entries", JSON.stringify(e));
     if (mcUserId) {
-      fetch("/api/budget", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: mcUserId, entries: e }),
-      }).catch(() => {});
+      postWithRetry("/api/budget", { userId: mcUserId, entries: e });
     }
   }
 

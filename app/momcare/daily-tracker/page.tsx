@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { postWithRetry } from "@/lib/postWithRetry";
 
 type TabKey = "sleep" | "feeding" | "diaper" | "pumping" | "mood";
 type Log = { id: string; type: TabKey; label: string; detail: string; time: string };
@@ -63,11 +64,7 @@ export default function DailyTrackerPage() {
     setLogs(l);
     localStorage.setItem(`momcare_logs_${todayKey()}`, JSON.stringify(l));
     if (mcUserId) {
-      fetch("/api/momcare/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: mcUserId, type: `logs_${todayKey()}`, data: l }),
-      }).catch(() => {});
+      postWithRetry("/api/momcare/save", { userId: mcUserId, type: `logs_${todayKey()}`, data: l });
     }
   }
 

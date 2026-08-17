@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { postWithRetry } from "@/lib/postWithRetry";
 
 type Mood = "happy" | "tired" | "grateful" | "worried" | "excited" | "overwhelmed";
 type DiaryEntry = { id: string; date: string; title: string; content: string; mood: Mood; weather: string; tags: string[] };
@@ -67,11 +68,7 @@ export default function BabyDiaryPage() {
     setEntries(e);
     localStorage.setItem("momcare_diary", JSON.stringify(e));
     if (mcUserId) {
-      fetch("/api/momcare/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: mcUserId, type: "diary", data: e }),
-      }).catch(() => {});
+      postWithRetry("/api/momcare/save", { userId: mcUserId, type: "diary", data: e });
     }
   }
 

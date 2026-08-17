@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { postWithRetry } from "@/lib/postWithRetry";
 
 type Letter = { id: string; title: string; content: string; writtenDate: string; openDate: string; openAge: string; isLocked: boolean };
 
@@ -80,11 +81,7 @@ export default function TimeCapsulePage() {
     setLetters(l);
     localStorage.setItem("momcare_capsule", JSON.stringify(l));
     if (mcUserId) {
-      fetch("/api/momcare/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: mcUserId, type: "capsule", data: l }),
-      }).catch(() => {});
+      postWithRetry("/api/momcare/save", { userId: mcUserId, type: "capsule", data: l });
     }
   }
 

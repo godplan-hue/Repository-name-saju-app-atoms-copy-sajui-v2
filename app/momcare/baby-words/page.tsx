@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { postWithRetry } from "@/lib/postWithRetry";
 
 type WordEntry = { id: string; babyWord: string; realWord: string; date: string; story: string; age: string };
 
@@ -66,11 +67,7 @@ export default function BabyWordsPage() {
     setWords(w);
     localStorage.setItem("momcare_words", JSON.stringify(w));
     if (mcUserId) {
-      fetch("/api/momcare/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: mcUserId, type: "words", data: w }),
-      }).catch(() => {});
+      postWithRetry("/api/momcare/save", { userId: mcUserId, type: "words", data: w });
     }
   }
 

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FOODS, OH_DIET, getOhFromYear, type Food } from "@/lib/foodDb";
+import { postWithRetry } from "@/lib/postWithRetry";
 
 type Meal = { id: string; name: string; cal: number; unit: string; time: string };
 type DayLog = { meals: Meal[]; totalCal: number; updatedAt?: number; weight?: number };
@@ -332,11 +333,7 @@ export default function DietPage() {
     setHistoryData(prev => ({ ...prev, [todayKey]: { meals: m, totalCal, weight: existingWeight } }));
     localStorage.setItem(`diet_meals_${todayKey}`, JSON.stringify(m));
     if (mcUserId) {
-      fetch("/api/diet", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: mcUserId, date: todayKey, meals: m, totalCal, weight: existingWeight }),
-      }).catch(() => {});
+      postWithRetry("/api/diet", { userId: mcUserId, date: todayKey, meals: m, totalCal, weight: existingWeight });
     }
   }
 
@@ -349,11 +346,7 @@ export default function DietPage() {
     setHistoryData(prev => ({ ...prev, [todayKey]: updated }));
     setWeightSaved(true);
     if (mcUserId) {
-      fetch("/api/diet", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: mcUserId, date: todayKey, meals: log.meals, totalCal: log.totalCal, weight: wNum }),
-      }).catch(() => {});
+      postWithRetry("/api/diet", { userId: mcUserId, date: todayKey, meals: log.meals, totalCal: log.totalCal, weight: wNum });
     }
   }
 
