@@ -955,9 +955,9 @@ export default function MainV2() {
             <br/>
             <span style={{ display: "inline-block", transform: "rotate(6deg) translateX(8px)" }}>운</span>
           </div>)}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(255,255,255,0.9)", borderRadius: 20 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", background: "rgba(255,255,255,0.9)", borderRadius: 20, whiteSpace: "nowrap" }}>
             <span style={{ fontSize: 12 }}>🌸</span>
-            <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700 }}>오늘의 무료사주</span>
+            <span style={{ fontSize: 12, color: "#ec4899", fontWeight: 700, whiteSpace: "nowrap" }}>오늘의 무료사주</span>
           </div>
         </div>
         {/* 마법사 고양이 이미지 */}
