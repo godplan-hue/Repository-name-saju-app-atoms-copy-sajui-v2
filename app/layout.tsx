@@ -23,9 +23,13 @@ const SITE_IMAGE = "https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc454
 const SITE_URL = "https://jeomun.com";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: SITE_TITLE,
   description: SITE_DESC,
   keywords: "점운, AI사주, 무료사주, 사주분석, 재물운, 연애운, 건강운, 성공운, 오늘의운세, 사주풀이, 만세력, jeomun",
+  alternates: {
+    canonical: "./",
+  },
   openGraph: {
     title: SITE_TITLE,
     description: SITE_DESC,
