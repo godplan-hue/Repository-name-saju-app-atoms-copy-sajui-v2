@@ -79,6 +79,13 @@ export default function MomcarePage() {
   const [phoneGate, setPhoneGate] = useState("");
   const [mcPrivacyAgreed, setMcPrivacyAgreed] = useState(false);
   const [mcMarketingAgreed, setMcMarketingAgreed] = useState(false);
+  const [showGate, setShowGate] = useState(false);
+  const [gateHref, setGateHref] = useState<string | null>(null);
+
+  function openGate(href: string) {
+    setGateHref(href);
+    setShowGate(true);
+  }
 
   useEffect(() => {
     try {
@@ -107,75 +114,77 @@ export default function MomcarePage() {
     return () => clearInterval(t);
   }, [autoPlay]);
 
-  if (!hasPhone) return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #0c2340 0%, #0284c7 60%, #0891b2 100%)", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
-      <div style={{ fontSize: 64, marginBottom: 8 }}>👶</div>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "white", margin: "0 0 6px", letterSpacing: -0.5 }}>육아일기</h1>
-      <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", margin: "0 0 36px" }}>AI 육아 플랫폼</p>
-      <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", maxWidth: 360, width: "100%", boxShadow: "0 16px 60px rgba(0,0,0,0.25)" }}>
-        <h2 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 6px" }}>전화번호로 시작하기</h2>
-        <p style={{ fontSize: 12, color: MID, margin: "0 0 20px", lineHeight: 1.7 }}>일기·편지·아기 말 기록이 모든 기기에서<br />자동으로 영구 보관됩니다.</p>
-        <input
-          value={phoneGate}
-          onChange={e => setPhoneGate(e.target.value)}
-          onKeyDown={e => { if (e.key === "Enter") (document.getElementById("mc-login-btn") as HTMLButtonElement)?.click(); }}
-          placeholder="010-1234-5678"
-          type="tel"
-          style={{ width: "100%", border: "2px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 16, outline: "none", boxSizing: "border-box", marginBottom: 12, textAlign: "center", letterSpacing: 1 }}
-        />
-        <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 8, textAlign: "left" }}>
-          <input type="checkbox" checked={mcPrivacyAgreed} onChange={e => setMcPrivacyAgreed(e.target.checked)}
-            style={{ marginTop: 3, accentColor: "#0891b2", width: 16, height: 16, flexShrink: 0 }} />
-          <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
-            <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 동의</strong><br />
-            수집 항목: 전화번호(필수) / 목적: 육아일기 서비스 제공 / 보관: 3년 후 파기
-          </span>
-        </label>
-        <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 12, textAlign: "left" }}>
-          <input type="checkbox" checked={mcMarketingAgreed} onChange={e => setMcMarketingAgreed(e.target.checked)}
-            style={{ marginTop: 3, accentColor: "#0891b2", width: 16, height: 16, flexShrink: 0 }} />
-          <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
-            <strong style={{ color: "#374151" }}>[선택] 마케팅 수신 동의</strong><br />
-            점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
-          </span>
-        </label>
-        <button id="mc-login-btn" onClick={async () => {
-          if (!mcPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
-          const ph = phoneGate.replace(/\D/g, "");
-          if (ph.length < 10) { alert("전화번호를 정확히 입력해주세요."); return; }
-          try { const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); p.phone = ph; localStorage.setItem("v2_saved_profile", JSON.stringify(p)); localStorage.setItem("v2_saved_phone", ph); } catch {}
-          fetch("https://jeomun-default-rtdb.firebaseio.com/momcare_leads.json", {
-            method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ phone: ph, source: "momcare", marketing: mcMarketingAgreed, agreed: true, agreedAt: Date.now() }),
-          }).catch(() => {});
-          try {
-            const r = await fetch(`/api/phone-unlock?phone=${ph}`);
-            const d = await r.json();
-            if (d.ok && d.unlocks?.momcare_unlock_until > Date.now()) {
-              localStorage.setItem("momcare_unlock_until", String(d.unlocks.momcare_unlock_until));
-            }
-          } catch {}
-          setHasPhone(true);
-        }} style={{ width: "100%", background: TEAL_GRAD, color: "white", border: "none", borderRadius: 14, padding: "15px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>육아일기 시작하기 →</button>
-        <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 10, textAlign: 'center' }}>오늘 <strong style={{ color: '#0284c7' }}>{count}</strong>명이 육아일기를 기록했어요</p>
-        <p style={{ fontSize: 11, color: LIGHT, textAlign: "center", margin: "14px 0 0", lineHeight: 1.6 }}>새 기기에서도 이용권·기록 자동 복원돼요.</p>
-      </div>
-    </div>
-  );
-
   return (
     <div style={{ minHeight: "100vh", background: BG, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", color: DARK }}>
+
+      {/* 전화번호 게이트 — 기능 진입 시에만 표시 */}
+      {showGate && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(12,35,64,0.7)", zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setShowGate(false)}>
+          <div style={{ background: "white", borderRadius: 24, padding: "32px 24px", maxWidth: 360, width: "100%", boxShadow: "0 16px 60px rgba(0,0,0,0.25)", position: "relative" }} onClick={e => e.stopPropagation()}>
+            <button onClick={() => setShowGate(false)} style={{ position: "absolute", top: 14, right: 16, background: "none", border: "none", fontSize: 20, color: LIGHT, cursor: "pointer" }}>✕</button>
+            <div style={{ fontSize: 40, textAlign: "center", marginBottom: 4 }}>👶</div>
+            <h2 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 6px", textAlign: "center" }}>전화번호로 시작하기</h2>
+            <p style={{ fontSize: 12, color: MID, margin: "0 0 20px", lineHeight: 1.7, textAlign: "center" }}>일기·편지·아기 말 기록이 모든 기기에서<br />자동으로 영구 보관됩니다.</p>
+            <input
+              value={phoneGate}
+              onChange={e => setPhoneGate(e.target.value)}
+              onKeyDown={e => { if (e.key === "Enter") (document.getElementById("mc-login-btn") as HTMLButtonElement)?.click(); }}
+              placeholder="010-1234-5678"
+              type="tel"
+              style={{ width: "100%", border: "2px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 16, outline: "none", boxSizing: "border-box", marginBottom: 12, textAlign: "center", letterSpacing: 1 }}
+            />
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 8, textAlign: "left" }}>
+              <input type="checkbox" checked={mcPrivacyAgreed} onChange={e => setMcPrivacyAgreed(e.target.checked)}
+                style={{ marginTop: 3, accentColor: "#0891b2", width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
+                <strong style={{ color: "#374151" }}>[필수] 개인정보 수집·이용 동의</strong><br />
+                수집 항목: 전화번호(필수) / 목적: 육아일기 서비스 제공 / 보관: 3년 후 파기
+              </span>
+            </label>
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 12, textAlign: "left" }}>
+              <input type="checkbox" checked={mcMarketingAgreed} onChange={e => setMcMarketingAgreed(e.target.checked)}
+                style={{ marginTop: 3, accentColor: "#0891b2", width: 16, height: 16, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.6 }}>
+                <strong style={{ color: "#374151" }}>[선택] 마케팅 수신 동의</strong><br />
+                점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
+              </span>
+            </label>
+            <button id="mc-login-btn" onClick={async () => {
+              if (!mcPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
+              const ph = phoneGate.replace(/\D/g, "");
+              if (ph.length < 10) { alert("전화번호를 정확히 입력해주세요."); return; }
+              try { const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); p.phone = ph; localStorage.setItem("v2_saved_profile", JSON.stringify(p)); localStorage.setItem("v2_saved_phone", ph); } catch {}
+              fetch("https://jeomun-default-rtdb.firebaseio.com/momcare_leads.json", {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phone: ph, source: "momcare", marketing: mcMarketingAgreed, agreed: true, agreedAt: Date.now() }),
+              }).catch(() => {});
+              try {
+                const r = await fetch(`/api/phone-unlock?phone=${ph}`);
+                const d = await r.json();
+                if (d.ok && d.unlocks?.momcare_unlock_until > Date.now()) {
+                  localStorage.setItem("momcare_unlock_until", String(d.unlocks.momcare_unlock_until));
+                }
+              } catch {}
+              setHasPhone(true);
+              setShowGate(false);
+              if (gateHref) window.location.href = gateHref;
+            }} style={{ width: "100%", background: TEAL_GRAD, color: "white", border: "none", borderRadius: 14, padding: "15px", fontSize: 16, fontWeight: 900, cursor: "pointer" }}>육아일기 시작하기 →</button>
+            <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 10, textAlign: 'center' }}>오늘 <strong style={{ color: '#0284c7' }}>{count}</strong>명이 육아일기를 기록했어요</p>
+            <p style={{ fontSize: 11, color: LIGHT, textAlign: "center", margin: "14px 0 0", lineHeight: 1.6 }}>새 기기에서도 이용권·기록 자동 복원돼요.</p>
+          </div>
+        </div>
+      )}
 
       {/* 네비게이션 */}
       <nav style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${BORDER}`, padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 50 }}>
         <Link href="/momcare" style={{ fontSize: 20, fontWeight: 900, color: TEAL, textDecoration: "none" }}>육아일기</Link>
         <div style={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-          <Link href="/momcare/growth-calendar" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>캘린더</Link>
-          <Link href="/momcare/daily-tracker" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>트래커</Link>
-          <Link href="/momcare/growth-diary" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>성장일기</Link>
-          <Link href="/momcare/baby-diary" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>육아일기</Link>
-          <Link href="/momcare/time-capsule" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>타임캡슐</Link>
-          <Link href="/momcare/baby-words" style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>말사전</Link>
+          <Link href="/momcare/growth-calendar" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/growth-calendar"); } }} style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>캘린더</Link>
+          <Link href="/momcare/daily-tracker" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/daily-tracker"); } }} style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>트래커</Link>
+          <Link href="/momcare/growth-diary" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/growth-diary"); } }} style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>성장일기</Link>
+          <Link href="/momcare/baby-diary" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/baby-diary"); } }} style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>육아일기</Link>
+          <Link href="/momcare/time-capsule" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/time-capsule"); } }} style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>타임캡슐</Link>
+          <Link href="/momcare/baby-words" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/baby-words"); } }} style={{ fontSize: 11, color: MID, textDecoration: "none", padding: "5px 7px" }}>말사전</Link>
         </div>
       </nav>
 
@@ -221,8 +230,8 @@ export default function MomcarePage() {
               성장 위기 캘린더 · 수유·수면 기록 · 타임캡슐 편지
             </p>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <Link href="/momcare/pay" style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "12px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>시작하기</Link>
-              <Link href="/momcare/growth-calendar" style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>성장 캘린더 →</Link>
+              <Link href="/momcare/pay" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/pay"); } }} style={{ background: TEAL_GRAD, color: "white", borderRadius: 28, padding: "12px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(2,132,199,0.35)" }}>시작하기</Link>
+              <Link href="/momcare/growth-calendar" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/growth-calendar"); } }} style={{ background: "white", color: TEAL, border: `1.5px solid ${BORDER}`, borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>성장 캘린더 →</Link>
               <button onClick={shareApp} style={{ background: "#f3e8ff", color: "#7c3aed", border: "1.5px solid rgba(124,58,237,0.3)", borderRadius: 28, padding: "11px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>🔗 공유하기</button>
             </div>
             <p style={{ fontSize: 11, color: MID, margin: "10px 0 0", lineHeight: 1.8 }}>육아일기 1,980원 결제 후 30일 전체 이용 가능해요</p>
@@ -270,7 +279,7 @@ export default function MomcarePage() {
               </div>
               <h3 style={{ fontSize: 18, fontWeight: 900, color: DARK, margin: "0 0 10px", wordBreak: "keep-all", lineHeight: 1.3 }}>{FEATURES[featureIdx].title}</h3>
               <p style={{ fontSize: 13, color: MID, margin: "0 0 20px", lineHeight: 1.7, wordBreak: "keep-all" }}>{FEATURES[featureIdx].desc}</p>
-              <Link href={FEATURES[featureIdx].href} style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none", alignSelf: "flex-start" }}>
+              <Link href={FEATURES[featureIdx].href} onClick={e => { if (!hasPhone) { e.preventDefault(); openGate(FEATURES[featureIdx].href); } }} style={{ display: "inline-block", background: TEAL_GRAD, color: "white", borderRadius: 20, padding: "10px 20px", fontSize: 13, fontWeight: 700, textDecoration: "none", alignSelf: "flex-start" }}>
                 지금 사용하기 →
               </Link>
             </div>
@@ -308,7 +317,7 @@ export default function MomcarePage() {
         <p style={{ fontSize: 13, color: "#f97316", fontWeight: 700, marginBottom: 20 }}>지금 SNS에서 가장 많이 공유되는 육아 기록 기능들이에요</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
           {NEW_FEATURES.map((f) => (
-            <Link key={f.href} href={f.href} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.08)" }}>
+            <Link key={f.href} href={f.href} onClick={e => { if (!hasPhone) { e.preventDefault(); openGate(f.href); } }} style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 16, overflow: "hidden", textDecoration: "none", color: DARK, display: "block", boxShadow: "0 4px 20px rgba(2,132,199,0.08)" }}>
               {f.img && <img src={f.img} alt={f.title} style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }} />}
               <div style={{ padding: "14px 14px 16px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
@@ -343,7 +352,7 @@ export default function MomcarePage() {
               <div style={{ fontSize: 24, marginBottom: 6 }}>🔮</div>
               <h3 style={{ fontSize: 12, fontWeight: 800, margin: "0 0 6px", wordBreak: "keep-all" }}>아이 재능·건강운</h3>
               <p style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.5, flex: 1, wordBreak: "keep-all" }}>아이 잘 키우고 싶다면?<br /><span style={{ color: "rgba(255,255,255,0.4)", fontSize: 10 }}>육아일기 결제 후 30일 이용</span></p>
-              <Link href="/momcare/pay" style={{ display: "block", textAlign: "center", background: TEAL_GRAD, color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>육아일기 결제하기 →</Link>
+              <Link href="/momcare/pay" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/pay"); } }} style={{ display: "block", textAlign: "center", background: TEAL_GRAD, color: "white", borderRadius: 16, padding: "7px 8px", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>육아일기 결제하기 →</Link>
             </div>
             <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "14px 12px", border: "1px solid rgba(255,255,255,0.12)", display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: 24, marginBottom: 6 }}>🌸</div>
@@ -377,7 +386,7 @@ export default function MomcarePage() {
             ))}
           </div>
           <div style={{ textAlign: "center", marginTop: 20 }}>
-            <Link href="/momcare/growth-calendar" style={{ background: TEAL_GRAD, color: "white", border: "none", borderRadius: 24, padding: "12px 28px", fontSize: 14, fontWeight: 700, textDecoration: "none", display: "inline-block" }}>
+            <Link href="/momcare/growth-calendar" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/growth-calendar"); } }} style={{ background: TEAL_GRAD, color: "white", border: "none", borderRadius: 24, padding: "12px 28px", fontSize: 14, fontWeight: 700, textDecoration: "none", display: "inline-block" }}>
               앱에서 더 많은 운동 확인하세요
             </Link>
           </div>
@@ -421,7 +430,7 @@ export default function MomcarePage() {
               <div key={item} style={{ background: "rgba(255,255,255,0.15)", borderRadius: 12, padding: "10px 6px", fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700, wordBreak: "keep-all" }}>{item}</div>
             ))}
           </div>
-          <Link href="/momcare/pay" style={{ display: "inline-block", background: "white", color: TEAL, borderRadius: 24, padding: "12px 32px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>
+          <Link href="/momcare/pay" onClick={e => { if (!hasPhone) { e.preventDefault(); openGate("/momcare/pay"); } }} style={{ display: "inline-block", background: "white", color: TEAL, borderRadius: 24, padding: "12px 32px", fontSize: 14, fontWeight: 900, textDecoration: "none" }}>
             육아일기 1,980원으로 시작하기 →
           </Link>
         </div>
