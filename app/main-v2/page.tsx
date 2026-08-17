@@ -799,7 +799,7 @@ export default function MainV2() {
   if (!mounted) return null;
 
   return (
-    <main style={{ minHeight: "100vh", background: BG, backgroundImage: `url('https://i.pinimg.com/736x/81/09/ff/8109fff1db1ee44dbdeab87d9cfe276b.jpg')`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
+    <main style={{ minHeight: "100vh", background: "#fdf6ec", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", overflowX: "hidden" }}>
       <Suspense fallback={null}><ModalParamReader setShowModal={(v) => setShowModal(v)} setModalSelectedCats={setModalSelectedCats} /></Suspense>
       <audio ref={audioRef} src="/bgm.mp3" loop preload="auto" />
 
