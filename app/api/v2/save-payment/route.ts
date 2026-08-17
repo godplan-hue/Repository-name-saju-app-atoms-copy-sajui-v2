@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     const name = body.name && String(body.name).trim() ? String(body.name).trim() : "고객";
     if (!id || !amount) return NextResponse.json({ ok: false });
     await db.ref(`v2_direct_payments/${id}`).set({
-      id, date, name,
+      id, date: date || new Date().toISOString(), name,
       phone: phone || "",
       amount: Number(amount),
       package: pkg || "",
