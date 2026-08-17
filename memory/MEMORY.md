@@ -1,5 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐ 2026-08-17 다이어트+MBTI 수정 진행현황](project_diet_mbti_fix_plan_pending.md) — 광고2개(4,7)+계절라벨(3) 완료, 여백복구는 재확인필요(1번캡쳐=현재라이브메인화면, 원본없음 아님 — 정정됨), 나머지(계절20개/전화번호버튼/크로스프로모16개) 미착수. 재개시 여기부터
+- [⛔⛔⛔ 2026-08-17 같은설명반복금지+수정중끼어들면무관하면끝내고답+검증안한걸검증했다 말 금지](feedback_stop_repeating_finish_before_reply.md) — 에스더님이 강하게 화내며 지적한 3가지 워크플로 규칙, 이후 세션 전부 적용
 - [⛔ 홍보 콘텐츠에 템플릿/API미호출 구조 절대 언급 금지](feedback_never_reveal_template_architecture_publicly.md) — LinkedIn·SNS·소개글에 내부 아키텍처(비법) 노출 금지 (2026-08-15)
 - [⛔ 쉬어라/그만해라/내일해라 절대 금지](feedback_no_rest_suggestions.md) — 화나셨을 때도 쉬라는 말 절대 하지 말 것, 전에도 하지 말라 하셨음 (2026-08-15)
 - [⛔ 변명부터 하지 말고 솔직하게 바로 답할 것](feedback_answer_honestly_no_defensive_excuses.md) — 확인차 묻는 질문에 방어적 변명 먼저 하지 말 것, 그냥 확인해서 직답 (2026-08-15)
