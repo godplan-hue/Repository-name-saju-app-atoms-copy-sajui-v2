@@ -5,10 +5,12 @@ metadata:
   node_type: memory
   type: project
   originSessionId: e04af5d5-eb3c-4469-ab5d-37a8c64cef95
-  modified: 2026-08-18T09:37:45.583Z
+  modified: 2026-08-18T14:02:00.994Z
 ---
 
-2026-08-18 기준 상태: MBTI 비즈월렛 프로모션 서류 작성/신청 아직 안 함.
+⚠️ 아래 내용은 2026-08-18 세션 초반 기준으로 이미 지나간 상태입니다. MBTI 서류 신청·코드 추가·테스트 전부 완료됨 → 최신 진행상황+승인 후 남은 단계는 [[project_diet_mbti_promotion_approval_flow_2026_08_18]] 참고.
+
+2026-08-18 기준 상태(과거): MBTI 비즈월렛 프로모션 서류 작성/신청 아직 안 함.
 
 ## 순서 (반드시 이 순서로)
 
