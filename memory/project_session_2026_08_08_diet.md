@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: f854df3a-19ca-4d16-ad61-120f368e9970
-  modified: 2026-08-18T09:23:48.973Z
+  modified: 2026-08-18T09:37:59.926Z
 ---
 
 ## ⛔ 심각한 사고 — 절대 반복 금지
@@ -39,7 +39,7 @@ metadata:
 - 상태: **진행 전** (아직 시작 안 함)
 - 소진율: 0.0%
 - 예산: 0 / 50,000원 (비즈머니에서 50,000원 묶여있음)
-- 종료일: 2026.08.18
+- 종료일: 2026.08.18 (7일 신청) — ⏳ **재신청 예정**: MBTI는 1개월로 신청함, 다이어트도 동일하게 1개월로 다시 신청할 예정 (2026-08-18)
 - 테스트 코드: `TEST_01KZG6GW5QX3PFH70TP9C5HAR5`
 - 실제 코드: `01KZG6GW5QX3PFH70TP9C5HAR5`
 - **앱 코드에 grantPromotionReward 아직 추가 안 됨**
