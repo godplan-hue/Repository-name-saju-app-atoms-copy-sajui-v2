@@ -1,6 +1,8 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
 - [⭐⭐⭐ 핵심 링크 3개 — 고객DB/토스콘솔/결제취소](reference_key_links.md) — direct-payments·apps-in-toss workspace 58523·app.tosspayments.com, 항상 여기서 먼저 확인
+- [⭐⭐⭐ 다이어트 시작하기 광고4초 프리로드 수정+탭바 플로팅 반려수정](project_diet_ad_tabbar_fix_2026_08_18.md) — 4초전 클릭시 광고안뜸 확인됨(수정함), 프로모션승인은 별개(재신청불필요), 탭바앱목록은 아래 최신메모 참고
+- [⭐⭐⭐ 접속중버튼 4개앱 전체적용+빌드완료 (2026-08-18)](project_connecting_button_4app_rollout_2026_08_18.md) — 실기기테스트 확정된 접속중버튼 패턴 저장, 다이어트1원alert버그수정, 궁합은 탭바자체가 없음(3개앱만 탭바수정), 새 deploymentId 4개
 - [⭐⭐⭐ 앱인토스 프로모션 공식가이드 — 테스트 필수조건](reference_toss_promotion_official_doc.md) — 시작하기 전 TEST_코드로 API 1회 성공 필수, 토스트알림 형식, 다이어트 다음단계 안내
 - [⭐⭐⭐ MBTI 지갑 프로모션 다음 순서 — 서류신청부터](project_mbti_wallet_promotion_next_steps.md) — 서류신청→코드발급→grantReward코드추가→테스트성공→시작하기 순서, 광고 시작 전 반드시 코드 확인할 것
 - [⭐⭐ 토스페이 쿠폰광고(배너노출패키지) 리서치](project_tosspay_coupon_ad_research.md) — jeomun.com 토스페이 결제 라이브 확인됨(신청조건 충족), 구매시에만 과금+첫집행20만트래픽 무료, 신청 전 정확한 쿠폰할인율/수수료 상담확인 필요- [⭐ 2026-08-17 메인페이지 뒷배경 크림색 변경](project_mainv2_bg_cream_change_2026_08_17.md) — main-v2 다이아몬드 배경→#fdf6ec 크림, 원본 이미지URL 백업됨(commit d389115), 결과지는 안건드림
