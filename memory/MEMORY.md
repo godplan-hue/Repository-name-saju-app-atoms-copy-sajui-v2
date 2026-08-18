@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐ 핵심 링크 3개 — 고객DB/토스콘솔/결제취소](reference_key_links.md) — direct-payments·apps-in-toss workspace 58523·app.tosspayments.com, 항상 여기서 먼저 확인
 - [⭐⭐⭐ 앱인토스 프로모션 공식가이드 — 테스트 필수조건](reference_toss_promotion_official_doc.md) — 시작하기 전 TEST_코드로 API 1회 성공 필수, 토스트알림 형식, 다이어트 다음단계 안내
 - [⭐ 2026-08-17 메인페이지 뒷배경 크림색 변경](project_mainv2_bg_cream_change_2026_08_17.md) — main-v2 다이아몬드 배경→#fdf6ec 크림, 원본 이미지URL 백업됨(commit d389115), 결과지는 안건드림
 - [⭐⭐⭐ 2026-08-17 20개앱 시작하기버튼 광고 안뜨는문제 전수수정 완료](project_20app_ad_button_fix_2026_08_17.md) — 10개파일 수정+커밋완료(mbti패턴 적용), 나머지10개는 원래정상. 빌드/배포는 아직 안함
