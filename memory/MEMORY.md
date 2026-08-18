@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐ MBTI 메인 배너광고 안뜨던 진짜원인 확정+수정 완료 (2026-08-19)](project_mbti_banner_root_cause_fix_2026_08_19.md) — initialize() 끝나기전 attachBanner 호출되는 레이스컨디션, 800ms지연으로 수정, 다른앱도 같은구조면 위험(요청없이 손대지말것)
 - [⭐⭐⭐ 다이어트+MBTI 프로모션 alert버그수정+테스트성공+승인후 남은단계](project_diet_mbti_promotion_approval_flow_2026_08_18.md) — 승인요청 진행중, 승인나면 test mode false+재빌드+버튼2번이 전부, "또 뭐해야돼" 물으면 여기부터 볼 것
 - [⭐⭐⭐ 다이어트 시작하기 광고4초 프리로드 수정+탭바 플로팅 반려수정](project_diet_ad_tabbar_fix_2026_08_18.md) — 4초전 클릭시 광고안뜸 확인됨(수정함), 프로모션승인은 별개(재신청불필요), 탭바앱목록은 아래 최신메모 참고
 - [⭐⭐⭐ 접속중버튼 4개앱 전체적용+빌드완료 (2026-08-18)](project_connecting_button_4app_rollout_2026_08_18.md) — 실기기테스트 확정된 접속중버튼 패턴 저장, 다이어트1원alert버그수정, 궁합은 탭바자체가 없음(3개앱만 탭바수정), 새 deploymentId 4개
