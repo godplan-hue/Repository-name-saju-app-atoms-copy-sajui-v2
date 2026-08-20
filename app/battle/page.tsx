@@ -271,8 +271,8 @@ export default function BattlePage() {
         {step === 'intro' && (
           <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
             {[
-              { href: '/gunghap', icon: '💑', label: '궁합', badge: '무료/990원' },
-              { href: '/mbti', icon: '🧠', label: 'MBTI', badge: '무료' },
+              { href: '/gunghap', icon: '💑', label: '궁합', badge: '990원' },
+              { href: '/mbti', icon: '🧠', label: 'MBTI', badge: '990원' },
               { href: '/main-v2', icon: '☯️', label: '사주 운세', badge: '990원~' },
               { href: '/lotto', icon: '🍀', label: '행운번호', badge: '무료' },
             ].map(a => (
