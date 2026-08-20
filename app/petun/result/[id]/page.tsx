@@ -679,7 +679,7 @@ export default function PetunResultPage() {
 
         {/* 나도 해보기 */}
         <Link href="/petun" style={{ display: "block", textAlign: "center" as const, background: "rgba(6,182,212,0.08)", border: "1.5px solid rgba(6,182,212,0.35)", borderRadius: 16, padding: "14px", color: "#22d3ee", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
-          나도 펫운 해보기 (무료) →
+          나도 펫운 해보기 →
         </Link>
 
         {/* 사주 연결 CTA */}
