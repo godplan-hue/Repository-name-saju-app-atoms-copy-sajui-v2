@@ -335,64 +335,74 @@ export default function ZodiacResultPage() {
           </div>
         </div>
 
-        {/* 오늘/이번주/이번달 탭 */}
-        <div style={{ display: "flex", background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 4, marginBottom: 20 }}>
-          {[{ key: "today", label: "오늘" }, { key: "week", label: "이번 주" }, { key: "month", label: "이번 달" }].map(t => (
-            <button key={t.key} onClick={() => setTab(t.key as "today"|"week"|"month")}
-              style={{ flex: 1, padding: "10px", background: tab === t.key ? "linear-gradient(135deg,#1d4ed8,#7c3aed)" : "transparent", color: tab === t.key ? "white" : "#9ca3af", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {/* 사랑/직업/건강 점수 */}
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "20px 18px", marginBottom: 20, animation: "fadeUp 0.5s ease 0.1s both" }}>
-          <ScoreBar label="💗 사랑" score={result.loveScore} color="#f472b6" />
-          <ScoreBar label="💼 직업" score={result.workScore} color="#60a5fa" />
-          <ScoreBar label="💪 건강" score={result.healthScore} color="#4ade80" />
-        </div>
-
-        {/* 탭별 운세 내용 */}
-        <div style={{ marginBottom: 20, animation: "fadeUp 0.5s ease 0.2s both" }}>
-          <div style={{ background: "rgba(147,197,253,0.07)", border: "1px solid rgba(147,197,253,0.15)", borderRadius: 20, padding: "18px 16px", marginBottom: 10 }}>
-            <p style={{ fontSize: 12, color: "#93c5fd", fontWeight: 700, margin: "0 0 8px" }}>💗 {tab === "today" ? "오늘" : tab === "week" ? "이번 주" : "이번 달"} 사랑운</p>
-            <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.8, margin: 0 }}>{readings.love[tab]}</p>
-          </div>
-          <div style={{ background: "rgba(96,165,250,0.07)", border: "1px solid rgba(96,165,250,0.15)", borderRadius: 20, padding: "18px 16px", marginBottom: 10 }}>
-            <p style={{ fontSize: 12, color: "#60a5fa", fontWeight: 700, margin: "0 0 8px" }}>💼 {tab === "today" ? "오늘" : tab === "week" ? "이번 주" : "이번 달"} 직업·재물운</p>
-            <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.8, margin: 0 }}>{readings.work[tab]}</p>
-          </div>
-          <div style={{ background: "rgba(74,222,128,0.07)", border: "1px solid rgba(74,222,128,0.15)", borderRadius: 20, padding: "18px 16px" }}>
-            <p style={{ fontSize: 12, color: "#4ade80", fontWeight: 700, margin: "0 0 8px" }}>💪 {tab === "today" ? "오늘" : tab === "week" ? "이번 주" : "이번 달"} 건강운</p>
-            <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.8, margin: 0 }}>{readings.health[tab]}</p>
-          </div>
-        </div>
-
-        {/* 행운 아이템 */}
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "18px 16px", marginBottom: 20, animation: "fadeUp 0.5s ease 0.3s both" }}>
-          <p style={{ fontSize: 13, fontWeight: 900, margin: "0 0 14px", color: "#fbbf24" }}>🍀 오늘의 행운 아이템</p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
-            <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 8px", textAlign: "center" as const }}>
-              <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 4px" }}>행운 색상</p>
-              <p style={{ fontSize: 13, fontWeight: 700, margin: 0 }}>{result.luckyColors.join(" · ")}</p>
+        {isUnlocked ? (
+          <>
+            {/* 오늘/이번주/이번달 탭 */}
+            <div style={{ display: "flex", background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 4, marginBottom: 20 }}>
+              {[{ key: "today", label: "오늘" }, { key: "week", label: "이번 주" }, { key: "month", label: "이번 달" }].map(t => (
+                <button key={t.key} onClick={() => setTab(t.key as "today"|"week"|"month")}
+                  style={{ flex: 1, padding: "10px", background: tab === t.key ? "linear-gradient(135deg,#1d4ed8,#7c3aed)" : "transparent", color: tab === t.key ? "white" : "#9ca3af", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                  {t.label}
+                </button>
+              ))}
             </div>
-            <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 8px", textAlign: "center" as const }}>
-              <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 4px" }}>행운 숫자</p>
-              <p style={{ fontSize: 13, fontWeight: 700, margin: 0 }}>{result.luckyNumbers.join(", ")}</p>
-            </div>
-            <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 8px", textAlign: "center" as const }}>
-              <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 4px" }}>행운 방향</p>
-              <p style={{ fontSize: 13, fontWeight: 700, margin: 0 }}>{result.luckyDirection}</p>
-            </div>
-          </div>
-        </div>
 
-        {/* 오행 × 별자리 교차 (점운 차별화) */}
-        {result.oh && crossDesc && (
-          <div style={{ background: `rgba(${result.oh==="목"?"74,222,128":result.oh==="화"?"248,113,113":result.oh==="토"?"251,191,36":result.oh==="금"?"147,197,253":"167,139,250"},0.08)`, border: `1px solid rgba(${result.oh==="목"?"74,222,128":result.oh==="화"?"248,113,113":result.oh==="토"?"251,191,36":result.oh==="금"?"147,197,253":"167,139,250"},0.2)`, borderRadius: 20, padding: "18px 16px", marginBottom: 20, animation: "fadeUp 0.5s ease 0.4s both" }}>
-            <p style={{ fontSize: 12, fontWeight: 900, margin: "0 0 8px", color: OH_COLOR[result.oh] }}>{OH_EMOJI[result.oh]} {result.oh}오행 × {result.zodiac} 교차분석</p>
-            <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.8, margin: "0 0 10px" }}>{crossDesc}</p>
-            <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>키워드: {info.keyword}</p>
+            {/* 사랑/직업/건강 점수 */}
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "20px 18px", marginBottom: 20, animation: "fadeUp 0.5s ease 0.1s both" }}>
+              <ScoreBar label="💗 사랑" score={result.loveScore} color="#f472b6" />
+              <ScoreBar label="💼 직업" score={result.workScore} color="#60a5fa" />
+              <ScoreBar label="💪 건강" score={result.healthScore} color="#4ade80" />
+            </div>
+
+            {/* 탭별 운세 내용 */}
+            <div style={{ marginBottom: 20, animation: "fadeUp 0.5s ease 0.2s both" }}>
+              <div style={{ background: "rgba(147,197,253,0.07)", border: "1px solid rgba(147,197,253,0.15)", borderRadius: 20, padding: "18px 16px", marginBottom: 10 }}>
+                <p style={{ fontSize: 12, color: "#93c5fd", fontWeight: 700, margin: "0 0 8px" }}>💗 {tab === "today" ? "오늘" : tab === "week" ? "이번 주" : "이번 달"} 사랑운</p>
+                <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.8, margin: 0 }}>{readings.love[tab]}</p>
+              </div>
+              <div style={{ background: "rgba(96,165,250,0.07)", border: "1px solid rgba(96,165,250,0.15)", borderRadius: 20, padding: "18px 16px", marginBottom: 10 }}>
+                <p style={{ fontSize: 12, color: "#60a5fa", fontWeight: 700, margin: "0 0 8px" }}>💼 {tab === "today" ? "오늘" : tab === "week" ? "이번 주" : "이번 달"} 직업·재물운</p>
+                <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.8, margin: 0 }}>{readings.work[tab]}</p>
+              </div>
+              <div style={{ background: "rgba(74,222,128,0.07)", border: "1px solid rgba(74,222,128,0.15)", borderRadius: 20, padding: "18px 16px" }}>
+                <p style={{ fontSize: 12, color: "#4ade80", fontWeight: 700, margin: "0 0 8px" }}>💪 {tab === "today" ? "오늘" : tab === "week" ? "이번 주" : "이번 달"} 건강운</p>
+                <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.8, margin: 0 }}>{readings.health[tab]}</p>
+              </div>
+            </div>
+
+            {/* 행운 아이템 */}
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "18px 16px", marginBottom: 20, animation: "fadeUp 0.5s ease 0.3s both" }}>
+              <p style={{ fontSize: 13, fontWeight: 900, margin: "0 0 14px", color: "#fbbf24" }}>🍀 오늘의 행운 아이템</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+                <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 8px", textAlign: "center" as const }}>
+                  <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 4px" }}>행운 색상</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, margin: 0 }}>{result.luckyColors.join(" · ")}</p>
+                </div>
+                <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 8px", textAlign: "center" as const }}>
+                  <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 4px" }}>행운 숫자</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, margin: 0 }}>{result.luckyNumbers.join(", ")}</p>
+                </div>
+                <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 8px", textAlign: "center" as const }}>
+                  <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 4px" }}>행운 방향</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, margin: 0 }}>{result.luckyDirection}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 오행 × 별자리 교차 (점운 차별화) */}
+            {result.oh && crossDesc && (
+              <div style={{ background: `rgba(${result.oh==="목"?"74,222,128":result.oh==="화"?"248,113,113":result.oh==="토"?"251,191,36":result.oh==="금"?"147,197,253":"167,139,250"},0.08)`, border: `1px solid rgba(${result.oh==="목"?"74,222,128":result.oh==="화"?"248,113,113":result.oh==="토"?"251,191,36":result.oh==="금"?"147,197,253":"167,139,250"},0.2)`, borderRadius: 20, padding: "18px 16px", marginBottom: 20, animation: "fadeUp 0.5s ease 0.4s both" }}>
+                <p style={{ fontSize: 12, fontWeight: 900, margin: "0 0 8px", color: OH_COLOR[result.oh] }}>{OH_EMOJI[result.oh]} {result.oh}오행 × {result.zodiac} 교차분석</p>
+                <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.8, margin: "0 0 10px" }}>{crossDesc}</p>
+                <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>키워드: {info.keyword}</p>
+              </div>
+            )}
+          </>
+        ) : (
+          <div style={{ background: "rgba(129,140,248,0.06)", border: "1.5px dashed rgba(129,140,248,0.35)", borderRadius: 20, padding: "22px 18px", marginBottom: 20, textAlign: "center" as const }}>
+            <p style={{ fontSize: 26, margin: "0 0 8px" }}>🔒</p>
+            <p style={{ fontSize: 14, fontWeight: 900, color: "#818cf8", margin: "0 0 6px" }}>사랑·직업·건강 상세 운세</p>
+            <p style={{ fontSize: 12, color: "#9ca3af", margin: 0, lineHeight: 1.6 }}>오늘·이번 주·이번 달 운세 · 행운 아이템<br/>오행×별자리 교차분석은 아래에서 잠금 해제 후 확인하세요</p>
           </div>
         )}
 
