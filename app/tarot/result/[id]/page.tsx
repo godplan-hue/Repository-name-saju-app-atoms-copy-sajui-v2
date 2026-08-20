@@ -339,7 +339,7 @@ export default function TarotResultPage() {
       const u = localStorage.getItem("tarot_unlock_until");
       if (!u || Number(u) <= Date.now()) { setIsUnlocked(false); return; }
       const _up = localStorage.getItem("tarot_unlock_phone")||""; const _rp=(result?.phone||"").replace(/\D/g,"");
-      setIsUnlocked(!_up || !_rp || _up === _rp);
+      setIsUnlocked(!!_up && !!_rp && _up === _rp);
     };
     checkUnlock();
     let timerId: ReturnType<typeof setInterval>;
@@ -447,119 +447,83 @@ export default function TarotResultPage() {
         </div>
         <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 28 }}>{TOPIC_LABEL[topic]}</p>
 
-        {/* 오행 소울카드 배너 */}
-        <div style={{ background: OH_COLOR[result.oh], borderRadius: 20, padding: "20px 18px", marginBottom: 24, border: "1px solid rgba(255,255,255,0.15)", opacity: soulFlipped ? 1 : 0, transform: soulFlipped ? "none" : "translateY(10px)", transition: "all 0.6s ease" }}>
-          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", margin: "0 0 4px", fontWeight: 700, letterSpacing: 1 }}>
-            {OH_EMOJI[result.oh]} {result.oh}오행 · {displayName}의 수호카드
-          </p>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div style={{ width: 60, height: 88, background: "rgba(0,0,0,0.3)", borderRadius: 8, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.3)", flexShrink: 0 }}>
-              <span style={{ fontSize: 28 }}>{soulCard.emoji}</span>
-              <span style={{ fontSize: 9, color: "rgba(255,255,255,0.9)", fontWeight: 700, marginTop: 4 }}>{soulCard.name}</span>
-            </div>
-            <div>
-              <p style={{ fontWeight: 900, fontSize: 16, margin: "0 0 4px" }}>No.{soulCard.idx} {soulCard.name}</p>
-              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", margin: 0, lineHeight: 1.6 }}>{OH_DESC[result.oh]}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* 오늘 뽑은 카드 */}
-        <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 16px" }}>오늘 {displayName}에게 온 카드</p>
-          <div style={{ perspective: "1000px", display: "inline-block" }}>
-            <div style={{
-              width: 140, height: 210, position: "relative", cursor: "pointer",
-              transformStyle: "preserve-3d",
-              transition: "transform 0.8s",
-              transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
-            }} onClick={() => setFlipped(f => !f)}>
-              {/* 카드 뒷면 (타로 카드 뒷면 패턴) */}
-              <div style={{
-                position: "absolute", width: "100%", height: "100%",
-                backfaceVisibility: "hidden",
-                background: "linear-gradient(135deg,#1e1b4b,#4c1d95)",
-                borderRadius: 14, display: "flex", flexDirection: "column" as const,
-                alignItems: "center", justifyContent: "center",
-                border: "2px solid rgba(192,132,252,0.5)",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
-              }}>
-                <span style={{ fontSize: 40, opacity: 0.7 }}>🃏</span>
-                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", marginTop: 8 }}>탭해서 열기</p>
-              </div>
-              {/* 카드 앞면 */}
-              <div style={{
-                position: "absolute", width: "100%", height: "100%",
-                backfaceVisibility: "hidden",
-                background: drawnCard.bg,
-                borderRadius: 14, display: "flex", flexDirection: "column" as const,
-                alignItems: "center", justifyContent: "center",
-                border: "2px solid rgba(255,255,255,0.3)",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
-                transform: "rotateY(180deg)",
-              }}>
-                <span style={{ fontSize: 50 }}>{drawnCard.emoji}</span>
-                <p style={{ fontWeight: 900, fontSize: 14, margin: "10px 0 2px" }}>{drawnCard.name}</p>
-                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.75)" }}>No.{drawnCard.idx}</p>
+        {isUnlocked && (
+          <>
+            {/* 오행 소울카드 배너 */}
+            <div style={{ background: OH_COLOR[result.oh], borderRadius: 20, padding: "20px 18px", marginBottom: 24, border: "1px solid rgba(255,255,255,0.15)", opacity: soulFlipped ? 1 : 0, transform: soulFlipped ? "none" : "translateY(10px)", transition: "all 0.6s ease" }}>
+              <p style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", margin: "0 0 4px", fontWeight: 700, letterSpacing: 1 }}>
+                {OH_EMOJI[result.oh]} {result.oh}오행 · {displayName}의 수호카드
+              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                <div style={{ width: 60, height: 88, background: "rgba(0,0,0,0.3)", borderRadius: 8, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.3)", flexShrink: 0 }}>
+                  <span style={{ fontSize: 28 }}>{soulCard.emoji}</span>
+                  <span style={{ fontSize: 9, color: "rgba(255,255,255,0.9)", fontWeight: 700, marginTop: 4 }}>{soulCard.name}</span>
+                </div>
+                <div>
+                  <p style={{ fontWeight: 900, fontSize: 16, margin: "0 0 4px" }}>No.{soulCard.idx} {soulCard.name}</p>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", margin: 0, lineHeight: 1.6 }}>{OH_DESC[result.oh]}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>탭하면 카드가 뒤집혀요</p>
-        </div>
 
-        {/* 카드 리딩 */}
-        <div style={{ background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 20, padding: "20px 18px", marginBottom: 20, opacity: flipped ? 1 : 0.4, transition: "opacity 0.6s" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-            <div style={{ width: 44, height: 66, background: drawnCard.bg, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: "1px solid rgba(255,255,255,0.2)" }}>
-              <span style={{ fontSize: 22 }}>{drawnCard.emoji}</span>
+            {/* 오늘 뽑은 카드 */}
+            <div style={{ textAlign: "center", marginBottom: 28 }}>
+              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 16px" }}>오늘 {displayName}에게 온 카드</p>
+              <div style={{ perspective: "1000px", display: "inline-block" }}>
+                <div style={{
+                  width: 140, height: 210, position: "relative", cursor: "pointer",
+                  transformStyle: "preserve-3d",
+                  transition: "transform 0.8s",
+                  transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+                }} onClick={() => setFlipped(f => !f)}>
+                  {/* 카드 뒷면 (타로 카드 뒷면 패턴) */}
+                  <div style={{
+                    position: "absolute", width: "100%", height: "100%",
+                    backfaceVisibility: "hidden",
+                    background: "linear-gradient(135deg,#1e1b4b,#4c1d95)",
+                    borderRadius: 14, display: "flex", flexDirection: "column" as const,
+                    alignItems: "center", justifyContent: "center",
+                    border: "2px solid rgba(192,132,252,0.5)",
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
+                  }}>
+                    <span style={{ fontSize: 40, opacity: 0.7 }}>🃏</span>
+                    <p style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", marginTop: 8 }}>탭해서 열기</p>
+                  </div>
+                  {/* 카드 앞면 */}
+                  <div style={{
+                    position: "absolute", width: "100%", height: "100%",
+                    backfaceVisibility: "hidden",
+                    background: drawnCard.bg,
+                    borderRadius: 14, display: "flex", flexDirection: "column" as const,
+                    alignItems: "center", justifyContent: "center",
+                    border: "2px solid rgba(255,255,255,0.3)",
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
+                    transform: "rotateY(180deg)",
+                  }}>
+                    <span style={{ fontSize: 50 }}>{drawnCard.emoji}</span>
+                    <p style={{ fontWeight: 900, fontSize: 14, margin: "10px 0 2px" }}>{drawnCard.name}</p>
+                    <p style={{ fontSize: 10, color: "rgba(255,255,255,0.75)" }}>No.{drawnCard.idx}</p>
+                  </div>
+                </div>
+              </div>
+              <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>탭하면 카드가 뒤집혀요</p>
             </div>
-            <div>
-              <p style={{ fontWeight: 900, fontSize: 17, margin: "0 0 2px" }}>{drawnCard.name}</p>
-              <p style={{ fontSize: 11, color: "#c084fc", margin: 0 }}>키워드: {drawnCard.keyword}</p>
-            </div>
-          </div>
-          <p style={{ fontSize: 14, color: "#e9d5ff", lineHeight: 1.8, margin: 0 }}>{reading}</p>
-        </div>
-
-        {/* 오행 에너지 설명 */}
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "16px 18px", marginBottom: 24 }}>
-          <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 8px", fontWeight: 700 }}>{OH_EMOJI[result.oh]} {result.oh}오행 에너지 해설</p>
-          <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.7, margin: 0 }}>
-            {result.oh === "목" && "목오행은 성장과 새로운 시작의 에너지예요. 직진하는 힘이 강하고, 창의적인 도전을 즐겨요. 오늘 받은 카드는 그 성장 에너지와 함께 당신에게 메시지를 전해요."}
-            {result.oh === "화" && "화오행은 열정과 표현의 에너지예요. 감정이 풍부하고 사람들에게 빛을 주는 따뜻함이 있어요. 오늘 받은 카드는 그 열정과 함께 당신에게 메시지를 전해요."}
-            {result.oh === "토" && "토오행은 안정과 포용의 에너지예요. 중심이 단단하고 모든 것을 품어주는 힘이 있어요. 오늘 받은 카드는 그 안정 에너지와 함께 당신에게 메시지를 전해요."}
-            {result.oh === "금" && "금오행은 결단과 정의의 에너지예요. 원칙이 분명하고 한 번 정한 방향은 흔들리지 않아요. 오늘 받은 카드는 그 결단 에너지와 함께 당신에게 메시지를 전해요."}
-            {result.oh === "수" && "수오행은 직관과 지혜의 에너지예요. 깊은 곳을 흐르는 물처럼 표면 아래를 꿰뚫어 봐요. 오늘 받은 카드는 그 직관 에너지와 함께 당신에게 메시지를 전해요."}
-          </p>
-        </div>
-
-        {/* 다시 뽑기 / 공유 버튼 */}
-        <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-          <button onClick={redraw} style={{ flex: 1, background: "rgba(255,255,255,0.06)", color: "#c084fc", border: "1px solid rgba(192,132,252,0.4)", borderRadius: 22, padding: "14px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
-            🔄 다시 뽑기
-          </button>
-          <button onClick={share} style={{ flex: 1, background: "linear-gradient(135deg,#7c3aed,#c084fc)", color: "white", border: "none", borderRadius: 22, padding: "14px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
-            {sharing ? "✅ 복사됨!" : "📤 공유하기"}
-          </button>
-        </div>
-
-        {/* 나도 해보기 */}
-        <Link href="/tarot" style={{ display: "block", textAlign: "center" as const, background: "rgba(192,132,252,0.08)", border: "1.5px solid rgba(192,132,252,0.35)", borderRadius: 16, padding: "14px", color: "#c084fc", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 16 }}>
-          나도 타로 뽑기 (무료) →
-        </Link>
+          </>
+        )}
 
         {/* 유료 잠금 or 심층 분석 */}
         {!isUnlocked ? (
-          <div style={{ background:"linear-gradient(135deg,#1e1b4b,#0f0320)", border:"2px solid rgba(192,132,252,0.5)", borderRadius:20, padding:"24px 20px", marginBottom:16, textAlign:"center" }}>
+          <div style={{ background:"linear-gradient(135deg,#1e1b4b,#0f0320)", border:"2px solid rgba(192,132,252,0.5)", borderRadius:20, padding:"24px 20px", marginBottom:20, textAlign:"center" }}>
             <div style={{ fontSize:36, marginBottom:10 }}>🔒</div>
-            <p style={{ fontSize:16, fontWeight:900, color:"white", margin:"0 0 8px" }}>심층 타로 분석</p>
+            <p style={{ fontSize:16, fontWeight:900, color:"white", margin:"0 0 8px" }}>타로 결과 전체보기</p>
             <p style={{ fontSize:13, color:"rgba(255,255,255,0.65)", lineHeight:1.75, margin:"0 0 6px" }}>
+              🃏 카드 리딩 전문 · {OH_EMOJI[result.oh]} 오행 에너지 해설<br/>
               💡 오늘의 조언 · 🎱 오늘의 행운번호<br/>
               ✨ 오라 색깔 분석 · 🪬 전생 직업
             </p>
-            <p style={{ fontSize:12, color:"#c084fc", margin:"0 0 18px" }}>결제 후 24시간 열람 가능합니다</p>
+            <p style={{ fontSize:12, color:"#c084fc", margin:"0 0 18px" }}>결제해야 결과를 볼 수 있어요 · 결제 후 24시간 열람 가능</p>
             <Link href={`/tarot/pay?id=${id}`} style={{ display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#c084fc)", color:"white", borderRadius:22, padding:"13px 28px", fontSize:14, fontWeight:900, textDecoration:"none" }}>
-              ₩990으로 전체 분석 보기 →
+              ₩990으로 전체 결과 보기 →
             </Link>
           </div>
         ) : (
@@ -570,6 +534,32 @@ export default function TarotResultPage() {
                 <span style={{ fontSize:12, color:"#4ade80" }}>이용 가능: <b>{unlockRemain}</b></span>
               </div>
             )}
+
+            {/* 카드 리딩 */}
+            <div style={{ background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 20, padding: "20px 18px", marginBottom: 14, opacity: flipped ? 1 : 0.4, transition: "opacity 0.6s" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+                <div style={{ width: 44, height: 66, background: drawnCard.bg, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: "1px solid rgba(255,255,255,0.2)" }}>
+                  <span style={{ fontSize: 22 }}>{drawnCard.emoji}</span>
+                </div>
+                <div>
+                  <p style={{ fontWeight: 900, fontSize: 17, margin: "0 0 2px" }}>{drawnCard.name}</p>
+                  <p style={{ fontSize: 11, color: "#c084fc", margin: 0 }}>키워드: {drawnCard.keyword}</p>
+                </div>
+              </div>
+              <p style={{ fontSize: 14, color: "#e9d5ff", lineHeight: 1.8, margin: 0 }}>{reading}</p>
+            </div>
+
+            {/* 오행 에너지 설명 */}
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "16px 18px", marginBottom: 14 }}>
+              <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 8px", fontWeight: 700 }}>{OH_EMOJI[result.oh]} {result.oh}오행 에너지 해설</p>
+              <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.7, margin: 0 }}>
+                {result.oh === "목" && "목오행은 성장과 새로운 시작의 에너지예요. 직진하는 힘이 강하고, 창의적인 도전을 즐겨요. 오늘 받은 카드는 그 성장 에너지와 함께 당신에게 메시지를 전해요."}
+                {result.oh === "화" && "화오행은 열정과 표현의 에너지예요. 감정이 풍부하고 사람들에게 빛을 주는 따뜻함이 있어요. 오늘 받은 카드는 그 열정과 함께 당신에게 메시지를 전해요."}
+                {result.oh === "토" && "토오행은 안정과 포용의 에너지예요. 중심이 단단하고 모든 것을 품어주는 힘이 있어요. 오늘 받은 카드는 그 안정 에너지와 함께 당신에게 메시지를 전해요."}
+                {result.oh === "금" && "금오행은 결단과 정의의 에너지예요. 원칙이 분명하고 한 번 정한 방향은 흔들리지 않아요. 오늘 받은 카드는 그 결단 에너지와 함께 당신에게 메시지를 전해요."}
+                {result.oh === "수" && "수오행은 직관과 지혜의 에너지예요. 깊은 곳을 흐르는 물처럼 표면 아래를 꿰뚫어 봐요. 오늘 받은 카드는 그 직관 에너지와 함께 당신에게 메시지를 전해요."}
+              </p>
+            </div>
 
             {/* 오늘의 조언 */}
             <div style={{ background:"rgba(124,58,237,0.1)", border:"1px solid rgba(124,58,237,0.3)", borderRadius:16, padding:"20px 18px", marginBottom:14 }}>
