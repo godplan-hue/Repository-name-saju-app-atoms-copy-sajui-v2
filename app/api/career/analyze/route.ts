@@ -99,8 +99,8 @@ export async function POST(req: NextRequest) {
 
     const result = {
       name: name || "", phone: phone || "", email: email || "",
-      birthYear, birthMonth, birthDay,
-      timeAvail, skill, speed, career,
+      birthYear: birthYear ?? null, birthMonth: birthMonth ?? null, birthDay: birthDay ?? null,
+      timeAvail: timeAvail ?? null, skill: skill ?? null, speed: speed ?? null, career: career ?? null,
       recommended,
       details: recommended.map((id: string) => CAREER_DETAIL[id] ?? CAREER_DETAIL["content"]),
       marketing: body.marketing ?? false,
