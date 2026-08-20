@@ -58,14 +58,13 @@ function DaewoonInner() {
     wakeLockRef.current = null;
   };
 
-  // 페이지 벗어날 때 TTS 정지 + 결제 상태 초기화 (재방문 시 재결제 필요)
+  // 페이지 벗어날 때 TTS 정지
+  // 결제 상태(daeunPaid 등)는 sessionStorage라 탭/브라우저를 닫으면 자동으로 초기화된다.
+  // 여기서 수동으로 지우면 추가 결제하러 잠깐 나갔다 오는 것만으로도 이미 결제한 구간이 잠겨버려서 지운다.
   useEffect(() => {
     return () => {
       if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
       releaseWakeLock();
-      sessionStorage.removeItem("daeunPaid");
-      sessionStorage.removeItem("daeunPaidCount");
-      sessionStorage.removeItem("daeunPaidIndices");
     };
   }, []);
 
