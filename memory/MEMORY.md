@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐ 내일할일: 전환추적테스트+랜딩페이지 토스링크점검 (2026-08-20)](project_next_session_2026_08_20.md) — 실결제 발생(한소희 3900원), 구글광고 켜기전 테스트필요. MBTI/다이어트/육아일기 150개만있음+토스링크 확인필요. 오늘 X, 내일부터
 - [⭐⭐⭐ 토스 웨비나 박효주 성장비법 전체 저장 (2026-08-20)](reference_toss_webinar_hyoju_growth_secrets.md) — 로그퍼널개선사례+스마트발송세그먼트+리워드광고10배차이+PRD/MCP토큰절약+피그마TDS. 우리앱 로그0개 갭 재확인
 - [⭐⭐ 앱인토스 공식 AI 미니앱 빌드 가이드 저장 (2026-08-20)](reference_toss_ai_miniapp_build_guide.md) — MCP연결 명령어+기획~출시 절차+Analytics 로그 문법, 새 미니앱 만들 때 필독
 - [⭐⭐ PRD템플릿+플랫폼폴더+TDS다운로드 정리 (2026-08-20)](reference_prd_platform_folder_tds_setup.md) — PRD구술템플릿 직접작성, 플랫폼폴더는 이미 하고있음, TDS는 피그마 수동복사 필요(에스더님 할일)
