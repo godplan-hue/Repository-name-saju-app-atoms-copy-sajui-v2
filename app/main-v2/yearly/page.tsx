@@ -7,6 +7,7 @@ import KakaoShareCouponBanner from "@/app/main-v2/_components/KakaoShareCouponBa
 
 const MONTHS = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 const MONTH_EMOJI = ["🌱","❄️","🌸","🌿","☀️","🌊","🔥","🌻","🍁","🌙","⭐","🎆"];
+const CURRENT_YEAR = new Date().getFullYear();
 
 export default function YearlyPage() {
   const router = useRouter();
@@ -182,7 +183,7 @@ export default function YearlyPage() {
     setSharing(false);
     if (!shareUrl) { alert("공유 링크를 만들지 못했어요. 잠시 후 다시 시도해주세요."); return; }
     const title = `📅 ${profile?.name}님의 연도별운세`;
-    const desc = `2026년 올해 운세 + 12개월 로드맵`;
+    const desc = `${CURRENT_YEAR}년 올해 운세 + 12개월 로드맵`;
     const kakao = (window as any).Kakao;
     if (kakao && kakao.isInitialized()) {
       kakao.Share.sendDefault({
@@ -313,7 +314,7 @@ export default function YearlyPage() {
             {/* 운세 점수 요약 */}
             {profile && scores && (
               <div style={{ background: "white", border: "1.5px solid rgba(37,99,235,0.2)", borderRadius: 14, padding: "16px", marginBottom: 20, textAlign: "center", boxShadow: "0 2px 12px rgba(37,99,235,0.08)" }}>
-                <p style={{ color: "#6b7280", fontSize: 12, margin: "0 0 8px" }}>{profile.name}님의 2026년 운세</p>
+                <p style={{ color: "#6b7280", fontSize: 12, margin: "0 0 8px" }}>{profile.name}님의 {CURRENT_YEAR}년 운세</p>
                 <div style={{ fontSize: 36, fontWeight: 900, color: "#2563eb", margin: "0 0 4px" }}>{totalScore}점</div>
                 <p style={{ color: "#374151", fontSize: 14, fontWeight: 700, margin: "0 0 12px" }}>{scoreLabel}</p>
                 <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap" }}>
@@ -335,7 +336,7 @@ export default function YearlyPage() {
             {/* 올해 운세 */}
             <div style={{ background: "white", border: "1.5px solid rgba(37,99,235,0.15)", borderRadius: 14, padding: "20px", marginBottom: 16, boxShadow: "0 2px 12px rgba(37,99,235,0.06)" }}>
               <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1d4ed8", margin: "0 0 12px", display: "flex", alignItems: "center", gap: 6 }}>
-                ☀️ 2026년 올해 운세
+                ☀️ {CURRENT_YEAR}년 올해 운세
               </h2>
               {paid ? (
                 <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line", wordBreak: "keep-all" }}>{yearlyText}</p>
@@ -351,14 +352,14 @@ export default function YearlyPage() {
             {paid && monthlyText ? (
               <div style={{ background: "white", border: "1.5px solid rgba(37,99,235,0.15)", borderRadius: 14, padding: "20px", marginBottom: 20, boxShadow: "0 2px 12px rgba(37,99,235,0.06)" }}>
                 <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1d4ed8", margin: "0 0 16px", display: "flex", alignItems: "center", gap: 6 }}>
-                  📅 2026년 월별 상세 운세
+                  📅 {CURRENT_YEAR}년 월별 상세 운세
                 </h2>
                 <p style={{ fontSize: 13, color: "#374151", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line", wordBreak: "keep-all" }}>{monthlyText}</p>
               </div>
             ) : !paid ? (
               /* 월별 미리보기 — 잠금 */
               <div style={{ background: "white", border: "1.5px solid rgba(37,99,235,0.15)", borderRadius: 14, padding: "20px", marginBottom: 20 }}>
-                <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1d4ed8", margin: "0 0 16px" }}>📅 2026년 월별 운세 미리보기</h2>
+                <h2 style={{ fontSize: 16, fontWeight: 900, color: "#1d4ed8", margin: "0 0 16px" }}>📅 {CURRENT_YEAR}년 월별 운세 미리보기</h2>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                   {MONTHS.map((m, i) => (
                     <div key={m} style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 10, padding: "10px 12px", filter: "blur(1.5px)", opacity: 0.6 }}>
@@ -400,7 +401,7 @@ export default function YearlyPage() {
                 <div style={{ fontSize: 28, marginBottom: 10 }}>🔓</div>
                 <h3 style={{ color: "#1d4ed8", fontSize: 18, fontWeight: 900, margin: "0 0 8px" }}>올해 운세 전체 + 12개월 로드맵</h3>
                 <p style={{ color: "#6b7280", fontSize: 13, lineHeight: 1.7, margin: "0 0 16px" }}>
-                  2026년 전체 흐름 상세 해설<br />
+                  {CURRENT_YEAR}년 전체 흐름 상세 해설<br />
                   1월~12월 월별 맞춤 운세 완전 공개
                 </p>
                 <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 16 }}>
@@ -421,7 +422,7 @@ export default function YearlyPage() {
 
             {paid && (
               <div style={{ textAlign: "center", padding: "16px 0", color: "#6b7280", fontSize: 13 }}>
-                ✅ 2026년 연도별운세 해금 완료
+                ✅ {CURRENT_YEAR}년 연도별운세 해금 완료
               </div>
             )}
           </>

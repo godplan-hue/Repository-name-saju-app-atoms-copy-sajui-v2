@@ -4,6 +4,8 @@ import LandingForm from "./LandingForm";
 
 export const dynamic = "force-dynamic";
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 const COLOR_THEMES: Record<string, { primary: string; secondary: string; bg: string; light: string }> = {
   pink:  { primary: "#ec4899", secondary: "#8b5cf6", bg: "#fdf2f8", light: "rgba(236,72,153,0.1)" },
   gold:  { primary: "#f59e0b", secondary: "#1f2937", bg: "#fffbeb", light: "rgba(245,158,11,0.1)" },
@@ -26,7 +28,7 @@ const PRODUCT_MAP: Record<string, { name: string; icon: string; desc: string; pr
   love:    { name: "연애운",     icon: "💕", desc: "연애·결혼 운세 분석",     price: 7900 },
   health:  { name: "건강운",     icon: "💪", desc: "건강 흐름 분석",          price: 7900 },
   success: { name: "성공운",     icon: "🎯", desc: "직업·커리어 분석",        price: 7900 },
-  yearly:  { name: "총운",       icon: "📅", desc: "2026년 전체 흐름 분석",   price: 7900 },
+  yearly:  { name: "총운",       icon: "📅", desc: `${CURRENT_YEAR}년 전체 흐름 분석`,   price: 7900 },
   daewoon: { name: "대운(大運)", icon: "🌌", desc: "10년 운명의 큰 흐름",    price: 2900 },
   taegil:  { name: "택일",       icon: "🗓",  desc: "중요한 날 좋은 날 찾기", price: 2900 },
   pkg:     { name: "패키지 특가", icon: "🎁", desc: "5개 운세 묶음 한 번에",  price: 9900 },

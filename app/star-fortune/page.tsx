@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+
+const CURRENT_YEAR = new Date().getFullYear();
+
 export const metadata: Metadata = {
   title: "별자리 운세 | 점운 — 별자리 + AI 사주 분석",
-  description: "별자리 운세와 AI 사주를 함께 확인해보세요. 양자리부터 물고기자리까지 2026년 별자리 운세.",
-  keywords: ["별자리 운세", "별자리 사주", "12별자리 운세", "2026 별자리운세", "별자리 운세 보기"],
+  description: `별자리 운세와 AI 사주를 함께 확인해보세요. 양자리부터 물고기자리까지 ${CURRENT_YEAR}년 별자리 운세.`,
+  keywords: ["별자리 운세", "별자리 사주", "12별자리 운세", `${CURRENT_YEAR} 별자리운세`, "별자리 운세 보기"],
   openGraph: { title: "별자리 운세 — 점운", description: "별자리 운세 + AI 사주 분석. 더 정확한 개인 운세.", url: "https://jeomun.com/star-fortune" },
   alternates: { canonical: "https://jeomun.com/star-fortune" },
 };
@@ -13,7 +16,7 @@ export default function StarFortunePage() {
     <main style={{ minHeight: "100vh", background: "#0f172a", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", color: "#e2e8f0" }}>
       <div style={{ background: "linear-gradient(135deg, #1e293b, #0f172a)", padding: "60px 20px 48px", textAlign: "center" }}>
         <p style={{ fontSize: 13, fontWeight: 700, color: "#94a3b8", margin: "0 0 10px" }}>⭐ 별자리 운세</p>
-        <h1 style={{ fontSize: "clamp(26px,5vw,40px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 12px", lineHeight: 1.25 }}>별자리로 보는<br />2026년 운세</h1>
+        <h1 style={{ fontSize: "clamp(26px,5vw,40px)", fontWeight: 900, color: "#f1f5f9", margin: "0 0 12px", lineHeight: 1.25 }}>별자리로 보는<br />{CURRENT_YEAR}년 운세</h1>
         <p style={{ fontSize: 15, color: "#94a3b8", margin: "0 0 28px", lineHeight: 1.7 }}>12별자리 운세 확인<br />더 정확한 AI 사주 분석도 받아보세요</p>
         <Link href="/main-v2" style={{ display: "inline-block", padding: "14px 36px", background: "linear-gradient(135deg, #6366f1, #4f46e5)", color: "white", borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none", boxShadow: "0 6px 20px rgba(99,102,241,0.4)" }}>⭐ 별자리 운세 보기 — 무료~</Link>
       </div>
