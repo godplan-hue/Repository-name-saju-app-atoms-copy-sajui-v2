@@ -1,6 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐ MBTI+다이어트 1원 중복지급 버그 수정 완료 (2026-08-19)](bug_mbti_diet_duplicate_reward_fix_2026_08_19.md) — 시작하기 누를때마다 무한중복지급되던 버그, 기기당1회제한 적용, 두 앱 다 GitHub 저장 완료(commit ae8c6d4/4b74f37), 재업로드→테스트→승인요청 필요
+- [⭐⭐ 앱인토스 공식 AI 미니앱 빌드 가이드 저장 (2026-08-20)](reference_toss_ai_miniapp_build_guide.md) — MCP연결 명령어+기획~출시 절차+Analytics 로그 문법, 새 미니앱 만들 때 필독
 - [⭐⭐⭐ 배너재시도 11개앱 최종빌드+깃허브저장 완료 + MBTI 프로모션 실제시작 완료 (2026-08-19)](project_mbti_banner_batch_final_and_promotion_launch_2026_08_19.md) — 각 앱 커밋해시 전부 기록됨, MBTI 비즈월렛 프로모션 "진행중" 상태 확정, 다이어트는 아직 승인안남
 - [⭐⭐⭐ MBTI 메인 배너광고 안뜨던 진짜원인 확정+수정 완료 (2026-08-19)](project_mbti_banner_root_cause_fix_2026_08_19.md) — initialize() 끝나기전 attachBanner 호출되는 레이스컨디션, 800ms지연으로 수정, 다른앱도 같은구조면 위험(요청없이 손대지말것)
 - [⭐⭐⭐ 다이어트+MBTI 프로모션 alert버그수정+테스트성공+승인후 남은단계](project_diet_mbti_promotion_approval_flow_2026_08_18.md) — 승인요청 진행중, 승인나면 test mode false+재빌드+버튼2번이 전부, "또 뭐해야돼" 물으면 여기부터 볼 것
