@@ -50,8 +50,9 @@ function PayInner() {
   const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
   const isFree = couponData && (finalAmount === 0 || couponData.fullAccess);
 
-  const setUnlock = () => {
+  const setUnlock = (ph?: string) => {
     localStorage.setItem("zodiac_unlock_until", String(Date.now() + 24*60*60*1000));
+    if (ph) localStorage.setItem("zodiac_unlock_phone", ph);
   };
 
   // 모바일 카카오페이/카드 결제는 PG사 인증 후 이 페이지로 "새로 돌아오는" 방식이라
@@ -60,7 +61,7 @@ function PayInner() {
   const finalizeSuccess = (info: { id: string; cleanMobile: string; name: string; finalAmount: number; coupon: string; hasCoupon: boolean }) => {
     if (info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.coupon.trim().toUpperCase()})}).catch(()=>{});
     fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`zodiac_${Date.now()}`,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"별자리 심층 분석",source:"zodiac"})}).catch(()=>{});
-    setUnlock();
+    setUnlock(info.cleanMobile);
     window.location.href = info.id ? `/zodiac/result/${info.id}` : "/zodiac";
   };
 
@@ -151,7 +152,7 @@ function PayInner() {
         const _ph = mobile.replace(/\D/g,"");
         fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`zodiac_${Date.now()}`,phone:_ph||"",name:name.trim()||"",amount:0,category:"별자리 쿠폰",source:"zodiac"})}).catch(()=>{});
         fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:coupon.trim().toUpperCase()})}).catch(()=>{});
-        setUnlock();
+        setUnlock(_ph);
         window.location.href = id ? `/zodiac/result/${id}` : "/zodiac";
       } finally { setLoading(false); }
       return;

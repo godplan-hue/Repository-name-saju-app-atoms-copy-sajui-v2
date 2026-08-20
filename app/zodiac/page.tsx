@@ -89,7 +89,7 @@ export default function ZodiacPage() {
       });
       const data = await res.json();
       if (data.id) {
-        router.push(`/zodiac/result/${data.id}`);
+        router.push(`/zodiac/pay?id=${data.id}`);
       } else {
         setError("오류가 발생했습니다. 다시 시도해주세요.");
       }
@@ -120,7 +120,7 @@ export default function ZodiacPage() {
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
               <Link href="/main-v2" style={{ color: "#93c5fd", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
-              <button onClick={() => { const d = { title: "점운 별자리 — 12별자리 오늘 운세", text: "내 별자리 오늘 운세를 봤어요! 완전 무료 ⭐", url: "https://jeomun.com/zodiac" }; const _k=(window as any).Kakao; if(_k?.isInitialized()&&_k?.Share){_k.Share.sendDefault({objectType:"feed",content:{title:d.title,description:d.text,imageUrl:"https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",link:{mobileWebUrl:d.url,webUrl:d.url}},buttons:[{title:"바로 보기",link:{mobileWebUrl:d.url,webUrl:d.url}},{title:"나도 해보기 →",link:{mobileWebUrl:d.url,webUrl:d.url}}]});}else{window.location.href=`kakaotalk://msg/send?text=${encodeURIComponent(d.text+'\n'+d.url)}`;}; }} style={{ fontSize: 12, color: "#93c5fd", fontWeight: 700, background: "rgba(147,197,253,0.15)", border: "1px solid rgba(147,197,253,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
+              <button onClick={() => { const d = { title: "점운 별자리 — 12별자리 오늘 운세", text: "내 별자리 오늘 운세를 봤어요! ⭐", url: "https://jeomun.com/zodiac" }; const _k=(window as any).Kakao; if(_k?.isInitialized()&&_k?.Share){_k.Share.sendDefault({objectType:"feed",content:{title:d.title,description:d.text,imageUrl:"https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",link:{mobileWebUrl:d.url,webUrl:d.url}},buttons:[{title:"바로 보기",link:{mobileWebUrl:d.url,webUrl:d.url}},{title:"나도 해보기 →",link:{mobileWebUrl:d.url,webUrl:d.url}}]});}else{window.location.href=`kakaotalk://msg/send?text=${encodeURIComponent(d.text+'\n'+d.url)}`;}; }} style={{ fontSize: 12, color: "#93c5fd", fontWeight: 700, background: "rgba(147,197,253,0.15)", border: "1px solid rgba(147,197,253,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
             </div>
             <div style={{ fontSize: 72, marginBottom: 12, display: "inline-block", animation: "floatStar 3s ease-in-out infinite" }}>⭐</div>
             <h1 style={{ fontSize: 28, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.3 }}>
@@ -142,7 +142,7 @@ export default function ZodiacPage() {
               ))}
             </div>
             <button onClick={() => setStep("select")} style={S.btn}>내 별자리 운세 보기 ⭐ →</button>
-            <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>완전 무료 · 전화번호만 있으면 OK</p>
+            <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>₩990 · 전화번호만 있으면 30초 완성</p>
             <p style={{ textAlign: "center", fontSize: 11, color: "rgba(96,165,250,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
               🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
             </p>
@@ -326,7 +326,7 @@ export default function ZodiacPage() {
           style={{ ...S.btn, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
           {loading ? "별자리 운세 불러오는 중... ⭐" : `${selectedZodiac} 운세 보기 →`}
         </button>
-        <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>완전 무료 · 광고 없음</p>
+        <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>₩990 · 결제 후 24시간 이용</p>
 
       {/* 회사정보 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>

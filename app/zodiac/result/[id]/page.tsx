@@ -5,7 +5,7 @@ import Link from "next/link";
 import Script from "next/script";
 
 type ZodiacResult = {
-  name: string; zodiac: string; oh: string; crossKey: string;
+  name: string; phone?: string; zodiac: string; oh: string; crossKey: string;
   loveScore: number; workScore: number; healthScore: number; totalScore: number;
   luckyColors: string[]; luckyNumbers: number[]; luckyDirection: string;
   birthYear?: number;
@@ -237,7 +237,9 @@ export default function ZodiacResultPage() {
   useEffect(() => {
     const checkUnlock = () => {
       const u = localStorage.getItem("zodiac_unlock_until");
-      setIsUnlocked(!!u && Number(u) > Date.now());
+      if (!u || Number(u) <= Date.now()) { setIsUnlocked(false); return; }
+      const _up = localStorage.getItem("zodiac_unlock_phone") || ""; const _rp = (result?.phone || "").replace(/\D/g, "");
+      setIsUnlocked(!!_up && !!_rp && _up === _rp);
     };
     checkUnlock();
     let timerId: ReturnType<typeof setInterval>;
@@ -254,7 +256,7 @@ export default function ZodiacResultPage() {
     timerId = setInterval(updateCountdown, 1000);
     updateCountdown();
     return () => clearInterval(timerId);
-  }, []);
+  }, [result]);
 
   const share = () => {
     const url = `https://jeomun.com/zodiac/result/${id}`;
@@ -428,7 +430,7 @@ export default function ZodiacResultPage() {
 
         {/* 나도 해보기 */}
         <Link href="/zodiac" style={{ display: "block", textAlign: "center" as const, background: "rgba(147,197,253,0.08)", border: "1.5px solid rgba(147,197,253,0.35)", borderRadius: 16, padding: "14px", color: "#93c5fd", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
-          나도 별자리 운세 보기 (무료) →
+          나도 별자리 운세 보기 →
         </Link>
 
         {/* 별자리 심층 분석 24h paywall */}
