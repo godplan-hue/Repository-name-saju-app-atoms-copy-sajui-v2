@@ -2,6 +2,7 @@
 
 - [⭐⭐⭐ 토스 웨비나 박효주 성장비법 전체 저장 (2026-08-20)](reference_toss_webinar_hyoju_growth_secrets.md) — 로그퍼널개선사례+스마트발송세그먼트+리워드광고10배차이+PRD/MCP토큰절약+피그마TDS. 우리앱 로그0개 갭 재확인
 - [⭐⭐ 앱인토스 공식 AI 미니앱 빌드 가이드 저장 (2026-08-20)](reference_toss_ai_miniapp_build_guide.md) — MCP연결 명령어+기획~출시 절차+Analytics 로그 문법, 새 미니앱 만들 때 필독
+- [⭐⭐ PRD템플릿+플랫폼폴더+TDS다운로드 정리 (2026-08-20)](reference_prd_platform_folder_tds_setup.md) — PRD구술템플릿 직접작성, 플랫폼폴더는 이미 하고있음, TDS는 피그마 수동복사 필요(에스더님 할일)
 - [⭐⭐⭐ 배너재시도 11개앱 최종빌드+깃허브저장 완료 + MBTI 프로모션 실제시작 완료 (2026-08-19)](project_mbti_banner_batch_final_and_promotion_launch_2026_08_19.md) — 각 앱 커밋해시 전부 기록됨, MBTI 비즈월렛 프로모션 "진행중" 상태 확정, 다이어트는 아직 승인안남
 - [⭐⭐⭐ MBTI 메인 배너광고 안뜨던 진짜원인 확정+수정 완료 (2026-08-19)](project_mbti_banner_root_cause_fix_2026_08_19.md) — initialize() 끝나기전 attachBanner 호출되는 레이스컨디션, 800ms지연으로 수정, 다른앱도 같은구조면 위험(요청없이 손대지말것)
 - [⭐⭐⭐ 다이어트+MBTI 프로모션 alert버그수정+테스트성공+승인후 남은단계](project_diet_mbti_promotion_approval_flow_2026_08_18.md) — 승인요청 진행중, 승인나면 test mode false+재빌드+버튼2번이 전부, "또 뭐해야돼" 물으면 여기부터 볼 것
