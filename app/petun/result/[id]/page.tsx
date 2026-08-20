@@ -235,7 +235,8 @@ export default function PetunResultPage() {
       if (!u) { setIsUnlocked(false); setUnlockRemain(""); return; }
       const ms = Number(u) - Date.now();
       if (ms <= 0) { localStorage.removeItem("petun_unlock_until"); setIsUnlocked(false); setUnlockRemain(""); return; }
-      const _up = localStorage.getItem("petun_unlock_phone")||""; const _rp=(result?.phone||"").replace(/\D/g,""); if(_up&&_rp&&_up!==_rp){setIsUnlocked(false);setUnlockRemain("");return;}
+      const _up = localStorage.getItem("petun_unlock_phone")||""; const _rp=(result?.phone||"").replace(/\D/g,"");
+      if(!_up || !_rp || _up !== _rp){setIsUnlocked(false);setUnlockRemain("");return;}
       setIsUnlocked(true);
       const h = Math.floor(ms / 3600000);
       const m = Math.floor((ms % 3600000) / 60000);
@@ -264,7 +265,7 @@ export default function PetunResultPage() {
           objectType: "feed",
           content: {
             title: `🐾 ${result.petName}(${result.petOh}오행) ${result.petPersonality.title}`,
-            description: `${result.petSpecies} 사주 분석! 점운 펫운에서 무료로 확인해봐!`,
+            description: `${result.petSpecies} 사주 분석! 점운 펫운에서 확인해봐!`,
             imageUrl: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
@@ -341,10 +342,18 @@ export default function PetunResultPage() {
           <h2 style={{ fontSize: 22, fontWeight: 900, color: "white", margin: "0 0 6px" }}>
             {result.petName}
           </h2>
-          <div style={{ display: "inline-block", background: `${ohColor}22`, border: `1px solid ${ohColor}55`, borderRadius: 20, padding: "6px 18px", marginBottom: 14 }}>
-            <span style={{ fontSize: 14, fontWeight: 900, color: ohColor }}>{result.petPersonality.title}</span>
-          </div>
-          <p style={S.body}>{result.petPersonality.desc}</p>
+          {isUnlocked ? (
+            <>
+              <div style={{ display: "inline-block", background: `${ohColor}22`, border: `1px solid ${ohColor}55`, borderRadius: 20, padding: "6px 18px", marginBottom: 14 }}>
+                <span style={{ fontSize: 14, fontWeight: 900, color: ohColor }}>{result.petPersonality.title}</span>
+              </div>
+              <p style={S.body}>{result.petPersonality.desc}</p>
+            </>
+          ) : (
+            <div style={{ background: "rgba(255,255,255,0.05)", border: "1.5px dashed rgba(255,255,255,0.2)", borderRadius: 14, padding: "12px 14px", marginBottom: 4 }}>
+              <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>🔒 {result.petName}의 성격 유형은 잠금 해제 후 확인할 수 있어요</p>
+            </div>
+          )}
 
           {/* 생명력 에너지 */}
           <div style={{ marginTop: 16 }}>
@@ -408,14 +417,16 @@ export default function PetunResultPage() {
         )}
 
         {/* 오행 기질 특징 */}
-        <div style={S.card}>
-          <p style={S.secTitle}>🧬 기질 특징</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
-            {result.petPersonality.trait.split("·").map(t => (
-              <span key={t} style={{ background: `${ohColor}18`, border: `1px solid ${ohColor}44`, borderRadius: 20, padding: "4px 12px", fontSize: 12, color: ohColor }}>{t.trim()}</span>
-            ))}
+        {isUnlocked && (
+          <div style={S.card}>
+            <p style={S.secTitle}>🧬 기질 특징</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+              {result.petPersonality.trait.split("·").map(t => (
+                <span key={t} style={{ background: `${ohColor}18`, border: `1px solid ${ohColor}44`, borderRadius: 20, padding: "4px 12px", fontSize: 12, color: ohColor }}>{t.trim()}</span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* 탭 메뉴 */}
         <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: "6px", display: "flex", gap: 4, marginBottom: 14 }}>
@@ -434,7 +445,15 @@ export default function PetunResultPage() {
         </div>
 
         {/* 케어법 탭 */}
-        {activeTab === "personality" && (
+        {activeTab === "personality" && !isUnlocked && (
+          <div style={{ background: "rgba(6,182,212,0.06)", border: "1.5px dashed rgba(6,182,212,0.35)", borderRadius: 18, padding: "28px 18px", marginBottom: 14, textAlign: "center" }}>
+            <p style={{ fontSize: 28, margin: "0 0 10px" }}>💝</p>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#06b6d4", margin: "0 0 6px" }}>케어법 심층 분석</p>
+            <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>케어 방법 · 좋아하는 놀이 · 감정 특성<br/>잠금 해제 후 확인하세요</p>
+            <a href={`/petun/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#0891b2,#06b6d4)", borderRadius: 14, padding: "10px 22px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900 }}>🔓 지금 열어보기 →</a>
+          </div>
+        )}
+        {activeTab === "personality" && isUnlocked && (
           <>
             <div style={S.card}>
               <p style={S.secTitle}>💝 케어 방법</p>
@@ -517,7 +536,15 @@ export default function PetunResultPage() {
         )}
 
         {/* 좋아하는 것 탭 */}
-        {activeTab === "fav" && (
+        {activeTab === "fav" && !isUnlocked && (
+          <div style={{ background: "rgba(6,182,212,0.06)", border: "1.5px dashed rgba(6,182,212,0.35)", borderRadius: 18, padding: "28px 18px", marginBottom: 14, textAlign: "center" }}>
+            <p style={{ fontSize: 28, margin: "0 0 10px" }}>🏆</p>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#06b6d4", margin: "0 0 6px" }}>{result.petName}이 좋아하는 것 TOP 5</p>
+            <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>잠금 해제 후 순위와 이유를 확인하세요</p>
+            <a href={`/petun/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#0891b2,#06b6d4)", borderRadius: 14, padding: "10px 22px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900 }}>🔓 지금 열어보기 →</a>
+          </div>
+        )}
+        {activeTab === "fav" && isUnlocked && (
           <div style={S.card}>
             <p style={S.secTitle}>🏆 {result.petName}이 좋아하는 것 TOP 5</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -537,7 +564,15 @@ export default function PetunResultPage() {
         )}
 
         {/* 행동 이유 탭 */}
-        {activeTab === "behavior" && (
+        {activeTab === "behavior" && !isUnlocked && (
+          <div style={{ background: "rgba(6,182,212,0.06)", border: "1.5px dashed rgba(6,182,212,0.35)", borderRadius: 18, padding: "28px 18px", marginBottom: 14, textAlign: "center" }}>
+            <p style={{ fontSize: 28, margin: "0 0 10px" }}>🐾</p>
+            <p style={{ fontSize: 15, fontWeight: 900, color: "#06b6d4", margin: "0 0 6px" }}>{behavior.title}</p>
+            <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>보호자라면 꼭 알아야 할 행동 신호예요<br/>잠금 해제 후 확인하세요</p>
+            <a href={`/petun/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#0891b2,#06b6d4)", borderRadius: 14, padding: "10px 22px", color: "white", textDecoration: "none", fontSize: 14, fontWeight: 900 }}>🔓 지금 열어보기 →</a>
+          </div>
+        )}
+        {activeTab === "behavior" && isUnlocked && (
           <div style={S.card}>
             <p style={S.secTitle}>🐾 {behavior.title}</p>
             <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 14px" }}>보호자라면 꼭 알아야 할 행동 신호예요</p>
