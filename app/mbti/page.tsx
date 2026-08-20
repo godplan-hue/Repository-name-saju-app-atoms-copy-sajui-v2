@@ -205,7 +205,7 @@ export default function MbtiPage() {
         <div style={{ maxWidth: 480, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
             <Link href="/main-v2" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
-            <button onClick={() => { const d = { title: "점운 MBTI — 사주로 보는 나의 성격 유형", text: "16문항으로 MBTI와 사주 오행 기질을 알아보세요! 완전 무료 🔮", url: "https://jeomun.com/mbti" }; const _k=(window as any).Kakao; if(_k?.isInitialized()&&_k?.Share){_k.Share.sendDefault({objectType:"feed",content:{title:d.title,description:d.text,imageUrl:"https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",link:{mobileWebUrl:d.url,webUrl:d.url}},buttons:[{title:"바로 보기",link:{mobileWebUrl:d.url,webUrl:d.url}},{title:"나도 해보기 →",link:{mobileWebUrl:d.url,webUrl:d.url}}]});}else{window.location.href=`kakaotalk://msg/send?text=${encodeURIComponent(d.text+'\n'+d.url)}`;}; }} style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, background: "rgba(124,58,237,0.15)", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
+            <button onClick={() => { const d = { title: "점운 MBTI — 사주로 보는 나의 성격 유형", text: "16문항으로 MBTI와 사주 오행 기질을 알아보세요! 🔮", url: "https://jeomun.com/mbti" }; const _k=(window as any).Kakao; if(_k?.isInitialized()&&_k?.Share){_k.Share.sendDefault({objectType:"feed",content:{title:d.title,description:d.text,imageUrl:"https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",link:{mobileWebUrl:d.url,webUrl:d.url}},buttons:[{title:"바로 보기",link:{mobileWebUrl:d.url,webUrl:d.url}},{title:"나도 해보기 →",link:{mobileWebUrl:d.url,webUrl:d.url}}]});}else{window.location.href=`kakaotalk://msg/send?text=${encodeURIComponent(d.text+'\n'+d.url)}`;}; }} style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, background: "rgba(124,58,237,0.15)", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
           </div>
 
           <div style={{ fontSize: 60, marginBottom: 16 }}>🔮</div>
@@ -216,7 +216,7 @@ export default function MbtiPage() {
             </span>
           </h1>
           <p style={{ color: "#c4b5fd", fontSize: 14, lineHeight: 1.7, margin: "0 0 24px" }}>
-            16문항 · 2분 완료 · 완전 무료<br />
+            16문항 · 2분 완료 · 990원 심층 분석<br />
             사주 오행 기질과 MBTI를 함께 분석해드립니다
           </p>
 
@@ -281,7 +281,7 @@ export default function MbtiPage() {
             <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
               <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
                 style={{ marginTop: 3, accentColor: "#a855f7", width: 16, height: 16, flexShrink: 0 }} />
-              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
+              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6, wordBreak: "keep-all" as const, minWidth: 0 }}>
                 <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 동의</strong><br />
                 점운(jeomun.com)이 전화번호·이메일을 서비스 제공에 활용하며, 3년간 보유 후 파기합니다.
               </span>
@@ -289,7 +289,7 @@ export default function MbtiPage() {
             <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginTop: 8 }}>
               <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)}
                 style={{ marginTop: 3, accentColor: "#a855f7", width: 16, height: 16, flexShrink: 0 }} />
-              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6 }}>
+              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6, wordBreak: "keep-all" as const, minWidth: 0 }}>
                 <strong style={{ color: "#e5e7eb" }}>[선택] 마케팅 수신 동의</strong><br />
                 이벤트·할인·운세 소식을 문자·카카오로 받습니다. 언제든지 수신거부 가능합니다.
               </span>
@@ -308,7 +308,7 @@ export default function MbtiPage() {
           }} style={S.btn}>
             테스트 시작하기 (2분) →
           </button>
-          <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>완전 무료 · 회원가입 불필요</p>
+          <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>990원 · 회원가입 불필요</p>
           <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 8, textAlign: 'center' }}>오늘 <strong style={{ color: '#a855f7' }}>{count}</strong>명이 MBTI를 확인했어요</p>
           <p style={{ textAlign: "center", fontSize: 11, color: "rgba(168,85,247,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
             🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
