@@ -25,6 +25,7 @@ interface MbtiData {
   tfPct: number;
   jpPct: number;
   userName: string;
+  phone?: string;
   compat?: { best: string; worst: string };
   loveDetail?: string;
   careerDetail?: string;
@@ -176,16 +177,20 @@ export default function MbtiResultPage() {
   const [crushResult, setCrushResult] = useState<{ score: number; headline: string; lens: string; signs: [string, string]; verdict: string; tip: string } | null>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const exp = localStorage.getItem("mbti_unlock_until");
-      if (exp && Date.now() < parseInt(exp)) setUnlocked(true);
-      if (new URLSearchParams(window.location.search).get("paid") === "1") setUnlocked(true);
-    }
     fetch(`/api/mbti/analyze?id=${id}`)
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
+  }, [id]);
 
+  useEffect(() => {
+    const checkUnlock = () => {
+      const u = localStorage.getItem("mbti_unlock_until");
+      if (!u || Number(u) <= Date.now()) { setUnlocked(false); return; }
+      const _up = localStorage.getItem("mbti_unlock_phone") || ""; const _rp = (data?.phone || "").replace(/\D/g, "");
+      setUnlocked(!!_up && !!_rp && _up === _rp);
+    };
+    checkUnlock();
     let timerId: ReturnType<typeof setInterval>;
     const updateCountdown = () => {
       const u = localStorage.getItem("mbti_unlock_until");
@@ -201,8 +206,9 @@ export default function MbtiResultPage() {
       setUnlockRemain(h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 ${s}초 남음`);
     };
     timerId = setInterval(updateCountdown, 1000);
+    updateCountdown();
     return () => clearInterval(timerId);
-  }, [id]);
+  }, [data]);
 
   const drawCard = () => {
     if (cardFlipped) {

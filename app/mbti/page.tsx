@@ -105,7 +105,7 @@ export default function MbtiPage() {
       });
       const data = await res.json();
       if (data.id) {
-        window.location.href = `/mbti/result/${data.id}`;
+        window.location.href = `/mbti/pay?id=${data.id}`;
       } else {
         setError("분석 중 오류가 발생했습니다.");
         setLoading(false);
