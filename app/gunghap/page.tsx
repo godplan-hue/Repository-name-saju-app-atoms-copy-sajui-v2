@@ -133,9 +133,9 @@ export default function GunghapPage() {
             </div>
 
             <button onClick={() => setStep("form")} style={S.btn}>
-              지금 무료로 궁합 보기 →
+              지금 궁합 보기 →
             </button>
-            <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>기본 결과 무료 · 상세 분석 990원</p>
+            <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>990원 · 전체 분석</p>
             <p style={{ textAlign: "center", fontSize: 11, color: "rgba(167,139,250,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
               🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
             </p>
@@ -316,7 +316,7 @@ export default function GunghapPage() {
           {loading ? "궁합 분석 중... 🔮" : "궁합 점수 확인하기 💞"}
         </button>
         <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>
-          기본 결과 무료 · 상세 분석 ₩990
+          990원 · 전체 분석
         </p>
 
       {/* 회사정보 */}

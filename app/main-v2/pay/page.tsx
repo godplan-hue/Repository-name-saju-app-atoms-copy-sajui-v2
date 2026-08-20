@@ -168,9 +168,11 @@ function PayInner() {
       } catch {}
       // fullAccess 쿠폰: 전체 앱 30일 열기
       if (couponFullAccess) {
-        const _faKeys = ["haemong_unlock_until","momcare_unlock_until","gamjung_unlock_until","budget_unlock_until","tarot_unlock_until","petun_unlock_until","diet_unlock_until"];
+        const _fa24Keys = ["haemong_unlock_until","tarot_unlock_until","petun_unlock_until"];
+        const _fa30Keys = ["momcare_unlock_until","gamjung_unlock_until","budget_unlock_until","diet_unlock_until"];
         const _faUnlocks: Record<string, number> = {};
-        _faKeys.forEach(k => { try { const _p=Number(localStorage.getItem(k)||0); const _u=(_p>Date.now()?_p:Date.now())+30*24*60*60*1000; localStorage.setItem(k,String(_u)); _faUnlocks[k]=_u; } catch {} });
+        _fa24Keys.forEach(k => { try { const _p=Number(localStorage.getItem(k)||0); const _u=(_p>Date.now()?_p:Date.now())+24*60*60*1000; localStorage.setItem(k,String(_u)); _faUnlocks[k]=_u; } catch {} });
+        _fa30Keys.forEach(k => { try { const _p=Number(localStorage.getItem(k)||0); const _u=(_p>Date.now()?_p:Date.now())+30*24*60*60*1000; localStorage.setItem(k,String(_u)); _faUnlocks[k]=_u; } catch {} });
         try {
           const _ph = (mobile||"").replace(/\D/g,"");
           if (_ph) {

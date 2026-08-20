@@ -157,7 +157,7 @@ export default function GunghapResultPage() {
   const share = () => {
     if (!result) return;
     const url = `https://jeomun.com/gunghap/result/${id}`;
-    const text = `${result.name1}♥${result.name2} 궁합 점수 ${result.score}점 ${result.grade}\n오행 ${result.oh1}×${result.oh2} | 점운에서 무료로 확인하세요!`;
+    const text = `${result.name1}♥${result.name2} 궁합 점수 ${result.score}점 ${result.grade}\n오행 ${result.oh1}×${result.oh2} | 점운에서 확인하세요!`;
     const kakao = (window as any).Kakao;
     if (kakao?.isInitialized() && kakao?.Share) {
       try {
@@ -165,7 +165,7 @@ export default function GunghapResultPage() {
           objectType: "feed",
           content: {
             title: `💞 ${result.name1}♥${result.name2} 궁합 ${result.score}점 ${result.grade}`,
-            description: `오행 ${result.oh1}×${result.oh2} 조합! 점운에서 무료로 확인해봐!`,
+            description: `오행 ${result.oh1}×${result.oh2} 조합! 점운에서 확인해봐!`,
             imageUrl: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
@@ -289,92 +289,96 @@ export default function GunghapResultPage() {
           💞 우리 궁합 {result.score}점 — 친구에게 공유하기
         </button>
 
-        {/* 오행 관계 분석 (무료) */}
-        <div style={{ background: `${ohRel.color}11`, border: `1px solid ${ohRel.color}33`, borderRadius: 20, padding: "18px 16px", marginBottom: 16 }}>
-          <p style={S.secTitle}>🔮 사주 오행 에너지 관계</p>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-            <span style={{ fontSize: 22 }}>{getOhEmoji(result.oh1)}</span>
-            <div style={{ flex: 1, height: 2, background: `linear-gradient(90deg,${getOhColor(result.oh1)},${getOhColor(result.oh2)})`, borderRadius: 99 }} />
-            <span style={{ fontSize: 22 }}>{getOhEmoji(result.oh2)}</span>
-          </div>
-          <p style={{ fontSize: 13, fontWeight: 700, color: ohRel.color, margin: "0 0 8px" }}>{ohRel.type}</p>
-          <p style={{ fontSize: 12, color: "#c4b5fd", margin: "0 0 8px" }}>{ohRel.desc}</p>
-          <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.7, margin: 0 }}>{ohRel.detail}</p>
-        </div>
-
-        {/* 천간(天干) 에너지 (무료) */}
-        <div style={S.card}>
-          <p style={S.secTitle}>📅 태어난 해의 천간 에너지</p>
-          {stemDesc1 && (
-            <div style={{ marginBottom: 10 }}>
-              <span style={{ fontSize: 11, color: "#a78bfa", fontWeight: 700 }}>{result.name1} ({result.birthYear1}년생)</span>
-              <p style={{ fontSize: 13, color: "#d1d5db", margin: "4px 0 0", lineHeight: 1.6 }}>{stemDesc1}</p>
-            </div>
-          )}
-          {stemDesc2 && (
-            <div>
-              <span style={{ fontSize: 11, color: "#f472b6", fontWeight: 700 }}>{result.name2} ({result.birthYear2}년생)</span>
-              <p style={{ fontSize: 13, color: "#d1d5db", margin: "4px 0 0", lineHeight: 1.6 }}>{stemDesc2}</p>
-            </div>
-          )}
-        </div>
-
-        {/* MBTI 오행 공명 (무료) */}
-        <div style={S.card}>
-          <p style={S.secTitle}>🧬 오행 × MBTI 기질 공명</p>
-          <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 12px" }}>사주로 MBTI를 알 수는 없지만, 오행 기질과 닮은 MBTI 유형이 있어요</p>
-          <div style={{ display: "flex", gap: 10 }}>
-            <div style={{ flex: 1, background: `${getOhColor(result.oh1)}11`, border: `1px solid ${getOhColor(result.oh1)}33`, borderRadius: 12, padding: "12px 10px" }}>
-              <p style={{ fontSize: 11, color: getOhColor(result.oh1), fontWeight: 700, margin: "0 0 4px" }}>{result.name1} · {result.oh1}오행</p>
-              <p style={{ fontSize: 12, color: "#d1d5db", margin: 0, lineHeight: 1.5 }}>{result.mbti1}</p>
-            </div>
-            <div style={{ flex: 1, background: `${getOhColor(result.oh2)}11`, border: `1px solid ${getOhColor(result.oh2)}33`, borderRadius: 12, padding: "12px 10px" }}>
-              <p style={{ fontSize: 11, color: getOhColor(result.oh2), fontWeight: 700, margin: "0 0 4px" }}>{result.name2} · {result.oh2}오행</p>
-              <p style={{ fontSize: 12, color: "#d1d5db", margin: 0, lineHeight: 1.5 }}>{result.mbti2}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* 타로 게임 (무료) */}
-        <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.15),rgba(236,72,153,0.1))", border: "1px solid rgba(124,58,237,0.4)", borderRadius: 20, padding: "20px 18px", marginBottom: 16 }}>
-          <p style={S.secTitle}>🃏 인연 타로 카드 뽑기</p>
-          <p style={{ fontSize: 13, color: "#c4b5fd", margin: "0 0 16px", lineHeight: 1.6 }}>
-            지금 두 사람의 인연 에너지를 타로로 확인해보세요
-          </p>
-          {!tarotUsed ? (
-            <button onClick={drawTarot}
-              style={{ width: "100%", background: "linear-gradient(135deg,#4c1d95,#831843)", border: "2px solid rgba(167,139,250,0.5)", borderRadius: 16, padding: "20px", cursor: "pointer", color: "white" }}>
-              <div style={{ fontSize: 36, marginBottom: 8 }}>🃏</div>
-              <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 4px" }}>카드 한 장 뽑기</p>
-              <p style={{ fontSize: 11, color: "#c4b5fd", margin: 0 }}>탭해서 인연 카드 확인하기</p>
-            </button>
-          ) : (
-            <div style={{ textAlign: "center" }}>
-              <div style={{ background: "linear-gradient(135deg,#2d1b69,#4c1d95)", border: "2px solid #a78bfa", borderRadius: 16, padding: "24px 20px", opacity: tarotFlipped ? 1 : 0, transform: tarotFlipped ? "scale(1)" : "scale(0.9)", transition: "all 0.4s ease" }}>
-                <div style={{ fontSize: 36, marginBottom: 10 }}>✨</div>
-                <p style={{ fontSize: 16, fontWeight: 900, color: "#c4b5fd", margin: "0 0 12px" }}>{tarotCard?.name}</p>
-                <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.7, margin: 0 }}>{tarotCard?.meaning}</p>
+        {paid && (
+          <>
+            {/* 오행 관계 분석 */}
+            <div style={{ background: `${ohRel.color}11`, border: `1px solid ${ohRel.color}33`, borderRadius: 20, padding: "18px 16px", marginBottom: 16 }}>
+              <p style={S.secTitle}>🔮 사주 오행 에너지 관계</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                <span style={{ fontSize: 22 }}>{getOhEmoji(result.oh1)}</span>
+                <div style={{ flex: 1, height: 2, background: `linear-gradient(90deg,${getOhColor(result.oh1)},${getOhColor(result.oh2)})`, borderRadius: 99 }} />
+                <span style={{ fontSize: 22 }}>{getOhEmoji(result.oh2)}</span>
               </div>
-              <button onClick={() => { setTarotFlipped(false); setTimeout(() => { setTarotCard(null); setTarotUsed(false); }, 300); }}
-                style={{ marginTop: 12, background: "none", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 12, padding: "8px 20px", color: "#a78bfa", fontSize: 12, cursor: "pointer" }}>
-                ↺ 다시 뽑기
-              </button>
+              <p style={{ fontSize: 13, fontWeight: 700, color: ohRel.color, margin: "0 0 8px" }}>{ohRel.type}</p>
+              <p style={{ fontSize: 12, color: "#c4b5fd", margin: "0 0 8px" }}>{ohRel.desc}</p>
+              <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.7, margin: 0 }}>{ohRel.detail}</p>
             </div>
-          )}
-        </div>
+
+            {/* 천간(天干) 에너지 */}
+            <div style={S.card}>
+              <p style={S.secTitle}>📅 태어난 해의 천간 에너지</p>
+              {stemDesc1 && (
+                <div style={{ marginBottom: 10 }}>
+                  <span style={{ fontSize: 11, color: "#a78bfa", fontWeight: 700 }}>{result.name1} ({result.birthYear1}년생)</span>
+                  <p style={{ fontSize: 13, color: "#d1d5db", margin: "4px 0 0", lineHeight: 1.6 }}>{stemDesc1}</p>
+                </div>
+              )}
+              {stemDesc2 && (
+                <div>
+                  <span style={{ fontSize: 11, color: "#f472b6", fontWeight: 700 }}>{result.name2} ({result.birthYear2}년생)</span>
+                  <p style={{ fontSize: 13, color: "#d1d5db", margin: "4px 0 0", lineHeight: 1.6 }}>{stemDesc2}</p>
+                </div>
+              )}
+            </div>
+
+            {/* MBTI 오행 공명 */}
+            <div style={S.card}>
+              <p style={S.secTitle}>🧬 오행 × MBTI 기질 공명</p>
+              <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 12px" }}>사주로 MBTI를 알 수는 없지만, 오행 기질과 닮은 MBTI 유형이 있어요</p>
+              <div style={{ display: "flex", gap: 10 }}>
+                <div style={{ flex: 1, background: `${getOhColor(result.oh1)}11`, border: `1px solid ${getOhColor(result.oh1)}33`, borderRadius: 12, padding: "12px 10px" }}>
+                  <p style={{ fontSize: 11, color: getOhColor(result.oh1), fontWeight: 700, margin: "0 0 4px" }}>{result.name1} · {result.oh1}오행</p>
+                  <p style={{ fontSize: 12, color: "#d1d5db", margin: 0, lineHeight: 1.5 }}>{result.mbti1}</p>
+                </div>
+                <div style={{ flex: 1, background: `${getOhColor(result.oh2)}11`, border: `1px solid ${getOhColor(result.oh2)}33`, borderRadius: 12, padding: "12px 10px" }}>
+                  <p style={{ fontSize: 11, color: getOhColor(result.oh2), fontWeight: 700, margin: "0 0 4px" }}>{result.name2} · {result.oh2}오행</p>
+                  <p style={{ fontSize: 12, color: "#d1d5db", margin: 0, lineHeight: 1.5 }}>{result.mbti2}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 타로 게임 */}
+            <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.15),rgba(236,72,153,0.1))", border: "1px solid rgba(124,58,237,0.4)", borderRadius: 20, padding: "20px 18px", marginBottom: 16 }}>
+              <p style={S.secTitle}>🃏 인연 타로 카드 뽑기</p>
+              <p style={{ fontSize: 13, color: "#c4b5fd", margin: "0 0 16px", lineHeight: 1.6 }}>
+                지금 두 사람의 인연 에너지를 타로로 확인해보세요
+              </p>
+              {!tarotUsed ? (
+                <button onClick={drawTarot}
+                  style={{ width: "100%", background: "linear-gradient(135deg,#4c1d95,#831843)", border: "2px solid rgba(167,139,250,0.5)", borderRadius: 16, padding: "20px", cursor: "pointer", color: "white" }}>
+                  <div style={{ fontSize: 36, marginBottom: 8 }}>🃏</div>
+                  <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 4px" }}>카드 한 장 뽑기</p>
+                  <p style={{ fontSize: 11, color: "#c4b5fd", margin: 0 }}>탭해서 인연 카드 확인하기</p>
+                </button>
+              ) : (
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ background: "linear-gradient(135deg,#2d1b69,#4c1d95)", border: "2px solid #a78bfa", borderRadius: 16, padding: "24px 20px", opacity: tarotFlipped ? 1 : 0, transform: tarotFlipped ? "scale(1)" : "scale(0.9)", transition: "all 0.4s ease" }}>
+                    <div style={{ fontSize: 36, marginBottom: 10 }}>✨</div>
+                    <p style={{ fontSize: 16, fontWeight: 900, color: "#c4b5fd", margin: "0 0 12px" }}>{tarotCard?.name}</p>
+                    <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.7, margin: 0 }}>{tarotCard?.meaning}</p>
+                  </div>
+                  <button onClick={() => { setTarotFlipped(false); setTimeout(() => { setTarotCard(null); setTarotUsed(false); }, 300); }}
+                    style={{ marginTop: 12, background: "none", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 12, padding: "8px 20px", color: "#a78bfa", fontSize: 12, cursor: "pointer" }}>
+                    ↺ 다시 뽑기
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
+        )}
 
         {/* 잠금 / 상세 분석 */}
         {!paid ? (
           <div style={S.lockCard}>
             <div style={{ fontSize: 32, marginBottom: 14 }}>🔒</div>
-            <p style={{ fontSize: 17, fontWeight: 900, margin: "0 0 8px" }}>상세 분석 전체 보기</p>
+            <p style={{ fontSize: 17, fontWeight: 900, margin: "0 0 8px" }}>궁합 분석 전체 보기</p>
             <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 18px", lineHeight: 1.7 }}>
-              연애 패턴 · 갈등 원인 분석<br />
-              시너지 강점 · 연애 조언 · 결혼 궁합<br />
-              사주 오행 기반 심층 해석까지
+              오행 에너지 관계 · 천간 에너지 · MBTI 공명<br />
+              타로 카드 뽑기 · 연애 패턴 · 갈등 원인<br />
+              시너지 강점 · 연애 조언 · 결혼 궁합까지
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 20 }}>
-              {["💬 성격 & 기질 전체", "💕 연애 패턴 전체", "⚡ 갈등 원인 분석", "✨ 시너지 강점", "🌿 연애 조언", "💍 결혼 궁합"].map(item => (
+              {["🔮 오행 에너지 관계", "📅 천간 에너지", "🧬 MBTI 오행 공명", "🃏 인연 타로 뽑기", "💬 성격 & 기질 전체", "💕 연애 패턴 전체", "⚡ 갈등 원인 분석", "✨ 시너지 강점", "🌿 연애 조언", "💍 결혼 궁합"].map(item => (
                 <div key={item} style={{ background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.2)", borderRadius: 10, padding: "10px 8px", fontSize: 12, color: "#c4b5fd", textAlign: "center" }}>
                   {item}
                 </div>
@@ -437,7 +441,7 @@ export default function GunghapResultPage() {
 
         {/* 나도 해보기 */}
         <Link href="/gunghap" style={{ display: "block", textAlign: "center" as const, background: "rgba(236,72,153,0.08)", border: "1.5px solid rgba(236,72,153,0.35)", borderRadius: 16, padding: "14px", color: "#f472b6", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
-          나도 궁합 해보기 (무료) →
+          나도 궁합 해보기 →
         </Link>
 
         {/* 사주 연결 CTA */}
