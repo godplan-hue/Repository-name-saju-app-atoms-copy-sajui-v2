@@ -16,6 +16,7 @@ type Result = {
   ohFood: OhFood;
   compatScore: number | null;
   compatDesc: CompatDesc | null;
+  phone?: string;
 };
 
 // ── 음식 안전도 DB ─────────────────────────────
@@ -234,7 +235,7 @@ export default function PetunResultPage() {
       if (!u) { setIsUnlocked(false); setUnlockRemain(""); return; }
       const ms = Number(u) - Date.now();
       if (ms <= 0) { localStorage.removeItem("petun_unlock_until"); setIsUnlocked(false); setUnlockRemain(""); return; }
-      const _up = localStorage.getItem("petun_unlock_phone")||""; const _pp=(()=>{try{return(JSON.parse(localStorage.getItem("v2_saved_profile")||"{}").phone||"").replace(/\D/g,"");}catch{return "";}})(); if(_up&&_pp&&_up!==_pp){setIsUnlocked(false);setUnlockRemain("");return;}
+      const _up = localStorage.getItem("petun_unlock_phone")||""; const _rp=(result?.phone||"").replace(/\D/g,""); if(_up&&_rp&&_up!==_rp){setIsUnlocked(false);setUnlockRemain("");return;}
       setIsUnlocked(true);
       const h = Math.floor(ms / 3600000);
       const m = Math.floor((ms % 3600000) / 60000);
@@ -244,7 +245,7 @@ export default function PetunResultPage() {
     update();
     timerId = setInterval(update, 1000);
     return () => clearInterval(timerId);
-  }, []);
+  }, [result]);
 
   const searchFood = () => {
     const q = foodQuery.trim().toLowerCase();

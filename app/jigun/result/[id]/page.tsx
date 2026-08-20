@@ -9,7 +9,7 @@ type Detail = {
   title: string; icon: string; income: string;
   why: string; howToStart: string[]; platforms: string[]; timeline: string; trap: string;
 };
-type Result = { name: string; birthYear?: number; recommended: string[]; details: Detail[]; createdAt: number };
+type Result = { name: string; phone?: string; birthYear?: number; recommended: string[]; details: Detail[]; createdAt: number };
 
 const GAN_OH = ["목", "목", "화", "화", "토", "토", "금", "금", "수", "수"];
 
@@ -60,7 +60,7 @@ export default function JigunResultPage() {
       if (!u) { setIsUnlocked(false); setUnlockRemain(""); return; }
       const ms = Number(u) - Date.now();
       if (ms <= 0) { localStorage.removeItem("jigun_unlock_until"); setIsUnlocked(false); setUnlockRemain(""); return; }
-      const _up = localStorage.getItem("jigun_unlock_phone")||""; const _pp=(()=>{try{return(JSON.parse(localStorage.getItem("v2_saved_profile")||"{}").phone||"").replace(/\D/g,"");}catch{return "";}})(); if(_up&&_pp&&_up!==_pp){setIsUnlocked(false);setUnlockRemain("");return;}
+      const _up = localStorage.getItem("jigun_unlock_phone")||""; const _rp=(result?.phone||"").replace(/\D/g,""); if(_up&&_rp&&_up!==_rp){setIsUnlocked(false);setUnlockRemain("");return;}
       setIsUnlocked(true);
       const h = Math.floor(ms / 3600000);
       const m = Math.floor((ms % 3600000) / 60000);
@@ -70,7 +70,7 @@ export default function JigunResultPage() {
     update();
     timerId = setInterval(update, 1000);
     return () => clearInterval(timerId);
-  }, []);
+  }, [result]);
 
   function share() {
     const url = window.location.href.split("?")[0];

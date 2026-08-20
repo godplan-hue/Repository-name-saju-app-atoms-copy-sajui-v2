@@ -13,6 +13,7 @@ type Result = {
   mbti1: string; mbti2: string;
   summary: string; personality: string; love: string;
   conflict: string; strength: string; advice: string; marriage: string;
+  phone?: string;
 };
 
 const TAROT = [
@@ -113,15 +114,18 @@ export default function GunghapResultPage() {
 
   useEffect(() => {
     setTodayCount(getTodayCount(1847));
-    const unlock = localStorage.getItem("gunghap_unlock_until");
-    if (unlock && Number(unlock) > Date.now()) {
-      const _up = localStorage.getItem("gunghap_unlock_phone")||""; const _pp=(()=>{try{return(JSON.parse(localStorage.getItem("v2_saved_profile")||"{}").phone||"").replace(/\D/g,"");}catch{return "";}})();
-      if (!_up || !_pp || _up === _pp) setPaid(true); else setPaid(false);
-    }
+    const checkPaid = (resultPhone?: string) => {
+      const unlock = localStorage.getItem("gunghap_unlock_until");
+      if (unlock && Number(unlock) > Date.now()) {
+        const _up = localStorage.getItem("gunghap_unlock_phone")||""; const _rp=(resultPhone||"").replace(/\D/g,"");
+        setPaid(!_up || !_rp || _up === _rp);
+      } else { setPaid(false); }
+    };
+    checkPaid();
     if (!id) return;
     fetch(`/api/gunghap/analyze?id=${id}`)
       .then(r => r.json())
-      .then(data => { if (data.result) setResult(data.result); setLoading(false); })
+      .then(data => { if (data.result) { setResult(data.result); checkPaid(data.result.phone); } setLoading(false); })
       .catch(() => setLoading(false));
 
     let timerId: ReturnType<typeof setInterval>;

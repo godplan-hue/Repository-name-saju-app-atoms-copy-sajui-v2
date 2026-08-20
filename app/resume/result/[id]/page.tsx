@@ -9,7 +9,7 @@ type Result = {
   name: string; field: string; companySize: string; company: string;
   oh: string; score: number; trait: string; ohKeyword: string; ohAdvice: string;
   fieldKeywords: string[]; fieldStrategy: string; interview: string[];
-  sizeStrategy: string; createdAt: number; paid?: boolean;
+  sizeStrategy: string; createdAt: number; paid?: boolean; phone?: string;
 };
 
 const ohEmoji: Record<string,string> = { 목:"🌿", 화:"🔥", 토:"🌍", 금:"💎", 수:"💧" };
@@ -33,11 +33,11 @@ export default function ResumeResultPage() {
     if (!id) return;
 
     // localStorage 24시간 잠금 확인 및 카운트다운
-    const checkUnlock = () => {
+    const checkUnlock = (resultPhone?: string) => {
       const u = localStorage.getItem("resume_unlock_until");
       if (u && Number(u) > Date.now()) {
-        const _up = localStorage.getItem("resume_unlock_phone")||""; const _pp=(()=>{try{return(JSON.parse(localStorage.getItem("v2_saved_profile")||"{}").phone||"").replace(/\D/g,"");}catch{return "";}})();
-        setIsUnlocked(!_up || !_pp || _up === _pp);
+        const _up = localStorage.getItem("resume_unlock_phone")||""; const _rp=(resultPhone||"").replace(/\D/g,"");
+        setIsUnlocked(!_up || !_rp || _up === _rp);
       } else { setIsUnlocked(false); }
     };
     checkUnlock();
@@ -64,6 +64,7 @@ export default function ResumeResultPage() {
       .then(d => {
         if (d.result) {
           setResult(d.result);
+          checkUnlock(d.result.phone);
         } else {
           setError("결과를 찾을 수 없어요.");
         }

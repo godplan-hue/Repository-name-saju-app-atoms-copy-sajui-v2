@@ -338,8 +338,8 @@ export default function TarotResultPage() {
     const checkUnlock = () => {
       const u = localStorage.getItem("tarot_unlock_until");
       if (!u || Number(u) <= Date.now()) { setIsUnlocked(false); return; }
-      const _up = localStorage.getItem("tarot_unlock_phone")||""; const _pp=(()=>{try{return(JSON.parse(localStorage.getItem("v2_saved_profile")||"{}").phone||"").replace(/\D/g,"");}catch{return "";}})();
-      setIsUnlocked(!_up || !_pp || _up === _pp);
+      const _up = localStorage.getItem("tarot_unlock_phone")||""; const _rp=(result?.phone||"").replace(/\D/g,"");
+      setIsUnlocked(!_up || !_rp || _up === _rp);
     };
     checkUnlock();
     let timerId: ReturnType<typeof setInterval>;
@@ -356,7 +356,7 @@ export default function TarotResultPage() {
     timerId = setInterval(updateCountdown, 1000);
     updateCountdown();
     return () => clearInterval(timerId);
-  }, []);
+  }, [result]);
 
   useEffect(() => {
     fetch(`/api/tarot/analyze?id=${id}`)
