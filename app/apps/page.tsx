@@ -68,6 +68,25 @@ const GRID_APPS = [
 export default function AppsPage() {
   const [unlocks, setUnlocks] = useState<Record<string, number>>({});
 
+  // 특정 앱의 로컬 잠금해제 값을 초기화 (예: /apps?reset=tarot,petun)
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const reset = params.get("reset");
+      if (reset) {
+        reset.split(",").forEach((raw) => {
+          const k = raw.trim();
+          if (!k) return;
+          localStorage.removeItem(`${k}_unlock_until`);
+          localStorage.removeItem(`${k}_unlock_phone`);
+        });
+        const url = new URL(window.location.href);
+        url.searchParams.delete("reset");
+        window.history.replaceState({}, "", url.toString());
+      }
+    } catch {}
+  }, []);
+
   useEffect(() => {
     const daysMap: Record<string, number> = {};
     Object.entries(UNLOCK_KEYS).forEach(([href, key]) => {
