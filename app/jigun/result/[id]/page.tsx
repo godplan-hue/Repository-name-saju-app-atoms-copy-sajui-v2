@@ -140,6 +140,20 @@ export default function JigunResultPage() {
           <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", margin: 0 }}>지금 바로 시작할 수 있는 맞춤 부업이에요</p>
         </div>
 
+        {/* TOP3 미리보기 (무료) */}
+        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 20, padding: "18px 20px", marginBottom: 20 }}>
+          <p style={{ fontSize: 12, fontWeight: 700, color: "#a78bfa", margin: "0 0 12px" }}>🏆 추천 부업 TOP 3 미리보기</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {result.details.map((d, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.04)", borderRadius: 12, padding: "10px 12px" }}>
+                <span style={{ fontSize: 20 }}>{d.icon}</span>
+                <span style={{ fontSize: 11, color: "#a78bfa", fontWeight: 700, flexShrink: 0 }}>{RANK_BADGE[i].replace(" 추천", "")}</span>
+                <span style={{ fontSize: 14, fontWeight: 800 }}>{d.title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* 오행 천직 배너 */}
         {ohInfo && (
           <div style={{ background: ohInfo.bg, border: `1px solid ${ohInfo.color}40`, borderRadius: 20, padding: "22px 20px", marginBottom: 20 }}>
@@ -170,7 +184,7 @@ export default function JigunResultPage() {
 
         {/* 부업 TOP 3 */}
         {result.details.map((d, i) => {
-          const isLocked = !isUnlocked && i > 0;
+          const isLocked = !isUnlocked;
           return (
             <div key={i} style={{ position: "relative", marginBottom: 14 }}>
               <div style={{
