@@ -102,7 +102,7 @@ export default function ResumePage() {
                 <input value={bd} onChange={e=>setBd(e.target.value)} placeholder="일" maxLength={2} style={S.input} inputMode="numeric" />
               </div>
               <button onClick={calc} disabled={saving} style={{width:"100%", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", border:"none", borderRadius:12, padding:"13px", fontSize:14, fontWeight:700, cursor:"pointer", opacity: saving ? 0.7 : 1}}>
-                {saving ? "저장 중..." : "2026년 취업운 점수 보기"}
+                {saving ? "저장 중..." : `${new Date().getFullYear()}년 취업운 점수 보기`}
               </button>
             </div>
           ) : (
@@ -121,11 +121,11 @@ export default function ResumePage() {
                   <span style={{fontSize:11, color:"#9ca3af"}}>/ 100점</span>
                 </div>
               </div>
-              <p style={{fontSize:13, fontWeight:700, color:"white", margin:"0 0 4px"}}>2026년 취업운 <span style={{color:"#a78bfa"}}>{res.score}점</span></p>
+              <p style={{fontSize:13, fontWeight:700, color:"white", margin:"0 0 4px"}}>{new Date().getFullYear()}년 취업운 <span style={{color:"#a78bfa"}}>{res.score}점</span></p>
               <p style={{fontSize:12, color:"#d1d5db", margin:"0 0 14px", lineHeight:1.6}}>{res.t}</p>
               <div style={{background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"10px 12px", marginBottom:12, textAlign:"left"}}>
                 <p style={{fontSize:11, color:"#fbbf24", fontWeight:700, margin:"0 0 4px"}}>⚡ 이 점수는 사주 티저입니다</p>
-                <p style={{fontSize:11, color:"#9ca3af", lineHeight:1.6, margin:0}}>자소서 분석 점수와 달리, 이건 2026년 운의 흐름을 보여주는 거예요.<br />사주 원국(오행, 일주, 대운)까지 보면 정확한 타이밍과 직종을 알 수 있어요.</p>
+                <p style={{fontSize:11, color:"#9ca3af", lineHeight:1.6, margin:0}}>자소서 분석 점수와 달리, 이건 {new Date().getFullYear()}년 운의 흐름을 보여주는 거예요.<br />사주 원국(오행, 일주, 대운)까지 보면 정확한 타이밍과 직종을 알 수 있어요.</p>
               </div>
               <div style={{display:"flex", gap:8, justifyContent:"center"}}>
                 <Link href="/main-v2" style={{display:"inline-block", background:"linear-gradient(135deg,#7c3aed,#ec4899)", color:"white", fontSize:12, fontWeight:700, padding:"9px 16px", borderRadius:20, textDecoration:"none"}}>정확한 취업운 사주 보기 →</Link>
@@ -259,7 +259,7 @@ export default function ResumePage() {
       {/* 푸터 */}
       <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
         <div style={{ maxWidth: 360, margin: "0 auto", padding: "18px 16px", borderRadius: 20, background: "#ede9fe", border: "2px solid #a78bfa" }}>
-          <p style={{ color: "#6d28d9", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© 2026 점운 합격 · AI 동양 운세 분석</p>
+          <p style={{ color: "#6d28d9", fontSize: 11, fontWeight: 700, margin: "0 0 8px" }}>© {new Date().getFullYear()} 점운 합격 · AI 동양 운세 분석</p>
           <div style={{ color: "#5b21b6", fontSize: 10.5, fontWeight: 700, lineHeight: 1.8, marginBottom: 12, letterSpacing: "0.1px" }}>
             <p style={{ margin: 0 }}>대표 장문정 · 상호 기획의신</p>
             <p style={{ margin: 0 }}>사업자등록번호 773-60-00359</p>
