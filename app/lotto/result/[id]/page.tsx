@@ -105,7 +105,7 @@ export default function LottoResultPage() {
           content: {
             title: `🎱 내 오행 행운번호 — ${data.main.join(", ")} + 보너스 ${data.bonus}`,
             description: `사주 오행(${data.oh})이 이끄는 나만의 숫자! 점운에서 무료로 뽑아봐!`,
-            imageUrl: "https://i.pinimg.com/1200x/ab/4e/bb/ab4ebb7c3bce50af2dc6e9f9bce02ff2.jpg",
+            imageUrl: "https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
           buttons: [

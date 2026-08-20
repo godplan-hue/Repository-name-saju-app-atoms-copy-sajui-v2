@@ -265,7 +265,7 @@ export default function PetunResultPage() {
           content: {
             title: `🐾 ${result.petName}(${result.petOh}오행) ${result.petPersonality.title}`,
             description: `${result.petSpecies} 사주 분석! 점운 펫운에서 무료로 확인해봐!`,
-            imageUrl: "https://i.pinimg.com/1200x/92/81/1b/92811ba3f49b58f4fc5e22b5a765a17b.jpg",
+            imageUrl: "https://i.pinimg.com/1200x/0f/8e/e2/0f8ee29760fa339bfdf211369cf2d100.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
           buttons: [

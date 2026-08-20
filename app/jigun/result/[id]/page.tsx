@@ -82,7 +82,7 @@ export default function JigunResultPage() {
           content: {
             title: "💼 직운 — 내 부업 추천 결과",
             description: "사주 오행으로 찾은 나만의 부업 TOP3! 점운에서 무료로 확인해봐!",
-            imageUrl: "https://i.pinimg.com/1200x/d2/bb/fc/d2bbfc234fc1e0e5eedf218d4cf9bfe4.jpg",
+            imageUrl: "https://i.pinimg.com/736x/bc/7c/f6/bc7cf6c186ee2e763c4bd7230098eba3.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
           buttons: [

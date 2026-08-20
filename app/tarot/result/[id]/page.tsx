@@ -385,7 +385,7 @@ export default function TarotResultPage() {
           content: {
             title: "🃏 타로 카드가 나에게 보내는 메시지",
             description: "점운 타로에서 오늘 나에게 오는 메시지를 확인해봐!",
-            imageUrl: "https://i.pinimg.com/1200x/4d/aa/bb/4daabb706b7a50f71fcfdc1e7ae03c7a.jpg",
+            imageUrl: "https://i.pinimg.com/1200x/0c/27/99/0c27999149b93230b696dce0918a4e8e.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
           buttons: [

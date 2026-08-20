@@ -85,7 +85,7 @@ export default function ResumeResultPage() {
           content: {
             title: "📄 나의 합격 전략 분석 결과",
             description: "사주 오행으로 찾은 나만의 합격 전략! 점운 합격에서 확인해봐!",
-            imageUrl: "https://i.pinimg.com/1200x/45/8c/cc/458ccc47124fae1f3b7d0d0c2ba16e8b.jpg",
+            imageUrl: "https://i.pinimg.com/736x/7c/b2/22/7cb22262844ff11bc8c1800a309f0b99.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
           buttons: [
