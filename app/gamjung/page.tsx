@@ -1,5 +1,5 @@
 ﻿"use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -123,10 +123,13 @@ export default function GamjungPage() {
     );
   };
 
+  const submittingRef = useRef(false);
   const analyze = async () => {
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
     if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/gamjung/analyze", {
@@ -157,6 +160,7 @@ export default function GamjungPage() {
       setError("네트워크 오류가 발생했습니다.");
     } finally {
       setLoading(false);
+      submittingRef.current = false;
     }
   };
 
@@ -422,8 +426,8 @@ export default function GamjungPage() {
             } else {
               setStep("form");
             }
-          }} style={S.btn}>
-            {selectedActivities.length > 0 ? `${selectedActivities.length}개 선택 완료 →` : "다음으로 →"}
+          }} disabled={loading} style={{ ...S.btn, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
+            {loading ? "저장 중... 🌿" : (selectedActivities.length > 0 ? `${selectedActivities.length}개 선택 완료 →` : "다음으로 →")}
           </button>
         </div>
       </div>
