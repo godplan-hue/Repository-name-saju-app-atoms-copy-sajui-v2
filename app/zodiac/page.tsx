@@ -89,7 +89,13 @@ export default function ZodiacPage() {
       });
       const data = await res.json();
       if (data.id) {
-        router.push(`/zodiac/pay?id=${data.id}`);
+        let alreadyUnlocked = false;
+        try {
+          const u = localStorage.getItem("zodiac_unlock_until");
+          const up = localStorage.getItem("zodiac_unlock_phone") || "";
+          alreadyUnlocked = !!u && Number(u) > Date.now() && !!up && !!cleanPhone && up === cleanPhone;
+        } catch {}
+        router.push(alreadyUnlocked ? `/zodiac/result/${data.id}` : `/zodiac/pay?id=${data.id}`);
       } else {
         setError("오류가 발생했습니다. 다시 시도해주세요.");
       }

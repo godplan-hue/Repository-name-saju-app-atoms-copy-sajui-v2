@@ -76,7 +76,13 @@ export default function GunghapPage() {
       });
       const data = await res.json();
       if (data.id) {
-        window.location.href = `/gunghap/pay?id=${data.id}`;
+        let alreadyUnlocked = false;
+        try {
+          const u = localStorage.getItem("gunghap_unlock_until");
+          const up = localStorage.getItem("gunghap_unlock_phone") || "";
+          alreadyUnlocked = !!u && Number(u) > Date.now() && !!up && !!cleanPhone && up === cleanPhone;
+        } catch {}
+        window.location.href = alreadyUnlocked ? `/gunghap/result/${data.id}` : `/gunghap/pay?id=${data.id}`;
       } else {
         setError("분석 중 오류가 발생했습니다. 다시 시도해주세요.");
       }
