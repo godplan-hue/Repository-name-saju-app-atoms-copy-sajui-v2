@@ -12,6 +12,7 @@ export default function CouponFunnel() {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [dismissed, setDismissed] = useState(false);
+  const [alreadyClaimed, setAlreadyClaimed] = useState(false);
 
   useEffect(() => {
     if (dismissed) return;
@@ -34,6 +35,7 @@ export default function CouponFunnel() {
       const data = await res.json();
       if (data.code) {
         setCode(data.code);
+        setAlreadyClaimed(!!data.alreadyClaimed);
         localStorage.setItem("coupon_funnel_shown", "1");
       } else {
         setError("쿠폰 발급에 실패했어요. 다시 시도해주세요.");
@@ -141,8 +143,17 @@ export default function CouponFunnel() {
               </>
             ) : (
               <>
-                <p style={{ fontSize: 20, fontWeight: 900, color: "#16a34a", margin: "0 0 6px", textAlign: "center" }}>✅ 쿠폰 발급 완료!</p>
-                <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 16px", textAlign: "center" }}>결제 페이지에서 아래 코드를 입력하세요</p>
+                {alreadyClaimed ? (
+                  <>
+                    <p style={{ fontSize: 20, fontWeight: 900, color: "#d97706", margin: "0 0 6px", textAlign: "center" }}>⚠️ 이미 받으신 번호예요</p>
+                    <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 16px", textAlign: "center" }}>이전에 발급해드렸던 코드를 다시 보여드려요</p>
+                  </>
+                ) : (
+                  <>
+                    <p style={{ fontSize: 20, fontWeight: 900, color: "#16a34a", margin: "0 0 6px", textAlign: "center" }}>✅ 쿠폰 발급 완료!</p>
+                    <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 16px", textAlign: "center" }}>결제 페이지에서 아래 코드를 입력하세요</p>
+                  </>
+                )}
 
                 <div style={{
                   background: "linear-gradient(135deg, #fdf2f8, #f5f3ff)",

@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     // 같은 번호 중복 방지 — 전화번호를 키로 직접 읽기
     const existingSnap = await db.ref(`coupon_leads/${cleanPhone}`).once("value");
     if (existingSnap.exists()) {
-      return NextResponse.json({ code: existingSnap.val().code });
+      return NextResponse.json({ code: existingSnap.val().code, alreadyClaimed: true });
     }
 
     // 새 코드 생성 (충돌 방지: 최대 5회 시도)
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       usageCount: 0,
     });
 
-    return NextResponse.json({ code });
+    return NextResponse.json({ code, alreadyClaimed: false });
   } catch (error) {
     console.error("Coupon lead error:", error);
     return NextResponse.json({ error: "쿠폰 발급 실패" }, { status: 500 });

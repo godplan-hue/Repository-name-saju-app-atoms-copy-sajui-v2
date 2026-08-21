@@ -377,6 +377,7 @@ function V2ResultInner() {
   const [showNoData, setShowNoData] = useState(false);
   const [couponSubmitting, setCouponSubmitting] = useState(false);
   const [couponCode, setCouponCode] = useState("");
+  const [couponAlreadyClaimed, setCouponAlreadyClaimed] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [shareId, setShareId] = useState<string>("");
   const [tipModal, setTipModal] = useState<{ text: string; onConfirm?: () => void; confirmLabel?: string } | null>(null);
@@ -1791,8 +1792,17 @@ function V2ResultInner() {
           <div style={{ marginBottom: 16, borderRadius: 18, background: "linear-gradient(135deg, #fff7ed, #fef3c7)", border: "1.5px solid rgba(245,158,11,0.35)", padding: "20px 18px" }}>
             {couponCode ? (
               <>
-                <p style={{ fontSize: 14, fontWeight: 900, color: "#92400e", margin: "0 0 6px" }}>🎉 쿠폰이 발급됐어요!</p>
-                <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 12px", lineHeight: 1.6 }}>결제 화면에서 아래 코드를 입력하면 <b>30% 할인</b>이 적용돼요.</p>
+                {couponAlreadyClaimed ? (
+                  <>
+                    <p style={{ fontSize: 14, fontWeight: 900, color: "#92400e", margin: "0 0 6px" }}>⚠️ 이미 신청하신 번호예요</p>
+                    <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 12px", lineHeight: 1.6 }}>이전에 발급해드렸던 코드를 다시 보여드려요. 결제 화면에서 아래 코드를 입력하면 <b>30% 할인</b>이 적용돼요.</p>
+                  </>
+                ) : (
+                  <>
+                    <p style={{ fontSize: 14, fontWeight: 900, color: "#92400e", margin: "0 0 6px" }}>🎉 쿠폰이 발급됐어요!</p>
+                    <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 12px", lineHeight: 1.6 }}>결제 화면에서 아래 코드를 입력하면 <b>30% 할인</b>이 적용돼요.</p>
+                  </>
+                )}
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <div style={{ flex: 1, background: "white", border: "2px dashed rgba(245,158,11,0.5)", borderRadius: 10, padding: "10px 14px", fontFamily: "monospace", fontSize: 18, fontWeight: 900, color: "#b45309", letterSpacing: 2, textAlign: "center" }}>
                     {couponCode}
@@ -1826,7 +1836,10 @@ function V2ResultInner() {
                           body: JSON.stringify({ phone: couponPhone, name: profile?.name ?? "" }),
                         });
                         const data = await res.json();
-                        if (data.code) setCouponCode(data.code);
+                        if (data.code) {
+                          setCouponCode(data.code);
+                          setCouponAlreadyClaimed(!!data.alreadyClaimed);
+                        }
                         else alert("쿠폰 발급에 실패했어요. 다시 시도해주세요.");
                       } catch { alert("네트워크 오류가 발생했어요."); }
                       finally { setCouponSubmitting(false); }
