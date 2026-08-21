@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐ 토스 다이어트 하단배너 탭바에 가려지던 버그 수정 (2026-08-21)](bug_diet_bottom_banner_hidden_by_tabbar_2026_08_21.md) — 오늘 탭만 여유공간있고 검색/프리미엄/기록 3탭은 배너가 고정탭바에 완전가려짐, marginBottom 100추가. commit 303a86d
 - [⭐⭐ 무료앱4종(movie/style/battle/work) 동의문구 3년보유 누락 수정 (2026-08-21)](bug_free4app_consent_3year_missing_2026_08_21.md) — 8월챌린지 신규앱만 "3년간 보유 후 파기" 문구 빠짐, commit 2d92bc6
 - [⭐⭐ 일기4앱 저장버튼 연타방지 가드 웹+토스 6곳 추가 (2026-08-21)](bug_diary4app_doubleclick_guard_2026_08_21.md) — 감정일기만 있던 가드를 가계부/다이어트/육아일기에 useRef방식으로 추가, 웹29958e6+토스3커밋
 - [⭐⭐⭐ 육아일기 7서브페이지 unlock버그 (재기록, 원본은 08-21 세션 후반부에 있었음)](bug_momcare_7subpages_unlock_check_2026_08_21.md) — 유효기간남아도 잠금풀리던 버그, commit b7627ff, 프로젝트 memory/에 누락돼있어 이번에 추가
