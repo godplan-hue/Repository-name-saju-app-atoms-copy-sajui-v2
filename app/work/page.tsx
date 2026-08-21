@@ -255,7 +255,7 @@ export default function WorkPage() {
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
               <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} style={{ marginTop: 2, flexShrink: 0 }} />
-              <span style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6 }}>[필수] 개인정보 수집·이용 동의 — 서비스 제공 목적으로 전화번호를 수집합니다</span>
+              <span style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.6 }}>[필수] 개인정보 수집·이용 동의 — 서비스 제공 목적으로 전화번호·이메일을 수집하며, 3년간 보유 후 파기합니다</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 16 }}>
               <input type="checkbox" checked={marketing} onChange={e => setMarketing(e.target.checked)} style={{ marginTop: 2, flexShrink: 0 }} />
