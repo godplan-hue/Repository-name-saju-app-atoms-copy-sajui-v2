@@ -105,7 +105,14 @@ export default function MbtiPage() {
       });
       const data = await res.json();
       if (data.id) {
-        window.location.href = `/mbti/pay?id=${data.id}`;
+        let alreadyUnlocked = false;
+        try {
+          const u = localStorage.getItem("mbti_unlock_until");
+          const up = localStorage.getItem("mbti_unlock_phone") || "";
+          const rp = phone.replace(/\D/g, "");
+          alreadyUnlocked = !!u && Number(u) > Date.now() && !!up && !!rp && up === rp;
+        } catch {}
+        window.location.href = alreadyUnlocked ? `/mbti/result/${data.id}` : `/mbti/pay?id=${data.id}`;
       } else {
         setError("분석 중 오류가 발생했습니다.");
         setLoading(false);

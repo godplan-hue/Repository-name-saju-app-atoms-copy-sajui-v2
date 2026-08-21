@@ -31,7 +31,12 @@ function PayInner() {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
       if (p.phone) setMobile(p.phone.replace(/\D/g,"").slice(0,11));
     } catch {}
-  }, []);
+    if (id) {
+      fetch(`/api/mbti/analyze?id=${id}`).then(r => r.json()).then(d => {
+        if (d?.phone) setMobile(String(d.phone).replace(/\D/g,"").slice(0,11));
+      }).catch(() => {});
+    }
+  }, [id]);
 
   const applyCoupon = async () => {
     if (!coupon.trim()) return;
