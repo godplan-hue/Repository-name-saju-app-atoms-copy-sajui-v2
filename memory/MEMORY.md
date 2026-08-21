@@ -1,5 +1,8 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐ 무료앱4종(movie/style/battle/work) 동의문구 3년보유 누락 수정 (2026-08-21)](bug_free4app_consent_3year_missing_2026_08_21.md) — 8월챌린지 신규앱만 "3년간 보유 후 파기" 문구 빠짐, commit 2d92bc6
+- [⭐⭐ 일기4앱 저장버튼 연타방지 가드 웹+토스 6곳 추가 (2026-08-21)](bug_diary4app_doubleclick_guard_2026_08_21.md) — 감정일기만 있던 가드를 가계부/다이어트/육아일기에 useRef방식으로 추가, 웹29958e6+토스3커밋
+- [⭐⭐⭐ 육아일기 7서브페이지 unlock버그 (재기록, 원본은 08-21 세션 후반부에 있었음)](bug_momcare_7subpages_unlock_check_2026_08_21.md) — 유효기간남아도 잠금풀리던 버그, commit b7627ff, 프로젝트 memory/에 누락돼있어 이번에 추가
 - [⭐⭐⭐ 배지수정이 일기4앱까지 번졌던 사건+원복 (2026-08-21)](bug_badge_scope_creep_diary_apps_2026_08_21.md) — 꿈해몽·타로만 고치려던 배지수정이 전체앱 고정배지로 번져 일기4앱 D-N배지 사라짐, 에스더님 크게 걱정. 7a583f7로 원복+저장로직 무관 확인
 - [⭐⭐⭐ 감정일기 중복저장 버그 수정 (2026-08-21)](bug_gamjung_double_save_2026_08_21.md) — 활동단계 다음버튼 연타시 analyze() 두번 실행돼 기록 2개 저장, ref가드+disabled추가로 수정. commit 1f9ebcc
 - [⭐⭐⭐ 궁합·별자리 결제후 결제페이지부터 뜨던 버그 수정 (2026-08-21)](bug_gunghap_zodiac_skip_to_result_2026_08_21.md) — MBTI엔 있던 24h재결제스킵 체크가 궁합·별자리엔 없어서 매번 결제창부터 뜸, commit 6ec425b로 수정. 펫운·타로는 원래 해당없음
