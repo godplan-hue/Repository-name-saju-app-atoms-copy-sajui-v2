@@ -5,7 +5,6 @@ const UNLOCK_KEYS: Record<string, string> = {
   "/haemong":  "haemong_unlock_until",
   "/momcare":  "momcare_unlock_until",
   "/tarot":    "tarot_unlock_until",
-  "/petun":    "petun_unlock_until",
   "/gamjung":  "gamjung_unlock_until",
   "/diet":     "diet_unlock_until",
   "/budget":   "budget_unlock_until",
