@@ -49,6 +49,7 @@ export default function TimeCapsulePage() {
     const exp = localStorage.getItem("momcare_unlock_until");
     if (!exp) { setMomcareUnlocked(false); }
     else if (Number(exp) <= Date.now()) { setMomcareUnlocked(false); setMomcareExpired(true); }
+    else { setMomcareUnlocked(true); }
   }, []);
 
   const [mcUserId, setMcUserId] = useState("");

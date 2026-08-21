@@ -33,6 +33,7 @@ export default function MemoryJournalPage() {
   useEffect(() => {
     const exp = localStorage.getItem("momcare_unlock_until");
     if (!exp || Number(exp) <= Date.now()) setUnlocked(false);
+    else setUnlocked(true);
   }, []);
 
   const [mcUserId, setMcUserId] = useState("");

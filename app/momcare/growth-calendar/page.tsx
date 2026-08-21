@@ -51,6 +51,7 @@ export default function GrowthCalendarPage() {
   useEffect(() => {
     const exp = localStorage.getItem("momcare_unlock_until");
     if (!exp || Number(exp) <= Date.now()) setUnlocked(false);
+    else setUnlocked(true);
   }, []);
 
   useEffect(() => {

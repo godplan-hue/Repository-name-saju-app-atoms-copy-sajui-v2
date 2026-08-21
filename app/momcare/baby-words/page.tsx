@@ -29,6 +29,7 @@ export default function BabyWordsPage() {
     const exp = localStorage.getItem("momcare_unlock_until");
     if (!exp) { setUnlocked(false); }
     else if (Number(exp) <= Date.now()) { setUnlocked(false); setExpired(true); }
+    else { setUnlocked(true); }
   }, []);
 
   useEffect(() => {
