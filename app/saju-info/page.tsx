@@ -108,21 +108,16 @@ export default function SajuInfo() {
     return (
       <main style={{
         minHeight: "100vh",
-        backgroundImage: "url('https://i.pinimg.com/736x/5f/80/4b/5f804b1e2f8687f0ab4733a07c844766.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-        color: "white",
+        background: "#fdf2f8",
+        color: "#4a2a3a",
         fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
         padding: "12px 12px 30px 12px",
         position: "relative"
       }}>
-        <div style={{ position: "fixed", inset: 0, background: "linear-gradient(135deg, rgba(61,38,112,0.78) 0%, rgba(74,50,128,0.78) 50%, rgba(61,38,112,0.78) 100%)", zIndex: 1, pointerEvents: "none" }} />
-
         <div style={{ position: "relative", zIndex: 10 }}>
           {/* 헤더 */}
           <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#e9d5ff", margin: 0 }}>사주를 이해하는 핵심 개념 정리</h1>
+            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#9d174d", margin: 0 }}>사주를 이해하는 핵심 개념 정리</h1>
           </div>
 
           {/* 탭 */}
@@ -149,7 +144,7 @@ export default function SajuInfo() {
               style={{
                 padding: "9px 11px",
                 background: activeTab === 'jeong' ? "#a5f3fc" : "rgba(165, 243, 252, 0.2)",
-                color: activeTab === 'jeong' ? "#0c4a6e" : "white",
+                color: activeTab === 'jeong' ? "#0c4a6e" : "#164e63",
                 border: "2px solid rgba(165, 243, 252, 0.4)",
                 borderRadius: 5,
                 fontWeight: 900,
@@ -215,7 +210,7 @@ export default function SajuInfo() {
                     <p style={{ color: item.color, fontWeight: 900, fontSize: 11, margin: "0 0 5px 0" }}>
                       {item.name}
                     </p>
-                    <p style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: 10, lineHeight: 1.5, margin: 0 }}>
+                    <p style={{ color: "rgba(0, 0, 0, 0.72)", fontSize: 10, lineHeight: 1.5, margin: 0 }}>
                       {item.desc}
                     </p>
                   </div>
@@ -240,10 +235,10 @@ export default function SajuInfo() {
                     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                       {section.items.map((item: any, itemIdx: number) => (
                         <div key={itemIdx} style={{ borderLeft: `2px solid ${section.color}`, paddingLeft: 8 }}>
-                          <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 11, margin: "0 0 3px 0" }}>
+                          <p style={{ color: "#be185d", fontWeight: 900, fontSize: 11, margin: "0 0 3px 0" }}>
                             {item.name}
                           </p>
-                          <p style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: 10, lineHeight: 1.5, margin: 0 }}>
+                          <p style={{ color: "rgba(0, 0, 0, 0.72)", fontSize: 10, lineHeight: 1.5, margin: 0 }}>
                             {item.desc}
                           </p>
                         </div>
@@ -284,21 +279,16 @@ export default function SajuInfo() {
   return (
     <main style={{
       minHeight: "100vh",
-      backgroundImage: "url('https://i.pinimg.com/736x/5f/80/4b/5f804b1e2f8687f0ab4733a07c844766.jpg')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundAttachment: "fixed",
-      color: "white",
+      background: "#fdf2f8",
+      color: "#4a2a3a",
       fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
       padding: "18px 20px 45px 20px",
       position: "relative"
     }}>
-      <div style={{ position: "fixed", inset: 0, background: "linear-gradient(135deg, rgba(61,38,112,0.78) 0%, rgba(74,50,128,0.78) 50%, rgba(61,38,112,0.78) 100%)", zIndex: 1, pointerEvents: "none" }} />
-
       <div style={{ position: "relative", zIndex: 10, maxWidth: 820, margin: "0 auto" }}>
         {/* 헤더 */}
         <div style={{ textAlign: "center", marginBottom: 16 }}>
-          <h1 style={{ fontSize: 32, fontWeight: 900, color: "#e9d5ff", margin: 0 }}>사주를 이해하는 핵심 개념 정리</h1>
+          <h1 style={{ fontSize: 32, fontWeight: 900, color: "#9d174d", margin: 0 }}>사주를 이해하는 핵심 개념 정리</h1>
         </div>
 
         {/* 메인 컨테이너 */}
@@ -327,7 +317,7 @@ export default function SajuInfo() {
               style={{
                 padding: "11px 13px",
                 background: activeTab === 'jeong' ? "#a5f3fc" : "rgba(165, 243, 252, 0.2)",
-                color: activeTab === 'jeong' ? "#0c4a6e" : "white",
+                color: activeTab === 'jeong' ? "#0c4a6e" : "#164e63",
                 border: "2px solid rgba(165, 243, 252, 0.4)",
                 borderRadius: 6,
                 fontWeight: 900,
@@ -395,7 +385,7 @@ export default function SajuInfo() {
                     <p style={{ color: item.color, fontWeight: 900, fontSize: 13, margin: "0 0 6px 0" }}>
                       {item.name}
                     </p>
-                    <p style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>
+                    <p style={{ color: "rgba(0, 0, 0, 0.72)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>
                       {item.desc}
                     </p>
                   </div>
@@ -420,10 +410,10 @@ export default function SajuInfo() {
                     <div style={{ display: "grid", gap: 8 }}>
                       {section.items.map((item: any, itemIdx: number) => (
                         <div key={itemIdx} style={{ borderLeft: `2px solid ${section.color}`, paddingLeft: 10 }}>
-                          <p style={{ color: "#fbbf24", fontWeight: 900, fontSize: 13, margin: "0 0 4px 0" }}>
+                          <p style={{ color: "#be185d", fontWeight: 900, fontSize: 13, margin: "0 0 4px 0" }}>
                             {item.name}
                           </p>
-                          <p style={{ color: "rgba(255, 255, 255, 0.9)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>
+                          <p style={{ color: "rgba(0, 0, 0, 0.72)", fontSize: 11, lineHeight: 1.6, margin: 0 }}>
                             {item.desc}
                           </p>
                         </div>
