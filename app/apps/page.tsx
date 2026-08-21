@@ -2,9 +2,7 @@
 import { useState, useEffect } from "react";
 
 const UNLOCK_KEYS: Record<string, string> = {
-  "/haemong":  "haemong_unlock_until",
   "/momcare":  "momcare_unlock_until",
-  "/tarot":    "tarot_unlock_until",
   "/gamjung":  "gamjung_unlock_until",
   "/diet":     "diet_unlock_until",
   "/budget":   "budget_unlock_until",
@@ -142,8 +140,8 @@ export default function AppsPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           {TOP_APPS.map(app => {
             const d = unlocks[app.href] || 0;
-            const badgeText = app.badge;
-            const badgeColor = app.badgeBg;
+            const badgeText = d > 0 ? `D-${d}` : app.badge;
+            const badgeColor = d > 0 ? "#16a34a" : app.badgeBg;
             return (
               <a
                 key={app.href}
@@ -168,8 +166,8 @@ export default function AppsPage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
           {GRID_APPS.map(app => {
             const d = unlocks[app.href] || 0;
-            const badgeText = app.badge;
-            const badgeBg = "color" in app ? app.color : "rgba(0,0,0,0.55)";
+            const badgeText = d > 0 ? `D-${d}` : app.badge;
+            const badgeBg = d > 0 ? "#16a34a" : ("color" in app ? app.color : "rgba(0,0,0,0.55)");
             return (
               <a
                 key={app.href}
