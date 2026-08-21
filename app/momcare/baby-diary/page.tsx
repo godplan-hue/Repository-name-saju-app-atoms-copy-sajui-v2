@@ -23,6 +23,7 @@ function todayStr() { return new Date().toISOString().slice(0, 10); }
 
 export default function BabyDiaryPage() {
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
+  const submitSavingRef = useRef(false);
   const [mode, setMode] = useState<"list" | "write" | "view">("list");
   const [viewEntry, setViewEntry] = useState<DiaryEntry | null>(null);
   const [search, setSearch] = useState("");
@@ -80,6 +81,9 @@ export default function BabyDiaryPage() {
   }
 
   function submit() {
+    if (submitSavingRef.current) return;
+    submitSavingRef.current = true;
+    setTimeout(() => { submitSavingRef.current = false; }, 500);
     if (!form.content.trim()) return;
     const entry: DiaryEntry = { ...form, id: form.id || Date.now().toString(), title: form.title || `${form.date} 일기` };
     const exists = entries.find(e => e.id === entry.id);

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { FOODS, OH_DIET, getOhFromYear, type Food } from "@/lib/foodDb";
 import { postWithRetry } from "@/lib/postWithRetry";
@@ -255,6 +255,7 @@ export default function DietPage() {
   const [restoring, setRestoring] = useState(false);
   const [restoreMsg, setRestoreMsg] = useState("");
   const [meals, setMeals] = useState<Meal[]>([]);
+  const saveWeightSavingRef = useRef(false);
   const [historyData, setHistoryData] = useState<Record<string, DayLog>>({});
   const [searchQ, setSearchQ] = useState("");
   const [customName, setCustomName] = useState("");
@@ -338,6 +339,9 @@ export default function DietPage() {
   }
 
   function saveWeight() {
+    if (saveWeightSavingRef.current) return;
+    saveWeightSavingRef.current = true;
+    setTimeout(() => { saveWeightSavingRef.current = false; }, 500);
     const wNum = parseFloat(todayWeight);
     if (!wNum || wNum < 20 || wNum > 300) { alert("올바른 체중을 입력해주세요 (20~300kg)"); return; }
     const todayKey = todayStr();

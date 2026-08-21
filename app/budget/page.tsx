@@ -1,5 +1,5 @@
 ﻿"use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { postWithRetry } from "@/lib/postWithRetry";
 
@@ -29,6 +29,7 @@ export default function BudgetPage() {
   const count = getTodayCount();
   const [view, setView] = useState<"list" | "add" | "chart">("list");
   const [entries, setEntries] = useState<Entry[]>([]);
+  const addEntrySavingRef = useRef(false);
   const [mcUserId, setMcUserId] = useState("");
   const [hasPhone, setHasPhone] = useState(false);
   const [setupDone, setSetupDone] = useState(false);
@@ -160,6 +161,9 @@ export default function BudgetPage() {
   }
 
   function addEntry() {
+    if (addEntrySavingRef.current) return;
+    addEntrySavingRef.current = true;
+    setTimeout(() => { addEntrySavingRef.current = false; }, 500);
     const amount = parseInt(form.amount.replace(/[^0-9]/g, ""));
     if (!amount) { alert("금액을 입력해주세요"); return; }
     const e: Entry = { id: Date.now().toString(), date: form.date, type: form.type, category: form.category, amount, memo: form.memo, createdAt: Date.now() };
