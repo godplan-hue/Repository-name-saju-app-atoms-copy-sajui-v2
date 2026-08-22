@@ -220,7 +220,7 @@ function PayInner() {
           <p style={{ fontSize: 28, margin: "0 0 8px" }}>🧠</p>
           <p style={{ fontSize: 17, fontWeight: 900, color: "white", margin: "0 0 8px" }}>MBTI 심층 분석 전체 공개</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, margin: "14px 0 16px", textAlign: "left" }}>
-            {["💕 연애 심층 분석", "💼 커리어 심층 분석", "⚡ 스트레스 & 회복법", "🤝 인간관계 팁", "🌱 성장 메시지"].map(item => (
+            {["💕 연애 심층 분석", "💼 커리어 심층 분석", "⚡ 스트레스 & 회복법", "🤝 인간관계 팁", "🌱 성장 메시지", "💰 돈 쓰는 스타일", "🔮 전생 이야기", "🖤 흑화 버전", "🎭 이중생활", "👀 썸 상대 마음 훔쳐보기"].map(item => (
               <div key={item} style={{ background: "rgba(255,255,255,0.07)", borderRadius: 10, padding: "8px 10px", fontSize: 12, color: "#c4b5fd" }}>{item}</div>
             ))}
           </div>
