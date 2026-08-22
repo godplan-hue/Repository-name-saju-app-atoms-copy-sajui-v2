@@ -232,7 +232,9 @@ function PayInner() {
           <p style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px" }}>직운 부업 추천 TOP 3 전체 공개</p>
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>
             부업 TOP 3 상세 분석 · 수입 범위<br />
-            3단계 시작법 · 플랫폼 · 함정 주의
+            3단계 시작법 · 플랫폼 · 함정 주의<br />
+            숨은 천직 부업 4위 · 3개월 로드맵<br />
+            예상 수익 시뮬레이터 · 오늘의 부업운
           </p>
           <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 24시간 열람 가능</p>
           <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: 0 }}>₩{AMOUNT.toLocaleString()}</p>

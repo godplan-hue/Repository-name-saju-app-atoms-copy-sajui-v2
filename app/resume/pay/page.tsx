@@ -217,7 +217,9 @@ function PayInner() {
           <p style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px" }}>합격자소서 합격 전략 분석</p>
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 6px", lineHeight: 1.6 }}>
             오행 기질 · 직무 키워드 5개 · 기업별 전략<br />
-            면접 예상 질문 TOP 5 · 합격 에너지 분석
+            면접 예상 질문 TOP 5 · 합격 에너지 분석<br />
+            자소서 감점 표현 · 면접관이 좋아하는 스타일<br />
+            합격 스토리라인 · 인기 기업 · 연봉협상 타이밍
           </p>
           <p style={{ fontSize: 12, color: "#a78bfa", margin: "0 0 14px" }}>결제 후 바로 이름·직무 입력 → 분석 즉시 공개</p>
           <p style={{ fontSize: 28, fontWeight: 900, color: "white", margin: 0 }}>₩{AMOUNT.toLocaleString()}</p>
