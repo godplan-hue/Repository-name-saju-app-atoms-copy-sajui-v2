@@ -1,165 +1,154 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐ MBTI 상단4개 잠금UI 그대로유지 결정 (2026-08-22)](project_mbti_top4_lock_ui_decision_2026_08_22.md) — 13개잠금카드안 검토했으나 재심사부담으로 보류, 나중에 재빌드타이밍에 다시제안
-- [⭐⭐ 감정일기 16개앱소개 줄바꿈+배너점선 옅게 수정 (2026-08-21)](project_gamjung_crosspromo_banner_fix_2026_08_21.md) — "매일 쓰는\n가계부", 다른 20개앱 동일버그는 그대로두기로함. commit e71cad2
-- [⭐⭐ 토스 다이어트 하단배너 탭바에 가려지던 버그 수정 (2026-08-21)](bug_diet_bottom_banner_hidden_by_tabbar_2026_08_21.md) — 오늘 탭만 여유공간있고 검색/프리미엄/기록 3탭은 배너가 고정탭바에 완전가려짐, marginBottom 100추가. commit 303a86d
-- [⭐⭐ 무료앱4종(movie/style/battle/work) 동의문구 3년보유 누락 수정 (2026-08-21)](bug_free4app_consent_3year_missing_2026_08_21.md) — 8월챌린지 신규앱만 "3년간 보유 후 파기" 문구 빠짐, commit 2d92bc6
-- [⭐⭐ 일기4앱 저장버튼 연타방지 가드 웹+토스 6곳 추가 (2026-08-21)](bug_diary4app_doubleclick_guard_2026_08_21.md) — 감정일기만 있던 가드를 가계부/다이어트/육아일기에 useRef방식으로 추가, 웹29958e6+토스3커밋
-- [⭐⭐⭐ 육아일기 7서브페이지 unlock버그 (재기록, 원본은 08-21 세션 후반부에 있었음)](bug_momcare_7subpages_unlock_check_2026_08_21.md) — 유효기간남아도 잠금풀리던 버그, commit b7627ff, 프로젝트 memory/에 누락돼있어 이번에 추가
-- [⭐⭐⭐ 배지수정이 일기4앱까지 번졌던 사건+원복 (2026-08-21)](bug_badge_scope_creep_diary_apps_2026_08_21.md) — 꿈해몽·타로만 고치려던 배지수정이 전체앱 고정배지로 번져 일기4앱 D-N배지 사라짐, 에스더님 크게 걱정. 7a583f7로 원복+저장로직 무관 확인
-- [⭐⭐⭐ 감정일기 중복저장 버그 수정 (2026-08-21)](bug_gamjung_double_save_2026_08_21.md) — 활동단계 다음버튼 연타시 analyze() 두번 실행돼 기록 2개 저장, ref가드+disabled추가로 수정. commit 1f9ebcc
-- [⭐⭐⭐ 궁합·별자리 결제후 결제페이지부터 뜨던 버그 수정 (2026-08-21)](bug_gunghap_zodiac_skip_to_result_2026_08_21.md) — MBTI엔 있던 24h재결제스킵 체크가 궁합·별자리엔 없어서 매번 결제창부터 뜸, commit 6ec425b로 수정. 펫운·타로는 원래 해당없음
-- [⭐⭐ MBTI·별자리·궁합·펫운·타로 5개앱 완전무료→990원 유료전환 확정 (2026-08-21)](project_5app_paid_conversion_2026_08_21.md) — CLAUDE.md엔 "완전무료"로 남아있던 구식설명, 실제론 오늘 전부 유료전환됨. 이 5개앱은 항상 코드 직접 확인할 것
-- [⭐⭐ 무료DB 전체삭제 버튼 제거 + DB자동저장 정상확인 (2026-08-21)](project_admin_delete_all_removed_db_check_2026_08_21.md) — 실수클릭 위험한 전체삭제 버튼 삭제(commit 9b708da), 사이트다운 걱정에 firebase.ts+라이브체크로 DB저장 정상 확인
-- [⭐⭐ 관리자 결제내역 세션만료 오해 해프닝 + 30일 연장 확정 (2026-08-21)](project_admin_session_30days_decision.md) — 데이터 삭제 아니고 로그인세션(당시7일) 만료였음, 401시 자동 로그인이동 수정+TTL 30일로 최종 확정
-- [⭐⭐⭐ 내일할일: 전환추적+랜딩토스링크+MBTI유료4개+잠금목록노출+전체앱로그/광고전환 (2026-08-20)](project_next_session_2026_08_20.md) — 실결제 발생(한소희 3900원). MBTI 잠금박스에 9개 항목명 전부 노출(무료제공 아님). 로그전체앱설치→광고전환 순서. 오늘 X, 내일부터
-- [⭐⭐⭐ 토스 웨비나 박효주 성장비법 전체 저장 (2026-08-20)](reference_toss_webinar_hyoju_growth_secrets.md) — 로그퍼널개선사례+스마트발송세그먼트+리워드광고10배차이+PRD/MCP토큰절약+피그마TDS. 우리앱 로그0개 갭 재확인
-- [⭐⭐ 앱인토스 공식 AI 미니앱 빌드 가이드 저장 (2026-08-20)](reference_toss_ai_miniapp_build_guide.md) — MCP연결 명령어+기획~출시 절차+Analytics 로그 문법, 새 미니앱 만들 때 필독
-- [⭐⭐ PRD템플릿+플랫폼폴더+TDS다운로드 정리 (2026-08-20)](reference_prd_platform_folder_tds_setup.md) — PRD구술템플릿 직접작성, 플랫폼폴더는 이미 하고있음, TDS는 피그마 수동복사 필요(에스더님 할일)
-- [⭐⭐⭐ 배너재시도 11개앱 최종빌드+깃허브저장 완료 + MBTI 프로모션 실제시작 완료 (2026-08-19)](project_mbti_banner_batch_final_and_promotion_launch_2026_08_19.md) — 각 앱 커밋해시 전부 기록됨, MBTI 비즈월렛 프로모션 "진행중" 상태 확정, 다이어트는 아직 승인안남
-- [⭐⭐⭐ MBTI 메인 배너광고 안뜨던 진짜원인 확정+수정 완료 (2026-08-19)](project_mbti_banner_root_cause_fix_2026_08_19.md) — initialize() 끝나기전 attachBanner 호출되는 레이스컨디션, 800ms지연으로 수정, 다른앱도 같은구조면 위험(요청없이 손대지말것)
-- [⭐⭐⭐ 다이어트+MBTI 프로모션 alert버그수정+테스트성공+승인후 남은단계](project_diet_mbti_promotion_approval_flow_2026_08_18.md) — 승인요청 진행중, 승인나면 test mode false+재빌드+버튼2번이 전부, "또 뭐해야돼" 물으면 여기부터 볼 것
-- [⭐⭐⭐ 다이어트 시작하기 광고4초 프리로드 수정+탭바 플로팅 반려수정](project_diet_ad_tabbar_fix_2026_08_18.md) — 4초전 클릭시 광고안뜸 확인됨(수정함), 프로모션승인은 별개(재신청불필요), 탭바앱목록은 아래 최신메모 참고
-- [⭐⭐⭐ 접속중버튼 4개앱 전체적용+빌드완료 (2026-08-18)](project_connecting_button_4app_rollout_2026_08_18.md) — 실기기테스트 확정된 접속중버튼 패턴 저장, 다이어트1원alert버그수정, 궁합은 탭바자체가 없음(3개앱만 탭바수정), 새 deploymentId 4개
-- [⭐⭐⭐ 핵심 링크 3개 — 고객DB/토스콘솔/결제취소](reference_key_links.md) — direct-payments·apps-in-toss workspace 58523·app.tosspayments.com, 항상 여기서 먼저 확인
-- [⭐⭐⭐ 앱인토스 프로모션 공식가이드 — 테스트 필수조건](reference_toss_promotion_official_doc.md) — 시작하기 전 TEST_코드로 API 1회 성공 필수, 토스트알림 형식, 다이어트 다음단계 안내
-- [⭐⭐⭐ MBTI 지갑 프로모션 다음 순서 — 서류신청부터](project_mbti_wallet_promotion_next_steps.md) — 서류신청→코드발급→grantReward코드추가→테스트성공→시작하기 순서, 광고 시작 전 반드시 코드 확인할 것
-- [⭐⭐ 토스페이 쿠폰광고(배너노출패키지) 리서치](project_tosspay_coupon_ad_research.md) — jeomun.com 토스페이 결제 라이브 확인됨(신청조건 충족), 구매시에만 과금+첫집행20만트래픽 무료, 신청 전 정확한 쿠폰할인율/수수료 상담확인 필요- [⭐ 2026-08-17 메인페이지 뒷배경 크림색 변경](project_mainv2_bg_cream_change_2026_08_17.md) — main-v2 다이아몬드 배경→#fdf6ec 크림, 원본 이미지URL 백업됨(commit d389115), 결과지는 안건드림
-- [⭐⭐⭐ 2026-08-17 20개앱 시작하기버튼 광고 안뜨는문제 전수수정 완료](project_20app_ad_button_fix_2026_08_17.md) — 10개파일 수정+커밋완료(mbti패턴 적용), 나머지10개는 원래정상. 빌드/배포는 아직 안함
-- [⭐⭐⭐ 2026-08-17 일기4앱 전화번호변경차단+영구저장 완료](project_diary4app_phonelock_save_done_2026_08_17.md) — gamjung/budget/momcare/diet 전부 완료, diet는 원래부터 다 되어있었음, 재확인 불필요
-- [⭐⭐⭐ 2026-08-17 다이어트+MBTI 수정 진행현황](project_diet_mbti_fix_plan_pending.md) — 광고2개(4,7)+계절라벨(3) 완료, 여백복구는 재확인필요(1번캡쳐=현재라이브메인화면, 원본없음 아님 — 정정됨), 나머지(계절20개/전화번호버튼/크로스프로모16개) 미착수. 재개시 여기부터
-- [⛔⛔⛔ 2026-08-17 같은설명반복금지+수정중끼어들면무관하면끝내고답+검증안한걸검증했다 말 금지](feedback_stop_repeating_finish_before_reply.md) — 에스더님이 강하게 화내며 지적한 3가지 워크플로 규칙, 이후 세션 전부 적용
-- [⛔ 홍보 콘텐츠에 템플릿/API미호출 구조 절대 언급 금지](feedback_never_reveal_template_architecture_publicly.md) — LinkedIn·SNS·소개글에 내부 아키텍처(비법) 노출 금지 (2026-08-15)
-- [⛔ 쉬어라/그만해라/내일해라 절대 금지](feedback_no_rest_suggestions.md) — 화나셨을 때도 쉬라는 말 절대 하지 말 것, 전에도 하지 말라 하셨음 (2026-08-15)
-- [⛔ 변명부터 하지 말고 솔직하게 바로 답할 것](feedback_answer_honestly_no_defensive_excuses.md) — 확인차 묻는 질문에 방어적 변명 먼저 하지 말 것, 그냥 확인해서 직답 (2026-08-15)
-- [⛔⛔⛔ 2026-08-15 토스앱 개수 17개 확정 — 다시 묻지 말 것](project_toss_17app_count_confirmed.md) — 20개 폴더 중 haemong/zodiac/petun은 사주앱에 흡수돼 제외, 17개 정식 목록 저장됨
-- [⭐⭐⭐ 2026-08-15 일기류4앱 990→1980원+잠금버그 완료, 토스첫진입광고제거 대기](project_diet_toss_ad_pending_2026_08_15.md) — momcare/gamjung/budget/diet 전부 완료(commit 1cd2721+c51da0c), diet앱 수정금지는 토스미니앱만 해당(웹앱은 자유수정), 토스 첫진입광고 제거(MBTI·diet 제외 전부)는 대상폴더 확인부터 시작할 것
-- [⭐⭐⭐ 2026-08-15 gamjung 미커밋 변경 3개 진행보류](project_gamjung_uncommitted_changes_pending.md) — fromHistory/히스토리잠금조건/코인광고재시도, 에스더님 이해안가서 승인전까지 빌드금지
-- [⭐⭐⭐ 2026-08-15 토스 라이브 전환 리마인더](project_toss_live_switch_reminder.md) — jeomun72su MID로 토스 통합결제 테스트 진행 중, 테스트 성공 후 라이브 전환 3단계 반드시 먼저 안내할 것
-- [⭐ 2026-08-15 가상계좌는 파트너페이지에만](project_toss_virtual_account_scope.md) — main-v2/pay엔 카드+간편결제만, 가상계좌 버튼은 파트너 결제에만 추가할 것
-- [⭐⭐⭐ 2026-08-14 결제 후 무료버튼 재클릭시 유료상태 초기화 버그 수정](bug_paid_status_wiped_by_free_button.md) — "3초무료" fresh=1이 결제자도 새 무료분석 실행해 v2_paid/price/plan 지움, commit 92e95be로 수정. 당신의변화 유료탭 안내문구도 추가
-- [⭐⭐⭐ 2026-08-14 관리자인증+알림톡제한+Cloudflare속도제한 수정](project_security_fix_2026_08_14.md) — 관리자API 13개 토큰인증 적용(commit 90e1067), 알림톡 시간당5회제한, Cloudflare속도제한 30→150/10초 상향(무료플랜 규칙1개제한)
-- [⭐⭐ 2026-08-14 3초무료버튼 재입력 버그 수정](project_free_button_profile_wipe_fix.md) — 결과지 홈으로/처음부터 버튼이 v2_saved_profile까지 지워서 기존가입자도 매번 5단계 재입력하던 버그, commit a327637로 수정 (로그인처럼 자동복원되게)
-- [⛔ 인증방식 바꾸는 배포 전엔 재로그인 필요 미리 경고](feedback_warn_before_auth_changes.md) — 관리자토큰 방식변경 후 재로그인 안내 안해서 "DB전부삭제" 오인 소동, 다음부턴 배포전 미리 안내
-- [⭐⭐⭐ 사주아이 강의 성장비법+PART6 홍보법+비용관리+프롬프트세트+Figma워크플로](reference_sajaui_course_growth_secrets.md) — 니치Fit/글로벌진출/PART6 홍보광고·SEO·AEO·SNS전략(가장중요)/운영비용관리/랜딩~토스PG 프롬프트5개/FigJam+Claude MCP 부록 (2026-08-11)
-- [⭐⭐⭐ 부드러운 존댓말 톤 사용](feedback_warm_tone_esther.md) — "에스더님" 호칭+존댓말+친구처럼 응원. 반말/건조체 금지 (2026-08-11 직접 교정)
-- [⭐⭐⭐ 답변 핵심만 짧게](feedback_keep_replies_very_short.md) — 화면보며 진행할땐 설명 최소화, 할일만 번호로 짧게 (2026-08-13 직접 교정)
-- [⭐⭐⭐ 17개앱 광고구조 마스터 (2026-08-13)](project_ad_structure_master_2026_08_13.md) — 진입광고+결과직전광고+섹션마다광고, 일기류 히스토리=2천포인트(출석+광고3회), MBTI 이중광고 그대로 유지 결정
-- [⭐⭐ 2026-08-11 최신 상태 업데이트](project_status_2026_08_11_update.md) — 토스 17개중 3개만 출시(14개 순차출시 필요), jeomun.com 카카오페이+신용카드만 연결, SEO 오늘 대량 제출완료
-- [⭐ 세션 2026-08-11 — SEO 5700개 완성+구글/빙 사이트맵 제출+감정일기 약관 등록](project_session_2026_08_11_seo.md) — 19개앱 ×300개 가이드페이지 완성, sitemap 4906개 추가, BingSiteAuth.xml, 감정일기 약관 URL등록 완료
-- [⭐⭐ 세션 2026-08-11 — 노마드코더+브런치+링크드인 홍보](project_session_2026_08_11_promo_brunch_linkedin.md) — 브런치 작가신청 제출(승인대기,다음세션확인), 링크드인 리브랜딩+게시글 발행(공개확인됨), 노마드코더 #portfolio 게시완료
-- [⚠️ 토스앱 유사카테고리 반려 경고 (Trinity 인터뷰)](reference_nomadcoders_trinity_toss_interview.md) — 사주/타로처럼 겹치는 앱 개발후 심사넣으면 반려됨. 심사 먼저 문의 or 기존앱 내부통합으로 우회. 점운 17개 토스앱 출시 시 필독
-- [⭐ 앱인토스 플랫폼 업데이트 (2026-08-12)](project_appintoss_update_2026_08.md) — 비즈월렛 최소충전 5만원으로 인하+1인일일한도 설정가능, 공유링크개선, 멤버권한분리, SDK3.0, 게임카테고리규정
-- [⭐⭐⭐ 2026-08-11 결제버그 마라톤 6개 원인+수정 총정리](project_session_2026_08_11_payment_bug_marathon.md) — 구글모바일 paymentId유실/storage유실/타임아웃없음/쿼리스트링/팝업방식/DB중복저장, 재발시 여기부터 확인
-- [⛔⛔⛔ 무관한 버그 쫓다 방어코드 무단추가 금지](feedback_no_speculative_defensive_code.md) — 2026-08-11 카톡결제 무단차단 사건(에스더님 격분, 원복). 승인된 흐름은 추측만으로 절대 손대지 말 것
-
-- [⭐⭐⭐ 전화번호 일치 잠금 구현 (미완료 — 다음 세션 바로 시작)](project_phone_match_pending.md) — 결제한 번호만 24시간 열림, 다른 번호 잠금. jigun pay만 완료, 나머지 11개 파일 미완료. 구현 코드+파일목록 전부 저장됨
-
-- [✅ (해제됨) 토스 미니앱 수정금지 규칙 완전 폐지 (2026-08-21)](feedback_diet_app_no_touch.md) — 다이어트 포함 어떤 토스앱도 이제 수정금지 아님, gamjung/budget/diet registerMode(전화번호변경) 완전삭제 완료
-
-- [⭐⭐⭐ 18개앱 토스 업그레이드 마스터 플랜 (절대 잃어버리지 말 것)](project_18app_upgrade_plan.md) — 7개 전면업그레이드+11개 기능추가+오늘몇명+탈잉1위+완전잠금+24시간 전체계획. 새 세션마다 반드시 읽을 것
-
-- [⭐⭐ 토스 랜딩페이지 제작 방법 (2026-08-09 확정)](project_toss_landing_method.md) — guide(점운)/toss(토스앱) 이중구조 300개, 앱별 테마·slug추출·sitemap추가 전체 방법. 새 앱 토스 랜딩 만들 때 반드시 읽을 것
-
-- [⭐⭐⭐ 매일 읽기 마스터 가이드 (절대 삭제 금지)](daily_master_guide.md) — 토스결제/광고/수익화/홍보전략 전부 한 곳에. 새 세션마다 반드시 읽을 것
-- [⛔ 빌드는 명확히 요청할 때만](feedback_build_only_when_asked.md) — "다시" 등 애매한 말에 자의적 빌드 절대 금지. 이미 올라간 앱 불필요하게 재빌드 금지
-- [⭐⭐ 토스 홍보 비법 (경쟁사 분석)](project_toss_promo_secrets.md) — N명 카운터+나갈때광고2번+코인시스템+광고2개연속. 2026-07-30 에스더님 직접 분석. 토스 작업 시 반드시 읽을 것
-- [⭐ 토스 앱 워터마크 전략](project_toss_watermark_strategy.md) — 메인 결과 카드 안 하단 고정. 앱별 문구 확정. 새 앱마다 동일 적용
-- [⭐ 토스 사주 앱 파트너 모집 전략](project_toss_saju_partner_strategy.md) — 블로그 콘텐츠 링크 방식으로 심사 우회. 사주 앱 만들 때 반드시 읽을 것
-- [⭐⭐⭐ 토스 미니앱 빌드 완전 가이드](toss_app_build_guide.md) — 새 앱 만들기 전 반드시 읽기. 시장현황+체크리스트+코드패턴+항상 에스더님께 먼저 계획 확인 후 코딩
-- [⚠️ 토스애즈 실패 교훈](project_toss_ads_lesson.md) — 4만원 날림. 미니앱 직접 연결 안 됨. 잔여 5만9천원 유지. 웹사이트 광고는 픽셀 연동 후 가능
-- [⭐⭐⭐ 비즈 월렛 프로모션 전략](project_biz_wallet_strategy.md) — 미니앱 홍보 핵심. 30만원→혜택탭 노출→가입시100원→광고수익상쇄→무료홍보. 승인 후 진행
-- [토스 네이티브 광고 집행 계획](project_toss_native_ad.md) — 미니앱 제약(MMP/AppScheme). 실패 확인됨. 웹사이트 광고 시 픽셀 필수
-- [토스애즈 MBTI+다이어트 광고 현황](project_toss_ads_campaign_status.md) — 2026-07-27 승인. 실패 경험. 잔여 5만9천원 유지
-
-- [⚠️ 다음 세션 첫 번째 할 것](project_next_session_upload.md) — ‼️7/29 바이브챌린지 마감. 1순위:출품신청, 2순위:네이티브광고(내일2시오픈), 3순위:광고성과확인, 4순위:감정일기 출시
-- [⭐ 세션 2026-08-02 — 알림톡 완전 수정](project_session_2026_08_02.md) — type:ATA 누락+파트너명버그 수정, 결과지 직접 링크 알림톡 발송, 꼭읽어보세요 스크롤 버그 수정
-
-- [⭐⭐⭐ 토스 앱 수익화 최종 확정 (2026-07-28)](project_toss_app_monetization_final.md) — 990원앱 vs 광고앱 분류 확정. 모든앱 배너+잠금. 광고앱=세션잠금(앱끄면초기화). 절대 변경 금지
-- [⭐⭐ 광고+리뷰 구조 최종 v4 (2026-07-27)](project_toss_ad_structure_v2_final.md) — 다이어트 프리미엄탭 무료=매번/유료=하루1번 추가. reviewClaimed 영구차단(테스트초기화에서 제외). 신규앱도 동일 적용
-- [이미지 만들기 요청 시 캔바 사양서로 줄 것](feedback_image_creation.md) — 아티팩트/HTML 금지. 캔바용 사이즈+색상+텍스트 사양서 텍스트로. 토스 로고=600×600, 스크린샷=636×1048
-- [⭐ MBTI+다이어트 광고 구조 최종](project_toss_ad_structure_final.md) — 섹션별 리워드+전면1번 확정. MBTI=세션만, 다이어트=24h, 990원/리뷰=일기후1번/일 (2026-07-25 최종, v2로 업데이트됨)
-- [⭐ 토스 리뷰 버튼 규칙](feedback_toss_review_button_rule.md) — requestReview() 필수, window.location.href 절대 금지. 전체 앱 확인 완료 (2026-07-28)
-- [토스 광고 타이밍 규칙](feedback_toss_ad_timing.md) — 전면형 딜레이 7초, 리워드 먹통 타임아웃 20초 (새 앱 만들 때 반드시 동일 적용)
-- [잠금 해제 버튼 문구 원칙](feedback_unlock_button_copy.md) — "광고 보기" 절대 금지, "🔓 지금 열어보기 →" 사용. 모든 토스 앱 공통 적용
-- [이미지 텍스트 이모지 금지](feedback_no_emoji_in_images.md) — 토스 이미지/설명 텍스트에 이모지 절대 금지 (에스더님 이미지 다시 만들어야 했음)
-- [⚠️ 앱 개발 기본 규칙](feedback_app_development_base_rule.md) — 항상 기존 웹앱 기반으로 만들 것. 새로 짜지 말고 유료 업그레이드+트렌드 기능 추가. 매일 읽을 것
-- [일기형 앱 Firebase 복원 규칙](feedback_diary_app_firebase_rule.md) — 일기형 앱만 자동복원+↻수동동기화 버튼. MBTI 등 일회성 앱은 해당 없음. 새 일기앱 만들 때 항상 적용
-- [User profile](user_profile.md) — non-technical first-time builder, vibe-coding this saju app, wants honest risk talk
-- [User background](user_background.md) — 47세, 800시간 투자, 어머니 수발+2년 무수입, 탈잉 1위 출신, 재기 간절히 원함 — 반드시 읽을 것
-- [Workflow rules](feedback_workflow_rules.md) — only change what's asked; verify build, commit, push, report hash, every time
-- [No question popups](feedback_no_question_popups.md) — ask clarifying questions in plain chat, not the boxed UI, unless truly critical
-- [Wait for explicit go](feedback_wait_for_explicit_go.md) — don't self-trigger build/commit/push after explaining a plan, wait for user's go-ahead
-- [Deployment is live](project_deployment.md) — app deployed to Vercel + jeomun.com; local edits need push+1-2min to show live, not instant
-- [Firebase vs Supabase decided](project_firebase_vs_supabase_decision.md) — staying on Firebase RTDB, not migrating; finish Toss payment integration first
-- [Saju text personalization](project_saju_personalization.md) — template-only (no AI API), what's wired in vs dead code vs still-pending (사주계산기/택일/saju-info page)
-- [White-label partner model](project_whitelabel_partner_model.md) — scaling partners via subdomain branding (1 app/DB/payment), not per-partner app copies
-- [Docs plan](project_docs_plan.md) — DATABASE.md 완료; PROJECT.md·SEO.md는 시기 맞춰 Claude가 먼저 제안할 것
-- [Next tasks](project_next_tasks.md) — 다음 만들 기능: SEO 랜딩, Q&A 검색창, 보관함 QASection, 대운 UI
-- [Q&A 확장 계획](project_qa_expansion_plan.md) — 택일/대운/연도별운세 Q&A 추가 계획 (상품 완성 후 진행, 대운 최우선)
-- [사주아이 벤치마킹 분석](project_sajaui_analysis.md) — 성공 비결, UI 방식, 미완성 기능 목록 (유저가 강의 구매 후 하루 분석한 내용, JSONL 트랜스크립트에서 복구)
-- [사주아이 전략 원문](project_sajaui_strategy_raw.md) — 앱 이름·Q&A 2030 언어화·서브도메인·SEO·DDoS·GA·우선순위 전략 원문 (유저가 직접 입력해 복원)
-- [요청 범위만 수정](feedback_only_touch_requested.md) — 요청한 파일·부분만 수정, 다른 페이지는 절대 건드리지 말 것
-- [기존 코드 절대 건드리지 말 것](feedback_dont_touch_existing.md) — 잘 작동하는 기존 코드는 손대지 말 것, 요청한 부분만 정확히 수정
-- [Firebase Blaze 전환 리마인더](project_firebase_blaze_reminder.md) — 앱 오픈 전 필수, 유저가 잊지 말고 알려달라고 요청
-- [원현우 점신 운영 방식](project_wonhyunwoo_model.md) — 경쟁사 파트너 리셀러 모델 분석, 점운과 차이점, 고객응대 자동화 방향
-- [모든 페이지 한 번에 수정](feedback_apply_to_all_pages.md) — "모든", "전부", "다" 요청 시 관련 파일 먼저 전부 파악 후 한 번에 처리
-- [세션 종료 시 CLAUDE.md 정리](feedback_session_summary.md) — 매 세션 끝날 때 작업 내용 CLAUDE.md에 자동 저장+커밋+푸시, 유저가 요청 안 해도 항상 할 것
-- [카카오 비즈니스 신청](project_kakao_biz.md) — 점운 카카오채널 + 알림톡 신청 완료, 승인 후 결제영수증·결과링크 카톡 발송 연동 예정
-- [포트원 PG 진행현황](project_portone_status.md) — KPN+카카오페이 심사중, 다음할일: 포트원V2연동→PPT작성→KPN서류등기발송
-- [마케팅 계획](project_marketing_plan.md) — 크몽 AI사주 서비스 등록이 제일 빠른 매출, 탈잉 강의도 유력
-- [광고 전략](project_ad_strategy.md) — 구글검색+유튜브게재위치+리마케팅, 포트원 연동 완료 후 실행, 랜딩→무료사주→결제 퍼널 필수
-- [유저 핵심 이력](user_credentials.md) — 탈잉 2년 연속 1위 + 크몽 상위 2% 프라임 — 마케팅·소개글에 항상 포함
-- [경쟁사 16Personalities 분석](competitor_16personalities.md) — 퀴즈구조(60문항/10단계), 결과페이지구조, 7900원 수익화, 502만 공유 수 — MBTI 앱 설계 참고
-- [자동 저장 규칙](feedback_auto_save_research.md) — 경쟁사 조사자료/링크/이미지는 말 안 해도 자동으로 memory에 저장할 것
-- [15개앱 전략](project_15app_strategy.md) — 완성 10개+남은 5개 순서, 다이어트/가계부 방식 전환, 풀패스 가격(₩4900/₩6900), "구독" 금지
-- [플랫폼 전략 원본](project_platform_strategy_original.md) — SNS홍보글100개, 랜딩구조, 전환시나리오(990원→패스), 30일캘린더, 벤치마킹, 앱15개순위표 (유저 원문)
-- [앱개발 결정 원본](project_app_decisions_original.md) — 에러위험도분류, 앱순서, 음식DB3000개, 뽑기목록, 풀패스가격, 10개앱완성 커밋이력 (유저 원문)
-- [전략 파일 먼저 읽기](feedback_read_strategy_first.md) — 새 세션에서 전략질문 오면 파일 먼저 읽고 답할 것, "모른다" 절대 금지
-- [이메일 항상 포함](feedback_always_include_email.md) — 새 앱 폼에 전화번호+이름+이메일 세 개 필수 세트, 빠뜨리면 유저 화냄
-- [완료된 작업 반복 금지](feedback_no_repeat_done_tasks.md) — 이미 한 작업 다시 하라고 절대 시키지 말 것, 코드 직접 읽어서 상태 파악
-- [플랫폼 시장 가치](project_platform_value.md) — 외주 기준 약 2억짜리 플랫폼, 에스더님이 AI로 94일 만에 혼자 구축 — 강의·마케팅 소개글에 활용
-- [미구현 결정 항목](project_pending_decisions.md) — ⚠️ 새 세션 필독: 결정됐지만 안 한 것 7개 (전화번호 Firebase저장·무료vs유료구분·DB중복·공유페이지모달 등)
-- [결정 즉시 저장 규칙](feedback_save_decisions_immediately.md) — 미구현 결정은 말 안 해도 즉시 memory 저장, 기다리지 말 것
-- [앱 잠금 체계](project_lock_system.md) — 앱별 잠금/해제 방식 확정(직운/합격 영구, 나머지 30일/24h), fullAccess 쿠폰, 전화번호 필수화 (2026-07-14 구현 완료, commit dc4c2f6)
-- [풀패스 전략](project_fullpass_strategy.md) — 4,900원(3개앱30일)/6,900원(3개앱+사주5개) 확정, 꿈해몽/직운/합격자소서 제외, 포트원KCP연동 완료 후 구현
-- [카카오톡 결과지 이탈 버그](feedback_kakaotalk_navigation_bug.md) — ⚠️ 반복 발생 패턴: replace/href → 결과지 사라짐. 수정법: 모든 CTA 버튼 window.open("_blank")로 통일 (commit 33b78ad 참고)
-- [앱인토스 전략](project_appintoss_strategy.md) — 무료 앱 4개(MBTI/궁합/행운번호/별자리) 먼저 올려 3000만 노출, 유료는 jeomun.com 연결, 수수료 20%
-- [결제 연동 현황](project_payment_status.md) — 포트원 신용카드 심사중+카카오페이 5일내 승인, 토스페이먼츠 직접계약 유지 결정
-- [잠금/해제/저장 검증 완료](project_lock_verification.md) — ⚠️ 새 세션 필독: 3종24h·무료쿠폰차단·7개앱풀패스·일기영구저장·fullAccess쿠폰 전부 완성 확인 (2026-07-17, commit 4ef5ee1)
-- [현재 결제 시스템](project_payment_current.md) — ⚠️ PG는 페이업(PayUp), 토스페이먼츠 아님. 월 카드한도 200~300만원. 파트너는 현금→계좌이체 수동방식. 크몽은 별도라 한도 무관
-- [크몽 파트너 판매글](project_kmong_partner_listing.md) — 실버14만/골드24만(얼리버드50%)/다이아99만(사전예약20일후오픈), 완성 판매글 전체 포함
-- [⚠️ 다음 세션 할 것](project_next_session_kmong.md) — 필독: 무료파트너 신청마감 코드수정 + 크몽 판매글 최종완성이 우선순위 1번
-- [맹렬 인스타 수익화 전략](competitor_maengryeol_instagram.md) — AI 애니릴스 7단계+솔트피드/힉스필드/리드젠 도구+상품4단구조+"새벽1시의 언어" 원칙 (점운 인스타 적용 예정)
-- [경쟁사 sajucase 틱톡 전략](competitor_sajucase_tiktok.md) — "~사주 TOP 5" 리스트형 숏폼으로 4일 42.5만 재생. 금색배경+굵은텍스트+댓글CTA → 무료재물운/MBTI로 DB 유입 전략
-- [⚠️ 카카오톡 읽기·보관함·공유 버그 수정법](feedback_kakaotalk_reading_fix.md) — 반복 발생 패턴 6종 + 올바른 수정코드 + 절대 하지 말 것 (이틀 고생한 내용, 반드시 먼저 읽을 것)
-- [토스 앱인토스 입점 현황](project_appintoss_progress.md) — ⚠️ 필독: 무료버전 .ait 빌드완료(미업로드), 인앱결제 사업자심사중(3일), 승인후 990원유료버전으로 재빌드후 출시. 유료/무료 분리구조+5개앱계획 전체 저장됨
-- [토스 미니앱 Firebase 저장 방법](project_toss_firebase_saving.md) — ⚠️ 필독: .ait 앱에서 Firebase REST API로 직접 저장하는 패턴, 새 토스 앱 추가 시 동일하게 사용
-- [2026-07-23 세션 작업](project_session_2026_07_23.md) — 개인정보보호법 [필수]+[선택] 체크박스 2개 분리 전체 완료 (15개앱+API), 꿈해몽 게이트 신규, 메인사주 마케팅 동의 추가
-- [⚠️ 토스 바이브코딩 챌린지](project_toss_vibe_challenge.md) — 7/29 마감! 상금 1등300만원. MBTI+다이어트 출품 예정. 내일 반드시 출품 신청할 것
-- [다이어트 토스앱 + MBTI 출시 + 토스애즈](project_session_2026_07_23_diet.md) — Toss Storage 영구저장 완성, MBTI 출시, 토스애즈 비즈니스그룹 승인완료, 광고전략 확정
-- [토스 프로모션 가이드](project_toss_promotion_guide.md) — 포인트 지급 이벤트, 비즈 월렛 최소 30만원, 혜택탭 노출, 허용/불가 유형, 체크리스트 전체
-- [토스 인앱 광고 가이드](project_toss_inapp_ad_guide.md) — 배너/전면형/리워드 3종, eCPM 공식, 정산구조, 분석탭, 점운 앱 적용 전략
-- [토스 앱인토스 성공사례 디스팟](reference_toss_discpot_case.md) — 5일 출시+마케팅비용0+첫달1000만원 노하우, 비개발자 성공, 블루오션 근거
-- [토스 앱인토스 성공사례 슈퍼조이](reference_toss_superjoy_case.md) — 70일 만에 100만 유저, 누적 매출 1.5억, 마케팅비 0원, CPI 30억 절감, 리텐션 강함, 인앱결제 비중 높음
-- [토스 리뷰 받는 법 (requestReview + 24h 보상)](project_toss_review_guide.md) — requestReview() 네이티브 API 무료, 포인트 방식은 30만원 필요
-- [토스 공유 리워드 가이드](project_toss_share_reward_guide.md) — 친구 초대 시 인앱 재화 지급, 돈 안 듦, SDK 연동 필요, 지금은 패스 나중에 적용
-- [토스 앱인토스 성공사례 마나바바](reference_toss_manababa_case.md) — 거지키우기 앱인토스 1위, 사무실 팔 위기→첫달 수익, 누적매출 1억목표, D+1 리텐션 40% 기준, 마케팅 0원
-- [토스 앱인토스 성공사례 자몽다](reference_toss_jamond_case.md) — 대학생 3명, 사주·타로 심리상담 앱, 6개월 만에 35만 사용자, 창업경진대회 대상. 사주카테고리 시장 검증됨
-- [⭐ 토스 성공 무료 비법 (통합)](reference_toss_success_secrets.md) — 4개 성공사례 핵심 모음. 마케팅 0원 노출 구조, 당장 할 것, 앱 이름 규칙 전체. 토스 작업 시 반드시 먼저 읽을 것
-- [⭐ 로빈 앱인토스 웨비나 전체](reference_robin_appintoss_webinar.md) — 스마트 발송 비법+세그먼트 레시피+소거법+수익화 전체. 점운 앱별 세그먼트 레시피 포함. 스마트 발송 설정 전 반드시 읽을 것
-- [⭐⭐ 토스 첫진입 광고 flicker 수정 (2026-07-31)](project_toss_ad_firstentry_fix.md) — loaded 이벤트 방식 확정+카운터 8시간블록. 9개앱 전부 적용. 새 앱도 동일 패턴 필수
-- [⛔ memory 저장은 항상 GitHub에](feedback_memory_save_to_github.md) — 로컬만 저장 금지. 반드시 프로젝트 memory/에 복사 후 commit+push까지 완료해야 저장 완료
-- [세션 작업 2026-08-01](project_session_2026_08_01.md) — 16개 앱 카운터 공식 통일(jigun/petun/saju 수정)+배지+흰푸터 5개 앱 추가+전체 빌드 완료
-- [⛔ 코드 직접 확인 — 저장된 문서만 보고 답하지 말 것](feedback_check_code_not_docs.md) — 상태 질문엔 반드시 App.tsx 직접 읽기. 문서는 참고만
-- [⛔⛔⛔ 요청한 것만 수정 — ShareClient 사건](feedback_no_extra_edits.md) — ShareClient.tsx(카톡공유, 버튼 위2개 아래1개 총3개 구조)를 요청 없이 건드려 에스더님 3일 작업 망침. 꼭읽어보세요는 result/page.tsx에만. 절대 다른 파일 건드리지 말 것
-- [세션 작업 2026-08-02](project_session_2026_08_02.md) — 카카오 알림톡 3종 버그 수정(type:ATA/변수/결과지링크)+꼭읽어보세요 첫진입 버그 수정
-- [⚠️ MBTI 이름 변경 승인 후 수정 대기](project_mbti_name_change_pending.md) — 승인 이메일 오면 즉시: ①App.tsx 756줄 워터마크 문구 변경 ②16개앱 크로스프로모 전체 변경+빌드
-- [⭐⭐ 앱인토스 8월 바이브코딩 챌린지 + 신규앱 4개](project_session_2026_08_03.md) — 하찮아도괜찮아 테마. 실제앱=이상형월드컵/인생이영화라면/추구미/직장버티기. jeomun.com /battle·/movie·/style·/work 생성완료. 8/26마감
-- [⚠️ 토스 크로스프로모 + 앱이름 수정 대기](project_toss_cross_promo_pending.md) — 모든앱 이름 "무료" 제거(콘솔), CROSS배열서 꿈해몽/별자리/펫운/행운번호 제거(코드). 4개신규앱은이미추가됨
-- [⭐ 세션 2026-08-05 — 사주앱 꿈해몽/별자리/펫운 3단계잠금+17개앱 크로스프로모+전체빌드](project_session_2026_08_05.md) — MINI_DREAM_DB 20개 완성, 3탭 잠금구조, 전화번호차단, 17개.ait빌드완료, 부제/키워드/스크린샷프롬프트 확정
-- [⭐ 토스 인앱 광고 가이드 v2 (2026-08-06 공식 캡처)](project_toss_inapp_ad_guide_v2.md) — 배너/전면/리워드 수익공식+배치원칙+정책위반제재+분석탭활용+배너분석미지원이유
-- [⭐⭐ 세션 2026-08-07 — 토스앱 5개 수정+빌드+육아일기 전면수정](project_session_2026_08_07.md) — momcare/budget/gunghap/fortune/daewoon .ait빌드완료. 핵심: 태몽잠금 isHistoryUnlocked 분리버그수정, 탭광고세션1회, 태몽입력후잠금구조, 크로스프로모16개, 초기화버튼제거
-- [⭐ 날씨 체크 앱 수익 구조 분석](reference_nalssicheok_structure.md) — 토스 4.3점/6037리뷰 탑앱. 출석보너스+미션광고+포인트=재방문구조. 사용자2원주고광고비수백원받는모델. 점운 적용시 날씨API+오행연결+비즈월렛필요
-- [⛔⛔ 다이어트 앱 사고 + 토스애즈 의심 (2026-08-08)](project_session_2026_08_08_diet.md) — git reset으로 78번째 버전 소스 영구소실. 토스애즈 봇 트래픽 의심(926명 방문/Firebase 0명). 프로모션 진행 전 상태. 월요일 고객센터 환불 요청 필요
-- [⭐ 세션 2026-08-11 — 구글 애즈 전면 수정](project_session_2026_08_11_google_ads.md) — 검색+디스플레이 광고 "무료" 전부 제거→990원 강조, URL /main-v2 수정, 사이트링크 5개 추가, 광고효율 좋음 달성. 광고 랜딩은 항상 /main-v2 (결제창 직접 연결 금지)
+- [⭐⭐⭐ 감정일기·가계부 코인 중복지급 버그 수정 (2026-08-22)](bug_coin_double_reward_gamjung_budget_fix_2026_08_22.md) — useRef가드+상호가드+done플래그, 맘케어는 승인중이라 안건드림
+- [⭐⭐⭐ MBTI·직운·합격 결제전 설명 3개앱 전부 최신화 (2026-08-22)](project_mbti_jigun_resume_content_port_and_paydesc_fix_2026_08_22.md) — 결과지 잠금오버레이 맞아도 별도 /pay페이지는 놓치기쉬움
+- [⭐⭐ 토스 20개앱 Firebase DB저장 실제라이브테스트 검증완료 (2026-08-22)](project_all_20_apps_db_save_verified_2026_08_22.md) — 저장안되는앱 없음, 새앱만들때만 재확인
+- [⭐⭐ 맘케어 코인락 미적용 결정 (2026-08-22)](project_momcare_tracker_no_coin_lock_decision_2026_08_22.md) — 승인요청중이라 의도적으로 안건드림
+- [⭐⭐⭐ 육아일기(맘케어) 7개서브페이지 결제해도 계속 잠금 버그 수정 (2026-08-21)](bug_momcare_7subpages_unlock_check_2026_08_21.md) — unlocked state 유효기간남아도 true분기 없었음. commit b7627ff
+- [⭐⭐⭐ 배지수정이 일기4앱까지 번졌던 사건+원복 (2026-08-21)](bug_badge_scope_creep_diary_apps_2026_08_21.md) — 꿈해몽·타로만 고치려던 배지수정 전체앱 번짐, 7a583f7 원복
+- [⭐⭐⭐ 감정일기 중복저장 버그 수정 (2026-08-21)](bug_gamjung_double_save_2026_08_21.md) — 활동단계 연타시 analyze() 2번 실행. commit 1f9ebcc
+- [⭐⭐⭐ 궁합·별자리 결제후 결제페이지부터 뜨던 버그 수정 (2026-08-21)](bug_gunghap_zodiac_skip_to_result_2026_08_21.md) — 24h재결제스킵 체크 누락. commit 6ec425b
+- [⭐⭐ MBTI·별자리·궁합·펫운·타로 5개앱 완전무료→990원 유료전환 확정 (2026-08-21)](project_5app_paid_conversion_2026_08_21.md) — CLAUDE.md 구식설명, 코드 직접 확인할 것
+- [⭐⭐ 무료DB 전체삭제 버튼 제거 + DB자동저장 확인 (2026-08-21)](project_admin_delete_all_removed_db_check_2026_08_21.md) — 9b708da로 삭제, DB저장 정상 확인
+- [⭐⭐ 관리자 결제내역 세션만료 해프닝 + 30일 연장 (2026-08-21)](project_admin_session_30days_decision.md) — 삭제 아니라 로그인세션만료, TTL 30일 확정
+- [⭐⭐⭐ 내일할일: 전환추적+랜딩토스링크+MBTI유료4개+잠금노출+로그 (2026-08-20)](project_next_session_2026_08_20.md) — 실결제 발생. MBTI 잠금박스 항목노출. 로그→광고전환 순서
+- [⭐⭐⭐ 토스 웨비나 박효주 성장비법 (2026-08-20)](reference_toss_webinar_hyoju_growth_secrets.md) — 로그퍼널+스마트발송+리워드10배차이+PRD/MCP+Figma TDS
+- [⭐⭐ 앱인토스 공식 AI 미니앱 빌드 가이드 (2026-08-20)](reference_toss_ai_miniapp_build_guide.md) — MCP연결+기획~출시+Analytics 로그 문법, 새 앱 필독
+- [⭐⭐ PRD템플릿+플랫폼폴더+TDS다운로드 (2026-08-20)](reference_prd_platform_folder_tds_setup.md) — TDS는 피그마 수동복사 필요
+- [⭐⭐⭐ 배너재시도 11개앱 빌드+MBTI 프로모션 시작 (2026-08-19)](project_mbti_banner_batch_final_and_promotion_launch_2026_08_19.md) — 커밋해시 전부기록, 다이어트 승인안남
+- [⭐⭐⭐ MBTI 메인배너 안뜨던 진짜원인+수정 (2026-08-19)](project_mbti_banner_root_cause_fix_2026_08_19.md) — attachBanner 레이스컨디션, 800ms지연 수정
+- [⭐⭐⭐ 다이어트+MBTI 프로모션 alert버그+테스트성공 (2026-08-18)](project_diet_mbti_promotion_approval_flow_2026_08_18.md) — 승인나면 test mode false+재빌드
+- [⭐⭐⭐ 다이어트 광고4초 프리로드+탭바 플로팅 반려 (2026-08-18)](project_diet_ad_tabbar_fix_2026_08_18.md) — 4초전 클릭시 광고안뜸 수정
+- [⭐⭐⭐ 접속중버튼 4개앱 전체적용+빌드 (2026-08-18)](project_connecting_button_4app_rollout_2026_08_18.md) — 다이어트1원alert버그수정, 궁합탭바없음
+- [⭐⭐⭐ 핵심 링크 3개 — 고객DB/토스콘솔/결제취소](reference_key_links.md) — direct-payments·apps-in-toss 58523·app.tosspayments.com
+- [⭐⭐⭐ 앱인토스 프로모션 공식가이드 — 테스트 필수조건](reference_toss_promotion_official_doc.md) — TEST_코드로 API 1회 성공 필수
+- [⭐⭐⭐ MBTI 지갑 프로모션 다음 순서](project_mbti_wallet_promotion_next_steps.md) — 서류→코드발급→grantReward→테스트→시작
+- [⭐⭐ 토스페이 쿠폰광고 리서치](project_tosspay_coupon_ad_research.md) — jeomun.com 라이브확인, 신청전 할인율/수수료 확인필요
+- [⭐ 2026-08-17 메인페이지 뒷배경 크림색 변경](project_mainv2_bg_cream_change_2026_08_17.md) — #fdf6ec, 원본URL 백업(d389115)
+- [⭐⭐⭐ 2026-08-17 20개앱 시작버튼 광고 안뜨는문제 전수수정](project_20app_ad_button_fix_2026_08_17.md) — 10개파일 수정완료, 빌드/배포 아직
+- [⭐⭐⭐ 2026-08-17 일기4앱 전화번호변경차단+영구저장](project_diary4app_phonelock_save_done_2026_08_17.md) — 4앱 전부완료, 재확인불필요
+- [⭐⭐⭐ 2026-08-17 다이어트+MBTI 수정 진행현황](project_diet_mbti_fix_plan_pending.md) — 광고2개+계절라벨 완료, 나머지 미착수
+- [⛔⛔⛔ 2026-08-17 같은설명반복금지+끼어들면끝내고답+검증안한거검증했다말금지](feedback_stop_repeating_finish_before_reply.md) — 3가지 워크플로 규칙
+- [⛔ 홍보 콘텐츠에 템플릿/API미호출 구조 절대 언급 금지](feedback_never_reveal_template_architecture_publicly.md) — SNS·소개글 내부구조 노출금지 (08-15)
+- [⛔ 쉬어라/그만해라/내일해라 절대 금지](feedback_no_rest_suggestions.md) — 화나셨을때도 금지 (08-15)
+- [⛔ 변명부터 하지 말고 솔직하게 바로 답할 것](feedback_answer_honestly_no_defensive_excuses.md) — 확인질문엔 방어적변명없이 직답 (08-15)
+- [⛔⛔⛔ 2026-08-15 토스앱 개수 17개 확정 — 다시 묻지 말 것](project_toss_17app_count_confirmed.md) — haemong/zodiac/petun 사주앱흡수 제외
+- [⭐⭐⭐ 2026-08-15 일기류4앱 990→1980원+잠금버그 완료](project_diet_toss_ad_pending_2026_08_15.md) — 4앱완료(1cd2721+c51da0c), diet수정금지는 토스미니앱만
+- [⭐⭐⭐ 2026-08-15 gamjung 미커밋 변경 3개 진행보류](project_gamjung_uncommitted_changes_pending.md) — 승인전까지 빌드금지
+- [⭐⭐⭐ 2026-08-15 토스 라이브 전환 리마인더](project_toss_live_switch_reminder.md) — jeomun72su MID 테스트중, 전환전 3단계 안내
+- [⭐ 2026-08-15 가상계좌는 파트너페이지에만](project_toss_virtual_account_scope.md) — main-v2/pay엔 카드+간편결제만
+- [⭐⭐⭐ 2026-08-14 결제후 무료버튼 재클릭시 유료상태 초기화 버그](bug_paid_status_wiped_by_free_button.md) — commit 92e95be로 수정
+- [⭐⭐⭐ 2026-08-14 관리자인증+알림톡제한+Cloudflare속도제한](project_security_fix_2026_08_14.md) — 관리자API 13개 토큰인증(90e1067)
+- [⭐⭐ 2026-08-14 3초무료버튼 재입력 버그 수정](project_free_button_profile_wipe_fix.md) — v2_saved_profile 지워지던 버그, a327637
+- [⛔ 인증방식 바꾸는 배포 전엔 재로그인 필요 미리 경고](feedback_warn_before_auth_changes.md) — "DB전부삭제" 오인 소동 있었음
+- [⭐⭐⭐ 사주아이 강의 성장비법+PART6홍보+비용관리+프롬프트+Figma](reference_sajaui_course_growth_secrets.md) — 08-11
+- [⭐⭐⭐ 부드러운 존댓말 톤 사용](feedback_warm_tone_esther.md) — "에스더님" 호칭+존댓말, 반말금지 (08-11)
+- [⭐⭐⭐ 답변 핵심만 짧게](feedback_keep_replies_very_short.md) — 화면보며 진행할땐 설명 최소화 (08-13)
+- [⭐⭐⭐ 17개앱 광고구조 마스터 (2026-08-13)](project_ad_structure_master_2026_08_13.md) — 진입+결과직전+섹션마다광고, 히스토리2천포인트
+- [⭐⭐ 2026-08-11 최신 상태 업데이트](project_status_2026_08_11_update.md) — 토스17개중3개출시, SEO대량제출완료
+- [⭐ 세션 2026-08-11 — SEO 5700개+구글/빙 사이트맵+감정일기 약관](project_session_2026_08_11_seo.md) — 19앱×300 가이드페이지
+- [⭐⭐ 세션 2026-08-11 — 노마드코더+브런치+링크드인 홍보](project_session_2026_08_11_promo_brunch_linkedin.md) — 브런치 승인대기
+- [⚠️ 토스앱 유사카테고리 반려 경고 (Trinity 인터뷰)](reference_nomadcoders_trinity_toss_interview.md) — 심사먼저문의 or 내부통합 우회
+- [⭐ 앱인토스 플랫폼 업데이트 (2026-08-12)](project_appintoss_update_2026_08.md) — 비즈월렛 최소5만원, SDK3.0
+- [⭐⭐⭐ 2026-08-11 결제버그 마라톤 6개 원인+수정](project_session_2026_08_11_payment_bug_marathon.md) — 재발시 여기부터
+- [⛔⛔⛔ 무관한 버그 쫓다 방어코드 무단추가 금지](feedback_no_speculative_defensive_code.md) — 카톡결제 무단차단 사건 (08-11)
+- [⭐⭐⭐ 전화번호 일치 잠금 구현 (미완료)](project_phone_match_pending.md) — jigun pay만 완료, 11개 파일 미완료
+- [✅ (해제됨) 토스 미니앱 수정금지 규칙 완전 폐지 (2026-08-21)](feedback_diet_app_no_touch.md) — 어떤 토스앱도 수정금지 아님
+- [⭐⭐⭐ 18개앱 토스 업그레이드 마스터 플랜](project_18app_upgrade_plan.md) — 7개전면업+11개기능추가, 새세션마다 읽을것
+- [⭐⭐ 토스 랜딩페이지 제작 방법 (2026-08-09)](project_toss_landing_method.md) — guide/toss 이중구조 300개
+- [⭐⭐⭐ 매일 읽기 마스터 가이드 (절대 삭제 금지)](daily_master_guide.md) — 새 세션마다 반드시 읽을 것
+- [⛔ 빌드는 명확히 요청할 때만](feedback_build_only_when_asked.md) — 애매한 말에 자의적 빌드 금지
+- [⭐⭐ 토스 홍보 비법 (경쟁사 분석)](project_toss_promo_secrets.md) — N명카운터+나갈때광고2번+코인시스템 (07-30)
+- [⭐ 토스 앱 워터마크 전략](project_toss_watermark_strategy.md) — 메인결과카드 하단고정, 앱별문구확정
+- [⭐ 토스 사주 앱 파트너 모집 전략](project_toss_saju_partner_strategy.md) — 블로그링크방식 심사우회
+- [⭐⭐⭐ 토스 미니앱 빌드 완전 가이드](toss_app_build_guide.md) — 새 앱 만들기 전 반드시 읽기
+- [⚠️ 토스애즈 실패 교훈](project_toss_ads_lesson.md) — 4만원날림, 미니앱직접연결안됨
+- [⭐⭐⭐ 비즈 월렛 프로모션 전략](project_biz_wallet_strategy.md) — 30만원→혜택탭노출→100원가입→광고상쇄
+- [토스 네이티브 광고 집행 계획](project_toss_native_ad.md) — 미니앱제약 실패확인, 웹사이트만가능
+- [토스애즈 MBTI+다이어트 광고 현황](project_toss_ads_campaign_status.md) — 07-27승인, 잔여5만9천원유지
+- [⚠️ 다음 세션 첫 번째 할 것](project_next_session_upload.md) — 바이브챌린지 관련, 과거항목
+- [⭐ 세션 2026-08-02 — 알림톡 완전 수정](project_session_2026_08_02.md) — type:ATA누락+파트너명버그, 링크발송
+- [⭐⭐⭐ 토스 앱 수익화 최종 확정 (2026-07-28)](project_toss_app_monetization_final.md) — 990원앱vs광고앱분류, 절대변경금지
+- [⭐⭐ 광고+리뷰 구조 최종 v4 (2026-07-27)](project_toss_ad_structure_v2_final.md) — reviewClaimed영구차단
+- [이미지 만들기 요청 시 캔바 사양서로 줄 것](feedback_image_creation.md) — 아티팩트/HTML금지, 캔바사양서로
+- [⭐ MBTI+다이어트 광고 구조 최종](project_toss_ad_structure_final.md) — 섹션별리워드+전면1번 (v2 업데이트됨)
+- [⭐ 토스 리뷰 버튼 규칙](feedback_toss_review_button_rule.md) — requestReview()필수, href금지
+- [토스 광고 타이밍 규칙](feedback_toss_ad_timing.md) — 전면딜레이7초, 리워드타임아웃20초
+- [잠금 해제 버튼 문구 원칙](feedback_unlock_button_copy.md) — "광고보기"금지, "🔓 지금 열어보기 →"
+- [이미지 텍스트 이모지 금지](feedback_no_emoji_in_images.md) — 토스이미지/설명텍스트 이모지금지
+- [⚠️ 앱 개발 기본 규칙](feedback_app_development_base_rule.md) — 기존웹앱 기반, 새로짜지말것
+- [일기형 앱 Firebase 복원 규칙](feedback_diary_app_firebase_rule.md) — 일기형만 자동복원+수동동기화버튼
+- [User profile](user_profile.md) — non-technical first-time builder, vibe-coding, honest risk talk 원함
+- [User background](user_background.md) — 47세, 800시간투자, 재기간절 — 반드시 읽을 것
+- [Workflow rules](feedback_workflow_rules.md) — only change what's asked; build확인, commit+push+해시보고
+- [No question popups](feedback_no_question_popups.md) — 일반채팅으로 질문, 박스UI금지
+- [Wait for explicit go](feedback_wait_for_explicit_go.md) — 계획설명후 자체트리거 금지
+- [Deployment is live](project_deployment.md) — Vercel+jeomun.com, push후 1-2분
+- [Firebase vs Supabase decided](project_firebase_vs_supabase_decision.md) — Firebase RTDB 유지, 전환금지
+- [Saju text personalization](project_saju_personalization.md) — template-only, 결선 wired/dead code 목록
+- [White-label partner model](project_whitelabel_partner_model.md) — 서브도메인 브랜딩, 앱복사아님
+- [Docs plan](project_docs_plan.md) — DATABASE.md완료, PROJECT/SEO는 시기맞춰제안
+- [Next tasks](project_next_tasks.md) — SEO랜딩/Q&A검색창/보관함QASection/대운UI
+- [Q&A 확장 계획](project_qa_expansion_plan.md) — 택일/대운/연도별운세 추가계획
+- [사주아이 벤치마킹 분석](project_sajaui_analysis.md) — 성공비결/UI방식/미완성기능목록
+- [사주아이 전략 원문](project_sajaui_strategy_raw.md) — 앱이름/Q&A/서브도메인/SEO 전략원문
+- [요청 범위만 수정](feedback_only_touch_requested.md) — 요청한 파일·부분만, 다른페이지 금지
+- [기존 코드 절대 건드리지 말 것](feedback_dont_touch_existing.md) — 잘작동하는 코드 손대지말것
+- [Firebase Blaze 전환 리마인더](project_firebase_blaze_reminder.md) — 앱오픈전 필수
+- [원현우 점신 운영 방식](project_wonhyunwoo_model.md) — 경쟁사 파트너 리셀러모델 분석
+- [모든 페이지 한 번에 수정](feedback_apply_to_all_pages.md) — "모든/전부/다" 요청시 전체파악후 일괄처리
+- [세션 종료 시 CLAUDE.md 정리](feedback_session_summary.md) — 매세션끝 작업내용 자동저장+커밋+푸시
+- [카카오 비즈니스 신청](project_kakao_biz.md) — 카카오채널+알림톡 신청완료
+- [포트원 PG 진행현황](project_portone_status.md) — KPN+카카오페이 심사중
+- [마케팅 계획](project_marketing_plan.md) — 크몽AI사주 등록이 제일빠른매출
+- [광고 전략](project_ad_strategy.md) — 구글검색+유튜브+리마케팅, 랜딩→무료사주→결제 퍼널필수
+- [유저 핵심 이력](user_credentials.md) — 탈잉2년연속1위+크몽상위2%프라임 — 마케팅에 항상포함
+- [경쟁사 16Personalities 분석](competitor_16personalities.md) — 퀴즈60문항, 7900원수익화
+- [자동 저장 규칙](feedback_auto_save_research.md) — 경쟁사조사자료 말안해도 자동저장
+- [15개앱 전략](project_15app_strategy.md) — 완성10+남은5, 풀패스가격, "구독"금지
+- [플랫폼 전략 원본](project_platform_strategy_original.md) — SNS100개/랜딩구조/전환시나리오 원문
+- [앱개발 결정 원본](project_app_decisions_original.md) — 에러위험도분류/앱순서/음식DB3000개 원문
+- [전략 파일 먼저 읽기](feedback_read_strategy_first.md) — 전략질문오면 파일먼저읽고답, "모른다"금지
+- [이메일 항상 포함](feedback_always_include_email.md) — 새앱폼 전화번호+이름+이메일 필수세트
+- [완료된 작업 반복 금지](feedback_no_repeat_done_tasks.md) — 이미한작업 다시시키지말것, 코드직접확인
+- [플랫폼 시장 가치](project_platform_value.md) — 외주기준약2억, 94일독자구축 — 강의소개활용
+- [미구현 결정 항목](project_pending_decisions.md) — 결정됐지만안한것 7개
+- [결정 즉시 저장 규칙](feedback_save_decisions_immediately.md) — 미구현결정 즉시memory저장
+- [앱 잠금 체계](project_lock_system.md) — 직운/합격영구, 나머지30일/24h, fullAccess쿠폰
+- [풀패스 전략](project_fullpass_strategy.md) — 4900원/6900원 확정, KCP연동후 구현
+- [카카오톡 결과지 이탈 버그](feedback_kakaotalk_navigation_bug.md) — replace/href→사라짐, window.open통일
+- [앱인토스 전략](project_appintoss_strategy.md) — 무료4개먼저, 유료는 jeomun.com연결
+- [결제 연동 현황](project_payment_status.md) — 포트원신용카드심사중+카카오페이대기
+- [잠금/해제/저장 검증 완료](project_lock_verification.md) — 3종24h/무료쿠폰차단/풀패스 전부완성확인
+- [현재 결제 시스템](project_payment_current.md) — PG는 페이업(PayUp), 월한도200~300만원
+- [크몽 파트너 판매글](project_kmong_partner_listing.md) — 실버/골드/다이아 완성판매글
+- [⚠️ 다음 세션 할 것](project_next_session_kmong.md) — 무료파트너마감코드+크몽판매글 우선순위1
+- [맹렬 인스타 수익화 전략](competitor_maengryeol_instagram.md) — AI애니릴스7단계+상품4단구조
+- [경쟁사 sajucase 틱톡 전략](competitor_sajucase_tiktok.md) — TOP5리스트형숏폼, 4일42.5만재생
+- [⚠️ 카카오톡 읽기·보관함·공유 버그 수정법](feedback_kakaotalk_reading_fix.md) — 반복패턴6종+수정코드, 반드시먼저읽을것
+- [토스 앱인토스 입점 현황](project_appintoss_progress.md) — 무료버전빌드완료(미업로드), 사업자심사중
+- [토스 미니앱 Firebase 저장 방법](project_toss_firebase_saving.md) — REST API 직접저장패턴
+- [2026-07-23 세션 작업](project_session_2026_07_23.md) — 개인정보 필수/선택 체크박스분리 완료
+- [⚠️ 토스 바이브코딩 챌린지](project_toss_vibe_challenge.md) — 과거항목, 7/29마감건
+- [다이어트 토스앱 + MBTI 출시 + 토스애즈](project_session_2026_07_23_diet.md) — Toss Storage완성, 토스애즈승인
+- [토스 프로모션 가이드](project_toss_promotion_guide.md) — 포인트이벤트, 비즈월렛최소30만원
+- [토스 인앱 광고 가이드](project_toss_inapp_ad_guide.md) — 배너/전면/리워드, eCPM공식, 정산구조
+- [토스 앱인토스 성공사례 디스팟/슈퍼조이/마나바바/자몽다](reference_toss_discpot_case.md) — 마케팅비0원 4개사례, [[reference_toss_superjoy_case]] [[reference_toss_manababa_case]] [[reference_toss_jamond_case]] 참고
+- [토스 리뷰 받는 법](project_toss_review_guide.md) — requestReview() 네이티브API 무료
+- [토스 공유 리워드 가이드](project_toss_share_reward_guide.md) — 친구초대 인앱재화, 나중에적용
+- [⭐ 토스 성공 무료 비법 (통합)](reference_toss_success_secrets.md) — 4개사례 핵심모음, 작업전 반드시읽을것
+- [⭐ 로빈 앱인토스 웨비나 전체](reference_robin_appintoss_webinar.md) — 스마트발송+세그먼트레시피+수익화
+- [⭐⭐ 토스 첫진입 광고 flicker 수정 (2026-07-31)](project_toss_ad_firstentry_fix.md) — loaded이벤트+8시간블록, 새앱필수
+- [⛔ memory 저장은 항상 GitHub에](feedback_memory_save_to_github.md) — 프로젝트memory/복사+commit+push까지완료
+- [세션 작업 2026-08-01](project_session_2026_08_01.md) — 16앱카운터통일+배지+흰푸터
+- [⛔ 코드 직접 확인 — 저장된 문서만 보고 답하지 말 것](feedback_check_code_not_docs.md) — 상태질문엔 코드직접읽기
+- [⛔⛔⛔ 요청한 것만 수정 — ShareClient 사건](feedback_no_extra_edits.md) — 요청없이건드려 3일작업망침, 다른파일금지
+- [⚠️ MBTI 이름 변경 승인 후 수정 대기](project_mbti_name_change_pending.md) — 승인오면 워터마크+크로스프로모 변경
+- [⭐⭐ 앱인토스 8월 바이브코딩 챌린지 + 신규앱 4개](project_session_2026_08_03.md) — 하찮아도괜찮아, /battle·/movie·/style·/work
+- [⚠️ 토스 크로스프로모 + 앱이름 수정 대기](project_toss_cross_promo_pending.md) — "무료"제거+CROSS배열정리
+- [⭐ 세션 2026-08-05 — 사주앱 3단계잠금+17개앱 크로스프로모](project_session_2026_08_05.md) — MINI_DREAM_DB20개, 17개.ait빌드완료
+- [⭐ 토스 인앱 광고 가이드 v2 (2026-08-06)](project_toss_inapp_ad_guide_v2.md) — 수익공식+배치원칙+정책위반제재
+- [⭐⭐ 세션 2026-08-07 — 토스앱 5개 수정+빌드+육아일기 전면수정](project_session_2026_08_07.md) — 태몽잠금버그수정, 크로스프로모16개
+- [⭐ 날씨 체크 앱 수익 구조 분석](reference_nalssicheok_structure.md) — 출석보너스+미션광고+포인트구조
+- [⛔⛔ 다이어트 앱 사고 + 토스애즈 의심 (2026-08-08)](project_session_2026_08_08_diet.md) — git reset소스소실, 봇트래픽의심
+- [⭐ 세션 2026-08-11 — 구글 애즈 전면 수정](project_session_2026_08_11_google_ads.md) — "무료"제거→990원강조, 광고랜딩은 항상/main-v2
