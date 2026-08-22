@@ -71,7 +71,7 @@ export default function DailyTrackerPage() {
 
   function addLog(type: TabKey, label: string, detail: string) {
     const newLog: Log = { id: Date.now().toString(), type, label, detail, time: now() };
-    saveLogs([newLog, ...logs].slice(0, 50));
+    saveLogs([newLog, ...logs]);
   }
 
   useEffect(() => {
