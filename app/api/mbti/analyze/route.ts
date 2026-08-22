@@ -473,7 +473,7 @@ export async function POST(req: NextRequest) {
     const { answers, userName, phone, email } = body;
     const marketing = body.marketing === true;
     if (!answers || answers.length !== 16) {
-      return NextResponse.json({ error: "answers 16개 필요" }, { status: 400 });
+      return NextResponse.json({ error: "answers 16개 필요" }, { status: 400, headers: CORS_HEADERS });
     }
 
     const dimScores: Record<Dim, number> = { EI: 0, SN: 0, TF: 0, JP: 0 };
@@ -511,7 +511,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ id: ref.key, ...result }, { headers: CORS_HEADERS });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ error: "서버 오류" }, { status: 500 });
+    return NextResponse.json({ error: "서버 오류" }, { status: 500, headers: CORS_HEADERS });
   }
 }
 
@@ -522,12 +522,12 @@ export async function OPTIONS() {
 export async function GET(req: NextRequest) {
   try {
     const id = new URL(req.url).searchParams.get("id");
-    if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+    if (!id) return NextResponse.json({ error: "id required" }, { status: 400, headers: CORS_HEADERS });
     const snap = await db.ref(`mbti_analyses/${id}`).get();
-    if (!snap.exists()) return NextResponse.json({ error: "not found" }, { status: 404 });
+    if (!snap.exists()) return NextResponse.json({ error: "not found" }, { status: 404, headers: CORS_HEADERS });
     return NextResponse.json({ id, ...snap.val() }, { headers: CORS_HEADERS });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ error: "서버 오류" }, { status: 500 });
+    return NextResponse.json({ error: "서버 오류" }, { status: 500, headers: CORS_HEADERS });
   }
 }
