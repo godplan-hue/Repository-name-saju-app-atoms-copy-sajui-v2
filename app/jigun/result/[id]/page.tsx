@@ -9,7 +9,32 @@ type Detail = {
   title: string; icon: string; income: string;
   why: string; howToStart: string[]; platforms: string[]; timeline: string; trap: string;
 };
-type Result = { name: string; phone?: string; birthYear?: number; recommended: string[]; details: Detail[]; createdAt: number };
+type Roadmap = { m1: string; m2: string; m3: string };
+type IncomeSim = { h1: string; h3: string; note: string };
+type Result = {
+  name: string; phone?: string; birthYear?: number; recommended: string[]; details: Detail[]; createdAt: number;
+  allRanked?: string[] | null; top4Detail?: Detail | null; avoidDetail?: Detail | null;
+  roadmap?: Roadmap | null; incomeSim?: IncomeSim | null;
+};
+
+// ── 오늘의 부업운 (오행별, 날짜 시드 — 토스 미니앱 jeomun-jigun 원문 그대로 이식) ──
+const OH_FORTUNE: Record<string, { high: string; mid: string; low: string }> = {
+  목: { high: "오늘은 새로운 걸 시작하기 딱 좋은 날이에요. 미뤄뒀던 부업 첫걸음, 오늘 떼어보세요.", mid: "천천히 준비하는 것만으로도 충분한 하루예요. 조급해하지 마세요.", low: "오늘은 크게 벌리기보다 기존에 하던 일을 다듬는 데 집중하세요." },
+  화: { high: "오늘은 사람들 앞에 나서거나 홍보하기 좋은 기운이에요. SNS에 뭔가 올려보세요.", mid: "에너지는 있지만 방향이 중요한 날. 계획부터 다시 점검해보세요.", low: "오늘은 감정적인 결정은 피하고, 숫자와 데이터로 판단하세요." },
+  토: { high: "꾸준히 쌓아온 게 슬슬 결과로 나타날 타이밍이에요. 오늘 점검해보세요.", mid: "안정적으로 흘러가는 날. 무리한 확장보다 유지에 집중하세요.", low: "오늘은 새 계약이나 큰 지출은 미루는 게 좋아요." },
+  금: { high: "분석하고 정리하면 답이 보이는 날이에요. 미뤄둔 서류·정산부터 처리하세요.", mid: "평소 실력이 그대로 나오는 무난한 하루예요.", low: "오늘은 완벽주의가 발목을 잡을 수 있어요. 60%만 완성해도 충분해요." },
+  수: { high: "직감이 예리해지는 날이에요. 아이디어가 떠오르면 바로 메모해두세요.", mid: "혼자 몰입해서 작업하기 좋은 하루예요.", low: "오늘은 중요한 판단은 하루 미루고 정보 수집만 하세요." },
+};
+function getTodayJobLuck(ohKey: string): { score: number; comment: string } {
+  const today = new Date();
+  const dateSeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+  const ohSeed = (ohKey.charCodeAt(0) || 0) * 7919;
+  const lcg = Math.abs(((dateSeed + ohSeed) * 1664525 + 1013904223) & 0x7fffffff);
+  const score = 62 + (lcg % 34);
+  const tier = score >= 85 ? "high" : score >= 73 ? "mid" : "low";
+  const fortune = OH_FORTUNE[ohKey] || OH_FORTUNE["목"];
+  return { score, comment: fortune[tier as "high" | "mid" | "low"] };
+}
 
 const GAN_OH = ["목", "목", "화", "화", "토", "토", "금", "금", "수", "수"];
 
@@ -255,6 +280,168 @@ export default function JigunResultPage() {
             </div>
           );
         })}
+
+        {/* 신규 콘텐츠 5종: 안맞는 부업 경고 / 숨은 TOP4 / 3개월 로드맵 / 수익 시뮬레이터 / 오늘의 부업운 — 기존 990원 결제(jigun_unlock_until)로 동일하게 잠금 */}
+        {(() => {
+          const newLocked = !isUnlocked;
+          const top1 = result.details[0];
+          const avoidDetail = result.avoidDetail;
+          const top4Detail = result.top4Detail;
+          const roadmap = result.roadmap;
+          const incomeSim = result.incomeSim;
+          const lockOverlay = (label: string) => (
+            <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", borderRadius: 22, background: "rgba(3,0,20,0.7)", backdropFilter: "blur(2px)" }}>
+              <div style={{ fontSize: 32, marginBottom: 10 }}>🔒</div>
+              <p style={{ fontSize: 14, fontWeight: 900, color: "white", margin: "0 0 4px", textAlign: "center" }}>{label}</p>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 14px", textAlign: "center" }}>990원 결제 후 24시간 전체 열람 가능</p>
+              <a href={`/jigun/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", borderRadius: 20, padding: "10px 22px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+                ₩990 결제하고 전체 보기 →
+              </a>
+            </div>
+          );
+
+          return (
+            <>
+              {/* 4. 나에게 안 맞는 부업 경고 */}
+              {avoidDetail && (
+                <div style={{ position: "relative", marginBottom: 14 }}>
+                  <div style={{
+                    background: "rgba(239,68,68,0.08)", border: "1.5px solid rgba(239,68,68,0.3)", borderRadius: 22, padding: "20px 18px",
+                    filter: newLocked ? "blur(4px)" : "none", userSelect: newLocked ? "none" : "auto", pointerEvents: newLocked ? "none" : "auto",
+                  }}>
+                    <h3 style={{ fontSize: 16, fontWeight: 800, color: "#fca5a5", margin: "0 0 12px" }}>⚠️ 지금 시작하면 오래 못 갈 부업</h3>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                      <span style={{ fontSize: 22 }}>{avoidDetail.icon}</span>
+                      <span style={{ fontSize: 16, fontWeight: 800, color: "#f3f4f6" }}>{avoidDetail.title}</span>
+                    </div>
+                    <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.8, wordBreak: "keep-all", margin: "0 0 10px" }}>
+                      8가지 답변 패턴을 종합했을 때, 이 부업은 지금 당신의 성향·환경과 결이 잘 맞지 않아요. {avoidDetail.trap} 억지로 시작하면 초반 의욕은 있어도 3개월을 넘기지 못하고 그만두는 경우가 많았어요.
+                    </p>
+                    <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.7, wordBreak: "keep-all", margin: 0 }}>
+                      지금은 위에서 추천드린 부업에 먼저 집중하시고, 이 분야는 경험과 자금 여유가 더 생겼을 때 다시 고려해보세요. 순서를 지키는 게 시간 낭비를 줄이는 가장 빠른 길이에요.
+                    </p>
+                  </div>
+                  {newLocked && lockOverlay("⚠️ 나에게 안 맞는 부업 잠금")}
+                </div>
+              )}
+
+              {/* 5. 숨은 TOP4 부업 */}
+              {top4Detail && (
+                <div style={{ position: "relative", marginBottom: 14 }}>
+                  <div style={{
+                    background: "rgba(255,255,255,0.04)", border: "2px solid rgba(255,255,255,0.08)", borderRadius: 22, padding: "24px 20px",
+                    filter: newLocked ? "blur(4px)" : "none", userSelect: newLocked ? "none" : "auto", pointerEvents: newLocked ? "none" : "auto",
+                  }}>
+                    <div style={{ background: "rgba(79,142,247,0.08)", border: "1.5px solid rgba(79,142,247,0.25)", borderRadius: 14, padding: "14px 16px", marginBottom: 14 }}>
+                      <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.8, wordBreak: "keep-all", margin: 0 }}>
+                        🔍 TOP3만 보고 끝내기엔 아쉬워요. 8가지 답변을 다시 분석해보니 <strong style={{ color: "#a78bfa" }}>'{top4Detail.title}'</strong>도 꽤 높은 궁합을 보였어요. 오히려 부담이 적어서 더 오래 갈 수도 있는 부업이에요.
+                      </p>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+                      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                        <span style={{ fontSize: 36 }}>{top4Detail.icon}</span>
+                        <div>
+                          <div style={{ fontSize: 11, color: "#a78bfa", fontWeight: 700, marginBottom: 2 }}>🏅 4순위 추천</div>
+                          <h2 style={{ fontSize: 16, fontWeight: 900, margin: 0 }}>{top4Detail.title}</h2>
+                        </div>
+                      </div>
+                      <div style={{ textAlign: "right", flexShrink: 0 }}>
+                        <div style={{ fontSize: 13, fontWeight: 900, color: "#22c55e" }}>{top4Detail.income}</div>
+                      </div>
+                    </div>
+                    <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 14px", marginBottom: 14 }}>
+                      <p style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.75, margin: 0 }}>{top4Detail.why}</p>
+                    </div>
+                    <div style={{ marginBottom: 14 }}>
+                      <p style={{ fontSize: 12, fontWeight: 700, color: "#a78bfa", margin: "0 0 8px" }}>🚀 지금 당장 시작하는 3단계</p>
+                      {top4Detail.howToStart.slice(0, 3).map((s, j) => (
+                        <div key={j} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 8 }}>
+                          <span style={{ background: "rgba(124,58,237,0.5)", color: "white", borderRadius: 6, padding: "2px 7px", fontSize: 11, fontWeight: 900, minWidth: 20, textAlign: "center", flexShrink: 0 }}>{j + 1}</span>
+                          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", margin: 0, lineHeight: 1.65 }}>{s}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ marginBottom: 12 }}>
+                      <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", margin: "0 0 6px", fontWeight: 700 }}>주요 플랫폼</p>
+                      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                        {top4Detail.platforms.map(p => (
+                          <span key={p} style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.65)", borderRadius: 10, padding: "3px 10px", fontSize: 11 }}>{p}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div style={{ background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.2)", borderRadius: 12, padding: "10px 12px", marginBottom: 10 }}>
+                      <p style={{ fontSize: 11, color: "rgba(234,179,8,0.85)", margin: 0, whiteSpace: "pre-line" }}>⚠️ 함정 주의: {top4Detail.trap}</p>
+                    </div>
+                    <p style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", margin: 0 }}>📅 예상 타임라인: {top4Detail.timeline}</p>
+                  </div>
+                  {newLocked && lockOverlay("🔍 숨겨진 천직 부업 4위 잠금")}
+                </div>
+              )}
+
+              {/* 6. 3개월 로드맵 */}
+              {roadmap && top1 && (
+                <div style={{ position: "relative", marginBottom: 14 }}>
+                  <div style={{
+                    background: "rgba(255,255,255,0.04)", border: "1.5px solid rgba(255,255,255,0.10)", borderRadius: 16, padding: "20px 18px",
+                    filter: newLocked ? "blur(4px)" : "none", userSelect: newLocked ? "none" : "auto", pointerEvents: newLocked ? "none" : "auto",
+                  }}>
+                    <h3 style={{ fontSize: 16, fontWeight: 800, color: "#f3f4f6", margin: "0 0 4px" }}>🗓️ {top1.title} 3개월 로드맵</h3>
+                    <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 14px" }}>당신의 TOP1 부업 기준으로 짠 현실적인 일정이에요</p>
+                    {[["1개월차", roadmap.m1], ["2개월차", roadmap.m2], ["3개월차", roadmap.m3]].map(([label, text], i) => (
+                      <div key={i} style={{ display: "flex", gap: 12, marginBottom: i < 2 ? 14 : 0 }}>
+                        <div style={{ flexShrink: 0, width: 62, height: 28, borderRadius: 14, background: "rgba(167,139,250,0.13)", color: "#a78bfa", fontSize: 12, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }}>{label}</div>
+                        <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.7, wordBreak: "keep-all", margin: 0 }}>{text}</p>
+                      </div>
+                    ))}
+                  </div>
+                  {newLocked && lockOverlay("🗓️ 3개월 로드맵 잠금")}
+                </div>
+              )}
+
+              {/* 7. 예상 수익 시뮬레이터 */}
+              {incomeSim && top1 && (
+                <div style={{ position: "relative", marginBottom: 14 }}>
+                  <div style={{
+                    background: "rgba(34,197,94,0.06)", border: "1.5px solid rgba(34,197,94,0.25)", borderRadius: 16, padding: "20px 18px",
+                    filter: newLocked ? "blur(4px)" : "none", userSelect: newLocked ? "none" : "auto", pointerEvents: newLocked ? "none" : "auto",
+                  }}>
+                    <h3 style={{ fontSize: 16, fontWeight: 800, color: "#4ade80", margin: "0 0 14px" }}>💰 {top1.title} 예상 수익 시뮬레이터</h3>
+                    <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+                      <div style={{ flex: 1, background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "12px 10px", textAlign: "center" }}>
+                        <p style={{ fontSize: 11, color: "#9ca3af", margin: "0 0 6px" }}>하루 1시간 투자</p>
+                        <p style={{ fontSize: 15, color: "#f3f4f6", fontWeight: 800, margin: 0 }}>{incomeSim.h1}</p>
+                      </div>
+                      <div style={{ flex: 1, background: "rgba(34,197,94,0.12)", borderRadius: 12, padding: "12px 10px", textAlign: "center" }}>
+                        <p style={{ fontSize: 11, color: "#86efac", margin: "0 0 6px" }}>하루 3시간 투자</p>
+                        <p style={{ fontSize: 15, color: "#4ade80", fontWeight: 800, margin: 0 }}>{incomeSim.h3}</p>
+                      </div>
+                    </div>
+                    <p style={{ fontSize: 12.5, color: "#9ca3af", lineHeight: 1.7, wordBreak: "keep-all", margin: 0 }}>{incomeSim.note}</p>
+                  </div>
+                  {newLocked && lockOverlay("💰 예상 수익 시뮬레이터 잠금")}
+                </div>
+              )}
+
+              {/* 8. 오늘의 부업운 (오행 있을 때만) */}
+              {ohInfo && oh && (() => {
+                const todayLuck = getTodayJobLuck(oh);
+                return (
+                  <div style={{ position: "relative", marginBottom: 14 }}>
+                    <div style={{
+                      background: `linear-gradient(135deg,${ohInfo.color}18,rgba(0,0,0,0))`, border: `1.5px solid ${ohInfo.color}44`, borderRadius: 16, padding: "20px 18px", textAlign: "center",
+                      filter: newLocked ? "blur(4px)" : "none", userSelect: newLocked ? "none" : "auto", pointerEvents: newLocked ? "none" : "auto",
+                    }}>
+                      <h3 style={{ fontSize: 16, fontWeight: 800, color: ohInfo.color, margin: "0 0 10px" }}>🍀 오늘의 부업운</h3>
+                      <div style={{ fontSize: 32, fontWeight: 900, color: ohInfo.color, marginBottom: 10 }}>{todayLuck.score}점</div>
+                      <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.8, wordBreak: "keep-all", margin: 0 }}>{todayLuck.comment}</p>
+                    </div>
+                    {newLocked && lockOverlay("🍀 오늘의 부업운 잠금")}
+                  </div>
+                );
+              })()}
+            </>
+          );
+        })()}
 
         {/* 파트너 카드 */}
         <div style={{ background: "linear-gradient(135deg,#0f172a,#1e1b4b)", border: "2px solid rgba(124,58,237,0.5)", borderRadius: 22, padding: "24px 20px", marginBottom: 14 }}>

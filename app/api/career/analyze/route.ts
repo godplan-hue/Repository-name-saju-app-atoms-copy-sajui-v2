@@ -88,14 +88,44 @@ const CAREER_DETAIL: Record<string, {
   },
 };
 
+// 3개월 로드맵 (부업별) — 토스 미니앱 jeomun-jigun 원문 그대로 이식
+const ROADMAP: Record<string, { m1: string; m2: string; m3: string }> = {
+  content: { m1: "채널 개설 + 컨셉 확정. 완벽한 첫 영상보다 '일단 10개 업로드'가 목표예요.", m2: "댓글·조회수 데이터로 잘 되는 주제 1~2개로 좁히기. 이때부터 팔로워 증가 속도가 붙어요.", m3: "협찬 문의 첫 메일 오는 시기. 단가표 만들고 광고주 응대 시작하세요." },
+  lecture: { m1: "내가 아는 것 정리해서 무료 강의 1개 클래스101·탈잉에 업로드.", m2: "수강 후기 5개 이상 모으고, 피드백 반영해 커리큘럼 다듬기.", m3: "유료 전환 + 가격 재설정. 이 시점부터 입소문으로 신청자가 늘어요." },
+  shop: { m1: "스마트스토어 개설, 소량 소싱으로 3~5개 상품 테스트 판매.", m2: "잘 팔리는 1~2개 상품에 집중, 재구매 후기 관리 시작.", m3: "광고(파워링크·쇼핑검색) 소액 테스트로 매출 규모 키우기." },
+  translate: { m1: "크몽에 번역 샘플 포트폴리오 등록, 첫 3건은 할인가로 리뷰 확보.", m2: "정가 전환 + 전문 분야(계약서·논문 등) 1개 특화하기.", m3: "단골 고객 2~3곳 확보. 이때부터 의뢰가 먼저 들어와요." },
+  writing: { m1: "브런치·블로그에 글 10개 발행, 내 문체와 주제 찾기.", m2: "크몽에 카피라이팅·콘텐츠 제작 서비스 등록, 첫 의뢰 수주.", m3: "기업 블로그 외주로 단가 올리기. 포트폴리오 링크로 영업." },
+  design: { m1: "미리캔버스·캔바로 샘플 5개 제작, 크몽 포트폴리오 등록.", m2: "첫 의뢰 완료 후 리뷰 확보, 유튜브 섬네일 등 특화 분야 정하기.", m3: "단가 인상 + 정기 클라이언트 확보로 안정적 수입 만들기." },
+  ai: { m1: "챗GPT·클로드로 업무 자동화 템플릿 2~3개 직접 만들어보기.", m2: "크몽에 'AI 자동화' 서비스 등록, 소규모 사업자 대상 첫 계약.", m3: "기업 맞춤 솔루션으로 확장, 단가를 프로젝트 단위로 재설정." },
+  food: { m1: "배달의민족 자영업 신청 + 메뉴 1~2개로 시작, 위생허가 필수 확인.", m2: "리뷰 이벤트로 초기 후기 확보, 반응 좋은 메뉴에 집중.", m3: "SNS 홍보 + 단골 확보. 재구매율이 수익을 좌우하는 시기예요." },
+};
+
+// 예상 수익 시뮬레이터 (부업별, 투자 시간 기준) — 토스 미니앱 jeomun-jigun 원문 그대로 이식
+const INCOME_SIM: Record<string, { h1: string; h3: string; note: string }> = {
+  content: { h1: "월 10만~40만원", h3: "월 80만~400만원", note: "콘텐츠는 투자 시간보다 '꾸준함'이 수익을 가릅니다. 3시간 투자해도 3개월은 지나야 광고 수익이 붙어요." },
+  lecture: { h1: "월 20만~80만원", h3: "월 150만~800만원", note: "강의는 시간보다 '준비 밀도'가 중요해요. 3시간을 커리큘럼 다듬기에 쓰면 수강생 만족도가 확 올라갑니다." },
+  shop: { h1: "월 15만~60만원", h3: "월 100만~300만원", note: "3시간 투자시 상품 소싱·CS를 직접 다 챙길 수 있어 마진율이 눈에 띄게 좋아져요." },
+  translate: { h1: "월 20만~50만원", h3: "월 100만~200만원", note: "번역은 시간 투입과 수입이 거의 비례해요. 3시간이면 의뢰를 2~3건 더 받을 수 있어요." },
+  writing: { h1: "월 10만~40만원", h3: "월 80만~300만원", note: "3시간 투자시 기업 외주 글까지 병행 가능해져서 단가가 확 뛰어요." },
+  design: { h1: "월 15만~60만원", h3: "월 100만~500만원", note: "디자인은 작업 속도가 곧 수입이에요. 3시간이면 하루 1~2건 완료가 가능해집니다." },
+  ai: { h1: "월 20만~80만원", h3: "월 150만~1,000만원", note: "AI 자동화는 초기 세팅만 3시간 투자해두면 이후엔 적은 시간으로도 유지가 돼요." },
+  food: { h1: "월 20만~60만원", h3: "월 100만~200만원", note: "3시간이면 준비·조리·포장까지 직접 가능해 외주 비용을 아낄 수 있어요." },
+};
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, phone, email, birthYear, birthMonth, birthDay, timeAvail, skill, speed, career, recommended } = body;
+    const { name, phone, email, birthYear, birthMonth, birthDay, timeAvail, skill, speed, career, recommended, allRanked } = body;
 
     if (!recommended || recommended.length === 0) {
       return NextResponse.json({ error: "추천 결과 없음" }, { status: 400 });
     }
+
+    // 신규 5종 콘텐츠(안맞는 부업 경고/숨은 TOP4/로드맵/수익시뮬레이터)용 — allRanked(전체 10개 순위) 있을 때만 계산, 없으면 undefined로 두어 기존 결과 구조에 영향 없음
+    const top1Key = recommended[0];
+    const rankedList: string[] | null = Array.isArray(allRanked) && allRanked.length > 0 ? allRanked : null;
+    const top4Key = rankedList && rankedList.length > 3 ? rankedList[3] : null;
+    const avoidKey = rankedList && rankedList.length > 0 ? rankedList[rankedList.length - 1] : null;
 
     const result = {
       name: name || "", phone: phone || "", email: email || "",
@@ -103,6 +133,11 @@ export async function POST(req: NextRequest) {
       timeAvail: timeAvail ?? null, skill: skill ?? null, speed: speed ?? null, career: career ?? null,
       recommended,
       details: recommended.map((id: string) => CAREER_DETAIL[id] ?? CAREER_DETAIL["content"]),
+      allRanked: rankedList,
+      top4Detail: top4Key ? (CAREER_DETAIL[top4Key] ?? null) : null,
+      avoidDetail: avoidKey ? (CAREER_DETAIL[avoidKey] ?? null) : null,
+      roadmap: ROADMAP[top1Key] || ROADMAP["content"],
+      incomeSim: INCOME_SIM[top1Key] || INCOME_SIM["content"],
       marketing: body.marketing ?? false,
       createdAt: Date.now(),
     };

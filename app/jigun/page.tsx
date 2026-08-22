@@ -132,6 +132,58 @@ function calcRecommended(ans: string[]): string[] {
   return Object.entries(s).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => k);
 }
 
+// 전체 10개 부업 점수 순위 (숨은 TOP4 · 안맞는 부업 경고용, calcRecommended와 별도 — 기존 로직 미변경)
+function calcFullRanked(ans: string[]): string[] {
+  const s: Record<string, number> = {
+    content: 0, lecture: 0, shop: 0, translate: 0,
+    writing: 0, consulting: 0, design: 0, ai: 0, food: 0, realestate: 0,
+  };
+
+  const t = ans[0];
+  if (t === "A") { s.writing += 2; s.translate += 2; s.shop += 1; }
+  if (t === "B") { s.content += 2; s.design += 2; s.writing += 1; s.translate += 1; }
+  if (t === "C") { s.lecture += 2; s.consulting += 2; s.ai += 2; }
+  if (t === "D") { s.lecture += 3; s.consulting += 3; s.realestate += 2; s.ai += 2; }
+
+  const m = ans[1];
+  if (m === "A") { s.content += 2; s.writing += 2; s.translate += 2; s.consulting += 2; s.ai += 2; }
+  if (m === "B") { s.design += 2; s.lecture += 2; s.shop += 2; s.food += 1; }
+  if (m === "C") { s.realestate += 3; s.food += 2; s.shop += 2; }
+
+  const sk = ans[2];
+  if (sk === "A") { s.lecture += 3; s.consulting += 3; s.content += 2; }
+  if (sk === "B") { s.content += 3; s.design += 3; s.food += 1; }
+  if (sk === "C") { s.ai += 3; s.realestate += 2; s.consulting += 2; }
+  if (sk === "D") { s.writing += 3; s.translate += 3; }
+
+  const so = ans[3];
+  if (so === "A") { s.consulting += 2; s.lecture += 2; s.food += 2; s.content += 1; }
+  if (so === "B") { s.writing += 2; s.ai += 2; s.translate += 2; s.design += 1; s.shop += 1; }
+
+  const sit = ans[4];
+  if (sit === "A") { s.content += 2; s.translate += 2; s.writing += 2; s.design += 1; }
+  if (sit === "B") { s.consulting += 2; s.lecture += 2; s.ai += 2; s.realestate += 1; }
+  if (sit === "C") { s.food += 3; s.shop += 2; s.content += 1; s.writing += 1; }
+
+  const on = ans[5];
+  if (on === "A") { s.content += 3; s.design += 2; s.shop += 2; }
+  if (on === "B") { s.content += 1; s.design += 1; s.ai += 1; s.shop += 1; }
+  if (on === "C") { s.consulting += 2; s.food += 2; s.realestate += 2; }
+
+  const inc = ans[6];
+  if (inc === "A") { s.food += 3; s.consulting += 2; s.translate += 2; s.design += 1; }
+  if (inc === "B") { s.content += 3; s.lecture += 2; s.ai += 2; s.realestate += 2; s.shop += 1; }
+
+  const f = ans[7];
+  if (f === "A") { s.ai += 4; s.design += 2; }
+  if (f === "B") { s.content += 4; s.design += 2; }
+  if (f === "C") { s.lecture += 4; s.consulting += 2; }
+  if (f === "D") { s.shop += 4; s.food += 2; s.realestate += 1; }
+  if (f === "E") { s.writing += 4; s.translate += 3; }
+
+  return Object.entries(s).sort((a, b) => b[1] - a[1]).map(([k]) => k);
+}
+
 function getTodayCount() {
   const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
   const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
@@ -185,6 +237,7 @@ export default function JigunPage() {
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setErr("전화번호를 입력해주세요. (필수사항)"); return; }
     const recommended = calcRecommended(answers);
+    const allRanked = calcFullRanked(answers);
     setLoading(true);
     setErr("");
     try {
@@ -203,6 +256,7 @@ export default function JigunPage() {
           speed: answers[6] === "A" ? 0 : 1,
           career: ["A", "B", "C"].indexOf(answers[4]),
           recommended,
+          allRanked,
           marketing: marketingAgreed,
         }),
       });

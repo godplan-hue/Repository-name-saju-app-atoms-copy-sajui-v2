@@ -10,6 +10,8 @@ type Result = {
   oh: string; score: number; trait: string; ohKeyword: string; ohAdvice: string;
   fieldKeywords: string[]; fieldStrategy: string; interview: string[];
   sizeStrategy: string; createdAt: number; paid?: boolean; phone?: string;
+  redFlag?: string; interviewerTrait?: string; storyline?: string;
+  companies?: { name: string; why: string }[]; salaryTiming?: string;
 };
 
 const ohEmoji: Record<string,string> = { 목:"🌿", 화:"🔥", 토:"🌍", 금:"💎", 수:"💧" };
@@ -223,6 +225,62 @@ export default function ResumeResultPage() {
                 ))}
               </div>
             </div>
+
+            {/* 감점 표현 경고 */}
+            {result.redFlag && (
+              <div style={S.card}>
+                <p style={{fontSize:15, fontWeight:900, color:"#f87171", margin:"0 0 14px"}}>⚠️ 이런 표현 쓰면 감점</p>
+                <p style={{fontSize:13, fontWeight:700, color:"#f87171", margin:"0 0 8px"}}>{result.field} 지원자가 가장 많이 하는 실수</p>
+                <p style={{fontSize:15, color:"#d1d5db", lineHeight:1.85, margin:0}}>{result.redFlag}</p>
+              </div>
+            )}
+
+            {/* 면접관이 좋아하는 태도 */}
+            {result.interviewerTrait && (
+              <div style={S.card}>
+                <p style={{fontSize:15, fontWeight:900, color:"#93c5fd", margin:"0 0 14px"}}>🤝 면접관이 좋아하는 태도</p>
+                <div style={{display:"flex", gap:14, alignItems:"flex-start"}}>
+                  <span style={{fontSize:30}}>{ohE}</span>
+                  <p style={{fontSize:15, color:"#d1d5db", lineHeight:1.85, margin:0}}>{result.interviewerTrait}</p>
+                </div>
+              </div>
+            )}
+
+            {/* 합격 스토리라인 예시 문장 */}
+            {result.storyline && (
+              <div style={S.card}>
+                <p style={{fontSize:15, fontWeight:900, color:"#c4b5fd", margin:"0 0 14px"}}>✍️ 합격 스토리라인 예시 문장</p>
+                <p style={{fontSize:13, fontWeight:700, color:"#c4b5fd", margin:"0 0 8px"}}>{result.field} 자소서 문장 템플릿</p>
+                <p style={{fontSize:15, color:"#d1d5db", lineHeight:1.85, margin:0}}>{result.storyline}</p>
+              </div>
+            )}
+
+            {/* 같은 직무 인기기업 TOP3 */}
+            {result.companies && result.companies.length > 0 && (
+              <div style={S.card}>
+                <p style={{fontSize:15, fontWeight:900, color:"#fcd34d", margin:"0 0 14px"}}>🏆 같은 직무 인기기업 TOP 3</p>
+                {result.companies.map((c, i) => (
+                  <div key={i} style={{display:"flex", gap:10, alignItems:"flex-start", marginBottom: i === result.companies!.length - 1 ? 0 : 14}}>
+                    <span style={{background:"rgba(252,211,77,0.2)", borderRadius:6, padding:"2px 8px", fontSize:12, fontWeight:800, color:"#fcd34d", flexShrink:0}}>{i + 1}위</span>
+                    <div>
+                      <p style={{fontSize:15, fontWeight:700, color:"#fff", margin:"0 0 3px"}}>{c.name}</p>
+                      <p style={{fontSize:13, color:"#9ca3af", margin:0, lineHeight:1.7}}>{c.why}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* 오행 기반 연봉협상 타이밍 */}
+            {result.salaryTiming && (
+              <div style={S.card}>
+                <p style={{fontSize:15, fontWeight:900, color:"#6ee7b7", margin:"0 0 14px"}}>💰 오행 기반 연봉협상 타이밍</p>
+                <div style={{display:"flex", gap:14, alignItems:"flex-start"}}>
+                  <span style={{fontSize:30}}>{ohE}</span>
+                  <p style={{fontSize:15, color:"#d1d5db", lineHeight:1.85, margin:0}}>{result.salaryTiming}</p>
+                </div>
+              </div>
+            )}
           </>
         )}
 

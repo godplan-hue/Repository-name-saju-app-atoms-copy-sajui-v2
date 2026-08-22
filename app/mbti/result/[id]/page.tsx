@@ -36,6 +36,10 @@ interface MbtiData {
   worstMatchTop3?: { type: string; reason: string }[];
   celebTwin?: { name: string; reason: string };
   tetoEgen?: { label: string; desc: string };
+  moneyStyle?: string;
+  pastLife?: string;
+  darkSide?: string;
+  workVsReal?: string;
 }
 
 const CRUSH_LENS: Record<string, string> = {
@@ -401,7 +405,7 @@ export default function MbtiResultPage() {
         {!unlocked ? (
           <div style={{ background: "linear-gradient(135deg,#1a0a2e,#2d1269)", border: "2px solid rgba(167,139,250,0.5)", borderRadius: 20, padding: "28px 22px", marginBottom: 14, textAlign: "center" as const }}>
             <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
-            <p style={{ fontSize: 18, fontWeight: 900, color: "white", margin: "0 0 14px" }}>MBTI × 사주 전체 분석 14가지</p>
+            <p style={{ fontSize: 18, fontWeight: 900, color: "white", margin: "0 0 14px" }}>MBTI × 사주 전체 분석 18가지</p>
             <div style={{ textAlign: "left" as const, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, padding: "16px 16px", marginBottom: 16 }}>
               {[
                 "🧠 성격 성향 완전 분석 — 외향/내향, 감각/직관, 사고/감정, 계획/인식 4가지 축 상세 리포트",
@@ -417,6 +421,10 @@ export default function MbtiResultPage() {
                 "💔 최악궁합 TOP3 — 유독 부딪히는 유형 3가지와 그 이유까지 전부",
                 "🌟 나와 완전히 똑같은 유명인 매칭 — 성격이 판박이인 유명인은 누구일까",
                 "🔄 테토-에겐 반대기운 매칭 — 나를 가장 편안하게 해주는 반대 에너지 유형",
+                "💰 돈 쓰는 스타일 — 나도 몰랐던 나의 소비 패턴",
+                "🔮 전생 이야기 — 전생에 어떤 사람이었을지",
+                "🖤 흑화 버전 — 한계를 넘으면 나타나는 반전 모습",
+                "🎭 이중생활 — 회사에서의 나 vs 진짜 사생활의 나",
                 "👀 썸·짝사랑 상대 마음 몰래 훔쳐보기 — 상대방 생년월일만 입력하면 지금 마음 상태 확인",
               ].map((t, i) => (
                 <p key={i} style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.7, margin: i === 0 ? "0 0 8px" : "0 0 8px" }}>{t}</p>
@@ -496,6 +504,38 @@ export default function MbtiResultPage() {
                   당신은 {data.tetoEgen.label} 에너지
                 </p>
                 <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.tetoEgen.desc}</p>
+              </div>
+            )}
+
+            {/* 돈 스타일 */}
+            {data.moneyStyle && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#4ade80", margin: "0 0 14px" }}>💰 돈 쓰는 스타일</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.moneyStyle}</p>
+              </div>
+            )}
+
+            {/* 전생 */}
+            {data.pastLife && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(96,165,250,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#60a5fa", margin: "0 0 14px" }}>🔮 전생 이야기</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.pastLife}</p>
+              </div>
+            )}
+
+            {/* 흑화 버전 */}
+            {data.darkSide && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#f87171", margin: "0 0 14px" }}>🖤 흑화 버전 (한계를 넘으면)</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.darkSide}</p>
+              </div>
+            )}
+
+            {/* 이중생활: 회사 vs 사생활 */}
+            {data.workVsReal && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(167,139,250,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#a78bfa", margin: "0 0 14px" }}>🎭 이중생활 — 회사 vs 사생활</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.workVsReal}</p>
               </div>
             )}
 
