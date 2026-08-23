@@ -1,6 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐ 가계부·감정일기·육아일기 DB저장+로컬저장 완전수정 (2026-08-23)](bug_budget_cloudflare_empty_useragent_block_2026_08_23.md) — Cloudflare UA차단+Storage이중화, 3개앱 전부완료(f30d098/2592dbe/7487e5b)
+- [⭐⭐⭐⭐ 가계부·감정일기·육아·다이어트·MBTI·펫운·별자리 7개앱 DB저장 완전수정 (2026-08-23)](bug_budget_cloudflare_empty_useragent_block_2026_08_23.md) — 3단계원인(UA헤더→Cloudflare skip설정→CORS preflight리다이렉트), 6개앱 재빌드+콘솔재업로드 필요
 - [⭐⭐⭐ 감정일기·가계부 코인 중복지급 버그 수정 (2026-08-22)](bug_coin_double_reward_gamjung_budget_fix_2026_08_22.md) — useRef가드+상호가드+done플래그, 맘케어는 승인중이라 안건드림
 - [⭐⭐⭐ MBTI·직운·합격 결제전 설명 3개앱 전부 최신화 (2026-08-22)](project_mbti_jigun_resume_content_port_and_paydesc_fix_2026_08_22.md) — 결과지 잠금오버레이 맞아도 별도 /pay페이지는 놓치기쉬움
 - [⭐⭐ 토스 20개앱 Firebase DB저장 실제라이브테스트 검증완료 (2026-08-22)](project_all_20_apps_db_save_verified_2026_08_22.md) — 저장안되는앱 없음, 새앱만들때만 재확인
