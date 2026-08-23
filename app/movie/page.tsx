@@ -72,6 +72,7 @@ export default function MoviePage() {
   const [marketing, setMarketing] = useState(false)
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
+  const [hpField, setHpField] = useState('')
   const count = getTodayCount()
 
   function answer(yes: boolean) {
@@ -90,6 +91,7 @@ export default function MoviePage() {
   }
 
   async function submit() {
+    if (hpField) return
     if (phone.replace(/[^0-9]/g, '').length < 10) {
       setError('전화번호를 정확히 입력해주세요.')
       return
@@ -209,6 +211,9 @@ export default function MoviePage() {
               <label style={{ fontSize: 13, color: '#d97706', fontWeight: 700, display: 'block', marginBottom: 6 }}>전화번호 ★ 필수</label>
               <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="010-0000-0000" type="tel"
                 style={{ width: '100%', border: '1.5px solid #fde68a', borderRadius: 12, padding: '12px 14px', fontSize: 15, outline: 'none', boxSizing: 'border-box' }} />
+              <input type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+                autoComplete="off" tabIndex={-1} aria-hidden="true"
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
             </div>
             <div style={{ marginBottom: 20 }}>
               <label style={{ fontSize: 13, color: '#374151', fontWeight: 700, display: 'block', marginBottom: 6 }}>이메일 (선택)</label>
