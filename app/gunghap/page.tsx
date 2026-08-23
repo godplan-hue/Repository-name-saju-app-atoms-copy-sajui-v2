@@ -28,6 +28,7 @@ export default function GunghapPage() {
   const [day2, setDay2] = useState("");
   const [gender2, setGender2] = useState("");
   const [email, setEmail] = useState("");
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
   const [agreed, setAgreed] = useState(false);
   const [marketingAgreed, setMarketingAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,6 +58,7 @@ export default function GunghapPage() {
   };
 
   const analyze = async () => {
+    if (hpField) return; // 봇 감지 — 조용히 무시
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
     if (!year1 || year1.length < 4) { setError("나의 출생연도를 입력해주세요."); return; }
@@ -227,6 +229,11 @@ export default function GunghapPage() {
             <input style={{ ...S.input, border: `1px solid ${error.includes("전화") ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.15)"}` }}
               placeholder="010-0000-0000" inputMode="tel" value={phone}
               onChange={e => { setPhone(e.target.value); setError(""); }} />
+            <input
+              type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+              autoComplete="off" tabIndex={-1} aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+            />
           </div>
 
           <div style={S.row}>

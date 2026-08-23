@@ -9,6 +9,7 @@ export default function FreeForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
   const [agreed, setAgreed] = useState(false);
   const [marketingAgreed, setMarketingAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,7 @@ export default function FreeForm() {
   }, []);
 
   async function handleSubmit() {
+    if (hpField) return; // 봇 감지 — 조용히 무시
     const clean = phone.replace(/\D/g, "");
     if (clean.length < 10) { setError("전화번호를 정확히 입력해주세요."); return; }
     if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
@@ -80,6 +82,11 @@ export default function FreeForm() {
         <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>전화번호 <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
         <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="010-0000-0000"
           style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e5e7eb", fontSize: 15, outline: "none", boxSizing: "border-box" }} />
+        <input
+          type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+          autoComplete="off" tabIndex={-1} aria-hidden="true"
+          style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+        />
       </div>
       <div style={{ marginBottom: 18 }}>
         <label style={{ fontSize: 12, fontWeight: 800, color: "#6b7280", display: "block", marginBottom: 6 }}>이메일 <span style={{ fontWeight: 400, color: "#9ca3af" }}>(선택)</span></label>

@@ -55,6 +55,7 @@ export default function HaemongPage() {
   const [gatePrivacy, setGatePrivacy] = useState(false);
   const [gateMarketing, setGateMarketing] = useState(false);
   const [gateSaving, setGateSaving] = useState(false);
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
 
   useEffect(() => {
     if (typeof window !== "undefined" && localStorage.getItem("haemong_phone")) {
@@ -63,6 +64,7 @@ export default function HaemongPage() {
   }, []);
 
   async function submitGate() {
+    if (hpField) return; // 봇 감지 — 조용히 무시
     const clean = gatePhone.replace(/\D/g, "");
     if (clean.length < 10) { alert("전화번호를 입력해주세요."); return; }
     if (!gatePrivacy) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
@@ -142,6 +144,11 @@ export default function HaemongPage() {
               placeholder="전화번호 (필수) 010-0000-0000"
               type="tel"
               style={{ width: "100%", border: "1.5px solid #e5e7eb", borderRadius: 12, padding: "12px 14px", fontSize: 14, marginBottom: 14, boxSizing: "border-box", outline: "none" }}
+            />
+            <input
+              type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+              autoComplete="off" tabIndex={-1} aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
             />
             <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, cursor: "pointer" }}>
               <input type="checkbox" checked={gatePrivacy} onChange={e => setGatePrivacy(e.target.checked)} style={{ marginTop: 2, accentColor: "#ec4899", width: 16, height: 16, flexShrink: 0 }} />

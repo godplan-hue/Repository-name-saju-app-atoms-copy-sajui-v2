@@ -243,6 +243,7 @@ export default function DietPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [targetWeight, setTargetWeight] = useState("");
@@ -375,6 +376,7 @@ export default function DietPage() {
   function removeMeal(id: string) { saveToday(meals.filter(m => m.id !== id)); }
 
   function saveSetup() {
+    if (hpField) return; // 봇 감지 — 조용히 무시
     if (!dietPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
     const yr = parseInt(birthYear);
     if (!yr || yr < 1940 || yr > 2015) { alert("올바른 출생연도를 입력해주세요 (1940~2015)"); return; }
@@ -568,6 +570,13 @@ export default function DietPage() {
               <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 8 }}>{f.label}</label>
               <input type={f.type} value={f.value} onChange={e => f.onChange(e.target.value)} placeholder={f.placeholder}
                 style={{ width: "100%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 12, padding: "13px 14px", fontSize: 16, color: "white", outline: "none", boxSizing: "border-box" as const }} />
+              {f.type === "tel" && (
+                <input
+                  type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+                  autoComplete="off" tabIndex={-1} aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                />
+              )}
             </div>
           ))}
 

@@ -17,6 +17,7 @@ export default function ResumeStartPage() {
   const [error, setError] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [marketingAgreed, setMarketingAgreed] = useState(false);
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
 
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function ResumeStartPage() {
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
   async function submit() {
+    if (hpField) return; // 봇 감지 — 조용히 무시
     if (!form.name || !form.birthYear || !form.birthMonth || !form.birthDay || !form.field || !form.companySize) {
       setError("이름, 생년월일, 직무, 기업 규모는 필수입니다"); return;
     }
@@ -123,6 +125,11 @@ export default function ResumeStartPage() {
           <div>
             <label className="text-sm text-purple-400 font-bold block mb-2">전화번호 <span className="text-pink-400">★ 필수사항</span></label>
             <input value={form.phone} onChange={e => set("phone", e.target.value)} placeholder="010-0000-0000" className="w-full bg-white/8 border border-white/15 rounded-xl px-5 py-4 text-white text-base placeholder-gray-500 outline-none focus:border-purple-400" />
+            <input
+              type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+              autoComplete="off" tabIndex={-1} aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+            />
           </div>
 
           {/* 이메일 (선택) */}

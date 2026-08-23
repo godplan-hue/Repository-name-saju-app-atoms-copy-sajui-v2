@@ -43,6 +43,7 @@ export default function BudgetPage() {
   const [setupName, setSetupName] = useState("");
   const [setupPhone, setSetupPhone] = useState("");
   const [setupEmail, setSetupEmail] = useState("");
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
   const [setupMarketingAgreed, setSetupMarketingAgreed] = useState(false);
   const [setupPrivacyAgreed, setSetupPrivacyAgreed] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(thisMonth());
@@ -123,6 +124,7 @@ export default function BudgetPage() {
   }, []);
 
   function saveBudgetSetup() {
+    if (hpField) return; // 봇 감지 — 조용히 무시
     if (!setupPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
     const cleanPhone = setupPhone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { alert("전화번호를 입력해주세요."); return; }
@@ -334,6 +336,11 @@ export default function BudgetPage() {
             <div>
               <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 6 }}>전화번호 * (영구 보관 필수)</label>
               <input type="tel" inputMode="tel" value={setupPhone} onChange={e => setSetupPhone(e.target.value)} placeholder="010-0000-0000" style={inp} />
+              <input
+                type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+                autoComplete="off" tabIndex={-1} aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+              />
             </div>
             <div>
               <label style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 6 }}>이메일 (선택)</label>

@@ -47,6 +47,7 @@ export default function GamjungPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
   const [agreed, setAgreed] = useState(false);
   const [marketingAgreed, setMarketingAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -125,6 +126,7 @@ export default function GamjungPage() {
 
   const submittingRef = useRef(false);
   const analyze = async () => {
+    if (hpField) return; // 봇 감지 — 조용히 무시
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
     if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
@@ -454,6 +456,11 @@ export default function GamjungPage() {
             <input style={{ ...S.input, border: `1px solid ${error.includes("전화") ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.12)"}` }}
               placeholder="010-0000-0000" inputMode="tel" value={phone}
               onChange={e => { setPhone(e.target.value); setError(""); }} />
+            <input
+              type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+              autoComplete="off" tabIndex={-1} aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+            />
           </div>
           <div style={{ marginBottom: 14 }}>
             <label style={S.label}>이름 또는 별명 (선택)</label>

@@ -77,6 +77,7 @@ export default function MomcarePage() {
   const [momcareDaysLeft, setMomcareDaysLeft] = useState(0);
   const [hasPhone, setHasPhone] = useState(true);
   const [phoneGate, setPhoneGate] = useState("");
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
   const [mcPrivacyAgreed, setMcPrivacyAgreed] = useState(false);
   const [mcMarketingAgreed, setMcMarketingAgreed] = useState(false);
   const [showGate, setShowGate] = useState(false);
@@ -133,6 +134,11 @@ export default function MomcarePage() {
               type="tel"
               style={{ width: "100%", border: "2px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", fontSize: 16, outline: "none", boxSizing: "border-box", marginBottom: 12, textAlign: "center", letterSpacing: 1 }}
             />
+            <input
+              type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+              autoComplete="off" tabIndex={-1} aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+            />
             <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 8, textAlign: "left" }}>
               <input type="checkbox" checked={mcPrivacyAgreed} onChange={e => setMcPrivacyAgreed(e.target.checked)}
                 style={{ marginTop: 3, accentColor: "#0891b2", width: 16, height: 16, flexShrink: 0 }} />
@@ -150,6 +156,7 @@ export default function MomcarePage() {
               </span>
             </label>
             <button id="mc-login-btn" onClick={async () => {
+              if (hpField) return; // 봇 감지 — 조용히 무시
               if (!mcPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
               const ph = phoneGate.replace(/\D/g, "");
               if (ph.length < 10) { alert("전화번호를 정확히 입력해주세요."); return; }

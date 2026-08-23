@@ -61,6 +61,7 @@ export default function MbtiPage() {
   const [userName, setUserName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
   const [agreed, setAgreed] = useState(false);
   const [marketingAgreed, setMarketingAgreed] = useState(false);
   const [current, setCurrent] = useState(0);
@@ -96,6 +97,7 @@ export default function MbtiPage() {
   };
 
   const submit = async (finalAnswers: number[]) => {
+    if (hpField) return; // 봇 감지 — 조용히 무시
     setLoading(true);
     try {
       const res = await fetch("/api/mbti/analyze", {
@@ -273,6 +275,11 @@ export default function MbtiPage() {
               value={phone}
               onChange={e => { setPhone(e.target.value); setError(""); }}
               inputMode="tel"
+            />
+            <input
+              type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+              autoComplete="off" tabIndex={-1} aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
             />
           </div>
           <div style={{ marginBottom: 10 }}>

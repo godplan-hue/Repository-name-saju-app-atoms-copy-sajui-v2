@@ -201,6 +201,7 @@ export default function JigunPage() {
   const [birthYear, setBirthYear] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [agreed, setAgreed] = useState(false);
@@ -233,6 +234,7 @@ export default function JigunPage() {
   }
 
   async function submit() {
+    if (hpField) return; // 봇 감지 — 조용히 무시
     if (!name.trim()) { setErr("이름을 입력해주세요."); return; }
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setErr("전화번호를 입력해주세요. (필수사항)"); return; }
@@ -441,6 +443,11 @@ export default function JigunPage() {
                   placeholder="01012345678"
                   inputMode="tel"
                   style={{ width: "100%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 14, padding: "14px 16px", color: "white", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+                />
+                <input
+                  type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+                  autoComplete="off" tabIndex={-1} aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
                 />
               </div>
               <div>
