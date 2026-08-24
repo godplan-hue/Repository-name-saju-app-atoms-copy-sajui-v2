@@ -12,10 +12,22 @@ function getTodayCount() {
   return (base + (block >= 1 ? 480 + (lcg % 220) : 0) + (block >= 2 ? 550 + ((lcg >> 4) % 300) : 0)).toLocaleString();
 }
 
+// 연애 성향 퀴즈 — 답변 기반 결과 느낌을 위해 궁합 계산 전 추가
+const LOVE_QUIZ: { q: string; a: string; b: string; aType: "E" | "S"; bType: "E" | "S" }[] = [
+  { q: "갈등이 생기면 나는?", a: "바로 대화로 풀어야 마음이 편하다", b: "시간을 두고 감정이 가라앉은 후 얘기한다", aType: "E", bType: "S" },
+  { q: "애정 표현은 주로?", a: "말과 스킨십으로 자주 표현한다", b: "행동과 배려로 은근히 표현한다", aType: "E", bType: "S" },
+  { q: "데이트 스타일은?", a: "즉흥적이고 새로운 걸 시도하는 게 좋다", b: "계획적이고 익숙한 곳이 편하다", aType: "E", bType: "S" },
+  { q: "연락은 어느 정도가 좋을까?", a: "자주 연락하고 일상을 공유해야 안심된다", b: "필요할 때만 연락해도 괜찮다", aType: "E", bType: "S" },
+  { q: "힘든 일이 있을 때 나는?", a: "상대방에게 바로 털어놓고 위로받고 싶다", b: "혼자 정리한 후에 얘기하고 싶다", aType: "E", bType: "S" },
+  { q: "관계에서 가장 중요한 건?", a: "서로에 대한 설렘과 감정 표현", b: "신뢰와 안정감", aType: "E", bType: "S" },
+];
+
 export default function GunghapPage() {
   const count = getTodayCount();
   const router = useRouter();
-  const [step, setStep] = useState<"intro" | "form">("intro");
+  const [step, setStep] = useState<"intro" | "form" | "quiz">("intro");
+  const [quizIdx, setQuizIdx] = useState(0);
+  const [quizAnswers, setQuizAnswers] = useState<("E" | "S")[]>([]);
   const [phone, setPhone] = useState("");
   const [name1, setName1] = useState("");
   const [year1, setYear1] = useState("");
@@ -57,13 +69,34 @@ export default function GunghapPage() {
     }),
   };
 
-  const analyze = async () => {
+  const goToQuiz = () => {
     if (hpField) return; // 봇 감지 — 조용히 무시
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { setError("전화번호를 입력해주세요."); return; }
     if (!year1 || year1.length < 4) { setError("나의 출생연도를 입력해주세요."); return; }
     if (!year2 || year2.length < 4) { setError("상대방 출생연도를 입력해주세요."); return; }
     if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
+    setError("");
+    setQuizIdx(0);
+    setQuizAnswers([]);
+    setStep("quiz");
+  };
+
+  const pickQuizAnswer = (type: "E" | "S") => {
+    const next = [...quizAnswers, type];
+    if (next.length < LOVE_QUIZ.length) {
+      setQuizAnswers(next);
+      setQuizIdx(quizIdx + 1);
+      return;
+    }
+    setQuizAnswers(next);
+    const eCount = next.filter(t => t === "E").length;
+    const loveStyle = eCount >= 4 ? "E" : eCount <= 2 ? "S" : "균형";
+    analyze(loveStyle);
+  };
+
+  const analyze = async (loveStyle: "E" | "S" | "균형") => {
+    const cleanPhone = phone.replace(/\D/g, "");
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/gunghap/analyze", {
@@ -74,6 +107,7 @@ export default function GunghapPage() {
           name1: name1 || "나", birthYear1: year1, birthMonth1: month1 || "1", birthDay1: day1 || "1", gender1,
           name2: name2 || "상대방", birthYear2: year2, birthMonth2: month2 || "1", birthDay2: day2 || "1", gender2,
           marketing: marketingAgreed,
+          loveStyle,
         }),
       });
       const data = await res.json();
@@ -204,6 +238,34 @@ export default function GunghapPage() {
     );
   }
 
+  if (step === "quiz") {
+    const q = LOVE_QUIZ[quizIdx];
+    return (
+      <div style={S.wrap}>
+        <div style={{ ...S.inner, paddingTop: 32 }}>
+          <p style={{ fontSize: 12, color: "#f9a8d4", textAlign: "center", marginBottom: 8, fontWeight: 700 }}>
+            나의 연애 성향 · {quizIdx + 1} / {LOVE_QUIZ.length}
+          </p>
+          <div style={{ width: "100%", height: 4, background: "rgba(255,255,255,0.08)", borderRadius: 4, marginBottom: 28 }}>
+            <div style={{ height: "100%", width: `${((quizIdx + 1) / LOVE_QUIZ.length) * 100}%`, background: "#ec4899", borderRadius: 4, transition: "width 0.3s" }} />
+          </div>
+          <h2 style={{ fontSize: 18, fontWeight: 900, textAlign: "center", marginBottom: 32, wordBreak: "keep-all", lineHeight: 1.5 }}>
+            {q.q}
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <button onClick={() => pickQuizAnswer(q.aType)} disabled={loading} style={{ width: "100%", background: "rgba(236,72,153,0.1)", border: "1.5px solid rgba(236,72,153,0.25)", borderRadius: 18, padding: "20px 16px", fontSize: 15, fontWeight: 700, color: "#fce7f3", cursor: loading ? "not-allowed" : "pointer", wordBreak: "keep-all", textAlign: "left" }}>
+              {q.a}
+            </button>
+            <button onClick={() => pickQuizAnswer(q.bType)} disabled={loading} style={{ width: "100%", background: "rgba(236,72,153,0.1)", border: "1.5px solid rgba(236,72,153,0.25)", borderRadius: 18, padding: "20px 16px", fontSize: 15, fontWeight: 700, color: "#fce7f3", cursor: loading ? "not-allowed" : "pointer", wordBreak: "keep-all", textAlign: "left" }}>
+              {q.b}
+            </button>
+          </div>
+          {loading && <p style={{ textAlign: "center", color: "#a78bfa", fontSize: 13, marginTop: 24 }}>궁합 분석 중... 🔮</p>}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={S.wrap}>
       <div style={S.inner}>
@@ -325,7 +387,7 @@ export default function GunghapPage() {
 
         {error && <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>}
 
-        <button onClick={analyze} disabled={loading} style={{ ...S.btn, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
+        <button onClick={goToQuiz} disabled={loading} style={{ ...S.btn, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
           {loading ? "궁합 분석 중... 🔮" : "궁합 점수 확인하기 💞"}
         </button>
         <p style={{ fontSize: 11, color: "#6b7280", textAlign: "center", marginTop: 10 }}>

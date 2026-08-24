@@ -123,6 +123,7 @@ export async function POST(request: NextRequest) {
     const { phone, email, name1, birthYear1, birthMonth1, birthDay1, gender1,
             name2, birthYear2, birthMonth2, birthDay2, gender2 } = body;
     const marketing = body.marketing === true;
+    const loveStyle: "E" | "S" | "균형" = body.loveStyle === "E" || body.loveStyle === "S" ? body.loveStyle : "균형";
 
     if (!birthYear1 || !birthYear2) {
       return NextResponse.json({ error: "생년월일을 입력해주세요" }, { status: 400 });
@@ -143,7 +144,7 @@ export async function POST(request: NextRequest) {
       name: name1 || "나",
       name1: name1 || "나", birthYear1, birthMonth1, birthDay1, gender1,
       name2: name2 || "상대방", birthYear2, birthMonth2, birthDay2, gender2,
-      oh1, oh2, score, grade, mbti1, mbti2,
+      oh1, oh2, score, grade, mbti1, mbti2, loveStyle,
       ...content,
       createdAt: Date.now(),
     };

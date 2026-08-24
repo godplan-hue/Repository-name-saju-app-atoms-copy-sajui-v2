@@ -14,6 +14,13 @@ type Result = {
   summary: string; personality: string; love: string;
   conflict: string; strength: string; advice: string; marriage: string;
   phone?: string;
+  loveStyle?: "E" | "S" | "균형";
+};
+
+const LOVE_STYLE_INFO: Record<"E" | "S" | "균형", { label: string; emoji: string; desc: string }> = {
+  E: { label: "표현형", emoji: "💬", desc: "감정을 적극적으로 표현하고 즉각적인 소통을 원하는 스타일" },
+  S: { label: "안정형", emoji: "🌊", desc: "차분하게 관계를 쌓아가며 은근한 배려로 마음을 표현하는 스타일" },
+  균형: { label: "균형형", emoji: "⚖️", desc: "상황에 따라 유연하게 표현 방식을 조절하는 스타일" },
 };
 
 const TAROT = [
@@ -284,6 +291,14 @@ export default function GunghapResultPage() {
           <p style={{ fontSize: 14, color: "#e2e8f0", lineHeight: 1.8, margin: 0 }}>{result.summary}</p>
         </div>
 
+        {result.loveStyle && (
+          <div style={{ marginBottom: 16, textAlign: "center", background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 10, padding: "8px 12px" }}>
+            <span style={{ fontSize: 13, color: "#c4b5fd", fontWeight: 700 }}>
+              {LOVE_STYLE_INFO[result.loveStyle].emoji} 당신의 연애 성향: {LOVE_STYLE_INFO[result.loveStyle].label}
+            </span>
+          </div>
+        )}
+
         {/* 공유 버튼 */}
         <button onClick={share} style={{ width: "100%", background: "rgba(236,72,153,0.15)", border: "2px solid rgba(236,72,153,0.4)", borderRadius: 14, padding: "13px", fontSize: 14, fontWeight: 700, color: "#f9a8d4", cursor: "pointer", marginBottom: 16 }}>
           💞 우리 궁합 {result.score}점 — 친구에게 공유하기
@@ -404,6 +419,14 @@ export default function GunghapResultPage() {
             </div>
             <div style={S.card}>
               <p style={S.secTitle}>💕 연애 패턴</p>
+              {result.loveStyle && (
+                <div style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.2)", borderRadius: 10, padding: "12px 14px", marginBottom: 14 }}>
+                  <p style={{ fontSize: 12, color: "#c4b5fd", fontWeight: 700, margin: "0 0 6px", textTransform: "uppercase" as const }}>{LOVE_STYLE_INFO[result.loveStyle].emoji} 당신의 답변으로 본 연애 성향</p>
+                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.8)", margin: 0, lineHeight: 1.6 }}>
+                    당신은 {LOVE_STYLE_INFO[result.loveStyle].desc}이에요. 이런 성향이 {result.name2}과의 관계에서는 이렇게 나타나요:
+                  </p>
+                </div>
+              )}
               <p style={S.body}>{result.love}</p>
             </div>
             <div style={S.card}>
