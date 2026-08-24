@@ -239,7 +239,6 @@ function PaymentCompleteInner() {
       sessionStorage.setItem("v2_after_payment_goto", "special");
       isSpecialFlowRef.current = true;
       setPackageName(SPECIAL_NAMES[specialType] || specialType);
-      setRedirectTo("/main-v2/special");
       setNeedsForm(true);
       setReady(true);
       return;
@@ -480,26 +479,6 @@ function PaymentCompleteInner() {
       const fullProfile = { ...prev, name, birthYear, birthMonth: String(birthMonth).padStart(2,"0"), birthDay: String(birthDay).padStart(2,"0"), birthHour, gender, relationship: "나" };
       localStorage.setItem("v2_saved_profile", JSON.stringify(fullProfile));
       sessionStorage.setItem("v2_profile", JSON.stringify(fullProfile));
-      try {
-        const _payPhone = (() => { try { return sessionStorage.getItem("v2_payment_phone") || localStorage.getItem("v2_saved_phone") || ""; } catch { return ""; } })();
-        const _payAmt = Number(effectivePaid || paidAmount || "0") || 0;
-        if (name && _payAmt > 0) {
-          fetch("/api/v2/save-payment", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            keepalive: true,
-            body: JSON.stringify({
-              id: paidId || String(Date.now()),
-              date: new Date().toISOString(),
-              name, phone: _payPhone, amount: _payAmt,
-              package: packageName, categories: [], plan: "select",
-              discountCode: appliedDiscount?.code || "",
-              discountPercent: appliedDiscount?.discountPercent || 0,
-              originalAmount: Number(paidAmount || _payAmt),
-            }),
-          }).catch(() => {});
-        }
-      } catch {}
       router.replace(redirectTo);
       return;
     }
