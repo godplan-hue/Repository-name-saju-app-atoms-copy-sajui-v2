@@ -14,39 +14,71 @@ const SITUATIONS = [
   { text: '누군가에게 상처받거나 지쳤다', pos: -3, neg: 5 },
 ]
 
-type GenreKey = '로코' | '힐링' | '직장코미디' | '역경'
+type GenreKey = '판타지' | '로코' | '힐링' | '직장코미디' | '미스터리' | '역경'
 
-const GENRES: Record<GenreKey, { emoji: string; title: string; tagline: string; comfort: string; color: string; ost: string }> = {
+const GENRES: Record<GenreKey, { emoji: string; title: string; tagline: string; comfort: string; color: string; excuse1: string; excuse2: string; excuse3: string; ost: string }> = {
+  판타지: {
+    emoji: '✨', title: '이 정도면 각본가가 다녀갔다', tagline: '판타지 로맨스 대작',
+    comfort: '오늘 같은 하루는 흔하지 않아요. 이런 날은 오래오래 기억하고, 이 좋은 기운을 내일도 이어가 보세요. 당신에게 좋은 일이 몰려오고 있다는 신호일 수도 있어요.',
+    color: '#a855f7',
+    excuse1: '오늘은 하늘이 도운 날이었어요. 이런 날은 그냥 즐기면 되는 거예요.',
+    excuse2: '이 정도로 다 잘 풀린 날엔 뭘 해도 잘 될 것 같은 기분, 그거 맞아요.',
+    excuse3: '오늘 같은 날 뭘 더 바라겠어요. 이미 인생 최고의 하루 중 하나예요.',
+    ost: 'IU - Celebrity\n아이유 - 라일락\nNewJeans - Super Shy\n볼빨간사춘기 - 여행',
+  },
   로코: {
     emoji: '🌟', title: '오늘도 예쁘게 살았습니다', tagline: '로맨틱 코미디',
-    comfort: '오늘 하루가 이렇게 좋았다면, 당신 주변에 분명 좋은 에너지가 있는 거예요. 그 흐름 그대로 내일도 이어가요.',
+    comfort: '오늘 하루가 이렇게 좋았다면, 내일도 분명 좋을 거예요. 지금 이 기분을 오래 기억해두세요. 좋은 날의 기억은 힘든 날 꺼내 쓸 수 있는 가장 좋은 힘이 되니까요.',
     color: '#d97706',
-    ost: 'IU - 좋은 날\nAKMU - 사랑이 참\nNewJeans - Hype Boy',
+    excuse1: '오늘 너무 좋은 일이 많아서 정신이 없었어요. 기분 좋은 날엔 실수도 귀여워 보이잖아요.',
+    excuse2: '사실 오늘 같은 날은 일이 잘 안 돼야 정상이에요. 이렇게 좋은 날에 집중이 될 리가요.',
+    excuse3: '오늘처럼 기분 좋은 날은 어떤 실수를 해도 다 용서가 되는 법이에요.',
+    ost: 'IU - 좋은 날\nAKMU - 사랑이 참\nNewJeans - Hype Boy\n볼빨간사춘기 - 우주를 줄게',
   },
   힐링: {
     emoji: '🌿', title: '평범한 하루의 기적', tagline: '힐링 드라마',
-    comfort: '평범한 것 같지만 사실 많이 잘 하고 있어요. 오늘 같은 날이 쌓여서 나중에 좋은 기억이 돼요.',
+    comfort: '평범한 것 같지만 사실 오늘 하루도 수많은 선택과 노력으로 이뤄졌어요. 잘 살았어요. 특별한 일이 없어도 하루를 무사히 채웠다는 것 자체가 이미 잘하고 있다는 증거예요.',
     color: '#059669',
-    ost: '아이유 - 밤편지\n10cm - 아메리카노\n자이언티 - 양화대교',
+    excuse1: '오늘은 몸과 마음을 재정비하는 날이었어요. 최선을 다하려면 쉬는 것도 필요하거든요.',
+    excuse2: '조금 쉬어가는 것도 전략이에요. 내일 더 잘하기 위한 오늘의 충전이었습니다.',
+    excuse3: '화려하지 않아도 꾸준한 하루가 결국 제일 오래가는 힘이 되는 거예요.',
+    ost: '아이유 - 밤편지\n10cm - 아메리카노\n자이언티 - 양화대교\n볼빨간사춘기 - 나만 봄',
   },
   직장코미디: {
     emoji: '😅', title: '살아남은 자의 슬픔', tagline: '직장 코미디',
-    comfort: '오늘 하루도 이 정도면 충분히 잘 버텼어요. 다 웃지 않아도 돼요. 퇴근했다는 사실만으로 충분해요.',
+    comfort: '오늘 하루도 이 정도면 충분히 잘 버텼어요. 살아있는 것만으로도 이미 대단해요. 웃으면서 넘긴 오늘의 해프닝들, 나중엔 다 안줏거리가 될 거예요.',
     color: '#2563eb',
-    ost: '백예린 - Square\n잔나비 - 주저하는 연인들을 위해\n10cm - 서커스',
+    excuse1: '원래 오늘같이 복잡한 날엔 실수가 나야 정상이에요. 안 난 게 더 신기한 거예요.',
+    excuse2: '이렇게 어려운 상황에서 이 정도 버텼다면, 저는 이미 능력자입니다. 인정해주세요.',
+    excuse3: '이 정도 해프닝은 사실 직장인이라면 누구나 한 번쯤 겪는 국룰이에요.',
+    ost: '이적 - 하늘을 달리다\nBTS - 고민보다 GO\n볼빨간사춘기 - 나만 안 되는 연애\n적재 - 별 보러 가자',
+  },
+  미스터리: {
+    emoji: '🕵️', title: '대체 무슨 일이 벌어진 거야', tagline: '미스터리 스릴러',
+    comfort: '오늘 하루는 예측불가 반전의 연속이었네요. 그래도 끝까지 이야기를 완성해냈다는 게 중요해요. 내일은 조금 더 평온한 전개로 흘러갈 거예요.',
+    color: '#0891b2',
+    excuse1: '오늘 같은 전개는 저도 예상 못 했어요. 각본이 갑자기 바뀐 느낌이었달까요.',
+    excuse2: '이런 날은 대응만 잘해도 이미 성공이에요. 저 오늘 정말 순발력 하나는 인정받아야 해요.',
+    excuse3: '복선이 너무 많아서 저도 결말을 못 맞췄어요. 그래도 끝까지 살아남았잖아요.',
+    ost: '잔나비 - 주저하는 연인들을 위해\n혁오 - TOMBOY\n크러쉬 - Beautiful\n디어클라우드 - White Lie',
   },
   역경: {
     emoji: '💪', title: '다 되는 척이라도 했잖아', tagline: '역경 극복 드라마',
-    comfort: '힘든 하루를 끝까지 버텼다는 것만으로도 대단해요. 내일은 조금 더 나아질 거예요. 오늘 수고했어요.',
+    comfort: '힘든 하루를 끝까지 버텼다는 것만으로도 당신은 이미 주인공이에요. 내일은 달라요. 오늘 겪은 이 모든 일들이 나중엔 다 성장의 한 장면으로 남을 거예요.',
     color: '#dc2626',
-    ost: '폴킴 - 모든 날 모든 순간\n빅뱅 - 우리 사랑하지 말아요\n에픽하이 - 우산',
+    excuse1: '오늘 이 상황은 사실 어느 누구도 쉽게 버틸 수 없는 레벨이었어요. 저만 힘든 게 아니에요.',
+    excuse2: '이 정도면 퇴사해도 되는 수준인데 안 했잖아요. 이미 의지력 챔피언이에요.',
+    excuse3: '이 정도 고비를 넘겼으면 앞으로 웬만한 일엔 흔들리지 않을 거예요.',
+    ost: 'BTS - NOT TODAY\n방탄소년단 - N.O\n박효신 - 야생화\n이하이 - 한숨',
   },
 }
 
 function getGenre(score: number): GenreKey {
+  if (score >= 30) return '판타지'
   if (score >= 15) return '로코'
   if (score >= 3) return '힐링'
   if (score >= -8) return '직장코미디'
+  if (score >= -20) return '미스터리'
   return '역경'
 }
 
@@ -136,7 +168,7 @@ export default function MoviePage() {
                 오늘 있었던 일에 Yes / No로 답하면<br />내 하루 영화 장르가 나와요
               </p>
               <div style={{ marginTop: 16, display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap' }}>
-                {(['🌟 로코', '🌿 힐링', '😅 직장코미디', '💪 역경'] as const).map(g => (
+                {(['✨ 판타지', '🌟 로코', '🌿 힐링', '😅 직장코미디', '🕵️ 미스터리', '💪 역경'] as const).map(g => (
                   <span key={g} style={{ background: '#fffbeb', borderRadius: 99, padding: '4px 10px', fontSize: 12, color: '#92400e' }}>{g}</span>
                 ))}
               </div>
@@ -252,6 +284,13 @@ export default function MoviePage() {
             <div style={{ background: 'white', borderRadius: 18, padding: '20px', marginBottom: 12, boxShadow: '0 4px 16px rgba(180,83,9,0.1)' }}>
               <div style={{ fontSize: 13, fontWeight: 700, color: '#b45309', marginBottom: 8 }}>🎵 오늘의 OST 추천</div>
               <pre style={{ fontSize: 14, color: '#374151', lineHeight: 1.8, margin: 0, fontFamily: 'inherit', whiteSpace: 'pre-line' }}>{genre.ost}</pre>
+            </div>
+
+            <div style={{ background: 'white', borderRadius: 18, padding: '20px', marginBottom: 12, boxShadow: '0 4px 16px rgba(180,83,9,0.1)' }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#b45309', marginBottom: 10 }}>🗣️ 오늘 써도 되는 핑계 3종</div>
+              <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.8, margin: '0 0 8px' }}>1. {genre.excuse1}</p>
+              <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.8, margin: '0 0 8px' }}>2. {genre.excuse2}</p>
+              <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.8, margin: 0 }}>3. {genre.excuse3}</p>
             </div>
 
             <div style={{ background: '#fffbeb', borderRadius: 14, padding: '12px 16px', marginBottom: 16, textAlign: 'center', fontSize: 13, color: '#92400e', border: '1.5px solid #fde68a' }}>
