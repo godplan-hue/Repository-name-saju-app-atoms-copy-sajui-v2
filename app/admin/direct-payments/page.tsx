@@ -56,6 +56,12 @@ const SOURCE_CFG: Record<string, [string, string, string]> = {
   haemong:    ["#fce7f3","#be185d","🌙꿈해몽"],
   free:       ["#fef3c7","#92400e","🎁재물운"],
 };
+const MERGED_SOURCES: Record<string, string[]> = {
+  battle: ["battle", "toss-battle"],
+  movie:  ["movie", "toss-movie"],
+  style:  ["style", "toss-style"],
+  work:   ["work", "toss-work"],
+};
 function SourceBadge({ source }: { source: string }) {
   const [bg, color, label] = SOURCE_CFG[source] ?? ["#f3f4f6","#374151",source];
   return <span style={{ background: bg, color, padding: "2px 7px", borderRadius: 6, fontSize: 11, fontWeight: 700, marginRight: 3, display: "inline-block" }}>{label}</span>;
@@ -309,17 +315,14 @@ export default function AdminDirectPayments() {
                 { key: "toss-petun",  label: "토스사주앱(펫운)", emoji: "🐾", activeBg: "#0e7490", inactiveBg: "#ecfeff", activeText: "white", inactiveText: "#0e7490" },
                 { key: "toss-jigun",  label: "토스직운",     emoji: "💼", activeBg: "#6d28d9", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#6d28d9" },
                 { key: "toss-resume", label: "토스합격",       emoji: "📄", activeBg: "#1d4ed8", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#1d4ed8" },
-                { key: "toss-work",   label: "토스직장버티기", emoji: "💪", activeBg: "#dc2626", inactiveBg: "#fee2e2", activeText: "white", inactiveText: "#dc2626" },
-                { key: "toss-battle", label: "토스이상형",    emoji: "❤️", activeBg: "#e11d48", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#e11d48" },
-                { key: "toss-style",  label: "토스추구미",    emoji: "✨", activeBg: "#7c3aed", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#7c3aed" },
-                { key: "toss-movie",  label: "토스인생영화",  emoji: "🎬", activeBg: "#d97706", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#d97706" },
-                { key: "battle", label: "이상형월드컵",  emoji: "❤️", activeBg: "#e11d48", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#e11d48" },
-                { key: "movie",  label: "인생이영화라면", emoji: "🎬", activeBg: "#d97706", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#d97706" },
-                { key: "style",  label: "추구미",        emoji: "✨", activeBg: "#7c3aed", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#7c3aed" },
-                { key: "work",   label: "직장버티기",    emoji: "💪", activeBg: "#2563eb", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#2563eb" },
+                { key: "battle", label: "이상형월드컵&토스이상형",    emoji: "❤️", activeBg: "#e11d48", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#e11d48" },
+                { key: "movie",  label: "인생이영화라면&토스인생영화", emoji: "🎬", activeBg: "#d97706", inactiveBg: "#fef3c7", activeText: "white", inactiveText: "#d97706" },
+                { key: "style",  label: "추구미&토스추구미",          emoji: "✨", activeBg: "#7c3aed", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#7c3aed" },
+                { key: "work",   label: "직장버티기&토스직장버티기",  emoji: "💪", activeBg: "#2563eb", inactiveBg: "#dbeafe", activeText: "white", inactiveText: "#2563eb" },
                 { key: "haemong",      label: "꿈해몽",       emoji: "🌙", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
               ]).map(f => {
-                const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.sources ?? [l.source ?? "free"]).includes(f.key)).length;
+                const matchKeys = MERGED_SOURCES[f.key] ?? [f.key];
+                const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.sources ?? [l.source ?? "free"]).some(s => matchKeys.includes(s))).length;
                 const active = sourceFilter === f.key;
                 return (
                   <button key={f.key} onClick={() => setSourceFilter(f.key)}
@@ -341,7 +344,7 @@ export default function AdminDirectPayments() {
                   </tr>
                 </thead>
                 <tbody>
-                  {leads.filter(l => sourceFilter === "all" || (l.sources ?? [l.source ?? "free"]).includes(sourceFilter)).map((lead, i) => (
+                  {leads.filter(l => sourceFilter === "all" || (l.sources ?? [l.source ?? "free"]).some(s => (MERGED_SOURCES[sourceFilter] ?? [sourceFilter]).includes(s))).map((lead, i) => (
                     <tr key={lead.id} style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}>
                       <td style={{ padding: "10px 12px", fontWeight: 700, color: "#111" }}>{lead.name || <span style={{color:"#aaa",fontWeight:400}}>—</span>}</td>
                       <td style={{ padding: "10px 12px", color: "#374151" }}>{lead.phone || "-"}</td>
