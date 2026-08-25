@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⛔⛔⛔ 타로/궁합 DB저장재신고+24h폰번호락 미구현 발견 (2026-08-25)](project_session_2026_08_25b.md) — 콘솔재업로드 여부 먼저 확인할것, mbti만 폰번호락있고 tarot/gunghap엔 없음
 - [⭐⭐⭐ displayName원복+타로3버그+추구미전체잠금 (2026-08-25)](project_session_2026_08_25.md) — battle/work/movie/style/tarot 5개커밋완료, style은전체6개잠금(다른앱은승인대기중이라보류)
 - [⭐⭐⭐⭐ 가계부·감정일기·육아·다이어트·MBTI·펫운·별자리 7개앱 DB저장 완전수정 (2026-08-23)](bug_budget_cloudflare_empty_useragent_block_2026_08_23.md) — 3단계원인(UA헤더→Cloudflare skip설정→CORS preflight리다이렉트), 6개앱 재빌드+콘솔재업로드 필요
 - [⭐⭐⭐ 감정일기·가계부 코인 중복지급 버그 수정 (2026-08-22)](bug_coin_double_reward_gamjung_budget_fix_2026_08_22.md) — useRef가드+상호가드+done플래그, 맘케어는 승인중이라 안건드림
