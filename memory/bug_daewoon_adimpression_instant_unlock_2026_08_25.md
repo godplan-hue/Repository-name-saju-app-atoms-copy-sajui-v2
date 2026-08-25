@@ -1,8 +1,11 @@
 ---
 name: bug-daewoon-adimpression-instant-unlock-2026-08-25
 description: "대운 앱 잠금해제 광고가 뜨자마자 바로 잠금해제되던 버그 - adImpression을 성공조건에 넣은 게 원인, 특정 대운기간 문제 아니라 전체 공통"
-metadata:
+metadata: 
+  node_type: memory
   type: project
+  originSessionId: e04af5d5-eb3c-4469-ab5d-37a8c64cef95
+  modified: 2026-08-25T03:28:58.248Z
 ---
 
 ## 문제
@@ -25,8 +28,19 @@ if (e.type === "dismissed" || e.type === "adClosed" || e.type === "adImpression"
 
 - 커밋: `da007d5`
 - 빌드: `daewoon-jeomun.ait`, deploymentId `01a036d7-bf95-757f-849d-e0099d536690`
-- **토스 콘솔 재업로드 필요** (아직 안 함)
+
+## 추가 수정 (같은날, adImpression 제거만으로는 해결 안 됨)
+
+사용자가 `da007d5` 재업로드 후에도 "대운아직도광고안나와" 반복 신고. "지금 열어보기" 눌러도 안뜬다고 특정. 추가로 3차례 더 파서 진짜 원인 확인:
+
+1. **`bd1572d`** — `watchAd()`의 `failedToShow`/`onError` 분기가 잠금은 풀어주면서 광고슬롯 재적재(`loadFullScreenAd`)를 안 하고 있었음. 한번 실패하면 그 뒤로 슬롯이 계속 빈 채로 남음. ([[bug_tarot_gunghap_cloudflare_waf_block_2026_08_25]]에서 타로에 적용한 `14d3b4a` 패턴과 동일)
+2. **`48ee5cd`** — 대운기간(selectedIdx) 바꿀 때마다 미리 광고를 채워두는 프리로드 추가.
+3. **`35fb2d2`(최종)** — **진짜 근본원인**: `watchAd()`가 슬롯 준비여부를 확인 안 하고 무조건 `showFullScreenAd`부터 호출 → 슬롯이 비어있으면 아무 이벤트도 안 오고 8초짜리 안전장치(`fsTimer`)가 조용히 잠금만 풀어버림 → 사용자 눈엔 "광고 안 뜨고 바로 열림"으로 보임. SDK 번들 소스(`node_modules/@apps-in-toss/web-framework/dist/prebuilt/*.js`)를 직접 읽어서 `loadFullScreenAd`가 실제로 로드완료 시 `{type:"loaded"}` 이벤트를 쏘는 걸 확인 → `adReadyRef` 추가해서 이 이벤트로만 true 세팅, `watchAd()`는 `adReadyRef.current`가 true일 때만 바로 보여주고, false면 즉시 재로드 후 `loaded` 콜백(최대 4초 대기) 받고서야 보여주도록 변경.
+   - 빌드: deploymentId `01a036ef-1c2a-773d-be17-450ff8710268`
+   - **토스 콘솔 재업로드 필요** (아직 안 함, 사용자가 테스트 예정)
 
 ## How to apply
 
 새 토스앱 만들거나 기존 앱 점검할 때, 전면광고 성공조건에 `adImpression`이 들어가 있는지 항상 확인할 것 — grep으로 `adImpression` 검색해서 성공조건(unlock/저장 등)에 쓰이고 있으면 무조건 버그. `dismissed`/`adClosed`만 성공조건으로 써야 함. `failedToShow`/`onError`는 광고 못 띄웠을 때의 fallback 언락이라 별개 취급.
+
+"광고 안뜨고 바로 열림/저장됨" 류 버그는 원인이 한 겹이 아닐 수 있음 — adImpression버그, 재적재누락, 슬롯준비상태 미확인(이번 건) 세 가지가 겹쳐있을 수 있으니 하나 고쳤다고 바로 재업로드 요청하지 말고 `showFullScreenAd`/`loadFullScreenAd` 관련 코드 전체와 SDK 번들 소스(`node_modules/@apps-in-toss/web-framework/dist/prebuilt/*.js`에서 이벤트 타입 grep)를 한 번에 다 확인한 뒤 수정할 것. [[feedback_investigate_fully_before_asking_reupload]] 참고.
