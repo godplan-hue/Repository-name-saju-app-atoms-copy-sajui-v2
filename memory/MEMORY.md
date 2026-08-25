@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⛔⛔⛔ 타로+궁합 990원결제 완전제거→전체무료전환, DB저장원인 여전히 미확정 (2026-08-25)](project_session_2026_08_25c.md) — 폰번호락gap은 무료전환으로 해소, DB저장은 Cloudflare아님만 확인·원인불명
 - [⛔⛔⛔ 타로/궁합 DB저장재신고+24h폰번호락 미구현 발견 (2026-08-25)](project_session_2026_08_25b.md) — 콘솔재업로드 여부 먼저 확인할것, mbti만 폰번호락있고 tarot/gunghap엔 없음
 - [⭐⭐⭐ displayName원복+타로3버그+추구미전체잠금 (2026-08-25)](project_session_2026_08_25.md) — battle/work/movie/style/tarot 5개커밋완료, style은전체6개잠금(다른앱은승인대기중이라보류)
 - [⭐⭐⭐⭐ 가계부·감정일기·육아·다이어트·MBTI·펫운·별자리 7개앱 DB저장 완전수정 (2026-08-23)](bug_budget_cloudflare_empty_useragent_block_2026_08_23.md) — 3단계원인(UA헤더→Cloudflare skip설정→CORS preflight리다이렉트), 6개앱 재빌드+콘솔재업로드 필요
