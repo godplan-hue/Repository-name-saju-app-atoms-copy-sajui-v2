@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: e04af5d5-eb3c-4469-ab5d-37a8c64cef95
-  modified: 2026-08-25T03:28:58.248Z
+  modified: 2026-08-25T04:16:49.515Z
 ---
 
 ## 문제
@@ -35,9 +35,13 @@ if (e.type === "dismissed" || e.type === "adClosed" || e.type === "adImpression"
 
 1. **`bd1572d`** — `watchAd()`의 `failedToShow`/`onError` 분기가 잠금은 풀어주면서 광고슬롯 재적재(`loadFullScreenAd`)를 안 하고 있었음. 한번 실패하면 그 뒤로 슬롯이 계속 빈 채로 남음. ([[bug_tarot_gunghap_cloudflare_waf_block_2026_08_25]]에서 타로에 적용한 `14d3b4a` 패턴과 동일)
 2. **`48ee5cd`** — 대운기간(selectedIdx) 바꿀 때마다 미리 광고를 채워두는 프리로드 추가.
-3. **`35fb2d2`(최종)** — **진짜 근본원인**: `watchAd()`가 슬롯 준비여부를 확인 안 하고 무조건 `showFullScreenAd`부터 호출 → 슬롯이 비어있으면 아무 이벤트도 안 오고 8초짜리 안전장치(`fsTimer`)가 조용히 잠금만 풀어버림 → 사용자 눈엔 "광고 안 뜨고 바로 열림"으로 보임. SDK 번들 소스(`node_modules/@apps-in-toss/web-framework/dist/prebuilt/*.js`)를 직접 읽어서 `loadFullScreenAd`가 실제로 로드완료 시 `{type:"loaded"}` 이벤트를 쏘는 걸 확인 → `adReadyRef` 추가해서 이 이벤트로만 true 세팅, `watchAd()`는 `adReadyRef.current`가 true일 때만 바로 보여주고, false면 즉시 재로드 후 `loaded` 콜백(최대 4초 대기) 받고서야 보여주도록 변경.
+3. **`35fb2d2`** — `watchAd()`가 슬롯 준비여부를 확인 안 하고 무조건 `showFullScreenAd`부터 호출 → 슬롯이 비어있으면 아무 이벤트도 안 오고 8초짜리 안전장치(`fsTimer`)가 조용히 잠금만 풀어버림 → 사용자 눈엔 "광고 안 뜨고 바로 열림"으로 보임. SDK 번들 소스(`node_modules/@apps-in-toss/web-framework/dist/prebuilt/*.js`)를 직접 읽어서 `loadFullScreenAd`가 실제로 로드완료 시 `{type:"loaded"}` 이벤트를 쏘는 걸 확인 → `adReadyRef` 추가해서 이 이벤트로만 true 세팅, `watchAd()`는 `adReadyRef.current`가 true일 때만 바로 보여주고, false면 즉시 재로드 후 `loaded` 콜백(최대 4초 대기) 받고서야 보여주도록 변경.
    - 빌드: deploymentId `01a036ef-1c2a-773d-be17-450ff8710268`
-   - **토스 콘솔 재업로드 필요** (아직 안 함, 사용자가 테스트 예정)
+   - **이후 `b336350`에서 `48ee5cd` 로직으로 되돌림 — `35fb2d2`는 최종본 아님.** 최종 상태는 이전 세션 기록 참고.
+
+### ⛔ 추가 확인 필요 (2026-08-25 후반)
+
+대운도 타로와 같은 함정에 빠졌을 수 있음 — 코드 수정(`da007d5`→`bd1572d`→`48ee5cd`→`b336350`)만 반복했지, 그 사이 실제로 토스 "앱 출시" 콘솔에서 버전이 승인+출시됐는지 확인한 적이 없음. [[bug_tarot_gunghap_cloudflare_waf_block_2026_08_25]]에서 타로는 16개 버전 전부 "검토 필요"로 미승인 상태였던 게 밝혀짐. 대운도 재조사 전에 먼저 "앱 출시"에서 최신 버전 승인 상태부터 확인할 것. [[feedback_investigate_fully_before_asking_reupload]] 참고.
 
 ## How to apply
 
