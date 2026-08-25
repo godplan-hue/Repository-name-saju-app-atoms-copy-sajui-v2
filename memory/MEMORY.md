@@ -1,6 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐⭐⭐ 타로/궁합/펫운/별자리 잠금해제 광고 재시도로직 누락 4개앱수정 (2026-08-25)](project_ad_retry_4apps_fix_2026_08_25.md) — failedToShow 즉시잠금해제하던버그, commit 3391a2c/18b676d/bc2f657/6d00215
+- [⭐⭐⭐⭐⭐ 타로/궁합/펫운/별자리 잠금해제 광고버그 4개앱수정+타로 impression오인 2차수정 (2026-08-25)](project_ad_retry_4apps_fix_2026_08_25.md) — 펫운·별자리 실제수정은 jeomun-saju(2b477b0), 타로 2차 commit 0b78ad9
 - [⭐⭐⭐⭐⭐ 사주 DB저장 진짜원인 발견+수정, 문제앱은 타로아니라 사주+궁합이었음 (2026-08-25)](project_session_2026_08_25e.md) — saju handleFormSubmit await없이 광고먼저뜨던 버그, commit d2ea301
 - [⭐⭐⭐⭐ 타로+궁합 DB저장수정+궁합 전면광고전환 (2026-08-25)](project_session_2026_08_25d.md) — DB 3회재시도로 수정, 궁합 리워드→전면광고 전환(commit b76c073), 최초 "수정불필요" 결론은 틀렸음
 - [⛔⛔⛔ 타로/궁합 DB저장 조사과정+무료전환+폰번호락 (2026-08-25 초반)](project_session_2026_08_25c.md) — 990원결제 전면제거([[project_session_2026_08_25b]] 폰번호락gap 해소), Cloudflare아님만 확인, 진짜원인은 25e에서 발견됨
