@@ -4,7 +4,7 @@ description: "펫운/별자리는 별도 토스앱이 아니라 jeomun-saju에 �
 metadata:
   type: project
   originSessionId: e04af5d5-eb3c-4469-ab5d-37a8c64cef95
-  modified: 2026-08-25T01:49:24.331Z
+  modified: 2026-08-25T02:00:25.544Z
 ---
 
 ## ⚠️ 앱 구조 정정 — 펫운/별자리는 별도 앱이 아니라 사주앱(jeomun-saju)에 흡수된 탭
@@ -36,6 +36,12 @@ metadata:
 2. **5개 섹션 잠금해제 버튼에 로딩/비활성화 가드가 전혀 없었음** (궁합/펫운/별자리는 이미 있었는데 타로만 누락). 버튼 눌러도 반응이 안 보여서 사용자가 두번 누르면, 레이아웃이 바뀌면서 두번째 탭이 바로 아래 섹션 버튼에 맞아 같이 풀림. → `unlockingSection` state 추가해 처리중엔 버튼 비활성화+"광고 불러오는 중..." 표시.
 
 **Why**: `impression`과 `dismissed`는 SDK에서 별개 이벤트(노출 vs 닫힘)인데 같은 걸로 취급한 게 근본 원인. 이 문제는 jeomun-saju의 6개 잠금해제 함수와 `jeomun-gunghap`에도 `adImpression`/`impression`이 성공조건에 남아있을 수 있음 — 아직 감사 안 함, 신고 들어오면 여기부터 확인.
+
+## 타로 3차 버그 수정 (2026-08-25, commit `faac20c`, deploymentId `01a036a5-1426-72fc-aa0a-9da3974b0fe7`)
+
+사용자 신고: 공유하기 눌러도 jeomun.com 웹링크 카드가 뜸(토스 미니앱 링크가 아님). 원인: `handleShare()`가 `getTossShareLink` 없이 메시지에 `https://jeomun.com`을 하드코딩. 궁합 앱은 이미 `getTossShareLink("intoss://gunghap-jeomun")`으로 실제 미니앱 딥링크를 발급받아 공유하고 있었음 — 타로도 동일 패턴 적용, `getTossShareLink("intoss://tarot-jeomun")`(scheme은 `granite.config.ts`의 `appName: "tarot-jeomun"`과 일치) 사용하도록 수정.
+
+**How to apply**: 다른 앱(펫운/별자리/MBTI 등)도 공유버튼이 `jeomun.com` 하드코딩돼있으면 같은 버그 — `getTossShareLink("intoss://{appName}-jeomun")` 패턴으로 통일할 것. appName은 각 앱의 `granite.config.ts` 확인.
 
 ## 남은 작업
 
