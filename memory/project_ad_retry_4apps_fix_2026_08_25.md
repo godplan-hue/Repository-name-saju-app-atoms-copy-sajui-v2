@@ -4,7 +4,7 @@ description: "펫운/별자리는 별도 토스앱이 아니라 jeomun-saju에 �
 metadata:
   type: project
   originSessionId: e04af5d5-eb3c-4469-ab5d-37a8c64cef95
-  modified: 2026-08-25T02:00:25.544Z
+  modified: 2026-08-25T02:07:53.503Z
 ---
 
 ## ⚠️ 앱 구조 정정 — 펫운/별자리는 별도 앱이 아니라 사주앱(jeomun-saju)에 흡수된 탭
@@ -42,6 +42,14 @@ metadata:
 사용자 신고: 공유하기 눌러도 jeomun.com 웹링크 카드가 뜸(토스 미니앱 링크가 아님). 원인: `handleShare()`가 `getTossShareLink` 없이 메시지에 `https://jeomun.com`을 하드코딩. 궁합 앱은 이미 `getTossShareLink("intoss://gunghap-jeomun")`으로 실제 미니앱 딥링크를 발급받아 공유하고 있었음 — 타로도 동일 패턴 적용, `getTossShareLink("intoss://tarot-jeomun")`(scheme은 `granite.config.ts`의 `appName: "tarot-jeomun"`과 일치) 사용하도록 수정.
 
 **How to apply**: 다른 앱(펫운/별자리/MBTI 등)도 공유버튼이 `jeomun.com` 하드코딩돼있으면 같은 버그 — `getTossShareLink("intoss://{appName}-jeomun")` 패턴으로 통일할 것. appName은 각 앱의 `granite.config.ts` 확인.
+
+## 타로 4차 버그 수정 (2026-08-25, commit `14d3b4a`, deploymentId `01a036ab-de7b-747d-9faf-7931cf4498aa`)
+
+사용자 신고: "광고를 불러오는 중" 텍스트만 뜨고 실제 광고는 안 나옴. **진짜 원인**: `showFullScreenAd`는 `loadFullScreenAd`로 미리 채워둔 광고 슬롯 1개를 "소비"하는 구조 — 재적재(reload) 안 하면 다음 호출은 뜰 광고가 없어서 onEvent/onError 콜백조차 없이 조용히 8초 타임아웃까지 대기함(로딩중 텍스트만 계속). 타로는 앱 진입시 1회 preload(line 273) → 결과지 진입 1초 후 "2번째 전면광고"가 그 슬롯을 소비 → 이후 재적재 코드가 없어서 섹션 잠금해제 버튼을 누르면 이미 빈 슬롯에 대고 show를 호출하는 셈이었음.
+
+**수정**: `reloadAd()` 헬퍼 추가 — (1) 결과지 2번째 전면광고 표시/실패 직후, (2) `watchAd()`의 `go()`(잠금해제 성공) 직후, 매번 다음 광고를 재적재하도록 함.
+
+**How to apply**: `loadFullScreenAd`+`showFullScreenAd` 패턴을 쓰는 다른 앱에서도 "광고가 처음엔 뜨는데 두번째부터 안 뜬다"는 신고가 오면 이 소비-후-미재적재 버그부터 의심할 것. 성공적으로 광고를 보여준(또는 소비한) 직후에는 항상 다음 사용을 위해 `loadFullScreenAd`를 다시 호출해야 함.
 
 ## 남은 작업
 
