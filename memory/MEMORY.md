@@ -1,9 +1,9 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⛔⛔⛔ 한번에 제대로 고치고 재업로드 요청 — 몇십번 테스트시키지 말것 (2026-08-25)](feedback_investigate_fully_before_asking_reupload.md) — 대운광고버그 4차수정 항의사건
-- [⭐⭐⭐⭐⭐ 대운 잠금해제 광고 즉시열림버그 - 전체기간 공통, adImpression 성공조건 오류 (2026-08-25)](bug_daewoon_adimpression_instant_unlock_2026_08_25.md) — commit da007d5→bd1572d→48ee5cd→b336350(최종, 35fb2d2는되돌려짐). 승인여부 미확인 — 재조사전 앱출시 콘솔부터 확인할것
+- [⭐⭐⭐⭐⭐ 신규 토스앱 기획 「관계레이더」— 개발착수용 완성스펙 (2026-08-25)](project_appintoss_gwangyeoradar_devspec_2026_08_25.md) — 화면1~20/DB스키마/27개결과항목/금지문구/가격, [[project_appintoss_gwangyeoradar_plan_2026_08_25]] 원본기획(1/2)과 함께 앱만들때 그대로 사용
+- [⛔⛔⛔ 한번에 제대로 고치고 재업로드 요청+재조사전 앱출시 승인여부부터 확인 (2026-08-25)](feedback_investigate_fully_before_asking_reupload.md) — 대운광고버그 4차수정 항의사건, 타로는 코드가 처음부터 맞았는데 리뷰 미승인(16개버전 전부 검토필요)이라 반영이 안됐던 것— 대운·직운·합격자소서·택일도 승인여부 미확인
+- [⭐⭐⭐⭐⭐ 대운 잠금해제 광고 즉시열림버그 - 전체기간 공통, adImpression 성공조건 오류 (2026-08-25)](bug_daewoon_adimpression_instant_unlock_2026_08_25.md) — commit da007d5→bd1572d→48ee5cd→b336350(최종, 35fb2d2는되돌려짐), 승인여부 미확인
 - [⭐⭐⭐⭐⭐ 타로저장 진짜원인=Cloudflare WAF규칙에 /api/tarot/lead 누락, 궁합·사주는 정상 (2026-08-25)](bug_tarot_gunghap_cloudflare_waf_block_2026_08_25.md) — 빈UA로 테스트해야 차단여부 확인됨, 대시보드 규칙 수정으로 해결(앱재업로드불필요)
-- [⭐⭐⭐⭐⭐ 타로 공유버튼 - 코드는처음부터맞았고 진짜원인은 앱출시 리뷰 미승인(16개버전전부검토필요) (2026-08-25)](feedback_investigate_fully_before_asking_reupload.md) — 코드버그로착각해 몇번씩 재조사시킴, 대운·직운·합격자소서·택일도 승인여부 미확인상태이니 먼저확인할것
 - [⭐⭐⭐⭐⭐ 타로 광고안뜸 진짜원인=재적재누락(14d3b4a)+공유링크+잠금해제 4차수정 (2026-08-25)](project_ad_retry_4apps_fix_2026_08_25.md) — showFullScreenAd는 슬롯소비형, reload안하면조용히타임아웃만. 펫운·별자리 실제수정은 jeomun-saju(2b477b0)
 - [⭐⭐⭐⭐⭐ 사주 DB저장 진짜원인 발견+수정, 문제앱은 타로아니라 사주+궁합이었음 (2026-08-25)](project_session_2026_08_25e.md) — saju handleFormSubmit await없이 광고먼저뜨던 버그, commit d2ea301
 - [⭐⭐⭐⭐ 타로+궁합 DB저장수정+궁합 전면광고전환 (2026-08-25)](project_session_2026_08_25d.md) — DB 3회재시도로 수정, 궁합 리워드→전면광고 전환(commit b76c073), 최초 "수정불필요" 결론은 틀렸음
