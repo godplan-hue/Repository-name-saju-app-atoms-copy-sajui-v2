@@ -37,10 +37,11 @@ or (http.request.uri.path contains "/api/gunghap/lead")
 3. "예전 빌드로 테스트한 거 아니냐"는 절대 다시 말하지 말 것 — 사용자가 매번 새 .ait 재업로드하고 테스트한다고 명확히 확인함
 4. 새 토스앱 만들 때마다 저장 API 경로를 이 Cloudflare 규칙에 미리 추가해두는 걸 체크리스트에 넣을 것
 
-## 남은 재업로드 (저장문제와 무관, 별개 수정사항)
+## 남은 재업로드 (저장문제와 무관, 별개 수정사항) — 2026-08-25 갱신
 
-- 타로: 광고 재적재 수정본 `14d3b4a` — 아직 재업로드 안 됨
-- 대운: 공유링크 앱스킴 오타 수정본 `7227f1b` (intoss://jeomun-daewoon → intoss://daewoon-jeomun) — 아직 재업로드 안 됨
-- 직운(jigun): 공유링크 스킴 오타 코드수정은 했으나 빌드/커밋/재업로드 전부 미완 (intoss://jeomun-jigun → intoss://jigun-jeomun, App.tsx line 536)
-- 합격자소서(resume): 동일 버그 확인됨(App.tsx line 491, intoss://jeomun-resume → intoss://resume-jeomun), 수정 자체도 아직 안 함
-- 택일(taegil): 동일 버그 의심됨(감사스크립트로 MISMATCH 확인), 정확한 위치 미확인, 수정 안 함
+전부 코드수정+빌드+커밋+푸시 완료, **토스 콘솔 재업로드만 남음**:
+- 타로: 광고 재적재 수정본 `14d3b4a`
+- 대운: 공유링크 스킴 수정 `7227f1b` + 잠금해제 adImpression버그 수정 `da007d5` ([[bug_daewoon_adimpression_instant_unlock_2026_08_25]] 참고)
+- 직운(jigun): 공유링크 스킴 수정 `a120850`
+- 합격자소서(resume): 공유링크 스킴 수정 `af98a11`
+- 택일(taegil): 공유링크 스킴 수정 `c22003d`
