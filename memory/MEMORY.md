@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⛔ 새 토스앱 만들 땐 처음부터 Analytics 로그 심을 것 (2026-08-25)](feedback_always_add_analytics_logging_new_apps.md) — screen/click/impression 패턴, mbti·gwangyeoradar 참고
 - [⭐⭐⭐⭐⭐ 신규 토스앱 기획 「관계레이더」— 개발착수용 완성스펙 (2026-08-25)](project_appintoss_gwangyeoradar_devspec_2026_08_25.md) — 화면1~20/DB스키마/27개결과항목/금지문구/가격, [[project_appintoss_gwangyeoradar_plan_2026_08_25]] 원본기획(1/2)과 함께 앱만들때 그대로 사용
 - [⛔⛔⛔ 한번에 제대로 고치고 재업로드 요청+재조사전 앱출시 승인여부부터 확인 (2026-08-25)](feedback_investigate_fully_before_asking_reupload.md) — 대운광고버그 4차수정 항의사건, 타로는 코드가 처음부터 맞았는데 리뷰 미승인(16개버전 전부 검토필요)이라 반영이 안됐던 것— 대운·직운·합격자소서·택일도 승인여부 미확인
 - [⭐⭐⭐⭐⭐ 대운 잠금해제 광고 즉시열림버그 - 전체기간 공통, adImpression 성공조건 오류 (2026-08-25)](bug_daewoon_adimpression_instant_unlock_2026_08_25.md) — commit da007d5→bd1572d→48ee5cd→b336350(최종, 35fb2d2는되돌려짐), 승인여부 미확인
