@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ 타로저장 진짜원인=Cloudflare WAF규칙에 /api/tarot/lead 누락, 궁합·사주는 정상 (2026-08-25)](bug_tarot_gunghap_cloudflare_waf_block_2026_08_25.md) — 빈UA로 테스트해야 차단여부 확인됨, 대시보드 규칙 수정으로 해결(앱재업로드불필요)
 - [⭐⭐⭐⭐⭐ 타로 광고안뜸 진짜원인=재적재누락(14d3b4a)+공유링크+잠금해제 4차수정 (2026-08-25)](project_ad_retry_4apps_fix_2026_08_25.md) — showFullScreenAd는 슬롯소비형, reload안하면조용히타임아웃만. 펫운·별자리 실제수정은 jeomun-saju(2b477b0)
 - [⭐⭐⭐⭐⭐ 사주 DB저장 진짜원인 발견+수정, 문제앱은 타로아니라 사주+궁합이었음 (2026-08-25)](project_session_2026_08_25e.md) — saju handleFormSubmit await없이 광고먼저뜨던 버그, commit d2ea301
 - [⭐⭐⭐⭐ 타로+궁합 DB저장수정+궁합 전면광고전환 (2026-08-25)](project_session_2026_08_25d.md) — DB 3회재시도로 수정, 궁합 리워드→전면광고 전환(commit b76c073), 최초 "수정불필요" 결론은 틀렸음
