@@ -1,5 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐ 토스 MBTI 가짜번호(01012345678) 차단 코드수정완료, 재업로드 대기 (2026-08-26)](project_mbti_toss_fakephone_fix_pending_upload_2026_08_26.md) — 빌드/콘솔업로드 안함, 다음 배치 재업로드때 같이 반영
+- [⛔⛔⛔ 재업로드=쌓인 다른 수정까지 전부 동반배포+죽은버그 되살림 미리경고 (2026-08-26)](feedback_dont_push_reupload_batch_fixes.md) — MBTI analyze CORS버그 되살아나며 1곳→2곳저장 돌변사건, 재업로드전 git log로 동반될 다른커밋 확인+부작용 미리설명 필수
 - [⭐⭐⭐ 맹렬퍼널홍보비법 4종세트 — 웨비나+홀모지x브런슨+세일즈문구100선+AI부업인터뷰 (2026-08-26)](reference_maengryeol_funnel_promotion_secrets.md) — 그랜드슬램오퍼·가치사다리·퍼펙트웨비나+구매심리10원리 100문구+AI콘텐츠제작·숫자카피, 향후 홍보 전체 적용
 - [⭐⭐⭐ MBTI 순위(27/2700,5/850)+공유리워드 신규구현+토스문서6종대조 (2026-08-26)](project_mbti_ranking_and_share_reward_2026_08_26.md) — 직업섹션 광고잠금→공유잠금 전환(commit 4a9e001), ait build+재업로드 아직 안함
 - [⭐ 앱인토스 SDK3.x Origin변경 공지 대응확인 (2026-08-26)](reference_toss_sdk3_origin_cors_notice_2026_08_26.md) — 21개앱 전부 SDK2.x+CORS와일드카드라 조치불필요, 3.x업그레이드시 재확인
