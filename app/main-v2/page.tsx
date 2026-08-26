@@ -293,7 +293,7 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
           ))}
         </div>
         <div style={{ textAlign: "center", marginBottom: 14 }}>
-          <span style={{ fontSize: 16, fontWeight: 900, color: "#fff", background: G, padding: "12px 26px", borderRadius: 26, boxShadow: "0 4px 14px rgba(139,92,246,0.45)", display: "inline-block" }}>✨ 990원부터 · 눌러서 자세히 보기</span>
+          <span style={{ fontSize: 16, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg, #f59e0b, #ea580c)", padding: "12px 26px", borderRadius: 26, boxShadow: "0 4px 14px rgba(234,88,12,0.45)", display: "inline-block" }}>✨ 990원부터 · 눌러서 자세히 보기</span>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
