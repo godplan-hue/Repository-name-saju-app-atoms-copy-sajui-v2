@@ -318,9 +318,9 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                     <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
                       9,900원~
                     </span>
-                  ) : (cat as any).price === "무료" && (
+                  ) : (
                     <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
-                      무료
+                      {(cat as any).price}
                     </span>
                   )}
                   {(cat as any).sub && (
