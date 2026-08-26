@@ -695,7 +695,7 @@ export default function MainV2() {
     const slot = Math.floor(now.getHours() / 8);
     const seed = dayOfYear * 3 + slot;
     const pseudo = ((seed * 9301 + 49297) % 233280) / 233280;
-    setLiveCount(620 + Math.floor(pseudo * 500));
+    setLiveCount(758 + Math.floor(pseudo * 400));
   }, []);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
