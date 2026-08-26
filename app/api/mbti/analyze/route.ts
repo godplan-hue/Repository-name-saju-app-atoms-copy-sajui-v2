@@ -537,9 +537,10 @@ const EXTRA_DATA: Record<string, {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json() as { answers: number[]; userName?: string; phone?: string; email?: string; marketing?: boolean };
+    const body = await req.json() as { answers: number[]; userName?: string; phone?: string; email?: string; marketing?: boolean; source?: string };
     const { answers, userName, phone, email } = body;
     const marketing = body.marketing === true;
+    const source = body.source === "toss" ? "toss" : "web";
     if (!answers || answers.length !== 16) {
       return NextResponse.json({ error: "answers 16개 필요" }, { status: 400, headers: CORS_HEADERS });
     }
@@ -571,6 +572,7 @@ export async function POST(req: NextRequest) {
       phone: phone || "",
       email: email || "",
       marketing,
+      source,
       createdAt: Date.now(),
     };
 
