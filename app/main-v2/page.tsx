@@ -315,6 +315,9 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
             <span key={i} style={{ display: "inline-block", color: "#facc15", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
           ))}
         </div>
+        <div style={{ textAlign: "center", marginBottom: 10 }}>
+          <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: G, padding: "6px 16px", borderRadius: 20, boxShadow: "0 2px 10px rgba(139,92,246,0.35)" }}>✨ 990원부터 · 눌러서 자세히 보기</span>
+        </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
             <div
@@ -334,9 +337,13 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                 <>
                   <img src={(cat as any).img} alt={cat.title} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 70%)" }} />
-                  {(cat as any).price && (
+                  {(isPartner && (cat.id === "wealth" || cat.id === "love")) ? (
                     <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
-                      {isPartner && (cat.id === "wealth" || cat.id === "love") ? "9,900원~" : (cat as any).price}
+                      9,900원~
+                    </span>
+                  ) : (cat as any).price === "무료" && (
+                    <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
+                      무료
                     </span>
                   )}
                   {(cat as any).sub && (
