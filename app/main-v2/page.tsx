@@ -315,8 +315,8 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
             <span key={i} style={{ display: "inline-block", color: "#facc15", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
           ))}
         </div>
-        <div style={{ textAlign: "center", marginBottom: 10 }}>
-          <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: G, padding: "6px 16px", borderRadius: 20, boxShadow: "0 2px 10px rgba(139,92,246,0.35)" }}>✨ 990원부터 · 눌러서 자세히 보기</span>
+        <div style={{ textAlign: "center", marginBottom: 14 }}>
+          <span style={{ fontSize: 16, fontWeight: 900, color: "#fff", background: G, padding: "12px 26px", borderRadius: 26, boxShadow: "0 4px 14px rgba(139,92,246,0.45)", display: "inline-block" }}>✨ 990원부터 · 눌러서 자세히 보기</span>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
           {FORTUNE_CATEGORIES.map(cat => (
