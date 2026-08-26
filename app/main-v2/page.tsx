@@ -687,6 +687,16 @@ export default function MainV2() {
   const [showModal, setShowModal] = useState<string | null>(null);
   const [modalSelectedCats, setModalSelectedCats] = useState<string[]>(["💰 재물운"]);
   const [extraOtherInput, setExtraOtherInput] = useState("");
+  // 실시간 접속자 배지 — 하루 3구간(0~8시/8~16시/16~24시)마다 숫자가 바뀜
+  const [liveCount, setLiveCount] = useState(758);
+  useEffect(() => {
+    const now = new Date();
+    const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000);
+    const slot = Math.floor(now.getHours() / 8);
+    const seed = dayOfYear * 3 + slot;
+    const pseudo = ((seed * 9301 + 49297) % 233280) / 233280;
+    setLiveCount(620 + Math.floor(pseudo * 500));
+  }, []);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
     const audio = audioRef.current;
@@ -864,6 +874,11 @@ export default function MainV2() {
         <p style={{ margin: "10px 0 0" }}>
           <span style={{ display: "inline-block", fontSize: 12, fontWeight: 800, color: "#7c3aed", background: "#fff", padding: "6px 14px", borderRadius: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.12)" }}>
             + 꿈해몽·점냥이·Q&A 3종 24시간 무료
+          </span>
+        </p>
+        <p style={{ margin: "10px 0 0" }}>
+          <span style={{ display: "inline-block", fontSize: 12, fontWeight: 700, color: "#fff", background: "rgba(0,0,0,0.55)", padding: "6px 14px", borderRadius: 20 }}>
+            🔥 지금 {liveCount}명이 함께 보고 있어요
           </span>
         </p>
       </section>
