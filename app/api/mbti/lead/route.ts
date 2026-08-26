@@ -15,7 +15,11 @@ export async function OPTIONS() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    await db.ref("free_leads/toss").push(body);
+    const phoneDigits = String(body?.phone || "").replace(/\D/g, "");
+    const isFakePhone = phoneDigits === "01012345678" || /^010(\d)\1{7}$/.test(phoneDigits);
+    if (!isFakePhone) {
+      await db.ref("free_leads/toss").push(body);
+    }
     return cors(NextResponse.json({ ok: true }));
   } catch (e) {
     console.error(e);

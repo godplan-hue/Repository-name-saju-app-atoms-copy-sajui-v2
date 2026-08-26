@@ -576,9 +576,11 @@ export async function POST(req: NextRequest) {
       createdAt: Date.now(),
     };
 
-    const ref = db.ref("mbti_analyses").push();
-    await ref.set(result);
-    return NextResponse.json({ id: ref.key, ...result }, { headers: CORS_HEADERS });
+    const phoneDigits = (phone || "").replace(/\D/g, "");
+    const isFakePhone = phoneDigits === "01012345678" || /^010(\d)\1{7}$/.test(phoneDigits);
+    const ref = isFakePhone ? null : db.ref("mbti_analyses").push();
+    if (ref) await ref.set(result);
+    return NextResponse.json({ id: ref ? ref.key : null, ...result }, { headers: CORS_HEADERS });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "서버 오류" }, { status: 500, headers: CORS_HEADERS });
