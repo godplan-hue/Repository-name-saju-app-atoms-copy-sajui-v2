@@ -933,8 +933,8 @@ export default function MainV2() {
       <div style={{ padding: "0 14px 20px", maxWidth: 480, margin: "0 auto" }}>
         <div style={{ position: "relative", overflow: "hidden", background: "linear-gradient(135deg, rgba(45,16,62,0.95), rgba(74,26,84,0.92))", border: "2px solid rgba(251,191,36,0.75)", borderRadius: 14, padding: "16px 18px", textAlign: "center", boxShadow: "0 4px 18px rgba(74,26,84,0.35)" }}>
           <div style={{ position: "absolute", top: 0, left: 0, width: "40%", height: "200%", background: "linear-gradient(100deg, transparent, rgba(255,255,255,0.55), transparent)", animation: "shimmerSweep 3.2s ease-in-out infinite", pointerEvents: "none" }} />
-          <p style={{ position: "relative", fontSize: 13, fontWeight: 800, color: "#f9a8d4", margin: "0 0 5px" }}>혹시 소문 듣고 오셨나요?</p>
-          <p style={{ position: "relative", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.5, color: "#ffffff", animation: "textGlow 1.8s ease-in-out infinite" }}>20만원씩 내고 봤던 사주보다<br/>더 자세하고 정확하대요</p>
+          <p style={{ position: "relative", fontSize: 13, fontWeight: 800, color: "#f9a8d4", margin: "0 0 5px" }}>오프라인 사주는 10~20만원</p>
+          <p style={{ position: "relative", fontSize: 12, fontWeight: 800, margin: 0, lineHeight: 1.5, color: "#ffffff", animation: "textGlow 1.8s ease-in-out infinite" }}>점운은 AI로 990원부터<br/>더 자세하게 풀어드려요</p>
         </div>
         <div style={{ textAlign: "center", marginTop: 16 }}>
           <button onClick={() => router.push("/main-v2/payment")} style={{ padding: "15px 36px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite" }}>
