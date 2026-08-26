@@ -287,29 +287,6 @@ const FORTUNE_CATEGORIES = [
 function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPartner: boolean }) {
   return (
     <div style={{ padding: "0 14px 28px", maxWidth: 480, margin: "0 auto" }}>
-        {/* 사주 전체보기 + 14개 무료앱 버튼 */}
-        {!isPartner && (
-          <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
-            <a href="/apps" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
-              <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
-                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 무료 18개<br />점운 전체앱</span>
-              </div>
-              <div style={{ background: "#f0fdf4", padding: "10px 12px", textAlign: "center" }}>
-                <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>18개 계열앱<br />무료로 이용</p>
-                <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#22c55e", padding: "4px 12px", borderRadius: 20 }}>전체보기 →</span>
-              </div>
-            </a>
-            <a href="/main-v2/payment" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd", textDecoration: "none" }}>
-              <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
-                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>💳 전체 운세<br />패키지 보기</span>
-              </div>
-              <div style={{ background: "#f5f3ff", padding: "10px 12px", textAlign: "center" }}>
-                <p style={{ fontSize: 11, color: "#5b21b6", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>운세 패키지<br />전체 확인하기</p>
-                <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "4px 12px", borderRadius: 20 }}>바로보기 →</span>
-              </div>
-            </a>
-          </div>
-        )}
         <div style={{ textAlign: "center", marginBottom: 6 }}>
           {[0,1,2,3,4].map(i => (
             <span key={i} style={{ display: "inline-block", color: "#facc15", fontSize: 16, margin: "0 2px", animation: "starTwinkle 1.6s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}>★</span>
@@ -891,17 +868,6 @@ export default function MainV2() {
         </p>
       </section>
 
-      {/* 슬라이드 배너 */}
-      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
-      <FortuneSearch onOpenModal={(catKey, modalId) => {
-        if (modalId) { setShowModal(modalId); }
-        else if (catKey) { setModalSelectedCats([catKey]); setShowModal("wealth5"); }
-      }} />
-
-      {/* 연결 앱 3개 배너 */}
-
-
-
       {/* 운세 선택 — 9개 박스 그리드(맨 앞 1개는 무료체험, 나머지 8개는 VIP 패키지의
           8개 항목을 그대로 미리보기 — 그래서 이름/내용을 다른 걸로 바꾸지 않음).
           재물운/연애운은 990원 단품 결제로, 나머지는 패키지(9,900원~) 결제로 보냄.
@@ -947,6 +913,39 @@ export default function MainV2() {
           </p>
         </div>
       </div>
+
+      {/* 슬라이드 배너 */}
+      <BannerSlider isPartner={isPartner} chatProfile={savedProfile} onStart={route => { if (route === "package") { router.push("/main-v2/payment?highlight=wealthlove"); } else { goFree(); } }} onModal={(id, preselect) => { if (id === "naming") setModalSelectedCats([preselect || "💰 재물운"]); if (id === "love") setModalSelectedCats([preselect || "🎍 신년운세"]); if (id === "wealth5") setModalSelectedCats(["💰 재물운"]); setShowModal(id); }} />
+      <FortuneSearch onOpenModal={(catKey, modalId) => {
+        if (modalId) { setShowModal(modalId); }
+        else if (catKey) { setModalSelectedCats([catKey]); setShowModal("wealth5"); }
+      }} />
+
+      {/* 무료 18개앱 / 전체 패키지 내비 카드 */}
+      {!isPartner && (
+        <div style={{ padding: "0 14px 14px", maxWidth: 480, margin: "0 auto" }}>
+          <div style={{ display: "flex", gap: 8 }}>
+            <a href="/apps" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
+              <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 무료 18개<br />점운 전체앱</span>
+              </div>
+              <div style={{ background: "#f0fdf4", padding: "10px 12px", textAlign: "center" }}>
+                <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>18개 계열앱<br />무료로 이용</p>
+                <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#22c55e", padding: "4px 12px", borderRadius: 20 }}>전체보기 →</span>
+              </div>
+            </a>
+            <a href="/main-v2/payment" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(139,92,246,0.15)", border: "1.5px solid #c4b5fd", textDecoration: "none" }}>
+              <div style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", padding: "8px 12px", textAlign: "center" }}>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>💳 전체 운세<br />패키지 보기</span>
+              </div>
+              <div style={{ background: "#f5f3ff", padding: "10px 12px", textAlign: "center" }}>
+                <p style={{ fontSize: 11, color: "#5b21b6", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>운세 패키지<br />전체 확인하기</p>
+                <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#7c3aed", padding: "4px 12px", borderRadius: 20 }}>바로보기 →</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* 히어로 */}
       <section style={{ padding: "24px 16px 20px" }}>
