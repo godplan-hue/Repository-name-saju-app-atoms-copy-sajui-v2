@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { isFakePhone } from "@/lib/fakePhone";
 
 const MOOD_INFO: Record<number, { label: string; emoji: string; oh: string }> = {
   5: { label: "최고!", emoji: "😄", oh: "화" },
@@ -118,11 +119,12 @@ export async function POST(req: NextRequest) {
       createdAt: Date.now(),
     };
 
-    const ref = db.ref("gamjung_analyses").push();
-    await ref.set(result);
+    const isFake = isFakePhone(cleanPhone);
+    const ref = isFake ? null : db.ref("gamjung_analyses").push();
+    if (ref) await ref.set(result);
 
     // 전화번호별 이력 인덱스 저장 — 다른 브라우저에서도 목록 복원 가능
-    if (cleanPhone && ref.key) {
+    if (!isFake && cleanPhone && ref && ref.key) {
       db.ref(`gamjung_history_phone/${cleanPhone}/${ref.key}`).set({
         id: ref.key,
         moodLabel: moodInfo.label,
@@ -132,7 +134,7 @@ export async function POST(req: NextRequest) {
       }).catch(() => {});
     }
 
-    return NextResponse.json({ id: ref.key, result });
+    return NextResponse.json({ id: ref ? ref.key : null, result });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "분석 중 오류" }, { status: 500 });

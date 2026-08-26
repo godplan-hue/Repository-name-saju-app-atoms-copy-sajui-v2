@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { isFakePhone } from "@/lib/fakePhone";
 
 const STEMS = ["경","신","임","계","갑","을","병","정","무","기"];
 const OH_MAP: Record<string,string> = {
@@ -110,8 +111,8 @@ export async function POST(request: NextRequest) {
       createdAt: Date.now(),
     };
 
-    const ref = await db.ref("petun_analyses").push(result);
-    return NextResponse.json({ id: ref.key, result });
+    const ref = isFakePhone(ownerPhone) ? null : await db.ref("petun_analyses").push(result);
+    return NextResponse.json({ id: ref ? ref.key : null, result });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "분석 중 오류" }, { status: 500 });

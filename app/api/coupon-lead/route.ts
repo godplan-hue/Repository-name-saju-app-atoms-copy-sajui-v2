@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { isFakePhone } from "@/lib/fakePhone";
 
 function genCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -30,21 +31,23 @@ export async function POST(request: NextRequest) {
     }
     if (!code) return NextResponse.json({ error: "코드 생성 실패" }, { status: 500 });
 
-    // 전화번호를 키로 저장 — 중복 발급 원천 차단
-    await db.ref(`coupon_leads/${cleanPhone}`).set({
-      phone: cleanPhone,
-      name: name || "",
-      code,
-      createdAt: Date.now(),
-      used: false,
-    });
+    if (!isFakePhone(cleanPhone)) {
+      // 전화번호를 키로 저장 — 중복 발급 원천 차단
+      await db.ref(`coupon_leads/${cleanPhone}`).set({
+        phone: cleanPhone,
+        name: name || "",
+        code,
+        createdAt: Date.now(),
+        used: false,
+      });
 
-    await db.ref(`promoCodes/${code}`).set({
-      discountPercent: 30,
-      note: "무료운세쿠폰",
-      active: true,
-      usageCount: 0,
-    });
+      await db.ref(`promoCodes/${code}`).set({
+        discountPercent: 30,
+        note: "무료운세쿠폰",
+        active: true,
+        usageCount: 0,
+      });
+    }
 
     return NextResponse.json({ code, alreadyClaimed: false });
   } catch (error) {

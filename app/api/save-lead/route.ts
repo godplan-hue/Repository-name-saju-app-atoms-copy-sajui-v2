@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { isFakePhone } from "@/lib/fakePhone";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -38,7 +39,9 @@ export async function POST(req: NextRequest) {
     };
 
     const path = pathMap[app] || `${app}_leads`;
-    await db.ref(`${path}/${id}`).set(data);
+    if (!isFakePhone(phone)) {
+      await db.ref(`${path}/${id}`).set(data);
+    }
 
     return NextResponse.json({ id, ok: true }, { headers: CORS_HEADERS });
   } catch (err) {

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { isFakePhone } from "@/lib/fakePhone";
 
 function genCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -47,25 +48,27 @@ export async function POST(request: NextRequest) {
     }
     if (!code) code = genCode();
 
-    await db.ref(`free_leads/${cleanPhone}`).set({
-      phone: cleanPhone,
-      name,
-      email: email || "",
-      marketing: marketing === true,
-      source: "free",
-      code,
-      used: false,
-      createdAt: Date.now(),
-    });
+    if (!isFakePhone(cleanPhone)) {
+      await db.ref(`free_leads/${cleanPhone}`).set({
+        phone: cleanPhone,
+        name,
+        email: email || "",
+        marketing: marketing === true,
+        source: "free",
+        code,
+        used: false,
+        createdAt: Date.now(),
+      });
 
-    // promoCodes에 등록해야 결제 시 실제 사용 가능
-    await db.ref(`promoCodes/${code}`).set({
-      discountPercent: 30,
-      note: "무료재물운쿠폰",
-      active: true,
-      usageCount: 0,
-      maxUses: 1,
-    });
+      // promoCodes에 등록해야 결제 시 실제 사용 가능
+      await db.ref(`promoCodes/${code}`).set({
+        discountPercent: 30,
+        note: "무료재물운쿠폰",
+        active: true,
+        usageCount: 0,
+        maxUses: 1,
+      });
+    }
 
     return NextResponse.json({ ok: true, code });
   } catch (error) {

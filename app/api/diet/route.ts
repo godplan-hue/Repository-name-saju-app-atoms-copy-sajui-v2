@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { isFakePhone } from "@/lib/fakePhone";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,7 +11,9 @@ export async function POST(req: NextRequest) {
 
     if (action === "lead") {
       const { name, phone, email, birthYear, marketing, createdAt } = body;
-      await db.ref(`diet_leads/${safeId}`).set({ name: name || "", phone: phone || "", email: email || "", birthYear: birthYear || null, marketing: marketing ?? false, createdAt: createdAt || Date.now() });
+      if (!isFakePhone(phone)) {
+        await db.ref(`diet_leads/${safeId}`).set({ name: name || "", phone: phone || "", email: email || "", birthYear: birthYear || null, marketing: marketing ?? false, createdAt: createdAt || Date.now() });
+      }
       return NextResponse.json({ ok: true });
     }
 

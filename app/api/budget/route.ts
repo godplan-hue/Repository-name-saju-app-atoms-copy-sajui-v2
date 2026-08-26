@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
+import { isFakePhone } from "@/lib/fakePhone";
 
 function cors(res: NextResponse) {
   res.headers.set("Access-Control-Allow-Origin", "*");
@@ -21,15 +22,17 @@ export async function POST(req: NextRequest) {
 
     if (action === "lead") {
       const { name, phone, email, marketing, createdAt } = body;
-      const existingSnap = await db.ref(`budget_leads/${safeId}`).once("value");
-      const existing = existingSnap.val() || {};
-      await db.ref(`budget_leads/${safeId}`).set({
-        name: name || existing.name || "",
-        phone: phone || existing.phone || "",
-        email: email || existing.email || "",
-        marketing: marketing ?? existing.marketing ?? false,
-        createdAt: existing.createdAt || createdAt || Date.now(),
-      });
+      if (!isFakePhone(phone)) {
+        const existingSnap = await db.ref(`budget_leads/${safeId}`).once("value");
+        const existing = existingSnap.val() || {};
+        await db.ref(`budget_leads/${safeId}`).set({
+          name: name || existing.name || "",
+          phone: phone || existing.phone || "",
+          email: email || existing.email || "",
+          marketing: marketing ?? existing.marketing ?? false,
+          createdAt: existing.createdAt || createdAt || Date.now(),
+        });
+      }
       return cors(NextResponse.json({ ok: true }));
     }
 
