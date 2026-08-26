@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ poomang.com 심리테스트 카탈로그(조회수순 정리)+신규앱 소스풀 확정 (2026-08-27)](reference_poomang_quiz_catalog_2026_08_27.md) — 100만+~5만대 전체정리, 토스에 없는것만 캡처받아 비슷하게 제작하는 프로세스, 계속 append 예정
 - [⭐⭐⭐⭐ 해외창업뉴스레터93개+토스앱화TOP5(미니멀/번아웃/시간관리/크리에이터유형/프리랜서) (2026-08-27)](reference_creator_income_newsletter_titles_2026_08_27.md) — 링크로 원문 추가확보 예정, 나머지는 SaaS라 템플릿앱 부적합
 - [⭐⭐⭐⭐⭐ 완전복구 지정지점=커밋 6fd31b69 (2026-08-27, main-v2 가격표시/문구 수정 전)](project_restore_checkpoint_2026_08_27_pre_mainv2_copy_edit.md) — "원래대로 돌려줘" 하면 이 커밋으로
 - [⭐⭐ 토스 MBTI 가짜번호(01012345678) 차단 코드수정완료, 재업로드 대기 (2026-08-26)](project_mbti_toss_fakephone_fix_pending_upload_2026_08_26.md) — 빌드/콘솔업로드 안함, 다음 배치 재업로드때 같이 반영
