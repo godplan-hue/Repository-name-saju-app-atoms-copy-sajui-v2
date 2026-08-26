@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { isFakePhone } from "@/lib/fakePhone";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 
@@ -25,6 +26,7 @@ export default function CouponFunnel() {
   async function handleSubmit() {
     const clean = phone.replace(/\D/g, "");
     if (clean.length < 10) { setError("전화번호를 정확히 입력해주세요."); return; }
+    if (isFakePhone(clean)) { setError("올바른 전화번호를 입력해주세요."); return; }
     setLoading(true); setError("");
     try {
       const res = await fetch("/api/coupon-lead", {

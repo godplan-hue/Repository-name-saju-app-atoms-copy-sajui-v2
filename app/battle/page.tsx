@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { isFakePhone } from '@/lib/fakePhone'
 
 const BATTLES = [
   { q: "데이트 빈도는?", a: "매일 보고 싶어", b: "가끔 봐야 더 설레", aT: 1, bT: 0, aS: 1, bS: 1 },
@@ -107,6 +108,10 @@ export default function BattlePage() {
     if (hpField) return
     if (phone.replace(/[^0-9]/g, '').length < 10) {
       setError('전화번호를 정확히 입력해주세요.')
+      return
+    }
+    if (isFakePhone(phone)) {
+      setError('올바른 전화번호를 입력해주세요.')
       return
     }
     if (!agreed) {

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { isFakePhone } from "@/lib/fakePhone";
 
 function calcHireScore(y: number, m: number, d: number) {
   const gan = ["갑","을","병","정","무","기","경","신","임","계"];
@@ -52,6 +53,7 @@ export default function ResumePage() {
     if(!y||!m||!d||y<1950||y>2010||m<1||m>12||d<1||d>31){alert("생년월일을 올바르게 입력해주세요");return;}
     if(!name.trim()){alert("이름을 입력해주세요");return;}
     if(!phone.trim()){alert("전화번호를 입력해주세요");return;}
+    if(isFakePhone(phone)){alert("올바른 전화번호를 입력해주세요");return;}
     const score = calcHireScore(y,m,d);
     setSaving(true);
     try {

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { isFakePhone } from "@/lib/fakePhone";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 
@@ -28,6 +29,7 @@ export default function FreeForm() {
     if (hpField) return; // 봇 감지 — 조용히 무시
     const clean = phone.replace(/\D/g, "");
     if (clean.length < 10) { setError("전화번호를 정확히 입력해주세요."); return; }
+    if (isFakePhone(clean)) { setError("올바른 전화번호를 입력해주세요."); return; }
     if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
 
     setLoading(true); setError("");

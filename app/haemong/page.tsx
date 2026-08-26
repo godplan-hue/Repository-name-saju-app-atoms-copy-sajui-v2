@@ -6,6 +6,7 @@ import {
   DREAMS,
   searchKeywords,
 } from "@/lib/haemong/data";
+import { isFakePhone } from "@/lib/fakePhone";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -67,6 +68,7 @@ export default function HaemongPage() {
     if (hpField) return; // 봇 감지 — 조용히 무시
     const clean = gatePhone.replace(/\D/g, "");
     if (clean.length < 10) { alert("전화번호를 입력해주세요."); return; }
+    if (isFakePhone(clean)) { alert("올바른 전화번호를 입력해주세요."); return; }
     if (!gatePrivacy) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
     setGateSaving(true);
     try {

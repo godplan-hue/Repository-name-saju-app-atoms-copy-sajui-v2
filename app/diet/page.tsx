@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { FOODS, OH_DIET, getOhFromYear, type Food } from "@/lib/foodDb";
 import { postWithRetry } from "@/lib/postWithRetry";
+import { isFakePhone } from "@/lib/fakePhone";
 
 type Meal = { id: string; name: string; cal: number; unit: string; time: string };
 type DayLog = { meals: Meal[]; totalCal: number; updatedAt?: number; weight?: number };
@@ -382,6 +383,7 @@ export default function DietPage() {
     if (!yr || yr < 1940 || yr > 2015) { alert("올바른 출생연도를 입력해주세요 (1940~2015)"); return; }
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { alert("전화번호를 입력해주세요."); return; }
+    if (isFakePhone(cleanPhone)) { alert("올바른 전화번호를 입력해주세요."); return; }
     try {
       const existing = localStorage.getItem("v2_saved_profile");
       const profile = existing ? JSON.parse(existing) : {};

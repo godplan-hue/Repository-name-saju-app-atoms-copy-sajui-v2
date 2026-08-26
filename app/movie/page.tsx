@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { isFakePhone } from '@/lib/fakePhone'
 
 const SITUATIONS = [
   { text: '아침에 일어났을 때 기분이 좋았다', pos: 3, neg: -2 },
@@ -126,6 +127,10 @@ export default function MoviePage() {
     if (hpField) return
     if (phone.replace(/[^0-9]/g, '').length < 10) {
       setError('전화번호를 정확히 입력해주세요.')
+      return
+    }
+    if (isFakePhone(phone)) {
+      setError('올바른 전화번호를 입력해주세요.')
       return
     }
     if (!agreed) {

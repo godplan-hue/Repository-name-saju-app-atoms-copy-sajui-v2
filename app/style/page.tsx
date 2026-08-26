@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { isFakePhone } from '@/lib/fakePhone'
 
 const QUIZ = [
   { q: '색상 선택은?', a: '컬러풀하고 화려하게', b: '무채색 톤으로 심플하게', aB: 1, bB: 0, aT: 1, bT: 0 },
@@ -110,6 +111,10 @@ export default function StylePage() {
     if (hpField) return
     if (phone.replace(/[^0-9]/g, '').length < 10) {
       setError('전화번호를 정확히 입력해주세요.')
+      return
+    }
+    if (isFakePhone(phone)) {
+      setError('올바른 전화번호를 입력해주세요.')
       return
     }
     if (!agreed) {

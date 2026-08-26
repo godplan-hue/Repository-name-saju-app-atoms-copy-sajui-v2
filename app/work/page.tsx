@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { isFakePhone } from '@/lib/fakePhone'
 
 const BOSS_TYPES = [
   { key: 'fire', emoji: '🔥', label: '불같은 상사', desc: '화를 잘 내고 눈치를 자주 봐야 해요', penalty: -15 },
@@ -161,6 +162,10 @@ export default function WorkPage() {
     if (hpField) return
     if (phone.replace(/[^0-9]/g, '').length < 10) {
       setError('전화번호를 정확히 입력해주세요.')
+      return
+    }
+    if (isFakePhone(phone)) {
+      setError('올바른 전화번호를 입력해주세요.')
       return
     }
     if (!agreed) {

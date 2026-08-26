@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { postWithRetry } from "@/lib/postWithRetry";
+import { isFakePhone } from "@/lib/fakePhone";
 
 type EntryType = "expense" | "income";
 type Entry = { id: string; date: string; type: EntryType; category: string; amount: number; memo: string; createdAt: number };
@@ -128,6 +129,7 @@ export default function BudgetPage() {
     if (!setupPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
     const cleanPhone = setupPhone.replace(/\D/g, "");
     if (cleanPhone.length < 10) { alert("전화번호를 입력해주세요."); return; }
+    if (isFakePhone(cleanPhone)) { alert("올바른 전화번호를 입력해주세요."); return; }
     try {
       const existing = localStorage.getItem("v2_saved_profile");
       const profile = existing ? JSON.parse(existing) : {};
