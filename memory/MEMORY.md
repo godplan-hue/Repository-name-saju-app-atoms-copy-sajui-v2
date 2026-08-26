@@ -1,6 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐⭐⭐ poomang.com 심리테스트 카탈로그(1·2차 캡처)+전략정정: 토스전체경쟁적은 검증수요 찾아 1위앱 제작 (2026-08-27)](reference_poomang_quiz_catalog_2026_08_27.md) — 우리앱대조가아니라 토스생태계전체 경쟁분석, 계속 append
+- [⭐⭐⭐⭐⭐ poomang.com 심리테스트 카탈로그(1·2·3차 캡처+손절각8유형)+전략정정 (2026-08-27)](reference_poomang_quiz_catalog_2026_08_27.md) — 토스생태계전체 경쟁분석, 계속 append
+- [⛔ 벤치마킹시 결과유형 전체 캡처 규칙 (2026-08-27)](feedback_benchmark_capture_all_results_2026_08_27.md) — 일부만 보고 설계 금지, 질문+결과유형전체+지표 세트로
 - [⭐⭐⭐⭐⭐ 토스 콘텐츠카테고리 실시간인기 1~17위 캡처 (2026-08-27)](reference_toss_realtime_popular_ranking_2026_08_27.md) — 사주계열6개(35%)最대장르, 말랑이/돌멩이류 힐링캐릭터3개, poomang과 교차대조용 기준데이터
 - [⭐⭐⭐ 새앱 공유버튼 문구는 MBTI스타일로 통일 (2026-08-27)](feedback_share_button_mbti_style_copy_2026_08_27.md) — "친구한테 공유하기"+결과개인화훅("나 이거 O프로래"), 새로만들때부터 적용
 - [⭐⭐⭐⭐ 해외창업뉴스레터93개+토스앱화TOP5(미니멀/번아웃/시간관리/크리에이터유형/프리랜서) (2026-08-27)](reference_creator_income_newsletter_titles_2026_08_27.md) — 링크로 원문 추가확보 예정, 나머지는 SaaS라 템플릿앱 부적합
