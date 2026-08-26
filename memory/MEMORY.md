@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐ MBTI 순위(27/2700,5/850)+공유리워드 신규구현+토스문서6종대조 (2026-08-26)](project_mbti_ranking_and_share_reward_2026_08_26.md) — 직업섹션 광고잠금→공유잠금 전환(commit 4a9e001), ait build+재업로드 아직 안함
 - [⭐ 앱인토스 SDK3.x Origin변경 공지 대응확인 (2026-08-26)](reference_toss_sdk3_origin_cors_notice_2026_08_26.md) — 21개앱 전부 SDK2.x+CORS와일드카드라 조치불필요, 3.x업그레이드시 재확인
 - [⛔⛔⛔ gwangyeoradar저장소 신규생성+jeomun-saju 내장탭 vs 독립폴더 혼동정리 (2026-08-26)](bug_toss_gwangyeoradar_dbsave_and_saju_bundled_apps_architecture_2026_08_26.md) — 사주/꿈해몽/별자리/펫운은 토스에선 saju앱 내장탭, 독립폴더3개는 죽은코드 추정
 - [⛔ 새 토스앱 만들 땐 처음부터 Analytics 로그 심을 것 (2026-08-25)](feedback_always_add_analytics_logging_new_apps.md) — screen/click/impression 패턴, mbti·gwangyeoradar 참고
