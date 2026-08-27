@@ -26,6 +26,15 @@ metadata:
 - `app/sonjeolgak/result/[id]/page.tsx` — 결과지 (MBTI 스타일 카드+잠금박스+카운트다운)
 - `app/sonjeolgak/pay/page.tsx` — 결제("심층 분석 10가지" 문구로 전면 수정, gunghap/pay 템플릿 기반)
 
+**2026-08-27 추가 수정 — MBTI 수준으로 콘텐츠·구조 보강, commit `133a96a9`**:
+사용자가 "공유버튼 MBTI처럼 수정했는지/celebTwin·bestMatchDetail·worstMatchTop3가 MBTI와 제목·레이아웃도 비슷한지/항목마다 최소 5-6줄인지" 검증 질문 → 직접 코드 대조 결과 4가지 불일치 확인, 이어서 "엠비티아이정도답변나와야하는데"라는 명시 지시로 즉시 수정.
+- **콘텐츠 길이**: 8유형 전부 pastPattern/recoveryTip/futureForecast/darkSide/breakupStyle을 기존 1문장 → 2-3문장으로 확장. MATCH_REASON/CLASH_REASON도 각 1문장 추가.
+- **celebTwin 구조 변경**: 기존엔 평범한 문자열 하나였음 → MBTI처럼 `{name, reason}` 객체로 변경, 결과지에 유명인 이름을 굵은 헤드라인으로 먼저 보여주고 그 아래 설명 문단 배치.
+- **worstMatchTop3 레이아웃 변경**: 기존엔 인라인 한 줄 나열이었음 → MBTI처럼 항목마다 박스형 서브카드 + "1위/2위/3위 · 이모지 유형명" 순위 배지로 재구성. 목록 위에 `worstMatchIntro` 안내문 신규 추가.
+- **공유 버튼 교체**: 기존 노란 카톡버튼(`#FEE500`, "💬 친구한테 공유하기", `kakaotalk://` 딥링크 방식) → MBTI와 동일하게 보라 그라디언트(`#a78bfa→#7c3aed`) + "📤 친구에게 공유하기" + Kakao Share SDK(`objectType:"feed"`) 우선 시도 + 클립보드 폴백 + "✅ 복사됐어요!" 상태로 전면 교체.
+- **전화번호 잠금 로직 강화**: 기존엔 `savedPhone`이나 `resultPhone` 둘 중 하나라도 비어있으면 통과되는 느슨한 조건이었음 → MBTI처럼 둘 다 존재하고 정확히 일치해야만 잠금 해제되도록 강화(`!!savedPhone && !!resultPhone && savedPhone === resultPhone`).
+- **bestMatchDetail 관련 — 의도적으로 유지, 미해결 아님**: MBTI엔 이 카드의 직접적인 대응물이 없음(MBTI 궁합 요약은 전부 무료 한줄). sonjeolgak만의 유료 추가 카드로 그대로 유지하기로 함 — 삭제/축소하지 않음.
+
 **How to apply**: 이 앱 관련 후속 작업(가격 변경, 콘텐츠 추가, 잠금 방식 변경 등) 논의 시 이 문서 기준으로 판단. testmoa.com 벤치마킹은 아직 미착수(보류 중).
 
 ⛔ **주의**: 이 저장소(saju-app-atoms 복사본사주아이본)에는 토스 미니앱(jeomun-mbti 등 16개) 폴더가 없다 — 별도 저장소/폴더. sonjeolgak과 mbti는 둘 다 이 저장소 안의 jeomun.com 웹페이지(`app/mbti/`, `app/sonjeolgak/`)이며, 토스 미니앱과는 무관하다.
