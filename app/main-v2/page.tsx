@@ -274,7 +274,7 @@ const BANNERS = [
     appBanner: true,
     directUrl: "/gwangyeoradar",
     bg: "linear-gradient(135deg,#1a0533 0%,#581c87 50%,#3b0764 100%)",
-    bgImg: "https://images.unsplash.com/photo-1625463006115-09f08489f591?w=800&q=80",
+    bgImg: "https://images.unsplash.com/photo-1591347887817-173e3d5c4891?w=800&q=80",
     badge: "📡 관계레이더 — 놓친 신호",
     badgeBg: "#9333ea",
     icon: "📡",

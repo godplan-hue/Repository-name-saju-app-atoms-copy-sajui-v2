@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const IMG = "https://images.unsplash.com/photo-1625463006115-09f08489f591?w=1200&q=80";
+const IMG = "https://images.unsplash.com/photo-1591347887817-173e3d5c4891?w=1200&q=80";
 
 export const metadata: Metadata = {
   title: "연락기록통계 점운 — 내가 놓치고 있던 관계 신호 찾기",
