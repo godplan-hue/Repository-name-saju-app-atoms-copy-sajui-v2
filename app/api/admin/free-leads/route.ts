@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
   const adminId = verifyAdminToken(request.headers.get("x-admin-id"));
   if (!adminId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, momcareSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap, tSajuSnap, tTarotSnap, tZodiacSnap, tGunghapSnap, tPetunSnap, tJigunSnap, tResumeSnap, battleSnap, movieSnap, styleSnap, workSnap, tGwangyeoradarSnap, gwangyeoradarSnap] = await Promise.all([
+  const [freeSnap, careerSnap, resumeSnap, mbtiSnap, lottoSnap, gunghapSnap, petunSnap, tarotSnap, zodiacSnap, gamjungSnap, dietSnap, budgetSnap, tossSnap, haemongSnap, momcareSnap, tDaewoonSnap, tTaegilSnap, tFortuneSnap, tGamjungSnap, tHaemongSnap, tMomcareSnap, tBudgetSnap, tSajuSnap, tTarotSnap, tZodiacSnap, tGunghapSnap, tPetunSnap, tJigunSnap, tResumeSnap, battleSnap, movieSnap, styleSnap, workSnap, tGwangyeoradarSnap, gwangyeoradarSnap, sonjeolgakSnap] = await Promise.all([
     db.ref("free_leads").orderByChild("createdAt").once("value"),
     db.ref("career_analyses").orderByChild("createdAt").once("value"),
     db.ref("resume_analyses").orderByChild("createdAt").once("value"),
@@ -75,6 +75,7 @@ export async function GET(request: NextRequest) {
     db.ref("work_leads").orderByChild("createdAt").once("value"),
     db.ref("gwangyeoradar_toss_users").once("value"),
     db.ref("gwangyeoradar_analyses").orderByChild("createdAt").once("value"),
+    db.ref("sonjeolgak_analyses").orderByChild("createdAt").once("value"),
   ]);
 
   const leads: any[] = [];
@@ -325,6 +326,14 @@ export async function GET(request: NextRequest) {
     if (v && v.phone) gwangyeoradarItems.push({ id: child.key, ...v });
   });
   for (const item of dedupByPhone(gwangyeoradarItems, "gwangyeoradar")) leads.push(item);
+
+  // 점운손절각 — sonjeolgak_analyses
+  const sonjeolgakItems: any[] = [];
+  sonjeolgakSnap.forEach(child => {
+    const v = child.val();
+    if (v && v.phone) sonjeolgakItems.push({ id: child.key, ...v });
+  });
+  for (const item of dedupByPhone(sonjeolgakItems, "sonjeolgak")) leads.push(item);
 
   // 최종 dedup: 전화번호 기준 한 항목으로 묶기 + sources 배열로 모든 앱 기록
   // 이름 있는 항목 우선, 둘 다 이름 있으면 최신 기준
