@@ -52,6 +52,7 @@ const SOURCE_CFG: Record<string, [string, string, string]> = {
   "toss-gwangyeoradar": ["#e0e7ff","#4338ca","📡토스연락통계"],
   gwangyeoradar: ["#ede9fe","#6d28d9","📡점운연락통계"],
   sonjeolgak: ["#fdf2f8","#db2777","✂️점운손절각"],
+  "toss-sonjeolgak": ["#fce7f3","#be185d","✂️토스손절각"],
   battle:     ["#fce7f3","#e11d48","❤️이상형"],
   movie:      ["#fef3c7","#d97706","🎬인생영화"],
   style:      ["#ede9fe","#7c3aed","✨추구미"],
@@ -326,6 +327,7 @@ export default function AdminDirectPayments() {
                 { key: "gwangyeoradar", label: "점운연락통계", emoji: "📡", activeBg: "#6d28d9", inactiveBg: "#ede9fe", activeText: "white", inactiveText: "#6d28d9" },
                 { key: "toss-gwangyeoradar", label: "토스연락통계", emoji: "📡", activeBg: "#4338ca", inactiveBg: "#e0e7ff", activeText: "white", inactiveText: "#4338ca" },
                 { key: "sonjeolgak", label: "점운손절각", emoji: "✂️", activeBg: "#db2777", inactiveBg: "#fdf2f8", activeText: "white", inactiveText: "#db2777" },
+                { key: "toss-sonjeolgak", label: "토스손절각", emoji: "✂️", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
               ]).map(f => {
                 const matchKeys = MERGED_SOURCES[f.key] ?? [f.key];
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.sources ?? [l.source ?? "free"]).some(s => matchKeys.includes(s))).length;
