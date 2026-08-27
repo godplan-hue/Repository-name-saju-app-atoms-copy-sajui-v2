@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐ Flova.ai 홍보영상제작툴 — 실제가입함, 무료100크레딧+2배크레딧행사 (2026-08-28)](reference_flova_ai_video_tool_2026_08_28.md) — TopView.ai보다저렴해서대체가입, Product Promo Video Skill사용
 - [⭐⭐ TopView.ai 홍보영상제작툴 — 링크+요금제+Ultra연간60일Seedance무제한 (2026-08-28)](reference_topview_ai_promo_video_tool_2026_08_28.md) — 점운 인스타/유튜브/X 홍보영상용, 2달아니라 연$599.90결제 포함 보너스
 - [⭐⭐⭐ CRM마케팅 특강 정리 — 마수동획득3타이밍+A/B라이브러리+옵트인팝업 클로드제작법 (2026-08-28)](reference_crm_marketing_secrets_2026_08_28.md) — 혜택직후동의요청이 가장효과적, 소프트프롬프트+네이티브콤보 실전코드
 - [⭐⭐⭐⭐⭐ 토스앱 SDK3.x전환+광고문구 현황표 8/21개 (2026-08-27)](project_sdk3_migration_status_2026_08_27.md) — 완료:gwangyeoradar/tarot/gunghap/battle/movie/mbti/gamjung/sonjeolgak, 미전환14개+전환절차9단계
