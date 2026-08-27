@@ -1,6 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐⭐⭐ 점운 손절각 신규앱 출시 완료 (2026-08-27)](project_sonjeolgak_app_launch_2026_08_27.md) — commit f1e811af, 7파트990원구조+8유형, 토스미니앱폴더는별도위치 주의
+- [⭐⭐⭐⭐⭐ 점운 손절각 앱 — MBTI방식 심층분석10가지 잠금 재설계 (2026-08-27)](project_sonjeolgak_app_launch_2026_08_27.md) — commit f1e811af→2e56c45f, 7파트전부무료+유료10항목, 토스미니앱폴더는별도위치 주의
 - [⭐⭐⭐⭐⭐ poomang.com 심리테스트 카탈로그(1·2·3차 캡처+손절각8유형)+전략정정 (2026-08-27)](reference_poomang_quiz_catalog_2026_08_27.md) — 토스생태계전체 경쟁분석, 계속 append
 - [⛔ 벤치마킹시 결과유형 전체 캡처 규칙 (2026-08-27)](feedback_benchmark_capture_all_results_2026_08_27.md) — 일부만 보고 설계 금지, 질문+결과유형전체+지표 세트로
 - [⭐⭐⭐⭐⭐ 토스 콘텐츠카테고리 실시간인기 1~17위 캡처 (2026-08-27)](reference_toss_realtime_popular_ranking_2026_08_27.md) — 사주계열6개(35%)最대장르, 말랑이/돌멩이류 힐링캐릭터3개, poomang과 교차대조용 기준데이터
