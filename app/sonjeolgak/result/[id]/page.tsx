@@ -19,6 +19,7 @@ type Result = {
   bestMatch: string; bestMatchEmoji: string; bestMatchDetail?: string;
   worstMatch: string; worstMatchEmoji: string;
   worstMatchTop3?: { type: string; emoji: string; reason: string }[];
+  worstMatchIntro?: string;
   rank: number;
   pastPattern?: string;
   warningSigns?: string[];
@@ -27,7 +28,7 @@ type Result = {
   actionPlan?: string[];
   darkSide?: string;
   breakupStyle?: string;
-  celebTwin?: string;
+  celebTwin?: { name: string; reason: string };
 };
 
 export default function SonjeolgakResultPage() {
@@ -64,7 +65,7 @@ export default function SonjeolgakResultPage() {
       const until = Number(localStorage.getItem("sonjeolgak_unlock_until") || 0);
       const savedPhone = (localStorage.getItem("sonjeolgak_unlock_phone") || "").replace(/\D/g, "");
       const resultPhone = (result.phone || "").replace(/\D/g, "");
-      if (until > Date.now() && (!savedPhone || !resultPhone || savedPhone === resultPhone)) {
+      if (until > Date.now() && !!savedPhone && !!resultPhone && savedPhone === resultPhone) {
         setPaid(true);
       }
     } catch {}
@@ -88,32 +89,32 @@ export default function SonjeolgakResultPage() {
     return () => clearInterval(iv);
   }, [paid]);
 
-  const share = () => {
-    const text = result ? `나의 ${result.partLabel} 손절각은 "${result.typeName}"! 너는 몇 점일까?` : "손절각 테스트 해보기";
-    const url = typeof window !== "undefined" ? window.location.href : "https://jeomun.com/sonjeolgak";
-    try {
-      const kakao = (window as any).Kakao;
-      if (kakao?.isInitialized?.()) {
+  const handleShare = () => {
+    if (!result) return;
+    const url = typeof window !== "undefined" ? window.location.href.split("?")[0] : "https://jeomun.com/sonjeolgak";
+    const kakao = (window as any).Kakao;
+    if (kakao?.isInitialized?.() && kakao?.Share) {
+      try {
         kakao.Share.sendDefault({
           objectType: "feed",
-          content: { title: "점운 손절각", description: text, imageUrl: "https://jeomun.com/og-image.png", link: { mobileWebUrl: url, webUrl: url } },
-          buttons: [{ title: "나도 테스트하기", link: { mobileWebUrl: url, webUrl: url } }],
+          content: {
+            title: `나의 ${result.partLabel} 손절각은 "${result.typeName}"! 🐱`,
+            description: `${result.score}점 — ${result.tagline}. 점운에서 테스트해봐!`,
+            imageUrl: "https://jeomun.com/og-image.png",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+          buttons: [
+            { title: "결과 보러가기", link: { mobileWebUrl: url, webUrl: url } },
+            { title: "나도 해보기 →", link: { mobileWebUrl: "https://jeomun.com/sonjeolgak", webUrl: "https://jeomun.com/sonjeolgak" } },
+          ],
         });
         return;
-      }
-    } catch {}
-    try {
-      window.location.href = `kakaotalk://msg/send?text=${encodeURIComponent(text + " " + url)}`;
-      setTimeout(() => {
-        navigator.clipboard?.writeText(url);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }, 400);
-    } catch {
-      navigator.clipboard?.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      } catch {}
     }
+    const text = `나의 ${result.partLabel} 손절각은 "${result.typeName}"!\n${result.score}점 — ${result.tagline}\n\n점운에서 테스트 → jeomun.com/sonjeolgak`;
+    navigator.clipboard?.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const S = {
@@ -178,10 +179,9 @@ export default function SonjeolgakResultPage() {
           </div>
         </div>
 
-        <button onClick={share} style={{ width: "100%", background: "#FEE500", color: "#1a1a1a", border: "none", borderRadius: 16, padding: "15px", fontSize: 14.5, fontWeight: 900, cursor: "pointer", marginBottom: 12 }}>
-          💬 친구한테 공유하기
+        <button onClick={handleShare} style={{ width: "100%", background: copied ? "rgba(34,197,94,0.15)" : "linear-gradient(135deg,#a78bfa,#7c3aed)", border: copied ? "1.5px solid #22c55e" : "none", borderRadius: 16, padding: "15px", color: "white", fontSize: 14.5, fontWeight: 900, cursor: "pointer", marginBottom: 12, boxShadow: copied ? "none" : "0 4px 20px rgba(124,58,237,0.4)" }}>
+          {copied ? "✅ 복사됐어요!" : "📤 친구에게 공유하기"}
         </button>
-        {copied && <p style={{ textAlign: "center", fontSize: 12, color: "#4ade80", marginTop: -6, marginBottom: 12 }}>링크가 복사됐어요!</p>}
 
         {paid && unlockRemain && (
           <div style={{ background: "rgba(236,72,153,0.1)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 12, padding: "9px 14px", textAlign: "center", marginBottom: 14 }}>
@@ -247,7 +247,8 @@ export default function SonjeolgakResultPage() {
             {result.celebTwin && (
               <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(34,211,238,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
                 <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#22d3ee" }}>⭐ 나와 닮은 유명인</p>
-                <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{result.celebTwin}</p>
+                <p style={{ fontSize: 17, fontWeight: 900, margin: "0 0 8px", color: "white" }}>{result.celebTwin.name}</p>
+                <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{result.celebTwin.reason}</p>
               </div>
             )}
 
@@ -261,11 +262,17 @@ export default function SonjeolgakResultPage() {
             {result.worstMatchTop3 && result.worstMatchTop3.length > 0 && (
               <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(251,146,60,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
                 <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#fb923c" }}>⚠️ 부딪히는 유형 TOP3</p>
-                {result.worstMatchTop3.map((w, i) => (
-                  <p key={i} style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: "0 0 8px" }}>
-                    {w.emoji} <b style={{ color: "#fdba74" }}>{w.type}</b> — {w.reason}
-                  </p>
-                ))}
+                {result.worstMatchIntro && (
+                  <p style={{ fontSize: 12.5, color: "#9ca3af", lineHeight: 1.7, margin: "0 0 14px" }}>{result.worstMatchIntro}</p>
+                )}
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {result.worstMatchTop3.map((w, i) => (
+                    <div key={i} style={{ background: "rgba(251,146,60,0.07)", border: "1px solid rgba(251,146,60,0.25)", borderRadius: 14, padding: "14px 14px" }}>
+                      <p style={{ fontSize: 12, fontWeight: 900, margin: "0 0 6px", color: "#fdba74" }}>{i + 1}위 · {w.emoji} {w.type}</p>
+                      <p style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.8, margin: 0 }}>{w.reason}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </>
