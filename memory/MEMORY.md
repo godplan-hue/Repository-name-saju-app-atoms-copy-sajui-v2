@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ 토스앱 SDK3.x전환+광고문구 현황표 8/21개 (2026-08-27)](project_sdk3_migration_status_2026_08_27.md) — 완료:gwangyeoradar/tarot/gunghap/battle/movie/mbti/gamjung/sonjeolgak, 미전환14개+전환절차9단계
 - [⭐⭐⭐⭐⭐ 신규 앱 기본구조=MBTI로 확정 (2026-08-27)](feedback_new_apps_default_mbti_structure_2026_08_27.md) — 공유버튼뿐아니라 전체설계(퀴즈/잠금/카운트다운/공유) 기본값
 - [⭐⭐⭐ 일기류 앱(감정일기/가계부/맘케어/다이어트) 나중에 3D UI전환 예정 (2026-08-27)](project_diary_apps_future_3d_upgrade_2026_08_27.md) — 이전저장기록 못찾아 새로저장, 지금은 착수안함
 - [⭐⭐⭐⭐ 앱인토스 8월5주 공지 5개항목 영향도체크 (2026-08-27)](reference_appintoss_notice_2026_08_5week_review.md) — SDK3.x 9/14마감 실행필요, 재테크탭 가계부기회, 검수강화 badfortune앱 주의
