@@ -132,11 +132,11 @@ function buildFreeResult(input: any, core: ReturnType<typeof computeCore>) {
 
 function pickTopSignal(input: any, core: ReturnType<typeof computeCore>) {
   const candidates = [
-    { key: "contact", pts: core.cPts, title: "연락 빈도 변화", desc: CONTACT_CHANGE_LABEL[input.contactChange as ContactChange] },
-    { key: "initiative", pts: core.iPts, title: "연락 주도권", desc: INITIATIVE_LABEL[input.contactInitiative as ContactInitiative] },
-    { key: "response", pts: core.rPts, title: "답장 속도 변화", desc: RESPONSE_CHANGE_LABEL[input.responseChange as ResponseChange] },
-    { key: "meeting", pts: core.mPts, title: "만남 변화", desc: MEETING_CHANGE_LABEL[input.meetingChange as MeetingChange] },
-    { key: "feeling", pts: core.fPts, title: "체감 관계 변화", desc: RELATION_FEELING_LABEL[input.relationFeeling as RelationFeeling] },
+    { key: "contact", pts: core.cPts, title: "연락 빈도 변화", desc: CONTACT_CHANGE_LABEL[input.contactChange as ContactChange] || "" },
+    { key: "initiative", pts: core.iPts, title: "연락 주도권", desc: INITIATIVE_LABEL[input.contactInitiative as ContactInitiative] || "" },
+    { key: "response", pts: core.rPts, title: "답장 속도 변화", desc: RESPONSE_CHANGE_LABEL[input.responseChange as ResponseChange] || "" },
+    { key: "meeting", pts: core.mPts, title: "만남 변화", desc: MEETING_CHANGE_LABEL[input.meetingChange as MeetingChange] || "" },
+    { key: "feeling", pts: core.fPts, title: "체감 관계 변화", desc: RELATION_FEELING_LABEL[input.relationFeeling as RelationFeeling] || "" },
   ];
   candidates.sort((a, b) => a.pts - b.pts);
   const mostNegative = candidates[0];
@@ -172,19 +172,19 @@ function buildPaidResult(input: any, core: ReturnType<typeof computeCore>): Item
 
   // 3. 연락주도권
   push(3, "initiative", "연락주도권", pctMine,
-    INITIATIVE_LABEL[input.contactInitiative as ContactInitiative],
+    INITIATIVE_LABEL[input.contactInitiative as ContactInitiative] || "",
     `입력하신 연락 주도권 항목을 기준으로, 전체 연락에서 사용자가 먼저 시작하는 비중을 약 ${pctMine}%로 추정했어요.`,
     pctMine >= 70 ? "한동안은 사용자가 먼저 연락하는 빈도를 살짝 줄이고, 상대방이 먼저 다가오는지 지켜보는 것도 방법이에요." : pctMine <= 30 ? "상대방이 주도권을 쥔 편이니, 부담 없는 선에서 가볍게 먼저 연락해보는 것도 관계에 도움이 될 수 있어요." : "주도권이 비교적 균형 잡혀 있는 편이니 지금처럼 자연스럽게 이어가세요.");
 
   // 4. 연락빈도변화
   push(4, "contactFreq", "연락빈도변화", clamp(50 + cPts * 1.6, 5, 95),
-    CONTACT_CHANGE_LABEL[input.contactChange as ContactChange],
+    CONTACT_CHANGE_LABEL[input.contactChange as ContactChange] || "",
     "최근 연락 빈도가 예전과 비교해 어떻게 달라졌는지를 기준으로 산출했어요.",
     cPts < -10 ? "빈도가 줄어든 것은 하나의 신호일 뿐, 바쁜 시기와 겹쳤을 가능성도 함께 고려해보세요." : "지금의 연락 빈도를 특별히 걱정할 단계는 아니에요.");
 
   // 5. 답장속도변화
   push(5, "responseSpeed", "답장속도변화", clamp(50 + rPts * 1.6, 5, 95),
-    RESPONSE_CHANGE_LABEL[input.responseChange as ResponseChange],
+    RESPONSE_CHANGE_LABEL[input.responseChange as ResponseChange] || "",
     "답장이 오는 데 걸리는 시간이 예전과 비교해 어떻게 바뀌었는지를 기준으로 분석했어요.",
     rPts < -10 ? "답장 속도만으로 관심도를 단정하기는 어려워요. 상대방의 요즘 일정이나 상황도 함께 고려해보세요." : "답장 속도는 안정적인 편이에요.");
 
@@ -216,7 +216,7 @@ function buildPaidResult(input: any, core: ReturnType<typeof computeCore>): Item
 
   // 9. 만남적극성
   push(9, "meetingProactiveness", "만남적극성", clamp(50 + mPts * 1.8, 5, 95),
-    MEETING_CHANGE_LABEL[input.meetingChange as MeetingChange],
+    MEETING_CHANGE_LABEL[input.meetingChange as MeetingChange] || "",
     "만남을 제안하는 빈도와 방향(누가 더 자주 제안하는지)을 기준으로 분석했어요.",
     mPts < -10 ? "만남이 줄었다면 온라인 연락과는 별개로, 짧고 부담 없는 만남을 한 번 제안해보는 것도 좋아요." : "만남 빈도는 안정적인 편이에요.");
 
@@ -441,9 +441,9 @@ export async function POST(request: NextRequest) {
 
     const ref = isFakePhone(cleanPhone) ? null : await db.ref("gwangyeoradar_analyses").push(record);
     return NextResponse.json({ id: ref ? ref.key : null, result: record });
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
-    return NextResponse.json({ error: "분석 중 오류가 발생했습니다", debug: String(e?.message || e), stack: e?.stack }, { status: 500 });
+    return NextResponse.json({ error: "분석 중 오류가 발생했습니다" }, { status: 500 });
   }
 }
 
