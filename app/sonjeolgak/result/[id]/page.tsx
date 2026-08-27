@@ -100,7 +100,7 @@ export default function SonjeolgakResultPage() {
           content: {
             title: `나의 ${result.partLabel} 손절각은 "${result.typeName}"! 🐱`,
             description: `${result.score}점 — ${result.tagline}. 점운에서 테스트해봐!`,
-            imageUrl: "https://jeomun.com/og-image.png",
+            imageUrl: "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg",
             link: { mobileWebUrl: url, webUrl: url },
           },
           buttons: [

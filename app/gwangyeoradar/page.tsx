@@ -147,7 +147,7 @@ export default function GwangyeoradarPage() {
       try {
         k.Share.sendDefault({
           objectType: "feed",
-          content: { title: "📡 연락통신 — 관계 신호 분석", description: text, link: { mobileWebUrl: url, webUrl: url } },
+          content: { title: "📡 연락통신 — 관계 신호 분석", description: text, imageUrl: "https://images.unsplash.com/photo-1625463006115-09f08489f591?w=1200&q=80", link: { mobileWebUrl: url, webUrl: url } },
           buttons: [{ title: "바로 보기", link: { mobileWebUrl: url, webUrl: url } }],
         });
         return;

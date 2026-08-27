@@ -99,7 +99,7 @@ export default function GwangyeoradarResultPage() {
       try {
         kakao.Share.sendDefault({
           objectType: "feed",
-          content: { title, description: desc, link: { mobileWebUrl: url, webUrl: url } },
+          content: { title, description: desc, imageUrl: "https://images.unsplash.com/photo-1625463006115-09f08489f591?w=1200&q=80", link: { mobileWebUrl: url, webUrl: url } },
           buttons: [
             { title: "결과 보기 📡", link: { mobileWebUrl: url, webUrl: url } },
             { title: "나도 해보기 →", link: { mobileWebUrl: "https://jeomun.com/gwangyeoradar", webUrl: "https://jeomun.com/gwangyeoradar" } },
