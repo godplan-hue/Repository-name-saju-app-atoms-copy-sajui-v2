@@ -441,9 +441,9 @@ export async function POST(request: NextRequest) {
 
     const ref = isFakePhone(cleanPhone) ? null : await db.ref("gwangyeoradar_analyses").push(record);
     return NextResponse.json({ id: ref ? ref.key : null, result: record });
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    return NextResponse.json({ error: "분석 중 오류가 발생했습니다" }, { status: 500 });
+    return NextResponse.json({ error: "분석 중 오류가 발생했습니다", debug: String(e?.message || e), stack: e?.stack }, { status: 500 });
   }
 }
 
