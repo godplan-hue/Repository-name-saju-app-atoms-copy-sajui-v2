@@ -247,11 +247,11 @@ const BANNERS = [
     directUrl: "/apps",
     bg: "linear-gradient(135deg,#0f0520 0%,#2d1b69 50%,#1a0533 100%)",
     bgImg: "https://i.pinimg.com/736x/3a/16/a2/3a16a2d6ec404d61ea7e416fc5603c4c.jpg",
-    badge: "✨ 점운 전체앱 18개",
+    badge: "✨ 점운 전체앱 20개",
     badgeBg: "#7c3aed",
     icon: "✨",
-    tagline: "18개 앱 한 곳에서 전부",
-    desc: "사주·꿈운·직운·합운·궁합·MBTI·행운번호·펫운·육아일기·감정일기·타로·별자리·다이어트·가계부·이상형월드컵·인생이영화라면·추구미·직장버티기",
+    tagline: "20개 앱 한 곳에서 전부",
+    desc: "사주·꿈운·직운·합운·궁합·MBTI·행운번호·펫운·육아일기·감정일기·타로·별자리·다이어트·가계부·이상형월드컵·인생이영화라면·추구미·직장버티기·관계레이더·손절각",
     cta: "전체앱 보기 →",
     ctaColor: "#c4b5fd",
     route: "free" as const,
@@ -268,6 +268,34 @@ const BANNERS = [
     desc: "감정일기·다이어트·가계부·육아일기\n일기류 4개 앱\n₩5,900 / 30일",
     cta: "풀패스 보러가기 →",
     ctaColor: "#fff",
+    route: "free" as const,
+  },
+  {
+    appBanner: true,
+    directUrl: "/gwangyeoradar",
+    bg: "linear-gradient(135deg,#1a0533 0%,#581c87 50%,#3b0764 100%)",
+    bgImg: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg",
+    badge: "📡 관계레이더 — 놓친 신호",
+    badgeBg: "#9333ea",
+    icon: "📡",
+    tagline: "그 사람과의 관계, 지금 어떤 상태?",
+    desc: "연락패턴·주도권·답장속도 27개 지표로\n놓치고 있던 관계 신호 찾기",
+    cta: "관계레이더 보러가기 →",
+    ctaColor: "#e9d5ff",
+    route: "free" as const,
+  },
+  {
+    appBanner: true,
+    directUrl: "/sonjeolgak",
+    bg: "linear-gradient(135deg,#3b0764 0%,#831843 50%,#500724 100%)",
+    bgImg: "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg",
+    badge: "✂️ 손절각 — 끊을까 이어갈까",
+    badgeBg: "#db2777",
+    icon: "✂️",
+    tagline: "그 관계, 계속 이어갈까요?",
+    desc: "우정·연애·전애인·직장 등 7가지 관계별\n손절각 지수 무료 확인",
+    cta: "손절각 테스트하기 →",
+    ctaColor: "#fbcfe8",
     route: "free" as const,
   },
 ];
@@ -942,10 +970,10 @@ export default function MainV2() {
           <div style={{ display: "flex", gap: 8 }}>
             <a href="/apps" style={{ flex: 1, borderRadius: 16, overflow: "hidden", cursor: "pointer", boxShadow: "0 2px 14px rgba(34,197,94,0.15)", border: "1.5px solid #86efac", textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 12px", textAlign: "center" }}>
-                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 무료 18개<br />점운 전체앱</span>
+                <span style={{ color: "#fff", fontWeight: 900, fontSize: 13 }}>✨ 무료 20개<br />점운 전체앱</span>
               </div>
               <div style={{ background: "#f0fdf4", padding: "10px 12px", textAlign: "center" }}>
-                <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>18개 계열앱<br />무료로 이용</p>
+                <p style={{ fontSize: 11, color: "#15803d", margin: "0 0 6px", lineHeight: 1.5, fontWeight: 600 }}>20개 계열앱<br />무료로 이용</p>
                 <span style={{ fontSize: 12, fontWeight: 900, color: "#fff", background: "#22c55e", padding: "4px 12px", borderRadius: 20 }}>전체보기 →</span>
               </div>
             </a>

@@ -60,6 +60,8 @@ const GRID_APPS = [
   { href: "/diet",      emoji: "🥗", label: "다이어트",  sub: "오행 체질 식단 추천",   desc: "칼로리 계산 + 맞춤 음식",    badge: "1,980원·30일",  color: "#65a30d", bg: "linear-gradient(145deg,#f7fee7,#d9f99d)", img: "https://i.pinimg.com/1200x/f1/11/77/f11177335015269c22af426b13f423bc.jpg" },
   { href: "/budget",    emoji: "💰", label: "가계부",    sub: "일기식 재물 기록",       desc: "지출 · 수입 · 재물운 연결",  badge: "1,980원·30일",  color: "#0369a1", bg: "linear-gradient(145deg,#e0f2fe,#bae6fd)", img: "https://i.pinimg.com/736x/73/84/95/738495640e6c2d69d0632c59be89818f.jpg" },
   { href: "/momcare",   emoji: "👶", label: "육아일기",  sub: "AI 육아 · 아기 기록",   desc: "일기 · 타임캡슐 · 아기말",   badge: "1,980원·30일",  color: "#be185d", bg: "linear-gradient(145deg,#fce7f3,#fbcfe8)", img: "https://i.pinimg.com/736x/19/f1/9c/19f19c6326262bd03985e28c1c45226c.jpg" },
+  { href: "/gwangyeoradar", emoji: "📡", label: "관계레이더", sub: "연락 패턴 27개 지표 분석", desc: "놓친 신호 · 관계 온도 · 회복가능성", badge: "990원·24h", color: "#9333ea", bg: "linear-gradient(145deg,#f3e8ff,#e9d5ff)", img: "https://i.pinimg.com/736x/bb/20/f3/bb20f354e8a443be9f6a4b71d0022f07.jpg" },
+  { href: "/sonjeolgak", emoji: "✂️", label: "손절각",   sub: "그 관계, 끊을까 이어갈까",  desc: "7가지 관계별 손절각 지수",       badge: "무료/990원",     color: "#db2777", bg: "linear-gradient(145deg,#fdf2f8,#fbcfe8)", img: "https://i.pinimg.com/736x/a2/e3/2a/a2e32abeae3320baec01b62d54e44751.jpg" },
 ];
 
 export default function AppsPage() {

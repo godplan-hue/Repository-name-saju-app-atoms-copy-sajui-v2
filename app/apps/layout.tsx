@@ -3,21 +3,21 @@
 const IMG = "https://i.pinimg.com/736x/45/8c/cc/458ccc4777dec685605f4cae0ae87336.jpg";
 
 export const metadata: Metadata = {
-  title: "점운 전체앱 18개 — 꿈해몽·궁합·MBTI·타로·다이어트",
-  description: "꿈해몽·육아일기·직운·합격·궁합·MBTI·행운번호·펫운·타로·별자리·감정일기·다이어트·가계부·파트너·핑계생성기·나쁜운세·귀찮음지수·뭐먹지 18개 앱",
+  title: "점운 전체앱 20개 — 꿈해몽·궁합·MBTI·타로·다이어트",
+  description: "꿈해몽·육아일기·직운·합격·궁합·MBTI·행운번호·펫운·타로·별자리·감정일기·다이어트·가계부·파트너·핑계생성기·나쁜운세·귀찮음지수·뭐먹지·관계레이더·손절각 20개 앱",
   openGraph: {
-    title: "✨ 점운 전체앱 18개 — 꿈해몽·궁합·MBTI·타로·다이어트",
-    description: "꿈해몽·육아일기·직운·합격·궁합·MBTI·행운번호·펫운·타로·별자리·감정일기·다이어트·가계부·파트너·핑계생성기·나쁜운세·귀찮음지수·뭐먹지 18개 앱",
+    title: "✨ 점운 전체앱 20개 — 꿈해몽·궁합·MBTI·타로·다이어트",
+    description: "꿈해몽·육아일기·직운·합격·궁합·MBTI·행운번호·펫운·타로·별자리·감정일기·다이어트·가계부·파트너·핑계생성기·나쁜운세·귀찮음지수·뭐먹지·관계레이더·손절각 20개 앱",
     url: "https://jeomun.com/apps",
     siteName: "점운",
     locale: "ko_KR",
     type: "website",
-    images: [{ url: IMG, width: 1200, height: 630, alt: "점운 전체앱 18개" }],
+    images: [{ url: IMG, width: 1200, height: 630, alt: "점운 전체앱 20개" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "✨ 점운 전체앱 18개 — 꿈해몽·궁합·MBTI·타로·다이어트",
-    description: "점운 18개 앱 전부 이용하세요",
+    title: "✨ 점운 전체앱 20개 — 꿈해몽·궁합·MBTI·타로·다이어트",
+    description: "점운 20개 앱 전부 이용하세요",
     images: [IMG],
   },
 };
