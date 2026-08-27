@@ -1,13 +1,14 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ 점운 손절각 신규앱 출시 완료 (2026-08-27)](project_sonjeolgak_app_launch_2026_08_27.md) — commit f1e811af, 7파트990원구조+8유형, 토스미니앱폴더는별도위치 주의
 - [⭐⭐⭐⭐⭐ poomang.com 심리테스트 카탈로그(1·2·3차 캡처+손절각8유형)+전략정정 (2026-08-27)](reference_poomang_quiz_catalog_2026_08_27.md) — 토스생태계전체 경쟁분석, 계속 append
 - [⛔ 벤치마킹시 결과유형 전체 캡처 규칙 (2026-08-27)](feedback_benchmark_capture_all_results_2026_08_27.md) — 일부만 보고 설계 금지, 질문+결과유형전체+지표 세트로
 - [⭐⭐⭐⭐⭐ 토스 콘텐츠카테고리 실시간인기 1~17위 캡처 (2026-08-27)](reference_toss_realtime_popular_ranking_2026_08_27.md) — 사주계열6개(35%)最대장르, 말랑이/돌멩이류 힐링캐릭터3개, poomang과 교차대조용 기준데이터
 - [⭐⭐⭐ 새앱 공유버튼 문구는 MBTI스타일로 통일 (2026-08-27)](feedback_share_button_mbti_style_copy_2026_08_27.md) — "친구한테 공유하기"+결과개인화훅("나 이거 O프로래"), 새로만들때부터 적용
+- [⛔⛔⛔ 가격배지 숨김=의도적결정, 관찰성발언에 임의수정+커밋+푸시 금지 (2026-08-27)](feedback_price_hidden_intentional_ask_before_changing_2026_08_27.md) — FortuneGrid 유료항목 가격안보임=이탈방지설계, 되돌림 commit cdf51029
 - [⭐⭐⭐⭐ 해외창업뉴스레터93개+토스앱화TOP5(미니멀/번아웃/시간관리/크리에이터유형/프리랜서) (2026-08-27)](reference_creator_income_newsletter_titles_2026_08_27.md) — 링크로 원문 추가확보 예정, 나머지는 SaaS라 템플릿앱 부적합
 - [⭐⭐⭐⭐⭐ 완전복구 지정지점=커밋 6fd31b69 (2026-08-27, main-v2 가격표시/문구 수정 전)](project_restore_checkpoint_2026_08_27_pre_mainv2_copy_edit.md) — "원래대로 돌려줘" 하면 이 커밋으로
 - [⭐⭐ 토스 MBTI 가짜번호(01012345678) 차단 코드수정완료, 재업로드 대기 (2026-08-26)](project_mbti_toss_fakephone_fix_pending_upload_2026_08_26.md) — 빌드/콘솔업로드 안함, 다음 배치 재업로드때 같이 반영
-- [⛔⛔⛔ 재업로드=쌓인 다른 수정까지 전부 동반배포+죽은버그 되살림 미리경고 (2026-08-26)](feedback_dont_push_reupload_batch_fixes.md) — MBTI analyze CORS버그 되살아나며 1곳→2곳저장 돌변사건, 재업로드전 git log로 동반될 다른커밋 확인+부작용 미리설명 필수
 - [⭐⭐⭐ 맹렬퍼널홍보비법 4종세트 — 웨비나+홀모지x브런슨+세일즈문구100선+AI부업인터뷰 (2026-08-26)](reference_maengryeol_funnel_promotion_secrets.md) — 그랜드슬램오퍼·가치사다리·퍼펙트웨비나+구매심리10원리 100문구+AI콘텐츠제작·숫자카피, 향후 홍보 전체 적용
 - [⭐⭐⭐ MBTI 순위(27/2700,5/850)+공유리워드 신규구현+토스문서6종대조 (2026-08-26)](project_mbti_ranking_and_share_reward_2026_08_26.md) — 직업섹션 광고잠금→공유잠금 전환(commit 4a9e001), ait build+재업로드 아직 안함
 - [⭐ 앱인토스 SDK3.x Origin변경 공지 대응확인 (2026-08-26)](reference_toss_sdk3_origin_cors_notice_2026_08_26.md) — 21개앱 전부 SDK2.x+CORS와일드카드라 조치불필요, 3.x업그레이드시 재확인
