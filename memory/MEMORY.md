@@ -1,5 +1,8 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ 신규 앱 기본구조=MBTI로 확정 (2026-08-27)](feedback_new_apps_default_mbti_structure_2026_08_27.md) — 공유버튼뿐아니라 전체설계(퀴즈/잠금/카운트다운/공유) 기본값
+- [⭐⭐⭐ 일기류 앱(감정일기/가계부/맘케어/다이어트) 나중에 3D UI전환 예정 (2026-08-27)](project_diary_apps_future_3d_upgrade_2026_08_27.md) — 이전저장기록 못찾아 새로저장, 지금은 착수안함
+- [⭐⭐⭐⭐ 앱인토스 8월5주 공지 5개항목 영향도체크 (2026-08-27)](reference_appintoss_notice_2026_08_5week_review.md) — SDK3.x 9/14마감 실행필요, 재테크탭 가계부기회, 검수강화 badfortune앱 주의
 - [⭐⭐⭐⭐⭐ 점운 손절각 앱 — MBTI방식 심층분석10가지 잠금 재설계 (2026-08-27)](project_sonjeolgak_app_launch_2026_08_27.md) — commit f1e811af→2e56c45f, 7파트전부무료+유료10항목, 토스미니앱폴더는별도위치 주의
 - [⭐⭐⭐⭐⭐ poomang.com 심리테스트 카탈로그(1·2·3차 캡처+손절각8유형)+전략정정 (2026-08-27)](reference_poomang_quiz_catalog_2026_08_27.md) — 토스생태계전체 경쟁분석, 계속 append
 - [⛔ 벤치마킹시 결과유형 전체 캡처 규칙 (2026-08-27)](feedback_benchmark_capture_all_results_2026_08_27.md) — 일부만 보고 설계 금지, 질문+결과유형전체+지표 세트로
