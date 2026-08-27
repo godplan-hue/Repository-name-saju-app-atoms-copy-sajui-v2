@@ -53,7 +53,7 @@ function PayInner() {
   const finalizeSuccess = (info: { paymentId: string; finalAmount: number; name: string; mobile: string; couponCode: string; hasCoupon: boolean }) => {
     const cleanMobile = info.mobile.replace(/\D/g, "");
     if (info.hasCoupon) fetch("/api/promo-codes", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: info.couponCode.trim().toUpperCase() }) }).catch(() => {});
-    fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ id: `sonjeolgak_${Date.now()}`, phone: cleanMobile || "", name: info.name.trim() || "", amount: info.finalAmount, category: "손절각 전체 파트 잠금해제", source: "sonjeolgak" }) }).catch(() => {});
+    fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ id: `sonjeolgak_${Date.now()}`, phone: cleanMobile || "", name: info.name.trim() || "", amount: info.finalAmount, category: "손절각 심층 분석 잠금해제", source: "sonjeolgak" }) }).catch(() => {});
     const _until = Date.now() + 24 * 60 * 60 * 1000;
     try { localStorage.setItem("sonjeolgak_unlock_until", String(_until)); } catch {}
     if (cleanMobile) try { localStorage.setItem("sonjeolgak_unlock_phone", cleanMobile); const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: cleanMobile })); } catch {}
@@ -125,7 +125,7 @@ function PayInner() {
         method: "CARD",
         amount: { currency: "KRW", value: finalAmount },
         orderId,
-        orderName: "점운 손절각 전체 파트 잠금해제",
+        orderName: "점운 손절각 심층 분석 잠금해제",
         successUrl: `${window.location.origin}${window.location.pathname}`,
         failUrl: `${window.location.origin}${window.location.pathname}?tossFail=1`,
         customerName: name.trim() || "고객",
@@ -167,7 +167,7 @@ function PayInner() {
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
         paymentId,
-        orderName: "점운 손절각 전체 파트 잠금해제",
+        orderName: "점운 손절각 심층 분석 잠금해제",
         totalAmount: finalAmount,
         currency: "KRW",
         payMethod: method === "KAKAOPAY" ? "EASY_PAY" : "CARD",
@@ -196,14 +196,14 @@ function PayInner() {
       <div style={S.inner}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
           <a href="/sonjeolgak" style={{ color: "#a78bfa", fontSize: 13, textDecoration: "none" }}>← 돌아가기</a>
-          <span style={{ fontSize: 13, color: "#6b7280" }}>손절각 전체 파트</span>
+          <span style={{ fontSize: 13, color: "#6b7280" }}>손절각 심층 분석</span>
         </div>
 
         <div style={{ background: "linear-gradient(135deg,#1a0030,#2d1b69)", border: "1px solid rgba(236,72,153,0.4)", borderRadius: 18, padding: "20px 18px", marginBottom: 24, textAlign: "center" }}>
           <p style={{ fontSize: 24, margin: "0 0 6px" }}>😼🗡️</p>
-          <p style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px" }}>손절각 6개 파트 전체 잠금해제</p>
+          <p style={{ fontSize: 16, fontWeight: 900, color: "white", margin: "0 0 6px" }}>내 유형 심층 분석 10가지 전체 잠금해제</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, margin: "14px 0 16px", textAlign: "left" }}>
-            {["💑 연애 손절각", "💔 전애인 손절각", "🌫️ 썸·바람 손절각", "💼 직장 손절각", "🏠 가족 손절각", "✈️ 여행 손절각"].map(item => (
+            {["🕰️ 과거 패턴 분석", "🚨 위험 신호 3가지", "🩹 회복 팁", "🔮 앞으로의 관계운", "✅ 액션플랜 3단계", "🌑 숨겨진 어두운 면", "💔 이별·손절 스타일", "⭐ 나와 닮은 유명인", "💚 궁합 좋은 이유 상세", "⚠️ 부딪히는 유형 TOP3"].map(item => (
               <div key={item} style={{ background: "rgba(255,255,255,0.07)", borderRadius: 10, padding: "8px 10px", fontSize: 12, color: "#c4b5fd" }}>{item}</div>
             ))}
           </div>

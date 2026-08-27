@@ -15,12 +15,12 @@ type PartKey = "friend" | "love" | "ex" | "some" | "work" | "family" | "travel";
 
 const PARTS: { key: PartKey; label: string; emoji: string; free: boolean; desc: string }[] = [
   { key: "friend", label: "우정 손절각", emoji: "👭", free: true, desc: "이 친구, 계속 봐야 할까?" },
-  { key: "love", label: "연애 손절각", emoji: "💑", free: false, desc: "지금 연애, 이어갈까 끊을까" },
-  { key: "ex", label: "전애인 손절각", emoji: "💔", free: false, desc: "전 애인, 진짜 정리했나?" },
-  { key: "some", label: "썸·바람 손절각", emoji: "🌫️", free: false, desc: "애매한 관계, 정리할 타이밍" },
-  { key: "work", label: "직장 손절각", emoji: "💼", free: false, desc: "동료·상사와의 거리두기" },
-  { key: "family", label: "가족 손절각", emoji: "🏠", free: false, desc: "가족과도 선이 필요할 때" },
-  { key: "travel", label: "여행 손절각", emoji: "✈️", free: false, desc: "그 사람과 다시 여행 갈까?" },
+  { key: "love", label: "연애 손절각", emoji: "💑", free: true, desc: "지금 연애, 이어갈까 끊을까" },
+  { key: "ex", label: "전애인 손절각", emoji: "💔", free: true, desc: "전 애인, 진짜 정리했나?" },
+  { key: "some", label: "썸·바람 손절각", emoji: "🌫️", free: true, desc: "애매한 관계, 정리할 타이밍" },
+  { key: "work", label: "직장 손절각", emoji: "💼", free: true, desc: "동료·상사와의 거리두기" },
+  { key: "family", label: "가족 손절각", emoji: "🏠", free: true, desc: "가족과도 선이 필요할 때" },
+  { key: "travel", label: "여행 손절각", emoji: "✈️", free: true, desc: "그 사람과 다시 여행 갈까?" },
 ];
 
 type Q = { q: string; a: string; b: string; aVal: number; bVal: number };
@@ -130,7 +130,6 @@ export default function SonjeolgakPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [paid, setPaid] = useState(false);
-  const [lockNotice, setLockNotice] = useState<PartKey | null>(null);
 
   useEffect(() => {
     try {
@@ -158,9 +157,6 @@ export default function SonjeolgakPage() {
   };
 
   const selectPart = (key: PartKey) => {
-    const p = PART_MAP[key];
-    if (!p.free && !paid) { setLockNotice(key); return; }
-    setLockNotice(null);
     setPart(key);
     setStep("form");
   };
@@ -259,44 +255,27 @@ export default function SonjeolgakPage() {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
-            {PARTS.map(p => {
-              const locked = !p.free && !paid;
-              return (
-                <button key={p.key} onClick={() => selectPart(p.key)}
-                  style={{
-                    position: "relative", textAlign: "left", cursor: "pointer",
-                    background: locked ? "rgba(255,255,255,0.03)" : "linear-gradient(135deg,rgba(124,58,237,0.18),rgba(236,72,153,0.12))",
-                    border: locked ? "1.5px dashed rgba(255,255,255,0.18)" : "1.5px solid rgba(236,72,153,0.4)",
-                    borderRadius: 16, padding: "16px 14px",
-                  }}>
-                  {locked && <span style={{ position: "absolute", top: 10, right: 10, fontSize: 14 }}>🔒</span>}
-                  <div style={{ fontSize: 26, marginBottom: 8 }}>{p.emoji}</div>
-                  <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 4px", color: locked ? "#9ca3af" : "white" }}>{p.label}</p>
-                  <p style={{ fontSize: 11, color: locked ? "#6b7280" : "#d8b4fe", margin: 0, lineHeight: 1.4 }}>{p.desc}</p>
-                  {p.free && <span style={{ display: "inline-block", marginTop: 8, fontSize: 10, fontWeight: 900, color: "#4ade80", background: "rgba(74,222,128,0.12)", borderRadius: 8, padding: "2px 8px" }}>무료</span>}
-                </button>
-              );
-            })}
-          </div>
-
-          {lockNotice && (
-            <div style={{ background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.4)", borderRadius: 16, padding: "16px", marginBottom: 20, textAlign: "center" }}>
-              <p style={{ fontSize: 13, color: "#e9d5ff", margin: "0 0 12px", lineHeight: 1.6 }}>
-                <b>{PART_MAP[lockNotice].label}</b>은(는) 잠긴 파트예요.<br />
-                990원으로 나머지 6개 파트를 전부 열어드려요.
-              </p>
-              <button onClick={() => { window.location.href = `/sonjeolgak/pay`; }}
-                style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 16, padding: "13px", fontSize: 14, fontWeight: 900, cursor: "pointer" }}>
-                ₩990 · 6개 파트 전체 잠금해제 →
+            {PARTS.map(p => (
+              <button key={p.key} onClick={() => selectPart(p.key)}
+                style={{
+                  position: "relative", textAlign: "left", cursor: "pointer",
+                  background: "linear-gradient(135deg,rgba(124,58,237,0.18),rgba(236,72,153,0.12))",
+                  border: "1.5px solid rgba(236,72,153,0.4)",
+                  borderRadius: 16, padding: "16px 14px",
+                }}>
+                <div style={{ fontSize: 26, marginBottom: 8 }}>{p.emoji}</div>
+                <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 4px", color: "white" }}>{p.label}</p>
+                <p style={{ fontSize: 11, color: "#d8b4fe", margin: 0, lineHeight: 1.4 }}>{p.desc}</p>
+                <span style={{ display: "inline-block", marginTop: 8, fontSize: 10, fontWeight: 900, color: "#4ade80", background: "rgba(74,222,128,0.12)", borderRadius: 8, padding: "2px 8px" }}>무료 테스트</span>
               </button>
-            </div>
-          )}
+            ))}
+          </div>
 
           {!paid && (
             <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "16px", marginBottom: 20 }}>
-              <p style={{ fontSize: 13, fontWeight: 900, margin: "0 0 6px" }}>💡 우정 손절각은 무료</p>
+              <p style={{ fontSize: 13, fontWeight: 900, margin: "0 0 6px" }}>💡 7개 파트 전부 무료로 테스트 가능</p>
               <p style={{ fontSize: 12, color: "#9ca3af", margin: 0, lineHeight: 1.6 }}>
-                연애·전애인·썸/바람·직장·가족·여행 손절각까지<br />990원 한 번이면 전부 평생 잠금해제돼요.
+                손절각 지수·타입은 전부 무료로 확인하고,<br />심층 분석 10가지는 990원 한 번이면 24시간 전체 열람돼요.
               </p>
             </div>
           )}

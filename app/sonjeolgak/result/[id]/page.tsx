@@ -13,11 +13,21 @@ function getTodayCount(base: number) {
 }
 
 type Result = {
-  name: string; part: string; partLabel: string; score: number;
+  name: string; part: string; partLabel: string; score: number; phone?: string;
   typeName: string; typeEmoji: string; typeColor: string; tagline: string;
   description: string; advice: string;
-  bestMatch: string; bestMatchEmoji: string; worstMatch: string; worstMatchEmoji: string;
+  bestMatch: string; bestMatchEmoji: string; bestMatchDetail?: string;
+  worstMatch: string; worstMatchEmoji: string;
+  worstMatchTop3?: { type: string; emoji: string; reason: string }[];
   rank: number;
+  pastPattern?: string;
+  warningSigns?: string[];
+  recoveryTip?: string;
+  futureForecast?: string;
+  actionPlan?: string[];
+  darkSide?: string;
+  breakupStyle?: string;
+  celebTwin?: string;
 };
 
 export default function SonjeolgakResultPage() {
@@ -28,13 +38,10 @@ export default function SonjeolgakResultPage() {
   const [paid, setPaid] = useState(false);
   const [todayCount, setTodayCount] = useState("0");
   const [copied, setCopied] = useState(false);
+  const [unlockRemain, setUnlockRemain] = useState("");
 
   useEffect(() => {
     setTodayCount(getTodayCount(640));
-    try {
-      const u = localStorage.getItem("sonjeolgak_unlock_until");
-      if (u && Number(u) > Date.now()) setPaid(true);
-    } catch {}
 
     if (id === "inline") {
       try {
@@ -50,6 +57,36 @@ export default function SonjeolgakResultPage() {
       .then(d => { if (d.result) setResult(d.result); })
       .finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    if (!result) return;
+    try {
+      const until = Number(localStorage.getItem("sonjeolgak_unlock_until") || 0);
+      const savedPhone = (localStorage.getItem("sonjeolgak_unlock_phone") || "").replace(/\D/g, "");
+      const resultPhone = (result.phone || "").replace(/\D/g, "");
+      if (until > Date.now() && (!savedPhone || !resultPhone || savedPhone === resultPhone)) {
+        setPaid(true);
+      }
+    } catch {}
+  }, [result]);
+
+  useEffect(() => {
+    if (!paid) return;
+    const tick = () => {
+      try {
+        const until = Number(localStorage.getItem("sonjeolgak_unlock_until") || 0);
+        const remain = until - Date.now();
+        if (remain <= 0) { setPaid(false); setUnlockRemain(""); return; }
+        const h = Math.floor(remain / 3600000);
+        const m = Math.floor((remain % 3600000) / 60000);
+        const s = Math.floor((remain % 60000) / 1000);
+        setUnlockRemain(h > 0 ? `${h}시간 ${m}분 남음` : `${m}분 ${s}초 남음`);
+      } catch {}
+    };
+    tick();
+    const iv = setInterval(tick, 1000);
+    return () => clearInterval(iv);
+  }, [paid]);
 
   const share = () => {
     const text = result ? `나의 ${result.partLabel} 손절각은 "${result.typeName}"! 너는 몇 점일까?` : "손절각 테스트 해보기";
@@ -146,15 +183,115 @@ export default function SonjeolgakResultPage() {
         </button>
         {copied && <p style={{ textAlign: "center", fontSize: 12, color: "#4ade80", marginTop: -6, marginBottom: 12 }}>링크가 복사됐어요!</p>}
 
-        {!paid && (
-          <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.18),rgba(236,72,153,0.12))", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 20, padding: "20px 18px", marginBottom: 16, textAlign: "center" }}>
-            <p style={{ fontSize: 14, fontWeight: 900, margin: "0 0 6px" }}>🔒 다른 관계의 손절각도 궁금하다면?</p>
-            <p style={{ fontSize: 12.5, color: "#d8b4fe", margin: "0 0 14px", lineHeight: 1.6 }}>
-              연애·전애인·썸/바람·직장·가족·여행<br />6개 파트를 990원에 전부 열어보세요
-            </p>
+        {paid && unlockRemain && (
+          <div style={{ background: "rgba(236,72,153,0.1)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 12, padding: "9px 14px", textAlign: "center", marginBottom: 14 }}>
+            <span style={{ fontSize: 12, color: "#f9a8d4", fontWeight: 700 }}>⏱️ 심층 분석 이용 가능: {unlockRemain}</span>
+          </div>
+        )}
+
+        {paid ? (
+          <>
+            {result.pastPattern && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(96,165,250,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#60a5fa" }}>🕰️ 과거 패턴 분석</p>
+                <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{result.pastPattern}</p>
+              </div>
+            )}
+
+            {result.warningSigns && result.warningSigns.length > 0 && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(248,113,113,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#f87171" }}>🚨 위험 신호 3가지</p>
+                {result.warningSigns.map((w, i) => (
+                  <p key={i} style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: "0 0 6px" }}>• {w}</p>
+                ))}
+              </div>
+            )}
+
+            {result.recoveryTip && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#4ade80" }}>🩹 회복 팁</p>
+                <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{result.recoveryTip}</p>
+              </div>
+            )}
+
+            {result.futureForecast && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(167,139,250,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#a78bfa" }}>🔮 앞으로의 관계운</p>
+                <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{result.futureForecast}</p>
+              </div>
+            )}
+
+            {result.actionPlan && result.actionPlan.length > 0 && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#fbbf24" }}>✅ 액션플랜 3단계</p>
+                {result.actionPlan.map((a, i) => (
+                  <p key={i} style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: "0 0 6px" }}>{i + 1}. {a}</p>
+                ))}
+              </div>
+            )}
+
+            {result.darkSide && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(220,38,38,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#f87171" }}>🌑 숨겨진 어두운 면</p>
+                <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{result.darkSide}</p>
+              </div>
+            )}
+
+            {result.breakupStyle && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(236,72,153,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#ec4899" }}>💔 이별·손절 스타일</p>
+                <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{result.breakupStyle}</p>
+              </div>
+            )}
+
+            {result.celebTwin && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(34,211,238,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#22d3ee" }}>⭐ 나와 닮은 유명인</p>
+                <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{result.celebTwin}</p>
+              </div>
+            )}
+
+            {result.bestMatchDetail && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#34d399" }}>💚 {result.bestMatch}과(와) 잘 맞는 이유</p>
+                <p style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{result.bestMatchDetail}</p>
+              </div>
+            )}
+
+            {result.worstMatchTop3 && result.worstMatchTop3.length > 0 && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(251,146,60,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 10px", color: "#fb923c" }}>⚠️ 부딪히는 유형 TOP3</p>
+                {result.worstMatchTop3.map((w, i) => (
+                  <p key={i} style={{ fontSize: 13.5, color: "#d1d5db", lineHeight: 1.9, margin: "0 0 8px" }}>
+                    {w.emoji} <b style={{ color: "#fdba74" }}>{w.type}</b> — {w.reason}
+                  </p>
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <div style={{ background: "linear-gradient(135deg,rgba(124,58,237,0.18),rgba(236,72,153,0.12))", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: 20, padding: "22px 18px", marginBottom: 16 }}>
+            <p style={{ fontSize: 15, fontWeight: 900, margin: "0 0 12px", textAlign: "center" }}>🔒 {result.typeName}의 심층 분석 10가지</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 16 }}>
+              {[
+                "🕰️ 과거 패턴 분석",
+                "🚨 위험 신호 3가지",
+                "🩹 회복 팁",
+                "🔮 앞으로의 관계운",
+                "✅ 액션플랜 3단계",
+                "🌑 숨겨진 어두운 면",
+                "💔 이별·손절 스타일",
+                "⭐ 나와 닮은 유명인",
+                "💚 궁합 좋은 이유 상세",
+                "⚠️ 부딪히는 유형 TOP3",
+              ].map(item => (
+                <div key={item} style={{ background: "rgba(255,255,255,0.07)", borderRadius: 10, padding: "9px 12px", fontSize: 12.5, color: "#e9d5ff" }}>{item}</div>
+              ))}
+            </div>
+            <p style={{ fontSize: 11.5, color: "#a78bfa", margin: "0 0 14px", textAlign: "center" }}>결제 후 24시간 열람 가능합니다</p>
             <button onClick={() => { window.location.href = "/sonjeolgak/pay"; }}
-              style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 16, padding: "13px", fontSize: 14, fontWeight: 900, cursor: "pointer" }}>
-              ₩990 · 6개 파트 전체 잠금해제 →
+              style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 16, padding: "14px", fontSize: 14.5, fontWeight: 900, cursor: "pointer" }}>
+              ₩990으로 심층 분석 전체 열기 →
             </button>
           </div>
         )}
