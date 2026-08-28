@@ -1,14 +1,14 @@
 ---
 name: project-sdk3-migration-status-2026-08-27
-description: "토스 미니앱 21개 중 SDK 3.x 전환+광고문구 완료 8개, 미전환 14개 현황표+전환절차"
+description: "토스 미니앱 21개 중 SDK 3.x 전환+광고문구 완료 9개, 미전환 13개 현황표+전환절차"
 metadata: 
   node_type: memory
   type: project
   originSessionId: e04af5d5-eb3c-4469-ab5d-37a8c64cef95
-  modified: 2026-08-27T03:28:29.305Z
+  modified: 2026-08-28T07:52:49.780Z
 ---
 
-## SDK 3.x 전환 + 광고문구(안내캡션) 완료 — 8개
+## SDK 3.x 전환 + 광고문구(안내캡션) 완료 — 9개
 
 | 앱 | 3.x 전환 | 광고문구 | 비고 |
 |---|---|---|---|
@@ -20,20 +20,29 @@ metadata:
 | jeomun-mbti | ✅ | ✅ | commit b2677a1 + c91ba1f(배너 width 중복키 정리) |
 | jeomun-gamjung | ✅ | ✅ (광고문구는 전날 이미 완료, 이번엔 3.x 전환만) | commit c630c9d |
 | jeomun-sonjeolgak | ✅ | ✅ | 신규앱, 처음부터 3.x+광고문구로 제작. 콘솔 미배포 |
+| jeomun-budget | ✅ | ✅ (로딩라벨 스왑 방식, 감정일기와 동일) | commit bae94e2, 빌드완료·**콘솔 미업로드**(사용자 승인 대기) |
 
-## 아직 SDK 2.x — 미전환 14개
+## 아직 SDK 2.x — 미전환 13개
 
-budget, daewoon, diet, fortune, haemong, jigun, momcare, petun, resume, saju, style, taegil, work, zodiac
+daewoon, diet, fortune, haemong, jigun, momcare, petun, resume, saju, style, taegil, work, zodiac
 
 (2026-08-27 기준 `package.json`의 `@apps-in-toss/web-framework` 버전으로 직접 확인한 결과. 다음 전환 세션 시작 전 반드시 재확인할 것 — 이 표는 시간이 지나면 stale해짐.)
 
-## 광고문구(안내캡션) 패턴 규칙
+## 광고문구(안내캡션) 패턴 규칙 — 실제로는 2가지 하위 방식이 혼재함
 
+**방식 A — 별도 캡션 줄 추가** (movie, battle 등 풀와이드 단일진입 버튼):
 - `loadFullScreenAd`/`showFullScreenAd`로 이어지는 버튼 바로 아래에 삽입:
   `<p style={{fontSize:11,color:"#6b7280",textAlign:"center",margin:"6px 0 0"}}>📺 [문구] 광고가 표시돼요</p>`
 - 팝업/모달(`position:fixed;inset:0` 등) 금지 — 인라인 캡션만. (손절각 초안에서 전체화면 모달로 잘못 만들었다가 이 규칙대로 다시 수정한 적 있음)
-- `GoogleAdMob.showAppsInTossAdMob`(리워드형 광고)는 대상 아님 — `loadFullScreenAd`/`showFullScreenAd` 계열 버튼만 해당
 - 진입점이 여러 개면(버튼마다) 각각 다 캡션 필요 (예: battle 5개, movie 4개)
+
+**방식 B — 로딩라벨 스왑만, 별도 캡션 없음** (gamjung 확인, budget도 동일하게 맞춤):
+- 버튼 로딩 중 텍스트를 `"로딩중..."` 같은 일반 문구 대신 `"📺 광고 준비 중..."`으로 표시 — 이게 광고문구 역할을 함
+- 출석체크/코인받기/섹션잠금해제(짜테크챌린지·리포트·캘린더·감정태그 등) 자잘한 pill/작은버튼류에 적용 — 별도 캡션 `<p>` 줄은 추가하지 않음
+- 왜 다른가: gamjung 원본 코드를 직접 열어 확인한 결과 섹션 unlock 버튼들(card/letter/weather)이 전부 이 방식이었음 — "감정일기처럼 해줘" 요청 시 이 방식이 기준
+
+**어떤 방식을 쓸지 판단법**: 그 앱/그 버튼이 기존에 어떤 방식이었는지 참고 앱(대개 요청에서 언급된 앱)을 실제로 열어서 확인하고 그대로 맞출 것 — 문서의 방식 A 규칙만 보고 일괄 적용하면 gamjung/budget 케이스에서 틀림.
+- `GoogleAdMob.showAppsInTossAdMob`(리워드형 광고)는 두 방식 모두 대상 아님
 
 ## 2.x → 3.x 전환 절차 (6개 앱에서 검증된 방법, 재사용)
 
