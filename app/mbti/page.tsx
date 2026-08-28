@@ -218,6 +218,7 @@ export default function MbtiPage() {
           </div>
 
           <div style={{ fontSize: 60, marginBottom: 16 }}>🔮</div>
+          <div style={{ display: "inline-block", fontSize: 13, fontWeight: 800, color: "#c4b5fd", background: "rgba(124,58,237,0.15)", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 20, padding: "4px 14px", marginBottom: 12 }}>점운 MBTI</div>
           <h1 style={{ fontSize: 26, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.3 }}>
             사주로 보는 나의 진짜<br />
             <span style={{ background: "linear-gradient(135deg,#a855f7,#7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
