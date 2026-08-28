@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ 재업로드할때마다 SDK3+광고문구+크로스프로모18개 3종세트 같이처리 (2026-08-28)](feedback_bundle_checklist_on_reupload_2026_08_28.md) — 미완료앱이면 물어보고 같이 처리, 콘솔업로드는 사용자몫
 - [⭐⭐ 가계부 광고 준비안됨/코인미지급 버그 수정+빌드완료 (2026-08-28)](project_budget_ad_retry_timeout_fix_2026_08_28.md) — 재시도4회+타임아웃20초, commit 41eea9c, 푸시안함
 - [⭐ 당근광고 사진·제목 작성 팁 (2026-08-28)](reference_karrot_ad_photo_title_tips_2026_08_28.md) — 실사사진+혜택강조제목, 클릭률비교예시
 - [⭐⭐ 틱톡 캡션 확정템플릿 — 사주TOP5 리스트형 (2026-08-28)](project_tiktok_topfive_caption_template_2026_08_28.md) — 짧게+가격언급금지+점운링크필수
