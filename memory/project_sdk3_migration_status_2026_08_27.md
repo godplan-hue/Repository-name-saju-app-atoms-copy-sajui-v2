@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: e04af5d5-eb3c-4469-ab5d-37a8c64cef95
-  modified: 2026-08-28T07:52:49.780Z
+  modified: 2026-08-28T08:01:07.359Z
 ---
 
 ## SDK 3.x 전환 + 광고문구(안내캡션) 완료 — 9개
@@ -20,7 +20,7 @@ metadata:
 | jeomun-mbti | ✅ | ✅ | commit b2677a1 + c91ba1f(배너 width 중복키 정리) |
 | jeomun-gamjung | ✅ | ✅ (광고문구는 전날 이미 완료, 이번엔 3.x 전환만) | commit c630c9d |
 | jeomun-sonjeolgak | ✅ | ✅ | 신규앱, 처음부터 3.x+광고문구로 제작. 콘솔 미배포 |
-| jeomun-budget | ✅ | ✅ (로딩라벨 스왑 방식, 감정일기와 동일) | commit bae94e2, 빌드완료·**콘솔 미업로드**(사용자 승인 대기) |
+| jeomun-budget | ✅ | ✅ (로딩라벨 스왑 방식, 감정일기와 동일) | commit bae94e2, **GitHub 푸시 완료**(2026-08-28). CORS 확인함 — jeomun.com API가 와일드카드(*)라 tossmini.com origin 등록 불필요, 신경 안 써도 됨. **토스 콘솔 업로드는 에스더님이 직접 함** — `ait deploy` CLI는 Claude Code 권한상 차단되어 있어서 대신 실행 불가 (다른 SDK3 전환 앱들도 전부 동일하게 코드+빌드만 하고 콘솔 업로드는 항상 사용자가 직접 함) |
 
 ## 아직 SDK 2.x — 미전환 13개
 
@@ -54,7 +54,8 @@ daewoon, diet, fortune, haemong, jigun, momcare, petun, resume, saju, style, tae
 6. 해당 앱이면 광고문구 추가 (위 패턴)
 7. `npm run build` — `npx ait build` 단독 실행 금지(웹 빌드 산출물 없다는 에러남, 반드시 `vite build && ait build` 체인으로)
 8. curl로 CORS/저장 확인 시 더미 payload는 401 뜰 수 있음(실제 스키마 shape로 보내야 정확한 판단 가능) — false negative 주의. jeomun.com API는 CORS가 와일드카드(`*`)라 도메인명(`jeomun-OO` vs `OO-jeomun` 역순 문제)는 신경 안 써도 됨
-9. `git commit` (최종), `ait deploy`/콘솔 업로드는 사용자 명시 승인 전까지 하지 않음
+9. `git commit` + `git push` (최종). `ait deploy`/콘솔 업로드는 사용자 명시 승인 전까지 하지 않음 — 그리고 애초에 `npm run deploy`(=`ait deploy`) 자체가 Claude Code 자동모드 분류기에서 차단당해서 실행 불가함(2026-08-28 가계부에서 확인). 즉 콘솔 업로드는 항상 에스더님이 직접 해야 함 — "왜 안 올렸냐"는 질문 나오면 이 이유 설명할 것.
+10. `.ait` 파일이 새로 생성/변경됐으면 반드시 커밋에 포함해서 push까지 끝내야 사용자가 콘솔에서 최신 파일을 받을 수 있음
 
 **Why:** 앱이 21개까지 늘어나서 어떤 앱이 3.x고 어떤 게 2.x인지, 광고문구가 어디 붙었는지 매번 헷갈림 — 실제로 이번 세션에서도 "이게 배틀이다/무비다" 혼동이 있었음.
 

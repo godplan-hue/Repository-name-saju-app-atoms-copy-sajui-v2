@@ -1,20 +1,16 @@
 ---
-name: feedback-no-question-popups
-description: "User wants clarifying questions asked as plain chat text, not via the AskUserQuestion box UI, except for truly urgent/critical decisions"
+name: no-question-popups
+description: Never use AskUserQuestion popup tool with this user — ask in plain chat text only
 metadata: 
   node_type: memory
   type: feedback
-  originSessionId: d6bb98eb-4daf-4c77-a75e-aba80f62591e
+  originSessionId: e04af5d5-eb3c-4469-ab5d-37a8c64cef95
+  modified: 2026-08-28T07:56:12.149Z
 ---
 
-Don't use the AskUserQuestion tool (the boxed multiple-choice question UI) for ordinary clarifying questions. Ask in plain chat text instead.
+절대 AskUserQuestion(박스형 팝업) 사용 금지. 질문은 항상 일반 채팅 텍스트로만 한다.
 
-**Why:** User explicitly said "이제 네모칸 질문창은 뛰우지말고 진짜 급 답 중요한것만빼고 여기에 질문해줘" (stop popping up the box question window, ask here in chat — except for genuinely urgent/critical things).
+**Why:** 여러 번 반복해서 지적받은 규칙. 2026-08-13 세션에서도 다시 위반해서 "그리고질문창띄우지말랫는데왜자꾸 띄우는거야띄우지마 여기다가물어그냥" (팝업 띄우지 말라고 했는데 왜 계속 띄우냐, 그냥 여기다 물어봐)라고 화내며 재지적함. 화면 보며 빠르게 진행하는 작업 스타일과 안 맞고, 팝업이 흐름을 끊는다고 느낌.
+2026-08-28 세션에서 또다시 AskUserQuestion(어떤 토스앱을 3.x 전환할지 묻는 4지선다) 사용 → "이창올리잠말라고"(이 창 올리지 말라고)라고 재차 화내며 지적함. **세 번째 반복 위반.**
 
-**How to apply:** Default to asking clarifying/diagnostic questions as normal text in the conversation. Only reach for AskUserQuestion when the decision is truly important/hard-to-reverse and a structured choice genuinely helps (e.g., picking between architecturally different approaches before implementing something costly). For routine bug-diagnosis questions ("what exactly do you see on screen"), debugging narrowing-down questions, or anything low-stakes, just ask directly in text.
-
-**Reinforced 2026-06-22:** Used AskUserQuestion twice more in the same session despite this rule (once for Vercel Hobby-vs-Pro plan choice, once for how to fix a broken share-link feature) — user reacted with "방금 뭐 올린거야" (confused/annoyed) and then explicitly again: "여기다 질문해 자꾸띄우지말고" (ask here, stop popping it up). In practice this user essentially NEVER wants the popup — treat AskUserQuestion as off-limits by default for this project and ask everything, including big architectural forks, as plain chat text instead.
-
-**Reinforced again 2026-06-25:** Used AskUserQuestion a third time, for routine bug-diagnosis questions while debugging a TTS resume bug (which page/browser/button-state) — user rejected the tool call outright and said "네모창띄우지말고요기다물어" (don't pop up the box, ask here). This is now a confirmed pattern: do not use AskUserQuestion for this project at all, full stop — not even for diagnostic/debugging questions that feel "routine." Always use plain chat text, no exceptions found so far in practice.
-
-Related: [[user-profile]] — this user is non-technical, builds via chat (vibe coding), and prefers a lighter-weight, conversational interaction style overall.
+**How to apply:** 명확화가 필요하면 채팅 텍스트로 짧게 물어본다. AskUserQuestion 도구는 이 프로젝트에서 절대 호출하지 말 것 — "어느 것을 원하세요?" 류의 선택지 질문도 전부 일반 텍스트 문장으로. [[feedback_keep_replies_very_short]]와 함께 적용 — 질문도 짧게.
