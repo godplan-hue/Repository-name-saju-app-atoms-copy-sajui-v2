@@ -1,9 +1,17 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐ 가계부 광고 준비안됨/코인미지급 버그 수정+빌드완료 (2026-08-28)](project_budget_ad_retry_timeout_fix_2026_08_28.md) — 재시도4회+타임아웃20초, commit 41eea9c, 푸시안함
+- [⭐ 당근광고 사진·제목 작성 팁 (2026-08-28)](reference_karrot_ad_photo_title_tips_2026_08_28.md) — 실사사진+혜택강조제목, 클릭률비교예시
+- [⭐⭐ 틱톡 캡션 확정템플릿 — 사주TOP5 리스트형 (2026-08-28)](project_tiktok_topfive_caption_template_2026_08_28.md) — 짧게+가격언급금지+점운링크필수
 - [⭐⭐ Kling.ai 홍보영상제작툴 — 원래쓰던기존계정, 월간구독4단계요금제 (2026-08-28)](reference_kling_ai_video_tool_2026_08_28.md) — 크레딧106보유무료체험중, TopView·Flova와별개
 - [⭐⭐ Flova.ai 홍보영상제작툴 — 실제가입함, 무료100크레딧+2배크레딧행사 (2026-08-28)](reference_flova_ai_video_tool_2026_08_28.md) — TopView.ai보다저렴해서대체가입, Product Promo Video Skill사용
 - [⭐⭐ TopView.ai 홍보영상제작툴 — 링크+요금제+Ultra연간60일Seedance무제한 (2026-08-28)](reference_topview_ai_promo_video_tool_2026_08_28.md) — 점운 인스타/유튜브/X 홍보영상용, 2달아니라 연$599.90결제 포함 보너스
 - [⭐⭐⭐ CRM마케팅 특강 정리 — 마수동획득3타이밍+A/B라이브러리+옵트인팝업 클로드제작법 (2026-08-28)](reference_crm_marketing_secrets_2026_08_28.md) — 혜택직후동의요청이 가장효과적, 소프트프롬프트+네이티브콤보 실전코드
+- [⭐⭐⭐⭐⭐ v3(SDK3.x) 이미완료 7개 vs 크로스프로모만된 10개 정확구분 (2026-08-27)](project_v3_upgrade_vs_crosspromo_only_apps_2026_08_27.md) — budget/momcare edit되돌린거 실수, "빌드하지마"≠"edit삭제해"
+- [⭐⭐⭐⭐⭐ 크로스프로모 그리드 정확스펙 — 4x4+신규2개 두배크기 (2026-08-27)](project_crosspromo_grid_spec_18apps_2026_08_27.md) — "18개앱"=그리드타일수, 저장소전체수정아님, 적용은 오늘재업로드앱만
+- [⭐⭐⭐⭐⭐ 크로스프로모 완료11개앱 커밋목록 — 재업로드금지, 다음수정때만빌드 (2026-08-27)](project_crosspromo_done_apps_list_2026_08_27.md) — diet/fortune/taegil/jigun/style/work/saju/resume/petun/daewoon/gwangyeoradar
+- [⛔⛔⛔ 꿈해몽/별자리/펫운은 사주앱 내장탭 — 반복지적됨 (2026-08-27)](feedback_haemong_zodiac_petun_bundled_in_saju_reminder_2026_08_27.md) — 독립폴더 절대손대지말것, jeomun-saju하나만
+- [⛔⛔⛔ 지시범위 스스로확대 금지 — 18개앱 크로스프로모 사건 (2026-08-27)](feedback_scope_creep_18app_crosspromo_2026_08_27.md) — 6-7개앱요청을 18개전체로 확대해석, 이미푸시된건 안되돌림 sonjeolgak만 보류
 - [⭐⭐⭐⭐⭐ 토스앱 SDK3.x전환+광고문구 현황표 8/21개 (2026-08-27)](project_sdk3_migration_status_2026_08_27.md) — 완료:gwangyeoradar/tarot/gunghap/battle/movie/mbti/gamjung/sonjeolgak, 미전환14개+전환절차9단계
 - [⭐⭐⭐⭐⭐ 신규 앱 기본구조=MBTI로 확정 (2026-08-27)](feedback_new_apps_default_mbti_structure_2026_08_27.md) — 공유버튼뿐아니라 전체설계(퀴즈/잠금/카운트다운/공유) 기본값
 - [⭐⭐⭐ 일기류 앱(감정일기/가계부/맘케어/다이어트) 나중에 3D UI전환 예정 (2026-08-27)](project_diary_apps_future_3d_upgrade_2026_08_27.md) — 이전저장기록 못찾아 새로저장, 지금은 착수안함
