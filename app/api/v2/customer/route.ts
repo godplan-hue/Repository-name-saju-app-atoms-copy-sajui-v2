@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, phone, email, birthYear, birthMonth, birthDay, gender, birthHour, relationship, referredBy, marketing } = await request.json();
+    const { name, phone, email, birthYear, birthMonth, birthDay, gender, birthHour, relationship, referredBy, marketing, source } = await request.json();
     if (!name || (!phone && !email)) {
       return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
     }
@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
       referredBy: referredBy || "",
       marketing: marketing ?? false,
       consentGiven: true,
+      source: source || "",
     };
 
     // 전화번호로 기존 레코드 찾기 — 있으면 업데이트, 없으면 신규 생성

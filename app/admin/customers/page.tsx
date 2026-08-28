@@ -13,6 +13,7 @@ interface Customer {
   gender: string;
   relationship: string;
   createdAt: string;
+  source?: string;
 }
 
 export default function AdminCustomers() {
@@ -93,15 +94,16 @@ export default function AdminCustomers() {
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>생년월일</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>성별</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>관계</th>
+                <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>경로</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>등록일시</th>
                 <th style={{ padding: "12px", textAlign: "left", fontWeight: 700, color: "#333" }}>관리</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
+                <tr><td colSpan={9} style={{ padding: "20px", textAlign: "center", color: "#999" }}>불러오는 중...</td></tr>
               ) : customers.length === 0 ? (
-                <tr><td colSpan={8} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 등록된 일반회원이 없습니다.</td></tr>
+                <tr><td colSpan={9} style={{ padding: "20px", textAlign: "center", color: "#999" }}>아직 등록된 일반회원이 없습니다.</td></tr>
               ) : (
                 customers.map(c => (
                   <tr key={c.id} style={{ borderBottom: "1px solid #eee" }}>
@@ -111,6 +113,7 @@ export default function AdminCustomers() {
                     <td style={{ padding: "12px", color: "#666" }}>{c.birthYear && c.birthMonth && c.birthDay ? `${c.birthYear}-${c.birthMonth}-${c.birthDay}` : "-"}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{c.gender || "-"}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{c.relationship || "-"}</td>
+                    <td style={{ padding: "12px" }}>{c.source ? <span style={{ fontSize: 11, background: "#f3f4f6", color: "#374151", padding: "2px 8px", borderRadius: 20, fontWeight: 700, whiteSpace: "nowrap" }}>{c.source}</span> : <span style={{ color: "#ccc" }}>-</span>}</td>
                     <td style={{ padding: "12px", color: "#666" }}>{new Date(c.createdAt).toLocaleString("ko-KR")}</td>
                     <td style={{ padding: "12px" }}>
                       <button onClick={() => handleDelete(c.id, c.name)} style={{ padding: "4px 10px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 12, cursor: "pointer" }}>삭제</button>

@@ -231,10 +231,31 @@ export default function V2Profile() {
     }));
     if (form.name) localStorage.setItem("v2_user_name", form.name);
     if (form.phone) localStorage.setItem("v2_verified_phone", form.phone.replace(/[^0-9]/g, ""));
+    const referer = document.referrer || "";
+    const source = referer.includes("google") ? "구글"
+      : referer.includes("naver") ? "네이버"
+      : referer.includes("daum") ? "다음"
+      : referer.includes("bing") ? "빙"
+      : referer.includes("kakao") || referer.includes("kakaotalk") ? "카카오"
+      : referer.includes("instagram") ? "인스타"
+      : referer.includes("youtube") ? "유튜브"
+      : referer.includes("tiktok") ? "틱톡"
+      : referer.includes("facebook") ? "페이스북"
+      : referer.includes("daangn") ? "당근"
+      : referer.includes("blog.naver") ? "네이버블로그"
+      : referer.includes("tistory") ? "티스토리"
+      : referer.includes("jeomun.com/main-v2/share") ? "공유페이지"
+      : referer.includes("jeomun.com/main-v2/result") ? "결과지"
+      : referer.includes("jeomun.com/free") ? "무료랜딩"
+      : referer.includes("jeomun.com/main-v2") ? "메인"
+      : referer.includes("jeomun.com/love") || referer.includes("jeomun.com/career") || referer.includes("jeomun.com/wealth") || referer.includes("jeomun.com/marriage") || referer.includes("jeomun.com/health") ? "SEO랜딩"
+      : referer.includes("jeomun") ? "점운내부"
+      : referer ? referer.split("/")[2] || "기타"
+      : "직접";
     fetch("/api/v2/customer", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, marketing: marketingAgreed }),
+      body: JSON.stringify({ ...form, marketing: marketingAgreed, source }),
     }).catch(() => {});
     // 무료 플로우: savedMode·유료잔여플래그 여부와 무관하게 항상 새 무료 분석으로 강제 이동
     if (isFreeFlow) {
