@@ -43,6 +43,51 @@ function getEmpathyLv(type: string) {
   return `🫶 다른 사람 마음을 얼마나 잘 읽는지 분석했어요.\n\n${EMPATHY_LV[sn]}\n\n${EMPATHY_LV[tf]}\n\n${EMPATHY_LV[ei]} ${EMPATHY_LV[jp]}`;
 }
 
+const FRIEND_TEMP: Record<string, string> = {
+  E: "사람을 만나면 오히려 에너지가 차오르는 타입이라 친구가 늘어나는 속도가 빨라요. 새로운 사람과도 금방 편해지고, 먼저 말 걸고 약속을 잡는 쪽이에요.",
+  I: "관계의 개수보다 밀도를 중요하게 여겨요. 새 친구를 늘리기보다 이미 있는 소수와 깊게, 오래 가는 편이라 겉보기엔 친구가 적어 보여도 유대는 훨씬 단단해요.",
+  S: "구체적인 약속과 확실한 계획이 있을 때 편하게 만나는 타입이에요. '언제 밥 한번'보다 '이번 주 토요일 7시'처럼 명확한 게 훨씬 편해요.",
+  N: "그날 기분과 대화 흐름에 따라 만남이 정해지는 편이에요. 즉흥적인 만남에서 오히려 더 깊은 얘기가 나오는 타입이라 계획 없이 만나도 대화가 끊기지 않아요.",
+  T: "위로할 때도 감정보다 해결책을 먼저 꺼내는 편이라 가끔 '차갑다'는 오해를 받기도 해요. 하지만 정작 필요한 순간엔 가장 확실하게 옆에 있어주는 친구예요.",
+  F: "친구의 기분 변화를 누구보다 빨리 알아채고 먼저 다가가 챙기는 편이에요. 그만큼 상대방 온도에도 쉽게 영향을 받으니, 가끔은 나 자신도 챙겨야 해요.",
+  J: "연락이 뜸해지는 걸 못 견디는 편이에요. 답장이 늦으면 괜히 서운해하기도 하지만, 약속은 한번 잡으면 웬만해선 지키는 쪽이라 '믿을 수 있는 사람'으로 통해요.",
+  P: "연락의 텀이 길어져도 관계가 식었다고 생각하지 않아요. 오랜만에 연락해도 어제 만난 것처럼 자연스럽게 이어지는 편안함이 있어요.",
+};
+function getFriendTemp(type: string) {
+  const [ei, , tf, jp] = type.split("");
+  return `🌡️ 지금 당신의 친구관계는 몇 도쯤 될까요?\n\n${FRIEND_TEMP[ei]}\n\n${FRIEND_TEMP[tf]}\n\n${FRIEND_TEMP[jp]} 오늘 문득 떠오르는 친구가 있다면, 그게 바로 온도를 올릴 신호예요.`;
+}
+
+const CONFESS_TIMING: Record<string, string> = {
+  E: "마음이 커지면 티가 확 나는 편이라 상대방도 이미 눈치챘을 확률이 높아요. 고백을 미루면 미룰수록 애매한 사이로 굳어질 위험이 커요.",
+  I: "감정을 꾹꾹 눌러 담다가 확신이 서면 움직이는 편이에요. 문제는 그 확신이 오기까지 너무 오래 걸려서, 상대방이 다른 관계를 시작해버릴 수도 있다는 것.",
+  S: "분위기, 스킨십, 연락 빈도 같은 확실한 신호가 있어야 움직이는 편이에요. 애매한 호감 신호 3개가 겹치면 그게 바로 고백 타이밍이에요.",
+  N: "논리적인 신호보다 촉과 분위기로 타이밍을 재는 편이에요. '오늘인 것 같다'는 그 직감, 의외로 잘 맞는 편이니 믿어봐도 좋아요.",
+  T: "고백 전에 성공 확률부터 계산하는 편이라 타이밍을 놓치기 쉬워요. 연애는 계산만으로 완성되지 않는다는 걸 이번엔 인정해볼 필요가 있어요.",
+  F: "상대가 상처받을까 봐 고민하다가 정작 내 마음을 못 전하는 경우가 많아요. 감정을 숨기는 게 오히려 상대를 더 헷갈리게 만들고 있을 수도 있어요.",
+  J: "이미 머릿속으로 시나리오를 다 짜놓은 편이에요. 계획한 타이밍이 지나가면 오히려 더 못 움직이니, 정한 날짜가 있다면 미루지 말고 실행하세요.",
+  P: "완벽한 타이밍을 기다리다 계속 미루는 타입이에요. 사실 완벽한 타이밍은 오지 않아요 — 지금 이 순간이 가장 좋은 타이밍일 수 있어요.",
+};
+function getConfessTiming(type: string) {
+  const [ei, sn, tf, jp] = type.split("");
+  return `💘 지금이 고백 타이밍인지 짚어봤어요.\n\n${CONFESS_TIMING[ei]}\n\n${CONFESS_TIMING[sn]}\n\n${CONFESS_TIMING[jp]} ${CONFESS_TIMING[tf]}`;
+}
+
+const SLANG_IQ: Record<string, string> = {
+  E: "새로운 유행어는 친구들 대화 속에서 자연스럽게 흡수하는 편이에요. 트렌드를 놓쳐도 금방 따라잡는 순발력이 있어요.",
+  I: "혼자 SNS나 영상을 보며 신조어를 습득하는 편이라, 아는 건 확실히 알지만 실제 대화에서 써먹는 타이밍은 살짝 늦는 편이에요.",
+  S: "이미 검증되고 자리 잡은 표현은 확실히 알지만, 그날그날 새로 생기는 초신상 밈은 놓치기 쉬워요.",
+  N: "밈의 맥락과 패턴을 빠르게 파악해서, 처음 보는 신조어도 대충 뜻을 유추해내는 능력이 있어요.",
+  T: "신조어를 쓰긴 하지만 '이게 왜 유행인지' 분석부터 하고 넘어가는 편이라, 유행이 지나고 나서야 제대로 이해하는 경우가 많아요.",
+  F: "분위기를 맞추려고 신조어를 적극적으로 써먹는 편이에요. 뜻은 대충 알아도 타이밍 좋게 던져서 분위기 메이커 역할을 해요.",
+  J: "정리된 리스트나 설명을 보고 확실히 익히는 걸 좋아해요. 애매하게 아는 채로 쓰는 걸 싫어해서 확실히 알기 전엔 잘 안 써요.",
+  P: "일단 아무 데나 던져보고 반응을 보면서 배우는 스타일이에요. 틀려도 개의치 않고 써보는 그 용기가 오히려 습득 속도를 높여줘요.",
+};
+function getSlangIQ(type: string) {
+  const [ei, sn, , jp] = type.split("");
+  return `🐣 신조어·밈에 대한 이해도를 분석했어요.\n\n${SLANG_IQ[sn]}\n\n${SLANG_IQ[ei]}\n\n${SLANG_IQ[jp]} 모르는 말이 나오면 창피해하지 말고 바로 물어보세요 — 그게 제일 빠른 습득법이에요.`;
+}
+
 interface TypeData {
   name: string;
   oh: string;
@@ -594,6 +639,7 @@ export async function POST(req: NextRequest) {
       love: data.love, career: data.career, celeb: data.celeb, ohDesc: data.ohDesc,
       ...extra,
       aura: getAuraText(data.oh, type), empathyLv: getEmpathyLv(type),
+      friendTemp: getFriendTemp(type), confessTiming: getConfessTiming(type), slangIQ: getSlangIQ(type),
       eiScore: dimScores.EI, snScore: dimScores.SN, tfScore: dimScores.TF, jpScore: dimScores.JP,
       eiPct: pct(dimScores.EI), snPct: pct(dimScores.SN), tfPct: pct(dimScores.TF), jpPct: pct(dimScores.JP),
       userName: userName || "",
@@ -626,9 +672,12 @@ export async function GET(req: NextRequest) {
     const snap = await db.ref(`mbti_analyses/${id}`).get();
     if (!snap.exists()) return NextResponse.json({ error: "not found" }, { status: 404, headers: CORS_HEADERS });
     const val = snap.val();
-    if (!val.aura || !val.empathyLv) {
+    if (!val.aura || !val.empathyLv || !val.friendTemp || !val.confessTiming || !val.slangIQ) {
       val.aura = val.aura || getAuraText(val.oh, val.type);
       val.empathyLv = val.empathyLv || getEmpathyLv(val.type);
+      val.friendTemp = val.friendTemp || getFriendTemp(val.type);
+      val.confessTiming = val.confessTiming || getConfessTiming(val.type);
+      val.slangIQ = val.slangIQ || getSlangIQ(val.type);
     }
     return NextResponse.json({ id, ...val }, { headers: CORS_HEADERS });
   } catch (e) {

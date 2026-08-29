@@ -42,6 +42,9 @@ interface MbtiData {
   workVsReal?: string;
   aura?: string;
   empathyLv?: string;
+  friendTemp?: string;
+  confessTiming?: string;
+  slangIQ?: string;
 }
 
 const CRUSH_LENS: Record<string, string> = {
@@ -410,12 +413,9 @@ export default function MbtiResultPage() {
             <p style={{ fontSize: 18, fontWeight: 900, color: "white", margin: "0 0 14px" }}>MBTI × 사주 전체 분석 20가지</p>
             <div style={{ textAlign: "left" as const, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, padding: "16px 16px", marginBottom: 16 }}>
               {[
-                "🧠 성격 성향 완전 분석 — 외향/내향, 감각/직관, 사고/감정, 계획/인식 4가지 축 상세 리포트",
-                "💪 강점 & ⚠️ 주의할 점 — 나만의 강점과 조심해야 할 부분 전부",
-                "💕 연애 스타일 + 연애 심층 분석 — 연애할 때 진짜 모습과 밀당 스타일",
-                "💞 궁합 유형 — 잘 맞는 유형 / 주의할 유형",
-                "💼 잘 맞는 직업 + 같은 유형 유명인",
-                "🌿 사주 오행 기질 연결 분석",
+                "🧠 성격 성향 완전 분석 + 💪 강점 & ⚠️ 주의할 점 — 4가지 축 상세 리포트, 나만의 강점과 조심할 부분 전부",
+                "💕 연애 스타일 + 연애 심층 분석 + 💞 궁합 유형 — 연애할 때 진짜 모습, 잘 맞는/주의할 유형",
+                "💼 잘 맞는 직업 + 같은 유형 유명인 + 🌿 사주 오행 기질 연결 분석",
                 "💼 커리어 심층 분석 — 어떤 일을 할 때 성과가 나는지, 나와 안 맞는 상사·조직 유형",
                 "⚡ 스트레스 & 회복법 — 지칠 때 나타나는 신호와 나에게 맞는 회복 방법",
                 "🤝 인간관계 팁 — 갈등이 생겼을 때 대처법, 거리를 둘지 다가갈지 판단하는 기준",
@@ -430,6 +430,9 @@ export default function MbtiResultPage() {
                 "👀 썸·짝사랑 상대 마음 몰래 훔쳐보기 — 상대방 생년월일만 입력하면 지금 마음 상태 확인",
                 "🌌 오행 아우라 분석 — 사람들 눈에 비치는 나의 기운과 첫인상",
                 "🫶 공감능력 분석 — 다른 사람 마음을 얼마나 잘 읽는 타입인지",
+                "🌡️ 친구관계 온도 — 지금 내 친구관계는 몇 도쯤 될까",
+                "💘 짝사랑 고백각 분석 — 지금이 고백 타이밍 맞을까",
+                "🐣 잼민력·신조어 테스트 — 요즘 애들 말 얼마나 알아듣나",
               ].map((t, i) => (
                 <p key={i} style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.7, margin: i === 0 ? "0 0 8px" : "0 0 8px" }}>{t}</p>
               ))}
@@ -556,6 +559,30 @@ export default function MbtiResultPage() {
               <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
                 <p style={{ fontSize: 15, fontWeight: 900, color: "#34d399", margin: "0 0 14px" }}>🫶 공감능력 분석</p>
                 <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line" as const }}>{data.empathyLv}</p>
+              </div>
+            )}
+
+            {/* 친구관계 온도 */}
+            {data.friendTemp && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(56,189,248,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#38bdf8", margin: "0 0 14px" }}>🌡️ 친구관계 온도</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line" as const }}>{data.friendTemp}</p>
+              </div>
+            )}
+
+            {/* 짝사랑 고백각 분석 */}
+            {data.confessTiming && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(244,114,182,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#f472b6", margin: "0 0 14px" }}>💘 짝사랑 고백각 분석</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line" as const }}>{data.confessTiming}</p>
+              </div>
+            )}
+
+            {/* 잼민력·신조어 테스트 */}
+            {data.slangIQ && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(74,222,128,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#4ade80", margin: "0 0 14px" }}>🐣 잼민력·신조어 테스트</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line" as const }}>{data.slangIQ}</p>
               </div>
             )}
 
