@@ -79,6 +79,7 @@ interface Payment {
   amount: number;
   package: string;
   categories: string[];
+  category?: string;
   plan: string;
   discountCode?: string;
   discountPercent?: number;
@@ -150,7 +151,7 @@ export default function AdminDirectPayments() {
   };
 
   const filtered = search.trim()
-    ? payments.filter(p => p.name.includes(search) || p.phone.includes(search) || p.package.includes(search))
+    ? payments.filter(p => p.name.includes(search) || p.phone.includes(search) || p.package.includes(search) || (p.category || "").includes(search))
     : payments;
 
   const handleDelete = async (id: string, name: string) => {
@@ -243,7 +244,7 @@ export default function AdminDirectPayments() {
                     <td style={{ padding: "10px 12px", color: "#6b7280", whiteSpace: "nowrap" }}>{fmtDate(p.date)}</td>
                     <td style={{ padding: "10px 12px", fontWeight: 700, color: "#111" }}>{p.name}</td>
                     <td style={{ padding: "10px 12px", color: "#6b7280" }}>{p.phone || "—"}</td>
-                    <td style={{ padding: "10px 12px", color: "#374151" }}>{p.package}</td>
+                    <td style={{ padding: "10px 12px", color: "#374151" }}>{p.package || p.category || "-"}</td>
                     <td style={{ padding: "10px 12px" }}>
                       <span style={{ fontSize: 11, background: p.plan === "package" ? "#fef3c7" : "#ede9fe", color: p.plan === "package" ? "#92400e" : "#6d28d9", padding: "2px 8px", borderRadius: 20, fontWeight: 700 }}>
                         {p.plan === "package" ? "📦 패키지" : "💎 개별"}
