@@ -85,6 +85,7 @@ function PayInner() {
     }
     try {
       const info = JSON.parse(pendingRaw);
+      if (info.paymentId && info.paymentId !== pgPaymentId) return;
       finalizeSuccess(info);
     } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
