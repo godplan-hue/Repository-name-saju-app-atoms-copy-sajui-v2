@@ -62,8 +62,8 @@ export default function SonjeolgakResultPage() {
   useEffect(() => {
     if (!result) return;
     try {
-      const until = Number(localStorage.getItem("sonjeolgak_unlock_until") || 0);
-      const savedPhone = (localStorage.getItem("sonjeolgak_unlock_phone") || "").replace(/\D/g, "");
+      const until = Number(localStorage.getItem(`sonjeolgak_unlock_until_${result.part}`) || 0);
+      const savedPhone = (localStorage.getItem(`sonjeolgak_unlock_phone_${result.part}`) || "").replace(/\D/g, "");
       const resultPhone = (result.phone || "").replace(/\D/g, "");
       if (until > Date.now() && !!savedPhone && !!resultPhone && savedPhone === resultPhone) {
         setPaid(true);
@@ -72,10 +72,10 @@ export default function SonjeolgakResultPage() {
   }, [result]);
 
   useEffect(() => {
-    if (!paid) return;
+    if (!paid || !result) return;
     const tick = () => {
       try {
-        const until = Number(localStorage.getItem("sonjeolgak_unlock_until") || 0);
+        const until = Number(localStorage.getItem(`sonjeolgak_unlock_until_${result.part}`) || 0);
         const remain = until - Date.now();
         if (remain <= 0) { setPaid(false); setUnlockRemain(""); return; }
         const h = Math.floor(remain / 3600000);
@@ -87,7 +87,7 @@ export default function SonjeolgakResultPage() {
     tick();
     const iv = setInterval(tick, 1000);
     return () => clearInterval(iv);
-  }, [paid]);
+  }, [paid, result]);
 
   const handleShare = () => {
     if (!result) return;
@@ -296,7 +296,7 @@ export default function SonjeolgakResultPage() {
               ))}
             </div>
             <p style={{ fontSize: 11.5, color: "#a78bfa", margin: "0 0 14px", textAlign: "center" }}>결제 후 24시간 열람 가능합니다</p>
-            <button onClick={() => { window.location.href = "/sonjeolgak/pay"; }}
+            <button onClick={() => { window.location.href = `/sonjeolgak/pay?part=${result.part}&rid=${id}`; }}
               style={{ width: "100%", background: "linear-gradient(135deg,#7c3aed,#ec4899)", color: "white", border: "none", borderRadius: 16, padding: "14px", fontSize: 14.5, fontWeight: 900, cursor: "pointer" }}>
               ₩990으로 심층 분석 전체 열기 →
             </button>

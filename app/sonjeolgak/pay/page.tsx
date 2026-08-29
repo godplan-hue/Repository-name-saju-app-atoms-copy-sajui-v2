@@ -14,6 +14,11 @@ export default function SonjeolgakPayPage() {
 function PayInner() {
   const searchParams = useSearchParams();
   const AMOUNT = 990;
+  const part = searchParams.get("part") || "";
+  const rid = searchParams.get("rid") || "";
+  const unlockKey = part ? `sonjeolgak_unlock_until_${part}` : "sonjeolgak_unlock_until";
+  const phoneKey = part ? `sonjeolgak_unlock_phone_${part}` : "sonjeolgak_unlock_phone";
+  const resultUrl = rid ? `/sonjeolgak/result/${rid}?unlocked=1` : "/sonjeolgak?unlocked=1";
 
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
@@ -50,15 +55,18 @@ function PayInner() {
   const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
   const isFree = couponData && (finalAmount === 0 || couponData.fullAccess);
 
-  const finalizeSuccess = (info: { paymentId: string; finalAmount: number; name: string; mobile: string; couponCode: string; hasCoupon: boolean }) => {
+  const finalizeSuccess = (info: { paymentId: string; finalAmount: number; name: string; mobile: string; couponCode: string; hasCoupon: boolean; part?: string; rid?: string }) => {
     const cleanMobile = info.mobile.replace(/\D/g, "");
+    const uKey = info.part ? `sonjeolgak_unlock_until_${info.part}` : unlockKey;
+    const pKey = info.part ? `sonjeolgak_unlock_phone_${info.part}` : phoneKey;
+    const target = info.rid ? `/sonjeolgak/result/${info.rid}?unlocked=1` : resultUrl;
     if (info.hasCoupon) fetch("/api/promo-codes", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: info.couponCode.trim().toUpperCase() }) }).catch(() => {});
     fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ id: `sonjeolgak_${Date.now()}`, phone: cleanMobile || "", name: info.name.trim() || "", amount: info.finalAmount, category: "손절각 심층 분석 잠금해제", source: "sonjeolgak" }) }).catch(() => {});
     const _until = Date.now() + 24 * 60 * 60 * 1000;
-    try { localStorage.setItem("sonjeolgak_unlock_until", String(_until)); } catch {}
-    if (cleanMobile) try { localStorage.setItem("sonjeolgak_unlock_phone", cleanMobile); const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: cleanMobile })); } catch {}
-    if (cleanMobile) fetch("/api/phone-unlock", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: cleanMobile, unlocks: { sonjeolgak_unlock_until: _until } }) }).catch(() => {});
-    window.location.href = "/sonjeolgak?unlocked=1";
+    try { localStorage.setItem(uKey, String(_until)); } catch {}
+    if (cleanMobile) try { localStorage.setItem(pKey, cleanMobile); const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: cleanMobile })); } catch {}
+    if (cleanMobile) fetch("/api/phone-unlock", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: cleanMobile, unlocks: { [uKey]: _until } }) }).catch(() => {});
+    window.location.href = target;
   };
 
   useEffect(() => {
@@ -102,7 +110,7 @@ function PayInner() {
         sessionStorage.removeItem("pay_pending");
         try { localStorage.removeItem("pay_pending"); } catch {}
         if (!res.ok || !data.ok) { setError(data.message || "결제 승인에 실패했어요. 다시 시도해주세요."); return; }
-        const finalInfo = info || { paymentId: orderId, finalAmount: Number(tossAmount) || finalAmount, name, mobile, couponCode: coupon, hasCoupon: !!(coupon && couponData) };
+        const finalInfo = info || { paymentId: orderId, finalAmount: Number(tossAmount) || finalAmount, name, mobile, couponCode: coupon, hasCoupon: !!(coupon && couponData), part, rid };
         finalizeSuccess(finalInfo);
       } catch { setError("결제 승인 처리 중 오류가 발생했어요. 다시 시도해주세요."); }
     })();
@@ -118,7 +126,7 @@ function PayInner() {
       if (!clientKey) throw new Error("클라이언트 키가 설정되지 않았어요 (NEXT_PUBLIC_TOSS_CLIENT_KEY 없음)");
       const orderId = `sonjeolgak-toss-${Date.now()}`;
       const cleanMobile = mobile.replace(/\D/g, "");
-      const pendingInfo = { paymentId: orderId, finalAmount, name, mobile, couponCode: coupon, hasCoupon: !!(coupon && couponData) };
+      const pendingInfo = { paymentId: orderId, finalAmount, name, mobile, couponCode: coupon, hasCoupon: !!(coupon && couponData), part, rid };
       try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
       const tossPayments = await loadTossPayments(clientKey);
       const payment = tossPayments.payment({ customerKey: ANONYMOUS });
@@ -145,12 +153,12 @@ function PayInner() {
       try {
         const _ph = mobile.replace(/\D/g, "");
         const _until = Date.now() + 24 * 60 * 60 * 1000;
-        try { localStorage.setItem("sonjeolgak_unlock_until", String(_until)); } catch {}
-        if (_ph) try { localStorage.setItem("sonjeolgak_unlock_phone", _ph); const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: _ph })); } catch {}
-        if (_ph) fetch("/api/phone-unlock", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: _ph, unlocks: { sonjeolgak_unlock_until: _until } }) }).catch(() => {});
+        try { localStorage.setItem(unlockKey, String(_until)); } catch {}
+        if (_ph) try { localStorage.setItem(phoneKey, _ph); const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: _ph })); } catch {}
+        if (_ph) fetch("/api/phone-unlock", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: _ph, unlocks: { [unlockKey]: _until } }) }).catch(() => {});
         fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ id: `sonjeolgak_${Date.now()}`, phone: _ph || "", name: name.trim() || "", amount: 0, category: "손절각 쿠폰", source: "sonjeolgak" }) }).catch(() => {});
         fetch("/api/promo-codes", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: coupon.trim().toUpperCase() }) }).catch(() => {});
-        window.location.href = "/sonjeolgak?unlocked=1";
+        window.location.href = resultUrl;
       } finally { setLoading(false); }
       return;
     }
