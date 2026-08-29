@@ -312,20 +312,24 @@ export default function MbtiResultPage() {
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 20px 80px" }}>
 
-        {unlocked && (
-        <>
-        {/* 성향 분석 바 */}
+        {/* 성향 분석 바 — 무료 */}
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: "20px 18px", marginBottom: 14 }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: ohColor, margin: "0 0 18px" }}>📊 성격 성향 분석</p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: ohColor, margin: 0 }}>📊 성격 성향 분석</p>
+            <span style={{ fontSize: 11, fontWeight: 800, color: "#4ade80", background: "rgba(74,222,128,0.12)", padding: "2px 10px", borderRadius: 8 }}>무료</span>
+          </div>
           <DimBar posLabel="외향형" negLabel="내향형" score={data.eiScore} pct={data.eiPct} color={ohColor} />
           <DimBar posLabel="감각형" negLabel="직관형" score={data.snScore} pct={data.snPct} color={ohColor} />
           <DimBar posLabel="사고형" negLabel="감정형" score={data.tfScore} pct={data.tfPct} color={ohColor} />
           <DimBar posLabel="계획형" negLabel="인식형" score={data.jpScore} pct={data.jpPct} color={ohColor} />
         </div>
 
-        {/* 강점 */}
+        {/* 강점 — 무료 */}
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: "20px 18px", marginBottom: 14 }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#22c55e", margin: "0 0 14px" }}>💪 강점</p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#22c55e", margin: 0 }}>💪 강점</p>
+            <span style={{ fontSize: 11, fontWeight: 800, color: "#4ade80", background: "rgba(74,222,128,0.12)", padding: "2px 10px", borderRadius: 8 }}>무료</span>
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             {data.strength.map((s, i) => (
               <div key={i} style={{ display: "flex", gap: 7, alignItems: "flex-start" }}>
@@ -336,9 +340,12 @@ export default function MbtiResultPage() {
           </div>
         </div>
 
-        {/* 약점 */}
+        {/* 약점 — 무료 */}
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: "20px 18px", marginBottom: 14 }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#f59e0b", margin: "0 0 14px" }}>⚠️ 주의할 점</p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#f59e0b", margin: 0 }}>⚠️ 주의할 점</p>
+            <span style={{ fontSize: 11, fontWeight: 800, color: "#4ade80", background: "rgba(74,222,128,0.12)", padding: "2px 10px", borderRadius: 8 }}>무료</span>
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             {data.weakness.map((w, i) => (
               <div key={i} style={{ display: "flex", gap: 7, alignItems: "flex-start" }}>
@@ -349,6 +356,8 @@ export default function MbtiResultPage() {
           </div>
         </div>
 
+        {unlocked && (
+        <>
         {/* 연애 스타일 */}
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: "20px 18px", marginBottom: 14 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "#ec4899", margin: "0 0 10px" }}>💕 연애 스타일</p>
@@ -413,7 +422,7 @@ export default function MbtiResultPage() {
             <p style={{ fontSize: 18, fontWeight: 900, color: "white", margin: "0 0 14px" }}>MBTI × 사주 전체 분석 20가지</p>
             <div style={{ textAlign: "left" as const, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, padding: "16px 16px", marginBottom: 16 }}>
               {[
-                "🧠 성격 성향 완전 분석 + 💪 강점 & ⚠️ 주의할 점 — 4가지 축 상세 리포트, 나만의 강점과 조심할 부분 전부",
+                "🎁 연애·직업·궁합·오행 몰아보기 — 나를 완성하는 4가지 조각을 한 번에",
                 "💕 연애 스타일 + 연애 심층 분석 + 💞 궁합 유형 — 연애할 때 진짜 모습, 잘 맞는/주의할 유형",
                 "💼 잘 맞는 직업 + 같은 유형 유명인 + 🌿 사주 오행 기질 연결 분석",
                 "💼 커리어 심층 분석 — 어떤 일을 할 때 성과가 나는지, 나와 안 맞는 상사·조직 유형",
@@ -511,6 +520,16 @@ export default function MbtiResultPage() {
                   당신은 {data.tetoEgen.label} 에너지
                 </p>
                 <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.tetoEgen.desc}</p>
+              </div>
+            )}
+
+            {/* 연애·직업·궁합·오행 몰아보기 */}
+            {data.compat && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(250,204,21,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#facc15", margin: "0 0 14px" }}>🎁 연애·직업·궁합·오행 몰아보기</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line" as const }}>
+                  {`💕 ${data.love}\n\n💼 ${data.career}\n\n💑 잘 맞는 유형: ${data.compat.best}\n주의할 유형: ${data.compat.worst}\n\n🌿 ${data.ohDesc}`}
+                </p>
               </div>
             )}
 
