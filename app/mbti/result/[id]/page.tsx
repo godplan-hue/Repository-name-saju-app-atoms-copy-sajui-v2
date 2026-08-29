@@ -289,7 +289,11 @@ export default function MbtiResultPage() {
       {/* 헤더 */}
       <div style={{ background: `linear-gradient(180deg, ${ohColor}1a 0%, #07000f 100%)`, borderBottom: `1px solid ${ohColor}2a` }}>
         <div style={{ maxWidth: 480, margin: "0 auto", padding: "32px 20px 28px" }}>
-          <Link href="/mbti" style={{ color: ohColor, fontSize: 13, textDecoration: "none", display: "block", marginBottom: 20 }}>← 다시 테스트하기</Link>
+          <Link href="/mbti" style={{ color: ohColor, fontSize: 13, textDecoration: "none", display: "block", marginBottom: 16 }}>← 다시 테스트하기</Link>
+
+          <a href="https://minion.toss.im/pht8Fcyp" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "linear-gradient(135deg,#facc15,#fb923c)", color: "#1a1a1a", fontWeight: 900, fontSize: 14, padding: "12px 16px", borderRadius: 14, textDecoration: "none", marginBottom: 20, textAlign: "center" as const, boxShadow: "0 4px 16px rgba(250,204,21,0.4)" }}>
+            🎁 전체 무료로 보려면 토스 MBTI에서 확인 →
+          </a>
 
           <div style={{ textAlign: "center" as const }}>
             <p style={{ fontSize: 13, color: "#9ca3af", marginBottom: 6 }}>{userName}성격 유형</p>
@@ -450,11 +454,6 @@ export default function MbtiResultPage() {
             <Link href={`/mbti/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#a855f7)", color: "white", borderRadius: 24, padding: "14px 32px", fontSize: 15, fontWeight: 900, textDecoration: "none", boxShadow: "0 4px 20px rgba(124,58,237,0.5)" }}>
               ₩990으로 전체 분석 열기 →
             </Link>
-            <p style={{ margin: "16px 0 0" }}>
-              <a href="https://minion.toss.im/pht8Fcyp" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: "#9ca3af", textDecoration: "underline" }}>
-                전체 무료로 보려면 토스 MBTI에서 확인하세요 →
-              </a>
-            </p>
           </div>
         ) : (
           <>

@@ -107,14 +107,7 @@ export default function MbtiPage() {
       });
       const data = await res.json();
       if (data.id) {
-        let alreadyUnlocked = false;
-        try {
-          const u = localStorage.getItem("mbti_unlock_until");
-          const up = localStorage.getItem("mbti_unlock_phone") || "";
-          const rp = phone.replace(/\D/g, "");
-          alreadyUnlocked = !!u && Number(u) > Date.now() && !!up && !!rp && up === rp;
-        } catch {}
-        window.location.href = alreadyUnlocked ? `/mbti/result/${data.id}` : `/mbti/pay?id=${data.id}`;
+        window.location.href = `/mbti/result/${data.id}`;
       } else {
         setError("분석 중 오류가 발생했습니다.");
         setLoading(false);
@@ -217,6 +210,10 @@ export default function MbtiPage() {
             <button onClick={() => { const d = { title: "점운 MBTI — 사주로 보는 나의 성격 유형", text: "16문항으로 MBTI와 사주 오행 기질을 알아보세요! 🔮", url: "https://jeomun.com/mbti" }; const _k=(window as any).Kakao; if(_k?.isInitialized()&&_k?.Share){_k.Share.sendDefault({objectType:"feed",content:{title:d.title,description:d.text,imageUrl:"https://i.pinimg.com/1200x/21/92/2c/21922cc59f29ba66e12cc4546e316079.jpg",link:{mobileWebUrl:d.url,webUrl:d.url}},buttons:[{title:"바로 보기",link:{mobileWebUrl:d.url,webUrl:d.url}},{title:"나도 해보기 →",link:{mobileWebUrl:d.url,webUrl:d.url}}]});}else{window.location.href=`kakaotalk://msg/send?text=${encodeURIComponent(d.text+'\n'+d.url)}`;}; }} style={{ fontSize: 12, color: "#a78bfa", fontWeight: 700, background: "rgba(124,58,237,0.15)", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
           </div>
 
+          <a href="https://minion.toss.im/pht8Fcyp" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "linear-gradient(135deg,#facc15,#fb923c)", color: "#1a1a1a", fontWeight: 900, fontSize: 14, padding: "12px 16px", borderRadius: 14, textDecoration: "none", marginBottom: 20, boxShadow: "0 4px 16px rgba(250,204,21,0.4)" }}>
+            🎁 전체 무료로 보려면 토스 MBTI에서 확인 →
+          </a>
+
           <div style={{ fontSize: 60, marginBottom: 16 }}>🔮</div>
           <div style={{ display: "inline-block", fontSize: 13, fontWeight: 800, color: "#c4b5fd", background: "rgba(124,58,237,0.15)", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 20, padding: "4px 14px", marginBottom: 12 }}>점운 MBTI</div>
           <h1 style={{ fontSize: 26, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.3 }}>
@@ -298,7 +295,7 @@ export default function MbtiPage() {
                 style={{ marginTop: 3, accentColor: "#a855f7", width: 16, height: 16, flexShrink: 0 }} />
               <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6, wordBreak: "keep-all" as const, minWidth: 0 }}>
                 <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 동의</strong><br />
-                점운(jeomun.com)이 전화번호·이메일을 서비스 제공에 활용하며, 3년간 보유 후 파기합니다.
+                점운(jeomun.com)이 전화번호·이메일을 서비스 제공에 활용하며,<br />3년간 보유 후 파기합니다.
               </span>
             </label>
             <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginTop: 8 }}>
@@ -325,11 +322,6 @@ export default function MbtiPage() {
           </button>
           <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>기본 분석 무료 · 심층 분석 990원 · 회원가입 불필요</p>
           <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 8, textAlign: 'center' }}>오늘 <strong style={{ color: '#a855f7' }}>{count}</strong>명이 MBTI를 확인했어요</p>
-          <p style={{ margin: "10px 0 0" }}>
-            <a href="https://minion.toss.im/pht8Fcyp" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#9ca3af", textDecoration: "underline" }}>
-              전체 무료로 보려면 토스 MBTI에서 확인하세요 →
-            </a>
-          </p>
           <p style={{ textAlign: "center", fontSize: 11, color: "rgba(168,85,247,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
             🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
           </p>
