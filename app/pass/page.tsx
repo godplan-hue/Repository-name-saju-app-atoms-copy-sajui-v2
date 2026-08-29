@@ -112,6 +112,7 @@ export default function PassPage() {
     }
     try {
       const info = JSON.parse(pendingRaw);
+      if (info.paymentId && info.paymentId !== pgPaymentId) return;
       finalizeSuccess(info);
     } catch {}
   }, []);
@@ -202,14 +203,15 @@ export default function PassPage() {
         ? "channel-key-b474ece1-40a8-4a8a-bc24-469e6dbf0948"
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
       const portone = await import("@portone/browser-sdk/v2");
-      const pendingInfo = { mobile: cleanMobile, name, amount: finalAmount, coupon, hasCoupon: !!couponData };
+      const paymentId = `pass_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const pendingInfo = { paymentId, mobile: cleanMobile, name, amount: finalAmount, coupon, hasCoupon: !!couponData };
       // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
       // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
       try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
       const res = await portone.requestPayment({
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",
         channelKey,
-        paymentId: `pass_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+        paymentId,
         orderName: "점운 일기류 4개앱 30일 풀패스",
         totalAmount: finalAmount,
         currency: "KRW",
