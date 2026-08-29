@@ -12,6 +12,16 @@ const PART_LABELS: Record<string, string> = {
   travel: "여행 동행자",
 };
 
+const PART_CONTEXT: Record<string, { noun: string; scene: string; signalHint: string; tipHint: string; futureHint: string; planHint: string; darkHint: string; endHint: string }> = {
+  friend: { noun: "그 친구", scene: "단톡방이나 술자리 같은 편한 자리", signalHint: "약속을 반복해서 미루거나 뒷담화가 들려올", tipHint: "친구 사이일수록 서운함을 묵히지 말고, 밥 한 끼 먹으면서 가볍게 풀어보는 게 오래가는 비결이에요.", futureHint: "다음 모임에서 분위기가 미묘하게 달라질 가능성이 있는데,", planHint: "이번 주 안에 그 친구에게 먼저 가벼운 안부 연락 한 번 해보기", darkHint: "친구 관계는 한 번 틀어지면 공통 친구들 사이에서까지 어색해질 수 있으니 특히 조심하세요.", endHint: "친구 사이의 손절은 대개 조용히 연락이 끊기는 방식으로 끝나는 경우가 많아요." },
+  love: { noun: "그 사람", scene: "데이트나 사소한 다툼이 반복되는 순간", signalHint: "연락 빈도나 애정 표현이 눈에 띄게 줄어드는", tipHint: "연인 사이라면 감정이 격해지기 전에, 둘만 있는 편안한 자리에서 솔직한 대화를 시도해보세요.", futureHint: "이번 달 데이트에서 관계의 온도를 가늠할 결정적인 순간이 한 번은 찾아올 텐데,", planHint: "이번 주 안에 서운했던 감정 하나를 직접 대화로 꺼내보기", darkHint: "연애에서는 이 성향이 심해지면 상대가 마음을 정리하는 결정적인 계기가 될 수 있어요.", endHint: "연인 관계의 손절은 감정이 얽혀 있는 만큼, 정리 후에도 미련이 오래 남는 경우가 많아요." },
+  ex: { noun: "그 전 애인", scene: "헤어진 뒤에도 문득 연락이 오는 순간", signalHint: "안부를 가장한 연락이 반복되거나 SNS를 자꾸 확인하게 되는", tipHint: "전 애인과의 관계는 완전히 정리할지, 편한 사이로 남을지 스스로 기준을 먼저 세워두는 게 흔들리지 않는 방법이에요.", futureHint: "다시 연락이 닿는 순간 예전 감정이 훅 올라올 수 있는 시기인데,", planHint: "전 애인에게 다시 연락이 오면 답장 전에 하루만 시간을 두고 생각해보기", darkHint: "전 애인 관계는 정리와 재회 사이에서 계속 흔들리면 스스로가 가장 지치는 유형이 될 수 있어요.", endHint: "전 애인과의 관계는 한 번 정리해도 시간이 지나 다시 연락이 오가는 경우가 유독 많아요." },
+  some: { noun: "그 썸 상대", scene: "애매한 연락과 만남이 반복되는 시기", signalHint: "확실한 답을 계속 피하거나 연락의 온도차가 느껴지는", tipHint: "썸 사이일수록 애매하게 끌려다니기보다, 지금이 정확히 어떤 관계인지 한 번은 직접 물어보는 게 좋아요.", futureHint: "이번 달 안에 관계가 진짜로 시작되거나 흐지부지 끝나는 갈림길이 올 가능성이 큰데,", planHint: "이번 주 안에 지금 이 관계가 뭔지 돌려 말하지 말고 직접 물어보기", darkHint: "썸 관계는 답을 계속 미루면 결국 둘 다 지쳐서 흐지부지 끝나버리는 경우가 가장 흔해요.", endHint: "썸 상대와의 손절은 이별 통보 없이 그냥 연락이 뜸해지다 자연스럽게 끝나는 경우가 많아요." },
+  work: { noun: "그 직장 사람", scene: "업무 카톡이나 회식 자리", signalHint: "업무 태도가 달라지거나 뒷말이 들려오는", tipHint: "직장 관계는 감정을 다 드러내기보다, 선을 지키면서 필요한 말만 정중하게 전달하는 게 서로에게 편해요.", futureHint: "이번 프로젝트나 회식 자리에서 관계의 분위기가 한 번은 시험받을 수 있는데,", planHint: "이번 주 안에 업무적으로 꼭 필요한 대화만 담백하게 정리해서 전달해보기", darkHint: "직장 관계는 감정적으로 대응하면 평판에까지 영향을 줄 수 있으니 특히 신중해야 해요.", endHint: "직장에서의 손절은 대놓고 티 내기보다, 업무적으로만 필요한 관계로 조용히 거리를 두는 방식으로 나타나요." },
+  family: { noun: "그 가족", scene: "명절이나 가족 모임 자리", signalHint: "반복되는 잔소리나 서운한 말이 쌓여가는", tipHint: "가족 관계는 완전히 끊기 어려운 만큼, 감정이 격해졌을 때보다는 시간을 두고 차분해진 뒤 대화를 시도하는 게 훨씬 효과적이에요.", futureHint: "다음 가족 모임에서 이 감정이 다시 한 번 시험대에 오를 수 있는데,", planHint: "이번 주 안에 가장 서운했던 순간 하나만 골라 차분하게 이야기해보기", darkHint: "가족 관계는 손절해도 완전히 끊어내기 어려운 만큼, 오히려 더 오래 마음에 남는 유형이 될 수 있어요.", endHint: "가족과의 손절은 완전히 연을 끊기보다, 연락 빈도를 줄이며 거리를 두는 방식으로 나타나는 경우가 많아요." },
+  travel: { noun: "그 여행 동행자", scene: "여행 중 일정이나 비용 문제로 부딪히는 순간", signalHint: "사소한 일정 조율에서도 짜증이 먼저 나오는", tipHint: "여행 동행자와는 여행이 끝난 뒤에도 관계가 이어질 사이라면, 여행 중 쌓인 서운함을 돌아온 뒤 꼭 한 번은 풀고 넘어가세요.", futureHint: "다음 여행 계획을 세우는 순간 이 관계를 다시 마주하게 될 텐데,", planHint: "다음 여행 전에 역할과 예산을 미리 정해두고 시작해보기", darkHint: "여행 동행자와의 관계는 짧고 강렬한 만큼, 한 번 틀어지면 여행 전체의 기억까지 나빠질 수 있어요.", endHint: "여행 동행자와의 손절은 여행이 끝나자마자 자연스럽게 연락이 끊기는 방식으로 나타나는 경우가 많아요." },
+};
+
 type CatType = {
   name: string; emoji: string; color: string; min: number;
   tagline: string; desc: string; advice: string;
@@ -157,6 +167,21 @@ export async function POST(request: NextRequest) {
     const match = getMatch(clamped);
     const rank = getRank(clamped);
     const relLabel = PART_LABELS[part];
+    const ctx = PART_CONTEXT[part] || PART_CONTEXT.friend;
+    const personalized = {
+      description: type.desc.replaceAll("관계", `${relLabel}와의 관계`) + ` 특히 ${ctx.scene}에서 이런 성향이 잘 드러나요.`,
+      pastPattern: `${ctx.noun}와 얽힌 ${ctx.scene}에서 특히 두드러지는 패턴이에요. ` + type.pastPattern,
+      warningSigns: [
+        `${type.warningSigns[0]} (특히 ${ctx.signalHint} 때 두드러져요)`,
+        type.warningSigns[1],
+        type.warningSigns[2],
+      ],
+      recoveryTip: type.recoveryTip + ` ${ctx.tipHint}`,
+      futureForecast: `${ctx.futureHint} ` + type.futureForecast,
+      actionPlan: [ctx.planHint, type.actionPlan[1], type.actionPlan[2]],
+      darkSide: type.darkSide + ` ${ctx.darkHint}`,
+      breakupStyle: type.breakupStyle + ` ${ctx.endHint}`,
+    };
 
     const result = {
       phone: phone || "",
@@ -170,7 +195,7 @@ export async function POST(request: NextRequest) {
       typeEmoji: type.emoji,
       typeColor: type.color,
       tagline: type.tagline,
-      description: type.desc.replaceAll("관계", `${relLabel}와의 관계`),
+      description: personalized.description,
       advice: type.advice,
       bestMatch: match.best,
       bestMatchEmoji: match.bestEmoji,
@@ -180,13 +205,13 @@ export async function POST(request: NextRequest) {
       worstMatchTop3: match.worstTop3,
       worstMatchIntro: match.worstIntro,
       rank,
-      pastPattern: type.pastPattern,
-      warningSigns: type.warningSigns,
-      recoveryTip: type.recoveryTip,
-      futureForecast: type.futureForecast,
-      actionPlan: type.actionPlan,
-      darkSide: type.darkSide,
-      breakupStyle: type.breakupStyle,
+      pastPattern: personalized.pastPattern,
+      warningSigns: personalized.warningSigns,
+      recoveryTip: personalized.recoveryTip,
+      futureForecast: personalized.futureForecast,
+      actionPlan: personalized.actionPlan,
+      darkSide: personalized.darkSide,
+      breakupStyle: personalized.breakupStyle,
       celebTwin: type.celebTwin,
       createdAt: Date.now(),
     };
