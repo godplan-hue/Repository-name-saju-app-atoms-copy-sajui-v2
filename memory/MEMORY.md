@@ -1,6 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
 - [⭐⭐⭐⭐⭐ 내일(8/30) 할일: 토스 결제창 파트분리 + 손절각·연락기록통계 광고3개/인앱결제 (2026-08-29)](project_next_session_2026_08_30_toss_payment_tasks.md) — 세션시작시 필독, 승인전 코드수정 금지
+- [⭐⭐⭐ 점운 MBTI(웹) 결과지 18→20가지 확장완료 (2026-08-30)](project_mbti_web_20items_expansion_2026_08_30.md) — commit bd8323f8, 토스5종중 아우라+공감능력만 포팅
 - [⭐⭐⭐⭐⭐ 손절각 7개 관계카테고리 결과내용 동일했던 버그 원인+수정완료 (2026-08-30)](bug_sonjeolgak_7parts_identical_content_fixed_2026_08_30.md) — 웹commit 6bbedc96+토스commit 1299357, 토스콘솔 재업로드필요
 - [⭐⭐⭐⭐⭐ 손절각(웹) 결제 파트구분버그+결과지진입 깜빡임버그 수정 + 승인패턴 성공 (2026-08-29)](feedback_wait_for_explicit_go.md) — commit 78444d10, 원인설명→승인대기→실행 패턴 에스더님 확인
 - [⭐⭐⭐⭐⭐ 사주 결과지 전체카테고리 누수버그 진짜원인+수정완료 (2026-08-29)](bug_saju_paid_cats_leak_all_categories_2026_08_29.md) — commit e2f85c6c, 점운웹앱만 수정, 토스미니앱은 소스없어 미확인
