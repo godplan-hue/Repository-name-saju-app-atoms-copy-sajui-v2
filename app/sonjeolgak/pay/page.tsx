@@ -170,7 +170,7 @@ function PayInner() {
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
       const portone = await import("@portone/browser-sdk/v2");
       const paymentId = `sonjeolgak_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-      const pendingInfo = { paymentId, finalAmount, name, mobile, couponCode: coupon, hasCoupon: !!(coupon && couponData) };
+      const pendingInfo = { paymentId, finalAmount, name, mobile, couponCode: coupon, hasCoupon: !!(coupon && couponData), part, rid };
       try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
       const res = await portone.requestPayment({
         storeId: "store-446686e2-22bd-4941-ae2a-83e7f3a15d87",

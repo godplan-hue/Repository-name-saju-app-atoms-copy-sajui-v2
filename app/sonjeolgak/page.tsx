@@ -208,9 +208,12 @@ export default function SonjeolgakPage() {
         window.location.href = `/sonjeolgak/result/inline`;
       } else {
         setError("분석 중 오류가 발생했어요. 다시 시도해주세요.");
+        setLoading(false);
       }
-    } catch { setError("분석 중 오류가 발생했어요. 다시 시도해주세요."); }
-    finally { setLoading(false); }
+    } catch {
+      setError("분석 중 오류가 발생했어요. 다시 시도해주세요.");
+      setLoading(false);
+    }
   };
 
   const footer = (
