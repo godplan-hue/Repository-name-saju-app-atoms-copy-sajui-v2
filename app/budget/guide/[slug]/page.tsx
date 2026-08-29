@@ -711,7 +711,7 @@ export default async function BudgetGuidePage({
           <span style={styles.divider}>|</span>
           <Link href="/main-v2" style={styles.bottomLink}>사주 보기</Link>
           <span style={styles.divider}>|</span>
-          <Link href="/main-v2/pay?amount=3900" style={styles.bottomLink}>재물운 보기</Link>
+          <Link href="/main-v2/payment" style={styles.bottomLink}>재물운 보기</Link>
         </nav>
       </div>
     </main>

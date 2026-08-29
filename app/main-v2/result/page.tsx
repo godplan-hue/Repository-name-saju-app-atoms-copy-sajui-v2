@@ -476,7 +476,7 @@ function V2ResultInner() {
         return (PKG_CAT_MAP[pkg] ?? PKG_CAT_MAP["기본 분석"]).map(c => c.apiKey);
       }
       const saved = localStorage.getItem("v2_paid_cats");
-      return saved ? JSON.parse(saved) : SELECT_CATS.map(c => c.key);
+      return saved ? JSON.parse(saved) : [];
     })();
     if (isPaid) setPaidCats(cats);
 
