@@ -450,6 +450,11 @@ export default function MbtiResultPage() {
             <Link href={`/mbti/pay?id=${id}`} style={{ display: "inline-block", background: "linear-gradient(135deg,#7c3aed,#a855f7)", color: "white", borderRadius: 24, padding: "14px 32px", fontSize: 15, fontWeight: 900, textDecoration: "none", boxShadow: "0 4px 20px rgba(124,58,237,0.5)" }}>
               ₩990으로 전체 분석 열기 →
             </Link>
+            <p style={{ margin: "16px 0 0" }}>
+              <a href="https://minion.toss.im/pht8Fcyp" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: "#9ca3af", textDecoration: "underline" }}>
+                전체 무료로 보려면 토스 MBTI에서 확인하세요 →
+              </a>
+            </p>
           </div>
         ) : (
           <>

@@ -191,8 +191,8 @@ export default function MoviePage() {
               {[
                 { href: '/battle', icon: '❤️', label: '이상형월드컵', badge: '무료' },
                 { href: '/work', icon: '💪', label: '직장버티기', badge: '무료' },
-                { href: '/main-v2', icon: '☯️', label: '사주 운세', badge: '990원~' },
-                { href: '/mbti', icon: '🧠', label: 'MBTI', badge: '990원' },
+                { href: '/main-v2', icon: '☯️', label: '사주 운세', badge: '무료/990원~' },
+                { href: '/mbti', icon: '🧠', label: 'MBTI', badge: '무료/990원' },
               ].map(a => (
                 <a key={a.href} href={a.href} style={{ background: 'white', borderRadius: 12, padding: '12px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, border: '1.5px solid #f3f4f6' }}>
                   <span style={{ fontSize: 22 }}>{a.icon}</span>

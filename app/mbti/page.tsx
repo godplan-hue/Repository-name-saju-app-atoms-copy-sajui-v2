@@ -226,7 +226,7 @@ export default function MbtiPage() {
             </span>
           </h1>
           <p style={{ color: "#c4b5fd", fontSize: 14, lineHeight: 1.7, margin: "0 0 24px" }}>
-            16문항 · 2분 완료 · 990원 심층 분석<br />
+            16문항 · 2분 완료 · 기본 분석 무료 · 심층 분석 990원<br />
             사주 오행 기질과 MBTI를 함께 분석해드립니다
           </p>
 
@@ -323,8 +323,13 @@ export default function MbtiPage() {
           }} style={S.btn}>
             테스트 시작하기 (2분) →
           </button>
-          <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>990원 · 회원가입 불필요</p>
+          <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>기본 분석 무료 · 심층 분석 990원 · 회원가입 불필요</p>
           <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 8, textAlign: 'center' }}>오늘 <strong style={{ color: '#a855f7' }}>{count}</strong>명이 MBTI를 확인했어요</p>
+          <p style={{ margin: "10px 0 0" }}>
+            <a href="https://minion.toss.im/pht8Fcyp" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#9ca3af", textDecoration: "underline" }}>
+              전체 무료로 보려면 토스 MBTI에서 확인하세요 →
+            </a>
+          </p>
           <p style={{ textAlign: "center", fontSize: 11, color: "rgba(168,85,247,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
             🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
           </p>
