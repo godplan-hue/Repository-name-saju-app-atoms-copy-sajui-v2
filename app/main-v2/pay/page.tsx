@@ -392,8 +392,12 @@ function PayInner() {
         : referer.includes("jeomun") ? "점운내부"
         : referer ? referer.split("/")[2] || "기타"
         : "직접";
+      // RefTracker가 최초 방문 시 저장해둔 진짜 유입경로(틱톡 등) 우선 사용 —
+      // 결제 페이지까지 오는 동안 내부 페이지를 여러 번 거치면 document.referrer는
+      // 직전 내부 페이지일 뿐이라 최초 유입경로가 사라져버림
+      const firstSource = localStorage.getItem("first_source");
       const partnerCode = localStorage.getItem("referred_by");
-      const sourceInfo = partnerCode ? `파트너:${partnerCode}` : sourceLabel;
+      const sourceInfo = partnerCode ? `파트너:${partnerCode}` : (firstSource || sourceLabel);
 
       const pendingInfo = {
         paymentId, amount, displayAmount, name, mobile, email,
@@ -471,8 +475,10 @@ function PayInner() {
         : referer.includes("jeomun") ? "점운내부"
         : referer ? referer.split("/")[2] || "기타"
         : "직접";
+      // RefTracker가 최초 방문 시 저장해둔 진짜 유입경로(틱톡 등) 우선 사용
+      const firstSource = localStorage.getItem("first_source");
       const partnerCode = localStorage.getItem("referred_by");
-      const sourceInfo = partnerCode ? `파트너:${partnerCode}` : `${sourceLabel}(토스)`;
+      const sourceInfo = partnerCode ? `파트너:${partnerCode}` : `${firstSource || sourceLabel}(토스)`;
 
       const pendingInfo = {
         paymentId: orderId, amount, displayAmount, name, mobile, email,
