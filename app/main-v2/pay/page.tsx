@@ -336,6 +336,7 @@ function PayInner() {
     try { info = JSON.parse(pendingRaw); } catch { return; }
 
     if (pgPaymentId) {
+      if (info.paymentId !== pgPaymentId) return;
       sessionStorage.removeItem("pay_pending");
       try { localStorage.removeItem("pay_pending"); } catch {}
       finalizeSuccess(info);
