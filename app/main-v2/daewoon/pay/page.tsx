@@ -63,12 +63,14 @@ function DaewoonPayInner() {
 
     // 일부 모바일 브라우저(네이버/구글/크롬 등)는 결제 앱에서 돌아올 때 주소창의
     // paymentId가 유실되는 경우가 있음 → 결제 게이트웨이에서 돌아온 것으로
-    // 보이고(referrer), 결제 시작 정보가 20분 이내로 신선하면 저장해둔 정보로
-    // 완료 처리를 이어감 (main-v2/pay/page.tsx와 동일 패턴)
+    // 보이고(referrer), 결제 시작 정보가 5분 이내로 신선하면 저장해둔 정보로
+    // 완료 처리를 이어감 (main-v2/pay/page.tsx와 동일 패턴).
+    // pay_pending은 전체 앱이 공유하는 localStorage 키라서 info.page로 대운
+    // 결제가 맞는지 반드시 확인 — 아니면 다른 앱 결제가 잘못 완료 처리될 수 있음
     const referer = document.referrer || "";
     const fromPaymentGateway = /kakaopay|portone|inicis|kcp|nice|kftc|payapp/i.test(referer);
-    const isFresh = typeof info.savedAt === "number" && Date.now() - info.savedAt < 20 * 60 * 1000;
-    if (fromPaymentGateway && isFresh) {
+    const isFresh = typeof info.savedAt === "number" && Date.now() - info.savedAt < 5 * 60 * 1000;
+    if (info.page === "daewoon" && fromPaymentGateway && isFresh) {
       sessionStorage.removeItem("pay_pending");
       try { localStorage.removeItem("pay_pending"); } catch {}
       finalizeSuccess(info);
@@ -86,7 +88,7 @@ function DaewoonPayInner() {
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
       const portone = await import("@portone/browser-sdk/v2");
       const paymentId = `daewoon_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-      const pendingInfo = { paymentId, count, indices, mobile, name, price, savedAt: Date.now() };
+      const pendingInfo = { paymentId, count, indices, mobile, name, price, savedAt: Date.now(), page: "daewoon" };
       // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
       // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
       try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
@@ -130,7 +132,7 @@ function DaewoonPayInner() {
       if (!clientKey) throw new Error("클라이언트 키가 설정되지 않았어요");
       const orderId = `daewoon-toss-${Date.now()}`;
       const cleanMobile = mobile.replace(/\D/g, "");
-      const pendingInfo = { count, indices, mobile, name, price, savedAt: Date.now() };
+      const pendingInfo = { count, indices, mobile, name, price, savedAt: Date.now(), page: "daewoon" };
       try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
 
       const tossPayments = await loadTossPayments(clientKey);
