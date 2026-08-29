@@ -23,6 +23,7 @@ export default function AdminCustomers() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [cursor, setCursor] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [total, setTotal] = useState<number | null>(null);
 
   const load = async (cur?: string | null) => {
     const adminId = localStorage.getItem("adminId") ?? "";
@@ -32,6 +33,7 @@ export default function AdminCustomers() {
     const data = await res.json();
     setCustomers(prev => cur ? [...prev, ...data.customers] : data.customers);
     setCursor(data.nextCursor);
+    if (typeof data.total === "number") setTotal(data.total);
     if (!data.nextCursor) setDone(true);
   };
 
@@ -83,7 +85,10 @@ export default function AdminCustomers() {
       <div style={{ flex: 1, padding: "30px" }}>
         <div style={{ background: "white", padding: "30px", borderRadius: "12px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
           <h1 style={{ fontSize: "32px", fontWeight: 900, margin: 0, marginBottom: "10px", color: "#333" }}>👤 일반회원 DB</h1>
-          <p style={{ fontSize: "13px", color: "#999", margin: "0 0 20px" }}>파트너를 거치지 않고 직접 사주를 본 일반 고객 목록입니다. 최신 50건씩 불러오며, 아래 버튼으로 더 불러올 수 있어요.</p>
+          <p style={{ fontSize: "13px", color: "#999", margin: "0 0 10px" }}>파트너를 거치지 않고 직접 사주를 본 일반 고객 목록입니다. 최신 50건씩 불러오며, 아래 버튼으로 더 불러올 수 있어요.</p>
+          {total !== null && (
+            <p style={{ fontSize: "14px", color: "#667eea", fontWeight: 700, margin: "0 0 20px" }}>전체 {total.toLocaleString()}명</p>
+          )}
 
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
             <thead>

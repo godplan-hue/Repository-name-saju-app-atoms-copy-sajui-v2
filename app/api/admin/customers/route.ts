@@ -17,12 +17,17 @@ export async function GET(request: NextRequest) {
   let query = db.ref("consumerCustomers").orderByKey();
   query = cursor ? query.endBefore(cursor).limitToLast(PAGE_SIZE) : query.limitToLast(PAGE_SIZE);
 
-  const snap = await query.once("value");
+  // 전체 개수는 첫 페이지를 불러올 때만 계산 (더보기 클릭마다 매번 세지 않음)
+  const [snap, totalSnap] = await Promise.all([
+    query.once("value"),
+    cursor ? Promise.resolve(null) : db.ref("consumerCustomers").once("value"),
+  ]);
   const val = snap.val() || {};
   const customers = Object.entries(val)
     .map(([id, v]) => ({ id, ...(v as object) }))
     .sort((a: any, b: any) => (a.id < b.id ? 1 : -1)); // 최신순
 
   const nextCursor = customers.length === PAGE_SIZE ? customers[customers.length - 1].id : null;
-  return NextResponse.json({ customers, nextCursor });
+  const total = totalSnap ? Object.keys(totalSnap.val() || {}).length : undefined;
+  return NextResponse.json({ customers, nextCursor, ...(total !== undefined ? { total } : {}) });
 }

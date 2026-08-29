@@ -232,7 +232,7 @@ export default function V2Profile() {
     if (form.name) localStorage.setItem("v2_user_name", form.name);
     if (form.phone) localStorage.setItem("v2_verified_phone", form.phone.replace(/[^0-9]/g, ""));
     const referer = document.referrer || "";
-    const source = referer.includes("google") ? "구글"
+    const liveSource = referer.includes("google") ? "구글"
       : referer.includes("naver") ? "네이버"
       : referer.includes("daum") ? "다음"
       : referer.includes("bing") ? "빙"
@@ -252,6 +252,10 @@ export default function V2Profile() {
       : referer.includes("jeomun") ? "점운내부"
       : referer ? referer.split("/")[2] || "기타"
       : "직접";
+    // RefTracker가 최초 방문 시 저장해둔 유입경로(틱톡/유튜브 등)를 우선 사용 —
+    // 사이트 내부를 여러 페이지 거쳐서 온 경우 document.referrer는 직전 내부
+    // 페이지일 뿐이라 최초 경로가 아님
+    const source = localStorage.getItem("first_source") || liveSource;
     fetch("/api/v2/customer", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
