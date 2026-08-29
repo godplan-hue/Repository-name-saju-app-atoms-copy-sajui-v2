@@ -16,6 +16,33 @@ const DIMS: Array<{ dim: Dim; dir: 1 | -1 }> = [
   { dim: "JP", dir: 1 }, { dim: "JP", dir: -1 }, { dim: "JP", dir: 1 }, { dim: "JP", dir: -1 },
 ];
 
+const AURA_BY_OH: Record<string, string> = {
+  "목": "🌿 초록빛이 은은하게 감도는 청량한 기운이에요. 처음 만난 사람도 당신 앞에서는 이상하게 긴장이 풀린다고 하죠 — 계절로 치면 막 새순이 돋아나는 봄, 사람으로 치면 '옆에 있으면 숨통이 트이는 사람'이에요.\n\n목(木) 기운은 성장과 생명력을 뜻해요. 정체된 분위기를 못 견디고, 늘 뭔가 새로운 걸 시도하고 배우려는 에너지가 자연스럽게 밖으로 새어 나와요. 사람들이 당신 곁에 있으면 '나도 뭔가 해봐야겠다'는 자극을 받는 이유가 여기 있어요.\n\n다만 그 에너지가 너무 뻗어나가기만 하면 정작 자기 자신을 돌보는 시간이 부족해져요. 오늘은 그 초록빛 기운을 한 번쯤 나에게도 돌려주세요.",
+  "화": "🔥 멀리서도 존재감이 느껴지는 붉고 뜨거운 기운이에요. 조용한 방에 들어와도 온도가 1도쯤 올라가는 느낌 — 사람들이 당신을 떠올릴 때 가장 먼저 생각나는 단어는 '에너지'예요.\n\n화(火) 기운은 열정과 표현력을 뜻해요. 좋아하는 걸 숨기지 못하고, 감정이 생기면 얼굴과 말투에 바로 드러나는 타입이라 상대방 입장에서는 당신의 마음을 읽기가 오히려 쉬워요. 그 솔직한 뜨거움이 사람을 끌어당기는 가장 큰 무기예요.\n\n다만 불이 너무 세면 주변까지 태울 수 있어요. 오늘 하루는 그 열기를 잠깐 낮추고, 한 박자 쉬어가는 연습을 해보세요.",
+  "토": "🟤 따뜻한 황토빛의, 발 딛고 서기 편안한 기운이에요. 사람들이 힘들 때 가장 먼저 떠올리는 이름 중 하나가 당신일 확률이 높아요 — '저 사람 옆에 있으면 왠지 안심된다'는 느낌, 그게 바로 토(土)의 기운이에요.\n\n토 기운은 안정감과 포용력을 뜻해요. 급하게 판단하지 않고 끝까지 들어주는 태도, 한번 맺은 관계를 쉽게 놓지 않는 우직함이 당신의 아우라를 단단하게 만들어요. 화려하진 않지만 가장 오래, 가장 깊이 신뢰받는 타입이죠.\n\n다만 남을 받쳐주다가 정작 자기 감정은 뒷전으로 미루는 습관이 있어요. 오늘은 그 든든한 땅에 당신 몫의 자리도 하나 남겨두세요.",
+  "금": "⚪ 은은하지만 날이 서 있는, 정제된 은빛 기운이에요. 시끄럽게 나서지 않아도 그 자리에서 가장 또렷하게 기억되는 사람 — 사람들이 당신 앞에서 은근히 말을 조심하게 되는 이유가 바로 이 카리스마예요.\n\n금(金) 기운은 원칙과 단단함을 뜻해요. 애매한 관계나 흐리멍덩한 상황을 싫어하고, 한번 정한 기준은 쉽게 흔들지 않는 곧은 성향이 당신을 신뢰할 수 있는 사람으로 만들어요. 겉으로는 차가워 보여도 속은 누구보다 명확하고 공정한 사람이에요.\n\n다만 그 단단함이 때로는 벽처럼 느껴질 수 있어요. 오늘은 그 은빛 갑옷을 살짝 내려놓고, 마음을 조금 더 열어보는 건 어떨까요.",
+  "수": "🌊 깊이를 가늠할 수 없는, 짙고 신비로운 남색 기운이에요. 사람들이 당신을 다 안다고 생각하는 순간에도 어딘가 읽히지 않는 부분이 남아있다고 느끼죠 — 그 미스터리함이 오히려 사람을 끌어당기는 힘이에요.\n\n수(水) 기운은 지혜와 유연함을 뜻해요. 겉으로 드러내지 않아도 상황을 꿰뚫어 보는 통찰력이 있고, 위기 앞에서 오히려 차분해지는 침착함이 당신의 진짜 무기예요. 남들이 당황할 때 홀로 냉정할 수 있는 사람, 그게 바로 당신이에요.\n\n다만 마음을 너무 깊이 숨기면 가까운 사람조차 거리감을 느낄 수 있어요. 오늘은 그 깊은 물 속의 진심을 한 스푼만 꺼내 보여주세요.",
+};
+function getAuraText(oh: string, type: string) {
+  const base = AURA_BY_OH[oh] || AURA_BY_OH["목"];
+  return `✨ ${type} 유형, 당신 본인의 오행(${oh})을 기준으로 아우라를 분석했어요.\n\n${base}`;
+}
+
+const EMPATHY_LV: Record<string, string> = {
+  E: "상대방의 표정과 말투 변화를 겉으로 표현하면서 알아채는 편이에요. '왜 그래, 무슨 일 있어?'라고 먼저 물어봐서 상대방이 편하게 마음을 열게 돼요.",
+  I: "말로 표현하기 전에 이미 상대방의 미묘한 변화를 눈치채는 편이에요. 다만 티 내지 않고 마음속으로만 헤아리는 경우가 많아 정작 상대방은 눈치챘다는 걸 몰라요.",
+  S: "말이나 행동 같은 눈에 보이는 신호로 감정을 읽는 편이에요. 명확한 표현이 없으면 변화를 놓칠 수 있으니, 가끔은 먼저 물어보는 게 도움이 돼요.",
+  N: "말하지 않은 부분까지 읽어내는 능력이 뛰어나요. 상대가 어떤 말을 '안 했는지'에서 진짜 감정을 캐치하는 편이라 '어떻게 알았어?'라는 말을 자주 들어요.",
+  T: "감정에 휩쓸리지 않고 상황을 객관적으로 보는 편이라, 정작 필요한 현실적인 조언을 정확하게 해주는 타입이에요. 위로보다 해결이 필요한 사람에겐 최고의 상담사예요.",
+  F: "상대방의 감정을 마치 내 것처럼 느끼는 편이에요. 진심 어린 위로를 잘하지만 감정 이입이 너무 깊어져 나까지 지치는 경우가 많으니 거리 조절이 필요해요.",
+  J: "감정을 파악한 뒤엔 구체적인 해결 방향까지 제시해주는 편이에요. 알아채는 것에서 그치지 않고 실질적인 도움으로 이어지는 게 강점이에요.",
+  P: "상황에 따라 유연하게 공감의 방식을 바꾸는 편이에요. 어떤 날은 조언을, 어떤 날은 그냥 들어주기만 하는 식으로 상대가 필요한 걸 자연스럽게 캐치해요.",
+};
+function getEmpathyLv(type: string) {
+  const [ei, sn, tf, jp] = type.split("");
+  return `🫶 다른 사람 마음을 얼마나 잘 읽는지 분석했어요.\n\n${EMPATHY_LV[sn]}\n\n${EMPATHY_LV[tf]}\n\n${EMPATHY_LV[ei]} ${EMPATHY_LV[jp]}`;
+}
+
 interface TypeData {
   name: string;
   oh: string;
@@ -566,6 +593,7 @@ export async function POST(req: NextRequest) {
       strength: data.strength, weakness: data.weakness,
       love: data.love, career: data.career, celeb: data.celeb, ohDesc: data.ohDesc,
       ...extra,
+      aura: getAuraText(data.oh, type), empathyLv: getEmpathyLv(type),
       eiScore: dimScores.EI, snScore: dimScores.SN, tfScore: dimScores.TF, jpScore: dimScores.JP,
       eiPct: pct(dimScores.EI), snPct: pct(dimScores.SN), tfPct: pct(dimScores.TF), jpPct: pct(dimScores.JP),
       userName: userName || "",
@@ -597,7 +625,12 @@ export async function GET(req: NextRequest) {
     if (!id) return NextResponse.json({ error: "id required" }, { status: 400, headers: CORS_HEADERS });
     const snap = await db.ref(`mbti_analyses/${id}`).get();
     if (!snap.exists()) return NextResponse.json({ error: "not found" }, { status: 404, headers: CORS_HEADERS });
-    return NextResponse.json({ id, ...snap.val() }, { headers: CORS_HEADERS });
+    const val = snap.val();
+    if (!val.aura || !val.empathyLv) {
+      val.aura = val.aura || getAuraText(val.oh, val.type);
+      val.empathyLv = val.empathyLv || getEmpathyLv(val.type);
+    }
+    return NextResponse.json({ id, ...val }, { headers: CORS_HEADERS });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "서버 오류" }, { status: 500, headers: CORS_HEADERS });

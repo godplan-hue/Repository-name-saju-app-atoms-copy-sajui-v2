@@ -40,6 +40,8 @@ interface MbtiData {
   pastLife?: string;
   darkSide?: string;
   workVsReal?: string;
+  aura?: string;
+  empathyLv?: string;
 }
 
 const CRUSH_LENS: Record<string, string> = {
@@ -405,7 +407,7 @@ export default function MbtiResultPage() {
         {!unlocked ? (
           <div style={{ background: "linear-gradient(135deg,#1a0a2e,#2d1269)", border: "2px solid rgba(167,139,250,0.5)", borderRadius: 20, padding: "28px 22px", marginBottom: 14, textAlign: "center" as const }}>
             <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
-            <p style={{ fontSize: 18, fontWeight: 900, color: "white", margin: "0 0 14px" }}>MBTI × 사주 전체 분석 18가지</p>
+            <p style={{ fontSize: 18, fontWeight: 900, color: "white", margin: "0 0 14px" }}>MBTI × 사주 전체 분석 20가지</p>
             <div style={{ textAlign: "left" as const, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, padding: "16px 16px", marginBottom: 16 }}>
               {[
                 "🧠 성격 성향 완전 분석 — 외향/내향, 감각/직관, 사고/감정, 계획/인식 4가지 축 상세 리포트",
@@ -426,6 +428,8 @@ export default function MbtiResultPage() {
                 "🖤 흑화 버전 — 한계를 넘으면 나타나는 반전 모습",
                 "🎭 이중생활 — 회사에서의 나 vs 진짜 사생활의 나",
                 "👀 썸·짝사랑 상대 마음 몰래 훔쳐보기 — 상대방 생년월일만 입력하면 지금 마음 상태 확인",
+                "🌌 오행 아우라 분석 — 사람들 눈에 비치는 나의 기운과 첫인상",
+                "🫶 공감능력 분석 — 다른 사람 마음을 얼마나 잘 읽는 타입인지",
               ].map((t, i) => (
                 <p key={i} style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.7, margin: i === 0 ? "0 0 8px" : "0 0 8px" }}>{t}</p>
               ))}
@@ -536,6 +540,22 @@ export default function MbtiResultPage() {
               <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(167,139,250,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
                 <p style={{ fontSize: 15, fontWeight: 900, color: "#a78bfa", margin: "0 0 14px" }}>🎭 이중생활 — 회사 vs 사생활</p>
                 <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0 }}>{data.workVsReal}</p>
+              </div>
+            )}
+
+            {/* 오행 아우라 분석 */}
+            {data.aura && (
+              <div style={{ background: `linear-gradient(135deg,${ohColor}15,${ohColor}07)`, border: `1px solid ${ohColor}40`, borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: ohColor, margin: "0 0 14px" }}>🌌 오행 아우라 분석</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line" as const }}>{data.aura}</p>
+              </div>
+            )}
+
+            {/* 공감능력 분석 */}
+            {data.empathyLv && (
+              <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 18, padding: "24px 20px", marginBottom: 14 }}>
+                <p style={{ fontSize: 15, fontWeight: 900, color: "#34d399", margin: "0 0 14px" }}>🫶 공감능력 분석</p>
+                <p style={{ fontSize: 15, color: "#d1d5db", lineHeight: 1.9, margin: 0, whiteSpace: "pre-line" as const }}>{data.empathyLv}</p>
               </div>
             )}
 
