@@ -1,6 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐ 앱인토스 제작자이름 신규기능 (2026-08-29)](reference_appintoss_creator_name_notice_2026_08_29.md) — 워크스페이스전체22개앱 공통노출, "점운"으로 콘솔설정 권장(미확인)
+- [⭐⭐⭐ 앱인토스 제작자이름 "기획의신 에스더" 설정완료 (2026-08-29)](reference_appintoss_creator_name_notice_2026_08_29.md) — 워크스페이스전체22개앱 공통노출, 콘솔에서 변경완료 확인
+- [⭐⭐⭐ SDK3.x WebView Origin변경 공지 — 8개전환앱 전수확인, 전부 조치불필요 (2026-08-29)](reference_toss_sdk3_webview_origin_storage_cors_2026_08_29.md) — battle/movie는 localStorage無+Firebase직통이라 병합대상아님
 - [⭐⭐⭐⭐ 관리자패널 유입경로 추적 확장 — 일반회원DB에도 경로 컬럼 추가 (2026-08-28)](project_admin_source_tracking_2026_08_28.md) — 당근/블로그/티스토리 신규추가, 3분리구조 재확인, 손절각 무료/유료구조 의도설계 재확인
 - [⭐⭐⭐⭐⭐ 재업로드할때마다 SDK3+광고문구+크로스프로모18개 3종세트 같이처리 (2026-08-28)](feedback_bundle_checklist_on_reupload_2026_08_28.md) — 미완료앱이면 물어보고 같이 처리, 콘솔업로드는 사용자몫
 - [⭐⭐ 가계부 광고 준비안됨/코인미지급 버그 수정+빌드완료 (2026-08-28)](project_budget_ad_retry_timeout_fix_2026_08_28.md) — 재시도4회+타임아웃20초, commit 41eea9c, 푸시안함
