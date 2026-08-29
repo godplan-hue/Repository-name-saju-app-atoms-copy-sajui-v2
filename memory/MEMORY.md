@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⛔⛔⛔ 19개앱 SDK3+광고문구+크로스프로모18개 전부완료+GitHub푸시확인 최종본 (2026-08-29)](project_19apps_sdk3_adcopy_crosspromo_final_2026_08_29.md) — 재조사말고 이 문서 그대로 믿을것, 콘솔업로드만 사용자몫
 - [⭐⭐⭐ 앱인토스 제작자이름 "기획의신 에스더" 설정완료 (2026-08-29)](reference_appintoss_creator_name_notice_2026_08_29.md) — 워크스페이스전체22개앱 공통노출, 콘솔에서 변경완료 확인
 - [⭐⭐⭐ SDK3.x WebView Origin변경 공지 — 8개전환앱 전수확인, 전부 조치불필요 (2026-08-29)](reference_toss_sdk3_webview_origin_storage_cors_2026_08_29.md) — battle/movie는 localStorage無+Firebase직통이라 병합대상아님
 - [⭐⭐⭐⭐ 관리자패널 유입경로 추적 확장 — 일반회원DB에도 경로 컬럼 추가 (2026-08-28)](project_admin_source_tracking_2026_08_28.md) — 당근/블로그/티스토리 신규추가, 3분리구조 재확인, 손절각 무료/유료구조 의도설계 재확인
