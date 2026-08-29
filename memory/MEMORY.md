@@ -4,6 +4,7 @@
 - [⭐⭐ 틱톡 "소울클린마스터 주노" 운세상담 광고 — 디즈니+ 가짜브랜드 후킹형 (2026-08-29)](reference_soulcleanmaster_disney_tiktok_format_2026_08_29.md) — 사주경쟁군, 브랜드도용은따라하지말고 신뢰신호연출만 참고
 - [⭐⭐ 틱톡 "슈니드" 신발광고 — 자막나열 공감후기형, 공유수34 압도적 (2026-08-29)](reference_schneed_shoes_tiktok_format_2026_08_29.md) — 3종 틱톡포맷 비교군 완성, 공유수최고는 이 자막나열형
 - [⭐⭐⭐ 틱톡 "88money" 사주 광고 — 노년층타겟 한줄자막릴레이형, 압축제작지침 (2026-08-29)](reference_88money_elderly_saju_tiktok_format_2026_08_29.md) — 사주 직접경쟁 사례, "탑2,3개 빼고 1개만 압축해서 만들것" 에스더님 지침
+- [⭐⭐⭐⭐ 강아지캐릭터 코믹숏폼 제작법(캐릭터생성+미니인터뷰대본+Veo3프롬프트+제목공식) → 점냥이로 전환예정 (2026-08-29)](project_animal_character_promo_video_method_2026_08_29.md) — 사주홍보 캐릭터영상 만들때 이 순서 그대로 따를 것
 - [⭐⭐⭐⭐⭐ 당근+틱톡 광고 후 첫 DB유입+990원 실결제 확인, payment/page.tsx paymentId검증누락 버그 수정완료 (2026-08-29)](project_first_ad_driven_db_inflow_2026_08_29.md) — "욱"님 실결제 1건뿐, 이메일2통은 pay_pending오매칭 버그였음, 한줄수정완료
 - [⛔⛔⛔ 19개앱 SDK3+광고문구+크로스프로모18개 전부완료+GitHub푸시확인 최종본 (2026-08-29)](project_19apps_sdk3_adcopy_crosspromo_final_2026_08_29.md) — 재조사말고 이 문서 그대로 믿을것, 콘솔업로드만 사용자몫
 - [⭐⭐⭐ 앱인토스 제작자이름 "기획의신 에스더" 설정완료 (2026-08-29)](reference_appintoss_creator_name_notice_2026_08_29.md) — 워크스페이스전체22개앱 공통노출, 콘솔에서 변경완료 확인
