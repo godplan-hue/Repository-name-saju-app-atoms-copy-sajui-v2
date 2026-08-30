@@ -194,19 +194,19 @@ export default function MbtiResultPage() {
 
   useEffect(() => {
     const checkUnlock = () => {
-      const u = localStorage.getItem("mbti_unlock_until");
+      const u = localStorage.getItem(`mbti_unlock_until_${id}`);
       if (!u || Number(u) <= Date.now()) { setUnlocked(false); return; }
-      const _up = localStorage.getItem("mbti_unlock_phone") || ""; const _rp = (data?.phone || "").replace(/\D/g, "");
-      setUnlocked(!!_up && !!_rp && _up === _rp);
+      const _up = localStorage.getItem(`mbti_unlock_phone_${id}`) || ""; const _rp = (data?.phone || "").replace(/\D/g, "");
+      setUnlocked(!_up || !_rp || _up === _rp);
     };
     checkUnlock();
     let timerId: ReturnType<typeof setInterval>;
     const updateCountdown = () => {
-      const u = localStorage.getItem("mbti_unlock_until");
+      const u = localStorage.getItem(`mbti_unlock_until_${id}`);
       if (!u) { setUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return; }
       const ms = Number(u) - Date.now();
       if (ms <= 0) {
-        localStorage.removeItem("mbti_unlock_until");
+        localStorage.removeItem(`mbti_unlock_until_${id}`);
         setUnlocked(false); setUnlockRemain(""); clearInterval(timerId); return;
       }
       const h = Math.floor(ms / 3600000);

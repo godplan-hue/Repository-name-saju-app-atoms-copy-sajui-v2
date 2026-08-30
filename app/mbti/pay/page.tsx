@@ -55,11 +55,12 @@ function PayInner() {
   const finalAmount = couponData ? Math.round(AMOUNT * (1 - couponData.discountPercent / 100)) : AMOUNT;
   const isFree = couponData && (finalAmount === 0 || couponData.fullAccess);
 
-  const setUnlock = (ph?: string) => {
+  const setUnlock = (ph?: string, resultId?: string) => {
     const cleanPh = (ph ?? mobile).replace(/\D/g,"");
-    localStorage.setItem("mbti_unlock_until", String(Date.now() + 24*60*60*1000));
+    const rid = resultId || id;
+    if (rid) localStorage.setItem(`mbti_unlock_until_${rid}`, String(Date.now() + 24*60*60*1000));
     if (cleanPh) {
-      localStorage.setItem("mbti_unlock_phone", cleanPh);
+      if (rid) localStorage.setItem(`mbti_unlock_phone_${rid}`, cleanPh);
       try { const sp=JSON.parse(localStorage.getItem("v2_saved_profile")||"{}"); localStorage.setItem("v2_saved_profile",JSON.stringify({...sp,phone:cleanPh})); } catch {}
     }
   };
@@ -70,7 +71,7 @@ function PayInner() {
   const finalizeSuccess = (info: { id: string; cleanMobile: string; name: string; finalAmount: number; coupon: string; hasCoupon: boolean; adSource?: string }) => {
     if (info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.coupon.trim().toUpperCase()})}).catch(()=>{});
     fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`mbti_${Date.now()}`,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"MBTI 심층 분석",source:"mbti",adSource:info.adSource||""})}).catch(()=>{});
-    setUnlock(info.cleanMobile);
+    setUnlock(info.cleanMobile, info.id);
     if (info.cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:info.cleanMobile,unlocks:{mbti_unlock_until:Date.now()+24*60*60*1000}})}).catch(()=>{});
     window.location.href = info.id ? `/mbti/result/${info.id}?paid=1` : "/mbti";
   };
