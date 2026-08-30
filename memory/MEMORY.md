@@ -2,6 +2,7 @@
 
 - [⭐⭐⭐⭐ 일반회원DB+결제내역 유입경로버그(틱톡→내부표기) 수정 + 전체인원수표시 (2026-08-30)](bug_admin_customers_source_always_internal_fixed_2026_08_30.md) — commit cda3f9a0+abdf1054, RefTracker first_source 패턴, 소급반영안됨
 - [⭐⭐⭐⭐⭐ 상품명빈칸수정 + 사주+MBTI만 실제광고경로(adSource) 추가, 나머지13개앱 범위제외 (2026-08-30)](project_mbti_adsource_ad_channel_tracking_2026_08_30.md) — commit 76d609bb+59c8520c, 기존source필드안건드림 완전추가형
+- [⭐⭐⭐⭐ 당근·틱톡·구글애즈 UTM/gclid 감지 추가 + 나머지13개앱 확장은 보류 동의받음 (2026-08-30)](feedback_adsource_expand_only_when_ads_start_2026_08_30.md) — commit 2a12d025, 당근/틱톡은 랜딩URL에 utm_source= 붙여야함
 - [⭐⭐⭐⭐⭐ 내일(8/30) 할일: 토스 결제창 파트분리 + 손절각·연락기록통계 광고3개/인앱결제 (2026-08-29)](project_next_session_2026_08_30_toss_payment_tasks.md) — 세션시작시 필독, 승인전 코드수정 금지
 - [⭐⭐⭐ 점운 MBTI(웹) 20개 유지+상위3개무료전환+몰아보기카드 완료 (2026-08-30)](project_mbti_web_20items_expansion_2026_08_30.md) — commit f152dc53, 성격성향/강점/주의점 무료화+badge변경, oh는생년월일무관 고정매핑(버그아님)
 - [⭐⭐⭐ MBTI 토스링크 실제화면추가+크로스프로모배지수정 (2026-08-30)](project_mbti_toss_link_and_crosspromo_badge_2026_08_30.md) — commit 199e0498, SEO서브페이지≠실제화면 교훈, MBTI만 링크추가 타앱금지
