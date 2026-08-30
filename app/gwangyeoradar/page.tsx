@@ -223,13 +223,7 @@ export default function GwangyeoradarPage() {
         });
         const data = await res.json();
         if (data.id) {
-          let alreadyUnlocked = false;
-          try {
-            const u = localStorage.getItem("gwangyeoradar_unlock_until");
-            const up = localStorage.getItem("gwangyeoradar_unlock_phone") || "";
-            alreadyUnlocked = !!u && Number(u) > Date.now() && !!up && !!cleanPhone && up === cleanPhone;
-          } catch {}
-          redirectTo = alreadyUnlocked ? `/gwangyeoradar/result/${data.id}` : `/gwangyeoradar/pay?id=${data.id}`;
+          redirectTo = `/gwangyeoradar/pay?id=${data.id}`;
         } else {
           redirectTo = "";
         }

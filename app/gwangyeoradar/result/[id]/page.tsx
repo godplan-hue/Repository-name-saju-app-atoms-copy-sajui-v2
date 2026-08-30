@@ -58,9 +58,9 @@ export default function GwangyeoradarResultPage() {
   useEffect(() => {
     setTodayCount(getTodayCount());
     const checkPaid = (resultPhone?: string) => {
-      const unlock = localStorage.getItem("gwangyeoradar_unlock_until");
+      const unlock = id ? localStorage.getItem(`gwangyeoradar_unlock_until_${id}`) : null;
       if (unlock && Number(unlock) > Date.now()) {
-        const _up = localStorage.getItem("gwangyeoradar_unlock_phone") || "";
+        const _up = (id ? localStorage.getItem(`gwangyeoradar_unlock_phone_${id}`) : "") || "";
         const _rp = (resultPhone || "").replace(/\D/g, "");
         setPaid(!_up || !_rp || _up === _rp);
       } else { setPaid(false); }
@@ -74,11 +74,11 @@ export default function GwangyeoradarResultPage() {
 
     let timerId: ReturnType<typeof setInterval>;
     const updateCountdown = () => {
-      const u = localStorage.getItem("gwangyeoradar_unlock_until");
+      const u = localStorage.getItem(`gwangyeoradar_unlock_until_${id}`);
       if (!u) { setPaid(false); setUnlockRemain(""); clearInterval(timerId); return; }
       const ms = Number(u) - Date.now();
       if (ms <= 0) {
-        localStorage.removeItem("gwangyeoradar_unlock_until");
+        localStorage.removeItem(`gwangyeoradar_unlock_until_${id}`);
         setPaid(false); setUnlockRemain(""); clearInterval(timerId); return;
       }
       const h = Math.floor(ms / 3600000);

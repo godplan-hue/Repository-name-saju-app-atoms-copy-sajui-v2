@@ -59,8 +59,8 @@ function PayInner() {
     if (info.hasCoupon) fetch("/api/promo-codes", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: info.couponCode.trim().toUpperCase() }) }).catch(() => {});
     fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ id: `gwangyeoradar_${Date.now()}`, phone: cleanMobile || "", name: info.name.trim() || "", amount: info.finalAmount, category: "연락기록통계 정밀분석", source: "gwangyeoradar" }) }).catch(() => {});
     const _until = Date.now() + 24 * 60 * 60 * 1000;
-    try { localStorage.setItem("gwangyeoradar_unlock_until", String(_until)); } catch {}
-    if (cleanMobile) try { localStorage.setItem("gwangyeoradar_unlock_phone", cleanMobile); const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: cleanMobile })); } catch {}
+    if (info.id) try { localStorage.setItem(`gwangyeoradar_unlock_until_${info.id}`, String(_until)); } catch {}
+    if (cleanMobile && info.id) try { localStorage.setItem(`gwangyeoradar_unlock_phone_${info.id}`, cleanMobile); const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: cleanMobile })); } catch {}
     if (cleanMobile) fetch("/api/phone-unlock", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: cleanMobile, unlocks: { gwangyeoradar_unlock_until: _until } }) }).catch(() => {});
     if (info.id) fetch("/api/gwangyeoradar/analyze", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: info.id }) }).catch(() => {});
     window.location.href = info.id ? `/gwangyeoradar/result/${info.id}?paid=1` : "/gwangyeoradar";
@@ -71,12 +71,17 @@ function PayInner() {
     const pgPaymentId = searchParams.get("paymentId");
     if (!pgPaymentId) return;
     const pendingRaw = (sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending"));
-    if (!pendingRaw) return;
     sessionStorage.removeItem("pay_pending");
     try { localStorage.removeItem("pay_pending"); } catch {}
     const pgCode = searchParams.get("code");
     if (pgCode) {
       setError(searchParams.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+    if (!pendingRaw) {
+      // 결제창 갔다 온 사이 브라우저가 임시저장 정보를 지운 경우 — 결제 자체는
+      // 성공(에러코드 없음)이므로 최소한 결제기록+잠금해제는 남긴다 (id는 redirectUrl에 담아둠)
+      if (id) finalizeSuccess({ paymentId: pgPaymentId, id, finalAmount, name, mobile, couponCode: "", hasCoupon: false });
       return;
     }
     try {
@@ -134,8 +139,8 @@ function PayInner() {
         amount: { currency: "KRW", value: finalAmount },
         orderId,
         orderName: "점운 연락기록통계 정밀분석",
-        successUrl: `${window.location.origin}${window.location.pathname}`,
-        failUrl: `${window.location.origin}${window.location.pathname}?tossFail=1`,
+        successUrl: `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(id)}`,
+        failUrl: `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(id)}&tossFail=1`,
         customerName: name.trim() || "고객",
         customerMobilePhone: cleanMobile || "01000000000",
       });
@@ -152,8 +157,8 @@ function PayInner() {
       try {
         const _ph = mobile.replace(/\D/g, "");
         const _until = Date.now() + 24 * 60 * 60 * 1000;
-        try { localStorage.setItem("gwangyeoradar_unlock_until", String(_until)); } catch {}
-        if (_ph) try { localStorage.setItem("gwangyeoradar_unlock_phone", _ph); const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: _ph })); } catch {}
+        if (id) try { localStorage.setItem(`gwangyeoradar_unlock_until_${id}`, String(_until)); } catch {}
+        if (_ph && id) try { localStorage.setItem(`gwangyeoradar_unlock_phone_${id}`, _ph); const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: _ph })); } catch {}
         if (_ph) fetch("/api/phone-unlock", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ phone: _ph, unlocks: { gwangyeoradar_unlock_until: _until } }) }).catch(() => {});
         if (id) fetch("/api/gwangyeoradar/analyze", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) }).catch(() => {});
         fetch("/api/v2/save-payment", { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true, body: JSON.stringify({ id: `gwangyeoradar_${Date.now()}`, phone: _ph || "", name: name.trim() || "", amount: 0, category: "연락기록통계 쿠폰", source: "gwangyeoradar" }) }).catch(() => {});
@@ -183,7 +188,7 @@ function PayInner() {
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
         windowType: { mobile: "REDIRECTION" },
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
-        redirectUrl: `${window.location.origin}${window.location.pathname}`,
+        redirectUrl: `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(id)}`,
       });
       if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {} return; }
       try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
