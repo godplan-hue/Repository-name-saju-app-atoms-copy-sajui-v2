@@ -688,14 +688,18 @@ export default function MainV2() {
   const [modalSelectedCats, setModalSelectedCats] = useState<string[]>(["💰 재물운"]);
   const [extraOtherInput, setExtraOtherInput] = useState("");
   // 실시간 접속자 배지 — 하루 3구간(0~8시/8~16시/16~24시)마다 숫자가 바뀜
-  const [liveCount, setLiveCount] = useState(758);
+  // 2357~4300 사이를 3등분한 구간에 슬롯을 순서대로 배정 → 하루 안에서는 항상 증가만 함(자정 지나 새 하루가 되면 낮은 구간으로 자연스럽게 리셋)
+  const [liveCount, setLiveCount] = useState(2357);
   useEffect(() => {
     const now = new Date();
     const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000);
-    const slot = Math.floor(now.getHours() / 8);
+    const slot = Math.floor(now.getHours() / 8); // 0, 1, 2
     const seed = dayOfYear * 3 + slot;
     const pseudo = ((seed * 9301 + 49297) % 233280) / 233280;
-    setLiveCount(758 + Math.floor(pseudo * 400));
+    const MIN = 2357, MAX = 4300;
+    const band = (MAX - MIN) / 3;
+    const bandStart = MIN + band * slot;
+    setLiveCount(Math.floor(bandStart + pseudo * band));
   }, []);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const toggleMusic = () => {
