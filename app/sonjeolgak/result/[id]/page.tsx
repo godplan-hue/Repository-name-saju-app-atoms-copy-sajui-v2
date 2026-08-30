@@ -65,7 +65,7 @@ export default function SonjeolgakResultPage() {
       const until = Number(localStorage.getItem(`sonjeolgak_unlock_until_${result.part}`) || 0);
       const savedPhone = (localStorage.getItem(`sonjeolgak_unlock_phone_${result.part}`) || "").replace(/\D/g, "");
       const resultPhone = (result.phone || "").replace(/\D/g, "");
-      if (until > Date.now() && !!savedPhone && !!resultPhone && savedPhone === resultPhone) {
+      if (until > Date.now() && (!savedPhone || !resultPhone || savedPhone === resultPhone)) {
         setPaid(true);
       }
     } catch {}
