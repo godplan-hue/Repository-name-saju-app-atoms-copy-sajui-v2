@@ -81,12 +81,17 @@ function PayInner() {
     const pgPaymentId = searchParams.get("paymentId");
     if (!pgPaymentId) return;
     const pendingRaw = (sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending"));
-    if (!pendingRaw) return;
     sessionStorage.removeItem("pay_pending");
     try { localStorage.removeItem("pay_pending"); } catch {}
     const pgCode = searchParams.get("code");
     if (pgCode) {
       setError(searchParams.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+    if (!pendingRaw) {
+      // 결제창 갔다 온 사이 브라우저가 임시저장 정보를 지운 경우 — 결제 자체는
+      // 성공(에러코드 없음)이므로 최소한 결제기록+잠금해제는 남긴다 (id는 redirectUrl에 담아둠)
+      if (id) finalizeSuccess({ id, cleanMobile: mobile.replace(/\D/g,""), name, finalAmount, coupon: "", hasCoupon: false });
       return;
     }
     try {
@@ -144,8 +149,8 @@ function PayInner() {
         amount: { currency: "KRW", value: finalAmount },
         orderId,
         orderName: "점운 MBTI 심층 분석",
-        successUrl: `${window.location.origin}${window.location.pathname}`,
-        failUrl: `${window.location.origin}${window.location.pathname}?tossFail=1`,
+        successUrl: `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(id)}`,
+        failUrl: `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(id)}&tossFail=1`,
         customerName: name.trim() || "고객",
         customerMobilePhone: cleanMobile || "01000000000",
       });
@@ -192,7 +197,7 @@ function PayInner() {
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
         windowType: { mobile: "REDIRECTION" },
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
-        redirectUrl: `${window.location.origin}${window.location.pathname}`,
+        redirectUrl: `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(id)}`,
       });
       // 리디렉션 방식이면 여기 도달하지 않고 페이지가 이동함 — 아래는 리디렉션 없이
       // 바로 결과를 돌려받는 경우에만 실행됨
