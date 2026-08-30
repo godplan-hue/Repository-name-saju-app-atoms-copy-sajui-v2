@@ -1,5 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ MBTI 전역unlock키 덮어쓰기버그 수정 (2026-08-30)](bug_mbti_global_unlock_key_overwrite_2026_08_30.md) — commit e31071a8, 결과id별키로분리, unlock버그3번째변종
+- [⭐⭐⭐⭐⭐ 손절각 결제해도 잠금안풀리던버그 수정+연락기록통계는반대증상 (2026-08-30)](bug_sonjeolgak_payment_unlock_optional_phone_2026_08_30.md) — commit 76f456a0, 선택전화번호+필수AND조합이원인, gwangyeoradar는미해결(과다열림)
 - [⭐⭐⭐⭐ 일반회원DB+결제내역 유입경로버그(틱톡→내부표기) 수정 + 전체인원수표시 (2026-08-30)](bug_admin_customers_source_always_internal_fixed_2026_08_30.md) — commit cda3f9a0+abdf1054, RefTracker first_source 패턴, 소급반영안됨
 - [⭐⭐⭐⭐⭐ 상품명빈칸수정 + 사주+MBTI만 실제광고경로(adSource) 추가, 나머지13개앱 범위제외 (2026-08-30)](project_mbti_adsource_ad_channel_tracking_2026_08_30.md) — commit 76d609bb+59c8520c, 기존source필드안건드림 완전추가형
 - [⭐⭐⭐⭐ 당근·틱톡·구글애즈 UTM/gclid 감지 추가 + 나머지13개앱 확장은 보류 동의받음 (2026-08-30)](feedback_adsource_expand_only_when_ads_start_2026_08_30.md) — commit 2a12d025, 당근/틱톡은 랜딩URL에 utm_source= 붙여야함
