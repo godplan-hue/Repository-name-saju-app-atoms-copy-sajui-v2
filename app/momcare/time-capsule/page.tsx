@@ -53,6 +53,7 @@ export default function TimeCapsulePage() {
   }, []);
 
   const [mcUserId, setMcUserId] = useState("");
+  const [syncFailed, setSyncFailed] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -82,7 +83,7 @@ export default function TimeCapsulePage() {
     setLetters(l);
     localStorage.setItem("momcare_capsule", JSON.stringify(l));
     if (mcUserId) {
-      postWithRetry("/api/momcare/save", { userId: mcUserId, type: "capsule", data: l });
+      postWithRetry("/api/momcare/save", { userId: mcUserId, type: "capsule", data: l }).then(ok => setSyncFailed(!ok));
     }
   }
 
@@ -250,6 +251,12 @@ export default function TimeCapsulePage() {
             <p style={{ fontSize: 14, fontWeight: 900, color: "#c2410c", margin: "0 0 6px" }}>{momcareExpired ? "⏰ 30일 이용권이 만료됐어요" : "🔒 결제 후 새 편지를 쓸 수 있어요"}</p>
             <p style={{ fontSize: 12, color: "#78350f", margin: "0 0 10px", lineHeight: 1.6 }}>{momcareExpired ? "기존 편지는 계속 읽을 수 있어요. 새 편지를 쓰려면 재활성화해주세요." : "육아일기 결제하면 30일 이용 가능해요."}</p>
             <a href="/momcare/pay" style={{ display: "block", background: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "white", fontSize: 13, fontWeight: 900, padding: "10px 20px", borderRadius: 14, textDecoration: "none", textAlign: "center" }}>💳 육아일기 결제하기 (1,980원·5,900원) →</a>
+          </div>
+        )}
+
+        {syncFailed && (
+          <div style={{ background: "#fee2e2", border: "1px solid #ef4444", borderRadius: 12, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#991b1b", lineHeight: 1.6 }}>
+            ⚠️ 서버 저장에 실패했어요 — 지금은 이 기기에만 저장되어 있어요. 인터넷 연결을 확인 후 다시 시도해주세요.
           </div>
         )}
 

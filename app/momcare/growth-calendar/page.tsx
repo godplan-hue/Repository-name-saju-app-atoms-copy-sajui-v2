@@ -45,6 +45,7 @@ export default function GrowthCalendarPage() {
   const [currentWeek, setCurrentWeek] = useState(0);
   const [selectedCrisis, setSelectedCrisis] = useState<typeof CRISIS_WEEKS[0] | null>(null);
   const [mcUserId, setMcUserId] = useState("");
+  const [syncFailed, setSyncFailed] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
   const router = useRouter();
 
@@ -91,7 +92,7 @@ export default function GrowthCalendarPage() {
       const newData = { ...d, birthDate, name: babyName };
       localStorage.setItem("momcare_baby", JSON.stringify(newData));
       if (mcUserId) {
-        postWithRetry("/api/momcare/save", { userId: mcUserId, type: "baby_profile", data: newData });
+        postWithRetry("/api/momcare/save", { userId: mcUserId, type: "baby_profile", data: newData }).then(ok => setSyncFailed(!ok));
       }
     }
   }, [birthDate, babyName, mcUserId]);
@@ -126,11 +127,17 @@ export default function GrowthCalendarPage() {
 
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "32px 20px" }}>
 
+        {syncFailed && (
+          <div style={{ background: "#fee2e2", border: "1px solid #ef4444", borderRadius: 12, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#991b1b", lineHeight: 1.6 }}>
+            ⚠️ 서버 저장에 실패했어요 — 지금은 이 기기에만 저장되어 있어요. 인터넷 연결을 확인 후 다시 시도해주세요.
+          </div>
+        )}
+
         {/* 아기 정보 */}
         <div style={{ background: "white", borderRadius: 18, padding: "24px 20px", marginBottom: 20, boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
             <h2 style={{ fontSize: 16, fontWeight: 900, margin: 0, color: "#111" }}>아기 정보 입력</h2>
-            {(birthDate || babyName) && <button onClick={() => { setBirthDate(""); setBabyName(""); setCurrentWeek(0); localStorage.removeItem("momcare_baby"); if (mcUserId) { postWithRetry("/api/momcare/save", { userId: mcUserId, type: "baby_profile", data: {} }); } }} style={{ fontSize: 11, color: "#fca5a5", background: "none", border: "none", cursor: "pointer" }}>초기화</button>}
+            {(birthDate || babyName) && <button onClick={() => { setBirthDate(""); setBabyName(""); setCurrentWeek(0); localStorage.removeItem("momcare_baby"); if (mcUserId) { postWithRetry("/api/momcare/save", { userId: mcUserId, type: "baby_profile", data: {} }).then(ok => setSyncFailed(!ok)); } }} style={{ fontSize: 11, color: "#fca5a5", background: "none", border: "none", cursor: "pointer" }}>초기화</button>}
           </div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 140 }}>

@@ -41,6 +41,7 @@ export default function BudgetPage() {
   const [restorePhone, setRestorePhone] = useState("");
   const [restoring, setRestoring] = useState(false);
   const [restoreMsg, setRestoreMsg] = useState("");
+  const [syncFailed, setSyncFailed] = useState(false);
   const [setupName, setSetupName] = useState("");
   const [setupPhone, setSetupPhone] = useState("");
   const [setupEmail, setSetupEmail] = useState("");
@@ -160,7 +161,7 @@ export default function BudgetPage() {
     setEntries(e);
     localStorage.setItem("budget_entries", JSON.stringify(e));
     if (mcUserId) {
-      postWithRetry("/api/budget", { userId: mcUserId, entries: e });
+      postWithRetry("/api/budget", { userId: mcUserId, entries: e }).then(ok => setSyncFailed(!ok));
     }
   }
 
@@ -401,6 +402,13 @@ export default function BudgetPage() {
           <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#92400e", lineHeight: 1.6 }}>
             ⚠️ 전화번호 미등록 — 가계부가 이 기기에만 저장되고 영구 보관되지 않아요.<br />
             <a href="/main-v2" style={{ color: "#f97316", fontWeight: 700, textDecoration: "none" }}>사주 앱에서 전화번호 등록하기 →</a>
+          </div>
+        )}
+
+        {/* 서버 동기화 실패 안내 */}
+        {syncFailed && (
+          <div style={{ background: "#fee2e2", border: "1px solid #ef4444", borderRadius: 12, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#991b1b", lineHeight: 1.6 }}>
+            ⚠️ 서버 저장에 실패했어요 — 지금은 이 기기에만 저장되어 있어요. 인터넷 연결을 확인 후 다시 시도해주세요.
           </div>
         )}
 

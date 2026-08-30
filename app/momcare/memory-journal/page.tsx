@@ -37,6 +37,7 @@ export default function MemoryJournalPage() {
   }, []);
 
   const [mcUserId, setMcUserId] = useState("");
+  const [syncFailed, setSyncFailed] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -84,7 +85,7 @@ export default function MemoryJournalPage() {
     setMilestones(m);
     localStorage.setItem("momcare_milestones", JSON.stringify(m));
     if (mcUserId) {
-      postWithRetry("/api/momcare/save", { userId: mcUserId, type: "milestones", data: m });
+      postWithRetry("/api/momcare/save", { userId: mcUserId, type: "milestones", data: m }).then(ok => setSyncFailed(!ok));
     }
   }
 
@@ -107,6 +108,12 @@ export default function MemoryJournalPage() {
       </nav>
 
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "24px 20px" }}>
+
+        {syncFailed && (
+          <div style={{ background: "#fee2e2", border: "1px solid #ef4444", borderRadius: 12, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#991b1b", lineHeight: 1.6 }}>
+            ⚠️ 서버 저장에 실패했어요 — 지금은 이 기기에만 저장되어 있어요. 인터넷 연결을 확인 후 다시 시도해주세요.
+          </div>
+        )}
 
         {/* 헤더 */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>

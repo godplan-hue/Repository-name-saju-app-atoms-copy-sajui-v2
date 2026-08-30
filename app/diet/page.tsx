@@ -252,6 +252,7 @@ export default function DietPage() {
   const [dietPrivacyAgreed, setDietPrivacyAgreed] = useState(false);
   const [dietMarketingAgreed, setDietMarketingAgreed] = useState(false);
   const [mcUserId, setMcUserId] = useState("");
+  const [syncFailed, setSyncFailed] = useState(false);
   const [dietLocked, setDietLocked] = useState(true);
   const [restorePhone, setRestorePhone] = useState("");
   const [restoring, setRestoring] = useState(false);
@@ -336,7 +337,7 @@ export default function DietPage() {
     setHistoryData(prev => ({ ...prev, [todayKey]: { meals: m, totalCal, weight: existingWeight } }));
     localStorage.setItem(`diet_meals_${todayKey}`, JSON.stringify(m));
     if (mcUserId) {
-      postWithRetry("/api/diet", { userId: mcUserId, date: todayKey, meals: m, totalCal, weight: existingWeight });
+      postWithRetry("/api/diet", { userId: mcUserId, date: todayKey, meals: m, totalCal, weight: existingWeight }).then(ok => setSyncFailed(!ok));
     }
   }
 
@@ -352,7 +353,7 @@ export default function DietPage() {
     setHistoryData(prev => ({ ...prev, [todayKey]: updated }));
     setWeightSaved(true);
     if (mcUserId) {
-      postWithRetry("/api/diet", { userId: mcUserId, date: todayKey, meals: log.meals, totalCal: log.totalCal, weight: wNum });
+      postWithRetry("/api/diet", { userId: mcUserId, date: todayKey, meals: log.meals, totalCal: log.totalCal, weight: wNum }).then(ok => setSyncFailed(!ok));
     }
   }
 
@@ -659,6 +660,12 @@ export default function DietPage() {
           <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 12, padding: "10px 14px", marginBottom: 14, fontSize: 12, color: "#92400e", lineHeight: 1.6 }}>
             ⚠️ 전화번호 미등록 — 기록이 이 기기에만 저장돼요.<br />
             <a href="/main-v2" style={{ color: "#f97316", fontWeight: 700, textDecoration: "none" }}>사주 앱에서 전화번호 등록하기 →</a>
+          </div>
+        )}
+
+        {syncFailed && (
+          <div style={{ background: "#fee2e2", border: "1px solid #ef4444", borderRadius: 12, padding: "10px 14px", marginBottom: 14, fontSize: 12, color: "#991b1b", lineHeight: 1.6 }}>
+            ⚠️ 서버 저장에 실패했어요 — 지금은 이 기기에만 저장되어 있어요. 인터넷 연결을 확인 후 다시 시도해주세요.
           </div>
         )}
 

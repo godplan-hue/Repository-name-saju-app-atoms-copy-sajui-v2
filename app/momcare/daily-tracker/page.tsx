@@ -28,6 +28,7 @@ export default function DailyTrackerPage() {
   const [mood, setMood] = useState<MoodKey>("happy");
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [mcUserId, setMcUserId] = useState("");
+  const [syncFailed, setSyncFailed] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
   const router = useRouter();
 
@@ -65,7 +66,7 @@ export default function DailyTrackerPage() {
     setLogs(l);
     localStorage.setItem(`momcare_logs_${todayKey()}`, JSON.stringify(l));
     if (mcUserId) {
-      postWithRetry("/api/momcare/save", { userId: mcUserId, type: `logs_${todayKey()}`, data: l });
+      postWithRetry("/api/momcare/save", { userId: mcUserId, type: `logs_${todayKey()}`, data: l }).then(ok => setSyncFailed(!ok));
     }
   }
 
@@ -131,6 +132,11 @@ export default function DailyTrackerPage() {
       </nav>
 
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "24px 20px" }}>
+        {syncFailed && (
+          <div style={{ background: "#fee2e2", border: "1px solid #ef4444", borderRadius: 12, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#991b1b", lineHeight: 1.6 }}>
+            ⚠️ 서버 저장에 실패했어요 — 지금은 이 기기에만 저장되어 있어요. 인터넷 연결을 확인 후 다시 시도해주세요.
+          </div>
+        )}
         <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 16px" }}>오늘 {new Date().toLocaleDateString("ko-KR")} 기록</p>
 
         {/* 탭 */}
