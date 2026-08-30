@@ -1,6 +1,8 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐⭐⭐ MBTI/타로/펫운/별자리 모바일결제 기록누락 위험 수정 (2026-08-30)](bug_mbti_tarot_petun_zodiac_payment_record_loss_2026_08_30.md) — commit 216d5082, redirectUrl에 id쿼리추가+PortOne무응답폴백, 다른앱미확장
+- [⭐⭐⭐⭐⭐ 가계부/다이어트/맘케어 저장실패해도 저장됨으로 뜨던버그 10곳 수정 (2026-08-30)](bug_budget_diet_momcare_save_failure_hidden_2026_08_30.md) — commit 6f6e77b1, postWithRetry결과 안확인하던게 원인, syncFailed배너추가
+- [⭐⭐⭐⭐⭐ 연락기록통계(gwangyeoradar) 결제안풀림+과다열림 둘다 원인찾아 수정 (2026-08-30)](bug_gwangyeoradar_payment_record_loss_and_overopen_2026_08_30.md) — commit 420a23b3, mbti패턴이식+전역키→per-id키전환, unlock버그4번째변종(과다열림)
+- [⭐⭐⭐⭐⭐ MBTI/타로/펫운/별자리 모바일결제 기록누락 위험 수정 (2026-08-30)](bug_mbti_tarot_petun_zodiac_payment_record_loss_2026_08_30.md) — commit 216d5082, redirectUrl에 id쿼리추가+PortOne무응답폴백, gwangyeoradar는이후완료됨
 - [⭐⭐⭐⭐⭐ MBTI 전역unlock키 덮어쓰기버그 수정 (2026-08-30)](bug_mbti_global_unlock_key_overwrite_2026_08_30.md) — commit e31071a8, 결과id별키로분리, unlock버그3번째변종
 - [⭐⭐⭐⭐⭐ 손절각 결제해도 잠금안풀리던버그 수정+연락기록통계는반대증상 (2026-08-30)](bug_sonjeolgak_payment_unlock_optional_phone_2026_08_30.md) — commit 76f456a0, 선택전화번호+필수AND조합이원인, gwangyeoradar는미해결(과다열림)
 - [⭐⭐⭐⭐ 일반회원DB+결제내역 유입경로버그(틱톡→내부표기) 수정 + 전체인원수표시 (2026-08-30)](bug_admin_customers_source_always_internal_fixed_2026_08_30.md) — commit cda3f9a0+abdf1054, RefTracker first_source 패턴, 소급반영안됨

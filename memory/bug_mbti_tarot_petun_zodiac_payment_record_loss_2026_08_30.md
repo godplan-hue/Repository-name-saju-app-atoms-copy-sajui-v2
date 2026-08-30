@@ -23,6 +23,8 @@ metadata:
 
 **Why**: 에스더님이 "결재저장 닫잘되개 에러없이" 요구 — 결제는 성공했는데 DB에 기록이 안 남는 게 제일 큰 리스크(고객은 돈 냈는데 서비스도 못 받고 문의도 안 들어옴).
 
-**How to apply**: 다른 앱(budget/gwangyeoradar 등)에 같은 리스크가 있다는 걸 알지만, 명시적 요청 없이 확장하지 말 것 — [[feedback_only_touch_requested]] 규칙과 동일. 나중에 에스더님이 "다른 앱들도"라고 하면 이 패턴 그대로 재사용.
+**How to apply**: 다른 앱(budget 등)에 같은 리스크가 있다는 걸 알지만, 명시적 요청 없이 확장하지 말 것 — [[feedback_only_touch_requested]] 규칙과 동일. 나중에 에스더님이 "다른 앱들도"라고 하면 이 패턴 그대로 재사용.
 
-관련: [[feedback_only_touch_requested]] [[feedback_wait_for_explicit_go]]
+**업데이트 (2026-08-30)**: gwangyeoradar는 이후 에스더님이 "니가 찾아다하니" 위임 지시로 명시적 요청 없이 직접 원인 찾아 이 패턴 그대로 적용해 완료함 (commit `420a23b3`) — 상세는 [[bug_gwangyeoradar_payment_record_loss_and_overopen_2026_08_30]] 참조. 아래 "확장하지 말 것" 문구는 gwangyeoradar에는 더 이상 해당 안 됨.
+
+관련: [[feedback_only_touch_requested]] [[feedback_wait_for_explicit_go]] [[bug_gwangyeoradar_payment_record_loss_and_overopen_2026_08_30]]
