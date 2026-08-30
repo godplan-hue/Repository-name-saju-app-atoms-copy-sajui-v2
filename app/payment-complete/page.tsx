@@ -373,6 +373,9 @@ function PaymentCompleteInner() {
         const _payAmt = Number(pricePaid || paidAmount || "0") || 0;
         if (p.name && _payAmt > 0 && result.histId) {
           const _payCats = (() => { try { const ls = localStorage.getItem("v2_paid_cats"); if (ls) return JSON.parse(ls); const ss = sessionStorage.getItem("v2_paid_cats"); return ss ? JSON.parse(ss) : []; } catch { return []; } })();
+          const _firstSource = (() => { try { return localStorage.getItem("first_source"); } catch { return null; } })();
+          const _partnerCode = (() => { try { return localStorage.getItem("referred_by"); } catch { return null; } })();
+          const _sourceInfo = _partnerCode ? `파트너:${_partnerCode}` : (_firstSource || "");
           fetch("/api/v2/save-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -389,6 +392,7 @@ function PaymentCompleteInner() {
               discountCode: appliedDiscount?.code || "",
               discountPercent: appliedDiscount?.discountPercent || 0,
               originalAmount: Number(paidAmount || _payAmt),
+              source: _sourceInfo,
             }),
           }).catch(() => {});
         }
