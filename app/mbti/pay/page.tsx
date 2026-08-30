@@ -67,9 +67,9 @@ function PayInner() {
   // 모바일 카카오페이/카드 결제는 PG사 인증 후 이 페이지로 "새로 돌아오는" 방식이라
   // requestPayment()가 프로미스로 끝나지 않는 경우가 많음 — 결제 시작 전에 완료 처리에
   // 필요한 정보를 sessionStorage에 저장해두고, 돌아왔을 때 그 정보로 이어서 처리함
-  const finalizeSuccess = (info: { id: string; cleanMobile: string; name: string; finalAmount: number; coupon: string; hasCoupon: boolean }) => {
+  const finalizeSuccess = (info: { id: string; cleanMobile: string; name: string; finalAmount: number; coupon: string; hasCoupon: boolean; adSource?: string }) => {
     if (info.hasCoupon) fetch("/api/promo-codes",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:info.coupon.trim().toUpperCase()})}).catch(()=>{});
-    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`mbti_${Date.now()}`,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"MBTI 심층 분석",source:"mbti"})}).catch(()=>{});
+    fetch("/api/v2/save-payment",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({id:`mbti_${Date.now()}`,phone:info.cleanMobile||"",name:info.name.trim()||"",amount:info.finalAmount,category:"MBTI 심층 분석",source:"mbti",adSource:info.adSource||""})}).catch(()=>{});
     setUnlock(info.cleanMobile);
     if (info.cleanMobile) fetch("/api/phone-unlock",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone:info.cleanMobile,unlocks:{mbti_unlock_until:Date.now()+24*60*60*1000}})}).catch(()=>{});
     window.location.href = info.id ? `/mbti/result/${info.id}?paid=1` : "/mbti";
@@ -118,7 +118,7 @@ function PayInner() {
         sessionStorage.removeItem("pay_pending");
         try { localStorage.removeItem("pay_pending"); } catch {}
         if (!res.ok || !data.ok) { setError(data.message || "결제 승인에 실패했어요. 다시 시도해주세요."); return; }
-        const finalInfo = info || { id, cleanMobile: mobile.replace(/\D/g,""), name, finalAmount: Number(tossAmount) || finalAmount, coupon, hasCoupon: !!(coupon && couponData) };
+        const finalInfo = info || { id, cleanMobile: mobile.replace(/\D/g,""), name, finalAmount: Number(tossAmount) || finalAmount, coupon, hasCoupon: !!(coupon && couponData), adSource: localStorage.getItem("first_source") || "" };
         finalizeSuccess(finalInfo);
       } catch { setError("결제 승인 처리 중 오류가 발생했어요. 다시 시도해주세요."); }
     })();
@@ -134,7 +134,7 @@ function PayInner() {
       if (!clientKey) throw new Error("클라이언트 키가 설정되지 않았어요 (NEXT_PUBLIC_TOSS_CLIENT_KEY 없음)");
       const orderId = `mbti-toss-${Date.now()}`;
       const cleanMobile = mobile.replace(/\D/g,"");
-      const pendingInfo = { id, cleanMobile, name, finalAmount, coupon, hasCoupon: !!(coupon && couponData) };
+      const pendingInfo = { id, cleanMobile, name, finalAmount, coupon, hasCoupon: !!(coupon && couponData), adSource: localStorage.getItem("first_source") || "" };
       try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}
       const tossPayments = await loadTossPayments(clientKey);
       const payment = tossPayments.payment({ customerKey: ANONYMOUS });
@@ -176,7 +176,7 @@ function PayInner() {
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
       const portone = await import("@portone/browser-sdk/v2");
       const paymentId = `mbti_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-      const pendingInfo = { paymentId, id, cleanMobile, name, finalAmount, coupon, hasCoupon: !!(coupon && couponData) };
+      const pendingInfo = { paymentId, id, cleanMobile, name, finalAmount, coupon, hasCoupon: !!(coupon && couponData), adSource: localStorage.getItem("first_source") || "" };
       // 모바일 리디렉션 방식은 이 페이지가 새로 로드되며 돌아오므로, 완료 처리에
       // 필요한 정보를 미리 저장해둠 (redirectUrl로 돌아왔을 때 위 useEffect가 사용)
       try { sessionStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); localStorage.setItem("pay_pending", JSON.stringify(pendingInfo)); } catch {}

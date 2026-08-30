@@ -7,7 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { id, date, phone, amount, package: pkg, categories, plan, discountCode, discountPercent, originalAmount, source, category } = body;
+    const { id, date, phone, amount, package: pkg, categories, plan, discountCode, discountPercent, originalAmount, source, category, adSource } = body;
     const name = body.name && String(body.name).trim() ? String(body.name).trim() : "고객";
     if (!id || !amount) return NextResponse.json({ ok: false });
     await db.ref(`v2_direct_payments/${id}`).set({
@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
       originalAmount: originalAmount || Number(amount),
       source: source || "",
       category: category || "",
+      adSource: adSource || "",
     });
 
     // 에스더님 결제 알림 이메일 (실패해도 결제 저장은 성공 처리)

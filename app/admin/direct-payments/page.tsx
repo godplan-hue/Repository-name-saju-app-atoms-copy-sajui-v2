@@ -85,7 +85,14 @@ interface Payment {
   discountPercent?: number;
   originalAmount?: number;
   source?: string;
+  adSource?: string;
 }
+
+const AD_SOURCE_ICON: Record<string, string> = {
+  구글: "🔍", 네이버: "🟢", 다음: "🟠", 빙: "🔷", 카카오: "💛", 인스타: "📸",
+  유튜브: "▶️", 틱톡: "🎵", 페이스북: "📘", 당근: "🥕", 네이버블로그: "📝",
+  티스토리: "📝", 직접: "🔗",
+};
 
 function fmtDate(iso: string) {
   const d = new Date(iso);
@@ -271,6 +278,11 @@ export default function AdminDirectPayments() {
                           {p.source === "구글" ? "🔍 구글" : p.source === "네이버" ? "🟢 네이버" : p.source === "다음" ? "🟠 다음" : p.source === "빙" ? "🔷 빙" : p.source === "카카오" ? "💛 카카오" : p.source === "인스타" ? "📸 인스타" : p.source === "직접" ? "🔗 직접" : p.source === "결과지" ? "🐱 결과지" : p.source === "공유페이지" ? "🔗 공유" : p.source === "무료랜딩" ? "🎁 무료" : p.source === "결제선택" ? "💳 결제선택" : p.source === "메인" ? "🏠 메인" : p.source === "SEO랜딩" ? "🔍 SEO" : p.source === "점운내부" ? "🐱 내부" : p.source.startsWith("파트너") ? `🤝 ${p.source}` : `🌐 ${p.source}`}
                         </span>
                       ) : <span style={{ color: "#d1d5db" }}>—</span>}
+                      {p.adSource ? (
+                        <div style={{ marginTop: 4, fontSize: 10, color: "#6b7280" }}>
+                          {AD_SOURCE_ICON[p.adSource] || "🌐"} {p.adSource}
+                        </div>
+                      ) : null}
                     </td>
                     <td style={{ padding: "10px 12px" }}>
                       <button onClick={() => handleDelete(p.id, p.name)} style={{ padding: "4px 10px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, fontWeight: 700, fontSize: 11, cursor: "pointer" }}>
