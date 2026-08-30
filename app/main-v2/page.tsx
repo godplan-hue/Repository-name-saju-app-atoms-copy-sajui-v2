@@ -318,11 +318,15 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                     <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
                       9,900원~
                     </span>
-                  ) : (cat as any).price === "무료" && (
+                  ) : (cat as any).price === "무료" ? (
                     <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
                       무료
                     </span>
-                  )}
+                  ) : (cat.id === "love" || cat.id === "naming") ? (
+                    <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 12, fontWeight: 900, padding: "4px 10px", borderRadius: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.45)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
+                      {(cat as any).price}
+                    </span>
+                  ) : null}
                   {(cat as any).sub && (
                     <div style={{ position: "absolute", bottom: 7, left: 0, right: 0, textAlign: "center", fontSize: 10, fontWeight: 900, color: "#fff", textShadow: "0 1px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9)", padding: "0 4px", whiteSpace: "nowrap", overflow: "hidden" }}>{(cat as any).sub}</div>
                   )}
