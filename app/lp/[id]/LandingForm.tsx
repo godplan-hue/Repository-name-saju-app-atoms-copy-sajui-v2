@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { lunarToSolar } from "@/lib/lunarToSolar";
 
 const HOURS = [
   "모름", "자시(23~01시)", "축시(01~03시)", "인시(03~05시)", "묘시(05~07시)",
@@ -74,11 +75,25 @@ export default function LandingForm({ partnerId, ctaText, primary, formType = "1
     } catch {}
 
     try {
-      localStorage.setItem("v2_saved_profile", JSON.stringify(profile1));
+      // 사주 계산은 항상 양력 기준이라, 음력으로 입력한 고객은 저장 직전에
+      // 양력으로 변환해준다. 고객 DB기록(profile1, 위 /api/v2/customer 호출)은
+      // 원본 입력값 그대로 남기고, 여기 로컬 저장값만 변환한다.
+      const toSajuProfile = (p: PersonForm, base: ReturnType<typeof buildProfile>) => {
+        if (!p.lunar) return base;
+        const solar = lunarToSolar(Number(base.birthYear), Number(base.birthMonth), Number(base.birthDay));
+        return {
+          ...base,
+          birthYear: String(solar.year),
+          birthMonth: String(solar.month).padStart(2, "0"),
+          birthDay: String(solar.day).padStart(2, "0"),
+        };
+      };
+
+      localStorage.setItem("v2_saved_profile", JSON.stringify(toSajuProfile(p1, profile1)));
       localStorage.setItem("referred_by", partnerId);
       if (is2person) {
         const profile2 = buildProfile(p2, "");
-        localStorage.setItem("v2_partner_profile", JSON.stringify(profile2));
+        localStorage.setItem("v2_partner_profile", JSON.stringify(toSajuProfile(p2, profile2)));
       }
     } catch {}
 
