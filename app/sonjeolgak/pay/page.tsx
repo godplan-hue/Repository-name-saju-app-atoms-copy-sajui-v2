@@ -73,12 +73,17 @@ function PayInner() {
     const pgPaymentId = searchParams.get("paymentId");
     if (!pgPaymentId) return;
     const pendingRaw = (sessionStorage.getItem("pay_pending") || localStorage.getItem("pay_pending"));
-    if (!pendingRaw) return;
     sessionStorage.removeItem("pay_pending");
     try { localStorage.removeItem("pay_pending"); } catch {}
     const pgCode = searchParams.get("code");
     if (pgCode) {
       setError(searchParams.get("message") || "결제에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+    if (!pendingRaw) {
+      // 결제창 갔다 온 사이 브라우저가 임시저장 정보를 지운 경우 — 결제 자체는
+      // 성공(에러코드 없음)이므로 최소한 결제기록+잠금해제는 남긴다 (part/rid는 redirectUrl에 담아둠)
+      if (part || rid) finalizeSuccess({ paymentId: pgPaymentId, finalAmount, name, mobile, couponCode: "", hasCoupon: false, part, rid });
       return;
     }
     try {
@@ -135,8 +140,8 @@ function PayInner() {
         amount: { currency: "KRW", value: finalAmount },
         orderId,
         orderName: "점운 손절각 심층 분석 잠금해제",
-        successUrl: `${window.location.origin}${window.location.pathname}`,
-        failUrl: `${window.location.origin}${window.location.pathname}?tossFail=1`,
+        successUrl: `${window.location.origin}${window.location.pathname}?part=${encodeURIComponent(part)}&rid=${encodeURIComponent(rid)}`,
+        failUrl: `${window.location.origin}${window.location.pathname}?part=${encodeURIComponent(part)}&rid=${encodeURIComponent(rid)}&tossFail=1`,
         customerName: name.trim() || "고객",
         customerMobilePhone: cleanMobile || "01000000000",
       });
@@ -183,7 +188,7 @@ function PayInner() {
         ...(method === "KAKAOPAY" ? { easyPay: { easyPayProvider: "KAKAOPAY" } } : {}),
         windowType: { mobile: "REDIRECTION" },
         customer: { fullName: name.trim() || "고객", phoneNumber: cleanMobile || "01000000000" },
-        redirectUrl: `${window.location.origin}${window.location.pathname}`,
+        redirectUrl: `${window.location.origin}${window.location.pathname}?part=${encodeURIComponent(part)}&rid=${encodeURIComponent(rid)}`,
       });
       if (res && "code" in res) { setError(res.message || "결제에 실패했습니다."); try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {} return; }
       try { sessionStorage.removeItem("pay_pending"); localStorage.removeItem("pay_pending"); } catch {}
