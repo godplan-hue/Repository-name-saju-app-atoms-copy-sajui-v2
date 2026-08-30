@@ -9,6 +9,21 @@ function genRefCode(): string {
   return code;
 }
 
+function detectFromParams(params: URLSearchParams): string | null {
+  if (params.get("gclid")) return "구글애즈";
+  const utmSource = params.get("utm_source");
+  if (!utmSource) return null;
+  const u = utmSource.toLowerCase();
+  if (u.includes("tiktok")) return "틱톡";
+  if (u.includes("daangn") || u.includes("karrot") || u.includes("당근")) return "당근";
+  if (u.includes("google")) return "구글애즈";
+  if (u.includes("naver")) return "네이버";
+  if (u.includes("kakao")) return "카카오";
+  if (u.includes("instagram") || u.includes("insta")) return "인스타";
+  if (u.includes("facebook") || u.includes("meta")) return "페이스북";
+  return utmSource;
+}
+
 function detectSource(referer: string): string {
   return referer.includes("google") ? "구글"
     : referer.includes("naver") ? "네이버"
@@ -53,7 +68,7 @@ export default function RefTracker() {
       // 페이지로 계속 바뀌어버려서, 가입/결제 시점엔 최초 유입경로가 사라지고
       // "점운내부"로만 잡히던 문제를 막기 위함
       if (!localStorage.getItem("first_source")) {
-        localStorage.setItem("first_source", detectSource(document.referrer || ""));
+        localStorage.setItem("first_source", detectFromParams(params) || detectSource(document.referrer || ""));
       }
     } catch {}
   }, []);
