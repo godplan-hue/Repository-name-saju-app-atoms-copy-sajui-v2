@@ -1,5 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ 손절각 결제 PG리다이렉트 part/rid 유실위험 수정 (2026-08-30)](bug_sonjeolgak_payment_pg_redirect_part_rid_loss_2026_08_30.md) — commit 38073849, mbti/gwangyeoradar와 동일패턴 3번째 이식
+- [⭐⭐⭐⭐⭐ UGC 손폰영상 프롬프트 템플릿 확정승인 (2026-08-30)](feedback_ugc_handheld_video_prompt_template_confirmed_2026_08_30.md) — TopView.ai용, 폰화면내용 명시+자막안잘림 규칙 필수
 - [⭐⭐⭐⭐⭐ 가계부/다이어트/맘케어 저장실패해도 저장됨으로 뜨던버그 10곳 수정 (2026-08-30)](bug_budget_diet_momcare_save_failure_hidden_2026_08_30.md) — commit 6f6e77b1, postWithRetry결과 안확인하던게 원인, syncFailed배너추가
 - [⭐⭐⭐⭐⭐ 연락기록통계(gwangyeoradar) 결제안풀림+과다열림 둘다 원인찾아 수정 (2026-08-30)](bug_gwangyeoradar_payment_record_loss_and_overopen_2026_08_30.md) — commit 420a23b3, mbti패턴이식+전역키→per-id키전환, unlock버그4번째변종(과다열림)
 - [⭐⭐⭐⭐⭐ MBTI/타로/펫운/별자리 모바일결제 기록누락 위험 수정 (2026-08-30)](bug_mbti_tarot_petun_zodiac_payment_record_loss_2026_08_30.md) — commit 216d5082, redirectUrl에 id쿼리추가+PortOne무응답폴백, gwangyeoradar는이후완료됨
