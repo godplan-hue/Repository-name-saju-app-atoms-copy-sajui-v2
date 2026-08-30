@@ -148,6 +148,9 @@ function PaymentInner() {
       try { localStorage.setItem("v2_saved_phone", cleanMobile); } catch {}
     }
     if (info.modalPrice > 0 && info.paymentId) {
+      const firstSource = (() => { try { return localStorage.getItem("first_source"); } catch { return null; } })();
+      const partnerCode = (() => { try { return localStorage.getItem("referred_by"); } catch { return null; } })();
+      const sourceInfo = partnerCode ? `파트너:${partnerCode}` : (firstSource || "");
       fetch("/api/v2/save-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -162,6 +165,7 @@ function PaymentInner() {
           categories: [],
           plan: "select",
           discountCode: info.couponCode || "",
+          source: sourceInfo,
         }),
       }).catch(() => {});
     }
