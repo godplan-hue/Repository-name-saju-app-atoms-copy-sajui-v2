@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { lunarToSolar } from "@/lib/lunarToSolar";
 
 function getTodayCount() {
   const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
@@ -33,11 +34,13 @@ export default function GunghapPage() {
   const [year1, setYear1] = useState("");
   const [month1, setMonth1] = useState("");
   const [day1, setDay1] = useState("");
+  const [isLunar1, setIsLunar1] = useState(false);
   const [gender1, setGender1] = useState("");
   const [name2, setName2] = useState("");
   const [year2, setYear2] = useState("");
   const [month2, setMonth2] = useState("");
   const [day2, setDay2] = useState("");
+  const [isLunar2, setIsLunar2] = useState(false);
   const [gender2, setGender2] = useState("");
   const [email, setEmail] = useState("");
   const [hpField, setHpField] = useState(""); // 허니팟 — 봇 방지용 숨김 필드, 사람 눈엔 안 보임
@@ -99,13 +102,30 @@ export default function GunghapPage() {
     const cleanPhone = phone.replace(/\D/g, "");
     setLoading(true); setError("");
     try {
+      // 음력 체크 시 실제 사주 계산(만세력)은 양력 기준이라, 계산용 값만 양력으로 변환한다.
+      // 월/일이 없으면(연도만 입력) 변환 대상이 아니므로 원본 그대로 둔다.
+      // 변환 실패 시 lunarToSolar가 원본 값을 그대로 돌려주므로 안전하다.
+      let y1 = year1, m1 = month1 || "1", d1 = day1 || "1";
+      if (isLunar1 && year1 && month1 && day1) {
+        try {
+          const solar = lunarToSolar(Number(year1), Number(month1), Number(day1));
+          y1 = String(solar.year); m1 = String(solar.month); d1 = String(solar.day);
+        } catch {}
+      }
+      let y2 = year2, m2 = month2 || "1", d2 = day2 || "1";
+      if (isLunar2 && year2 && month2 && day2) {
+        try {
+          const solar = lunarToSolar(Number(year2), Number(month2), Number(day2));
+          y2 = String(solar.year); m2 = String(solar.month); d2 = String(solar.day);
+        } catch {}
+      }
       const res = await fetch("/api/gunghap/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           phone: cleanPhone, email,
-          name1: name1 || "나", birthYear1: year1, birthMonth1: month1 || "1", birthDay1: day1 || "1", gender1,
-          name2: name2 || "상대방", birthYear2: year2, birthMonth2: month2 || "1", birthDay2: day2 || "1", gender2,
+          name1: name1 || "나", birthYear1: y1, birthMonth1: m1, birthDay1: d1, gender1,
+          name2: name2 || "상대방", birthYear2: y2, birthMonth2: m2, birthDay2: d2, gender2,
           marketing: marketingAgreed,
           loveStyle,
         }),
@@ -322,6 +342,15 @@ export default function GunghapPage() {
           </div>
 
           <div style={{ marginBottom: 14 }}>
+            <p style={{ fontSize: 11, color: "#a78bfa", fontWeight: 700, margin: "0 0 6px" }}>사주는 음력이 정확해요</p>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+              <input type="checkbox" checked={isLunar1} onChange={e => setIsLunar1(e.target.checked)}
+                style={{ width: 18, height: 18, accentColor: "#ec4899", cursor: "pointer", flexShrink: 0 }} />
+              <span style={{ fontSize: 13, fontWeight: 800, color: isLunar1 ? "#f472b6" : "#e5e7eb" }}>음력 체크</span>
+            </label>
+          </div>
+
+          <div style={{ marginBottom: 14 }}>
             <label style={S.label}>성별 (선택)</label>
             <div style={{ display: "flex", gap: 8 }}>
               <button onClick={() => setGender1("여성")} style={S.gBtn(gender1 === "여성")}>👩 여성</button>
@@ -374,6 +403,15 @@ export default function GunghapPage() {
               <input style={S.input} placeholder="22" maxLength={2} inputMode="numeric" value={day2}
                 onChange={e => setDay2(e.target.value.replace(/\D/g, "").slice(0, 2))} />
             </div>
+          </div>
+
+          <div style={{ marginBottom: 14 }}>
+            <p style={{ fontSize: 11, color: "#f472b6", fontWeight: 700, margin: "0 0 6px" }}>사주는 음력이 정확해요</p>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+              <input type="checkbox" checked={isLunar2} onChange={e => setIsLunar2(e.target.checked)}
+                style={{ width: 18, height: 18, accentColor: "#ec4899", cursor: "pointer", flexShrink: 0 }} />
+              <span style={{ fontSize: 13, fontWeight: 800, color: isLunar2 ? "#f472b6" : "#e5e7eb" }}>음력 체크</span>
+            </label>
           </div>
 
           <div>

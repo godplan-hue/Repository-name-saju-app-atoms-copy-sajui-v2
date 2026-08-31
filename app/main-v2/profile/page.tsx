@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { isPartnerHost } from "@/lib/isPartnerHost";
+import { lunarToSolar } from "@/lib/lunarToSolar";
 
 const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
@@ -85,7 +86,7 @@ export default function V2Profile() {
 
   const [form, setForm] = useState({
     name: "", relationship: "나",
-    birthYear: "", birthMonth: "", birthDay: "",
+    birthYear: "", birthMonth: "", birthDay: "", isLunar: false,
     gender: "", birthHour: "",
     phone: "", email: "",
   });
@@ -209,7 +210,7 @@ export default function V2Profile() {
             } catch {}
           }
           if (!usedLocal) {
-            setForm({ name: "", relationship: "나", birthYear: "", birthMonth: "", birthDay: "", gender: "", birthHour: "", phone, email: "" });
+            setForm({ name: "", relationship: "나", birthYear: "", birthMonth: "", birthDay: "", isLunar: false, gender: "", birthHour: "", phone, email: "" });
             localStorage.removeItem("v2_saved_profile");
           }
         }
@@ -224,9 +225,21 @@ export default function V2Profile() {
   };
 
   const finish = () => {
-    sessionStorage.setItem("v2_profile", JSON.stringify(form));
+    // 음력 체크 시 실제 사주 계산(만세력)은 양력 기준이라, 계산·저장용 값만 양력으로
+    // 변환한다. 변환 실패 시 lunarToSolar가 원본 값을 그대로 돌려주므로 안전하다.
+    // 체크 안 한 경우(기존 전체 사용자)는 이 분기를 타지 않아 동작이 완전히 그대로다.
+    let sajuYear = form.birthYear, sajuMonth = form.birthMonth, sajuDay = form.birthDay;
+    if (form.isLunar && form.birthYear && form.birthMonth && form.birthDay) {
+      try {
+        const solar = lunarToSolar(Number(form.birthYear), Number(form.birthMonth), Number(form.birthDay));
+        sajuYear = String(solar.year);
+        sajuMonth = String(solar.month).padStart(2, "0");
+        sajuDay = String(solar.day).padStart(2, "0");
+      } catch {}
+    }
+    sessionStorage.setItem("v2_profile", JSON.stringify({ ...form, birthYear: sajuYear, birthMonth: sajuMonth, birthDay: sajuDay }));
     localStorage.setItem("v2_saved_profile", JSON.stringify({
-      name: form.name, birthYear: form.birthYear, birthMonth: form.birthMonth, birthDay: form.birthDay,
+      name: form.name, birthYear: sajuYear, birthMonth: sajuMonth, birthDay: sajuDay,
       gender: form.gender, birthHour: form.birthHour, phone: form.phone, email: form.email,
     }));
     if (form.name) localStorage.setItem("v2_user_name", form.name);
@@ -405,6 +418,14 @@ export default function V2Profile() {
               </select>
             </div>
 
+            <div style={{ marginBottom: 16, marginTop: -8 }}>
+              <p style={{ fontSize: 11, color: "#fbbf24", fontWeight: 700, margin: "0 0 6px" }}>사주는 음력이 정확해요</p>
+              <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+                <input type="checkbox" checked={form.isLunar} onChange={e => setForm(p => ({ ...p, isLunar: e.target.checked }))} style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
+                <span style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>음력 체크</span>
+              </label>
+            </div>
+
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 6, marginBottom: 8 }}>
               {HOURS.filter(h => h.value !== "unknown").map(h => (
                 <button key={h.value} onClick={() => setForm(p => ({ ...p, birthHour: h.value }))}
@@ -516,6 +537,13 @@ export default function V2Profile() {
                   <option value="">일</option>
                   {Array.from({ length: 31 }, (_, i) => <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}일</option>)}
                 </select>
+              </div>
+              <div style={{ marginTop: 12 }}>
+                <p style={{ fontSize: 11, color: "#8b5cf6", fontWeight: 700, margin: "0 0 6px" }}>사주는 음력이 정확해요</p>
+                <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+                  <input type="checkbox" checked={form.isLunar} onChange={e => setForm(p => ({ ...p, isLunar: e.target.checked }))} style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, fontWeight: 800, color: form.isLunar ? "#be185d" : "#374151" }}>음력 체크</span>
+                </label>
               </div>
             </div>
           )}
