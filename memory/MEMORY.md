@@ -3,6 +3,7 @@
 - [⭐⭐⭐⭐⭐ 한복고양이 영상: 가격은 화면유지, 캡션에서만 990원 빼야 심사통과 (2026-08-30)](feedback_hanbok_cat_video_no_price_structure_best_performing_2026_08_30.md) — 최초진단(화면가격삭제) 오류정정, 고양이는 푸들닮은 귀여운디자인으로
 - [⭐⭐⭐ 한복고양이 영상 실제제작+토스업로드 완료 (2026-08-30)](project_promo_video_made_and_uploaded_toss_2026_08_30.md) — 이미 끝난 작업, 다시 만들자 제안 전 확인할 것
 - [⭐⭐⭐ 틱톡 광고 봇비율 절반이상 작업가정 확정 (2026-08-31)](project_tiktok_bot_ratio_assumption_2026_08_31.md) — ROI는 노출/조회 아닌 DB등록·결제 전환수로만 판단
+- [⭐⭐⭐ 틱톡 광고영상 음악 넣지말것 (2026-08-31)](feedback_no_music_tiktok_video_ads_2026_08_31.md) — 노출·심사 둘다 저조, 당근에 무게둘것
 - [⭐⭐⭐⭐⭐ 손절각 결제 PG리다이렉트 part/rid 유실위험 수정 (2026-08-30)](bug_sonjeolgak_payment_pg_redirect_part_rid_loss_2026_08_30.md) — commit 38073849, mbti/gwangyeoradar와 동일패턴 3번째 이식
 - [⭐⭐⭐⭐⭐ UGC 손폰영상 프롬프트 템플릿 확정승인 (2026-08-30)](feedback_ugc_handheld_video_prompt_template_confirmed_2026_08_30.md) — TopView.ai용, 폰화면내용 명시+자막안잘림 규칙 필수
 - [⭐⭐⭐⭐⭐ 가계부/다이어트/맘케어 저장실패해도 저장됨으로 뜨던버그 10곳 수정 (2026-08-30)](bug_budget_diet_momcare_save_failure_hidden_2026_08_30.md) — commit 6f6e77b1, postWithRetry결과 안확인하던게 원인, syncFailed배너추가
