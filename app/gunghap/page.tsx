@@ -325,7 +325,7 @@ export default function GunghapPage() {
 
           <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
             <div style={{ flex: 1 }}>
-              <label style={S.label}>출생연도 *</label>
+              <label style={S.label}>출생연도 (양력) *</label>
               <input style={S.input} placeholder="1998" maxLength={4} inputMode="numeric" value={year1}
                 onChange={e => setYear1(e.target.value.replace(/\D/g, "").slice(0, 4))} />
             </div>
@@ -389,7 +389,7 @@ export default function GunghapPage() {
 
           <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
             <div style={{ flex: 1 }}>
-              <label style={S.label}>출생연도 *</label>
+              <label style={S.label}>출생연도 (양력) *</label>
               <input style={S.input} placeholder="1996" maxLength={4} inputMode="numeric" value={year2}
                 onChange={e => setYear2(e.target.value.replace(/\D/g, "").slice(0, 4))} />
             </div>

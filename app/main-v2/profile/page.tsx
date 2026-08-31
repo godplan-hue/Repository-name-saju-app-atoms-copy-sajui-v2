@@ -61,7 +61,7 @@ const inp: React.CSSProperties = {
 
 const STEPS = [
   { icon: "🐱", title: "누구의 운세를 볼까요?", hint: "" },
-  { icon: "🎂", title: "생년월일을 입력해주세요", hint: "" },
+  { icon: "🎂", title: "생년월일을 입력해주세요", hint: "양력 기준으로 입력해주세요 (음력이면 아래 체크)" },
   { icon: "😼😻", title: "성별을 선택해주세요", hint: "" },
   { icon: "🌙✨", title: "태어난 시를 선택해주세요", hint: "모르시면 '모름'을 선택해도 됩니다" },
   { icon: "💌", title: "연락처를 입력해주세요", hint: "" },
@@ -405,7 +405,7 @@ export default function V2Profile() {
             <label style={{ fontSize: 12, fontWeight: 700, color: "#fbbf24", display: "block", marginBottom: 6 }}>이름</label>
             <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} placeholder="이름 입력" style={{ ...cardInp, marginBottom: 14 }} />
 
-            <label style={{ fontSize: 12, fontWeight: 700, color: "#fbbf24", display: "block", marginBottom: 6 }}>생년월일</label>
+            <label style={{ fontSize: 12, fontWeight: 700, color: "#fbbf24", display: "block", marginBottom: 6 }}>생년월일 (양력)</label>
             <input type="number" value={form.birthYear} onChange={e => setForm(p => ({ ...p, birthYear: e.target.value }))} placeholder="1990" min="1900" max="2024" style={{ ...cardInp, marginBottom: 8, textAlign: "center" }} />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
               <select value={form.birthMonth} onChange={e => setForm(p => ({ ...p, birthMonth: e.target.value }))} style={{ ...cardInp, cursor: "pointer" }}>
