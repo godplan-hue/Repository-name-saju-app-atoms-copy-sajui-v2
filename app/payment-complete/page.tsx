@@ -4,6 +4,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useRef, Suspense } from "react";
+import { lunarToSolar } from "@/lib/lunarToSolar";
 
 const SPECIAL_NAMES: Record<string, string> = {
   sinyeon: "신년운세",
@@ -86,6 +87,7 @@ function PaymentCompleteInner() {
   const [birthDay, setBirthDay] = useState("");
   const [birthHour, setBirthHour] = useState("unknown");
   const [gender, setGender] = useState("");
+  const [isLunar, setIsLunar] = useState(false);
 
   // 사주 정보 폼 — 상대방 (VIP 커플팩 전용)
   const [partnerName, setPartnerName] = useState("");
@@ -93,6 +95,7 @@ function PaymentCompleteInner() {
   const [partnerBirthMonth, setPartnerBirthMonth] = useState("");
   const [partnerBirthDay, setPartnerBirthDay] = useState("");
   const [partnerBirthHour, setPartnerBirthHour] = useState("unknown");
+  const [partnerIsLunar, setPartnerIsLunar] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [needsForm, setNeedsForm] = useState(false);
@@ -476,20 +479,38 @@ function PaymentCompleteInner() {
         }
       } catch {}
     }
+
+    // 사주 계산(만세력)은 양력 기준이라, 음력 체크 시 계산·저장용 값만 양력으로 변환한다.
+    // 변환 실패 시 lunarToSolar가 원본 값을 그대로 돌려주므로 안전하다.
+    let sajuYear = birthYear, sajuMonth = birthMonth, sajuDay = birthDay;
+    if (isLunar && birthYear && birthMonth && birthDay) {
+      try {
+        const solar = lunarToSolar(Number(birthYear), Number(birthMonth), Number(birthDay));
+        sajuYear = String(solar.year); sajuMonth = String(solar.month); sajuDay = String(solar.day);
+      } catch {}
+    }
+    let partnerSajuYear = partnerBirthYear, partnerSajuMonth = partnerBirthMonth, partnerSajuDay = partnerBirthDay;
+    if (partnerIsLunar && partnerBirthYear && partnerBirthMonth && partnerBirthDay) {
+      try {
+        const solar = lunarToSolar(Number(partnerBirthYear), Number(partnerBirthMonth), Number(partnerBirthDay));
+        partnerSajuYear = String(solar.year); partnerSajuMonth = String(solar.month); partnerSajuDay = String(solar.day);
+      } catch {}
+    }
+
     // naming/daeun/yearly: 프로필 저장 후 redirectTo로 이동
     if (redirectTo) {
       let prev: Record<string,string> = {};
       try { prev = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); } catch {}
-      const fullProfile = { ...prev, name, birthYear, birthMonth: String(birthMonth).padStart(2,"0"), birthDay: String(birthDay).padStart(2,"0"), birthHour, gender, relationship: "나" };
+      const fullProfile = { ...prev, name, birthYear: sajuYear, birthMonth: String(sajuMonth).padStart(2,"0"), birthDay: String(sajuDay).padStart(2,"0"), birthHour, gender, relationship: "나" };
       localStorage.setItem("v2_saved_profile", JSON.stringify(fullProfile));
       sessionStorage.setItem("v2_profile", JSON.stringify(fullProfile));
       router.replace(redirectTo);
       return;
     }
     runAnalysis({
-      name, birthYear, birthMonth, birthDay, birthHour,
+      name, birthYear: sajuYear, birthMonth: sajuMonth, birthDay: sajuDay, birthHour,
       pkg: packageName,
-      partnerName, partnerBirthYear, partnerBirthMonth, partnerBirthDay, partnerBirthHour,
+      partnerName, partnerBirthYear: partnerSajuYear, partnerBirthMonth: partnerSajuMonth, partnerBirthDay: partnerSajuDay, partnerBirthHour,
     }, effectivePaid);
   };
 
@@ -582,6 +603,10 @@ function PaymentCompleteInner() {
                       {days.map(d => <option key={d} value={d}>{d}일</option>)}
                     </select>
                   </div>
+                  <label style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 5, cursor: "pointer" }}>
+                    <input type="checkbox" checked={isLunar} onChange={e => setIsLunar(e.target.checked)} style={{ width: 14, height: 14, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
+                    <span style={{ fontSize: 10, fontWeight: 700, color: isLunar ? "#fbbf24" : "#f5f5f5" }}>음력 생일이면 체크 (양력으로 자동 변환)</span>
+                  </label>
                 </div>
 
                 {redirectTo && (
@@ -633,6 +658,10 @@ function PaymentCompleteInner() {
                         {days.map(d => <option key={d} value={d}>{d}일</option>)}
                       </select>
                     </div>
+                    <label style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 5, cursor: "pointer" }}>
+                      <input type="checkbox" checked={partnerIsLunar} onChange={e => setPartnerIsLunar(e.target.checked)} style={{ width: 14, height: 14, accentColor: "#c4b5fd", cursor: "pointer", flexShrink: 0 }} />
+                      <span style={{ fontSize: 10, fontWeight: 700, color: partnerIsLunar ? "#c4b5fd" : "#f5f5f5" }}>음력 생일이면 체크 (양력으로 자동 변환)</span>
+                    </label>
                   </div>
 
                   <div>
