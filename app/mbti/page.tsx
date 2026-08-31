@@ -257,7 +257,7 @@ export default function MbtiPage() {
           </div>
 
           {/* 이름·전번 입력 */}
-          <div style={{ marginBottom: 10 }}>
+          <div id="mbti-phone-form" style={{ marginBottom: 10 }}>
             <input
               style={{ width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", boxSizing: "border-box" as const }}
               ref={nameInputRef}
@@ -346,7 +346,17 @@ export default function MbtiPage() {
           </div>
         ))}
 
-        <button onClick={() => setStep("quiz")} style={{ ...S.btn, marginTop: 16 }}>
+        <button onClick={() => {
+          const clean = phone.replace(/\D/g, "");
+          if (clean.length < 10 || !agreed) {
+            setError(clean.length < 10 ? "전화번호를 입력해주세요." : "개인정보 수집 동의를 체크해주세요.");
+            document.getElementById("mbti-phone-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+          }
+          const domName = nameInputRef.current?.value?.trim() || "";
+          if (domName) setUserName(domName);
+          setStep("quiz");
+        }} style={{ ...S.btn, marginTop: 16 }}>
           나의 MBTI 알아보기 →
         </button>
 
