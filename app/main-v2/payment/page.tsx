@@ -13,6 +13,19 @@ interface PromoCode {
 
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
+// special=xxx 코드값을 결제창·알림메일에 표시할 한글 상품명으로 변환 (app/payment-complete/page.tsx의 SPECIAL_NAMES와 동일)
+const SPECIAL_LABELS: Record<string, string> = {
+  sinyeon: "신년운세",
+  sinyeon_premium: "프리미엄 신년운세",
+  reunion: "재회운",
+  marriage_detail: "결혼사주",
+  findmatch: "내 사람 찾기",
+  love_detail: "연애사주",
+  divorce: "이혼운세",
+  taegil: "택일",
+  pet_compat: "반려동물 궁합",
+};
+
 export default function Payment() {
   return (
     <Suspense fallback={<main style={{ minHeight: "100vh", background: BG }} />}>
@@ -214,7 +227,8 @@ function PaymentInner() {
         : "channel-key-e3b35730-62df-4314-a2c9-afd813698cd7";
       const portone = await import("@portone/browser-sdk/v2");
       const _params = new URLSearchParams(modalNextUrl.split("?")[1] || "");
-      const _orderName = _params.get("package") || _params.get("special") || "점운 운세";
+      const _rawOrderName = _params.get("package") || _params.get("special") || "점운 운세";
+      const _orderName = SPECIAL_LABELS[_rawOrderName] || _rawOrderName;
       const _paymentId = `pay_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
       const pendingInfo = {
@@ -270,7 +284,8 @@ function PaymentInner() {
       const orderId = `jeomun-toss-${Date.now()}`;
       const cleanMobile = modalMobile.replace(/\D/g, "");
       const _params = new URLSearchParams(modalNextUrl.split("?")[1] || "");
-      const _orderName = _params.get("package") || _params.get("special") || "점운 운세";
+      const _rawOrderName = _params.get("package") || _params.get("special") || "점운 운세";
+      const _orderName = SPECIAL_LABELS[_rawOrderName] || _rawOrderName;
 
       const pendingInfo = {
         modalPrice, modalNextUrl, modalName, modalMobile, paymentId: orderId,
