@@ -419,7 +419,7 @@ export default function V2Profile() {
             </div>
 
             <div style={{ marginBottom: 16, marginTop: -8 }}>
-              <p style={{ fontSize: 11, color: "#fbbf24", fontWeight: 700, margin: "0 0 6px" }}>사주는 음력이 정확해요</p>
+              <p style={{ fontSize: 11, color: "#fbbf24", fontWeight: 700, margin: "0 0 6px" }}>음력 생일이면 체크해주세요 (양력으로 자동 변환)</p>
               <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
                 <input type="checkbox" checked={form.isLunar} onChange={e => setForm(p => ({ ...p, isLunar: e.target.checked }))} style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
                 <span style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>음력 체크</span>
@@ -539,7 +539,7 @@ export default function V2Profile() {
                 </select>
               </div>
               <div style={{ marginTop: 12 }}>
-                <p style={{ fontSize: 11, color: "#8b5cf6", fontWeight: 700, margin: "0 0 6px" }}>사주는 음력이 정확해요</p>
+                <p style={{ fontSize: 11, color: "#8b5cf6", fontWeight: 700, margin: "0 0 6px" }}>음력 생일이면 체크해주세요 (양력으로 자동 변환)</p>
                 <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
                   <input type="checkbox" checked={form.isLunar} onChange={e => setForm(p => ({ ...p, isLunar: e.target.checked }))} style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
                   <span style={{ fontSize: 13, fontWeight: 800, color: form.isLunar ? "#be185d" : "#374151" }}>음력 체크</span>

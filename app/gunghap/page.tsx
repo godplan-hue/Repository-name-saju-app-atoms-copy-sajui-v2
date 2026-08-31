@@ -342,7 +342,7 @@ export default function GunghapPage() {
           </div>
 
           <div style={{ marginBottom: 14 }}>
-            <p style={{ fontSize: 11, color: "#a78bfa", fontWeight: 700, margin: "0 0 6px" }}>사주는 음력이 정확해요</p>
+            <p style={{ fontSize: 11, color: "#a78bfa", fontWeight: 700, margin: "0 0 6px" }}>음력 생일이면 체크해주세요 (양력으로 자동 변환)</p>
             <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
               <input type="checkbox" checked={isLunar1} onChange={e => setIsLunar1(e.target.checked)}
                 style={{ width: 18, height: 18, accentColor: "#ec4899", cursor: "pointer", flexShrink: 0 }} />
@@ -406,7 +406,7 @@ export default function GunghapPage() {
           </div>
 
           <div style={{ marginBottom: 14 }}>
-            <p style={{ fontSize: 11, color: "#f472b6", fontWeight: 700, margin: "0 0 6px" }}>사주는 음력이 정확해요</p>
+            <p style={{ fontSize: 11, color: "#f472b6", fontWeight: 700, margin: "0 0 6px" }}>음력 생일이면 체크해주세요 (양력으로 자동 변환)</p>
             <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
               <input type="checkbox" checked={isLunar2} onChange={e => setIsLunar2(e.target.checked)}
                 style={{ width: 18, height: 18, accentColor: "#ec4899", cursor: "pointer", flexShrink: 0 }} />
