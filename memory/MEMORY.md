@@ -1,5 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⛔ 18개 다른앱소개 작업시 다른화면에 이미있는 기존섹션은 손대지말것 (2026-09-01)](feedback_dont_remove_existing_crosspromo_other_pages_2026_09_01.md) — jeomun-saju에이전트가 정리명목으로 기존 인라인그리드 삭제→제지받음, 추가만하고 기존것은 그대로
+- [⭐⭐⭐⭐⭐ 18개앱 전부 인트로+결과지에 CrossPromoMini 확인완료 (2026-09-01)](project_crosspromo_intro_result_all18apps_done_2026_09_01.md) — 17개앱 병렬에이전트+taegil수동, 커밋해시전체목록, 콘솔재업로드 전부남음(대운최우선)
 - [⭐⭐⭐⭐⭐ 직운 리워드광고 가짜전역참조로 닫기만해도 언락되던 진짜버그 발견+수정 (2026-09-01)](bug_jigun_reward_ad_fake_globalref_2026_09_01.md) — commit f3a86ec, 9개앱중 jigun만버그 나머지8개는정상, 라이브재현시 콘솔업로드여부부터확인
 - [⭐⭐⭐⭐⭐ MBTI는 리워드광고 15초방어 수정후 상태좋음 확인, 더 건들지말것 (2026-09-01)](feedback_mbti_reward_fix_confirmed_working_2026_09_01.md) — commit 2ebcbb4, 지시 손대지마→수정해도→다시손대지마 반복이력, 택일도 놔두라고 지시받음(interstitial vs reward 구분 정상)
 - [⭐⭐⭐⭐⭐ 손절각+연락기록통계 광고=개별언락 최종확정 + 대운/택일 990원결제+진짜리워드광고 전환 전부완료 (2026-09-01)](project_sonjeolgak_gwangyeoradar_global_unlock_2026_09_01.md) — 대운 e3f931a+30d6687, 택일 49c2a12+0b02e2c, .ait 재빌드완료 콘솔업로드만 남음(삭제예정 배지 급함)
