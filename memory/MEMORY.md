@@ -1,11 +1,9 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ 손절각+연락기록통계 결제1번/광고1번=전체24시간언락 통일완료 (2026-09-01)](project_sonjeolgak_gwangyeoradar_global_unlock_2026_09_01.md) — commit 6f8820e+699d81b, 대운/택일은원래광고전용이라수정불필요, .ait 재빌드완료 콘솔업로드만남음
+- [⭐⭐⭐⭐⭐ 구글 미색인 근본원인=Vercel CNAME/Cloudflare A레코드 불일치, 사이트맵재제출로 색인 66→1260개 (2026-09-01)](bug_dns_cname_fix_google_indexing_2026_08_28.md) — 브랜드검색 노출은 별개(랭킹), site:jeomun.com으로 색인확인, [[feedback_gsc_bulk_action_must_be_named_explicitly_2026_09_01]] 대량처리버튼 먼저제시할것
+- [⭐⭐⭐⭐ 홍보영상: 대사는 기본(짧게1줄), 무대사 액션+로고등장은 "가끔 괜찮은" 옵션 (2026-09-01)](feedback_dialogueless_action_video_confirmed_2026_09_01.md) — 무대사가 기본아님, 캡션여러줄 나열만 금지
 - [⭐⭐⭐⭐⭐ 한복고양이 영상: 가격은 화면유지, 캡션에서만 990원 빼야 심사통과 (2026-08-30)](feedback_hanbok_cat_video_no_price_structure_best_performing_2026_08_30.md) — 최초진단(화면가격삭제) 오류정정, 고양이는 푸들닮은 귀여운디자인으로
-- [⭐⭐⭐ 한복고양이 영상 실제제작+토스업로드 완료 (2026-08-30)](project_promo_video_made_and_uploaded_toss_2026_08_30.md) — 이미 끝난 작업, 다시 만들자 제안 전 확인할 것
-- [⭐⭐⭐ 틱톡 광고 봇비율 절반이상 작업가정 확정 (2026-08-31)](project_tiktok_bot_ratio_assumption_2026_08_31.md) — ROI는 노출/조회 아닌 DB등록·결제 전환수로만 판단
-- [⭐⭐⭐ 틱톡 광고영상 음악 넣지말것 (2026-08-31)](feedback_no_music_tiktok_video_ads_2026_08_31.md) — 노출·심사 둘다 저조, 당근에 무게둘것
-- [⭐⭐⭐⭐ 점냥이 미니인터뷰 영상 2세트 확정(로또사주/인복MBTI) + 일기스타일 반려 (2026-08-31)](project_janggnyangi_video_sets_lotto_mbti_2026_08_31.md) — 캐릭터없는 감성컨셉 항상반려, 미니인터뷰가 기본
-- [⭐⭐⭐ 고양이 팔자 스크립트+업로드채널 기획의신 확정 (2026-08-31)](project_cat_palja_script_and_channel_decision_2026_08_31.md) — tys8763은 페널티이력으로 제외
 - [⭐⭐⭐⭐⭐ 손절각 결제 PG리다이렉트 part/rid 유실위험 수정 (2026-08-30)](bug_sonjeolgak_payment_pg_redirect_part_rid_loss_2026_08_30.md) — commit 38073849, mbti/gwangyeoradar와 동일패턴 3번째 이식
 - [⭐⭐⭐⭐⭐ UGC 손폰영상 프롬프트 템플릿 확정승인 (2026-08-30)](feedback_ugc_handheld_video_prompt_template_confirmed_2026_08_30.md) — TopView.ai용, 폰화면내용 명시+자막안잘림 규칙 필수
 - [⭐⭐⭐⭐⭐ 가계부/다이어트/맘케어 저장실패해도 저장됨으로 뜨던버그 10곳 수정 (2026-08-30)](bug_budget_diet_momcare_save_failure_hidden_2026_08_30.md) — commit 6f6e77b1, postWithRetry결과 안확인하던게 원인, syncFailed배너추가
