@@ -103,6 +103,7 @@ function PaymentCompleteInner() {
   const formRef = useRef<HTMLDivElement>(null);
   const submittingRef = useRef(false); // 중복 제출 방지
   const isSpecialFlowRef = useRef(false); // special 상품(신년운세/재회운 등) 결제 여부
+  const isBundleRef = useRef(false); // 5종 묶음(naming) 결제 여부 — 어드민에서 개별과 구분하기 위함
 
   // 할인코드
   const [discountInput, setDiscountInput] = useState("");
@@ -222,6 +223,7 @@ function PaymentCompleteInner() {
         sessionStorage.setItem("v2_after_payment_goto", "special");
       }
       isSpecialFlowRef.current = true;
+      isBundleRef.current = true;
       setPackageName(searchParams.get("package") || `${queueArr.length}개 운세 묶음`);
       setRedirectTo("/main-v2/special");
       setNeedsForm(true);
@@ -391,7 +393,7 @@ function PaymentCompleteInner() {
               amount: _payAmt,
               package: packageName || p.pkg || "운세",
               categories: _payCats,
-              plan,
+              plan: isBundleRef.current ? "bundle" : plan,
               discountCode: appliedDiscount?.code || "",
               discountPercent: appliedDiscount?.discountPercent || 0,
               originalAmount: Number(paidAmount || _payAmt),

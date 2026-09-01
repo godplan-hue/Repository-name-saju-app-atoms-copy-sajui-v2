@@ -253,8 +253,8 @@ export default function AdminDirectPayments() {
                     <td style={{ padding: "10px 12px", color: "#6b7280" }}>{p.phone || "—"}</td>
                     <td style={{ padding: "10px 12px", color: "#374151" }}>{p.package || p.category || "-"}</td>
                     <td style={{ padding: "10px 12px" }}>
-                      <span style={{ fontSize: 11, background: p.plan === "package" ? "#fef3c7" : "#ede9fe", color: p.plan === "package" ? "#92400e" : "#6d28d9", padding: "2px 8px", borderRadius: 20, fontWeight: 700 }}>
-                        {p.plan === "package" ? "📦 패키지" : "💎 개별"}
+                      <span style={{ fontSize: 11, background: p.plan === "package" ? "#fef3c7" : p.plan === "bundle" ? "#dcfce7" : "#ede9fe", color: p.plan === "package" ? "#92400e" : p.plan === "bundle" ? "#166534" : "#6d28d9", padding: "2px 8px", borderRadius: 20, fontWeight: 700 }}>
+                        {p.plan === "package" ? "📦 패키지" : p.plan === "bundle" ? "🎁 5종묶음" : "💎 개별"}
                       </span>
                     </td>
                     <td style={{ padding: "10px 12px", fontWeight: 900, color: "#059669" }}>

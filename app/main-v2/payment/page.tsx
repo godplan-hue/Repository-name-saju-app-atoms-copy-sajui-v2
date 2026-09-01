@@ -520,7 +520,7 @@ function PaymentInner() {
 
         {/* 오픈기념 5종 묶음 990원 */}
         {!isFromYourChange && (
-        <div style={{ maxWidth: 600, margin: "0 auto 16px" }}>
+        <div id="bundle-990" style={{ maxWidth: 600, margin: "0 auto 16px" }}>
           <button
             onClick={() => {
               const paidPrice = finalPrice(990);
@@ -533,9 +533,12 @@ function PaymentInner() {
             <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 800, background: "#7a0c1f", color: "#fff", borderRadius: 10, padding: "8px 10px", lineHeight: 1.6, wordBreak: "keep-all" }}>
               🎍신년운세 + 💗연애사주 + 🔍내사람찾기 + 💍결혼사주 + 🌧이혼운세
             </p>
-            <p style={{ margin: 0, fontSize: 15, fontWeight: 900 }}>
+            <p style={{ margin: "0 0 10px", fontSize: 15, fontWeight: 900 }}>
               <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 13, marginRight: 8 }}>정가 4,950원</span>
               5개 사주 몽땅 <span style={{ color: "#fde047", fontSize: 24 }}>990원</span>에 드려요!
+            </p>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#7a0c1f", background: "#fde047", borderRadius: 10, padding: "8px 10px" }}>
+              👆 여기를 눌러서 5개 몽땅 결제하기
             </p>
           </button>
         </div>
