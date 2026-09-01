@@ -891,6 +891,28 @@ export default function MainV2() {
         </p>
       </section>
 
+      {/* 오픈기념 5종 세트 990원 고정특가 — 메인 첫 화면에서 바로 보이고 바로 결제되게 */}
+      {!isPartner && (
+        <div style={{ padding: "0 16px", margin: "4px 0 16px" }}>
+          <button
+            onClick={() => {
+              const queue = "sinyeon,love_detail,findmatch,marriage_detail,divorce";
+              const paid = 990;
+              const label = "오픈기념 5종 세트";
+              const next = `/payment-complete?naming=1&queue=${queue}&paid=${paid}&package=${encodeURIComponent(label)}`;
+              window.location.href = `/main-v2/pay?amount=${paid}&next=${encodeURIComponent(next)}`;
+            }}
+            style={{ width: "100%", maxWidth: 480, margin: "0 auto", display: "block", padding: "16px 14px", background: "linear-gradient(135deg, #ef4444, #f59e0b)", border: "2px solid rgba(255,255,255,0.5)", borderRadius: 16, cursor: "pointer", textAlign: "center", color: "#fff", boxShadow: "0 6px 22px rgba(239,68,68,0.45)" }}
+          >
+            <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 900, letterSpacing: "0.3px", wordBreak: "keep-all" }}>🎉 오픈기념 한정특가 · 신년운세+연애사주+내사람찾기+결혼사주+이혼운세</p>
+            <p style={{ margin: 0, fontSize: 20, fontWeight: 900 }}>
+              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 14, marginRight: 8 }}>₩4,950</span>
+              5개 전부 ₩990
+            </p>
+          </button>
+        </div>
+      )}
+
       {/* 운세 선택 — 9개 박스 그리드(맨 앞 1개는 무료체험, 나머지 8개는 VIP 패키지의
           8개 항목을 그대로 미리보기 — 그래서 이름/내용을 다른 걸로 바꾸지 않음).
           재물운/연애운은 990원 단품 결제로, 나머지는 패키지(9,900원~) 결제로 보냄.

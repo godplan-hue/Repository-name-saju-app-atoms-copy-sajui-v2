@@ -518,6 +518,27 @@ function PaymentInner() {
           )}
         </div>
 
+        {/* 오픈기념 5종 묶음 990원 */}
+        {!isFromYourChange && (
+        <div style={{ maxWidth: 600, margin: "0 auto 16px" }}>
+          <button
+            onClick={() => {
+              const paidPrice = finalPrice(990);
+              const queue = "sinyeon,love_detail,findmatch,marriage_detail,divorce";
+              openPortoneModal(paidPrice, `/payment-complete?naming=1&queue=${queue}&package=${encodeURIComponent("오픈기념 5종 세트")}&paid=${paidPrice}`);
+            }}
+            style={{ width: "100%", padding: "16px 14px", background: "linear-gradient(135deg, #ef4444, #f59e0b)", border: "2px solid rgba(255,255,255,0.45)", borderRadius: 16, cursor: "pointer", textAlign: "center", color: "white", boxShadow: "0 6px 24px rgba(239,68,68,0.4)" }}
+          >
+            <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 900 }}>🎉 오픈기념 한정특가</p>
+            <p style={{ margin: "0 0 6px", fontSize: 14, fontWeight: 900, lineHeight: 1.4, wordBreak: "keep-all" }}>신년운세 + 연애사주 + 내 사람 찾기 + 결혼사주 + 이혼운세</p>
+            <p style={{ margin: 0, fontSize: 20, fontWeight: 900 }}>
+              <span style={{ textDecoration: "line-through", opacity: 0.7, fontSize: 14, marginRight: 8 }}>₩4,950</span>
+              ₩990
+            </p>
+          </button>
+        </div>
+        )}
+
         {/* 신규 990원 */}
         {!isFromYourChange && (
         <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
