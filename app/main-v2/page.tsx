@@ -913,6 +913,25 @@ export default function MainV2() {
               5개 사주 몽땅 <span style={{ color: "#fde047", fontSize: 24 }}>990원</span>에 드려요!
             </p>
           </button>
+          <button
+            onClick={() => {
+              const queue = "sinyeon,love_detail,findmatch,marriage_detail,divorce";
+              const paid = 990;
+              const label = "오픈기념 5종 세트";
+              const next = `/payment-complete?naming=1&queue=${queue}&paid=${paid}&package=${encodeURIComponent(label)}`;
+              window.location.href = `/main-v2/pay?amount=${paid}&next=${encodeURIComponent(next)}`;
+            }}
+            style={{ width: "100%", marginTop: 10, padding: "14px", background: "linear-gradient(135deg,#dc2626,#991b1b)", border: "none", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer" }}
+          >
+            5종 990원 결제하기 →
+          </button>
+          <div style={{ marginTop: 10, padding: "10px 14px", background: "rgba(139,92,246,0.12)", borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)", textAlign: "center" }}>
+            <p style={{ margin: 0, fontSize: 12, color: "#c4b5fd", fontWeight: 700, lineHeight: 1.8 }}>
+              🎁 결제하면 3종 24시간 무료!<br />
+              <b style={{ color: "#f9a8d4" }}>꿈해몽 전체</b> · <b style={{ color: "#f9a8d4" }}>점냥이 채팅</b> · <b style={{ color: "#f9a8d4" }}>Q&A 전체</b><br />
+              <span style={{ color: "rgba(196,181,253,0.7)", fontSize: 11 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
+            </p>
+          </div>
         </div>
       )}
 

@@ -541,16 +541,29 @@ function PaymentInner() {
               👆 여기를 눌러서 5개 몽땅 결제하기
             </p>
           </button>
+          <button
+            onClick={() => {
+              const paidPrice = finalPrice(990);
+              const queue = "sinyeon,love_detail,findmatch,marriage_detail,divorce";
+              openPortoneModal(paidPrice, `/payment-complete?naming=1&queue=${queue}&package=${encodeURIComponent("오픈기념 5종 세트")}&paid=${paidPrice}`);
+            }}
+            style={{ width: "100%", marginTop: 10, padding: "14px", background: "linear-gradient(135deg,#dc2626,#991b1b)", border: "none", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer" }}
+          >
+            5종 990원 결제하기 →
+          </button>
+          <div style={{ marginTop: 10, padding: "10px 14px", background: "rgba(139,92,246,0.12)", borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)", textAlign: "center" }}>
+            <p style={{ margin: 0, fontSize: 12, color: "#c4b5fd", fontWeight: 700, lineHeight: 1.8 }}>
+              🎁 결제하면 3종 24시간 무료!<br />
+              <b style={{ color: "#f9a8d4" }}>꿈해몽 전체</b> · <b style={{ color: "#f9a8d4" }}>점냥이 채팅</b> · <b style={{ color: "#f9a8d4" }}>Q&A 전체</b><br />
+              <span style={{ color: "rgba(196,181,253,0.7)", fontSize: 11 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
+            </p>
+          </div>
         </div>
         )}
 
         {/* 신규 990원 */}
         {!isFromYourChange && (
         <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
-          <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 4px 2px" }}>⚡ 낱개 990원 (1개당 가격)</p>
-          <p style={{ color: "#fca5a5", fontSize: 11.5, fontWeight: 700, margin: "0 0 8px 2px", wordBreak: "keep-all" }}>
-            ⚠️ 아래는 1개씩 990원이에요. 5개 다 보고 싶으시면 <b style={{ color: "#fde047" }}>위의 오픈기념 5종 세트(전부 990원)</b>가 훨씬 이득이에요!
-          </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
             {[
               { id: "sinyeon",         emoji: "🎍", label: "신년운세",       sub: "올해 사주 완벽분석",  price: 990,  accent: "#fbbf24", bdColor: "rgba(251,191,36,0.35)", bg: "rgba(20,10,40,0.55)" },
