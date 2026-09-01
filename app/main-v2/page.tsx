@@ -902,12 +902,15 @@ export default function MainV2() {
               const next = `/payment-complete?naming=1&queue=${queue}&paid=${paid}&package=${encodeURIComponent(label)}`;
               window.location.href = `/main-v2/pay?amount=${paid}&next=${encodeURIComponent(next)}`;
             }}
-            style={{ width: "100%", maxWidth: 480, margin: "0 auto", display: "block", padding: "16px 14px", background: "linear-gradient(135deg, #ef4444, #f59e0b)", border: "2px solid rgba(255,255,255,0.5)", borderRadius: 16, cursor: "pointer", textAlign: "center", color: "#fff", boxShadow: "0 6px 22px rgba(239,68,68,0.45)" }}
+            style={{ width: "100%", maxWidth: 480, margin: "0 auto", display: "block", padding: "16px 14px", background: "linear-gradient(135deg, #991b1b, #dc2626)", border: "3px solid #fde047", borderRadius: 16, cursor: "pointer", textAlign: "center", color: "#fff", boxShadow: "0 6px 22px rgba(153,27,27,0.55)" }}
           >
-            <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 900, letterSpacing: "0.3px", wordBreak: "keep-all" }}>🎉 오픈기념 한정특가 (조기마감될 수 있어요) · 신년운세+연애사주+내사람찾기+결혼사주+이혼운세</p>
-            <p style={{ margin: 0, fontSize: 20, fontWeight: 900 }}>
-              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 14, marginRight: 8 }}>₩4,950</span>
-              5개 전부 ₩990
+            <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 900, letterSpacing: "0.3px" }}>🎉 오픈기념 한정특가 (조기마감될 수 있어요)</p>
+            <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 800, background: "#7a0c1f", color: "#fff", borderRadius: 10, padding: "8px 10px", lineHeight: 1.6, wordBreak: "keep-all" }}>
+              🎍신년운세 + 💗연애사주 + 🔍내사람찾기 + 💍결혼사주 + 🌧이혼운세
+            </p>
+            <p style={{ margin: 0, fontSize: 15, fontWeight: 900 }}>
+              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 13, marginRight: 8 }}>4,950원</span>
+              5개 몽땅 <span style={{ color: "#fde047", fontSize: 24 }}>990원</span>에 드려요!
             </p>
           </button>
         </div>
