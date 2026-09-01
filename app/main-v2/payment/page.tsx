@@ -547,7 +547,10 @@ function PaymentInner() {
         {/* 신규 990원 */}
         {!isFromYourChange && (
         <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
-          <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>⚡ 신규 990원</p>
+          <p style={{ color: "#fbbf24", fontSize: 13, fontWeight: 900, margin: "0 0 4px 2px" }}>⚡ 낱개 990원 (1개당 가격)</p>
+          <p style={{ color: "#fca5a5", fontSize: 11.5, fontWeight: 700, margin: "0 0 8px 2px", wordBreak: "keep-all" }}>
+            ⚠️ 아래는 1개씩 990원이에요. 5개 다 보고 싶으시면 <b style={{ color: "#fde047" }}>위의 오픈기념 5종 세트(전부 990원)</b>가 훨씬 이득이에요!
+          </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
             {[
               { id: "sinyeon",         emoji: "🎍", label: "신년운세",       sub: "올해 사주 완벽분석",  price: 990,  accent: "#fbbf24", bdColor: "rgba(251,191,36,0.35)", bg: "rgba(20,10,40,0.55)" },
