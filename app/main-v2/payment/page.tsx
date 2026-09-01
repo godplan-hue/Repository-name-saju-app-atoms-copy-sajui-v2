@@ -540,24 +540,14 @@ function PaymentInner() {
             <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#7a0c1f", background: "#fde047", borderRadius: 10, padding: "8px 10px" }}>
               👆 여기를 눌러서 5개 몽땅 결제하기
             </p>
+            <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
+              <p style={{ margin: 0, fontSize: 12, color: "#f9a8d4", fontWeight: 700, lineHeight: 1.8 }}>
+                🎁 결제하면 3종 24시간 무료!<br />
+                <b style={{ color: "#fde047" }}>꿈해몽 전체</b> · <b style={{ color: "#fde047" }}>점냥이 채팅</b> · <b style={{ color: "#fde047" }}>Q&A 전체</b><br />
+                <span style={{ color: "rgba(255,255,255,0.75)", fontSize: 11 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
+              </p>
+            </div>
           </button>
-          <button
-            onClick={() => {
-              const paidPrice = finalPrice(990);
-              const queue = "sinyeon,love_detail,findmatch,marriage_detail,divorce";
-              openPortoneModal(paidPrice, `/payment-complete?naming=1&queue=${queue}&package=${encodeURIComponent("오픈기념 5종 세트")}&paid=${paidPrice}`);
-            }}
-            style={{ width: "100%", marginTop: 10, padding: "14px", background: "linear-gradient(135deg,#dc2626,#991b1b)", border: "none", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer" }}
-          >
-            5종 990원 결제하기 →
-          </button>
-          <div style={{ marginTop: 10, padding: "10px 14px", background: "rgba(139,92,246,0.12)", borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)", textAlign: "center" }}>
-            <p style={{ margin: 0, fontSize: 12, color: "#c4b5fd", fontWeight: 700, lineHeight: 1.8 }}>
-              🎁 결제하면 3종 24시간 무료!<br />
-              <b style={{ color: "#f9a8d4" }}>꿈해몽 전체</b> · <b style={{ color: "#f9a8d4" }}>점냥이 채팅</b> · <b style={{ color: "#f9a8d4" }}>Q&A 전체</b><br />
-              <span style={{ color: "rgba(196,181,253,0.7)", fontSize: 11 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
-            </p>
-          </div>
         </div>
         )}
 
