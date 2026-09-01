@@ -527,24 +527,24 @@ function PaymentInner() {
               const queue = "sinyeon,love_detail,findmatch,marriage_detail,divorce";
               openPortoneModal(paidPrice, `/payment-complete?naming=1&queue=${queue}&package=${encodeURIComponent("오픈기념 5종 세트")}&paid=${paidPrice}`);
             }}
-            style={{ width: "100%", padding: "16px 14px", background: "linear-gradient(135deg, #991b1b, #dc2626)", border: "3px solid #fde047", borderRadius: 16, cursor: "pointer", textAlign: "center", color: "white", boxShadow: "0 6px 24px rgba(153,27,27,0.5)" }}
+            style={{ width: "100%", padding: "10px 10px", background: "linear-gradient(135deg, #991b1b, #dc2626)", border: "2px solid #fde047", borderRadius: 12, cursor: "pointer", textAlign: "center", color: "white", boxShadow: "0 4px 16px rgba(153,27,27,0.5)" }}
           >
-            <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 900 }}>🎉 오픈기념 한정특가 (조기마감될 수 있어요)</p>
-            <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 800, background: "#7a0c1f", color: "#fff", borderRadius: 10, padding: "8px 10px", lineHeight: 1.6, wordBreak: "keep-all" }}>
+            <p style={{ margin: "0 0 6px", fontSize: 11, fontWeight: 900 }}>🎉 오픈기념 한정특가 (조기마감될 수 있어요)</p>
+            <p style={{ margin: "0 0 6px", fontSize: 11, fontWeight: 800, background: "#7a0c1f", color: "#fff", borderRadius: 8, padding: "5px 7px", lineHeight: 1.4, wordBreak: "keep-all" }}>
               🎍신년운세 + 💗연애사주 + 🔍내사람찾기 + 💍결혼사주 + 🌧이혼운세
             </p>
-            <p style={{ margin: "0 0 10px", fontSize: 15, fontWeight: 900 }}>
-              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 13, marginRight: 8 }}>정가 4,950원</span>
-              5개 사주 몽땅 <span style={{ color: "#fde047", fontSize: 24 }}>990원</span>에 드려요!
+            <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900 }}>
+              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 11, marginRight: 6 }}>정가 4,950원</span>
+              5개 사주 몽땅 <span style={{ color: "#fde047", fontSize: 18 }}>990원</span>에 드려요!
             </p>
-            <p style={{ margin: 0, fontSize: 13, fontWeight: 900, color: "#7a0c1f", background: "#fde047", borderRadius: 10, padding: "8px 10px" }}>
+            <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#7a0c1f", background: "#fde047", borderRadius: 8, padding: "5px 7px" }}>
               👆 여기를 눌러서 5개 몽땅 결제하기
             </p>
-            <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
-              <p style={{ margin: 0, fontSize: 12, color: "#f9a8d4", fontWeight: 700, lineHeight: 1.8 }}>
+            <div style={{ marginTop: 6, paddingTop: 6, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
+              <p style={{ margin: 0, fontSize: 10, color: "#f9a8d4", fontWeight: 700, lineHeight: 1.5 }}>
                 🎁 결제하면 3종 24시간 무료!<br />
                 <b style={{ color: "#fde047" }}>꿈해몽 전체</b> · <b style={{ color: "#fde047" }}>점냥이 채팅</b> · <b style={{ color: "#fde047" }}>Q&A 전체</b><br />
-                <span style={{ color: "rgba(255,255,255,0.75)", fontSize: 11 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
+                <span style={{ color: "rgba(255,255,255,0.75)", fontSize: 9 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
               </p>
             </div>
           </button>
