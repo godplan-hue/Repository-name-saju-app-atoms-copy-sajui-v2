@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ 직운 리워드광고 가짜전역참조로 닫기만해도 언락되던 진짜버그 발견+수정 (2026-09-01)](bug_jigun_reward_ad_fake_globalref_2026_09_01.md) — commit f3a86ec, 9개앱중 jigun만버그 나머지8개는정상, 라이브재현시 콘솔업로드여부부터확인
 - [⭐⭐⭐⭐⭐ 손절각+연락기록통계 광고=개별언락 최종확정 + 대운/택일 990원결제+진짜리워드광고 전환 전부완료 (2026-09-01)](project_sonjeolgak_gwangyeoradar_global_unlock_2026_09_01.md) — 대운 e3f931a+30d6687, 택일 49c2a12+0b02e2c, .ait 재빌드완료 콘솔업로드만 남음(삭제예정 배지 급함)
 - [⭐⭐⭐⭐⭐ 구글 미색인 근본원인=Vercel CNAME/Cloudflare A레코드 불일치, 사이트맵재제출로 색인 66→1260개 (2026-09-01)](bug_dns_cname_fix_google_indexing_2026_08_28.md) — 브랜드검색 노출은 별개(랭킹), site:jeomun.com으로 색인확인, [[feedback_gsc_bulk_action_must_be_named_explicitly_2026_09_01]] 대량처리버튼 먼저제시할것
 - [⭐⭐⭐⭐ 홍보영상: 대사는 기본(짧게1줄), 무대사 액션+로고등장은 "가끔 괜찮은" 옵션 (2026-09-01)](feedback_dialogueless_action_video_confirmed_2026_09_01.md) — 무대사가 기본아님, 캡션여러줄 나열만 금지
