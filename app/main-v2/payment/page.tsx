@@ -543,9 +543,11 @@ function PaymentInner() {
             <div style={{ marginTop: 6, paddingTop: 6, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
               <p style={{ margin: 0, fontSize: 10, color: "#f9a8d4", fontWeight: 700, lineHeight: 1.5 }}>
                 🎁 결제하면 3종 24시간 무료!<br />
-                <b style={{ color: "#fde047" }}>꿈해몽 전체</b> · <b style={{ color: "#fde047" }}>점냥이 채팅</b> · <b style={{ color: "#fde047" }}>Q&A 전체</b><br />
-                <span style={{ color: "rgba(255,255,255,0.75)", fontSize: 9 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
+                <b style={{ color: "#fde047" }}>꿈해몽 전체</b> · <b style={{ color: "#fde047" }}>점냥이 채팅</b> · <b style={{ color: "#fde047" }}>Q&A 전체</b>
               </p>
+            </div>
+            <div style={{ marginTop: 10, padding: "11px 0", background: "#fde047", color: "#7a0c1f", borderRadius: 10, fontSize: 14, fontWeight: 900 }}>
+              5종 결제하기 →
             </div>
           </button>
         </div>
