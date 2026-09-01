@@ -908,30 +908,18 @@ export default function MainV2() {
             <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 800, background: "#7a0c1f", color: "#fff", borderRadius: 10, padding: "8px 10px", lineHeight: 1.6, wordBreak: "keep-all" }}>
               🎍신년운세 + 💗연애사주 + 🔍내사람찾기 + 💍결혼사주 + 🌧이혼운세
             </p>
-            <p style={{ margin: 0, fontSize: 15, fontWeight: 900 }}>
+            <p style={{ margin: "0 0 10px", fontSize: 15, fontWeight: 900 }}>
               <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 13, marginRight: 8 }}>정가 4,950원</span>
               5개 사주 몽땅 <span style={{ color: "#fde047", fontSize: 24 }}>990원</span>에 드려요!
             </p>
+            <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
+              <p style={{ margin: 0, fontSize: 12, color: "#f9a8d4", fontWeight: 700, lineHeight: 1.8 }}>
+                🎁 결제하면 3종 24시간 무료!<br />
+                <b style={{ color: "#fde047" }}>꿈해몽 전체</b> · <b style={{ color: "#fde047" }}>점냥이 채팅</b> · <b style={{ color: "#fde047" }}>Q&A 전체</b><br />
+                <span style={{ color: "rgba(255,255,255,0.75)", fontSize: 11 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
+              </p>
+            </div>
           </button>
-          <button
-            onClick={() => {
-              const queue = "sinyeon,love_detail,findmatch,marriage_detail,divorce";
-              const paid = 990;
-              const label = "오픈기념 5종 세트";
-              const next = `/payment-complete?naming=1&queue=${queue}&paid=${paid}&package=${encodeURIComponent(label)}`;
-              window.location.href = `/main-v2/pay?amount=${paid}&next=${encodeURIComponent(next)}`;
-            }}
-            style={{ width: "100%", marginTop: 10, padding: "14px", background: "linear-gradient(135deg,#dc2626,#991b1b)", border: "none", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 900, cursor: "pointer" }}
-          >
-            5종 990원 결제하기 →
-          </button>
-          <div style={{ marginTop: 10, padding: "10px 14px", background: "rgba(139,92,246,0.12)", borderRadius: 12, border: "1px solid rgba(139,92,246,0.3)", textAlign: "center" }}>
-            <p style={{ margin: 0, fontSize: 12, color: "#c4b5fd", fontWeight: 700, lineHeight: 1.8 }}>
-              🎁 결제하면 3종 24시간 무료!<br />
-              <b style={{ color: "#f9a8d4" }}>꿈해몽 전체</b> · <b style={{ color: "#f9a8d4" }}>점냥이 채팅</b> · <b style={{ color: "#f9a8d4" }}>Q&A 전체</b><br />
-              <span style={{ color: "rgba(196,181,253,0.7)", fontSize: 11 }}>결제 후 24시간 동안 무료로 이용할 수 있어요</span>
-            </p>
-          </div>
         </div>
       )}
 
