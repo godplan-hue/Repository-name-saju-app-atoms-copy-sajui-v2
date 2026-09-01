@@ -910,7 +910,7 @@ export default function MainV2() {
             </p>
             <p style={{ margin: 0, fontSize: 15, fontWeight: 900 }}>
               <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 13, marginRight: 8 }}>정가 4,950원</span>
-              5개 몽땅 <span style={{ color: "#fde047", fontSize: 24 }}>990원</span>에 드려요!
+              5개 사주 몽땅 <span style={{ color: "#fde047", fontSize: 24 }}>990원</span>에 드려요!
             </p>
           </button>
         </div>
