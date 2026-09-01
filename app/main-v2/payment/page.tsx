@@ -534,7 +534,7 @@ function PaymentInner() {
               🎍신년운세 + 💗연애사주 + 🔍내사람찾기 + 💍결혼사주 + 🌧이혼운세
             </p>
             <p style={{ margin: 0, fontSize: 15, fontWeight: 900 }}>
-              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 13, marginRight: 8 }}>4,950원</span>
+              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 13, marginRight: 8 }}>정가 4,950원</span>
               5개 몽땅 <span style={{ color: "#fde047", fontSize: 24 }}>990원</span>에 드려요!
             </p>
           </button>
