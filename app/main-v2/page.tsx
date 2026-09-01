@@ -904,7 +904,7 @@ export default function MainV2() {
             }}
             style={{ width: "100%", maxWidth: 480, margin: "0 auto", display: "block", padding: "16px 14px", background: "linear-gradient(135deg, #ef4444, #f59e0b)", border: "2px solid rgba(255,255,255,0.5)", borderRadius: 16, cursor: "pointer", textAlign: "center", color: "#fff", boxShadow: "0 6px 22px rgba(239,68,68,0.45)" }}
           >
-            <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 900, letterSpacing: "0.3px", wordBreak: "keep-all" }}>🎉 오픈기념 한정특가 · 신년운세+연애사주+내사람찾기+결혼사주+이혼운세</p>
+            <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 900, letterSpacing: "0.3px", wordBreak: "keep-all" }}>🎉 오픈기념 한정특가 (조기마감될 수 있어요) · 신년운세+연애사주+내사람찾기+결혼사주+이혼운세</p>
             <p style={{ margin: 0, fontSize: 20, fontWeight: 900 }}>
               <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 14, marginRight: 8 }}>₩4,950</span>
               5개 전부 ₩990

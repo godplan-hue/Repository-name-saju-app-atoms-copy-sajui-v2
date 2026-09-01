@@ -529,11 +529,10 @@ function PaymentInner() {
             }}
             style={{ width: "100%", padding: "16px 14px", background: "linear-gradient(135deg, #ef4444, #f59e0b)", border: "2px solid rgba(255,255,255,0.45)", borderRadius: 16, cursor: "pointer", textAlign: "center", color: "white", boxShadow: "0 6px 24px rgba(239,68,68,0.4)" }}
           >
-            <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 900 }}>🎉 오픈기념 한정특가</p>
-            <p style={{ margin: "0 0 6px", fontSize: 14, fontWeight: 900, lineHeight: 1.4, wordBreak: "keep-all" }}>신년운세 + 연애사주 + 내 사람 찾기 + 결혼사주 + 이혼운세</p>
+            <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 900, wordBreak: "keep-all" }}>🎉 오픈기념 한정특가 (조기마감될 수 있어요) · 신년운세+연애사주+내사람찾기+결혼사주+이혼운세</p>
             <p style={{ margin: 0, fontSize: 20, fontWeight: 900 }}>
-              <span style={{ textDecoration: "line-through", opacity: 0.7, fontSize: 14, marginRight: 8 }}>₩4,950</span>
-              ₩990
+              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 14, marginRight: 8 }}>₩4,950</span>
+              5개 전부 ₩990
             </p>
           </button>
         </div>
