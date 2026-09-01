@@ -103,7 +103,7 @@ export default function MbtiPage() {
       const res = await fetch("/api/mbti/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers: finalAnswers, userName, phone: phone.replace(/\D/g, ""), email, marketing: marketingAgreed }),
+        body: JSON.stringify({ answers: finalAnswers, userName, phone: phone.replace(/\D/g, ""), email, marketing: marketingAgreed, adSource: (() => { try { return localStorage.getItem("first_source") || ""; } catch { return ""; } })() }),
       });
       const data = await res.json();
       if (data.id) {
