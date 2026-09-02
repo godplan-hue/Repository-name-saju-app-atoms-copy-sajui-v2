@@ -537,9 +537,6 @@ function PaymentInner() {
               <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 11, marginRight: 6 }}>정가 4,950원</span>
               5개 사주 몽땅 <span style={{ color: "#fde047", fontSize: 18 }}>990원</span>에 드려요!
             </p>
-            <p style={{ margin: 0, fontSize: 11, fontWeight: 900, color: "#7a0c1f", background: "#fde047", borderRadius: 8, padding: "5px 7px" }}>
-              👆 여기를 눌러서 5개 몽땅 결제하기
-            </p>
             <div style={{ marginTop: 6, paddingTop: 6, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
               <p style={{ margin: 0, fontSize: 10, color: "#f9a8d4", fontWeight: 700, lineHeight: 1.5 }}>
                 🎁 결제하면 3종 24시간 무료!<br />
