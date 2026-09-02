@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⛔ 펫운/별자리/꿈해몽 무료잠금해제 광고 전면→진짜리워드 전환완료, 3앱모두 리워드ID가짜/공백 남음 (2026-09-02)](bug_petun_zodiac_haemong_interstitial_to_reward_ad_2026_09_02.md) — commit 679f074/4d9a40d/8a82d7b, 콘솔에서 진짜 리워드 그룹ID 3개 받아야 실제작동
 - [⭐⭐⭐⭐⭐ 스마트발송 발송대상(포함/제외 유저) 실제 조건 세팅법 확정 (2026-09-02)](project_smartpush_targeting_condition_setup_2026_09_02.md) — 유저활동>서비스방문>앱선택+기간, 신규유입=제외365일/재방문=제외1일, [[project_smartpush_new_user_acquisition]] 4개앱한정결정과 별개로 육아일기도 확장적용중
 - [⭐⭐⭐⭐ 스마트발송 가계부 앱 적용 (2026-09-02)](project_smartpush_targeting_budget_2026_09_02.md) — 육아일기와 동일패턴, 광고문구숫자만 1,893명으로 다르게
 - [⛔ 18개 다른앱소개 작업시 다른화면에 이미있는 기존섹션은 손대지말것 (2026-09-01)](feedback_dont_remove_existing_crosspromo_other_pages_2026_09_01.md) — jeomun-saju에이전트가 정리명목으로 기존 인라인그리드 삭제→제지받음, 추가만하고 기존것은 그대로
