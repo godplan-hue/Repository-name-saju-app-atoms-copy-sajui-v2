@@ -1,6 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
 - [⭐⭐⭐⭐⭐ 스마트발송 발송대상(포함/제외 유저) 실제 조건 세팅법 확정 (2026-09-02)](project_smartpush_targeting_condition_setup_2026_09_02.md) — 유저활동>서비스방문>앱선택+기간, 신규유입=제외365일/재방문=제외1일, [[project_smartpush_new_user_acquisition]] 4개앱한정결정과 별개로 육아일기도 확장적용중
+- [⭐⭐⭐⭐ 스마트발송 가계부 앱 적용 (2026-09-02)](project_smartpush_targeting_budget_2026_09_02.md) — 육아일기와 동일패턴, 광고문구숫자만 1,893명으로 다르게
 - [⛔ 18개 다른앱소개 작업시 다른화면에 이미있는 기존섹션은 손대지말것 (2026-09-01)](feedback_dont_remove_existing_crosspromo_other_pages_2026_09_01.md) — jeomun-saju에이전트가 정리명목으로 기존 인라인그리드 삭제→제지받음, 추가만하고 기존것은 그대로
 - [⭐⭐⭐⭐⭐ 18개앱 전부 인트로+결과지에 CrossPromoMini 확인완료 (2026-09-01)](project_crosspromo_intro_result_all18apps_done_2026_09_01.md) — 17개앱 병렬에이전트+taegil수동, 커밋해시전체목록, 콘솔재업로드 전부남음(대운최우선)
 - [⭐⭐⭐⭐⭐ 직운 리워드광고 가짜전역참조로 닫기만해도 언락되던 진짜버그 발견+수정 (2026-09-01)](bug_jigun_reward_ad_fake_globalref_2026_09_01.md) — commit f3a86ec, 9개앱중 jigun만버그 나머지8개는정상, 라이브재현시 콘솔업로드여부부터확인
