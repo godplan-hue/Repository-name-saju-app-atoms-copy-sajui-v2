@@ -1,7 +1,27 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import FreeForm from "./FreeForm";
 
 const BG = "linear-gradient(160deg, #0f0620 0%, #1a0f35 50%, #0a0420 100%)";
+
+type Props = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const sp = await searchParams;
+  const qs = new URLSearchParams();
+  for (const [key, value] of Object.entries(sp)) {
+    if (typeof value === "string") qs.set(key, value);
+    else if (Array.isArray(value)) value.forEach((v) => qs.append(key, v));
+  }
+  const query = qs.toString();
+  const url = `https://jeomun.com/free${query ? `?${query}` : ""}`;
+
+  return {
+    openGraph: { url },
+  };
+}
 
 export default function FreePage() {
   return (
