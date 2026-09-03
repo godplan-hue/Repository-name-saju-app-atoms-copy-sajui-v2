@@ -1,13 +1,14 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐⭐⭐ 점냥이 홍보영상 프롬프트 구조 최종확정 "구조짱이다" 승인 + 파도타기버전 실제인기영상검증 (2026-09-03)](feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03.md) — 왕관+990항상노출/대사완결(점운잘림방지)/숫자순우리말발음, [[feedback_dialogueless_action_video_confirmed_2026_09_01]] 파도타기형이 1순위 검증템플릿으로 승격
+- [⛔ 토스MBTI 하나씩광고언락 제안→미빌드 폐기, 라이브구조(광고1회=20개전부)가 최종 (2026-09-03)](feedback_mbti_one_by_one_unlock_rejected_2026_09_03.md) — [[feedback_mbti_reward_fix_confirmed_working_2026_09_01]] 재확인, 재제안금지
+- [⭐⭐⭐⭐⭐ 점냥이 홍보영상 프롬프트 구조 최종확정 "구조짱이다" 승인 (2026-09-03)](feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03.md) — 왕관+990항상노출/대사완결(점운잘림방지)/숫자순우리말발음, [[feedback_video_prompt_banner_korean_3d_rule_2026_08_29]] 3종위에추가
 - [⛔ 펫운/별자리/꿈해몽 무료잠금해제 광고 전면→진짜리워드 전환완료, 3앱모두 리워드ID가짜/공백 남음 (2026-09-02)](bug_petun_zodiac_haemong_interstitial_to_reward_ad_2026_09_02.md) — commit 679f074/4d9a40d/8a82d7b, 콘솔에서 진짜 리워드 그룹ID 3개 받아야 실제작동
 - [⭐⭐⭐⭐⭐ 스마트발송 발송대상(포함/제외 유저) 실제 조건 세팅법 확정 (2026-09-02)](project_smartpush_targeting_condition_setup_2026_09_02.md) — 유저활동>서비스방문>앱선택+기간, 신규유입=제외365일/재방문=제외1일, [[project_smartpush_new_user_acquisition]] 4개앱한정결정과 별개로 육아일기도 확장적용중
-- [⭐⭐⭐⭐ 스마트발송 가계부 앱 적용 (2026-09-02)](project_smartpush_targeting_budget_2026_09_02.md) — 육아일기와 동일패턴, 광고문구숫자만 1,893명으로 다르게
+- [⭐⭐⭐⭐ 결제알림 상품명 "운세"로만 뜨던버그 + 타로 리워드광고 15초→3초완화 재빌드 (2026-09-01)](bug_mainv2_pay_package_label_hardcoded_2026_09_01.md) — commit 2591462b, /main-v2/pay vs /payment 혼동주의, [[bug_tarot_reward_ad_watch_threshold_2026_09_01]] .ait재업로드필요
 - [⛔ 18개 다른앱소개 작업시 다른화면에 이미있는 기존섹션은 손대지말것 (2026-09-01)](feedback_dont_remove_existing_crosspromo_other_pages_2026_09_01.md) — jeomun-saju에이전트가 정리명목으로 기존 인라인그리드 삭제→제지받음, 추가만하고 기존것은 그대로
 - [⭐⭐⭐⭐⭐ 18개앱 전부 인트로+결과지에 CrossPromoMini 확인완료 (2026-09-01)](project_crosspromo_intro_result_all18apps_done_2026_09_01.md) — 17개앱 병렬에이전트+taegil수동, 커밋해시전체목록, 콘솔재업로드 전부남음(대운최우선)
 - [⭐⭐⭐⭐⭐ 직운 리워드광고 가짜전역참조로 닫기만해도 언락되던 진짜버그 발견+수정 (2026-09-01)](bug_jigun_reward_ad_fake_globalref_2026_09_01.md) — commit f3a86ec, 9개앱중 jigun만버그 나머지8개는정상, 라이브재현시 콘솔업로드여부부터확인
-- [⭐⭐⭐⭐⭐ MBTI는 리워드광고 15초방어 수정후 상태좋음 확인, 더 건들지말것 (2026-09-01)](feedback_mbti_reward_fix_confirmed_working_2026_09_01.md) — commit 2ebcbb4, 지시 손대지마→수정해도→다시손대지마 반복이력, 택일도 놔두라고 지시받음(interstitial vs reward 구분 정상)
+- [⛔⛔⛔ MBTI 최종확정: 라이브(2ebcbb4 적용전) 버전이 기준, 재적용 절대금지 (2026-09-01)](feedback_mbti_reward_fix_confirmed_working_2026_09_01.md) — 버그없음 확인됨, 향후수정시 이 커밋 되살리지말것, 택일도 놔두라고 지시받음
 - [⭐⭐⭐⭐⭐ 손절각+연락기록통계 광고=개별언락 최종확정 + 대운/택일 990원결제+진짜리워드광고 전환 전부완료 (2026-09-01)](project_sonjeolgak_gwangyeoradar_global_unlock_2026_09_01.md) — 대운 e3f931a+30d6687, 택일 49c2a12+0b02e2c, .ait 재빌드완료 콘솔업로드만 남음(삭제예정 배지 급함)
 - [⭐⭐⭐⭐⭐ 구글 미색인 근본원인=Vercel CNAME/Cloudflare A레코드 불일치, 사이트맵재제출로 색인 66→1260개 (2026-09-01)](bug_dns_cname_fix_google_indexing_2026_08_28.md) — 브랜드검색 노출은 별개(랭킹), site:jeomun.com으로 색인확인, [[feedback_gsc_bulk_action_must_be_named_explicitly_2026_09_01]] 대량처리버튼 먼저제시할것
 - [⭐⭐⭐⭐ 홍보영상: 대사는 기본(짧게1줄), 무대사 액션+로고등장은 "가끔 괜찮은" 옵션 (2026-09-01)](feedback_dialogueless_action_video_confirmed_2026_09_01.md) — 무대사가 기본아님, 캡션여러줄 나열만 금지
