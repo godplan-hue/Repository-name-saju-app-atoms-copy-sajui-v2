@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import DaewoonClient from "./DaewoonClient";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
