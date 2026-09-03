@@ -66,9 +66,15 @@ export default function RefTracker() {
       // 최초 유입경로(틱톡·유튜브 등)를 한 번만 저장해둠 — 이후 사이트 내부를
       // window.location.href로 이동할 때마다 document.referrer가 직전 내부
       // 페이지로 계속 바뀌어버려서, 가입/결제 시점엔 최초 유입경로가 사라지고
-      // "점운내부"로만 잡히던 문제를 막기 위함
-      if (!localStorage.getItem("first_source")) {
-        localStorage.setItem("first_source", detectFromParams(params) || detectSource(document.referrer || ""));
+      // "점운내부"로만 잡히던 문제를 막기 위함.
+      // 단, 이번 방문 URL에 utm_source/gclid 같은 실제 광고 파라미터가 붙어있으면
+      // 예전에 저장된 값(같은 기기로 재테스트했거나 예전에 다른 경로로 들어왔던 경우)을
+      // 덮어써서 항상 최신 광고 클릭을 우선한다.
+      const fromParams = detectFromParams(params);
+      if (fromParams) {
+        localStorage.setItem("first_source", fromParams);
+      } else if (!localStorage.getItem("first_source")) {
+        localStorage.setItem("first_source", detectSource(document.referrer || ""));
       }
     } catch {}
   }, []);
