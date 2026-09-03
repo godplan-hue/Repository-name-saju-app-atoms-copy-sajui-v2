@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐⭐⭐ 점냥이 홍보영상 프롬프트 구조 최종확정 "구조짱이다" 승인 + 파도타기버전 실제인기영상검증 (2026-09-03)](feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03.md) — 왕관+990항상노출/대사완결(점운잘림방지)/숫자순우리말발음, [[feedback_dialogueless_action_video_confirmed_2026_09_01]] 파도타기형이 1순위 검증템플릿으로 승격
 - [⛔ 펫운/별자리/꿈해몽 무료잠금해제 광고 전면→진짜리워드 전환완료, 3앱모두 리워드ID가짜/공백 남음 (2026-09-02)](bug_petun_zodiac_haemong_interstitial_to_reward_ad_2026_09_02.md) — commit 679f074/4d9a40d/8a82d7b, 콘솔에서 진짜 리워드 그룹ID 3개 받아야 실제작동
 - [⭐⭐⭐⭐⭐ 스마트발송 발송대상(포함/제외 유저) 실제 조건 세팅법 확정 (2026-09-02)](project_smartpush_targeting_condition_setup_2026_09_02.md) — 유저활동>서비스방문>앱선택+기간, 신규유입=제외365일/재방문=제외1일, [[project_smartpush_new_user_acquisition]] 4개앱한정결정과 별개로 육아일기도 확장적용중
 - [⭐⭐⭐⭐ 스마트발송 가계부 앱 적용 (2026-09-02)](project_smartpush_targeting_budget_2026_09_02.md) — 육아일기와 동일패턴, 광고문구숫자만 1,893명으로 다르게
