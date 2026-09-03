@@ -9,12 +9,19 @@ interface Lead {
   email?: string;
   birthYear?: string;
   source?: string;
+  adSource?: string;
   code?: string;
   used?: boolean;
   createdAt: number;
 }
 
 type SourceFilter = "all" | "free" | "jigun" | "resume";
+
+const AD_SOURCE_ICON: Record<string, string> = {
+  구글: "🔍", 구글애즈: "🎯", 네이버: "🟢", 다음: "🟠", 빙: "🔷", 카카오: "💛", 인스타: "📸",
+  유튜브: "▶️", 틱톡: "🎵", 페이스북: "📘", 당근: "🥕", 네이버블로그: "📝",
+  티스토리: "📝", 직접: "🔗",
+};
 
 export default function AdminFreeLeads() {
   const router = useRouter();
@@ -97,6 +104,7 @@ export default function AdminFreeLeads() {
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>이메일</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>생년</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>출처</th>
+                    <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>유입경로</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>쿠폰코드</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>사용여부</th>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 700, color: "#374151" }}>신청일</th>
@@ -117,6 +125,13 @@ export default function AdminFreeLeads() {
                         }}>
                           {lead.source === "jigun" ? "💼직운" : lead.source === "resume" ? "📄합격자소서" : "🎁무료재물운"}
                         </span>
+                      </td>
+                      <td style={{ padding: "12px 16px" }}>
+                        {lead.adSource
+                          ? <span style={{ background: "#f3f4f6", color: "#374151", padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700 }}>
+                              {AD_SOURCE_ICON[lead.adSource] || "🌐"} {lead.adSource}
+                            </span>
+                          : <span style={{ color: "#9ca3af", fontSize: 12 }}>—</span>}
                       </td>
                       <td style={{ padding: "12px 16px" }}>
                         {lead.code

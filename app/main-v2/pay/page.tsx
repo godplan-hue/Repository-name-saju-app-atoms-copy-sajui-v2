@@ -246,6 +246,7 @@ function PayInner() {
           discountPercent: info.discountPct,
           originalAmount: info.amount,
           source: info.sourceInfo,
+          adSource: (() => { try { return localStorage.getItem("first_source") || ""; } catch { return ""; } })(),
         }),
       }).catch(() => {});
     }

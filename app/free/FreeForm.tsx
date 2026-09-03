@@ -39,7 +39,7 @@ export default function FreeForm() {
       const res = await fetch("/api/free-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), phone: clean, email: email.trim(), marketing: marketingAgreed }),
+        body: JSON.stringify({ name: name.trim(), phone: clean, email: email.trim(), marketing: marketingAgreed, adSource: (() => { try { return localStorage.getItem("first_source") || ""; } catch { return ""; } })() }),
       });
       const data = await res.json();
       if (data.duplicate) {

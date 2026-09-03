@@ -31,7 +31,7 @@ function DaewoonPayInner() {
     const cleanMobile = info.mobile.replace(/\D/g, "");
     fetch("/api/v2/save-payment", {
       method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
-      body: JSON.stringify({ id: `daewoon_${Date.now()}`, phone: cleanMobile || "", name: info.name.trim() || "", amount: info.price ?? price, category: `대운 해설 ${info.count}개`, source: "daewoon" }),
+      body: JSON.stringify({ id: `daewoon_${Date.now()}`, phone: cleanMobile || "", name: info.name.trim() || "", amount: info.price ?? price, category: `대운 해설 ${info.count}개`, source: "daewoon", adSource: (() => { try { return localStorage.getItem("first_source") || ""; } catch { return ""; } })() }),
     }).catch(() => {});
     window.location.href = `/main-v2/daewoon?daeunPaid=1&daeunCount=${info.count}&daeunIndices=${encodeURIComponent(info.indices)}`;
   };
