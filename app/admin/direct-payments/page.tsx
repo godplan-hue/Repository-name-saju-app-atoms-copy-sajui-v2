@@ -10,6 +10,7 @@ interface Lead {
   birthYear?: string;
   source?: string;
   sources?: string[];
+  adSource?: string;
   code?: string;
   used?: boolean;
   marketing?: boolean;
@@ -359,7 +360,7 @@ export default function AdminDirectPayments() {
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                 <thead>
                   <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
-                    {["이름", "전화번호", "이메일", "출처", "마케팅", "생년", "쿠폰코드", "사용여부", "신청일"].map(h => (
+                    {["이름", "전화번호", "이메일", "출처", "유입경로", "마케팅", "생년", "쿠폰코드", "사용여부", "신청일"].map(h => (
                       <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontWeight: 900, color: "#374151" }}>{h}</th>
                     ))}
                   </tr>
@@ -372,6 +373,13 @@ export default function AdminDirectPayments() {
                       <td style={{ padding: "10px 12px", color: "#6b7280" }}>{lead.email || "-"}</td>
                       <td style={{ padding: "10px 12px" }}>
                         {(lead.sources ?? [lead.source ?? "free"]).map(s => <SourceBadge key={s} source={s} />)}
+                      </td>
+                      <td style={{ padding: "10px 12px" }}>
+                        {lead.adSource
+                          ? <span style={{ background: "#f3f4f6", color: "#374151", padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700 }}>
+                              {AD_SOURCE_ICON[lead.adSource] || "🌐"} {lead.adSource}
+                            </span>
+                          : <span style={{ color: "#d1d5db" }}>—</span>}
                       </td>
                       <td style={{ padding: "10px 12px" }}>
                         {lead.marketing === true
