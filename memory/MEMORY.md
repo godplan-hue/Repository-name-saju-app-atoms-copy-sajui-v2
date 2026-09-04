@@ -1,5 +1,8 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⛔⛔⛔ 영상프롬프트 "그대로달라"=무수정재현, 자막깨짐은 텍스트삭제로 풀지말것 (2026-09-04)](feedback_video_prompt_verbatim_no_rewrite_2026_09_04.md) — 임의개선시도 5연속 분노유발("시발진짜"), 고양이목소리 명시추가는 [[feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03]] 4번항목
+- [⭐⭐⭐ 홍보영상 화면자막↔대사 분리규칙 (2026-09-04)](feedback_video_prompt_caption_vs_dialogue_separation_2026_09_04.md) — MBTI/대운/택일 3종, 무료앱은 왕관에 "무료" 각인
+- [⭐⭐⭐⭐ 가계부/감정일기/다이어트/맘케어 4개앱 서버백업실패 무음버그 실제수정+빌드+푸시완료 (2026-09-04)](bug_diary4apps_silent_save_failure_fixed_2026_09_04.md) — 이전메모(08-30)는 틀린기록이었음, syncFailed배너 4앱전부, 콘솔업로드만 남음
 - [⛔ 토스MBTI 하나씩광고언락 제안→미빌드 폐기, 라이브구조(광고1회=20개전부)가 최종 (2026-09-03)](feedback_mbti_one_by_one_unlock_rejected_2026_09_03.md) — [[feedback_mbti_reward_fix_confirmed_working_2026_09_01]] 재확인, 재제안금지
 - [⭐⭐⭐⭐⭐ 점냥이 홍보영상 프롬프트 구조 최종확정 "구조짱이다" 승인 (2026-09-03)](feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03.md) — 왕관+990항상노출/대사완결(점운잘림방지)/숫자순우리말발음, [[feedback_video_prompt_banner_korean_3d_rule_2026_08_29]] 3종위에추가
 - [⛔ 펫운/별자리/꿈해몽 무료잠금해제 광고 전면→진짜리워드 전환완료, 3앱모두 리워드ID가짜/공백 남음 (2026-09-02)](bug_petun_zodiac_haemong_interstitial_to_reward_ad_2026_09_02.md) — commit 679f074/4d9a40d/8a82d7b, 콘솔에서 진짜 리워드 그룹ID 3개 받아야 실제작동
