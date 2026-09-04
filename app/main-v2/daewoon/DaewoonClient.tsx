@@ -512,7 +512,7 @@ function DaewoonInner() {
             }} style={{ background: "rgba(139,92,246,0.25)", border: "1px solid rgba(139,92,246,0.6)", color: "#fbbf24", padding: "8px 14px", borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: "pointer", marginBottom: 20 }}>← 돌아가기</button>
 
             <a href="https://minion.toss.im/3DuwWNLj" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "linear-gradient(135deg,#facc15,#fb923c)", color: "#1a1a1a", fontWeight: 900, fontSize: 14, padding: "12px 16px", borderRadius: 14, textDecoration: "none", marginBottom: 20, boxShadow: "0 4px 16px rgba(250,204,21,0.4)" }}>
-              🎁 전체 무료로 보려면 토스 대운에서 확인 →
+              🎁 전체 무료로 보려면 토스 대운에서 확인 → 바로가기
             </a>
 
             <div style={{ textAlign: "center" }}>

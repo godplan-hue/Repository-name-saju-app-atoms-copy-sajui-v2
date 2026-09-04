@@ -341,7 +341,7 @@ export default function TaegilClient() {
         <button onClick={() => { window.location.href = "/main-v2"; }} style={{ background:"none", border:"none", color:"rgba(255,255,255,0.8)", fontSize:14, cursor:"pointer", padding:0, marginBottom:12 }}>← 홈으로</button>
 
         <a href="https://minion.toss.im/PBTFNtl6" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "linear-gradient(135deg,#facc15,#fb923c)", color: "#1a1a1a", fontWeight: 900, fontSize: 14, padding: "12px 16px", borderRadius: 14, textDecoration: "none", marginBottom: 16, boxShadow: "0 4px 16px rgba(250,204,21,0.4)" }}>
-          🎁 전체 무료로 보려면 토스 택일에서 확인 →
+          🎁 전체 무료로 보려면 토스 택일에서 확인 → 바로가기
         </a>
 
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>

@@ -292,7 +292,7 @@ export default function MbtiResultPage() {
           <Link href="/mbti" style={{ color: ohColor, fontSize: 13, textDecoration: "none", display: "block", marginBottom: 16 }}>← 다시 테스트하기</Link>
 
           <a href="https://minion.toss.im/pht8Fcyp" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "linear-gradient(135deg,#facc15,#fb923c)", color: "#1a1a1a", fontWeight: 900, fontSize: 14, padding: "12px 16px", borderRadius: 14, textDecoration: "none", marginBottom: 20, textAlign: "center" as const, boxShadow: "0 4px 16px rgba(250,204,21,0.4)" }}>
-            🎁 전체 무료로 보려면 토스 MBTI에서 확인 →
+            🎁 전체 무료로 보려면 토스 MBTI에서 확인 → 바로가기
           </a>
 
           <div style={{ textAlign: "center" as const }}>
