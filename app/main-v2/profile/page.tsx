@@ -116,7 +116,7 @@ export default function V2Profile() {
             sessionStorage.setItem("v2_profile", JSON.stringify(p));
             const afterGoto = sessionStorage.getItem("v2_after_payment_goto");
             sessionStorage.removeItem("v2_after_payment_goto");
-            if (afterGoto === "special") {
+            if (afterGoto === "special" && sessionStorage.getItem("specialType")) {
               router.replace("/main-v2/special");
             } else {
               sessionStorage.removeItem("specialPaid");
@@ -302,10 +302,11 @@ export default function V2Profile() {
       router.push("/main-v2/daewoon");
     } else if (pendingModal) {
       router.push("/main-v2");
-    } else if (afterPaymentGoto === "special") {
+    } else if (afterPaymentGoto === "special" && sessionStorage.getItem("specialType")) {
       sessionStorage.removeItem("v2_after_payment_goto");
       router.push("/main-v2/special");
     } else {
+      sessionStorage.removeItem("v2_after_payment_goto");
       router.push("/main-v2/analysis");
     }
   };
