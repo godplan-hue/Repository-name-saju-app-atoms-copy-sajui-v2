@@ -30,7 +30,13 @@ function QAListContent() {
         if (saved) { const p = JSON.parse(saved); n = p?.name ?? ""; y = Number(p?.birthYear ?? 0); }
       } catch {}
     }
-    if (!n || !y) { window.location.replace("/main-v2"); return; }
+    if (!n || !y) {
+      sessionStorage.setItem("v2_profile_next_url", window.location.href);
+      sessionStorage.setItem("v2_from_app", "1");
+      document.cookie = "jeomun_from_app=1; path=/; max-age=30";
+      window.location.href = "/main-v2/profile";
+      return;
+    }
     setName(n);
     setBirthYear(y);
     const lsUnlock = localStorage.getItem(`v2_qa_unlock_${n}_${y}`);
