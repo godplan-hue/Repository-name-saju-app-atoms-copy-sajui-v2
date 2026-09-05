@@ -93,6 +93,35 @@ export default function AppsPage() {
       daysMap[href] = s.days;
     });
     setUnlocks(daysMap);
+
+    // 이 기기 localStorage에 값이 없어도(다른 브라우저 등) 전화번호로
+    // Firebase에 저장된 실제 잠금해제 상태를 다시 불러와 덮어쓰지 않고 병합
+    try {
+      const phone = localStorage.getItem("v2_verified_phone");
+      if (phone) {
+        fetch(`/api/phone-unlock?phone=${phone}`)
+          .then(r => r.json())
+          .then(d => {
+            if (!d.ok || !d.unlocks) return;
+            const merged: Record<string, number> = { ...daysMap };
+            let changed = false;
+            Object.entries(UNLOCK_KEYS).forEach(([href, key]) => {
+              const fbUntil = Number(d.unlocks[key] || 0);
+              if (fbUntil > Date.now()) {
+                const localUntil = Number(localStorage.getItem(key) || 0);
+                if (fbUntil > localUntil) {
+                  localStorage.setItem(key, String(fbUntil));
+                  changed = true;
+                }
+                const fbDays = Math.ceil((fbUntil - Date.now()) / (24 * 60 * 60 * 1000));
+                if (fbDays > (merged[href] || 0)) merged[href] = fbDays;
+              }
+            });
+            if (changed || Object.keys(merged).some(k => merged[k] !== daysMap[k])) setUnlocks(merged);
+          })
+          .catch(() => {});
+      }
+    } catch {}
   }, []);
 
   // 이용 중인 앱 목록 (남은 날짜 있는 것)
