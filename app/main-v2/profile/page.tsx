@@ -49,8 +49,8 @@ function isPrivacyAgreementValid(): boolean {
 }
 
 const inp: React.CSSProperties = {
-  width: "100%", padding: "13px 14px", borderRadius: 12,
-  border: "1.5px solid rgba(251,191,36,0.4)", fontSize: 15,
+  width: "100%", padding: "9px 12px", borderRadius: 10,
+  border: "1.5px solid rgba(251,191,36,0.4)", fontSize: 14,
   boxSizing: "border-box", outline: "none",
   fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
   color: "#1a1a2e", background: "rgba(255,255,255,0.85)",
@@ -448,19 +448,19 @@ export default function V2Profile() {
         <div style={{ height: "100%", width: `${progress}%`, background: G, transition: "width 0.4s ease", borderRadius: "0 4px 4px 0" }} />
       </div>
 
-      <div style={{ maxWidth: 480, margin: "0 auto", padding: "28px 16px 60px" }}>
-        <div style={{ textAlign: "center", marginBottom: 22 }}>
-          <div style={{ fontSize: 56, lineHeight: 1, marginBottom: 10, display: "inline-block", animation: "bounce 2s ease-in-out infinite", filter: step === 1 ? "grayscale(1) brightness(1.8) contrast(0.9)" : "none" }}>{cur.icon}</div>
-          <h1 style={{ fontSize: 19, fontWeight: 900, color: "#ffffff", margin: "0 0 4px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{cur.title}</h1>
-          {cur.hint && <p style={{ fontSize: 12, color: "#ffffff", margin: 0, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>{cur.hint}</p>}
+      <div style={{ maxWidth: 480, margin: "0 auto", padding: "12px 16px 20px" }}>
+        <div style={{ textAlign: "center", marginBottom: 10 }}>
+          <div style={{ fontSize: 34, lineHeight: 1, marginBottom: 4, display: "inline-block", animation: "bounce 2s ease-in-out infinite", filter: step === 1 ? "grayscale(1) brightness(1.8) contrast(0.9)" : "none" }}>{cur.icon}</div>
+          <h1 style={{ fontSize: 16, fontWeight: 900, color: "#ffffff", margin: "0 0 2px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{cur.title}</h1>
+          {cur.hint && <p style={{ fontSize: 11, color: "#ffffff", margin: 0, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>{cur.hint}</p>}
         </div>
 
-        <div style={{ background: "rgba(255,255,255,0.78)", backdropFilter: "blur(14px)", borderRadius: 24, padding: "22px 16px", boxShadow: "0 12px 40px rgba(0,0,0,0.18)", border: "1.5px solid rgba(251,191,36,0.45)" }}>
+        <div style={{ background: "rgba(255,255,255,0.78)", backdropFilter: "blur(14px)", borderRadius: 20, padding: "12px 12px", boxShadow: "0 12px 40px rgba(0,0,0,0.18)", border: "1.5px solid rgba(251,191,36,0.45)" }}>
 
           {step === 1 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
               <div>
-                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>전화번호 <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
+                <label style={{ fontSize: 12, fontWeight: 800, color: "#374151", display: "block", marginBottom: 3 }}>전화번호 <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
                 <input
                   autoFocus
                   type="tel" value={form.phone}
@@ -477,11 +477,11 @@ export default function V2Profile() {
                   }}
                   placeholder="010-0000-0000" style={inp}
                   onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")} />
-                {phoneLoading && <p style={{ fontSize: 11, color: "#8b5cf6", margin: "6px 0 0" }}>기존 정보 확인 중...</p>}
+                {phoneLoading && <p style={{ fontSize: 10, color: "#8b5cf6", margin: "3px 0 0" }}>기존 정보 확인 중...</p>}
               </div>
 
               <div>
-                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>이름 (별명도 괜찮아요) <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
+                <label style={{ fontSize: 12, fontWeight: 800, color: "#374151", display: "block", marginBottom: 3 }}>이름 (별명도 괜찮아요) <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
                 <input
                   type="text" value={form.name}
                   onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
@@ -493,23 +493,23 @@ export default function V2Profile() {
               </div>
 
               <div>
-                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>누구의 운세인가요?</label>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 4 }}>
+                <label style={{ fontSize: 12, fontWeight: 800, color: "#374151", display: "block", marginBottom: 3 }}>누구의 운세인가요?</label>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 3 }}>
                   {RELS.map(r => (
                     <button key={r.value} type="button" onClick={() => {
                       setForm(p => p.relationship === r.value ? p : { ...p, relationship: r.value });
                     }}
-                      style={{ padding: "6px 2px", borderRadius: 8, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 2px 8px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
-                      <div style={{ fontSize: 14, marginBottom: 1 }}>{r.icon}</div>
-                      <div style={{ fontSize: 8, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
+                      style={{ padding: "4px 2px", borderRadius: 7, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 2px 8px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
+                      <div style={{ fontSize: 12, marginBottom: 0 }}>{r.icon}</div>
+                      <div style={{ fontSize: 7, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>생년월일 (양력) <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
-                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 8 }}>
+                <label style={{ fontSize: 12, fontWeight: 800, color: "#374151", display: "block", marginBottom: 3 }}>생년월일 (양력) <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
+                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 6 }}>
                   <input type="number" value={form.birthYear} onChange={e => setForm(p => ({ ...p, birthYear: e.target.value }))}
                     placeholder="1990" min="1900" max="2024" style={{ ...inp, textAlign: "center" }}
                     onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
@@ -523,20 +523,20 @@ export default function V2Profile() {
                     {Array.from({ length: 31 }, (_, i) => <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}일</option>)}
                   </select>
                 </div>
-                <div style={{ marginTop: 10 }}>
-                  <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-                    <input type="checkbox" checked={form.isLunar} onChange={e => setForm(p => ({ ...p, isLunar: e.target.checked }))} style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
-                    <span style={{ fontSize: 12, fontWeight: 700, color: form.isLunar ? "#be185d" : "#8b5cf6" }}>음력 생일이면 체크 (양력 자동 변환)</span>
+                <div style={{ marginTop: 5 }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
+                    <input type="checkbox" checked={form.isLunar} onChange={e => setForm(p => ({ ...p, isLunar: e.target.checked }))} style={{ width: 15, height: 15, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
+                    <span style={{ fontSize: 11, fontWeight: 700, color: form.isLunar ? "#be185d" : "#8b5cf6" }}>음력 생일이면 체크 (양력 자동 변환)</span>
                   </label>
                 </div>
               </div>
 
               <div>
-                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>성별 <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <label style={{ fontSize: 12, fontWeight: 800, color: "#374151", display: "block", marginBottom: 3 }}>성별 <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
                   {[{ v: "남", label: "😼 남성" }, { v: "여", label: "😻 여성" }].map(g => (
                     <button key={g.v} type="button" onClick={() => setForm(p => ({ ...p, gender: g.v }))}
-                      style={{ padding: "18px 0", borderRadius: 16, border: form.gender === g.v ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.gender === g.v ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.gender === g.v ? "#be185d" : "#374151", fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: form.gender === g.v ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
+                      style={{ padding: "10px 0", borderRadius: 12, border: form.gender === g.v ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.gender === g.v ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.gender === g.v ? "#be185d" : "#374151", fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: form.gender === g.v ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
                       {g.label}
                     </button>
                   ))}
@@ -546,15 +546,15 @@ export default function V2Profile() {
           )}
 
           {step === 2 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
               <div>
-                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>태어난 시</label>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7, maxHeight: 280, overflowY: "auto" }}>
+                <label style={{ fontSize: 12, fontWeight: 800, color: "#374151", display: "block", marginBottom: 4 }}>태어난 시</label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, maxHeight: 190, overflowY: "auto" }}>
                   {HOURS.map(h => (
                     <button key={h.value} type="button" onClick={() => setForm(p => ({ ...p, birthHour: h.value }))}
-                      style={{ padding: "10px 6px", borderRadius: 12, border: form.birthHour === h.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.birthHour === h.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.birthHour === h.value ? "#be185d" : "#374151", fontWeight: 800, fontSize: 11, cursor: "pointer", textAlign: "center", boxShadow: form.birthHour === h.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
+                      style={{ padding: "5px 5px", borderRadius: 10, border: form.birthHour === h.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.birthHour === h.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.birthHour === h.value ? "#be185d" : "#374151", fontWeight: 800, fontSize: 10, cursor: "pointer", textAlign: "center", boxShadow: form.birthHour === h.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
                       <div>{h.label}</div>
-                      <div style={{ fontSize: 10, opacity: 0.6, marginTop: 2 }}>{h.time}</div>
+                      <div style={{ fontSize: 9, opacity: 0.6, marginTop: 1 }}>{h.time}</div>
                     </button>
                   ))}
                 </div>
@@ -564,27 +564,27 @@ export default function V2Profile() {
                 placeholder="이메일 (선택, example@email.com)" style={inp}
                 onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
                 onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")} />
-              <div style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(6px)", borderRadius: 14, padding: "14px 14px 12px", border: "1.5px solid rgba(251,191,36,0.35)" }}>
-                <p style={{ fontSize: 12, fontWeight: 900, color: "#1a1a2e", margin: "0 0 10px" }}>📋 개인정보 수집·이용 동의서</p>
-                <div style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.8, marginBottom: 12 }}>
+              <div style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(6px)", borderRadius: 12, padding: "8px 10px 6px", border: "1.5px solid rgba(251,191,36,0.35)" }}>
+                <p style={{ fontSize: 11, fontWeight: 900, color: "#1a1a2e", margin: "0 0 5px" }}>📋 개인정보 수집·이용 동의서</p>
+                <div style={{ fontSize: 10, color: "#6b7280", lineHeight: 1.4, marginBottom: 6 }}>
                   <div>• 수집 목적: 사주 분석 서비스 제공</div>
                   <div>• 수집 항목: 이름, 생년월일, 성별, 출생시간, 전화번호, 이메일</div>
                   <div>• 보유 기간: 3년</div>
                   <div>• 동의 거부: 서비스 이용 불가</div>
                 </div>
-                <label style={{ display: "flex", alignItems: "center", gap: 9, cursor: "pointer", marginBottom: 10 }}>
+                <label style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer", marginBottom: 5 }}>
                   <input type="checkbox" checked={agreed} onChange={e => {
                     setAgreed(e.target.checked);
                     localStorage.setItem("v2_privacy_agreed", e.target.checked ? "1" : "0");
                     if (e.target.checked) localStorage.setItem("v2_privacy_agreed_at", String(Date.now()));
-                  }} style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, fontWeight: 800, color: agreed ? "#be185d" : "#374151" }}>
+                  }} style={{ width: 15, height: 15, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
+                  <span style={{ fontSize: 12, fontWeight: 800, color: agreed ? "#be185d" : "#374151" }}>
                     <strong>[필수]</strong> 개인정보 수집·이용 동의합니다
                   </span>
                 </label>
-                <label style={{ display: "flex", alignItems: "flex-start", gap: 9, cursor: "pointer" }}>
-                  <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)} style={{ marginTop: 2, width: 16, height: 16, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
-                  <span style={{ fontSize: 12, color: "#4b5563", lineHeight: 1.6 }}>
+                <label style={{ display: "flex", alignItems: "flex-start", gap: 7, cursor: "pointer" }}>
+                  <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)} style={{ marginTop: 2, width: 14, height: 14, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
+                  <span style={{ fontSize: 11, color: "#4b5563", lineHeight: 1.3 }}>
                     <strong style={{ color: "#1a1a2e" }}>[선택] 마케팅 수신 동의</strong><br />
                     점운의 새로운 기능·이벤트 알림을 받겠습니다. 언제든 수신거부 가능합니다.
                   </span>
@@ -603,25 +603,25 @@ export default function V2Profile() {
                   finish();
                 }}
                 disabled={!agreed}
-                style={{ padding: "15px 0", background: agreed ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(0,0,0,0.1)", color: agreed ? "#1a0f2e" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: agreed ? "pointer" : "not-allowed", boxShadow: agreed ? "0 6px 22px rgba(251,191,36,0.4)" : "none", marginTop: 4 }}>
+                style={{ padding: "11px 0", background: agreed ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(0,0,0,0.1)", color: agreed ? "#1a0f2e" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: agreed ? "pointer" : "not-allowed", boxShadow: agreed ? "0 6px 22px rgba(251,191,36,0.4)" : "none", marginTop: 2 }}>
                 🔮 무료 분석 시작
               </button>
             </div>
           )}
 
           {step < TOTAL && (
-            <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: step > 1 ? "1fr 2fr" : "1fr", gap: 10 }}>
+            <div style={{ marginTop: 10, display: "grid", gridTemplateColumns: step > 1 ? "1fr 2fr" : "1fr", gap: 8 }}>
               {step > 1 && (
-                <button onClick={() => setStep(s => s - 1)} style={{ padding: "14px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 14, cursor: "pointer" }}>← 이전</button>
+                <button onClick={() => setStep(s => s - 1)} style={{ padding: "10px 0", background: "white", color: "#8b5cf6", border: "1.5px solid #8b5cf6", borderRadius: 50, fontWeight: 800, fontSize: 13, cursor: "pointer" }}>← 이전</button>
               )}
-              <button onClick={next} style={{ padding: "14px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.3)" }}>
+              <button onClick={next} style={{ padding: "10px 0", background: G, color: "white", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.3)" }}>
                 다음 →
               </button>
             </div>
           )}
         </div>
 
-        <p style={{ textAlign: "center", fontSize: 11, color: "#ffffff", fontWeight: 800, marginTop: 14, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>🔒 입력 정보는 암호화 보호됩니다</p>
+        <p style={{ textAlign: "center", fontSize: 10, color: "#ffffff", fontWeight: 800, marginTop: 6, textShadow: "0 1px 6px rgba(0,0,0,0.5)" }}>🔒 입력 정보는 암호화 보호됩니다</p>
       </div>
 
       <style jsx>{`
