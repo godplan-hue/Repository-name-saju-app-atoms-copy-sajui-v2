@@ -89,7 +89,6 @@ export default function V2Profile() {
   const [marketingAgreed, setMarketingAgreed] = useState(false);
   const [phoneLoading, setPhoneLoading] = useState(false);
   const [checking, setChecking] = useState(true);
-  const [showRelPicker, setShowRelPicker] = useState(false);
 
   useEffect(() => {
     const loggedInName = localStorage.getItem("v2_user_name") ?? "";
@@ -494,31 +493,18 @@ export default function V2Profile() {
               </div>
 
               <div>
-                {!showRelPicker ? (
-                  <button type="button" onClick={() => setShowRelPicker(true)}
-                    style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-                    <span style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 700 }}>
-                      {form.relationship === "나" ? "🙋 나의 운세를 볼게요" : `${RELS.find(r => r.value === form.relationship)?.icon ?? ""} ${form.relationship}의 운세를 볼게요`}
-                    </span>
-                    <span style={{ fontSize: 11, color: "#ec4899", fontWeight: 800, textDecoration: "underline" }}>바꾸기</span>
-                  </button>
-                ) : (
-                  <div>
-                    <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>누구의 운세인가요?</label>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 9 }}>
-                      {RELS.map(r => (
-                        <button key={r.value} type="button" onClick={() => {
-                          setForm(p => p.relationship === r.value ? p : { ...p, relationship: r.value });
-                          setShowRelPicker(false);
-                        }}
-                          style={{ padding: "15px 8px", borderRadius: 14, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
-                          <div style={{ fontSize: 24, marginBottom: 4 }}>{r.icon}</div>
-                          <div style={{ fontSize: 11, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>누구의 운세인가요?</label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 9 }}>
+                  {RELS.map(r => (
+                    <button key={r.value} type="button" onClick={() => {
+                      setForm(p => p.relationship === r.value ? p : { ...p, relationship: r.value });
+                    }}
+                      style={{ padding: "15px 8px", borderRadius: 14, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
+                      <div style={{ fontSize: 24, marginBottom: 4 }}>{r.icon}</div>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div>
