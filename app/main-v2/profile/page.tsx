@@ -493,15 +493,15 @@ export default function V2Profile() {
               </div>
 
               <div>
-                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>누구의 운세인가요?</label>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 9 }}>
+                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>누구의 운세인가요?</label>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 4 }}>
                   {RELS.map(r => (
                     <button key={r.value} type="button" onClick={() => {
                       setForm(p => p.relationship === r.value ? p : { ...p, relationship: r.value });
                     }}
-                      style={{ padding: "15px 8px", borderRadius: 14, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
-                      <div style={{ fontSize: 24, marginBottom: 4 }}>{r.icon}</div>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
+                      style={{ padding: "6px 2px", borderRadius: 8, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 2px 8px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
+                      <div style={{ fontSize: 14, marginBottom: 1 }}>{r.icon}</div>
+                      <div style={{ fontSize: 8, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
                     </button>
                   ))}
                 </div>
