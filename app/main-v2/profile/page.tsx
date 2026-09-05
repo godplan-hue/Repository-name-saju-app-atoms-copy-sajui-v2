@@ -9,11 +9,8 @@ const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const STEP_BACKGROUNDS: Record<number, string> = {
-  1: "https://i.pinimg.com/736x/35/04/d8/3504d87bd6b5aae73941f6d85c3f6686.jpg",
-  2: "https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg",
-  3: "https://i.pinimg.com/1200x/6d/df/69/6ddf69eba555283a55f2007a0d43699f.jpg",
-  4: "https://i.pinimg.com/vwebp/736x/9d/a4/47/9da447bd262e5f09a7d0745ba1fddeb8.webp",
-  5: "https://i.pinimg.com/736x/a8/78/60/a87860d56c2d18f7d1995e0050d42632.jpg",
+  1: "https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg",
+  2: "https://i.pinimg.com/vwebp/736x/9d/a4/47/9da447bd262e5f09a7d0745ba1fddeb8.webp",
 };
 
 const RELS = [
@@ -21,6 +18,7 @@ const RELS = [
   { value: "배우자", icon: "💑", label: "배우자" },
   { value: "자녀", icon: "👧", label: "자녀" },
   { value: "부모", icon: "👨‍👩‍👧", label: "부모" },
+  { value: "형제자매", icon: "👫", label: "형제자매" },
   { value: "친구", icon: "🤝", label: "친구" },
   { value: "연인", icon: "💕", label: "연인" },
 ];
@@ -60,11 +58,8 @@ const inp: React.CSSProperties = {
 };
 
 const STEPS = [
-  { icon: "🐱", title: "누구의 운세를 볼까요?", hint: "" },
-  { icon: "🎂", title: "생년월일을 입력해주세요", hint: "양력 기준으로 입력해주세요 (음력이면 아래 체크)" },
-  { icon: "😼😻", title: "성별을 선택해주세요", hint: "" },
+  { icon: "🐱", title: "정보를 입력해주세요", hint: "양력 기준으로 입력해주세요 (음력이면 아래 체크)" },
   { icon: "🌙✨", title: "태어난 시를 선택해주세요", hint: "모르시면 '모름'을 선택해도 됩니다" },
-  { icon: "💌", title: "연락처를 입력해주세요", hint: "" },
 ];
 
 export default function V2Profile() {
@@ -92,10 +87,9 @@ export default function V2Profile() {
   });
   const [agreed, setAgreed] = useState(false);
   const [marketingAgreed, setMarketingAgreed] = useState(false);
-  const [phoneStep, setPhoneStep] = useState(true);
-  const [phoneInput, setPhoneInput] = useState("");
   const [phoneLoading, setPhoneLoading] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [showRelPicker, setShowRelPicker] = useState(false);
 
   useEffect(() => {
     const loggedInName = localStorage.getItem("v2_user_name") ?? "";
@@ -159,7 +153,6 @@ export default function V2Profile() {
         if (nameOk && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone && p.birthYear && p.gender && p.birthHour) {
           setForm(prev => ({ ...prev, ...p, relationship: p.relationship || "나" }));
           setSavedMode(true);
-          setPhoneStep(false);
           setChecking(false);
           return;
         }
@@ -173,13 +166,13 @@ export default function V2Profile() {
     setChecking(false); // 처음 방문 or 다른 사람 → 전화번호 입력 화면 표시
   }, []);
 
-  const TOTAL = 5;
+  const TOTAL = 2;
   const progress = (step / TOTAL) * 100;
   const cur = STEPS[step - 1];
 
-  const checkPhone = async () => {
-    const phone = phoneInput.replace(/[^0-9]/g, "");
-    if (phone.length < 10) { alert("전화번호를 정확히 입력해주세요"); return; }
+  const checkPhone = async (phoneRaw: string) => {
+    const phone = phoneRaw.replace(/[^0-9]/g, "");
+    if (phone.length < 10) return;
     setPhoneLoading(true);
     try {
       const res = await fetch(`/api/v2/customer?phone=${encodeURIComponent(phone)}`);
@@ -210,8 +203,7 @@ export default function V2Profile() {
             } catch {}
           }
           if (!usedLocal) {
-            setForm({ name: "", relationship: "나", birthYear: "", birthMonth: "", birthDay: "", isLunar: false, gender: "", birthHour: "", phone, email: "" });
-            localStorage.removeItem("v2_saved_profile");
+            setForm(prev => ({ ...prev, phone }));
           }
         }
       } else {
@@ -220,7 +212,6 @@ export default function V2Profile() {
     } catch {
       setForm(prev => ({ ...prev, phone }));
     }
-    setPhoneStep(false);
     setPhoneLoading(false);
   };
 
@@ -321,56 +312,22 @@ export default function V2Profile() {
   };
 
   const next = () => {
-    const ok: Record<number, boolean> = {
-      1: !!form.relationship,
-      2: !!(form.birthYear && form.birthMonth && form.birthDay),
-      3: !!form.gender,
-      4: !!form.birthHour,
-      5: true,
-    };
-    if (!ok[step]) { alert("정보를 입력해주세요"); return; }
-    if (step < TOTAL) { setStep(s => s + 1); return; }
+    if (step === 1) {
+      if (!form.name.trim()) { alert("이름을 입력해주세요"); return; }
+      if (form.phone && !/^01[0-9]-?\d{3,4}-?\d{4}$/.test(form.phone.replace(/\s/g, ""))) {
+        alert("전화번호 형식을 다시 확인해주세요 (예: 010-1234-5678)"); return;
+      }
+      if (!form.phone) { alert("전화번호를 입력해주세요"); return; }
+      if (!(form.birthYear && form.birthMonth && form.birthDay)) { alert("생년월일을 입력해주세요"); return; }
+      if (!form.gender) { alert("성별을 선택해주세요"); return; }
+      setStep(2);
+      return;
+    }
     finish();
   };
 
   // 직접 접근 여부 확인 중 → 아무것도 렌더링하지 않음 (깜박임 방지)
   if (checking) return null;
-
-  // ── 전화번호 본인 확인 화면 ──────────────────
-  if (phoneStep) {
-    return (
-      <main style={{ minHeight: "100vh", backgroundImage: "url('https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative" }}>
-        <div style={{ position: "fixed", inset: 0, background: "rgba(20,5,50,0.68)", zIndex: 1, pointerEvents: "none" }} />
-        <header style={{ position: "sticky", top: 0, zIndex: 100, height: 52, padding: "0 16px", display: "flex", alignItems: "center", background: "rgba(20,5,50,0.7)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-          <button onClick={() => router.push("/main-v2")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, padding: 0 }}>
-            <span style={{ fontSize: 16, color: "rgba(255,255,255,0.8)" }}>←</span>
-            <span style={{ fontSize: 14, fontWeight: 900, color: "#fbbf24" }}>🐱 점운 메인으로</span>
-          </button>
-        </header>
-        <div style={{ position: "relative", zIndex: 10, maxWidth: 480, margin: "0 auto", padding: "40px 20px 40px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>🔮</div>
-          <h1 style={{ fontSize: 22, fontWeight: 900, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>점운 사주 분석</h1>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", margin: "0 0 32px", textAlign: "center" }}>전화번호로 본인 확인 후 시작합니다</p>
-          <div style={{ width: "100%", background: "rgba(60,20,100,0.72)", backdropFilter: "blur(16px)", borderRadius: 20, padding: "24px 20px", border: "1px solid rgba(255,255,255,0.15)" }}>
-            <label style={{ fontSize: 13, fontWeight: 700, color: "#fbbf24", display: "block", marginBottom: 8 }}>📱 전화번호</label>
-            <input
-              type="tel" value={phoneInput}
-              onChange={e => setPhoneInput(e.target.value)}
-              onKeyDown={e => { if (e.key === "Enter") checkPhone(); }}
-              placeholder="010-0000-0000"
-              style={{ width: "100%", padding: "14px", borderRadius: 12, border: "1.5px solid rgba(251,191,36,0.4)", fontSize: 16, boxSizing: "border-box", outline: "none", color: "#1a1a2e", background: "rgba(255,255,255,0.9)", textAlign: "center", letterSpacing: 2 }}
-            />
-            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "8px 0 20px", textAlign: "center" }}>전화번호로 기존 정보를 불러옵니다</p>
-            <button
-              onClick={checkPhone} disabled={phoneLoading}
-              style={{ width: "100%", padding: "15px 0", background: phoneLoading ? "rgba(139,92,246,0.5)" : "linear-gradient(135deg, #ec4899, #8b5cf6)", color: "#fff", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: phoneLoading ? "not-allowed" : "pointer" }}>
-              {phoneLoading ? "확인 중..." : "다음 →"}
-            </button>
-          </div>
-        </div>
-      </main>
-    );
-  }
 
   // ── 저장된 정보 단일 폼 (유료 재방문자) ──────────────────
   if (savedMode) {
@@ -454,9 +411,14 @@ export default function V2Profile() {
               onClick={() => {
                 localStorage.removeItem("v2_saved_profile");
                 localStorage.removeItem("v2_verified_phone");
+                setForm({
+                  name: "", relationship: "나",
+                  birthYear: "", birthMonth: "", birthDay: "", isLunar: false,
+                  gender: "", birthHour: "",
+                  phone: "", email: "",
+                });
                 setSavedMode(false);
-                setPhoneInput("");
-                setPhoneStep(true);
+                setStep(1);
               }}
               style={{ width: "100%", padding: "11px 0", marginTop: 10, background: "transparent", color: "rgba(255,255,255,0.65)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 12, fontWeight: 700, fontSize: 14, cursor: "pointer" }}>
               다른 사람 정보로 보기 (배우자·자녀 등)
@@ -497,86 +459,31 @@ export default function V2Profile() {
         <div style={{ background: "rgba(255,255,255,0.78)", backdropFilter: "blur(14px)", borderRadius: 24, padding: "22px 16px", boxShadow: "0 12px 40px rgba(0,0,0,0.18)", border: "1.5px solid rgba(251,191,36,0.45)" }}>
 
           {step === 1 && (
-            <div>
-              <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>누구의 운세인가요?</label>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 9 }}>
-              {RELS.map(r => (
-                <button key={r.value} onClick={() => setForm(p => {
-                  if (r.value === p.relationship) return { ...p, relationship: r.value };
-                  return { ...p, relationship: r.value, gender: "", birthYear: "", birthMonth: "", birthDay: "", birthHour: "" };
-                })}
-                  style={{ padding: "15px 8px", borderRadius: 14, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
-                  <div style={{ fontSize: 24, marginBottom: 4 }}>{r.icon}</div>
-                  <div style={{ fontSize: 11, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
-                </button>
-              ))}
-            </div>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div>
-              <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 8 }}>
-                <input type="number" value={form.birthYear} onChange={e => {
-                  if (e.target.value === form.birthYear) return;
-                  setForm(p => ({ ...p, birthYear: e.target.value, gender: "", birthHour: "" }));
-                }} placeholder="1990" min="1900" max="2024" style={{ ...inp, textAlign: "center" }}
-                  onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
-                  onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")} />
-                <select value={form.birthMonth} onChange={e => {
-                  if (e.target.value === form.birthMonth) return;
-                  setForm(p => ({ ...p, birthMonth: e.target.value, gender: "", birthHour: "" }));
-                }} style={{ ...inp, textAlign: "center" }}>
-                  <option value="">월</option>
-                  {Array.from({ length: 12 }, (_, i) => <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}월</option>)}
-                </select>
-                <select value={form.birthDay} onChange={e => {
-                  if (e.target.value === form.birthDay) return;
-                  setForm(p => ({ ...p, birthDay: e.target.value, gender: "", birthHour: "" }));
-                }} style={{ ...inp, textAlign: "center" }}>
-                  <option value="">일</option>
-                  {Array.from({ length: 31 }, (_, i) => <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}일</option>)}
-                </select>
-              </div>
-              <div style={{ marginTop: 12 }}>
-                <p style={{ fontSize: 11, color: "#8b5cf6", fontWeight: 700, margin: "0 0 6px" }}>음력 생일이면 체크해주세요 (양력으로 자동 변환)</p>
-                <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-                  <input type="checkbox" checked={form.isLunar} onChange={e => setForm(p => ({ ...p, isLunar: e.target.checked }))} style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, fontWeight: 800, color: form.isLunar ? "#be185d" : "#374151" }}>음력 체크</span>
-                </label>
-              </div>
-            </div>
-          )}
-
-          {step === 3 && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              {[{ v: "남", label: "😼 남성" }, { v: "여", label: "😻 여성" }].map(g => (
-                <button key={g.v} onClick={() => setForm(p => ({ ...p, gender: g.v }))}
-                  style={{ padding: "20px 0", borderRadius: 16, border: form.gender === g.v ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.gender === g.v ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.gender === g.v ? "#be185d" : "#374151", fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: form.gender === g.v ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
-                  {g.label}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {step === 4 && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7, maxHeight: 330, overflowY: "auto" }}>
-              {HOURS.map(h => (
-                <button key={h.value} onClick={() => setForm(p => ({ ...p, birthHour: h.value }))}
-                  style={{ padding: "10px 6px", borderRadius: 12, border: form.birthHour === h.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.birthHour === h.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.birthHour === h.value ? "#be185d" : "#374151", fontWeight: 800, fontSize: 11, cursor: "pointer", textAlign: "center", boxShadow: form.birthHour === h.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
-                  <div>{h.label}</div>
-                  <div style={{ fontSize: 10, opacity: 0.6, marginTop: 2 }}>{h.time}</div>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {step === 5 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>전화번호 <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
+                <input
+                  autoFocus
+                  type="tel" value={form.phone}
+                  onChange={e => {
+                    const digits = e.target.value.replace(/\D/g, "").slice(0, 11);
+                    let formatted = digits;
+                    if (digits.length > 3 && digits.length <= 7) formatted = `${digits.slice(0,3)}-${digits.slice(3)}`;
+                    else if (digits.length > 7) formatted = `${digits.slice(0,3)}-${digits.slice(3,7)}-${digits.slice(7)}`;
+                    setForm(p => ({ ...p, phone: formatted }));
+                  }}
+                  onBlur={e => {
+                    e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)";
+                    checkPhone(e.target.value);
+                  }}
+                  placeholder="010-0000-0000" style={inp}
+                  onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")} />
+                {phoneLoading && <p style={{ fontSize: 11, color: "#8b5cf6", margin: "6px 0 0" }}>기존 정보 확인 중...</p>}
+              </div>
+
               <div>
                 <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>이름 (별명도 괜찮아요) <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
                 <input
-                  autoFocus
                   type="text" value={form.name}
                   onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
                   placeholder="홍길동"
@@ -585,20 +492,90 @@ export default function V2Profile() {
                   onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")}
                 />
               </div>
-              <input type="tel" value={form.phone}
-                onChange={e => {
-                  const digits = e.target.value.replace(/\D/g, "").slice(0, 11);
-                  let formatted = digits;
-                  if (digits.length > 3 && digits.length <= 7) formatted = `${digits.slice(0,3)}-${digits.slice(3)}`;
-                  else if (digits.length > 7) formatted = `${digits.slice(0,3)}-${digits.slice(3,7)}-${digits.slice(7)}`;
-                  setForm(p => ({ ...p, phone: formatted }));
-                }}
-                placeholder="010-0000-0000" style={inp}
-                onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
-                onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")} />
+
+              <div>
+                {!showRelPicker ? (
+                  <button type="button" onClick={() => setShowRelPicker(true)}
+                    style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                    <span style={{ fontSize: 12, color: "#8b5cf6", fontWeight: 700 }}>
+                      {form.relationship === "나" ? "🙋 나의 운세를 볼게요" : `${RELS.find(r => r.value === form.relationship)?.icon ?? ""} ${form.relationship}의 운세를 볼게요`}
+                    </span>
+                    <span style={{ fontSize: 11, color: "#ec4899", fontWeight: 800, textDecoration: "underline" }}>바꾸기</span>
+                  </button>
+                ) : (
+                  <div>
+                    <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>누구의 운세인가요?</label>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 9 }}>
+                      {RELS.map(r => (
+                        <button key={r.value} type="button" onClick={() => {
+                          setForm(p => p.relationship === r.value ? p : { ...p, relationship: r.value });
+                          setShowRelPicker(false);
+                        }}
+                          style={{ padding: "15px 8px", borderRadius: 14, border: form.relationship === r.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.relationship === r.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", cursor: "pointer", textAlign: "center", boxShadow: form.relationship === r.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
+                          <div style={{ fontSize: 24, marginBottom: 4 }}>{r.icon}</div>
+                          <div style={{ fontSize: 11, fontWeight: 800, color: form.relationship === r.value ? "#be185d" : "#374151" }}>{r.label}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>생년월일 (양력) <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
+                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: 8 }}>
+                  <input type="number" value={form.birthYear} onChange={e => setForm(p => ({ ...p, birthYear: e.target.value }))}
+                    placeholder="1990" min="1900" max="2024" style={{ ...inp, textAlign: "center" }}
+                    onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
+                    onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")} />
+                  <select value={form.birthMonth} onChange={e => setForm(p => ({ ...p, birthMonth: e.target.value }))} style={{ ...inp, textAlign: "center" }}>
+                    <option value="">월</option>
+                    {Array.from({ length: 12 }, (_, i) => <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}월</option>)}
+                  </select>
+                  <select value={form.birthDay} onChange={e => setForm(p => ({ ...p, birthDay: e.target.value }))} style={{ ...inp, textAlign: "center" }}>
+                    <option value="">일</option>
+                    {Array.from({ length: 31 }, (_, i) => <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}일</option>)}
+                  </select>
+                </div>
+                <div style={{ marginTop: 10 }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+                    <input type="checkbox" checked={form.isLunar} onChange={e => setForm(p => ({ ...p, isLunar: e.target.checked }))} style={{ width: 18, height: 18, accentColor: "#fbbf24", cursor: "pointer", flexShrink: 0 }} />
+                    <span style={{ fontSize: 12, fontWeight: 700, color: form.isLunar ? "#be185d" : "#8b5cf6" }}>음력 생일이면 체크 (양력 자동 변환)</span>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 6 }}>성별 <span style={{ color: "#ec4899", fontWeight: 900 }}>★ 필수</span></label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  {[{ v: "남", label: "😼 남성" }, { v: "여", label: "😻 여성" }].map(g => (
+                    <button key={g.v} type="button" onClick={() => setForm(p => ({ ...p, gender: g.v }))}
+                      style={{ padding: "18px 0", borderRadius: 16, border: form.gender === g.v ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.gender === g.v ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.gender === g.v ? "#be185d" : "#374151", fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: form.gender === g.v ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
+                      {g.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 13, fontWeight: 800, color: "#374151", display: "block", marginBottom: 8 }}>태어난 시</label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7, maxHeight: 280, overflowY: "auto" }}>
+                  {HOURS.map(h => (
+                    <button key={h.value} type="button" onClick={() => setForm(p => ({ ...p, birthHour: h.value }))}
+                      style={{ padding: "10px 6px", borderRadius: 12, border: form.birthHour === h.value ? "2px solid #fbbf24" : "1.5px solid rgba(0,0,0,0.08)", background: form.birthHour === h.value ? "linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.12))" : "#fdf2f8", color: form.birthHour === h.value ? "#be185d" : "#374151", fontWeight: 800, fontSize: 11, cursor: "pointer", textAlign: "center", boxShadow: form.birthHour === h.value ? "0 4px 14px rgba(251,191,36,0.25)" : "none", transition: "all 0.15s" }}>
+                      <div>{h.label}</div>
+                      <div style={{ fontSize: 10, opacity: 0.6, marginTop: 2 }}>{h.time}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
               <input type="email" value={form.email}
                 onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                placeholder="example@email.com" style={inp}
+                placeholder="이메일 (선택, example@email.com)" style={inp}
                 onFocus={e => (e.currentTarget.style.borderColor = "#fbbf24")}
                 onBlur={e => (e.currentTarget.style.borderColor = "rgba(251,191,36,0.4)")} />
               <div style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(6px)", borderRadius: 14, padding: "14px 14px 12px", border: "1.5px solid rgba(251,191,36,0.35)" }}>
