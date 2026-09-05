@@ -65,11 +65,16 @@ function PaidInfoInputInner() {
     if (saved) {
       try {
         const p = JSON.parse(saved);
-        setName(p.name ?? "");
-        setBirthYear(p.birthYear ?? "");
-        setBirthMonth(p.birthMonth ? String(Number(p.birthMonth)) : "");
-        setBirthDay(p.birthDay ? String(Number(p.birthDay)) : "");
-        setBirthHour(p.birthHour && HOUR_PERIOD_TO_24H[p.birthHour] ? HOUR_PERIOD_TO_24H[p.birthHour] : "unknown");
+        // 검증된 전화번호가 이 프로필의 번호와 일치할 때만 신뢰 — 아니면 이 기기의
+        // 이전 사용자 정보를 새 방문자에게 채워주거나(아래) 곧바로 분석까지
+        // 건너뛰어(자동스킵) 그 사람 정보로 결제·분석이 진행될 위험이 있음
+        const verifiedPhone = localStorage.getItem("v2_verified_phone");
+        const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+        if (phoneOk) setName(p.name ?? "");
+        if (phoneOk) setBirthYear(p.birthYear ?? "");
+        if (phoneOk) setBirthMonth(p.birthMonth ? String(Number(p.birthMonth)) : "");
+        if (phoneOk) setBirthDay(p.birthDay ? String(Number(p.birthDay)) : "");
+        if (phoneOk) setBirthHour(p.birthHour && HOUR_PERIOD_TO_24H[p.birthHour] ? HOUR_PERIOD_TO_24H[p.birthHour] : "unknown");
 
         // 유료 다시보기: 본인 정보가 다 있고 VIP 커플팩(상대방 정보 매번 다를 수
         // 있어 제외)이 아니며, 같은 로그인 세션 안에서 이미 한 번 분석을
@@ -83,7 +88,7 @@ function PaidInfoInputInner() {
         const todayKey = new Date().toDateString();
         const alreadyShownThisSession = loginSessionId !== "" && loginSessionId === shownForSession && shownOnDate === todayKey;
         const complete = !!(p.name && p.birthYear && p.birthMonth && p.birthDay);
-        if (complete && pkg !== "VIP 커플팩" && alreadyShownThisSession) {
+        if (phoneOk && complete && pkg !== "VIP 커플팩" && alreadyShownThisSession) {
           setAutoSkipping(true);
           runAnalysis({
             name: p.name,

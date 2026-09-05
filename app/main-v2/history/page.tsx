@@ -205,11 +205,14 @@ export default function V2History() {
       });
     };
 
-    // 이름으로 자동 조회
+    // 이름으로 자동 조회 — 검증된 번호일 때만: 아니면 이 기기의 이전 사용자 이름으로
+    // 그 사람의 유료 결제 기록이 새 방문자의 보관함에 그대로 노출될 수 있음
     try {
       const profile = JSON.parse(localStorage.getItem("v2_saved_profile") || "null");
       const name = profile?.name || "";
-      if (name) {
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
+      const phoneOk = !!verifiedPhone && (profile?.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+      if (name && phoneOk) {
         fetch(`/api/v2/history?name=${encodeURIComponent(name)}`)
           .then(r => r.json())
           .then(data => { mergeRemote((data.items || []).filter((i: Item) => i.isPaid === true && !i.category?.includes("오늘의 운세"))); })
@@ -267,11 +270,16 @@ export default function V2History() {
       localStorage.setItem("v2_history_cleared_at", Date.now().toString());
       setHist([]);
       // Firebase에서도 삭제 (이름 경로 + 전화번호 경로 모두)
+      // — 검증된 번호일 때만: 아니면 이 기기의 이전 사용자 실제 계정 기록을
+      // 새 방문자가 "전체 삭제"를 눌러 지워버리는 사고가 날 수 있음
       try {
         const profile = JSON.parse(localStorage.getItem("v2_saved_profile") || "null");
         const name = profile?.name || "";
-        const phone = (profile?.phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
-        if (name) {
+        const verifiedPhone = localStorage.getItem("v2_verified_phone");
+        const profPhone = (profile?.phone || "").replace(/[^0-9]/g, "");
+        const phoneOk = !!verifiedPhone && profPhone === verifiedPhone;
+        const phone = phoneOk ? profPhone : "";
+        if (name && phoneOk) {
           fetch("/api/v2/history", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

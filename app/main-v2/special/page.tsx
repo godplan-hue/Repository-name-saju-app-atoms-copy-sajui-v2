@@ -486,10 +486,12 @@ function SpecialPageContent() {
     setProductType(type);
     setIsPaid(paid);
     try {
+      const verifiedPhoneSpecial = localStorage.getItem("v2_verified_phone");
       const raw = localStorage.getItem("v2_saved_profile");
       if (raw) {
         const p = JSON.parse(raw);
-        if (p?.name && p?.birthYear) setProfile({ name: p.name, birthYear: Number(p.birthYear) });
+        const phoneOkSpecial = !!verifiedPhoneSpecial && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhoneSpecial;
+        if (phoneOkSpecial && p?.name && p?.birthYear) setProfile({ name: p.name, birthYear: Number(p.birthYear) });
       }
     } catch {}
   }, []);

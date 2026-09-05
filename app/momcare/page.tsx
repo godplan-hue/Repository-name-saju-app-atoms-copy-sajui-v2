@@ -90,8 +90,9 @@ export default function MomcarePage() {
 
   useEffect(() => {
     try {
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
       const ph = (JSON.parse(localStorage.getItem("v2_saved_profile") || "{}").phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
-      if (ph.length < 10) setHasPhone(false);
+      if (ph.length < 10 || !verifiedPhone || ph !== verifiedPhone) setHasPhone(false);
     } catch { setHasPhone(false); }
   }, []);
 
@@ -160,7 +161,7 @@ export default function MomcarePage() {
               if (!mcPrivacyAgreed) { alert("개인정보 수집·이용 동의를 체크해주세요."); return; }
               const ph = phoneGate.replace(/\D/g, "");
               if (ph.length < 10) { alert("전화번호를 정확히 입력해주세요."); return; }
-              try { const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); p.phone = ph; localStorage.setItem("v2_saved_profile", JSON.stringify(p)); localStorage.setItem("v2_saved_phone", ph); } catch {}
+              try { const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); p.phone = ph; localStorage.setItem("v2_saved_profile", JSON.stringify(p)); localStorage.setItem("v2_saved_phone", ph); localStorage.setItem("v2_verified_phone", ph); } catch {}
               fetch("https://jeomun-default-rtdb.firebaseio.com/momcare_leads.json", {
                 method: "POST", headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phone: ph, source: "momcare", marketing: mcMarketingAgreed, agreed: true, agreedAt: Date.now() }),

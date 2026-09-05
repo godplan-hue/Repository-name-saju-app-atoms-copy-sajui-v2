@@ -183,9 +183,13 @@ export default function ShareClient({ id }: { id: string }) {
       .then(data => {
         setEntry(data.entry);
         // 내 프로필(이름+생년)이 share 데이터와 일치하면 오너로 처리 (기존 링크 복구)
+        // — 검증된 전화번호까지 일치할 때만 인정: 아니면 기기를 같이 쓰는 다른 사람이
+        // 우연히 이름+생년이 같을 때 남의 결과지 오너 권한(공유·보관함·결제 버튼)을 가져감
         try {
           const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-          if (data.entry && sp.name && sp.birthYear &&
+          const verifiedPhone = localStorage.getItem("v2_verified_phone");
+          const phoneOk = !!verifiedPhone && (sp.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+          if (phoneOk && data.entry && sp.name && sp.birthYear &&
               data.entry.name === sp.name &&
               String(data.entry.birthYear) === String(sp.birthYear)) {
             setIsOwner(true);

@@ -44,10 +44,12 @@ export default function PetunPage() {
     } catch {}
     try {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-      if (p.name) setOwnerName(p.name);
-      if (p.phone) setOwnerPhone(p.phone);
-      if (p.phone) setRestorePhone(p.phone);
-      if (p.email) setOwnerEmail(p.email);
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
+      const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+      if (phoneOk && p.name) setOwnerName(p.name);
+      if (phoneOk && p.phone) setOwnerPhone(p.phone);
+      if (phoneOk && p.phone) setRestorePhone(p.phone);
+      if (phoneOk && p.email) setOwnerEmail(p.email);
     } catch {}
   }, []);
 
@@ -89,7 +91,7 @@ export default function PetunPage() {
       const d = await r.json();
       if (d.ok && d.unlocks?.petun_unlock_until > Date.now()) {
         try { localStorage.setItem("petun_unlock_until", String(d.unlocks.petun_unlock_until)); } catch {}
-        try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
+        try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); localStorage.setItem("v2_verified_phone", ph); } catch {}
         setRestoreMsg("✅ 이용권 복원 완료! 새로고침할게요.");
         setTimeout(() => window.location.reload(), 1000);
       } else { setRestoreMsg("해당 전화번호로 등록된 이용권이 없어요."); }

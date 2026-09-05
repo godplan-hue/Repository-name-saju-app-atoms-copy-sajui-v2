@@ -236,7 +236,12 @@ export default function DietPage() {
     if (typeof window === "undefined") return false;
     try {
       const saved = localStorage.getItem("v2_saved_profile");
-      if (saved) { const p = JSON.parse(saved); if (p.birthYear) return true; }
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
+      if (saved) {
+        const p = JSON.parse(saved);
+        const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+        if (p.birthYear && phoneOk) return true;
+      }
     } catch {}
     return false;
   });
@@ -280,12 +285,16 @@ export default function DietPage() {
     let ph = "";
     try {
       const saved = localStorage.getItem("v2_saved_profile");
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
       if (saved) {
         const p = JSON.parse(saved);
-        if (p.birthYear) yr = String(p.birthYear);
-        if (p.name) setName(p.name);
-        if (p.email) setEmail(p.email);
-        if (p.phone) { ph = p.phone; setRestorePhone(p.phone); setHasPhone(true); uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+        const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+        if (phoneOk) {
+          if (p.birthYear) yr = String(p.birthYear);
+          if (p.name) setName(p.name);
+          if (p.email) setEmail(p.email);
+          if (p.phone) { ph = p.phone; setRestorePhone(p.phone); setHasPhone(true); uid = `phone_${p.phone.replace(/\D/g, "")}`; }
+        }
       }
     } catch {}
     try {
@@ -393,6 +402,7 @@ export default function DietPage() {
       if (phone) profile.phone = phone;
       if (email) profile.email = email;
       localStorage.setItem("v2_saved_profile", JSON.stringify(profile));
+      if (cleanPhone) localStorage.setItem("v2_verified_phone", cleanPhone);
     } catch {}
     if (height) localStorage.setItem("diet_height", height);
     if (weight) localStorage.setItem("diet_weight", weight);
@@ -419,7 +429,7 @@ export default function DietPage() {
       if (hasTicket) {
         try { localStorage.setItem("diet_unlock_until", String(d.unlocks.diet_unlock_until)); } catch {}
       }
-      try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
+      try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); localStorage.setItem("v2_verified_phone", ph); } catch {}
       setRestoreMsg(hasTicket ? "✅ 이용권 복원 완료! 새로고침할게요." : "✅ 기록을 불러올게요. 새로고침할게요.");
       setTimeout(() => window.location.reload(), 1000);
     } catch { setRestoreMsg("복원 중 오류가 발생했어요."); }

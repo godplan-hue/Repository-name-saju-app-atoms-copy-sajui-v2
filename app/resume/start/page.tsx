@@ -23,11 +23,13 @@ export default function ResumeStartPage() {
   useEffect(() => {
     try {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
+      const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
       setForm(f => ({
         ...f,
-        ...(p.name ? { name: p.name } : {}),
-        ...(p.phone ? { phone: p.phone } : {}),
-        ...(p.email ? { email: p.email } : {}),
+        ...(phoneOk && p.name ? { name: p.name } : {}),
+        ...(phoneOk && p.phone ? { phone: p.phone } : {}),
+        ...(phoneOk && p.email ? { email: p.email } : {}),
       }));
     } catch {}
   }, []);

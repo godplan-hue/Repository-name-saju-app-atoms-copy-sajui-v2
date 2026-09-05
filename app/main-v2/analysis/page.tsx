@@ -62,7 +62,10 @@ function backupPaidResultToHistory(r: any) {
       if (name) {
         try {
           const _prof = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-          const _phone = (_prof.phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
+          const _verifiedPhone = localStorage.getItem("v2_verified_phone");
+          const _profPhone = (_prof.phone || "").replace(/[^0-9]/g, "");
+          // 검증된 번호가 아니면 이 기기의 이전 사용자 번호를 새 분석 기록에 잘못 태깅하지 않음
+          const _phone = (_verifiedPhone && _profPhone === _verifiedPhone) ? _profPhone : "";
           fetch("/api/v2/history", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, phone: _phone || undefined, item }) }).catch(() => {});
         } catch {}
       }

@@ -133,10 +133,14 @@ export default function SonjeolgakPage() {
 
   useEffect(() => {
     try {
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-      if (p.name) setName(p.name);
-      if (p.phone) setPhone(p.phone);
-      if (p.email) setEmail(p.email);
+      const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+      if (phoneOk) {
+        if (p.name) setName(p.name);
+        if (p.phone) setPhone(p.phone);
+        if (p.email) setEmail(p.email);
+      }
     } catch {}
     try {
       const u = localStorage.getItem("sonjeolgak_unlock_until");

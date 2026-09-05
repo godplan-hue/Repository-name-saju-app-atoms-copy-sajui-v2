@@ -59,11 +59,13 @@ export default function BudgetPage() {
     const alreadySetup = localStorage.getItem("budget_setup_done");
     try {
       const profile = localStorage.getItem("v2_saved_profile");
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
       if (profile) {
         const p = JSON.parse(profile);
-        if (p.name) setSetupName(p.name);
-        if (p.email) setSetupEmail(p.email);
-        if (p.phone) {
+        const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+        if (phoneOk && p.name) setSetupName(p.name);
+        if (phoneOk && p.email) setSetupEmail(p.email);
+        if (phoneOk && p.phone) {
           const clean = p.phone.replace(/\D/g, "");
           setSetupPhone(p.phone);
           uid = `phone_${clean}`;
@@ -138,6 +140,7 @@ export default function BudgetPage() {
       profile.phone = setupPhone;
       if (setupEmail) profile.email = setupEmail;
       localStorage.setItem("v2_saved_profile", JSON.stringify(profile));
+      localStorage.setItem("v2_verified_phone", cleanPhone);
     } catch {}
     const uid = `phone_${cleanPhone}`;
     setMcUserId(uid);
@@ -205,7 +208,7 @@ export default function BudgetPage() {
       if (hasTicket) {
         try { localStorage.setItem("budget_unlock_until", String(d.unlocks.budget_unlock_until)); } catch {}
       }
-      try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
+      try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); localStorage.setItem("v2_verified_phone", ph); } catch {}
       setRestoreMsg(hasTicket ? "✅ 이용권 복원 완료! 새로고침할게요." : "✅ 기록을 불러올게요. 새로고침할게요.");
       setTimeout(() => window.location.reload(), 1000);
     } catch { setRestoreMsg("복원 중 오류가 발생했어요."); }

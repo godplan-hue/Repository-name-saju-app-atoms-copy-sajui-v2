@@ -108,11 +108,13 @@ export default function V2Profile() {
       setIsFreeFlow(true);
       const saved = localStorage.getItem("v2_saved_profile");
       const loggedInName = localStorage.getItem("v2_user_name") ?? "";
+      const verifiedPhoneFree = localStorage.getItem("v2_verified_phone");
       if (saved) {
         try {
           const p = JSON.parse(saved);
           const sameName = !loggedInName || p.name === loggedInName;
-          if (sameName && p.name && p.birthYear && p.gender && p.birthHour) {
+          const phoneOkFree = !!verifiedPhoneFree && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhoneFree;
+          if (sameName && phoneOkFree && p.name && p.birthYear && p.gender && p.birthHour) {
             sessionStorage.setItem("v2_profile", JSON.stringify(p));
             const afterGoto = sessionStorage.getItem("v2_after_payment_goto");
             sessionStorage.removeItem("v2_after_payment_goto");

@@ -11,7 +11,9 @@ export default function SajuUpsellCTA() {
       const sp = localStorage.getItem("v2_saved_profile");
       if (sp) {
         const p = JSON.parse(sp);
-        if (p.name && p.birthYear && p.gender && p.birthHour) {
+        const verifiedPhone = localStorage.getItem("v2_verified_phone");
+        const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+        if (phoneOk && p.name && p.birthYear && p.gender && p.birthHour) {
           setHref("/main-v2/payment");
         }
       }

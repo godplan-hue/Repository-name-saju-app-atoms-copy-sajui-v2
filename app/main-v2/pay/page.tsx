@@ -41,9 +41,11 @@ function PayInner() {
       try {
         const sp = localStorage.getItem("v2_saved_profile");
         const p = sp ? JSON.parse(sp) : {};
-        const loggedInName = localStorage.getItem("v2_user_name") ?? "";
-        // 로그인 이름이 저장된 이름과 다른 사람이면 → 이전 정보 초기화 → 프로필부터
-        if (loggedInName && p.name && loggedInName !== p.name) {
+        const verifiedPhone = localStorage.getItem("v2_verified_phone");
+        // 인증된 전화번호와 저장된 프로필의 번호가 일치할 때만 "본인"으로 신뢰 —
+        // 로그아웃 상태거나 새 번호면 예전 정보(다른 사람 것일 수 있음)를 절대 재사용하지 않음
+        const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+        if (!phoneOk) {
           localStorage.removeItem("v2_saved_profile");
           localStorage.removeItem("v2_verified_phone");
           sessionStorage.setItem("v2_profile_next_url", window.location.href);
@@ -67,10 +69,14 @@ function PayInner() {
       setPageReady(true);
     } else {
       try {
-        const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-        if (p.name) setName(p.name);
-        if (p.phone) setMobile(p.phone);
-        if (p.email) setEmail(p.email);
+        const sp = localStorage.getItem("v2_saved_profile");
+        const p = sp ? JSON.parse(sp) : {};
+        const verifiedPhone = localStorage.getItem("v2_verified_phone");
+        if (verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone) {
+          if (p.name) setName(p.name);
+          if (p.phone) setMobile(p.phone);
+          if (p.email) setEmail(p.email);
+        }
       } catch {}
       setPageReady(true);
     }

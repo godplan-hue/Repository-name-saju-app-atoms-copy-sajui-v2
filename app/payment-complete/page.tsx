@@ -116,9 +116,11 @@ function PaymentCompleteInner() {
   // 저장된 본인 프로필 불러오기
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
-    if (!saved) return;
+    const verifiedPhone = localStorage.getItem("v2_verified_phone");
+    if (!saved || !verifiedPhone) return;
     try {
       const p = JSON.parse(saved);
+      if ((p.phone || "").replace(/[^0-9]/g, "") !== verifiedPhone) return;
       setName(p.name ?? "");
       setBirthYear(p.birthYear ?? "");
       setBirthMonth(p.birthMonth ? String(Number(p.birthMonth)) : "");

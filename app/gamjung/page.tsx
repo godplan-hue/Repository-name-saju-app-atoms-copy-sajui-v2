@@ -70,10 +70,12 @@ export default function GamjungPage() {
     } catch {}
     try {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-      if (p.name) setName(p.name);
-      if (p.phone) setPhone(p.phone);
-      if (p.phone) setRestorePhone(p.phone);
-      if (p.email) setEmail(p.email);
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
+      const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+      if (phoneOk && p.name) setName(p.name);
+      if (phoneOk && p.phone) setPhone(p.phone);
+      if (phoneOk && p.phone) setRestorePhone(p.phone);
+      if (phoneOk && p.email) setEmail(p.email);
       // 이전 동의 상태 복원 — 이용권 보유자 또는 이전 제출자는 다시 묻지 않음
       const hasActivePass = Number(localStorage.getItem("gamjung_unlock_until") || 0) > Date.now();
       const hasConsented = localStorage.getItem("gamjung_consented") === "true";
@@ -82,7 +84,8 @@ export default function GamjungPage() {
         setMarketingAgreed(localStorage.getItem("gamjung_marketing") === "true");
       }
       // 전화번호 있으면 Firebase에서 이력 복원 (다른 브라우저에서도 목록 보임)
-      const cleanPh = (p.phone || "").replace(/\D/g, "");
+      // — 검증된 번호일 때만 조회: 아니면 이 기기의 이전 사용자 일기가 새 방문자에게 보일 수 있음
+      const cleanPh = phoneOk ? (p.phone || "").replace(/\D/g, "") : "";
       if (cleanPh) {
         fetch(`/api/gamjung/analyze?phone=${cleanPh}`)
           .then(r => r.ok ? r.json() : null)
@@ -148,6 +151,7 @@ export default function GamjungPage() {
           if (name) savedP.name = name;
           if (email) savedP.email = email;
           localStorage.setItem("v2_saved_profile", JSON.stringify(savedP));
+          localStorage.setItem("v2_verified_phone", cleanPhone);
           localStorage.setItem("gamjung_consented", "true");
           localStorage.setItem("gamjung_marketing", String(marketingAgreed));
         } catch {}
@@ -177,7 +181,7 @@ export default function GamjungPage() {
       if (hasTicket) {
         try { localStorage.setItem("gamjung_unlock_until", String(d.unlocks.gamjung_unlock_until)); } catch {}
       }
-      try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); } catch {}
+      try { const _p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); _p.phone = restorePhone; localStorage.setItem("v2_saved_profile", JSON.stringify(_p)); localStorage.setItem("v2_verified_phone", ph); } catch {}
       setRestoreMsg(hasTicket ? "✅ 이용권 복원 완료! 새로고침할게요." : "✅ 기록을 불러올게요. 새로고침할게요.");
       setTimeout(() => window.location.reload(), 1000);
     } catch { setRestoreMsg("복원 중 오류가 발생했어요."); }

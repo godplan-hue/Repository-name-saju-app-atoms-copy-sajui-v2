@@ -71,14 +71,22 @@ export default function TaegilClient() {
 
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
-    if (!saved) {
+    const verifiedPhone = localStorage.getItem("v2_verified_phone");
+    let p: any = null;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (verifiedPhone && (parsed.phone || "").replace(/[^0-9]/g, "") === verifiedPhone) p = parsed;
+      } catch {}
+    }
+    if (!p) {
       sessionStorage.setItem("v2_profile_next_url", window.location.href);
       sessionStorage.setItem("v2_from_app", "1");
       document.cookie = "jeomun_from_app=1; path=/; max-age=30";
       window.location.href = "/main-v2/profile";
       return;
     }
-    setProfile(JSON.parse(saved));
+    setProfile(p);
 
     const urlParams = new URLSearchParams(window.location.search);
     const urlPaid = urlParams.get("taegilPaid") === "1";

@@ -27,7 +27,11 @@ function QAListContent() {
     if (!n || !y) {
       try {
         const saved = localStorage.getItem("v2_saved_profile");
-        if (saved) { const p = JSON.parse(saved); n = p?.name ?? ""; y = Number(p?.birthYear ?? 0); }
+        const verifiedPhone = localStorage.getItem("v2_verified_phone");
+        if (saved && verifiedPhone) {
+          const p = JSON.parse(saved);
+          if ((p?.phone || "").replace(/[^0-9]/g, "") === verifiedPhone) { n = p?.name ?? ""; y = Number(p?.birthYear ?? 0); }
+        }
       } catch {}
     }
     if (!n || !y) {

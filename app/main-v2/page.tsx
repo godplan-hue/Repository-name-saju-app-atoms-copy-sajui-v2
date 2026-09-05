@@ -752,10 +752,12 @@ export default function MainV2() {
     const saved = localStorage.getItem("v2_user_name");
     if (saved) setUser(saved);
     try {
+      const verifiedPhoneMain = localStorage.getItem("v2_verified_phone");
       const raw = localStorage.getItem("v2_saved_profile");
       if (raw) {
         const p = JSON.parse(raw);
-        if (p?.name && p?.birthYear) setSavedProfile({ name: p.name, birthYear: Number(p.birthYear) });
+        const phoneOkMain = !!verifiedPhoneMain && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhoneMain;
+        if (phoneOkMain && p?.name && p?.birthYear) setSavedProfile({ name: p.name, birthYear: Number(p.birthYear) });
       }
     } catch {}
     // 프로필 입력 후 돌아왔을 때 대기 중이던 특별 사주 모달 자동 오픈
@@ -768,7 +770,15 @@ export default function MainV2() {
 
   const goFree = () => {
     // 로그인 없이 바로 시작 — 저장된 정보 있으면 바로 분석, 없으면 생년월일 입력 마법사
-    try { const sp = localStorage.getItem("v2_saved_profile"); if (sp) { const p = JSON.parse(sp); if (p.name && p.birthYear && p.gender && p.birthHour) { localStorage.setItem("v2_user_name", p.name); sessionStorage.setItem("v2_profile", JSON.stringify(p)); window.location.href = "/main-v2/analysis?fresh=1"; return; } } } catch {}
+    try {
+      const verifiedPhoneFree = localStorage.getItem("v2_verified_phone");
+      const sp = localStorage.getItem("v2_saved_profile");
+      if (sp) {
+        const p = JSON.parse(sp);
+        const phoneOkFree = !!verifiedPhoneFree && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhoneFree;
+        if (phoneOkFree && p.name && p.birthYear && p.gender && p.birthHour) { localStorage.setItem("v2_user_name", p.name); sessionStorage.setItem("v2_profile", JSON.stringify(p)); window.location.href = "/main-v2/analysis?fresh=1"; return; }
+      }
+    } catch {}
     sessionStorage.setItem("v2_profile_flow", "free");
     sessionStorage.setItem("v2_from_app", "1");
     document.cookie = "jeomun_from_app=1; path=/; max-age=30";
@@ -784,9 +794,11 @@ export default function MainV2() {
       const payUrl = `/main-v2/payment?preselect=${_pkgPreselect[c.packageName ?? ""] || "basic"}`;
       // 생년월일 없으면 프로필 먼저 수집 → 완료 후 결제 페이지로 복귀
       try {
+        const verifiedPhoneCourse = localStorage.getItem("v2_verified_phone");
         const sp = localStorage.getItem("v2_saved_profile");
         const p = sp ? JSON.parse(sp) : {};
-        if (p.birthYear && p.gender && p.birthHour) {
+        const phoneOkCourse = !!verifiedPhoneCourse && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhoneCourse;
+        if (phoneOkCourse && p.birthYear && p.gender && p.birthHour) {
           window.location.href = payUrl;
           return;
         }

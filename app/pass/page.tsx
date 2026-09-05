@@ -25,9 +25,12 @@ export default function PassPage() {
 
   useEffect(() => {
     try {
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-      if (p.name) setName(p.name);
-      if (p.phone) setMobile(p.phone.replace(/\D/g,"").slice(0,11));
+      if (verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone) {
+        if (p.name) setName(p.name);
+        if (p.phone) setMobile(p.phone.replace(/\D/g,"").slice(0,11));
+      }
     } catch {}
   }, []);
 

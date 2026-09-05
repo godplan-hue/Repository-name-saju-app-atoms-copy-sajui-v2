@@ -44,8 +44,9 @@ export default function DailyTrackerPage() {
 
     let uid = "";
     try {
+      const verifiedPhone = localStorage.getItem("v2_verified_phone");
       const ph = (JSON.parse(localStorage.getItem("v2_saved_profile") || "{}").phone || localStorage.getItem("v2_saved_phone") || "").replace(/\D/g, "");
-      if (ph.length >= 10) uid = `phone_${ph}`;
+      if (ph.length >= 10 && verifiedPhone && ph === verifiedPhone) uid = `phone_${ph}`;
     } catch {}
     if (!uid) { router.replace("/momcare"); return; }
     setMcUserId(uid);
