@@ -97,12 +97,11 @@ function DaewoonInner() {
 
   useEffect(() => {
     const saved = localStorage.getItem("v2_saved_profile");
-    const verifiedPhone = localStorage.getItem("v2_verified_phone");
     let p: any = null;
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (verifiedPhone && (parsed.phone || "").replace(/[^0-9]/g, "") === verifiedPhone) p = parsed;
+        if (parsed.name && parsed.birthYear && parsed.gender && parsed.birthHour) p = parsed;
       } catch {}
     }
     if (!p) {
