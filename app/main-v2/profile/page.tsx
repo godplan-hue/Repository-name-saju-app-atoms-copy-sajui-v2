@@ -282,7 +282,7 @@ export default function V2Profile() {
       const pendingPayUrl = sessionStorage.getItem("v2_profile_next_url");
       if (pendingPayUrl) {
         sessionStorage.removeItem("v2_profile_next_url");
-        window.location.href = pendingPayUrl;
+        window.location.replace(pendingPayUrl);
         return;
       }
       router.push("/main-v2");
@@ -292,7 +292,7 @@ export default function V2Profile() {
     const pendingPayUrl = sessionStorage.getItem("v2_profile_next_url");
     if (pendingPayUrl) {
       sessionStorage.removeItem("v2_profile_next_url");
-      window.location.href = pendingPayUrl;
+      window.location.replace(pendingPayUrl);
       return;
     }
     // 유료 결제가 있으면 분석 재실행 없이 결과지로 (결과지에서 필요 시 자동 재호출함)

@@ -82,9 +82,14 @@ export default function TaegilClient() {
       sessionStorage.setItem("v2_profile_next_url", window.location.href);
       sessionStorage.setItem("v2_from_app", "1");
       document.cookie = "jeomun_from_app=1; path=/; max-age=30";
-      window.location.href = "/main-v2/profile";
+      window.location.replace("/main-v2/profile");
       return;
     }
+    try {
+      const cleanPhone = (p.phone || "").replace(/[^0-9]/g, "");
+      if (cleanPhone) localStorage.setItem("v2_verified_phone", cleanPhone);
+      if (p.name) localStorage.setItem("v2_user_name", p.name);
+    } catch {}
     setProfile(p);
 
     const urlParams = new URLSearchParams(window.location.search);
