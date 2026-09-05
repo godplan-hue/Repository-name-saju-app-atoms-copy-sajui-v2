@@ -61,11 +61,23 @@ function PaymentInner() {
         .catch(() => {});
     }
     try {
+      const sp = localStorage.getItem("v2_saved_profile");
+      const p = sp ? JSON.parse(sp) : {};
       const verifiedPhone = localStorage.getItem("v2_verified_phone");
-      const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
-      if (verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone) {
-        if (p.phone) setModalMobile(p.phone.replace(/\D/g,"").slice(0,11));
+      // 인증된 전화번호와 저장된 프로필의 번호가 일치할 때만 "본인"으로 신뢰 —
+      // 로그아웃 상태거나 새 번호면 예전 정보(다른 사람 것일 수 있음)를 절대 재사용하지 않음
+      const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
+      if (!phoneOk || !p.birthYear || !p.gender || !p.birthHour) {
+        localStorage.removeItem("v2_saved_profile");
+        localStorage.removeItem("v2_verified_phone");
+        sessionStorage.setItem("v2_profile_next_url", window.location.href);
+        sessionStorage.setItem("v2_from_app", "1");
+        document.cookie = "jeomun_from_app=1; path=/; max-age=30";
+        window.location.replace("/main-v2/profile");
+        return;
       }
+      if (p.name) setModalName(p.name);
+      if (p.phone) setModalMobile(p.phone.replace(/\D/g,"").slice(0,11));
     } catch {}
   }, []);
 
