@@ -90,6 +90,7 @@ export default function LandingForm({ partnerId, ctaText, primary, formType = "1
       };
 
       localStorage.setItem("v2_saved_profile", JSON.stringify(toSajuProfile(p1, profile1)));
+      if (p1.name.trim()) localStorage.setItem("v2_user_name", p1.name.trim());
       localStorage.setItem("referred_by", partnerId);
       if (is2person) {
         const profile2 = buildProfile(p2, "");

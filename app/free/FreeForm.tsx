@@ -60,6 +60,7 @@ export default function FreeForm() {
       phone: clean,
       email: email.trim(),
     }));
+    if (name.trim()) localStorage.setItem("v2_user_name", name.trim());
 
     // 재물운 결제 완료 플로우 (naming=1 아님 — 재물운 개별 분석)
     localStorage.setItem("v2_paid", "1");

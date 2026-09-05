@@ -319,6 +319,7 @@ function PaymentCompleteInner() {
         birthMonth: String(p.birthMonth).padStart(2, "0"),
         birthDay: String(p.birthDay).padStart(2, "0"),
       }));
+      if (p.name) localStorage.setItem("v2_user_name", p.name);
 
       const isPkg = PKG_DISPLAY_NAMES.includes(p.pkg);
       const prePlan = isPkg ? "package" : "select";
@@ -507,6 +508,7 @@ function PaymentCompleteInner() {
       try { prev = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); } catch {}
       const fullProfile = { ...prev, name, birthYear: sajuYear, birthMonth: String(sajuMonth).padStart(2,"0"), birthDay: String(sajuDay).padStart(2,"0"), birthHour, gender, relationship: "나" };
       localStorage.setItem("v2_saved_profile", JSON.stringify(fullProfile));
+      if (name) localStorage.setItem("v2_user_name", name);
       sessionStorage.setItem("v2_profile", JSON.stringify(fullProfile));
       router.replace(redirectTo);
       return;

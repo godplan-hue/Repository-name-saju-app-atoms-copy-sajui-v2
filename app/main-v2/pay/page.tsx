@@ -169,7 +169,7 @@ function PayInner() {
 
       localStorage.setItem("v2_paid", "1");
       localStorage.setItem("v2_plan", "select");
-      try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); const cleanMob = mobile.replace(/\D/g,""); localStorage.setItem("v2_saved_profile", JSON.stringify({...sp, phone: cleanMob, email: email.trim()})); if (cleanMob) localStorage.setItem("v2_saved_phone", cleanMob); } catch {}
+      try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); const cleanMob = mobile.replace(/\D/g,""); localStorage.setItem("v2_saved_profile", JSON.stringify({...sp, phone: cleanMob, email: email.trim()})); if (cleanMob) localStorage.setItem("v2_saved_phone", cleanMob); if (name) localStorage.setItem("v2_user_name", name); } catch {}
       try {
         const cats = JSON.parse(localStorage.getItem("v2_paid_cats") || "[]");
         if (!cats.includes("💰 재물운")) cats.push("💰 재물운");
@@ -226,7 +226,7 @@ function PayInner() {
         sessionStorage.setItem("v2_payment_phone", cleanMobile);
       } catch {}
     }
-    try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: cleanMobile, email: info.email.trim() })); } catch {}
+    try { const sp = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}"); localStorage.setItem("v2_saved_profile", JSON.stringify({ ...sp, phone: cleanMobile, email: info.email.trim() })); if (info.name) localStorage.setItem("v2_user_name", info.name.trim()); } catch {}
     try { const _h = Date.now() + 24*60*60*1000; localStorage.setItem("v2_qa_unlock_until", String(_h)); const _existH = Number(localStorage.getItem("haemong_unlock_until")||0); localStorage.setItem("haemong_unlock_until", String(Math.max(_existH, _h))); if (cleanMobile) localStorage.setItem("haemong_unlock_phone", cleanMobile); } catch {}
     if (info.displayAmount > 0) {
       let packageLabel = "운세";
