@@ -920,7 +920,7 @@ export default function MainV2() {
             }}
             style={{ width: "100%", maxWidth: 600, margin: "0 auto", display: "block", padding: "16px 14px", background: "linear-gradient(135deg, #991b1b, #dc2626)", border: "3px solid #fde047", borderRadius: 16, cursor: "pointer", textAlign: "center", color: "#fff", boxShadow: "0 6px 22px rgba(153,27,27,0.55)" }}
           >
-            <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 900, letterSpacing: "0.3px" }}>🎉 오픈기념 한정특가 (조기마감될 수 있어요)</p>
+            <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 900, letterSpacing: "0.3px", wordBreak: "keep-all" }}>🎉 오픈기념 한정특가 (조기마감될 수 있어요)</p>
             <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 800, background: "#7a0c1f", color: "#fff", borderRadius: 10, padding: "8px 10px", lineHeight: 1.6, wordBreak: "keep-all" }}>
               🎍신년운세 + 💗연애사주 + 🔍내사람찾기 + 💍결혼사주 + 🌧이혼운세
             </p>
