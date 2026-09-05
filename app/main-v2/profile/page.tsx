@@ -185,6 +185,7 @@ export default function V2Profile() {
           setForm(prev => ({ ...prev, ...profileData, relationship: "나" }));
           localStorage.setItem("v2_saved_profile", JSON.stringify(profileData));
           localStorage.setItem("v2_verified_phone", phone);
+          if (profileData.name) localStorage.setItem("v2_user_name", profileData.name);
           setSavedMode(true);
         } else {
           // Firebase에서 못 찾음 → 로컬에 기존 데이터 있으면 그대로 사용 (입력 전에 완성 가능)
@@ -198,6 +199,7 @@ export default function V2Profile() {
                 setForm(prev => ({ ...prev, ...profileData, relationship: localP.relationship || "나" }));
                 localStorage.setItem("v2_saved_profile", JSON.stringify(profileData));
                 localStorage.setItem("v2_verified_phone", phone);
+                if (profileData.name) localStorage.setItem("v2_user_name", profileData.name);
                 setSavedMode(true);
                 usedLocal = true;
               }
