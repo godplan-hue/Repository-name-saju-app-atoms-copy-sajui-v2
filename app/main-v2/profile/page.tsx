@@ -9,8 +9,8 @@ const G = "linear-gradient(135deg, #ec4899, #8b5cf6)";
 const BG = "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)";
 
 const STEP_BACKGROUNDS: Record<number, string> = {
-  1: "https://i.pinimg.com/736x/a8/78/60/a87860d56c2d18f7d1995e0050d42632.jpg",
-  2: "https://i.pinimg.com/736x/35/04/d8/3504d87bd6b5aae73941f6d85c3f6686.jpg",
+  1: "https://i.pinimg.com/736x/35/04/d8/3504d87bd6b5aae73941f6d85c3f6686.jpg",
+  2: "https://i.pinimg.com/736x/a8/78/60/a87860d56c2d18f7d1995e0050d42632.jpg",
 };
 
 const RELS = [
