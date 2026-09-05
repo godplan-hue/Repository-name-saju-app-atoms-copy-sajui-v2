@@ -255,6 +255,13 @@ export default function YearlyPage() {
   const totalScore = scores?.total ?? 0;
   const scoreLabel = totalScore >= 75 ? "강한 길운 ✨" : totalScore >= 60 ? "안정적인 흐름 🌿" : "변화가 필요한 시기 🌱";
 
+  // 프로필 확인이 끝나기 전에는 페이지 내용을 그리지 않음 —
+  // 아니면 로그아웃 상태로 들어왔을 때 실제 결과 화면이 한 프레임 보였다가
+  // /main-v2/profile로 튕기는 "뭔가 뜨고 넘어가는" 깜빡임 발생
+  if (!profile) {
+    return <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #e0f2fe 100%)" }} />;
+  }
+
   return (
     <>
     <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"

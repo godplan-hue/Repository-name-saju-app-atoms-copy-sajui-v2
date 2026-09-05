@@ -49,6 +49,7 @@ function PaymentInner() {
   const selectedPackage = highlightWealthLove ? "기본 분석" : preselectInfo ? preselectInfo.name : "기본 분석";
   const [isPartner, setIsPartner] = useState(false);
   const [brand, setBrand] = useState<{ businessName: string; logoUrl: string; customPriceBasic?: string; customPriceStandard?: string; customPricePremium?: string; customPriceVip?: string } | null>(null);
+  const [gateOk, setGateOk] = useState(false);
   useEffect(() => {
     const hostname = window.location.hostname;
     const partner = isPartnerHost(hostname);
@@ -78,6 +79,7 @@ function PaymentInner() {
       }
       if (p.name) setModalName(p.name);
       if (p.phone) setModalMobile(p.phone.replace(/\D/g,"").slice(0,11));
+      setGateOk(true);
     } catch {}
   }, []);
 
@@ -408,6 +410,13 @@ function PaymentInner() {
     { id: "couple",      icon: "👫", name: "궁합분석" },
   ];
 
+
+  // 프로필 확인이 끝나기 전에는 결제 페이지 내용을 그리지 않음 —
+  // 아니면 로그아웃 상태로 들어왔을 때 실제 결제 화면이 한 프레임 보였다가
+  // /main-v2/profile로 튕기는 "뭔가 뜨고 넘어가는" 깜빡임 발생
+  if (!gateOk) {
+    return <main style={{ minHeight: "100vh", background: BG }} />;
+  }
 
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #d97706 100%)", backgroundImage: "url('https://images.unsplash.com/photo-1719399184315-5ffab4006e18?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fCVFQyVCQiVBOCVFQyU4NSU4OSUyMCVFQyU5NSU4NCVFRCU4QSVCOHxlbnwwfHwwfHx8MA%3D%3D')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "scroll", color: "white", fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif", position: "relative", overflow: "hidden", WebkitTapHighlightColor: "transparent" }}>

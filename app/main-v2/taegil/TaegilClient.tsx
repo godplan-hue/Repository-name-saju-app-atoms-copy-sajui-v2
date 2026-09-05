@@ -352,6 +352,13 @@ export default function TaegilClient() {
 
   const canAnalyze = !!eventType && selectedDates.length > 0 && !loading;
 
+  // 프로필 확인(위 useEffect)이 끝나기 전에는 페이지 내용을 그리지 않음 —
+  // 아니면 프로필 없는 사람이 택일 페이지에 들어왔을 때 실제 콘텐츠가
+  // 한 프레임 보였다가 /main-v2/profile로 튕기는 "뭔가 뜨고 넘어가는" 깜빡임 발생
+  if (!profile) {
+    return <main style={{ minHeight:"100vh", background:"#f0fdf4" }} />;
+  }
+
   return (
     <main style={{ minHeight:"100vh", background:"#f0fdf4", fontFamily:"'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
       {/* 헤더 — 항상 즉시 렌더링 (LCP 개선) */}

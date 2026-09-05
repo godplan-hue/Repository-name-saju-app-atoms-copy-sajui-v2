@@ -509,6 +509,13 @@ function DaewoonInner() {
   const selectedLocked = selectedIdx >= 0 ? isBlockLocked(selectedIdx) : true;
   const isSelectedCurrent = selectedIdx === currentIndex;
 
+  // 프로필 확인(위 useEffect)이 끝나기 전에는 페이지 내용을 그리지 않음 —
+  // 아니면 프로필 없는 사람이 대운 페이지에 들어왔을 때 실제 콘텐츠가
+  // 한 프레임 보였다가 /main-v2/profile로 튕기는 "뭔가 뜨고 넘어가는" 깜빡임 발생
+  if (!profile) {
+    return <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#0f0620 0%,#1a0535 40%,#0a0420 100%)" }} />;
+  }
+
   return (
     <>
       <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" strategy="afterInteractive"
