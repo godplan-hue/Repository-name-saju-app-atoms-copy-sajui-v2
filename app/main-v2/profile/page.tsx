@@ -352,7 +352,7 @@ export default function V2Profile() {
           <div style={{ textAlign: "center", marginBottom: 20 }}>
             <div style={{ fontSize: 42, lineHeight: 1, marginBottom: 8 }}>🔮</div>
             <h1 style={{ fontSize: 24, fontWeight: 900, color: "#ffffff", margin: "0 0 4px" }}>점운 분석</h1>
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", margin: 0 }}>당신의 정보를 입력해주세요</p>
+            <p style={{ fontSize: 13, color: "#fbbf24", fontWeight: 800, margin: 0 }}>✅ 기존 회원 정보를 불러왔어요</p>
           </div>
 
           <div style={{ background: "rgba(60,20,100,0.72)", backdropFilter: "blur(16px)", borderRadius: 20, padding: "22px 18px 24px", boxShadow: "0 12px 40px rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.15)" }}>
