@@ -31,6 +31,7 @@ function PayInner() {
   const [couponFullAccess, setCouponFullAccess] = useState(false);
   const [refundAgreed, setRefundAgreed] = useState(false);
   const [showRefundNote, setShowRefundNote] = useState(false);
+  const [pageReady, setPageReady] = useState(false);
 
   const displayAmount = discountPct > 0 ? Math.round(amount * (1 - discountPct / 100)) : amount;
 
@@ -63,6 +64,7 @@ function PayInner() {
         if (p.phone) setMobile(p.phone);
         if (p.email) setEmail(p.email);
       } catch {}
+      setPageReady(true);
     } else {
       try {
         const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
@@ -70,6 +72,7 @@ function PayInner() {
         if (p.phone) setMobile(p.phone);
         if (p.email) setEmail(p.email);
       } catch {}
+      setPageReady(true);
     }
   }, [isTaegil]);
 
@@ -524,6 +527,10 @@ function PayInner() {
     color: "#fff", fontSize: 15, fontWeight: 700, outline: "none", boxSizing: "border-box",
   };
   const lbl: CSSProperties = { display: "block", color: "#fbbf24", fontSize: 11, fontWeight: 700, marginBottom: 4 };
+
+  if (!pageReady) {
+    return <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#1a0535,#0a0420)" }} />;
+  }
 
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(180deg,#1a0835,#0d0520)", color: "white", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 16px" }}>
