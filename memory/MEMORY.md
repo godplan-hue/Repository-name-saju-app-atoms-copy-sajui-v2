@@ -1,5 +1,8 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐⭐⭐ 당근비즈니스 가이드 요약+당근광고 운영조언 (2026-09-05)](reference_karrot_business_guide_and_strategy_advice_2026_09_05.md) — 간편모드유지+전환추적관리 우선붙일것, [[project_first_ad_driven_db_inflow_2026_08_29]] 유일한 실결제확인채널인데 예산배분전략엔 빠져있던 불일치 지적
+- [⭐⭐⭐⭐ 로그아웃 깜빡임버그 4곳(대운/택일/990버튼/패키지카드)+apps D-day버그+qa뒤로가기버그 수정 (2026-09-05)](project_session_2026_09_05_flash_bug_and_apps_qa_fixes.md) — commit 37dfbb98/09105de5/39f73df3, router.push레이스컨디션 early-return guard 패턴
+- [⭐⭐⭐⭐ 사주앱 전체 프로필누락+special낡은플래그 버그 전수조사, /main-v2/qa죽은페이지 삭제보류 (2026-09-05)](bug_qa_page_dead_orphan_and_special_stale_flag_sweep_2026_09_05.md) — [[bug_special_stale_flag_wrong_number_2026_09_05]] 010-0000-0000 로그인버그 원인+수정(commit 1f7f8974), 택일/대운/올해운세/QA리스트 계열 최종스윕
 - [⛔⛔⛔ 영상프롬프트 "그대로달라"=무수정재현, 자막깨짐은 텍스트삭제로 풀지말것 (2026-09-04)](feedback_video_prompt_verbatim_no_rewrite_2026_09_04.md) — 임의개선시도 5연속 분노유발("시발진짜"), 고양이목소리 명시추가는 [[feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03]] 4번항목
 - [⭐⭐⭐ 홍보영상 화면자막↔대사 분리규칙 (2026-09-04)](feedback_video_prompt_caption_vs_dialogue_separation_2026_09_04.md) — MBTI/대운/택일 3종, 무료앱은 왕관에 "무료" 각인
 - [⭐⭐⭐⭐ 가계부/감정일기/다이어트/맘케어 4개앱 서버백업실패 무음버그 실제수정+빌드+푸시완료 (2026-09-04)](bug_diary4apps_silent_save_failure_fixed_2026_09_04.md) — 이전메모(08-30)는 틀린기록이었음, syncFailed배너 4앱전부, 콘솔업로드만 남음
