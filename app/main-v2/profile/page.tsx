@@ -331,7 +331,7 @@ export default function V2Profile() {
 
   // ── 저장된 정보 단일 폼 (유료 재방문자) ──────────────────
   if (savedMode) {
-    const bgImg = "https://i.pinimg.com/1200x/3c/d5/82/3cd582b516489126cddf762e4ad4d717.jpg";
+    const bgImg = STEP_BACKGROUNDS[2];
     const cardInp: React.CSSProperties = {
       width: "100%", padding: "13px 14px", borderRadius: 12,
       border: "1.5px solid rgba(251,191,36,0.4)", fontSize: 15,
@@ -405,7 +405,7 @@ export default function V2Profile() {
                 finish();
               }}
               style={{ width: "100%", padding: "16px 0", background: "#fbbf24", color: "#1a0f2e", border: "none", borderRadius: 14, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.45)" }}>
-              분석 시작
+              🔮 무료 분석 시작
             </button>
             <button
               onClick={() => {
@@ -618,7 +618,7 @@ export default function V2Profile() {
                 }}
                 disabled={!agreed}
                 style={{ padding: "15px 0", background: agreed ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(0,0,0,0.1)", color: agreed ? "#1a0f2e" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 15, cursor: agreed ? "pointer" : "not-allowed", boxShadow: agreed ? "0 6px 22px rgba(251,191,36,0.4)" : "none", marginTop: 4 }}>
-                🔮 분석 시작
+                🔮 무료 분석 시작
               </button>
             </div>
           )}
