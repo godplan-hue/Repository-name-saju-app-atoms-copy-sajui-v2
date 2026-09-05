@@ -758,6 +758,10 @@ export default function MainV2() {
         const p = JSON.parse(raw);
         const phoneOkMain = !!verifiedPhoneMain && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhoneMain;
         if (phoneOkMain && p?.name && p?.birthYear) setSavedProfile({ name: p.name, birthYear: Number(p.birthYear) });
+        if (!saved && phoneOkMain && p?.name) {
+          localStorage.setItem("v2_user_name", p.name);
+          setUser(p.name);
+        }
       }
     } catch {}
     // 프로필 입력 후 돌아왔을 때 대기 중이던 특별 사주 모달 자동 오픈
