@@ -59,7 +59,7 @@ function QAListContent() {
   return (
     <main style={{ minHeight: "100vh", background: "linear-gradient(160deg, #fdf2f8 0%, #ede9fe 100%)", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" }}>
       <div style={{ background: "white", borderBottom: "1px solid #f3e8ff", padding: "12px 16px", display: "flex", alignItems: "center", gap: 10, position: "sticky", top: 0, zIndex: 10 }}>
-        <button onClick={() => window.history.back()} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#8b5cf6", padding: "0 4px" }}>←</button>
+        <button onClick={() => { if (window.history.length > 1) window.history.back(); else window.location.href = "/main-v2"; }} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#8b5cf6", padding: "0 4px" }}>←</button>
         <div style={{ flex: 1 }}>
           <p style={{ margin: 0, fontSize: 14, fontWeight: 900, color: "#1a1a2e" }}>사주 Q&amp;A</p>
           <p style={{ margin: 0, fontSize: 11, fontWeight: 700, color: unlocked ? "#8b5cf6" : "#ef4444", display: "flex", alignItems: "center", gap: 5 }}>
