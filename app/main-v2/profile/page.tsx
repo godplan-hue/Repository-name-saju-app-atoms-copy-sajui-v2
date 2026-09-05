@@ -405,7 +405,7 @@ export default function V2Profile() {
                 finish();
               }}
               style={{ width: "100%", padding: "16px 0", background: "#fbbf24", color: "#1a0f2e", border: "none", borderRadius: 14, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 22px rgba(251,191,36,0.45)" }}>
-              🔮 무료 분석 시작
+              🔮 분석하기
             </button>
             <button
               onClick={() => {
@@ -605,7 +605,7 @@ export default function V2Profile() {
                 }}
                 disabled={!agreed}
                 style={{ padding: "11px 0", background: agreed ? "linear-gradient(135deg, #fbbf24, #ec4899, #8b5cf6)" : "rgba(0,0,0,0.1)", color: agreed ? "#1a0f2e" : "#9ca3af", border: "none", borderRadius: 50, fontWeight: 900, fontSize: 14, cursor: agreed ? "pointer" : "not-allowed", boxShadow: agreed ? "0 6px 22px rgba(251,191,36,0.4)" : "none", marginTop: 2 }}>
-                🔮 무료 분석 시작
+                {isFreeFlow ? "🔮 무료 분석 시작" : "🔮 분석하기"}
               </button>
             </div>
           )}
