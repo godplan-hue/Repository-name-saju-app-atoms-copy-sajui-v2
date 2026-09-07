@@ -19,7 +19,6 @@ export default function BabyWordsPage() {
   const [words, setWords] = useState<WordEntry[]>([]);
   const [form, setForm] = useState({ babyWord: "", realWord: "", date: new Date().toISOString().slice(0,10), story: "", age: "" });
   const [showForm, setShowForm] = useState(false);
-  const [search, setSearch] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [expired, setExpired] = useState(false);
   const [mcUserId, setMcUserId] = useState("");
@@ -82,9 +81,7 @@ export default function BabyWordsPage() {
     setShowForm(false);
   }
 
-  const filtered = words.filter(w =>
-    search === "" || w.babyWord.includes(search) || w.realWord.includes(search) || w.story.includes(search)
-  );
+  const filtered = words;
 
   function share() {
     if (words.length === 0) { alert("기록된 단어가 없어요!"); return; }
@@ -178,11 +175,6 @@ export default function BabyWordsPage() {
             </div>
             <button onClick={() => setShowForm(true)} style={{ width: "100%", marginTop: 16, background: "#f97316", color: "white", border: "none", borderRadius: 12, padding: "13px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>우리 아기 첫 단어 기록하기</button>
           </div>
-        )}
-
-        {/* 검색 */}
-        {words.length > 0 && (
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="단어 검색..." style={{ width: "100%", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 16px", fontSize: 14, outline: "none", background: "white", boxSizing: "border-box", marginBottom: 12 }} />
         )}
 
         {/* 단어 목록 */}
