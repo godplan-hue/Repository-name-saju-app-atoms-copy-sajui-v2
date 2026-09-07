@@ -21,6 +21,21 @@ const PRESET_TAGS = ["#첫경험", "#웃음", "#울음", "#먹방", "#수면", "
 
 function todayStr() { return new Date().toISOString().slice(0, 10); }
 
+function groupDiaryByMonth(entries: DiaryEntry[]): { key: string; label: string; items: DiaryEntry[] }[] {
+  const groups: { key: string; label: string; items: DiaryEntry[] }[] = [];
+  const map = new Map<string, DiaryEntry[]>();
+  entries.forEach(e => {
+    const key = e.date.slice(0, 7);
+    if (!map.has(key)) {
+      const [y, m] = key.split("-");
+      map.set(key, []);
+      groups.push({ key, label: `${y}년 ${Number(m)}월`, items: map.get(key)! });
+    }
+    map.get(key)!.push(e);
+  });
+  return groups;
+}
+
 export default function BabyDiaryPage() {
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
   const submitSavingRef = useRef(false);
@@ -32,6 +47,8 @@ export default function BabyDiaryPage() {
   const [expired, setExpired] = useState(false);
   const [mcUserId, setMcUserId] = useState("");
   const [syncFailed, setSyncFailed] = useState(false);
+  const [showAllDiary, setShowAllDiary] = useState(false);
+  const [expandedDiaryMonths, setExpandedDiaryMonths] = useState<Set<string>>(new Set());
   const router = useRouter();
 
   useEffect(() => {
@@ -104,6 +121,32 @@ export default function BabyDiaryPage() {
   const filtered = entries.filter(e =>
     search === "" || e.title.includes(search) || e.content.includes(search) || e.tags.some(t => t.includes(search))
   );
+
+  function renderDiaryCard(e: DiaryEntry) {
+    const m = MOODS[e.mood];
+    return (
+      <div key={e.id} onClick={() => { setViewEntry(e); setMode("view"); }} style={{ background: "white", borderRadius: 18, padding: "20px", boxShadow: "0 2px 10px rgba(0,0,0,0.06)", cursor: "pointer", borderLeft: "4px solid #f97316" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 20 }}>{m.emoji}</span>
+              <span style={{ fontSize: 12, color: "#9ca3af" }}>{e.date}</span>
+              <span style={{ fontSize: 12, color: "#9ca3af" }}>{e.weather}</span>
+              <span style={{ fontSize: 11, background: m.color, color: "#374151", borderRadius: 6, padding: "1px 7px", fontWeight: 700 }}>{m.label}</span>
+            </div>
+            <p style={{ fontSize: 15, fontWeight: 800, color: "#1a1a2e", margin: "0 0 6px" }}>{e.title}</p>
+            <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const }}>{e.content}</p>
+            {e.tags.length > 0 && (
+              <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                {e.tags.map(t => <span key={t} style={{ fontSize: 11, background: "#f3f4f6", color: "#9ca3af", borderRadius: 6, padding: "1px 6px" }}>{t}</span>)}
+              </div>
+            )}
+          </div>
+          <span style={{ color: "#d1d5db", fontSize: 18, marginLeft: 8 }}>›</span>
+        </div>
+      </div>
+    );
+  }
 
   // ── 뷰 모드 ──────────────────────────────────────────────
   if (mode === "view" && viewEntry) {
@@ -256,33 +299,40 @@ export default function BabyDiaryPage() {
             <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 24px" }}>오늘 아기와의 소중한 하루를 기록해보세요</p>
             <button onClick={openNew} style={{ background: "#f97316", color: "white", border: "none", borderRadius: 14, padding: "14px 28px", fontSize: 15, fontWeight: 700, cursor: "pointer" }}>첫 일기 쓰기</button>
           </div>
-        ) : (
+        ) : search !== "" ? (
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {filtered.map(e => {
-              const m = MOODS[e.mood];
-              return (
-                <div key={e.id} onClick={() => { setViewEntry(e); setMode("view"); }} style={{ background: "white", borderRadius: 18, padding: "20px", boxShadow: "0 2px 10px rgba(0,0,0,0.06)", cursor: "pointer", borderLeft: "4px solid #f97316" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: 20 }}>{m.emoji}</span>
-                        <span style={{ fontSize: 12, color: "#9ca3af" }}>{e.date}</span>
-                        <span style={{ fontSize: 12, color: "#9ca3af" }}>{e.weather}</span>
-                        <span style={{ fontSize: 11, background: m.color, color: "#374151", borderRadius: 6, padding: "1px 7px", fontWeight: 700 }}>{m.label}</span>
-                      </div>
-                      <p style={{ fontSize: 15, fontWeight: 800, color: "#1a1a2e", margin: "0 0 6px" }}>{e.title}</p>
-                      <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const }}>{e.content}</p>
-                      {e.tags.length > 0 && (
-                        <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-                          {e.tags.map(t => <span key={t} style={{ fontSize: 11, background: "#f3f4f6", color: "#9ca3af", borderRadius: 6, padding: "1px 6px" }}>{t}</span>)}
-                        </div>
-                      )}
-                    </div>
-                    <span style={{ color: "#d1d5db", fontSize: 18, marginLeft: 8 }}>›</span>
+            {filtered.map(renderDiaryCard)}
+          </div>
+        ) : !showAllDiary ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {filtered.slice(0, 5).map(renderDiaryCard)}
+            {filtered.length > 5 && (
+              <button onClick={() => setShowAllDiary(true)} style={{ width: "100%", background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px", color: "#6b7280", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                전체 {filtered.length}개 기록 보기 ▾
+              </button>
+            )}
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {groupDiaryByMonth(filtered).map(g => (
+              <div key={g.key}>
+                <button
+                  onClick={() => setExpandedDiaryMonths(prev => { const next = new Set(prev); if (next.has(g.key)) next.delete(g.key); else next.add(g.key); return next; })}
+                  style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 16px", color: "#1a1a2e", fontSize: 14, fontWeight: 800, cursor: "pointer", marginBottom: expandedDiaryMonths.has(g.key) ? 8 : 0 }}
+                >
+                  <span>{g.label} ({g.items.length}개)</span>
+                  <span>{expandedDiaryMonths.has(g.key) ? "▲" : "▾"}</span>
+                </button>
+                {expandedDiaryMonths.has(g.key) && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 8 }}>
+                    {g.items.map(renderDiaryCard)}
                   </div>
-                </div>
-              );
-            })}
+                )}
+              </div>
+            ))}
+            <button onClick={() => setShowAllDiary(false)} style={{ background: "none", border: "none", color: "#9ca3af", fontSize: 12, cursor: "pointer", padding: "4px 0" }}>
+              접어서 보기 ▴
+            </button>
           </div>
         )}
       </div>

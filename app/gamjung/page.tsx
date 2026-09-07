@@ -58,6 +58,18 @@ function getTodayCount() {
   return (base + (block >= 1 ? 410 + (lcg % 190) : 0) + (block >= 2 ? 480 + ((lcg >> 4) % 250) : 0)).toLocaleString();
 }
 
+function groupByMonth<T extends { createdAt: number }>(entries: T[]): { key: string; label: string; items: T[] }[] {
+  const groups: { key: string; label: string; items: T[] }[] = [];
+  const map = new Map<string, T[]>();
+  entries.forEach(e => {
+    const d = new Date(e.createdAt);
+    const key = `${d.getFullYear()}-${d.getMonth() + 1}`;
+    if (!map.has(key)) { map.set(key, []); groups.push({ key, label: `${d.getFullYear()}년 ${d.getMonth() + 1}월`, items: map.get(key)! }); }
+    map.get(key)!.push(e);
+  });
+  return groups;
+}
+
 export default function GamjungPage() {
   const count = getTodayCount();
   const router = useRouter();
@@ -77,6 +89,8 @@ export default function GamjungPage() {
 
   const selectedMood = MOODS.find(m => m.score === moodScore);
   const [history, setHistory] = useState<Array<{id: string; moodLabel: string; moodEmoji: string; createdAt: number}>>([]);
+  const [showAllHistory, setShowAllHistory] = useState(false);
+  const [expandedHistoryMonths, setExpandedHistoryMonths] = useState<Set<string>>(new Set());
   const [gamjungLocked, setGamjungLocked] = useState(true);
   const [gamjungNeverPaid, setGamjungNeverPaid] = useState(false);
   const [gamjungExpiringSoon, setGamjungExpiringSoon] = useState(false);
@@ -88,7 +102,7 @@ export default function GamjungPage() {
   useEffect(() => {
     try {
       const h = localStorage.getItem("gamjung_history");
-      if (h) setHistory(JSON.parse(h).slice(0, 5));
+      if (h) setHistory(JSON.parse(h).slice(0, 50));
     } catch {}
     try {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
@@ -117,8 +131,8 @@ export default function GamjungPage() {
                 const merged = [...data.entries, ...prev];
                 const unique = merged.filter((e: {id: string}, i: number, arr: {id: string}[]) => arr.findIndex(a => a.id === e.id) === i);
                 const sliced = unique.slice(0, 50);
-                try { localStorage.setItem("gamjung_history", JSON.stringify(sliced.slice(0, 5))); } catch {}
-                return sliced.slice(0, 5);
+                try { localStorage.setItem("gamjung_history", JSON.stringify(sliced)); } catch {}
+                return sliced;
               });
             }
           }).catch(() => {});
@@ -335,16 +349,56 @@ export default function GamjungPage() {
           <div style={{ maxWidth: 440, margin: "0 auto", padding: "0 24px 16px" }}>
             <p style={{ fontSize: 13, color: "#4ade80", fontWeight: 700, margin: "0 0 10px" }}>📔 내 감정일기 기록</p>
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
-              {history.map(h => (
-                <Link key={h.id} href={`/gamjung/result/${h.id}`} style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(74,222,128,0.2)", borderRadius: 12, padding: "12px 16px", textDecoration: "none" }}>
-                  <span style={{ fontSize: 24 }}>{h.moodEmoji}</span>
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: "#e5e7eb", margin: "0 0 2px" }}>{h.moodLabel}</p>
-                    <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>{new Date(h.createdAt).toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "short" })}</p>
-                  </div>
-                  <span style={{ color: "#4ade80", fontSize: 14 }}>›</span>
-                </Link>
-              ))}
+              {!showAllHistory ? (
+                <>
+                  {history.slice(0, 5).map(h => (
+                    <Link key={h.id} href={`/gamjung/result/${h.id}`} style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(74,222,128,0.2)", borderRadius: 12, padding: "12px 16px", textDecoration: "none" }}>
+                      <span style={{ fontSize: 24 }}>{h.moodEmoji}</span>
+                      <div style={{ flex: 1 }}>
+                        <p style={{ fontSize: 14, fontWeight: 700, color: "#e5e7eb", margin: "0 0 2px" }}>{h.moodLabel}</p>
+                        <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>{new Date(h.createdAt).toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "short" })}</p>
+                      </div>
+                      <span style={{ color: "#4ade80", fontSize: 14 }}>›</span>
+                    </Link>
+                  ))}
+                  {history.length > 5 && (
+                    <button onClick={() => setShowAllHistory(true)} style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(74,222,128,0.2)", borderRadius: 12, padding: "10px", color: "#9ca3af", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                      전체 {history.length}개 기록 보기 ▾
+                    </button>
+                  )}
+                </>
+              ) : (
+                <>
+                  {groupByMonth(history).map(g => (
+                    <div key={g.key}>
+                      <button
+                        onClick={() => setExpandedHistoryMonths(prev => { const next = new Set(prev); if (next.has(g.key)) next.delete(g.key); else next.add(g.key); return next; })}
+                        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(74,222,128,0.2)", borderRadius: 12, padding: "11px 14px", color: "#e5e7eb", fontSize: 13, fontWeight: 800, cursor: "pointer", marginBottom: expandedHistoryMonths.has(g.key) ? 8 : 0 }}
+                      >
+                        <span>{g.label} ({g.items.length}개)</span>
+                        <span>{expandedHistoryMonths.has(g.key) ? "▲" : "▾"}</span>
+                      </button>
+                      {expandedHistoryMonths.has(g.key) && (
+                        <div style={{ display: "flex", flexDirection: "column" as const, gap: 8, marginBottom: 8 }}>
+                          {g.items.map(h => (
+                            <Link key={h.id} href={`/gamjung/result/${h.id}`} style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(74,222,128,0.2)", borderRadius: 12, padding: "12px 16px", textDecoration: "none" }}>
+                              <span style={{ fontSize: 24 }}>{h.moodEmoji}</span>
+                              <div style={{ flex: 1 }}>
+                                <p style={{ fontSize: 14, fontWeight: 700, color: "#e5e7eb", margin: "0 0 2px" }}>{h.moodLabel}</p>
+                                <p style={{ fontSize: 11, color: "#6b7280", margin: 0 }}>{new Date(h.createdAt).toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "short" })}</p>
+                              </div>
+                              <span style={{ color: "#4ade80", fontSize: 14 }}>›</span>
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <button onClick={() => setShowAllHistory(false)} style={{ background: "none", border: "none", color: "#6b7280", fontSize: 11, cursor: "pointer", padding: "4px 0" }}>
+                    접어서 보기 ▴
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}

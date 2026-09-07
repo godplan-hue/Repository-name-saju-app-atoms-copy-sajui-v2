@@ -11,6 +11,22 @@ type Tab = "today" | "search" | "premium" | "history";
 type Season = "봄" | "여름" | "가을" | "겨울";
 type PremiumSub = "avoid" | "exercise" | "seasonal" | "report";
 
+function groupHistoryByMonth(entries: [string, DayLog][]): { key: string; label: string; items: [string, DayLog][] }[] {
+  const groups: { key: string; label: string; items: [string, DayLog][] }[] = [];
+  const map = new Map<string, [string, DayLog][]>();
+  entries.forEach(entry => {
+    const [date] = entry;
+    const key = date.slice(0, 7);
+    if (!map.has(key)) {
+      const [y, m] = key.split("-");
+      map.set(key, []);
+      groups.push({ key, label: `${y}년 ${Number(m)}월`, items: map.get(key)! });
+    }
+    map.get(key)!.push(entry);
+  });
+  return groups;
+}
+
 const OH_AVOID: Record<string, { name: string; reason: string }[]> = {
   목: [
     { name: "삼겹살·베이컨", reason: "과도한 동물성 지방이 목 체질 간에 부담" },
@@ -258,6 +274,8 @@ export default function DietPage() {
   const [dietMarketingAgreed, setDietMarketingAgreed] = useState(false);
   const [mcUserId, setMcUserId] = useState("");
   const [syncFailed, setSyncFailed] = useState(false);
+  const [showAllDietHistory, setShowAllDietHistory] = useState(false);
+  const [expandedDietMonths, setExpandedDietMonths] = useState<Set<string>>(new Set());
   const [dietLocked, setDietLocked] = useState(true);
   const [restorePhone, setRestorePhone] = useState("");
   const [restoring, setRestoring] = useState(false);
@@ -1007,37 +1025,86 @@ export default function DietPage() {
               </div>
             </div>
 
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 14 }}>최근 30일 기록</p>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 14 }}>전체 기록</p>
             {Object.keys(historyData).length === 0 ? (
               <div style={{ textAlign: "center", padding: "36px 0", color: "rgba(255,255,255,0.35)" }}>
                 <div style={{ fontSize: 48, marginBottom: 8 }}>📊</div>
                 <p style={{ margin: 0, fontSize: 14 }}>아직 기록이 없어요</p>
               </div>
+            ) : !showAllDietHistory ? (
+              <>
+                {Object.entries(historyData)
+                  .sort(([a], [b]) => b.localeCompare(a))
+                  .slice(0, 5)
+                  .map(([date, log]) => {
+                    const cal = log.totalCal || (log.meals || []).reduce((s, m) => s + m.cal, 0);
+                    const r = Math.min(100, Math.round((cal / target) * 100));
+                    return (
+                      <div key={date} style={{ background: "rgba(255,255,255,0.06)", borderRadius: 14, padding: "12px 14px", marginBottom: 8 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                          <span style={{ fontSize: 13, fontWeight: 700 }}>{date}{log.weight ? ` · ⚖️${log.weight}kg` : ""}</span>
+                          <span style={{ fontSize: 13, fontWeight: 900, color: r >= 105 ? "#f87171" : ohData.color }}>{cal.toLocaleString()} kcal</span>
+                        </div>
+                        <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 99, height: 5 }}>
+                          <div style={{ width: `${r}%`, height: "100%", background: r >= 105 ? "#f87171" : ohData.color, borderRadius: 99 }} />
+                        </div>
+                        <div style={{ marginTop: 5 }}>
+                          {(log.meals || []).slice(0, 3).map((m, i) => (
+                            <span key={i} style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginRight: 8 }}>{m.name} {m.cal}kcal</span>
+                          ))}
+                          {(log.meals || []).length > 3 && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>+{(log.meals || []).length - 3}개</span>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                {Object.keys(historyData).length > 5 && (
+                  <button onClick={() => setShowAllDietHistory(true)} style={{ width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "10px", color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                    전체 {Object.keys(historyData).length}개 기록 보기 ▾
+                  </button>
+                )}
+              </>
             ) : (
-              Object.entries(historyData)
-                .sort(([a], [b]) => b.localeCompare(a))
-                .slice(0, 30)
-                .map(([date, log]) => {
-                  const cal = log.totalCal || (log.meals || []).reduce((s, m) => s + m.cal, 0);
-                  const r = Math.min(100, Math.round((cal / target) * 100));
-                  return (
-                    <div key={date} style={{ background: "rgba(255,255,255,0.06)", borderRadius: 14, padding: "12px 14px", marginBottom: 8 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                        <span style={{ fontSize: 13, fontWeight: 700 }}>{date}{log.weight ? ` · ⚖️${log.weight}kg` : ""}</span>
-                        <span style={{ fontSize: 13, fontWeight: 900, color: r >= 105 ? "#f87171" : ohData.color }}>{cal.toLocaleString()} kcal</span>
+              <>
+                {groupHistoryByMonth(Object.entries(historyData).sort(([a], [b]) => b.localeCompare(a))).map(g => (
+                  <div key={g.key}>
+                    <button
+                      onClick={() => setExpandedDietMonths(prev => { const next = new Set(prev); if (next.has(g.key)) next.delete(g.key); else next.add(g.key); return next; })}
+                      style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "11px 14px", color: "rgba(255,255,255,0.8)", fontSize: 13, fontWeight: 800, cursor: "pointer", marginBottom: expandedDietMonths.has(g.key) ? 8 : 0 }}
+                    >
+                      <span>{g.label} ({g.items.length}개)</span>
+                      <span>{expandedDietMonths.has(g.key) ? "▲" : "▾"}</span>
+                    </button>
+                    {expandedDietMonths.has(g.key) && (
+                      <div style={{ marginBottom: 8 }}>
+                        {g.items.map(([date, log]) => {
+                          const cal = log.totalCal || (log.meals || []).reduce((s, m) => s + m.cal, 0);
+                          const r = Math.min(100, Math.round((cal / target) * 100));
+                          return (
+                            <div key={date} style={{ background: "rgba(255,255,255,0.06)", borderRadius: 14, padding: "12px 14px", marginBottom: 8 }}>
+                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                                <span style={{ fontSize: 13, fontWeight: 700 }}>{date}{log.weight ? ` · ⚖️${log.weight}kg` : ""}</span>
+                                <span style={{ fontSize: 13, fontWeight: 900, color: r >= 105 ? "#f87171" : ohData.color }}>{cal.toLocaleString()} kcal</span>
+                              </div>
+                              <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 99, height: 5 }}>
+                                <div style={{ width: `${r}%`, height: "100%", background: r >= 105 ? "#f87171" : ohData.color, borderRadius: 99 }} />
+                              </div>
+                              <div style={{ marginTop: 5 }}>
+                                {(log.meals || []).slice(0, 3).map((m, i) => (
+                                  <span key={i} style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginRight: 8 }}>{m.name} {m.cal}kcal</span>
+                                ))}
+                                {(log.meals || []).length > 3 && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>+{(log.meals || []).length - 3}개</span>}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                      <div style={{ background: "rgba(255,255,255,0.1)", borderRadius: 99, height: 5 }}>
-                        <div style={{ width: `${r}%`, height: "100%", background: r >= 105 ? "#f87171" : ohData.color, borderRadius: 99 }} />
-                      </div>
-                      <div style={{ marginTop: 5 }}>
-                        {(log.meals || []).slice(0, 3).map((m, i) => (
-                          <span key={i} style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginRight: 8 }}>{m.name} {m.cal}kcal</span>
-                        ))}
-                        {(log.meals || []).length > 3 && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>+{(log.meals || []).length - 3}개</span>}
-                      </div>
-                    </div>
-                  );
-                })
+                    )}
+                  </div>
+                ))}
+                <button onClick={() => setShowAllDietHistory(false)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: 11, cursor: "pointer", padding: "4px 0" }}>
+                  접어서 보기 ▴
+                </button>
+              </>
             )}
 
             <div style={{ marginTop: 18, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: "18px 16px", textAlign: "center" }}>
