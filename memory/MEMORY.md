@@ -1,6 +1,10 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐ 당근비즈니스 가이드 요약+당근광고 운영조언 (2026-09-05)](reference_karrot_business_guide_and_strategy_advice_2026_09_05.md) — 간편모드유지+전환추적관리 우선붙일것, [[project_first_ad_driven_db_inflow_2026_08_29]] 유일한 실결제확인채널인데 예산배분전략엔 빠져있던 불일치 지적
+- [⭐⭐⭐⭐⭐ Vercel www↔jeomun.com 리다이렉트 방향 뒤집힘 발견+수정, DNS수정과 별개원인 (2026-09-07)](bug_vercel_primary_domain_www_redirect_reversed_2026_09_07.md) — 308유지필수, [[bug_dns_cname_fix_google_indexing_2026_08_28]]와 혼동말것
+- [⭐⭐⭐⭐⭐ "990원사주 재물운없음" 진짜원인 코드로확인: finalizeSuccess가 v2_paid_cats 미세팅 (2026-09-07)](bug_real_payment_finalizeSuccess_never_sets_paid_cats_2026_09_07.md) — 8/29수정의부작용, 미수정·승인대기, 결제코드라 임의수정금지
+- [⭐⭐⭐⭐⭐ 당근광고 클릭→디비0건 라이브테스트로 최종해결: 파이프라인정상, 미리보기무과금 (2026-09-05)](project_karrot_ad_to_db_flow_verified_working_2026_09_05.md) — 코드버그아님, 폼이탈이원인, 재발시 재조사말고 이거참고
+- [⭐⭐⭐ 당근 사주vs MBTI 2종 8-9일 성과비교 + 기존3개복구완료 (2026-09-05)](project_karrot_mbti_vs_saju_ad_performance_2026_09_05.md) — 클릭당비용동일, MBTI저조=노출배분차이, 문구순서로 클릭률2배차이
+- [⭐⭐⭐ 당근비즈니스 가이드+운영조언+전문가모드 광고만들기 절차 (2026-09-05)](reference_karrot_business_guide_and_strategy_advice_2026_09_05.md) — 간편모드유지 추천, 나중에 전문가모드 필요시 A/B 절차 그대로참고, [[project_first_ad_driven_db_inflow_2026_08_29]]
 - [⭐⭐⭐⭐ 로그아웃 깜빡임버그 4곳(대운/택일/990버튼/패키지카드)+apps D-day버그+qa뒤로가기버그 수정 (2026-09-05)](project_session_2026_09_05_flash_bug_and_apps_qa_fixes.md) — commit 37dfbb98/09105de5/39f73df3, router.push레이스컨디션 early-return guard 패턴
 - [⭐⭐⭐⭐ 사주앱 전체 프로필누락+special낡은플래그 버그 전수조사, /main-v2/qa죽은페이지 삭제보류 (2026-09-05)](bug_qa_page_dead_orphan_and_special_stale_flag_sweep_2026_09_05.md) — [[bug_special_stale_flag_wrong_number_2026_09_05]] 010-0000-0000 로그인버그 원인+수정(commit 1f7f8974), 택일/대운/올해운세/QA리스트 계열 최종스윕
 - [⛔⛔⛔ 영상프롬프트 "그대로달라"=무수정재현, 자막깨짐은 텍스트삭제로 풀지말것 (2026-09-04)](feedback_video_prompt_verbatim_no_rewrite_2026_09_04.md) — 임의개선시도 5연속 분노유발("시발진짜"), 고양이목소리 명시추가는 [[feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03]] 4번항목
