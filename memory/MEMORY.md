@@ -1,7 +1,7 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
 - [⭐⭐⭐⭐⭐ Vercel www↔jeomun.com 리다이렉트 방향 뒤집힘 발견+수정, DNS수정과 별개원인 (2026-09-07)](bug_vercel_primary_domain_www_redirect_reversed_2026_09_07.md) — 308유지필수, [[bug_dns_cname_fix_google_indexing_2026_08_28]]와 혼동말것
-- [⭐⭐⭐⭐⭐ "990원사주 재물운없음" 진짜원인 코드로확인: finalizeSuccess가 v2_paid_cats 미세팅 (2026-09-07)](bug_real_payment_finalizeSuccess_never_sets_paid_cats_2026_09_07.md) — 8/29수정의부작용, 미수정·승인대기, 결제코드라 임의수정금지
+- [⛔ 정정됨: finalizeSuccess=v2_paid_cats원인설은 오판, 실구매경로 전부무관함확인 (2026-09-07)](bug_real_payment_finalizeSuccess_never_sets_paid_cats_2026_09_07.md) — 5종990원=queue/special로별개, 3900원류=버튼이미리세팅, "재물운없음"불만정체는미확인
 - [⭐⭐⭐⭐⭐ 당근광고 클릭→디비0건 라이브테스트로 최종해결: 파이프라인정상, 미리보기무과금 (2026-09-05)](project_karrot_ad_to_db_flow_verified_working_2026_09_05.md) — 코드버그아님, 폼이탈이원인, 재발시 재조사말고 이거참고
 - [⭐⭐⭐ 당근 사주vs MBTI 2종 8-9일 성과비교 + 기존3개복구완료 (2026-09-05)](project_karrot_mbti_vs_saju_ad_performance_2026_09_05.md) — 클릭당비용동일, MBTI저조=노출배분차이, 문구순서로 클릭률2배차이
 - [⭐⭐⭐ 당근비즈니스 가이드+운영조언+전문가모드 광고만들기 절차 (2026-09-05)](reference_karrot_business_guide_and_strategy_advice_2026_09_05.md) — 간편모드유지 추천, 나중에 전문가모드 필요시 A/B 절차 그대로참고, [[project_first_ad_driven_db_inflow_2026_08_29]]
