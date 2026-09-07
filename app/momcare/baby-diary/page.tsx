@@ -123,7 +123,7 @@ export default function BabyDiaryPage() {
   );
 
   function renderDiaryCard(e: DiaryEntry) {
-    const m = MOODS[e.mood];
+    const m = MOODS[e.mood] || MOODS.happy;
     return (
       <div key={e.id} onClick={() => { setViewEntry(e); setMode("view"); }} style={{ background: "white", borderRadius: 18, padding: "20px", boxShadow: "0 2px 10px rgba(0,0,0,0.06)", cursor: "pointer", borderLeft: "4px solid #f97316" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -150,7 +150,7 @@ export default function BabyDiaryPage() {
 
   // ── 뷰 모드 ──────────────────────────────────────────────
   if (mode === "view" && viewEntry) {
-    const m = MOODS[viewEntry.mood];
+    const m = MOODS[viewEntry.mood] || MOODS.happy;
     return (
       <div style={{ minHeight: "100vh", background: m.color, fontFamily: "'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" }}>
         <nav style={{ background: "white", borderBottom: "1px solid #e5e7eb", padding: "14px 24px", display: "flex", gap: 12, alignItems: "center" }}>
