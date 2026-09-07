@@ -29,6 +29,27 @@ const ACTIVITIES = [
   { key: "music",    label: "음악",        emoji: "🎵" },
 ];
 
+type GamjungPayload = { name: string; phone: string; email: string; moodScore: number; activities: string[]; memo: string; marketing: boolean };
+type GamjungAnalyzeResult = { id?: string; result?: unknown };
+
+async function analyzeWithRetry(payload: GamjungPayload, retries = 4): Promise<GamjungAnalyzeResult | null> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch("/api/gamjung/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.id) return data;
+      }
+    } catch {}
+    if (i < retries - 1) await new Promise(r => setTimeout(r, 700 * (i + 1)));
+  }
+  return null;
+}
+
 function getTodayCount() {
   const seed = parseInt(new Date().toISOString().slice(0, 10).replace(/-/g, ""));
   const lcg = ((seed * 1664525 + 1013904223) & 0xffffffff) >>> 0;
@@ -52,6 +73,7 @@ export default function GamjungPage() {
   const [marketingAgreed, setMarketingAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [syncFailed, setSyncFailed] = useState(false);
 
   const selectedMood = MOODS.find(m => m.score === moodScore);
   const [history, setHistory] = useState<Array<{id: string; moodLabel: string; moodEmoji: string; createdAt: number}>>([]);
@@ -119,6 +141,18 @@ export default function GamjungPage() {
         }
       }
     } catch {}
+    // 이전에 서버 저장이 끝내 실패해 로컬에만 남아있던 일기가 있으면 조용히 재전송 시도
+    try {
+      const pendingRaw = localStorage.getItem("gamjung_pending_entry");
+      if (pendingRaw) {
+        const pending = JSON.parse(pendingRaw) as GamjungPayload;
+        analyzeWithRetry(pending).then(data => {
+          if (data?.id) {
+            try { localStorage.removeItem("gamjung_pending_entry"); } catch {}
+          }
+        });
+      }
+    } catch {}
   }, []);
 
   const toggleActivity = (key: string) => {
@@ -135,15 +169,14 @@ export default function GamjungPage() {
     if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
     if (submittingRef.current) return;
     submittingRef.current = true;
-    setLoading(true); setError("");
+    setLoading(true); setError(""); setSyncFailed(false);
+    const payload: GamjungPayload = { name, phone: cleanPhone, email, moodScore, activities: selectedActivities, memo, marketing: marketingAgreed };
+    // 로컬 먼저 저장 — 서버 저장이 전부 실패해도 방금 쓴 일기 내용이 사라지지 않도록 백업
+    try { localStorage.setItem("gamjung_pending_entry", JSON.stringify(payload)); } catch {}
     try {
-      const res = await fetch("/api/gamjung/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone: cleanPhone, email, moodScore, activities: selectedActivities, memo, marketing: marketingAgreed }),
-      });
-      const data = await res.json();
-      if (data.id) {
+      const data = await analyzeWithRetry(payload);
+      if (data?.id) {
+        try { localStorage.removeItem("gamjung_pending_entry"); } catch {}
         // 프로필·동의 상태 저장 (다음 일기 때 폼 건너뜀)
         try {
           const savedP = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
@@ -160,10 +193,12 @@ export default function GamjungPage() {
         }
         window.location.href = `/gamjung/result/${data.id}`;
       } else {
-        setError("오류가 발생했습니다. 다시 시도해주세요.");
+        setSyncFailed(true);
+        setError("서버 저장에 실패했어요 — 입력하신 내용은 이 기기에 저장해뒀어요. 인터넷 연결을 확인 후 다시 시도해주세요.");
       }
     } catch {
-      setError("네트워크 오류가 발생했습니다.");
+      setSyncFailed(true);
+      setError("네트워크 오류가 발생했어요 — 입력하신 내용은 이 기기에 저장해뒀어요. 인터넷 연결을 확인 후 다시 시도해주세요.");
     } finally {
       setLoading(false);
       submittingRef.current = false;
@@ -495,6 +530,11 @@ export default function GamjungPage() {
           </label>
         </div>
 
+        {syncFailed && (
+          <div style={{ background: "rgba(248,113,113,0.12)", border: "1px solid rgba(248,113,113,0.4)", borderRadius: 12, padding: "10px 14px", marginBottom: 10 }}>
+            <p style={{ color: "#f87171", fontSize: 12, margin: 0, lineHeight: 1.6 }}>⚠️ 서버 저장에 실패했어요 — 지금은 이 기기에만 저장되어 있어요. 인터넷 연결을 확인 후 다시 시도해주세요.</p>
+          </div>
+        )}
         {error && <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>}
         <button onClick={analyze} disabled={loading}
           style={{ ...S.btn, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
