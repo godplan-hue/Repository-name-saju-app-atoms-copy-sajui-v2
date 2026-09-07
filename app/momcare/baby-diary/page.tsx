@@ -60,7 +60,9 @@ export default function BabyDiaryPage() {
 
   useEffect(() => {
     const saved = localStorage.getItem("momcare_diary");
-    if (saved) setEntries(JSON.parse(saved));
+    if (saved) {
+      try { setEntries(JSON.parse(saved)); } catch { localStorage.removeItem("momcare_diary"); }
+    }
 
     let uid = "";
     try {
