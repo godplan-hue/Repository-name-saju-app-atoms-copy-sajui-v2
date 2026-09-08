@@ -3,7 +3,7 @@
 - [⛔ 육아일기 크래시 3연발(mood/JSON.parse/tags) 수정완료 (09-08)](bug_momcare_babydiary_mood_undefined_crash_2026_09_08.md) — 재발보고오면 4번째지점 의심, F12콘솔 최우선
 - [⭐ AI블로그노출 4단계기법 (09-08)](reference_aeo_blog_ai_visibility_astra_lecture_2026_09_08.md) — 사업3줄+질문5개+시크릿창+결론부터
 - [⭐ 점운 정체성(20개앱/토스19개/MBTI과거5위) (09-08)](reference_jeomun_platform_identity_for_ai_content_2026_09_08.md) — "현재5위"아닌 "과거5위이력"만 사용
-- [⭐ 점운 AEO블로그전략+140질문+연결포인트6종 (09-08)](project_jeomun_aeo_blog_content_strategy_2026_09_08.md) — 7개축, 매 블로그요청시 기본전제
+- [⭐ 점운 AEO블로그전략+140질문+990원사주/고양이사주20개 (09-08)](project_jeomun_aeo_blog_content_strategy_2026_09_08.md) — 7개축, 990원/고양이 독립검색군, 매 블로그요청시 기본전제
 - [⭐ 블로그글쓰기규칙: 질문답변먼저→점운연결 (09-08)](feedback_blog_content_answer_first_then_jeomun_connect_2026_09_08.md) — 광고형제목 금지
 - [⭐ Vercel www↔jeomun.com 리다이렉트뒤집힘 수정 (09-07)](bug_vercel_primary_domain_www_redirect_reversed_2026_09_07.md) — 308유지필수
 - [⛔ 정정됨: finalizeSuccess원인설 오판, 실구매경로 무관확인 (09-07)](bug_real_payment_finalizeSuccess_never_sets_paid_cats_2026_09_07.md) — "재물운없음"불만 원인 미확인 남음
