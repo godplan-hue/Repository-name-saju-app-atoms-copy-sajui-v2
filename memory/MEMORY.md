@@ -1,5 +1,6 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
+- [⭐ 토스 일기4앱 재동기화통일+대운 광고시청시간버그 수정 (09-08)](project_toss_diary_resync_and_daewoon_ad_timing_fix_2026_09_08.md) — 4개 콘솔재업로드 대기중
 - [⛔ 육아일기 크래시 3연발(mood/JSON.parse/tags) 수정완료 (09-08)](bug_momcare_babydiary_mood_undefined_crash_2026_09_08.md) — 재발보고오면 4번째지점 의심, F12콘솔 최우선
 - [⭐ AI블로그노출 4단계기법 (09-08)](reference_aeo_blog_ai_visibility_astra_lecture_2026_09_08.md) — 사업3줄+질문5개+시크릿창+결론부터
 - [⭐ 점운 정체성(20개앱/토스19개/MBTI과거5위) (09-08)](reference_jeomun_platform_identity_for_ai_content_2026_09_08.md) — "현재5위"아닌 "과거5위이력"만 사용
