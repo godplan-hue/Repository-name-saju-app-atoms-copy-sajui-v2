@@ -57,7 +57,7 @@ function getTodayCount() {
 export default function MbtiPage() {
   const count = getTodayCount();
   const router = useRouter();
-  const [step, setStep] = useState<"intro" | "quiz">("intro");
+  const [step, setStep] = useState<"intro" | "quiz" | "contact">("intro");
   const [userName, setUserName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -94,7 +94,7 @@ export default function MbtiPage() {
       if (current < 15) {
         setCurrent(current + 1);
       } else {
-        submit(newAnswers);
+        setStep("contact");
       }
     }, 280);
   };
@@ -203,6 +203,74 @@ export default function MbtiPage() {
     );
   }
 
+  if (step === "contact") {
+    return (
+      <div style={{ ...S.wrap, display: "flex", flexDirection: "column" as const, justifyContent: "center" }}>
+        <div style={{ maxWidth: 480, margin: "0 auto", padding: "40px 24px 60px", width: "100%", boxSizing: "border-box" as const }}>
+          <div style={{ textAlign: "center", marginBottom: 28 }}>
+            <div style={{ fontSize: 52, marginBottom: 12 }}>✨</div>
+            <h2 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 8px", color: "#f3e8ff" }}>분석 완료!</h2>
+            <p style={{ fontSize: 14, color: "#9ca3af", margin: 0 }}>결과 확인을 위해 정보를 입력해주세요</p>
+          </div>
+
+          <input
+            style={{ width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", marginBottom: 10, boxSizing: "border-box" as const }}
+            ref={nameInputRef}
+            placeholder="이름 또는 별명 (선택)"
+            value={userName}
+            onChange={e => setUserName(e.target.value)}
+          />
+          <input
+            type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
+            autoComplete="off" tabIndex={-1} aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+          />
+          <input
+            style={{ width: "100%", background: "rgba(255,255,255,0.07)", border: `1px solid ${error ? "rgba(248,113,113,0.6)" : "rgba(168,85,247,0.3)"}`, borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", marginBottom: 10, boxSizing: "border-box" as const }}
+            placeholder="전화번호 (필수) — 010-0000-0000"
+            value={phone}
+            onChange={e => { setPhone(e.target.value); setError(""); }}
+            inputMode="tel"
+          />
+          <input
+            style={{ width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", marginBottom: 14, boxSizing: "border-box" as const }}
+            placeholder="이메일 (선택) — example@email.com"
+            inputMode="email" type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 8 }}>
+            <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
+              style={{ marginTop: 3, accentColor: "#a855f7", width: 16, height: 16, flexShrink: 0 }} />
+            <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6, wordBreak: "keep-all" as const, minWidth: 0 }}>
+              <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 동의</strong><br />
+              점운(jeomun.com)이 전화번호·이메일을 서비스 제공에 활용하며,<br />3년간 보유 후 파기합니다.
+            </span>
+          </label>
+          <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginBottom: 16 }}>
+            <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)}
+              style={{ marginTop: 3, accentColor: "#a855f7", width: 16, height: 16, flexShrink: 0 }} />
+            <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6, wordBreak: "keep-all" as const, minWidth: 0 }}>
+              <strong style={{ color: "#e5e7eb" }}>[선택] 마케팅 수신 동의</strong><br />
+              이벤트·할인·운세 소식을 문자·카카오로 받습니다. 언제든지 수신거부 가능합니다.
+            </span>
+          </label>
+          {error && <p style={{ color: "#f87171", fontSize: 13, marginBottom: 10 }}>{error}</p>}
+          <button onClick={() => {
+            const clean = phone.replace(/\D/g, "");
+            if (clean.length < 10) { setError("전화번호를 입력해주세요."); return; }
+            if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
+            const domName = nameInputRef.current?.value?.trim() || "";
+            if (domName) setUserName(domName);
+            submit(answers);
+          }} style={S.btn} disabled={loading}>
+            {loading ? "분석 중..." : "결과 보기 →"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={S.wrap}>
       {/* 히어로 */}
@@ -259,68 +327,7 @@ export default function MbtiPage() {
             ))}
           </div>
 
-          {/* 이름·전번 입력 */}
-          <div id="mbti-phone-form" style={{ marginBottom: 10 }}>
-            <input
-              style={{ width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", boxSizing: "border-box" as const }}
-              ref={nameInputRef}
-              placeholder="이름 또는 별명 (선택)"
-              value={userName}
-              onChange={e => setUserName(e.target.value)}
-            />
-          </div>
-          <div style={{ marginBottom: 10 }}>
-            <input
-              style={{ width: "100%", background: "rgba(255,255,255,0.07)", border: `1px solid ${error ? "rgba(248,113,113,0.6)" : "rgba(168,85,247,0.3)"}`, borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", boxSizing: "border-box" as const }}
-              placeholder="전화번호 (필수) — 010-0000-0000"
-              value={phone}
-              onChange={e => { setPhone(e.target.value); setError(""); }}
-              inputMode="tel"
-            />
-            <input
-              type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
-              autoComplete="off" tabIndex={-1} aria-hidden="true"
-              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
-            />
-          </div>
-          <div style={{ marginBottom: 10 }}>
-            <input
-              style={{ width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(168,85,247,0.3)", borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", boxSizing: "border-box" as const }}
-              placeholder="이메일 (선택) — example@email.com"
-              inputMode="email" type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-          </div>
-          <div style={{ marginBottom: 14 }}>
-            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
-              <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
-                style={{ marginTop: 3, accentColor: "#a855f7", width: 16, height: 16, flexShrink: 0 }} />
-              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6, wordBreak: "keep-all" as const, minWidth: 0 }}>
-                <strong style={{ color: "#e5e7eb" }}>[필수] 개인정보 수집·이용 동의</strong><br />
-                점운(jeomun.com)이 전화번호·이메일을 서비스 제공에 활용하며,<br />3년간 보유 후 파기합니다.
-              </span>
-            </label>
-            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginTop: 8 }}>
-              <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)}
-                style={{ marginTop: 3, accentColor: "#a855f7", width: 16, height: 16, flexShrink: 0 }} />
-              <span style={{ fontSize: 11, color: "#9ca3af", lineHeight: 1.6, wordBreak: "keep-all" as const, minWidth: 0 }}>
-                <strong style={{ color: "#e5e7eb" }}>[선택] 마케팅 수신 동의</strong><br />
-                이벤트·할인·운세 소식을 문자·카카오로 받습니다. 언제든지 수신거부 가능합니다.
-              </span>
-            </label>
-          </div>
-          {error && <p style={{ color: "#f87171", fontSize: 13, marginBottom: 10 }}>{error}</p>}
-
-          <button onClick={() => {
-            const clean = phone.replace(/\D/g, "");
-            if (clean.length < 10) { setError("전화번호를 입력해주세요."); return; }
-            if (!agreed) { setError("개인정보 수집 동의를 체크해주세요."); return; }
-            // 한글 IME 미확정 버그 방지: DOM 값 직접 읽어서 state 강제 업데이트
-            const domName = nameInputRef.current?.value?.trim() || "";
-            if (domName) setUserName(domName);
-            setStep("quiz");
-          }} style={S.btn}>
+          <button onClick={() => setStep("quiz")} style={S.btn}>
             테스트 시작하기 (2분) →
           </button>
           <p style={{ fontSize: 11, color: "#6b7280", marginTop: 10 }}>기본 분석 무료 · 심층 분석 990원 · 회원가입 불필요</p>
@@ -349,17 +356,7 @@ export default function MbtiPage() {
           </div>
         ))}
 
-        <button onClick={() => {
-          const clean = phone.replace(/\D/g, "");
-          if (clean.length < 10 || !agreed) {
-            setError(clean.length < 10 ? "전화번호를 입력해주세요." : "개인정보 수집 동의를 체크해주세요.");
-            document.getElementById("mbti-phone-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
-            return;
-          }
-          const domName = nameInputRef.current?.value?.trim() || "";
-          if (domName) setUserName(domName);
-          setStep("quiz");
-        }} style={{ ...S.btn, marginTop: 16 }}>
+        <button onClick={() => setStep("quiz")} style={{ ...S.btn, marginTop: 16 }}>
           나의 MBTI 알아보기 →
         </button>
 
