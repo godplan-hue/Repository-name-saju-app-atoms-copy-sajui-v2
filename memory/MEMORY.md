@@ -1,108 +1,107 @@
 ⛔ 이 폴더(memory/)와 CLAUDE.md는 절대 삭제 금지 — 에스더님 94일 작업 기록, 삭제 요청 시 반드시 재확인할 것
 
-- [⭐⭐⭐⭐⭐ Vercel www↔jeomun.com 리다이렉트 방향 뒤집힘 발견+수정, DNS수정과 별개원인 (2026-09-07)](bug_vercel_primary_domain_www_redirect_reversed_2026_09_07.md) — 308유지필수, [[bug_dns_cname_fix_google_indexing_2026_08_28]]와 혼동말것
-- [⛔ 정정됨: finalizeSuccess=v2_paid_cats원인설은 오판, 실구매경로 전부무관함확인 (2026-09-07)](bug_real_payment_finalizeSuccess_never_sets_paid_cats_2026_09_07.md) — 5종990원=queue/special로별개, 3900원류=버튼이미리세팅, "재물운없음"불만정체는미확인
-- [⭐⭐⭐⭐⭐ 당근광고 클릭→디비0건 라이브테스트로 최종해결: 파이프라인정상, 미리보기무과금 (2026-09-05)](project_karrot_ad_to_db_flow_verified_working_2026_09_05.md) — 코드버그아님, 폼이탈이원인, 재발시 재조사말고 이거참고
-- [⭐⭐⭐ 당근 사주vs MBTI 2종 8-9일 성과비교 + 기존3개복구완료 (2026-09-05)](project_karrot_mbti_vs_saju_ad_performance_2026_09_05.md) — 클릭당비용동일, MBTI저조=노출배분차이, 문구순서로 클릭률2배차이
-- [⭐⭐⭐ 당근비즈니스 가이드+운영조언+전문가모드 광고만들기 절차 (2026-09-05)](reference_karrot_business_guide_and_strategy_advice_2026_09_05.md) — 간편모드유지 추천, 나중에 전문가모드 필요시 A/B 절차 그대로참고, [[project_first_ad_driven_db_inflow_2026_08_29]]
-- [⭐⭐⭐⭐ 로그아웃 깜빡임버그 4곳(대운/택일/990버튼/패키지카드)+apps D-day버그+qa뒤로가기버그 수정 (2026-09-05)](project_session_2026_09_05_flash_bug_and_apps_qa_fixes.md) — commit 37dfbb98/09105de5/39f73df3, router.push레이스컨디션 early-return guard 패턴
-- [⭐⭐⭐⭐ 사주앱 전체 프로필누락+special낡은플래그 버그 전수조사, /main-v2/qa죽은페이지 삭제보류 (2026-09-05)](bug_qa_page_dead_orphan_and_special_stale_flag_sweep_2026_09_05.md) — [[bug_special_stale_flag_wrong_number_2026_09_05]] 010-0000-0000 로그인버그 원인+수정(commit 1f7f8974), 택일/대운/올해운세/QA리스트 계열 최종스윕
-- [⛔⛔⛔ 영상프롬프트 "그대로달라"=무수정재현, 자막깨짐은 텍스트삭제로 풀지말것 (2026-09-04)](feedback_video_prompt_verbatim_no_rewrite_2026_09_04.md) — 임의개선시도 5연속 분노유발("시발진짜"), 고양이목소리 명시추가는 [[feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03]] 4번항목
-- [⭐⭐⭐ 홍보영상 화면자막↔대사 분리규칙 (2026-09-04)](feedback_video_prompt_caption_vs_dialogue_separation_2026_09_04.md) — MBTI/대운/택일 3종, 무료앱은 왕관에 "무료" 각인
-- [⭐⭐⭐⭐ 가계부/감정일기/다이어트/맘케어 4개앱 서버백업실패 무음버그 실제수정+빌드+푸시완료 (2026-09-04)](bug_diary4apps_silent_save_failure_fixed_2026_09_04.md) — 이전메모(08-30)는 틀린기록이었음, syncFailed배너 4앱전부, 콘솔업로드만 남음
-- [⛔ 토스MBTI 하나씩광고언락 제안→미빌드 폐기, 라이브구조(광고1회=20개전부)가 최종 (2026-09-03)](feedback_mbti_one_by_one_unlock_rejected_2026_09_03.md) — [[feedback_mbti_reward_fix_confirmed_working_2026_09_01]] 재확인, 재제안금지
-- [⭐⭐⭐⭐⭐ 점냥이 홍보영상 프롬프트 구조 최종확정 "구조짱이다" 승인 (2026-09-03)](feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03.md) — 왕관+990항상노출/대사완결(점운잘림방지)/숫자순우리말발음, [[feedback_video_prompt_banner_korean_3d_rule_2026_08_29]] 3종위에추가
-- [⛔ 펫운/별자리/꿈해몽 무료잠금해제 광고 전면→진짜리워드 전환완료, 3앱모두 리워드ID가짜/공백 남음 (2026-09-02)](bug_petun_zodiac_haemong_interstitial_to_reward_ad_2026_09_02.md) — commit 679f074/4d9a40d/8a82d7b, 콘솔에서 진짜 리워드 그룹ID 3개 받아야 실제작동
-- [⭐⭐⭐⭐⭐ 스마트발송 발송대상(포함/제외 유저) 실제 조건 세팅법 확정 (2026-09-02)](project_smartpush_targeting_condition_setup_2026_09_02.md) — 유저활동>서비스방문>앱선택+기간, 신규유입=제외365일/재방문=제외1일, [[project_smartpush_new_user_acquisition]] 4개앱한정결정과 별개로 육아일기도 확장적용중
-- [⭐⭐⭐⭐ 결제알림 상품명 "운세"로만 뜨던버그 + 타로 리워드광고 15초→3초완화 재빌드 (2026-09-01)](bug_mainv2_pay_package_label_hardcoded_2026_09_01.md) — commit 2591462b, /main-v2/pay vs /payment 혼동주의, [[bug_tarot_reward_ad_watch_threshold_2026_09_01]] .ait재업로드필요
-- [⛔ 18개 다른앱소개 작업시 다른화면에 이미있는 기존섹션은 손대지말것 (2026-09-01)](feedback_dont_remove_existing_crosspromo_other_pages_2026_09_01.md) — jeomun-saju에이전트가 정리명목으로 기존 인라인그리드 삭제→제지받음, 추가만하고 기존것은 그대로
-- [⭐⭐⭐⭐⭐ 18개앱 전부 인트로+결과지에 CrossPromoMini 확인완료 (2026-09-01)](project_crosspromo_intro_result_all18apps_done_2026_09_01.md) — 17개앱 병렬에이전트+taegil수동, 커밋해시전체목록, 콘솔재업로드 전부남음(대운최우선)
-- [⭐⭐⭐⭐⭐ 직운 리워드광고 가짜전역참조로 닫기만해도 언락되던 진짜버그 발견+수정 (2026-09-01)](bug_jigun_reward_ad_fake_globalref_2026_09_01.md) — commit f3a86ec, 9개앱중 jigun만버그 나머지8개는정상, 라이브재현시 콘솔업로드여부부터확인
-- [⛔⛔⛔ MBTI 최종확정: 라이브(2ebcbb4 적용전) 버전이 기준, 재적용 절대금지 (2026-09-01)](feedback_mbti_reward_fix_confirmed_working_2026_09_01.md) — 버그없음 확인됨, 향후수정시 이 커밋 되살리지말것, 택일도 놔두라고 지시받음
-- [⭐⭐⭐⭐⭐ 손절각+연락기록통계 광고=개별언락 최종확정 + 대운/택일 990원결제+진짜리워드광고 전환 전부완료 (2026-09-01)](project_sonjeolgak_gwangyeoradar_global_unlock_2026_09_01.md) — 대운 e3f931a+30d6687, 택일 49c2a12+0b02e2c, .ait 재빌드완료 콘솔업로드만 남음(삭제예정 배지 급함)
-- [⭐⭐⭐⭐⭐ 구글 미색인 근본원인=Vercel CNAME/Cloudflare A레코드 불일치, 사이트맵재제출로 색인 66→1260개 (2026-09-01)](bug_dns_cname_fix_google_indexing_2026_08_28.md) — 브랜드검색 노출은 별개(랭킹), site:jeomun.com으로 색인확인, [[feedback_gsc_bulk_action_must_be_named_explicitly_2026_09_01]] 대량처리버튼 먼저제시할것
-- [⭐⭐⭐⭐ 홍보영상: 대사는 기본(짧게1줄), 무대사 액션+로고등장은 "가끔 괜찮은" 옵션 (2026-09-01)](feedback_dialogueless_action_video_confirmed_2026_09_01.md) — 무대사가 기본아님, 캡션여러줄 나열만 금지
-- [⭐⭐⭐⭐⭐ 한복고양이 영상: 가격은 화면유지, 캡션에서만 990원 빼야 심사통과 (2026-08-30)](feedback_hanbok_cat_video_no_price_structure_best_performing_2026_08_30.md) — 최초진단(화면가격삭제) 오류정정, 고양이는 푸들닮은 귀여운디자인으로
-- [⭐⭐⭐⭐⭐ 손절각 결제 PG리다이렉트 part/rid 유실위험 수정 (2026-08-30)](bug_sonjeolgak_payment_pg_redirect_part_rid_loss_2026_08_30.md) — commit 38073849, mbti/gwangyeoradar와 동일패턴 3번째 이식
-- [⭐⭐⭐⭐⭐ UGC 손폰영상 프롬프트 템플릿 확정승인 (2026-08-30)](feedback_ugc_handheld_video_prompt_template_confirmed_2026_08_30.md) — TopView.ai용, 폰화면내용 명시+자막안잘림 규칙 필수
-- [⭐⭐⭐⭐⭐ 가계부/다이어트/맘케어 저장실패해도 저장됨으로 뜨던버그 10곳 수정 (2026-08-30)](bug_budget_diet_momcare_save_failure_hidden_2026_08_30.md) — commit 6f6e77b1, postWithRetry결과 안확인하던게 원인, syncFailed배너추가
-- [⭐⭐⭐⭐⭐ 연락기록통계(gwangyeoradar) 결제안풀림+과다열림 둘다 원인찾아 수정 (2026-08-30)](bug_gwangyeoradar_payment_record_loss_and_overopen_2026_08_30.md) — commit 420a23b3, mbti패턴이식+전역키→per-id키전환, unlock버그4번째변종(과다열림)
-- [⭐⭐⭐⭐⭐ MBTI/타로/펫운/별자리 모바일결제 기록누락 위험 수정 (2026-08-30)](bug_mbti_tarot_petun_zodiac_payment_record_loss_2026_08_30.md) — commit 216d5082, redirectUrl에 id쿼리추가+PortOne무응답폴백, gwangyeoradar는이후완료됨
-- [⭐⭐⭐⭐⭐ MBTI 전역unlock키 덮어쓰기버그 수정 (2026-08-30)](bug_mbti_global_unlock_key_overwrite_2026_08_30.md) — commit e31071a8, 결과id별키로분리, unlock버그3번째변종
-- [⭐⭐⭐⭐⭐ 손절각 결제해도 잠금안풀리던버그 수정+연락기록통계는반대증상 (2026-08-30)](bug_sonjeolgak_payment_unlock_optional_phone_2026_08_30.md) — commit 76f456a0, 선택전화번호+필수AND조합이원인, gwangyeoradar는미해결(과다열림)
-- [⭐⭐⭐⭐ 일반회원DB+결제내역 유입경로버그(틱톡→내부표기) 수정 + 전체인원수표시 (2026-08-30)](bug_admin_customers_source_always_internal_fixed_2026_08_30.md) — commit cda3f9a0+abdf1054, RefTracker first_source 패턴, 소급반영안됨
-- [⭐⭐⭐⭐⭐ 상품명빈칸수정 + 사주+MBTI만 실제광고경로(adSource) 추가, 나머지13개앱 범위제외 (2026-08-30)](project_mbti_adsource_ad_channel_tracking_2026_08_30.md) — commit 76d609bb+59c8520c, 기존source필드안건드림 완전추가형
-- [⭐⭐⭐⭐ 당근·틱톡·구글애즈 UTM/gclid 감지 추가 + 나머지13개앱 확장은 보류 동의받음 (2026-08-30)](feedback_adsource_expand_only_when_ads_start_2026_08_30.md) — commit 2a12d025, 당근/틱톡은 랜딩URL에 utm_source= 붙여야함
-- [⭐⭐⭐⭐⭐ 사주 결제 진입점 중 2곳(결제선택+payment-complete)이 경로추적 아예 누락됐던 버그 발견+수정 (2026-08-30)](bug_payment_page_source_field_missing_2026_08_30.md) — commit 1e61d412+a01fd36e, 사주=이미다됐다고가정말것
-- [⭐⭐⭐⭐⭐ 내일(8/30) 할일: 토스 결제창 파트분리 + 손절각·연락기록통계 광고3개/인앱결제 (2026-08-29)](project_next_session_2026_08_30_toss_payment_tasks.md) — 세션시작시 필독, 승인전 코드수정 금지
-- [⭐⭐⭐ 점운 MBTI(웹) 20개 유지+상위3개무료전환+몰아보기카드 완료 (2026-08-30)](project_mbti_web_20items_expansion_2026_08_30.md) — commit f152dc53, 성격성향/강점/주의점 무료화+badge변경, oh는생년월일무관 고정매핑(버그아님)
-- [⭐⭐⭐ MBTI 토스링크 실제화면추가+크로스프로모배지수정 (2026-08-30)](project_mbti_toss_link_and_crosspromo_badge_2026_08_30.md) — commit 199e0498, SEO서브페이지≠실제화면 교훈, MBTI만 링크추가 타앱금지
-- [⭐⭐⭐⭐ MBTI 퀴즈완료후 결제창먼저나오던버그 수정+토스링크상단이동 (2026-08-30)](bug_mbti_payment_shown_before_free_result_2026_08_30.md) — commit 5d644b1e, 제출리다이렉트에서 결제게이트걸면안됨(결과지내부에서만)
-- [⭐⭐⭐⭐⭐ 손절각 7개 관계카테고리 결과내용 동일했던 버그 원인+수정완료 (2026-08-30)](bug_sonjeolgak_7parts_identical_content_fixed_2026_08_30.md) — 웹commit 6bbedc96+토스commit 1299357, 토스콘솔 재업로드필요
-- [⭐⭐⭐⭐⭐ 손절각(웹) 결제 파트구분버그+결과지진입 깜빡임버그 수정 + 승인패턴 성공 (2026-08-29)](feedback_wait_for_explicit_go.md) — commit 78444d10, 원인설명→승인대기→실행 패턴 에스더님 확인
-- [⭐⭐⭐⭐⭐ 사주 결과지 전체카테고리 누수버그 진짜원인+수정완료 (2026-08-29)](bug_saju_paid_cats_leak_all_categories_2026_08_29.md) — commit e2f85c6c, 점운웹앱만 수정, 토스미니앱은 소스없어 미확인
-- [⛔ 관계레이더 앱이름 → 연락기록통계로 변경됨 (2026-08-29)](project_gwangyeoradar_renamed_2026_08_29.md) — 코드명 유지, 언급시 연락기록통계로, [[feedback_save_facts_not_just_acknowledge_2026_08_29]] 새사실은 즉시memory저장
-- [⛔ 토스 심사제출용 이미지에 고양이캐릭터 넣지말것 (2026-08-29)](feedback_no_cat_character_in_store_images_2026_08_29.md) — 반려됨, 웹사이트UI 고양이는 예외
-- [⭐⭐⭐ 사주앱만 유료유지 확정, 연락기록통계/손절각 SKU버그 나중에 (2026-08-29)](project_saju_only_paid_sku_bug_deferred_2026_08_29.md) — 먼저나서서지적말것, 사용자가꺼낼때만
-- [⭐⭐⭐⭐ 관계레이더+손절각 결제전용→광고도열리게 전환완료 (2026-08-29)](project_gwangyeoradar_sonjeolgak_ad_unlock_2026_08_29.md) — 사주앱만유료, 나머지2개도 항목별광고+전체결제 병행
-- [⭐⭐⭐⭐ 토스 MBTI 심층분석 15개 전부 광고로 풀림+핑크결제버튼1개유지 (2026-08-29)](project_mbti_toss_all15_ad_unlock_2026_08_29.md) — jeomun-mbti저장소(별도)
-- [⭐⭐⭐⭐⭐ 영상프롬프트 필수3항목+3종세트 표준화 (2026-08-29)](feedback_video_prompt_banner_korean_3d_rule_2026_08_29.md) — 한글오타방지+상단배너+3D4D, [[feedback_promo_video_3piece_combo_rule_2026_08_29]] 동물캐릭터법+틱톡캡션+후킹압축
-- [⭐⭐⭐ 틱톡/당근 광고포맷 레퍼런스 모음 (2026-08-29)](reference_air_affiliate_ad_course_2026_08_29.md) — 후킹문구공식+쓰레드5일룰, [[reference_dailyclosetmagazine_tiktok_format_2026_08_29]] [[reference_soulcleanmaster_disney_tiktok_format_2026_08_29]] [[reference_schneed_shoes_tiktok_format_2026_08_29]] [[reference_88money_elderly_saju_tiktok_format_2026_08_29]] 사주경쟁사 3종비교+88money압축지침
-- [⭐⭐⭐⭐ 강아지캐릭터 코믹숏폼 제작법→점냥이전환예정 (2026-08-29)](project_animal_character_promo_video_method_2026_08_29.md) — 캐릭터생성+대본+Veo3프롬프트
-- [⭐⭐⭐⭐⭐ 당근+틱톡 첫DB유입+990원실결제 확인, payment검증버그수정 (2026-08-29)](project_first_ad_driven_db_inflow_2026_08_29.md) — pay_pending오매칭 원인, 한줄수정완료
-- [⛔⛔⛔ 19개앱 SDK3+광고문구+크로스프로모18개 전부완료 최종본 (2026-08-29)](project_19apps_sdk3_adcopy_crosspromo_final_2026_08_29.md) — 재조사말고 그대로믿을것, 콘솔업로드만 사용자몫
-- [⭐⭐⭐ 앱인토스 제작자이름설정+SDK3 Origin공지 확인 (2026-08-29)](reference_appintoss_creator_name_notice_2026_08_29.md) — "기획의신 에스더" 22개앱공통, [[reference_toss_sdk3_webview_origin_storage_cors_2026_08_29]] 8개전환앱 조치불필요
-- [⭐⭐⭐⭐ 관리자패널 유입경로 추적 확장 (2026-08-28)](project_admin_source_tracking_2026_08_28.md) — 당근/블로그/티스토리 추가, 손절각 무료유료구조 의도설계
-- [⭐⭐⭐⭐⭐ 재업로드시 SDK3+광고문구+크로스프로모18개 3종세트 항상같이처리 (2026-08-28)](feedback_bundle_checklist_on_reupload_2026_08_28.md) — 미완료면 물어보고 같이처리
-- [⭐⭐ 가계부 광고버그수정+빌드완료 (2026-08-28)](project_budget_ad_retry_timeout_fix_2026_08_28.md) — 재시도4회타임아웃20초, commit 41eea9c 푸시안함
-- [⭐⭐ 홍보영상 3종툴(Kling/Flova/TopView)+당근사진팁+틱톡캡션템플릿+CRM특강 (2026-08-28)](reference_karrot_ad_photo_title_tips_2026_08_28.md) — [[project_tiktok_topfive_caption_template_2026_08_28]] [[reference_kling_ai_video_tool_2026_08_28]] [[reference_flova_ai_video_tool_2026_08_28]] [[reference_topview_ai_promo_video_tool_2026_08_28]] [[reference_crm_marketing_secrets_2026_08_28]]
-- [⭐⭐⭐⭐⭐ v3전환/크로스프로모 정확스펙+완료목록 (2026-08-27)](project_v3_upgrade_vs_crosspromo_only_apps_2026_08_27.md) — 완료7 vs 크로스프로모만10 구분, [[project_crosspromo_grid_spec_18apps_2026_08_27]] 4x4+신규2배크기, [[project_crosspromo_done_apps_list_2026_08_27]] 11개앱 재업로드금지
-- [⛔⛔⛔ 꿈해몽/별자리/펫운 내장탭 + 스코프확대금지 (2026-08-27)](feedback_haemong_zodiac_petun_bundled_in_saju_reminder_2026_08_27.md) — jeomun-saju내장, [[feedback_scope_creep_18app_crosspromo_2026_08_27]] 6-7개요청을18개로확대한사건
-- [⭐⭐⭐⭐⭐ SDK3.x전환현황 8/21개 + 신규앱기본구조=MBTI (2026-08-27)](project_sdk3_migration_status_2026_08_27.md) — [[feedback_new_apps_default_mbti_structure_2026_08_27]] 퀴즈/잠금/카운트다운/공유 기본값
-- [⭐⭐⭐ 일기류앱 3D전환예정+앱인토스8월5주공지 (2026-08-27)](project_diary_apps_future_3d_upgrade_2026_08_27.md) — 착수안함, [[reference_appintoss_notice_2026_08_5week_review.md]] SDK3.x 9/14마감
-- [⭐⭐⭐⭐⭐ 손절각 앱 재설계 + poomang경쟁분석 + 실시간인기순위 (2026-08-27)](project_sonjeolgak_app_launch_2026_08_27.md) — MBTI방식10항목, [[reference_poomang_quiz_catalog_2026_08_27]] [[reference_toss_realtime_popular_ranking_2026_08_27]] 사주계열35%최대장르
-- [⛔ 벤치마킹 결과유형 전체캡처 규칙 + 공유버튼 MBTI스타일 (2026-08-27)](feedback_benchmark_capture_all_results_2026_08_27.md) — 일부만보고설계금지, [[feedback_share_button_mbti_style_copy_2026_08_27]]
-- [⛔⛔⛔ 가격배지숨김=의도적, 임의수정금지 (2026-08-27)](feedback_price_hidden_intentional_ask_before_changing_2026_08_27.md) — FortuneGrid 이탈방지설계, 되돌림 cdf51029
-- [⭐⭐⭐⭐⭐ 완전복구 지정지점=커밋 6fd31b69 (2026-08-27)](project_restore_checkpoint_2026_08_27_pre_mainv2_copy_edit.md) — "원래대로" 요청시 이 커밋으로, [[reference_creator_income_newsletter_titles_2026_08_27]] 해외뉴스레터TOP5참고
-- [⭐⭐ MBTI가짜번호차단+순위공유리워드+SDK Origin확인 (2026-08-26)](project_mbti_toss_fakephone_fix_pending_upload_2026_08_26.md) — 재업로드대기, [[project_mbti_ranking_and_share_reward_2026_08_26]] [[reference_toss_sdk3_origin_cors_notice_2026_08_26]] 21개앱조치불필요
-- [⭐⭐⭐ 맹렬퍼널 홍보비법 4종세트 (2026-08-26)](reference_maengryeol_funnel_promotion_secrets.md) — 그랜드슬램오퍼+구매심리10원리, 홍보전체적용
-- [⛔⛔⛔ gwangyeoradar신규생성 + saju내장탭 vs 독립폴더 혼동정리 (2026-08-26)](bug_toss_gwangyeoradar_dbsave_and_saju_bundled_apps_architecture_2026_08_26.md) — 사주/꿈해몽/별자리/펫운=saju내장, 독립폴더3개=죽은코드추정
-- [⭐⭐⭐⭐⭐ 08-25 세션 연쇄: 대운광고버그→타로DB저장→사주혼동정리 (진짜원인은 세션e)](project_session_2026_08_25e.md) — [[bug_daewoon_adimpression_instant_unlock_2026_08_25]] [[bug_tarot_gunghap_cloudflare_waf_block_2026_08_25]] [[project_ad_retry_4apps_fix_2026_08_25]] [[project_session_2026_08_25d]] [[project_session_2026_08_25c]] [[project_session_2026_08_25]] saju handleFormSubmit await누락버그 commit d2ea301최종
-- [⛔ 새앱 Analytics로그 처음부터 심을것 (2026-08-25)](feedback_always_add_analytics_logging_new_apps.md) — screen/click/impression패턴
-- [⭐⭐⭐⭐⭐ 관계레이더 개발스펙 (2026-08-25)](project_appintoss_gwangyeoradar_devspec_2026_08_25.md) — 화면1~20/DB스키마/27항목/가격, [[project_appintoss_gwangyeoradar_plan_2026_08_25]] 원본기획
-- [⛔⛔⛔ 재조사전 승인여부부터 확인 (2026-08-25)](feedback_investigate_fully_before_asking_reupload.md) — 대운4차수정항의사건, 타로는코드는맞았는데리뷰미승인이 원인 — 대운·직운·합격·택일도 승인여부 미확인
-- [⭐⭐⭐⭐ 7개앱 DB저장 완전수정 + 코인중복지급수정 (2026-08-22~23)](bug_budget_cloudflare_empty_useragent_block_2026_08_23.md) — UA헤더→Cloudflare→CORS 3단계원인, [[bug_coin_double_reward_gamjung_budget_fix_2026_08_22]] useRef가드
-- [⭐⭐⭐ MBTI/직운/합격 결제전설명 최신화 + 20앱DB검증 (2026-08-22)](project_mbti_jigun_resume_content_port_and_paydesc_fix_2026_08_22.md) — /pay페이지 놓치기쉬움, [[project_all_20_apps_db_save_verified_2026_08_22]] 저장안되는앱없음
-- [⭐⭐⭐ 08-21 세션: 맘케어7서브잠금+배지수정+5앱유료전환+관리자 (2026-08-21)](bug_momcare_7subpages_unlock_check_2026_08_21.md) — commit b7627ff, [[bug_badge_scope_creep_diary_apps_2026_08_21]] [[project_5app_paid_conversion_2026_08_21]] MBTI별자리궁합펫운타로 990원전환, [[project_admin_delete_all_removed_db_check_2026_08_21]]
-- [⭐⭐⭐ 내일할일(08-20)+토스웨비나+AI빌드가이드 (2026-08-20)](project_next_session_2026_08_20.md) — 실결제발생 MBTI잠금노출, [[reference_toss_webinar_hyoju_growth_secrets]] [[reference_toss_ai_miniapp_build_guide]]
-- [⭐⭐⭐ 08-17~19 배너/프로모션/일괄수정 세션 (2026-08-17~19)](project_mbti_banner_batch_final_and_promotion_launch_2026_08_19.md) — attachBanner레이스컨디션, [[project_20app_ad_button_fix_2026_08_17]] 크림색배경+폰번호락
-- [⭐⭐⭐ 핵심링크3개+프로모션가이드+쿠폰리서치 (레퍼런스)](reference_key_links.md) — direct-payments/apps-in-toss콘솔/토스결제취소, [[reference_toss_promotion_official_doc]] [[project_tosspay_coupon_ad_research]]
-- [⛔⛔⛔ 08-17 반복금지+끼어들면끝내고답+검증안한거검증했다말금지](feedback_stop_repeating_finish_before_reply.md) — 워크플로 3규칙
-- [⛔ 08-15 세션: 홍보내부구조노출금지+쉬어라금지+변명금지+안전규칙 (2026-08-15)](feedback_never_reveal_template_architecture_publicly.md) — [[feedback_no_rest_suggestions]] [[feedback_answer_honestly_no_defensive_excuses]] [[project_toss_17app_count_confirmed]] 17개앱확정, [[feedback_warn_before_auth_changes]]
-- [⭐⭐⭐ 08-11~14 세션 모음: 무료버튼버그+톤+답변짧게+광고구조마스터](bug_paid_status_wiped_by_free_button.md) — commit 92e95be, [[feedback_warm_tone_esther]] [[feedback_keep_replies_very_short]] [[project_ad_structure_master_2026_08_13]] 17개앱광고구조, [[project_status_2026_08_11_update]] [[project_session_2026_08_11_payment_bug_marathon]] [[feedback_no_speculative_defensive_code]] [[reference_sajaui_course_growth_secrets]]
-- [⚠️ 토스앱 유사카테고리 반려경고 + 앱인토스업데이트 (2026-08-12)](reference_nomadcoders_trinity_toss_interview.md) — 심사먼저문의, [[project_appintoss_update_2026_08]] 비즈월렛최소5만원 SDK3.0
-- [⭐⭐⭐ 전화번호일치잠금(미완료) + 토스미니앱수정금지 해제됨](project_phone_match_pending.md) — jigun pay만완료 11개파일미완료, [[feedback_diet_app_no_touch]] 수정금지규칙 폐지됨
-- [⭐⭐⭐ 18개앱 업그레이드플랜 + 토스빌드가이드 + 매일읽기가이드](project_18app_upgrade_plan.md) — 새세션마다읽을것, [[toss_app_build_guide]] 새앱만들기전필독, [[daily_master_guide]] 절대삭제금지
-- [⛔ 빌드는 명확요청시만 + 토스홍보비법+워터마크전략](feedback_build_only_when_asked.md) — 애매한말에자의적빌드금지, [[project_toss_promo_secrets]] N명카운터+코인시스템
-- [⚠️ 토스애즈 실패교훈(4만원) + 비즈월렛프로모션전략](project_toss_ads_lesson.md) — 미니앱직접연결안됨, [[project_biz_wallet_strategy]] 30만원→혜택탭노출
-- [⭐ 07-28~08-02 세션: 알림톡수정+수익화확정+광고구조v4](project_session_2026_08_02.md) — type:ATA누락수정, [[project_toss_app_monetization_final]] 990원vs광고앱분류절대변경금지, [[project_toss_ad_structure_v2_final]] reviewClaimed영구차단
-- [⭐ 이미지요청시 캔바사양서로 + MBTI광고구조+리뷰버튼규칙+잠금버튼문구](feedback_image_creation.md) — 아티팩트금지, [[project_toss_ad_structure_final]] 전면딜레이7초, [[feedback_toss_review_button_rule]] requestReview()필수, [[feedback_unlock_button_copy]] 이모지금지
-- [⚠️ 앱개발기본규칙+일기형Firebase복원규칙](feedback_app_development_base_rule.md) — 기존웹앱기반새로짜지말것, [[feedback_diary_app_firebase_rule]] 일기형만자동복원
-- [User profile / background — 반드시읽을것](user_profile.md) — non-technical vibe-coding, [[user_background]] 47세800시간투자재기간절
-- [Workflow rules 모음](feedback_workflow_rules.md) — only change what's asked, [[feedback_no_question_popups]] 박스UI금지, [[feedback_wait_for_explicit_go]] 자체트리거금지
-- [배포/DB/파트너모델 핵심결정 3종](project_deployment.md) — Vercel push후1-2분, [[project_firebase_vs_supabase_decision]] Firebase유지, [[project_whitelabel_partner_model]] 서브도메인
-- [사주텍스트개인화 + 요청범위만수정 규칙](project_saju_personalization.md) — template-only, [[feedback_only_touch_requested]] 요청한파일만
-- [문서계획+다음작업+Q&A확장 / 사주아이벤치마킹 분석](project_docs_plan.md) — [[project_sajaui_analysis]] 성공비결/UI방식
-- [Firebase Blaze전환리마인더 + 원현우점신모델 + 페이지일괄수정규칙](project_firebase_blaze_reminder.md) — 앱오픈전필수, [[project_wonhyunwoo_model]] 경쟁사분석, [[feedback_apply_to_all_pages]] "모든/전부"전체파악후일괄
-- [카카오비즈+포트원PG현황 / 마케팅·광고전략](project_kakao_biz.md) — 알림톡완료, [[project_portone_status]] KPN심사중, [[project_marketing_plan]] 크몽AI사주, [[project_ad_strategy]] 퍼널필수
-- [유저핵심이력(마케팅항상포함) / 16Personalities경쟁분석](user_credentials.md) — 탈잉2년연속1위, [[competitor_16personalities]] 자동저장규칙
-- [15개앱전략+플랫폼결정원문 / 전략파일먼저읽기규칙](project_15app_strategy.md) — 풀패스"구독"금지, [[feedback_read_strategy_first]] "모른다"금지+이메일항상포함
-- [플랫폼시장가치(약2억) / 미구현결정항목7개](project_platform_value.md) — 강의소개활용, [[project_pending_decisions]] [[feedback_save_decisions_immediately]] 결정즉시저장
-- [앱잠금체계/풀패스전략 / 카톡결과지이탈버그모음](project_lock_system.md) — 직운합격영구나머지30일, [[feedback_kakaotalk_navigation_bug]] window.open통일 반복패턴6종필독
-- [앱인토스전략+입점현황 / 결제연동현황](project_appintoss_strategy.md) — 무료4개먼저, [[project_payment_status]] 포트원심사중
-- [크몽파트너판매글+다음할것 / 경쟁사인스타틱톡전략](project_kmong_partner_listing.md) — 무료파트너마감코드1순위, [[competitor_maengryeol_instagram]] AI애니릴스7단계
-- [토스Firebase저장방법 / 07-23세션 / 바이브코딩챌린지(과거)](project_toss_firebase_saving.md) — REST API직접패턴, [[project_session_2026_07_23]] MBTI출시, [[project_toss_vibe_challenge]] 7/29마감건(지남)
-- [토스프로모션가이드v1v2 / 성공사례4종 / 리뷰공유가이드](project_toss_promotion_guide.md) — eCPM공식, [[reference_toss_discpot_case]] 마케팅비0원, [[project_toss_review_guide]] 친구초대인앱재화
-- [로빈웨비나 / 첫진입광고flicker수정 / memory는항상GitHub에](reference_robin_appintoss_webinar.md) — 세그먼트레시피, [[project_toss_ad_firstentry_fix]] 8시간블록, [[feedback_memory_save_to_github.md]] 항상 commit+push
-- [08-01세션(16앱통일) / 코드직접확인규칙 / 요청외수정금지(ShareClient사건)](project_session_2026_08_01.md) — [[feedback_check_code_not_docs]] 상태질문엔코드읽기, [[feedback_no_extra_edits]] 3일작업망침사건
-- [MBTI이름변경대기 / 08-03~08 세션모음(신규앱4개+잠금+크로스프로모)](project_mbti_name_change_pending.md) — 워터마크변경대기, [[project_session_2026_08_03]] 하찮아도괜찮아, [[reference_nalssicheok_structure]] 날씨체크앱분석, [[project_session_2026_08_08_diet]] git reset소스소실사고
+- [⛔ 육아일기 크래시 3연발(mood/JSON.parse/tags) 수정완료 (09-08)](bug_momcare_babydiary_mood_undefined_crash_2026_09_08.md) — 재발보고오면 4번째지점 의심, F12콘솔 최우선
+- [⭐ AI블로그노출 4단계기법 (09-08)](reference_aeo_blog_ai_visibility_astra_lecture_2026_09_08.md) — 사업3줄+질문5개+시크릿창+결론부터
+- [⭐ 점운 정체성(20개앱/토스19개/MBTI과거5위) (09-08)](reference_jeomun_platform_identity_for_ai_content_2026_09_08.md) — "현재5위"아닌 "과거5위이력"만 사용
+- [⭐ 점운 AEO블로그전략+140질문+연결포인트6종 (09-08)](project_jeomun_aeo_blog_content_strategy_2026_09_08.md) — 7개축, 매 블로그요청시 기본전제
+- [⭐ 블로그글쓰기규칙: 질문답변먼저→점운연결 (09-08)](feedback_blog_content_answer_first_then_jeomun_connect_2026_09_08.md) — 광고형제목 금지
+- [⭐ Vercel www↔jeomun.com 리다이렉트뒤집힘 수정 (09-07)](bug_vercel_primary_domain_www_redirect_reversed_2026_09_07.md) — 308유지필수
+- [⛔ 정정됨: finalizeSuccess원인설 오판, 실구매경로 무관확인 (09-07)](bug_real_payment_finalizeSuccess_never_sets_paid_cats_2026_09_07.md) — "재물운없음"불만 원인 미확인 남음
+- [⭐ 당근광고 클릭→DB0건 라이브테스트로 해결 (09-05)](project_karrot_ad_to_db_flow_verified_working_2026_09_05.md) — 코드정상, 폼이탈이원인
+- [당근 사주vs MBTI 성과비교+기존3개복구 (09-05)](project_karrot_mbti_vs_saju_ad_performance_2026_09_05.md) — 문구순서로 클릭률2배차
+- [당근비즈니스가이드+전문가모드절차 (09-05)](reference_karrot_business_guide_and_strategy_advice_2026_09_05.md) — 간편모드유지 추천
+- [⭐ 로그아웃깜빡임4곳+apps D-day+qa뒤로가기 버그수정 (09-05)](project_session_2026_09_05_flash_bug_and_apps_qa_fixes.md) — router.push레이스컨디션 가드패턴
+- [사주앱 프로필누락+special낡은플래그 전수조사 (09-05)](bug_qa_page_dead_orphan_and_special_stale_flag_sweep_2026_09_05.md) — 010-0000-0000 로그인버그 수정(commit 1f7f8974)
+- [⛔ 영상프롬프트 "그대로달라"=무수정재현 (09-04)](feedback_video_prompt_verbatim_no_rewrite_2026_09_04.md) — 임의개선시도 금지
+- [홍보영상 화면자막↔대사 분리규칙 (09-04)](feedback_video_prompt_caption_vs_dialogue_separation_2026_09_04.md) — 무료앱은 왕관에 "무료" 각인
+- [가계부/감정일기/다이어트/맘케어 서버백업 무음버그 수정 (09-04)](bug_diary4apps_silent_save_failure_fixed_2026_09_04.md) — syncFailed배너 4앱, 콘솔업로드만 남음
+- [⛔ MBTI 하나씩언락 제안→폐기, 광고1회=20개전부 (09-03)](feedback_mbti_one_by_one_unlock_rejected_2026_09_03.md) — 재제안금지
+- [⭐ 점냥이 영상프롬프트 구조 최종확정 (09-03)](feedback_video_prompt_crown_dialogue_complete_rule_2026_09_03.md) — 왕관+990노출/대사완결/숫자발음
+- [펫운/별자리/꿈해몽 전면→진짜리워드 전환 (09-02)](bug_petun_zodiac_haemong_interstitial_to_reward_ad_2026_09_02.md) — 3앱 리워드ID 콘솔등록 남음
+- [스마트발송 타겟팅조건 세팅법 확정 (09-02)](project_smartpush_targeting_condition_setup_2026_09_02.md) — 신규제외365일/재방문제외1일
+- [결제알림 상품명버그+타로 리워드임계값완화 (09-01)](bug_mainv2_pay_package_label_hardcoded_2026_09_01.md) — .ait재업로드필요
+- [⛔ 18개앱 소개작업시 기존섹션 손대지말것 (09-01)](feedback_dont_remove_existing_crosspromo_other_pages_2026_09_01.md) — 추가만, 기존유지
+- [⭐ 18개앱 인트로+결과지 CrossPromoMini 완료 (09-01)](project_crosspromo_intro_result_all18apps_done_2026_09_01.md) — 콘솔재업로드 전부남음(대운최우선)
+- [직운 리워드광고 가짜전역참조 버그 수정 (09-01)](bug_jigun_reward_ad_fake_globalref_2026_09_01.md) — 9개앱중 jigun만 버그였음
+- [⛔ MBTI 최종확정: 라이브버전이 기준, 재적용금지 (09-01)](feedback_mbti_reward_fix_confirmed_working_2026_09_01.md) — 택일도 그대로 두기
+- [⭐ 손절각+연락기록통계 언락확정+대운택일 990원전환 (09-01)](project_sonjeolgak_gwangyeoradar_global_unlock_2026_09_01.md) — .ait재빌드완료, 콘솔업로드만 남음
+- [⭐ 구글미색인=Vercel/Cloudflare레코드불일치, 색인66→1260개 (09-01)](bug_dns_cname_fix_google_indexing_2026_08_28.md) — site:jeomun.com으로 확인
+- [홍보영상: 대사는기본, 무대사액션은 가끔옵션 (09-01)](feedback_dialogueless_action_video_confirmed_2026_09_01.md) — 캡션여러줄나열만 금지
+- [⭐ 한복고양이영상: 캡션에서만 990원 제거 (08-30)](feedback_hanbok_cat_video_no_price_structure_best_performing_2026_08_30.md) — 화면가격은 유지, 최초진단 정정됨
+- [⭐ 08-30 결제/언락 버그 일괄수정 6종](bug_sonjeolgak_payment_pg_redirect_part_rid_loss_2026_08_30.md) — 손절각PG리다이렉트, [[bug_gwangyeoradar_payment_record_loss_and_overopen_2026_08_30]] [[bug_mbti_tarot_petun_zodiac_payment_record_loss_2026_08_30]] [[bug_mbti_global_unlock_key_overwrite_2026_08_30]] [[bug_sonjeolgak_payment_unlock_optional_phone_2026_08_30]] 전부 mbti패턴 이식/전역키→per-id키 전환
+- [UGC 손폰영상 프롬프트 템플릿 확정 (08-30)](feedback_ugc_handheld_video_prompt_template_confirmed_2026_08_30.md) — TopView.ai용, 자막안잘림 필수
+- [⭐ 가계부/다이어트/맘케어 저장실패 은폐버그 10곳 수정 (08-30)](bug_budget_diet_momcare_save_failure_hidden_2026_08_30.md) — postWithRetry결과 미확인이 원인
+- [일반회원DB 유입경로버그(틱톡→내부) 수정 (08-30)](bug_admin_customers_source_always_internal_fixed_2026_08_30.md) — RefTracker first_source패턴, 소급반영안됨
+- [사주+MBTI adSource추가, 나머지13개앱 제외 (08-30)](project_mbti_adsource_ad_channel_tracking_2026_08_30.md) — 기존source필드안건드림
+- [당근·틱톡·구글애즈 UTM/gclid감지 추가 (08-30)](feedback_adsource_expand_only_when_ads_start_2026_08_30.md) — 당근/틱톡은 랜딩URL utm_source= 필요
+- [⭐ 사주 결제진입점 2곳 경로추적누락 수정 (08-30)](bug_payment_page_source_field_missing_2026_08_30.md) — 사주=이미다됐다고 가정말것
+- [MBTI(웹) 20개유지+상위3무료전환 (08-30)](project_mbti_web_20items_expansion_2026_08_30.md) — oh는생년월일무관 고정매핑(버그아님)
+- [MBTI 토스링크추가+크로스프로모배지수정 (08-30)](project_mbti_toss_link_and_crosspromo_badge_2026_08_30.md) — SEO서브페이지≠실제화면, MBTI만 링크추가
+- [MBTI 퀴즈완료후 결제창먼저나오던버그 수정 (08-30)](bug_mbti_payment_shown_before_free_result_2026_08_30.md) — 결과지내부에서만 결제게이트
+- [⭐ 손절각 7개관계카테고리 결과동일 버그 수정 (08-30)](bug_sonjeolgak_7parts_identical_content_fixed_2026_08_30.md) — 토스콘솔 재업로드필요
+- [손절각(웹) 결제파트버그+결과지깜빡임 수정 (08-29)](feedback_wait_for_explicit_go.md) — 원인설명→승인대기→실행 패턴 확인됨
+- [⭐ 사주 결과지 전체카테고리 누수버그 수정 (08-29)](bug_saju_paid_cats_leak_all_categories_2026_08_29.md) — 웹앱만 수정, 토스미니앱 미확인
+- [⛔ 관계레이더→연락기록통계 개명 (08-29)](project_gwangyeoradar_renamed_2026_08_29.md) — 코드명유지, 언급시 연락기록통계로
+- [토스심사이미지 고양이캐릭터 금지 (08-29)](feedback_no_cat_character_in_store_images_2026_08_29.md) — 웹사이트UI 고양이는 예외
+- [사주앱만 유료유지확정, 나머지SKU버그 보류 (08-29)](project_saju_only_paid_sku_bug_deferred_2026_08_29.md) — 사용자꺼낼때만
+- [관계레이더+손절각 결제전용→광고언락 전환 (08-29)](project_gwangyeoradar_sonjeolgak_ad_unlock_2026_08_29.md) — 항목별광고+전체결제 병행
+- [MBTI토스 심층15개 광고로풀림+결제버튼1개유지 (08-29)](project_mbti_toss_all15_ad_unlock_2026_08_29.md) — jeomun-mbti저장소(별도)
+- [⭐ 영상프롬프트 필수3항목+3종세트 표준화 (08-29)](feedback_video_prompt_banner_korean_3d_rule_2026_08_29.md) — 한글오타방지+상단배너+3D4D
+- [틱톡/당근 광고포맷 레퍼런스 5종 (08-29)](reference_air_affiliate_ad_course_2026_08_29.md) — 후킹문구공식+사주경쟁사3종비교
+- [강아지캐릭터 숏폼제작법→점냥이전환예정 (08-29)](project_animal_character_promo_video_method_2026_08_29.md) — 대본+Veo3프롬프트
+- [⭐ 당근+틱톡 첫DB유입+990원실결제 확인 (08-29)](project_first_ad_driven_db_inflow_2026_08_29.md) — pay_pending오매칭 수정완료
+- [⛔ 19개앱 SDK3+광고문구+크로스프로모18개 완료 (08-29)](project_19apps_sdk3_adcopy_crosspromo_final_2026_08_29.md) — 재조사말고 믿을것, 콘솔업로드만 남음
+- [앱인토스 제작자이름="기획의신 에스더" 22개공통 (08-29)](reference_appintoss_creator_name_notice_2026_08_29.md) — SDK3 Origin공지 8개전환앱 조치불필요
+- [관리자패널 유입경로추적 확장 (08-28)](project_admin_source_tracking_2026_08_28.md) — 당근/블로그/티스토리 추가
+- [⭐ 재업로드시 SDK3+광고문구+크로스프로모 3종세트 항상같이 (08-28)](feedback_bundle_checklist_on_reupload_2026_08_28.md) — 미완료면 물어보고 같이처리
+- [가계부 광고재시도타임아웃 수정+빌드 (08-28)](project_budget_ad_retry_timeout_fix_2026_08_28.md) — 재시도4회20초, 푸시안함
+- [홍보영상3종툴+당근사진팁+틱톡캡션템플릿 (08-28)](reference_karrot_ad_photo_title_tips_2026_08_28.md) — Kling/Flova/TopView, CRM특강 포함
+- [⭐ v3전환/크로스프로모 완료목록 확정 (08-27)](project_v3_upgrade_vs_crosspromo_only_apps_2026_08_27.md) — 완료7 vs 크로스프로모만10, 11개앱 재업로드금지
+- [⛔ 꿈해몽/별자리/펫운 사주앱내장탭, 스코프확대금지 (08-27)](feedback_haemong_zodiac_petun_bundled_in_saju_reminder_2026_08_27.md) — 6-7개요청을18개로확대한사건
+- [⭐ SDK3.x전환현황 8/21개+신규앱기본구조=MBTI (08-27)](project_sdk3_migration_status_2026_08_27.md) — 퀴즈/잠금/카운트다운/공유 기본값
+- [일기류앱 3D전환예정(착수안함)+앱인토스공지 (08-27)](project_diary_apps_future_3d_upgrade_2026_08_27.md) — SDK3.x 9/14마감
+- [⭐ 손절각앱 재설계+경쟁분석+실시간인기순위 (08-27)](project_sonjeolgak_app_launch_2026_08_27.md) — MBTI방식10항목, 사주계열35%최대장르
+- [벤치마킹 결과유형 전체캡처규칙 (08-27)](feedback_benchmark_capture_all_results_2026_08_27.md) — 일부만보고설계금지
+- [⛔ 가격배지숨김=의도적, 임의수정금지 (08-27)](feedback_price_hidden_intentional_ask_before_changing_2026_08_27.md) — FortuneGrid 이탈방지설계
+- [⭐ 완전복구 지정지점=커밋 6fd31b69 (08-27)](project_restore_checkpoint_2026_08_27_pre_mainv2_copy_edit.md) — "원래대로"요청시 이 커밋으로
+- [MBTI가짜번호차단+순위공유리워드 (08-26)](project_mbti_toss_fakephone_fix_pending_upload_2026_08_26.md) — 재업로드대기, 21개앱조치불필요
+- [맹렬퍼널 홍보비법 4종세트 (08-26)](reference_maengryeol_funnel_promotion_secrets.md) — 그랜드슬램오퍼+구매심리10원리
+- [⛔ gwangyeoradar신규 + saju내장탭vs독립폴더 정리 (08-26)](bug_toss_gwangyeoradar_dbsave_and_saju_bundled_apps_architecture_2026_08_26.md) — 독립폴더3개는 죽은코드추정
+- [⭐ 08-25 세션연쇄: 대운광고버그→타로DB저장→사주정리 (08-25)](project_session_2026_08_25e.md) — saju handleFormSubmit await누락 commit d2ea301최종
+- [새앱 Analytics로그 처음부터 심을것 (08-25)](feedback_always_add_analytics_logging_new_apps.md) — screen/click/impression패턴
+- [관계레이더 개발스펙: 화면20/DB스키마/27항목 (08-25)](project_appintoss_gwangyeoradar_devspec_2026_08_25.md) — 원본기획 별도
+- [⛔ 재조사전 승인여부부터 확인 (08-25)](feedback_investigate_fully_before_asking_reupload.md) — 대운4차수정항의사건, 리뷰미승인이 원인
+- [7개앱 DB저장 완전수정+코인중복지급수정 (08-22~23)](bug_budget_cloudflare_empty_useragent_block_2026_08_23.md) — UA헤더→Cloudflare→CORS 3단계원인
+- [MBTI/직운/합격 결제전설명 최신화+20앱DB검증 (08-22)](project_mbti_jigun_resume_content_port_and_paydesc_fix_2026_08_22.md) — 저장안되는앱 없음 확인
+- [08-21세션: 맘케어7서브잠금+5앱유료전환 (08-21)](bug_momcare_7subpages_unlock_check_2026_08_21.md) — MBTI별자리궁합펫운타로 990원전환
+- [08-17~19세션: 배너/프로모션/일괄수정](project_mbti_banner_batch_final_and_promotion_launch_2026_08_19.md) — attachBanner레이스컨디션, 크림색배경+폰번호락
+- [핵심링크3개+프로모션가이드+쿠폰리서치](reference_key_links.md) — direct-payments/apps-in-toss콘솔/토스결제취소
+- [⛔ 반복금지+끼어들면끝내고답+검증안한거검증했다말금지](feedback_stop_repeating_finish_before_reply.md) — 워크플로 3규칙
+- [08-15세션: 홍보내부구조노출금지+안전규칙](feedback_never_reveal_template_architecture_publicly.md) — 17개앱확정, 인증변경전경고
+- [08-11~14세션: 무료버튼버그+톤+광고구조마스터](bug_paid_status_wiped_by_free_button.md) — commit 92e95be, 17개앱광고구조확정
+- [토스앱 유사카테고리 반려경고+업데이트 (08-12)](reference_nomadcoders_trinity_toss_interview.md) — 심사먼저문의, 비즈월렛최소5만원
+- [전화번호일치잠금(미완료, 11개파일)](project_phone_match_pending.md) — jigun pay만완료, 수정금지규칙 폐지됨
+- [18개앱 업그레이드플랜+토스빌드가이드](project_18app_upgrade_plan.md) — 새세션마다읽을것, 절대삭제금지
+- [⛔ 빌드는 명확요청시만+토스홍보비법](feedback_build_only_when_asked.md) — 애매한말에자의적빌드금지, N명카운터+코인시스템
+- [토스애즈 실패교훈(4만원)+비즈월렛전략](project_toss_ads_lesson.md) — 미니앱직접연결안됨, 30만원→혜택탭노출
+- [07-28~08-02세션: 알림톡수정+수익화확정](project_session_2026_08_02.md) — type:ATA누락수정, 990원vs광고앱분류 절대변경금지
+- [이미지요청시 캔바사양서로+MBTI광고구조](feedback_image_creation.md) — 아티팩트금지, 전면딜레이7초, requestReview()필수
+- [앱개발기본규칙+일기형Firebase복원규칙](feedback_app_development_base_rule.md) — 기존웹앱기반새로짜지말것
+- [User profile / background — 반드시읽을것](user_profile.md) — non-technical vibe-coding, 47세800시간투자재기간절
+- [Workflow rules 모음](feedback_workflow_rules.md) — only change what's asked, 박스UI금지, 자체트리거금지
+- [배포/DB/파트너모델 핵심결정 3종](project_deployment.md) — Vercel push후1-2분, Firebase유지, 서브도메인
+- [사주텍스트개인화+요청범위만수정 규칙](project_saju_personalization.md) — template-only, 요청한파일만
+- [문서계획+Q&A확장/사주아이벤치마킹 분석](project_docs_plan.md) — 성공비결/UI방식
+- [Firebase Blaze전환+원현우점신모델+페이지일괄수정규칙](project_firebase_blaze_reminder.md) — 앱오픈전필수, "모든/전부"전체파악후일괄
+- [카카오비즈+포트원PG현황/마케팅광고전략](project_kakao_biz.md) — 알림톡완료, KPN심사중, 퍼널필수
+- [유저핵심이력(마케팅항상포함)/16Personalities경쟁분석](user_credentials.md) — 탈잉2년연속1위, 자동저장규칙
+- [15개앱전략+플랫폼결정원문](project_15app_strategy.md) — 풀패스"구독"금지, "모른다"금지
+- [플랫폼시장가치(약2억)/미구현결정항목7개](project_platform_value.md) — 결정즉시저장
+- [앱잠금체계/풀패스전략/카톡결과지이탈버그](project_lock_system.md) — 직운합격영구나머지30일, window.open통일
+- [앱인토스전략+입점현황/결제연동현황](project_appintoss_strategy.md) — 무료4개먼저, 포트원심사중
+- [크몽파트너판매글+경쟁사인스타틱톡전략](project_kmong_partner_listing.md) — 무료파트너마감코드1순위
+- [토스Firebase저장방법/바이브코딩챌린지(과거)](project_toss_firebase_saving.md) — REST API직접패턴, MBTI출시
+- [토스프로모션가이드v1v2+성공사례4종](project_toss_promotion_guide.md) — eCPM공식, 친구초대인앱재화
+- [로빈웨비나/첫진입광고flicker수정/memory는항상GitHub에](reference_robin_appintoss_webinar.md) — 세그먼트레시피, 8시간블록
+- [08-01세션(16앱통일)/코드직접확인규칙/요청외수정금지](project_session_2026_08_01.md) — 3일작업망침사건
+- [MBTI이름변경대기/08-03~08 세션모음](project_mbti_name_change_pending.md) — 워터마크변경대기, git reset소스소실사고
