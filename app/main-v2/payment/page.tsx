@@ -674,6 +674,36 @@ function PaymentInner() {
           </div>
         )}
 
+        {/* 오픈기념 990원 특가(개당) — 기존 3,900원 그리드는 그대로 두고 별도 신규 섹션으로 추가 */}
+        {!isPartner && (
+          <div id="deep990" style={{ maxWidth: 600, margin: "0 auto 20px" }}>
+            <p style={{ color: "#fde047", fontSize: 13, fontWeight: 900, margin: "0 0 8px 2px" }}>🎉 오픈기념 990원 특가 (개당)</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
+              {[
+                { id: "재물운990", emoji: "💰", label: "재물운", catKey: "💰 재물운" },
+                { id: "연애운990", emoji: "💕", label: "연애운", catKey: "💕 연애운" },
+                { id: "건강운990", emoji: "💪", label: "건강운", catKey: "💪 건강운" },
+                { id: "성공운990", emoji: "🎯", label: "성공운", catKey: "🎯 성공운" },
+                { id: "총운990",   emoji: "✨", label: "총운",   catKey: "✨ 총운"   },
+              ].map(s => (
+                <button key={s.id}
+                  onClick={() => {
+                    const paidPrice = finalPrice(990);
+                    localStorage.setItem("v2_paid_cats", JSON.stringify([s.catKey]));
+                    openPortoneModal(paidPrice, `/payment-complete?package=${encodeURIComponent(s.label)}&pages=30&paid=${paidPrice}`);
+                  }}
+                  style={{ padding: "10px 4px", background: "rgba(30,58,138,0.55)", backdropFilter: "blur(10px)", border: "1.5px solid rgba(253,224,71,0.5)", borderRadius: 14, cursor: "pointer", textAlign: "center", color: "white" }}
+                >
+                  <p style={{ margin: "0 0 3px", fontSize: 20 }}>{s.emoji}</p>
+                  <p style={{ margin: "0 0 4px", fontSize: 10, fontWeight: 900, wordBreak: "keep-all", lineHeight: 1.3 }}>{s.label}</p>
+                  <p style={{ margin: "0 0 2px", fontSize: 9, fontWeight: 700, textDecoration: "line-through", opacity: 0.7, color: "#fff" }}>₩3,900</p>
+                  <p style={{ margin: 0, fontSize: 12, fontWeight: 900, color: "#fde047" }}>₩990</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* 패키지 빠른 선택 (9900원~) */}
         {!isPartner && (
           <div style={{ maxWidth: 600, margin: "0 auto 20px" }}>
