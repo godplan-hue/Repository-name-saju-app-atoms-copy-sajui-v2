@@ -83,6 +83,16 @@ function PaymentInner() {
     } catch {}
   }, []);
 
+  // gateOk가 true가 된 뒤에야 본문(#deep990 포함)이 그려지므로, 페이지 로드시 브라우저가
+  // 시도하는 자동 해시 스크롤은 그 시점에 요소가 없어 실패함 — gateOk 이후 한 번 더 스크롤 시도
+  useEffect(() => {
+    if (gateOk && window.location.hash === "#deep990") {
+      setTimeout(() => {
+        document.getElementById("deep990")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  }, [gateOk]);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [musicOn, setMusicOn] = useState(false);
   const toggleMusic = () => {
@@ -542,33 +552,56 @@ function PaymentInner() {
           )}
         </div>
 
-        {/* 오픈기념 5종 묶음 990원 */}
+        {/* 오픈기념 5종 묶음 990원 + 심층분석 990원 특가(개당) — 메인 페이지와 동일한 2버튼 레이아웃 */}
         {!isFromYourChange && (
-        <div id="bundle-990" style={{ maxWidth: 600, margin: "0 auto 16px" }}>
+        <div id="bundle-990" style={{ maxWidth: 600, margin: "0 auto 16px", display: "flex", gap: 8 }}>
           <button
             onClick={() => {
               const paidPrice = finalPrice(990);
               const queue = "sinyeon,love_detail,findmatch,marriage_detail,divorce";
               openPortoneModal(paidPrice, `/payment-complete?naming=1&queue=${queue}&package=${encodeURIComponent("오픈기념 5종 세트")}&paid=${paidPrice}`);
             }}
-            style={{ width: "100%", padding: "10px 10px", background: "linear-gradient(135deg, #991b1b, #dc2626)", border: "2px solid #fde047", borderRadius: 12, cursor: "pointer", textAlign: "center", color: "white", boxShadow: "0 4px 16px rgba(153,27,27,0.5)" }}
+            style={{ width: "50%", boxSizing: "border-box", padding: "10px 8px", background: "linear-gradient(135deg, #991b1b, #dc2626)", border: "2px solid #fde047", borderRadius: 12, cursor: "pointer", textAlign: "center", color: "white", boxShadow: "0 4px 16px rgba(153,27,27,0.5)" }}
           >
-            <p style={{ margin: "0 0 6px", fontSize: 11, fontWeight: 900 }}>🎉 오픈기념 한정특가 (조기마감될 수 있어요)</p>
-            <p style={{ margin: "0 0 6px", fontSize: 11, fontWeight: 800, background: "#7a0c1f", color: "#fff", borderRadius: 8, padding: "5px 7px", lineHeight: 1.4, wordBreak: "keep-all" }}>
+            <p style={{ margin: "0 0 6px", fontSize: 11, fontWeight: 900, wordBreak: "keep-all" }}>🎉 오픈기념 한정특가<br/>(조기마감될 수 있어요)</p>
+            <p style={{ margin: "0 0 6px", fontSize: 10, fontWeight: 800, background: "#7a0c1f", color: "#fff", borderRadius: 8, padding: "5px 6px", lineHeight: 1.4, wordBreak: "keep-all" }}>
               🎍신년운세 + 💗연애사주 + 🔍내사람찾기 + 💍결혼사주 + 🌧이혼운세
             </p>
-            <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 900 }}>
-              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 11, marginRight: 6 }}>정가 4,950원</span>
-              5개 사주 몽땅 <span style={{ color: "#fde047", fontSize: 18 }}>990원</span>에 드려요!
+            <p style={{ margin: "0 0 6px", fontSize: 12, fontWeight: 900, wordBreak: "keep-all" }}>
+              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 10, marginRight: 4, wordBreak: "keep-all" }}>정가 4,950원</span>
+              5개 몽땅 <span style={{ color: "#fde047", fontSize: 17, whiteSpace: "nowrap" }}>990원</span>
             </p>
             <div style={{ marginTop: 6, paddingTop: 6, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
-              <p style={{ margin: 0, fontSize: 10, color: "#f9a8d4", fontWeight: 700, lineHeight: 1.5 }}>
+              <p style={{ margin: 0, fontSize: 9, color: "#f9a8d4", fontWeight: 700, lineHeight: 1.5 }}>
                 🎁 결제하면 3종 24시간 무료!<br />
-                <b style={{ color: "#fde047" }}>꿈해몽 전체</b> · <b style={{ color: "#fde047" }}>점냥이 채팅</b> · <b style={{ color: "#fde047" }}>Q&A 전체</b>
+                <b style={{ color: "#fde047" }}>꿈해몽</b> · <b style={{ color: "#fde047" }}>점냥이</b> · <b style={{ color: "#fde047" }}>Q&A</b>
               </p>
             </div>
-            <div style={{ marginTop: 10, padding: "11px 0", background: "#fde047", color: "#7a0c1f", borderRadius: 10, fontSize: 14, fontWeight: 900 }}>
+            <div style={{ marginTop: 10, padding: "11px 0", background: "#fde047", color: "#7a0c1f", borderRadius: 10, fontSize: 13, fontWeight: 900 }}>
               5종 결제하기 →
+            </div>
+          </button>
+          <button
+            onClick={() => {
+              document.getElementById("deep990")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            style={{ width: "50%", boxSizing: "border-box", padding: "10px 8px", background: "linear-gradient(135deg, #1e3a8a, #2563eb)", border: "2px solid #fde047", borderRadius: 12, cursor: "pointer", textAlign: "center", color: "white", boxShadow: "0 4px 16px rgba(30,58,138,0.55)" }}
+          >
+            <p style={{ margin: "0 0 6px", fontSize: 11, fontWeight: 900, wordBreak: "keep-all" }}>🎉 오픈기념<br/>심층분석 특가</p>
+            <p style={{ margin: "0 0 6px", fontSize: 10, fontWeight: 800, background: "#0f2563", color: "#fff", borderRadius: 8, padding: "5px 6px", lineHeight: 1.4, wordBreak: "keep-all" }}>
+              💰재물운 · 💕연애운 · 💪건강운 · 🎯성공운 · ✨총운
+            </p>
+            <p style={{ margin: "0 0 6px", fontSize: 12, fontWeight: 900, wordBreak: "keep-all" }}>
+              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 10, marginRight: 4, wordBreak: "keep-all" }}>개당 3,900원</span>
+              개당 <span style={{ color: "#fde047", fontSize: 17, whiteSpace: "nowrap" }}>990원</span>
+            </p>
+            <div style={{ marginTop: 6, paddingTop: 6, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
+              <p style={{ margin: 0, fontSize: 9, color: "#bfdbfe", fontWeight: 700, lineHeight: 1.5 }}>
+                원하는 항목만 골라서<br/>담을 수 있어요
+              </p>
+            </div>
+            <div style={{ marginTop: 10, padding: "11px 0", background: "#fde047", color: "#0f2563", borderRadius: 10, fontSize: 13, fontWeight: 900 }}>
+              골라서 담기 →
             </div>
           </button>
         </div>

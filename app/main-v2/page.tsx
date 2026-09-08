@@ -946,9 +946,9 @@ export default function MainV2() {
             <p style={{ margin: "0 0 10px", fontSize: 12, fontWeight: 800, background: "#0f2563", color: "#fff", borderRadius: 10, padding: "8px 8px", lineHeight: 1.6, wordBreak: "keep-all" }}>
               💰재물운 · 💕연애운 · 💪건강운 · 🎯성공운 · ✨총운
             </p>
-            <p style={{ margin: "0 0 10px", fontSize: 14, fontWeight: 900 }}>
-              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 12, marginRight: 6 }}>개당 3,900원</span>
-              개당 <span style={{ color: "#fde047", fontSize: 20 }}>990원</span>
+            <p style={{ margin: "0 0 10px", fontSize: 14, fontWeight: 900, wordBreak: "keep-all" }}>
+              <span style={{ textDecoration: "line-through", opacity: 0.75, fontSize: 12, marginRight: 6, wordBreak: "keep-all" }}>개당 3,900원</span>
+              개당 <span style={{ color: "#fde047", fontSize: 20, whiteSpace: "nowrap" }}>990원</span>
             </p>
             <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid rgba(255,255,255,0.25)" }}>
               <p style={{ margin: 0, fontSize: 11, color: "#bfdbfe", fontWeight: 700, lineHeight: 1.7 }}>
