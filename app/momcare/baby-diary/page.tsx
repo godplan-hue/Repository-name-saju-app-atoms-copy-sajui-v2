@@ -121,7 +121,7 @@ export default function BabyDiaryPage() {
   }
 
   const filtered = entries.filter(e =>
-    search === "" || e.title.includes(search) || e.content.includes(search) || e.tags.some(t => t.includes(search))
+    search === "" || (e.title || "").includes(search) || (e.content || "").includes(search) || (e.tags || []).some(t => t.includes(search))
   );
 
   function renderDiaryCard(e: DiaryEntry) {
@@ -138,9 +138,9 @@ export default function BabyDiaryPage() {
             </div>
             <p style={{ fontSize: 15, fontWeight: 800, color: "#1a1a2e", margin: "0 0 6px" }}>{e.title}</p>
             <p style={{ fontSize: 13, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const }}>{e.content}</p>
-            {e.tags.length > 0 && (
+            {(e.tags || []).length > 0 && (
               <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-                {e.tags.map(t => <span key={t} style={{ fontSize: 11, background: "#f3f4f6", color: "#9ca3af", borderRadius: 6, padding: "1px 6px" }}>{t}</span>)}
+                {(e.tags || []).map(t => <span key={t} style={{ fontSize: 11, background: "#f3f4f6", color: "#9ca3af", borderRadius: 6, padding: "1px 6px" }}>{t}</span>)}
               </div>
             )}
           </div>
@@ -173,13 +173,13 @@ export default function BabyDiaryPage() {
             </div>
             <h1 style={{ fontSize: 22, fontWeight: 900, color: "#1a1a2e", margin: "0 0 20px", lineHeight: 1.3 }}>{viewEntry.title}</h1>
             <div style={{ fontSize: 15, color: "#374151", lineHeight: 2, whiteSpace: "pre-wrap", minHeight: 120 }}>{viewEntry.content}</div>
-            {viewEntry.tags.length > 0 && (
+            {(viewEntry.tags || []).length > 0 && (
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 20 }}>
-                {viewEntry.tags.map(t => <span key={t} style={{ fontSize: 12, background: "#f3f4f6", color: "#6b7280", borderRadius: 8, padding: "3px 10px" }}>{t}</span>)}
+                {(viewEntry.tags || []).map(t => <span key={t} style={{ fontSize: 12, background: "#f3f4f6", color: "#6b7280", borderRadius: 8, padding: "3px 10px" }}>{t}</span>)}
               </div>
             )}
             <div style={{ marginTop: 24, paddingTop: 16, borderTop: "1px solid #f3f4f6", display: "flex", gap: 10 }}>
-              <button onClick={() => { const text = `${viewEntry.date} 육아일기\n\n${viewEntry.title}\n\n${viewEntry.content}\n\n${viewEntry.tags.join(" ")}`; if (navigator.share) { navigator.share({ title: viewEntry.title, text }); } else { navigator.clipboard?.writeText(text).then(() => alert("클립보드에 복사됐어요!")); } }} style={{ flex: 1, background: "#f97316", color: "white", border: "none", borderRadius: 12, padding: "12px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>공유하기 📤</button>
+              <button onClick={() => { const text = `${viewEntry.date} 육아일기\n\n${viewEntry.title}\n\n${viewEntry.content}\n\n${(viewEntry.tags || []).join(" ")}`; if (navigator.share) { navigator.share({ title: viewEntry.title, text }); } else { navigator.clipboard?.writeText(text).then(() => alert("클립보드에 복사됐어요!")); } }} style={{ flex: 1, background: "#f97316", color: "white", border: "none", borderRadius: 12, padding: "12px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>공유하기 📤</button>
             </div>
           </div>
         </div>
