@@ -12,7 +12,13 @@ type MoodKey = "happy" | "calm" | "fussy" | "crying" | "sick";
 const MOODS: Record<MoodKey, string> = { happy: "😊 기분 좋음", calm: "😌 차분함", fussy: "😤 칭얼거림", crying: "😭 울음", sick: "🤒 몸 불편함" };
 
 function now() { return new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }); }
-function todayKey() { return new Date().toISOString().slice(0, 10); }
+function todayKey() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
 function fmtSec(s: number) { const m = Math.floor(s / 60); const sec = s % 60; return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`; }
 
 export default function DailyTrackerPage() {
