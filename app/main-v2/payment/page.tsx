@@ -152,6 +152,11 @@ function PaymentInner() {
   const [refundAgreed, setRefundAgreed] = useState(false);
   const [showRefund, setShowRefund] = useState(false);
 
+  // 오픈기념 심층분석 990원 골라담기 (체크박스 선택 → 바로 결제창)
+  const [showDeepPick, setShowDeepPick] = useState(false);
+  const [deepSelectedCats, setDeepSelectedCats] = useState<string[]>(["💰 재물운"]);
+  const DEEP_CATS = ["💰 재물운", "💕 연애운", "💪 건강운", "🎯 성공운", "✨ 총운"];
+
   const closePayModal = () => {
     setShowPayModal(false);
     setModalError(""); setModalLoading(false);
@@ -467,6 +472,47 @@ function PaymentInner() {
         </>
       )}
 
+      {/* 오픈기념 심층분석 990원 골라담기 모달 (체크박스 선택 → 바로 결제창) */}
+      {showDeepPick && (
+        <div onClick={() => setShowDeepPick(false)} style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.55)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: "#16103a", border: "1px solid rgba(167,139,250,0.2)", borderRadius: "16px 16px 0 0", padding: "20px 20px 32px", width: "100%", maxWidth: 420 }}>
+            <div style={{ width: 36, height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 2, margin: "0 auto 18px" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+              <span style={{ fontSize: 34 }}>💰</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ color: "#ddd6fe", fontSize: 16, fontWeight: 900 }}>오픈기념 심층분석 특가</div>
+                <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 }}>원하는 운세만 골라서 · 개당 ₩990 (정가 ₩3,900)</div>
+              </div>
+              <div style={{ color: "#ef4444", fontSize: 16, fontWeight: 900, border: "2px solid #ef4444", borderRadius: 8, padding: "3px 10px" }}>
+                {deepSelectedCats.length > 0 ? `₩${(deepSelectedCats.length * 990).toLocaleString()}` : "₩990"}
+              </div>
+            </div>
+            <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
+              {DEEP_CATS.map((f, i) => (
+                <div key={i} onClick={() => setDeepSelectedCats(prev => prev.includes(f) ? prev.filter(x => x !== f) : [...prev, f])} style={{ display: "flex", alignItems: "center", gap: 10, color: deepSelectedCats.includes(f) ? "#fff" : "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: 700, lineHeight: 2.2, cursor: "pointer" }}>
+                  <span style={{ width: 20, height: 20, border: `2px solid ${deepSelectedCats.includes(f) ? "#a78bfa" : "rgba(255,255,255,0.25)"}`, borderRadius: 5, display: "inline-flex", alignItems: "center", justifyContent: "center", background: deepSelectedCats.includes(f) ? "#7c3aed" : "transparent", flexShrink: 0, fontSize: 12 }}>{deepSelectedCats.includes(f) ? "✓" : ""}</span>
+                  <span style={{ display: "inline-block", width: "1.6em", textAlign: "center", flexShrink: 0 }}>{f.split(" ")[0]}</span><span>{f.split(" ").slice(1).join(" ")}</span>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => {
+                if (deepSelectedCats.length === 0) return;
+                setShowDeepPick(false);
+                const d990Paid = deepSelectedCats.length * 990;
+                const d990Label = deepSelectedCats.length === 1 ? (deepSelectedCats[0].split(" ").slice(1).join(" ") || "운세") : `${deepSelectedCats.length}개 운세 묶음`;
+                localStorage.setItem("v2_paid_cats", JSON.stringify(deepSelectedCats));
+                openPortoneModal(d990Paid, `/payment-complete?package=${encodeURIComponent(d990Label)}&pages=${deepSelectedCats.length * 30}&paid=${d990Paid}`);
+              }}
+              style={{ width: "100%", padding: "14px 0", background: deepSelectedCats.length === 0 ? "rgba(124,58,237,0.4)" : "linear-gradient(135deg, #7c3aed, #5b21b6)", color: "white", border: "none", borderRadius: 10, fontWeight: 900, fontSize: 15, cursor: deepSelectedCats.length === 0 ? "not-allowed" : "pointer", boxShadow: deepSelectedCats.length === 0 ? "none" : "0 4px 14px rgba(124,58,237,0.4)", marginBottom: 10 }}
+            >
+              결제하기
+            </button>
+            <button onClick={() => setShowDeepPick(false)} style={{ width: "100%", padding: "10px 0", background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>닫기</button>
+          </div>
+        </div>
+      )}
+
       {/* PortOne 결제 모달 */}
       {showPayModal && (
         <>
@@ -583,7 +629,8 @@ function PaymentInner() {
           </button>
           <button
             onClick={() => {
-              document.getElementById("deep990")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              setDeepSelectedCats(["💰 재물운"]);
+              setShowDeepPick(true);
             }}
             style={{ width: "50%", boxSizing: "border-box", padding: "10px 8px", background: "linear-gradient(135deg, #1e3a8a, #2563eb)", border: "2px solid #fde047", borderRadius: 12, cursor: "pointer", textAlign: "center", color: "white", boxShadow: "0 4px 16px rgba(30,58,138,0.55)" }}
           >
