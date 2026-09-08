@@ -279,9 +279,9 @@ const FORTUNE_CATEGORIES = [
   { id: "qa",            title: "운세 궁금증 무료",  sub: "오행 맞춤 답변",        emoji: "💬", img: "https://i.pinimg.com/736x/b4/b0/5b/b4b05b2365cd1eb0f1426eacd8529c96.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#7c3aed", price: "무료",      priceBg: "#2563eb" },
   { id: "sinyeon_premium", title: "프리미엄 신년운세", sub: "신년+월별 12달", emoji: "⭐", img: "https://i.pinimg.com/736x/05/53/27/055327e74b7436d04c938d038ba0d900.jpg", bg: "linear-gradient(145deg, #ede9fe, #ddd6fe)", accent: "#7c3aed", price: "₩4,900", priceBg: "#7c3aed" },
   { id: "yearly",        title: "기본 분석",         sub: "재물운+연애운",       emoji: "🎍", img: "https://i.pinimg.com/1200x/24/32/ee/2432eed06907654905c7949ce4ea350d.jpg", bg: "linear-gradient(145deg, #fce7f3, #fbcfe8)", accent: "#db2777", price: "₩9,900",     priceBg: "#fbbf24", priceColor: "#1a1a2e" },
-  { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "👑 VIP 전용", priceBg: "#6d28d9" },
-  { id: "health",        title: "건강운",           sub: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "프리미엄", priceBg: "#15803d" },
-  { id: "full",          title: "베이직",            sub: "올해+월별 운세", emoji: "🎯", img: "https://i.pinimg.com/1200x/5a/27/e1/5a27e1d0bf4ea71ee0dfc035f4724e5e.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "베이직",     priceBg: "#2563eb" },
+  { id: "compatibility", title: "궁합분석",          sub: "이름+궁합+전체사주", emoji: "💑", img: "https://i.pinimg.com/736x/56/27/4b/56274ba01259316125b29015d9b9a4fe.jpg", bg: "linear-gradient(145deg, #dbeafe, #bfdbfe)", accent: "#1d4ed8", price: "₩29,900", priceBg: "#6d28d9" },
+  { id: "health",        title: "건강운",           sub: "건강운", emoji: "🍀", img: "https://i.pinimg.com/736x/66/b6/67/66b66708f6e337996b4fa81e95613c64.jpg", bg: "linear-gradient(145deg, #dcfce7, #bbf7d0)", accent: "#16a34a", price: "₩24,900", priceBg: "#15803d" },
+  { id: "full",          title: "베이직",            sub: "올해+월별 운세", emoji: "🎯", img: "https://i.pinimg.com/1200x/5a/27/e1/5a27e1d0bf4ea71ee0dfc035f4724e5e.jpg", bg: "linear-gradient(145deg, #fce7f3, #f9a8d4)", accent: "#9d174d", price: "₩19,900",     priceBg: "#2563eb" },
 ];
 
 function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPartner: boolean }) {
@@ -322,11 +322,11 @@ function FortuneGrid({ onPick, isPartner }: { onPick: (id: string) => void; isPa
                     <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 9, fontWeight: 900, padding: "2px 7px", borderRadius: 20, boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
                       무료
                     </span>
-                  ) : (cat.id === "love" || cat.id === "naming") ? (
+                  ) : (
                     <span style={{ position: "absolute", top: 5, left: 5, background: (cat as any).priceBg, color: (cat as any).priceColor ?? "#fff", fontSize: 12, fontWeight: 900, padding: "4px 10px", borderRadius: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.45)", display: "inline-block", minWidth: 52, textAlign: "center" }}>
                       {(cat as any).price}
                     </span>
-                  ) : null}
+                  )}
                   {(cat as any).sub && (
                     <div style={{ position: "absolute", bottom: 7, left: 0, right: 0, textAlign: "center", fontSize: 10, fontWeight: 900, color: "#fff", textShadow: "0 1px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9)", padding: "0 4px", whiteSpace: "nowrap", overflow: "hidden" }}>{(cat as any).sub}</div>
                   )}
