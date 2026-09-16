@@ -16,7 +16,7 @@ export default function PartnerApply() {
 
   const handleApply = (tier: string) => {
     if (tier === "free") {
-      alert("무료 파트너는 2026년 8월 말 오픈 예정입니다.\n오픈 시 신청 링크를 보내드릴게요 🙏\n카카오톡으로 문의해 주세요!");
+      alert("무료 파트너는 2026년 10월 말 오픈 예정입니다.\n오픈 시 신청 링크를 보내드릴게요 🙏\n카카오톡으로 문의해 주세요!");
       return;
     }
     router.push(`/partner/apply-form?tier=${tier}`);
