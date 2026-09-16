@@ -892,13 +892,13 @@ export default function MainV2() {
             <span key={b.text} style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: b.bg, borderRadius: 20, padding: "6px 12px", boxShadow: "0 3px 8px rgba(0,0,0,0.15)" }}>{b.text}</span>
           ))}
         </div>
-        <button onClick={goFree} style={{ marginTop: 16, padding: "15px 36px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 17, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite", wordBreak: "keep-all" }}>
+        <button onClick={goFree} style={{ marginTop: 16, padding: "12px 30px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite", wordBreak: "keep-all" }}>
           🔮 3초만에 무료로 내 사주 보기
         </button>
         <p style={{ margin: "10px 0 0" }}>
-          <span style={{ display: "inline-block", fontSize: 12, fontWeight: 800, color: "#7c3aed", background: "#fff", padding: "6px 14px", borderRadius: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.12)" }}>
-            + 꿈해몽·점냥이·Q&A 3종 24시간 무료
-          </span>
+          <a href="/apps" style={{ display: "inline-block", fontSize: 13, fontWeight: 900, color: "#fff", background: "linear-gradient(135deg,#22c55e,#15803d)", padding: "8px 16px", borderRadius: 20, boxShadow: "0 3px 10px rgba(34,197,94,0.35)", textDecoration: "none", wordBreak: "keep-all" }}>
+            ✨ 20개 무료앱 전체보기 →
+          </a>
         </p>
         <p style={{ margin: "10px 0 0" }}>
           <span style={{ display: "inline-block", fontSize: 12, fontWeight: 700, color: "#fff", background: "rgba(0,0,0,0.55)", padding: "6px 14px", borderRadius: 20 }}>
