@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface Lead {
   id: string;
@@ -118,12 +118,16 @@ export default function AdminDirectPayments() {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [tab, setTab] = useState<"payments" | "leads" | "sns">("payments");
+  const [tab, setTab] = useState<"payments" | "leads" | "sns" | "remarketing">("payments");
   const [leads, setLeads] = useState<Lead[]>([]);
   const [sourceFilter, setSourceFilter] = useState<string>("all");
   const [snsPending, setSnsPending] = useState<{phone: string; postUrl: string; createdAt: number}[]>([]);
   const [snsLoading, setSnsLoading] = useState(false);
   const [approvedCodes, setApprovedCodes] = useState<{phone: string; codes: string[]} | null>(null);
+  const [generalCustomers, setGeneralCustomers] = useState<{phone: string; name?: string; createdAt?: number}[]>([]);
+  const [remarketingLoaded, setRemarketingLoaded] = useState(false);
+  const [remarketingLoading, setRemarketingLoading] = useState(false);
+  const [copyDone, setCopyDone] = useState(false);
 
   useEffect(() => {
     const adminId = localStorage.getItem("adminId");
@@ -161,6 +165,40 @@ export default function AdminDirectPayments() {
   const filtered = search.trim()
     ? payments.filter(p => p.name.includes(search) || p.phone.includes(search) || p.package.includes(search) || (p.category || "").includes(search))
     : payments;
+
+  // 카톡 재발송 대상 DB — 결제내역 + 무료DB(미니앱 포함) + 일반회원(무료사주 본 사람) 전화번호 기준 합쳐서 중복 제거
+  const remarketingList = useMemo(() => {
+    const byPhone = new Map<string, { phone: string; name: string; tags: Set<string>; createdAt: number }>();
+    const digits = (p: string) => (p || "").replace(/\D/g, "");
+    const upsert = (rawPhone: string, name: string, tag: string, createdAt: number) => {
+      const phone = digits(rawPhone);
+      if (phone.length < 10) return;
+      const ex = byPhone.get(phone);
+      if (!ex) {
+        byPhone.set(phone, { phone, name: name || "", tags: new Set([tag]), createdAt: createdAt || 0 });
+      } else {
+        ex.tags.add(tag);
+        if (name && !ex.name) ex.name = name;
+        if ((createdAt || 0) > ex.createdAt) ex.createdAt = createdAt || 0;
+      }
+    };
+    for (const p of payments) upsert(p.phone, p.name, "결제완료", new Date(p.date).getTime());
+    for (const l of leads) upsert(l.phone, l.name, "무료체험", l.createdAt);
+    for (const c of generalCustomers) upsert(c.phone, c.name || "", "일반회원", c.createdAt || 0);
+    return [...byPhone.values()].sort((a, b) => b.createdAt - a.createdAt);
+  }, [payments, leads, generalCustomers]);
+
+  const loadRemarketing = () => {
+    setTab("remarketing");
+    if (remarketingLoaded || remarketingLoading) return;
+    setRemarketingLoading(true);
+    const adminId = localStorage.getItem("adminId") || "";
+    fetch("/api/admin/remarketing", { headers: { "x-admin-id": adminId } })
+      .then(r => r.json())
+      .then(d => { setGeneralCustomers(d.customers || []); setRemarketingLoaded(true); })
+      .catch(() => {})
+      .finally(() => setRemarketingLoading(false));
+  };
 
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`"${name}" 결제 기록을 삭제할까요?`)) return;
@@ -201,6 +239,7 @@ export default function AdminDirectPayments() {
               const adminId = localStorage.getItem("adminId") || "";
               fetch("/api/admin/sns-pending", { headers: { "x-admin-id": adminId } }).then(r => r.json()).then(d => { setSnsPending(d.list || []); setSnsLoading(false); }).catch(() => setSnsLoading(false));
             }} style={{ padding: "10px 20px", borderRadius: 10, border: "none", background: tab === "sns" ? "linear-gradient(135deg,#f59e0b,#ec4899)" : "#f3f4f6", color: tab === "sns" ? "white" : "#6b7280", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>📸 SNS후기신청 {snsPending.length > 0 ? `(${snsPending.length})` : ""}</button>
+            <button onClick={loadRemarketing} style={{ padding: "10px 20px", borderRadius: 10, border: "none", background: tab === "remarketing" ? "linear-gradient(135deg,#10b981,#059669)" : "#f3f4f6", color: tab === "remarketing" ? "white" : "#6b7280", fontWeight: 900, fontSize: 14, cursor: "pointer" }}>💬 카톡 재발송 대상{remarketingLoaded ? ` (${remarketingList.length}명)` : ""}</button>
           </div>
 
           {tab === "payments" && <>
@@ -453,6 +492,57 @@ export default function AdminDirectPayments() {
                 </div>
               </div>
             ))}
+          </>}
+
+          {/* 카톡 재발송 대상 DB */}
+          {tab === "remarketing" && <>
+            <h1 style={{ fontSize: 24, fontWeight: 900, margin: "0 0 6px", color: "#333" }}>💬 카톡 재발송 대상 DB</h1>
+            <p style={{ fontSize: 13, color: "#888", margin: "0 0 16px" }}>결제완료 + 무료체험(미니앱 포함) + 일반회원(무료 사주 조회) 전화번호를 합쳐 중복 제거한 목록이에요. 새로 결제·체험·조회가 쌓일 때마다 여기 자동 반영됩니다.</p>
+
+            {remarketingLoading ? (
+              <p style={{ textAlign: "center", color: "#888", padding: "40px 0" }}>불러오는 중...</p>
+            ) : (
+              <>
+                <div style={{ display: "flex", gap: 16, alignItems: "center", marginBottom: 20, flexWrap: "wrap" }}>
+                  <div style={{ background: "linear-gradient(135deg, #10b981, #059669)", padding: "16px 24px", borderRadius: 12, color: "white" }}>
+                    <div style={{ fontSize: 11, opacity: 0.85, marginBottom: 4 }}>중복 제거 후 대상 인원</div>
+                    <div style={{ fontSize: 28, fontWeight: 900 }}>{remarketingList.length}명</div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(remarketingList.map(r => r.phone).join("\n"));
+                      setCopyDone(true);
+                      setTimeout(() => setCopyDone(false), 2000);
+                    }}
+                    style={{ padding: "10px 18px", borderRadius: 10, border: "none", background: copyDone ? "#16a34a" : "#374151", color: "white", fontWeight: 900, fontSize: 13, cursor: "pointer" }}
+                  >{copyDone ? "✅ 복사됨" : "📋 전화번호 전체 복사"}</button>
+                </div>
+
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ background: "#f9fafb", borderBottom: "2px solid #e5e7eb" }}>
+                      {["이름", "전화번호", "구분", "최근활동일"].map(h => (
+                        <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontWeight: 900, color: "#374151" }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {remarketingList.map((r, i) => (
+                      <tr key={r.phone} style={{ borderBottom: "1px solid #f3f4f6", background: i % 2 === 0 ? "white" : "#fafafa" }}>
+                        <td style={{ padding: "10px 12px", fontWeight: 700, color: "#111" }}>{r.name || <span style={{ color: "#aaa", fontWeight: 400 }}>—</span>}</td>
+                        <td style={{ padding: "10px 12px", color: "#374151" }}>{r.phone}</td>
+                        <td style={{ padding: "10px 12px" }}>
+                          {[...r.tags].map(t => (
+                            <span key={t} style={{ fontSize: 11, background: t === "결제완료" ? "#dcfce7" : t === "무료체험" ? "#fef3c7" : "#e0e7ff", color: t === "결제완료" ? "#166534" : t === "무료체험" ? "#92400e" : "#3730a3", padding: "2px 8px", borderRadius: 20, fontWeight: 700, marginRight: 4 }}>{t}</span>
+                          ))}
+                        </td>
+                        <td style={{ padding: "10px 12px", color: "#9ca3af", fontSize: 12 }}>{r.createdAt ? new Date(r.createdAt).toLocaleDateString("ko-KR") : "-"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            )}
           </>}
         </div>
       </div>
