@@ -302,9 +302,8 @@ function getEntry(slug: string): Entry | undefined {
   return DATA.find((d) => d.slug === slug);
 }
 
-export async function generateStaticParams() {
-  return DATA.map((d) => ({ slug: d.slug }));
-}
+// 한글 슬러그 정적 사전생성이 배포 시 실제 요청 주소와 어긋나 500/404를 유발하는 문제 테스트를 위해
+// 사전생성을 끄고 방문 시점에 바로 렌더링하도록 변경 (이 파일 1개만 우선 적용)
 
 export async function generateMetadata({
   params,
