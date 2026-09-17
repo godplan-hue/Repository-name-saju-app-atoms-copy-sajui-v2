@@ -299,7 +299,11 @@ const DATA = [
 type Entry = typeof DATA[number];
 
 function getEntry(slug: string): Entry | undefined {
-  return DATA.find((d) => d.slug === slug);
+  let decoded = slug;
+  try {
+    decoded = decodeURIComponent(slug);
+  } catch {}
+  return DATA.find((d) => d.slug === decoded || d.slug === slug);
 }
 
 // 한글 슬러그 정적 사전생성이 배포 시 실제 요청 주소와 어긋나 500/404를 유발하는 문제 테스트를 위해
@@ -368,23 +372,7 @@ export default async function SajuGuidePage({
 }) {
   const { slug } = await params;
   const entry = getEntry(slug);
-  if (!entry) {
-    return (
-      <pre style={{ whiteSpace: "pre-wrap", padding: 20, color: "#0f0", background: "#000" }}>
-        {JSON.stringify(
-          {
-            receivedSlug: slug,
-            length: slug.length,
-            codePoints: [...slug].map((c) => c.codePointAt(0)!.toString(16)),
-            dataSampleSlug: DATA[0].slug,
-            dataSampleCodePoints: [...DATA[0].slug].map((c) => c.codePointAt(0)!.toString(16)),
-          },
-          null,
-          2
-        )}
-      </pre>
-    );
-  }
+  if (!entry) notFound();
 
   return (
     <>
