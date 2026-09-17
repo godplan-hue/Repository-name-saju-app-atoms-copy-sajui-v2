@@ -300,13 +300,21 @@ const DATA: Entry[] = [
   { slug:"pet-lucky-number", title:"반려동물 행운 번호 | 점운 펫운", desc:"반려동물 행운 번호 — 반려동물 생년월일 오행 에너지로 행운 숫자와 색깔을 도출합니다.", h1:"반려동물 행운 번호 — 오행 에너지로 보는 행운 숫자", sub:"반려동물 생년월일 오행 에너지로 보는 행운 숫자·색깔", emoji:"🍀" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -317,7 +325,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function PetunSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "🐾", title: "오행 궁합 점수", desc: "반려동물과 보호자의 오행 에너지 궁합 점수를 즉시 분석합니다." },

@@ -312,12 +312,20 @@ const DATA: DataEntry[] = [
   { slug: "saju-love-game", title: "사주 연애 게임 | 점운 이상형", desc: "사주 연애 게임으로 이상형과의 연애운을 확인해보세요. 오행 기질 사주 연애 게임을 점운에서 무료로 즐겨보세요.", h1: "사주 연애 게임 — 사주 연애 게임으로 이상형 연애운 확인", sub: "사주 연애 게임으로 이상형과의 연애운 발견", emoji: "🔯" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const d = DATA.find((x) => x.slug === params.slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === params.slug || x.slug === safeDecodeSlug(params.slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -369,7 +377,7 @@ const FAQS = [
 ];
 
 export default function BattleGuidePage({ params }: { params: { slug: string } }) {
-  const d = DATA.find((x) => x.slug === params.slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === params.slug || x.slug === safeDecodeSlug(params.slug)) ?? DATA[0];
 
   return (
     <main

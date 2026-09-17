@@ -306,13 +306,21 @@ const DATA: Entry[] = [
   { slug:"mbti-in-2025", title:"2025년 MBTI 인기 유형 | 점운 MBTI", desc:"2025년 MBTI 인기 유형 분析 — 2025년 가장 인기 있었던 MBTI 유형과 트렌드를 분析합니다.", h1:"2025년 MBTI 인기 유형 — 트렌드 분析", sub:"2025년 가장 인기 있는 MBTI 유형과 트렌드 완전 분析", emoji:"📊" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -323,7 +331,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function MbtiSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "🧠", title: "16가지 유형 분석", desc: "MBTI 16가지 유형의 성격 특성, 강점, 약점, 직업 방향을 즉시 무료로 분석합니다." },

@@ -302,13 +302,21 @@ const DATA: Entry[] = [
   { slug:"miraein-gunghap", title:"미래 인연 궁합 | 점운 궁합", desc:"미래 인연 궁합 — 오행 에너지로 앞으로 만날 미래 인연의 오행 기질과 시기를 예측합니다.", h1:"미래 인연 궁합 — 오행으로 예측하는 미래 인연 기질", sub:"오행 에너지로 예측하는 앞으로 만날 미래 인연 분석", emoji:"🔭" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -319,7 +327,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function GunghapSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "💑", title: "오행 궁합 점수", desc: "두 사람의 생년월일로 오행 에너지 궁합 점수를 44~99점으로 즉시 계산합니다." },

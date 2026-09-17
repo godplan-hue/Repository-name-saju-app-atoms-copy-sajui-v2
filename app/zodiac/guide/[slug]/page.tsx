@@ -306,13 +306,21 @@ const DATA: Entry[] = [
   { slug:"zodiac-libra-summary", title:"천칭자리 완전 정리 - 점운 별자리", desc:"천칭자리 완전 정리 — 천칭자리 성격·연애·직업·건강·궁합·오행 에너지를 한 페이지에 완전 정리합니다.", h1:"천칭자리 완전 정리 — 성격·연애·직업·건강·오행 총정리", sub:"천칭자리 성격·연애·직업·건강·궁합·오행 에너지 완전 정리", emoji:"♎" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -323,7 +331,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ZodiacSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "⭐", title: "12별자리+오행 분석", desc: "서양 12별자리와 동양 오행 기질을 결합해 더 정확한 성격과 운세를 분석합니다." },

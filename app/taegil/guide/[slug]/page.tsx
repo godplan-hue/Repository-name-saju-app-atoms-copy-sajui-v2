@@ -303,6 +303,14 @@ const DATA: { slug: string; title: string; desc: string; keyword: string }[] = [
   { slug: "길운날짜", title: "길운 날짜 — 행운이 강한 날 사주 계산", desc: "길운 날짜를 사주 오행으로 계산합니다. 재물운·사랑운·건강운·성공운이 모두 강한 길운의 날을 무료로 찾아드립니다.", keyword: "길운날짜" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((item) => ({ slug: item.slug }));
 }
@@ -313,7 +321,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const item = DATA.find((d) => d.slug === slug);
+  const item = DATA.find((d) => d.slug === slug || d.slug === safeDecodeSlug(slug));
   if (!item) {
     return {
       title: "사주 택일 — 점운",
@@ -341,7 +349,7 @@ export default async function TaegilGuidePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const item = DATA.find((d) => d.slug === slug) ?? DATA[0];
+  const item = DATA.find((d) => d.slug === slug || d.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     {

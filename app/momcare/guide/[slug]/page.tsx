@@ -306,13 +306,21 @@ const DATA: Entry[] = [
   { slug:"momcare-app-guide", title:"점운 맘케어 앱 가이드 — 점운 맘케어", desc:"점운 맘케어 앱 사용 방법을 안내합니다. 태몽·아기사주·수유·수면·성장 기록 모든 기능을 활용하세요.", h1:"점운 맘케어 앱 가이드 — 모든 기능 활용하기", sub:"점운 맘케어 앱의 태몽·사주·기록 기능 완전 가이드", emoji:"📱" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<import("next").Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -323,7 +331,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function MomcareSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "🌙", title: "태몽 해몽", desc: "동물·식물·날씨 등 태몽 종류별로 아기의 성격과 미래를 분석합니다." },

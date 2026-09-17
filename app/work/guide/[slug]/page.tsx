@@ -305,13 +305,21 @@ const DATA: Entry[] = [
   { slug: "work-independence-plan", title: "직장 독립 계획 | 점운 직장버티기", desc: "직장 독립 계획 — 오행 에너지 기질별 직장을 그만두고 독립·창업을 준비하는 단계별 방법을 안내합니다.", h1: "직장 독립 계획 — 오행 에너지 창업 독립 전략", sub: "오행 에너지 기질별 직장 독립·창업 준비 단계별 가이드", emoji: "🚀" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -322,7 +330,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function WorkSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "😤", title: "상사 유형 분석", desc: "나를 힘들게 하는 상사 유형을 선택하면 오행 에너지로 상사의 속마음을 분석해드려요." },

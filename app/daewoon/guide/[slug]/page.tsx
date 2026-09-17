@@ -303,6 +303,14 @@ const DATA: { slug: string; title: string; desc: string; keywords: string }[] = 
   { slug: "사주완전분석", title: "사주 완전 분석 — 원국·대운·세운 빠짐없는 총분석", desc: "사주 원국부터 대운·세운까지 빠짐없이 완전 분석. 점운의 통합 사주 분석 서비스.", keywords: "사주완전분석,사주총분석,완전사주분석,사주원국대운세운" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
@@ -313,7 +321,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const item = DATA.find((d) => d.slug === slug) ?? DATA[0];
+  const item = DATA.find((d) => d.slug === slug || d.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: `${item.title} | 점운 대운`,
     description: item.desc,
@@ -376,7 +384,7 @@ export default async function DaewoonGuidePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const item = DATA.find((d) => d.slug === slug) ?? DATA[0];
+  const item = DATA.find((d) => d.slug === slug || d.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const bg = "linear-gradient(180deg, #050010 0%, #0a001f 40%, #0f0033 100%)";
   const accent = "#a78bfa";

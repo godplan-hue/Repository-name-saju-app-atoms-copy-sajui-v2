@@ -312,6 +312,14 @@ const DATA: PageData[] = [
   { slug: "복리효과-저축방법", title: "복리 효과 저축 방법 — 시간이 돈을 만드는 원리", desc: "복리의 마법으로 작은 저축이 시간이 지나면 큰돈이 되는 원리와 복리를 극대화하는 저축 방법입니다.", keyword: "복리효과 저축방법" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
@@ -322,7 +330,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const item = DATA.find((d) => d.slug === slug);
+  const item = DATA.find((d) => d.slug === slug || d.slug === safeDecodeSlug(slug));
   if (!item) return { title: "오행 가계부 | 점운" };
   return {
     title: `${item.title} | 오행 가계부 — 점운`,
@@ -390,7 +398,7 @@ export default async function BudgetGuidePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const item = DATA.find((d) => d.slug === slug);
+  const item = DATA.find((d) => d.slug === slug || d.slug === safeDecodeSlug(slug));
   const title = item?.title ?? "오행 가계부 — 재물운으로 보는 돈 관리";
   const desc = item?.desc ?? "오행 이론으로 본인의 소비 기질을 파악하고 일기식 가계부로 재정을 관리하세요.";
 

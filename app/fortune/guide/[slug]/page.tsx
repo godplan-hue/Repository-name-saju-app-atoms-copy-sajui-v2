@@ -305,13 +305,21 @@ const DATA: Entry[] = [
   { slug:"fortune-and-psychology", title:"운세와 심리학 | 점운 오늘의운세", desc:"운세와 심리학의 연결 — 오늘의 운세가 심리학적으로 어떤 의미를 갖는지 오행 에너지로 설명합니다.", h1:"운세와 심리학 — 오행 에너지 심리 연결", sub:"오행 에너지와 심리학의 연결 분析 완전 가이드", emoji:"🧠" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -322,7 +330,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function FortuneSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "🔮", title: "매일 새로운 운세", desc: "오늘의 재물·연애·건강·직장운을 매일 새롭게 확인하세요." },

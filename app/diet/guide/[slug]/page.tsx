@@ -306,13 +306,21 @@ const DATA: Entry[] = [
   { slug:"calorie-kimchi", title:"김치 칼로리 | 점운 다이어트", desc:"김치 칼로리 완전 가이드 — 김치 100g 평균 칼로리와 오행 체질에 맞는 발효식품 건강 가이드.", h1:"김치 칼로리 — 오행 체질 발효식품 건강 가이드", sub:"김치 100g 칼로리와 오행 체질 발효식품 건강 가이드", emoji:"🥬" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -323,7 +331,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function DietSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "🥗", title: "오행 체질 맞춤 식단", desc: "목·화·토·금·수 오행 체질에 맞는 음식과 피해야 할 음식을 분석합니다." },

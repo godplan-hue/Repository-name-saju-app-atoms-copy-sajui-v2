@@ -316,12 +316,20 @@ const DATA: SlugData[] = [
 ];
 
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export function generateStaticParams() {
   return DATA.map((item) => ({ slug: item.slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const item = DATA.find((d) => d.slug === params.slug) ?? DATA[0];
+  const item = DATA.find((d) => d.slug === params.slug || d.slug === safeDecodeSlug(params.slug)) ?? DATA[0];
   return {
     title: item.title,
     description: item.desc,
@@ -357,7 +365,7 @@ const FAQS = [
 ];
 
 export default function MovieGuidePage({ params }: { params: { slug: string } }) {
-  const item = DATA.find((d) => d.slug === params.slug) ?? DATA[0];
+  const item = DATA.find((d) => d.slug === params.slug || d.slug === safeDecodeSlug(params.slug)) ?? DATA[0];
 
   return (
     <main

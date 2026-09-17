@@ -306,13 +306,21 @@ const DATA: Entry[] = [
   { slug:"bueob-retire-planning", title:"은퇴 대비 부업 계획 | 점운 직운", desc:"은퇴를 대비한 부업 계획을 사주로 분석합니다. 오행 기질로 은퇴 후에도 지속 가능한 수입원을 미리 준비하세요.", h1:"은퇴 대비 부업 계획 — 오행 기질로 지속 가능한 수입 설계", sub:"오행 기질에 맞는 은퇴 대비 부업과 수입 지속화 전략 가이드", emoji:"🌅" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<import("next").Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -323,7 +331,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function JigunSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "🎯", title: "오행 천직 분석", desc: "출생연도로 오행을 계산해 나에게 맞는 천직과 직업 방향을 즉시 분석합니다." },

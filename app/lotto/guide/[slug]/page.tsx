@@ -306,13 +306,21 @@ const DATA: Entry[] = [
   { slug:"lotto-thursday-lucky", title:"목요일행운번호 | 점운 행운번호", desc:"목요일행운번호 — 목(木) 오행 에너지가 강한 목요일에 맞는 행운번호를 분析합니다.", h1:"목요일행운번호 — 목 오행 에너지 목요일 행운번호", sub:"목 오행 에너지가 강한 목요일 맞춤 행운번호 분析", emoji:"🌿" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -323,7 +331,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function LottoSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "🍀", title: "오행 행운번호 뽑기", desc: "내 생년월일 오행 기질로 이번 주 행운 번호 6개를 즉시 무료로 뽑아드립니다." },

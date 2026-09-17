@@ -306,13 +306,21 @@ const DATA: Entry[] = [
   { slug:"emotion-diary-community", title:"감정일기 커뮤니티 | 점운 감정일기", desc:"감정일기 커뮤니티 — 오행 에너지로 감정을 기록하는 사람들과 함께하는 감정일기 방법.", h1:"감정일기 커뮤니티 — 오행으로 함께하는 감정 기록", sub:"오행 에너지로 감정을 기록하는 사람들과 함께하는 방법", emoji:"👥" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -323,7 +331,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function GamjungSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "📔", title: "오행 감정 기록", desc: "오늘 느낀 감정을 기록하고 사주 오행 에너지로 감정의 흐름과 패턴을 분석합니다." },

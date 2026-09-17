@@ -310,13 +310,21 @@ const DATA: Entry[] = [
   { slug:"kkum-gamsaham", title:"감사한꿈 해몽 | 점운 꿈해몽", desc:"감사함을 느끼는 꿈 해몽 — 꿈에서 감사함을 느끼는 꿈은 좋은 에너지·인연·길몽의 신호입니다.", h1:"감사한꿈 해몽 — 좋은 에너지와 길몽의 신호", sub:"감사한꿈 상황별 해몽과 좋은 에너지 운세 분석", emoji:"🙏" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -327,7 +335,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function HaemongSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "🌙", title: "100가지 꿈 카테고리", desc: "동물·자연·사람·상황별 100가지 꿈 카테고리를 즉시 무료로 해몽합니다." },

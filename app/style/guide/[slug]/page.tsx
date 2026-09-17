@@ -334,6 +334,14 @@ const FAQS = [
   { q: "사주와 연결되나요?", a: "오행 기질과 추구미가 연결돼요. 사주 분석으로 더 깊은 나만의 스타일 에너지를 확인할 수 있어요." },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((item) => ({ slug: item.slug }));
 }
@@ -344,7 +352,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const item = DATA.find((d) => d.slug === slug);
+  const item = DATA.find((d) => d.slug === slug || d.slug === safeDecodeSlug(slug));
   if (!item) {
     return {
       title: "추구미 테스트 | 점운",
@@ -377,7 +385,7 @@ export default async function StyleGuidePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const item = DATA.find((d) => d.slug === slug) ?? DATA[0];
+  const item = DATA.find((d) => d.slug === slug || d.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   return (
     <div

@@ -306,13 +306,21 @@ const DATA: Entry[] = [
   { slug:"tarot-purpose-finding", title:"목적 찾기 타로 | 점운 타로", desc:"목적 찾기 타로 — 내 삶의 목적과 방향을 오행 에너지 사주와 타로카드로 함께 분析합니다.", h1:"목적 찾기 타로 — 삶의 목적·방향 오행+타로 분析", sub:"내 삶의 목적과 방향을 오행 에너지 사주와 타로로 분析", emoji:"🧭" },
 ];
 
+function safeDecodeSlug(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 export async function generateStaticParams() {
   return DATA.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
   return {
     title: d.title,
     description: d.desc,
@@ -323,7 +331,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function TarotSeoPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = DATA.find((x) => x.slug === slug) ?? DATA[0];
+  const d = DATA.find((x) => x.slug === slug || x.slug === safeDecodeSlug(slug)) ?? DATA[0];
 
   const features = [
     { icon: "🃏", title: "오행 타로카드 뽑기", desc: "오행 에너지와 결합한 타로카드로 지금 이 순간 필요한 메시지를 즉시 받아보세요." },
