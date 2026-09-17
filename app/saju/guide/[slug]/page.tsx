@@ -368,7 +368,23 @@ export default async function SajuGuidePage({
 }) {
   const { slug } = await params;
   const entry = getEntry(slug);
-  if (!entry) notFound();
+  if (!entry) {
+    return (
+      <pre style={{ whiteSpace: "pre-wrap", padding: 20, color: "#0f0", background: "#000" }}>
+        {JSON.stringify(
+          {
+            receivedSlug: slug,
+            length: slug.length,
+            codePoints: [...slug].map((c) => c.codePointAt(0)!.toString(16)),
+            dataSampleSlug: DATA[0].slug,
+            dataSampleCodePoints: [...DATA[0].slug].map((c) => c.codePointAt(0)!.toString(16)),
+          },
+          null,
+          2
+        )}
+      </pre>
+    );
+  }
 
   return (
     <>
