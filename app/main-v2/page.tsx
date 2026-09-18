@@ -885,10 +885,9 @@ export default function MainV2() {
         <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.2px", margin: "0 0 12px", color: "#b76e79", textShadow: "1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 0 0 1.5px #fff", animation: "sparklePulse 1.8s ease-in-out infinite" }}>당신의 운명을 AI가 풀어드립니다</p>
         {!isPartner && (
           <div style={{ marginBottom: 16 }}>
-            <a href="/bokmun" style={{ display: "inline-block", fontSize: 15, fontWeight: 900, color: "#fef3c7", background: "linear-gradient(135deg,#dc2626,#991b1b)", padding: "14px 28px", borderRadius: 30, boxShadow: "0 6px 20px rgba(220,38,38,0.45)", textDecoration: "none", wordBreak: "keep-all" }}>
-              🧧 운수대통 부적 무료로 받기
+            <a href="/bokmun" style={{ display: "inline-block", fontSize: 12.5, fontWeight: 900, color: "#fef3c7", background: "linear-gradient(135deg,#dc2626,#991b1b)", padding: "9px 18px", borderRadius: 24, boxShadow: "0 4px 14px rgba(220,38,38,0.4)", textDecoration: "none", wordBreak: "keep-all" }}>
+              🧧 운수대통 부적 무료로 받기 <span style={{ fontSize: 10, fontWeight: 700 }}>— 내 띠 전용</span>
             </a>
-            <p style={{ margin: "6px 0 0", fontSize: 12, fontWeight: 700, color: "#991b1b" }}>— 내 띠 전용</p>
           </div>
         )}
         <div style={{ display: "flex", justifyContent: "center", gap: 4, flexWrap: "nowrap" }}>
