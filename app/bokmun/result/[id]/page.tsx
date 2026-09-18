@@ -233,8 +233,29 @@ export default function BokmunResultPage() {
       </div>
 
       <div style={S.section}>
+        {/* 점운 메인 안내 — 부적 받은 직후, 마음 열렸을 때 노출 */}
+        <div style={{ ...S.card, textAlign: "center" as const, marginTop: 20, background: "rgba(255,255,255,0.04)" }}>
+          <p style={{ fontWeight: 900, color: "#fbbf24", margin: "0 0 6px", fontSize: 15 }}>🔮 점운에서 더 볼 수 있어요</p>
+          <p style={{ color: "#c9a876", fontSize: 12.5, margin: "0 0 16px", lineHeight: 1.6 }}>
+            오늘의 운세 · MBTI · 궁합 · 꿈해몽 외 20가지
+          </p>
+          <Link href="/main-v2" style={{
+            display: "block", background: "rgba(251,191,36,0.1)", border: "1.5px solid rgba(251,191,36,0.4)",
+            color: "#fbbf24", textDecoration: "none", borderRadius: 14, padding: "13px", fontSize: 14, fontWeight: 800, marginBottom: 8,
+          }}>
+            점운 메인 보러가기 →
+          </Link>
+          <Link href="/main-v2/payment" style={{
+            display: "block", background: "linear-gradient(135deg,#dc2626,#991b1b)",
+            color: "#fef3c7", textDecoration: "none", borderRadius: 14, padding: "13px", fontSize: 14, fontWeight: 900,
+            boxShadow: "0 4px 14px rgba(220,38,38,0.35)",
+          }}>
+            내 사주 990원에 보기 →
+          </Link>
+        </div>
+
         {/* 캡처 안내 + 저장 버튼 */}
-        <div style={{ ...S.card, textAlign: "center" as const, borderColor: `${data.color}44`, background: `${data.color}11`, marginTop: 20 }}>
+        <div style={{ ...S.card, textAlign: "center" as const, borderColor: `${data.color}44`, background: `${data.color}11` }}>
           <p style={{ fontWeight: 700, color: data.color, margin: "0 0 6px", fontSize: 14 }}>📸 이 부적을 캡처해서 간직하세요</p>
           <p style={{ color: "#c9a876", fontSize: 12, margin: "0 0 16px" }}>폰 배경화면이나 잠금화면으로 저장해두면 좋아요</p>
           <button onClick={saveImage} disabled={saving} style={{
