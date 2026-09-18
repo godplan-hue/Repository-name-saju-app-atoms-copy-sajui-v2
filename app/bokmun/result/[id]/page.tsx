@@ -78,12 +78,17 @@ export default function BokmunResultPage() {
       const isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
       await document.fonts.ready;
       freeze();
+      const PAD = 40;
       const canvas = await html2canvas(el, {
         backgroundColor: null,
         scale: 2,
         useCORS: true,
         allowTaint: true,
         logging: false,
+        x: -PAD,
+        y: -PAD,
+        width: el.offsetWidth + PAD * 2,
+        height: el.offsetHeight + PAD * 2,
       });
       unfreeze();
       if (isIOSDevice) {
