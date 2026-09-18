@@ -51,6 +51,7 @@ export default function BokmunResultPage() {
     const sparkle = el.querySelector<HTMLElement>(".bokmun-sparkle");
     const prevElAnim = el.style.animation;
     const prevElShadow = el.style.boxShadow;
+    const prevElOverflow = el.style.overflow;
     const prevSparkleAnim = sparkle?.style.animation || "";
     const prevSparkleOpacity = sparkle?.style.opacity || "";
     const hexToRgba = (hex: string, alpha: number) => {
@@ -63,11 +64,13 @@ export default function BokmunResultPage() {
     const freeze = () => {
       el.style.animation = "none";
       el.style.boxShadow = `0 0 28px ${hexToRgba(data.color, 0.4)}`;
+      el.style.overflow = "visible";
       if (sparkle) { sparkle.style.animation = "none"; sparkle.style.opacity = "1"; }
     };
     const unfreeze = () => {
       el.style.animation = prevElAnim;
       el.style.boxShadow = prevElShadow;
+      el.style.overflow = prevElOverflow;
       if (sparkle) { sparkle.style.animation = prevSparkleAnim; sparkle.style.opacity = prevSparkleOpacity; }
     };
     try {
