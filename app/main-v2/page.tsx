@@ -886,17 +886,17 @@ export default function MainV2() {
         {!isPartner && (
           <div style={{ marginBottom: 16 }}>
             <a href="/bokmun" style={{ display: "inline-block", fontSize: 15, fontWeight: 900, color: "#fef3c7", background: "linear-gradient(135deg,#dc2626,#991b1b)", padding: "14px 28px", borderRadius: 30, boxShadow: "0 6px 20px rgba(220,38,38,0.45)", textDecoration: "none", wordBreak: "keep-all" }}>
-              🧧 운수대통 부적 무료로 받기 — 내 띠 전용
+              🧧 운수대통 부적 무료로 받기<br />— 내 띠 전용
             </a>
           </div>
         )}
-        <div style={{ display: "flex", justifyContent: "center", gap: 6, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: 4, flexWrap: "nowrap" }}>
           {[
             { text: "⚡ AI 정밀분석", bg: "linear-gradient(135deg, #6d28d9, #8b5cf6)" },
             { text: "🔒 개인정보 즉시삭제", bg: "linear-gradient(135deg, #15803d, #16a34a)" },
             { text: "⏱ 3초 완성", bg: "linear-gradient(135deg, #b45309, #d97706)" },
           ].map(b => (
-            <span key={b.text} style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: b.bg, borderRadius: 20, padding: "6px 12px", boxShadow: "0 3px 8px rgba(0,0,0,0.15)" }}>{b.text}</span>
+            <span key={b.text} style={{ fontSize: 9.5, fontWeight: 700, color: "#fff", background: b.bg, borderRadius: 20, padding: "5px 7px", boxShadow: "0 3px 8px rgba(0,0,0,0.15)", whiteSpace: "nowrap" }}>{b.text}</span>
           ))}
         </div>
         <button onClick={goFree} style={{ marginTop: 16, padding: "12px 30px", background: G, color: "#fff", border: "none", borderRadius: 30, fontWeight: 900, fontSize: 15, cursor: "pointer", boxShadow: "0 6px 20px rgba(236,72,153,0.45)", animation: "bigGlow 2.4s ease-in-out infinite", wordBreak: "keep-all" }}>

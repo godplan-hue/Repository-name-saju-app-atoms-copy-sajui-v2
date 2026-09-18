@@ -96,8 +96,9 @@ export default function BokmunPage() {
 
         <div style={{ textAlign: "center" as const, marginBottom: 16 }}>
           <div style={{ fontSize: 40, marginBottom: 4, animation: "float 3s ease-in-out infinite" }}>🧧</div>
+          <p style={{ fontSize: 13, fontWeight: 800, color: "#b45309", margin: "0 0 4px" }}>내 띠 전용</p>
           <h1 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 4px", lineHeight: 1.3, color: "#78350f" }}>
-            내 띠 전용 <span style={{ color: "#b91c1c" }}>복문(福文) 부적</span>
+            운수대통 <span style={{ color: "#b91c1c" }}>복문(福文) 부적</span>
           </h1>
           <p style={{ color: "#8a5a26", fontSize: 12.5, lineHeight: 1.6, margin: 0 }}>
             생년월일만 입력하면 12띠 맞춤 부적 완성 · 완전 무료
