@@ -40,18 +40,33 @@ export default function BokmunResultPage() {
   }, [id]);
 
   const saveImage = async () => {
-    if (saving || !cardRef.current) return;
+    if (saving || !cardRef.current || !data) return;
     const isKakaoTalk = /KAKAOTALK/i.test(navigator.userAgent);
     if (isKakaoTalk) {
       alert("카카오톡에서는 이미지 저장이 안 돼요.\n우측 상단 [···] 메뉴에서 '다른 브라우저로 열기'를 선택한 뒤 다시 저장해주세요.");
       return;
     }
     setSaving(true);
+    const el = cardRef.current;
+    const sparkle = el.querySelector<HTMLElement>(".bokmun-sparkle");
+    const prevElAnim = el.style.animation;
+    const prevElShadow = el.style.boxShadow;
+    const prevSparkleAnim = sparkle?.style.animation || "";
+    const freeze = () => {
+      el.style.animation = "none";
+      el.style.boxShadow = `0 0 28px ${data.color}66`;
+      if (sparkle) sparkle.style.animation = "none";
+    };
+    const unfreeze = () => {
+      el.style.animation = prevElAnim;
+      el.style.boxShadow = prevElShadow;
+      if (sparkle) sparkle.style.animation = prevSparkleAnim;
+    };
     try {
       const html2canvas = (await import("html2canvas")).default;
-      const el = cardRef.current;
       const isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
       await document.fonts.ready;
+      freeze();
       const canvas = await html2canvas(el, {
         backgroundColor: null,
         scale: 2,
@@ -59,6 +74,7 @@ export default function BokmunResultPage() {
         allowTaint: true,
         logging: false,
       });
+      unfreeze();
       if (isIOSDevice) {
         const w = window.open(canvas.toDataURL("image/png"), "_blank");
         if (w) {
@@ -82,6 +98,7 @@ export default function BokmunResultPage() {
         setSaving(false);
       }, "image/png");
     } catch (e) {
+      unfreeze();
       console.error(e);
       alert("이미지 저장에 실패했습니다. 화면을 직접 캡처해주세요.");
       setSaving(false);
@@ -228,36 +245,18 @@ export default function BokmunResultPage() {
                 점운 · jeomun.com
               </p>
             </div>
+
+            {/* 주의사항 — 작은 글씨로 부적 바로 아래 */}
+            <p style={{ fontSize: 11.5, color: "rgba(245,241,232,0.55)", lineHeight: 1.6, margin: "12px 4px 0", textAlign: "left" as const }}>
+              ⚠️ {data.caution}
+            </p>
           </div>
         </div>
       </div>
 
       <div style={S.section}>
-        {/* 점운 메인 안내 — 부적 받은 직후, 마음 열렸을 때 노출 */}
-        <div style={{ ...S.card, textAlign: "center" as const, marginTop: 20, background: "rgba(255,255,255,0.04)" }}>
-          <p style={{ fontWeight: 900, color: "#fbbf24", margin: "0 0 6px", fontSize: 15 }}>🔮 점운에서 더 볼 수 있어요</p>
-          <p style={{ color: "#c9a876", fontSize: 12.5, margin: "0 0 16px", lineHeight: 1.6 }}>
-            오늘의 운세 · MBTI · 궁합 · 꿈해몽 외 20가지
-          </p>
-          <Link href="/main-v2" style={{
-            display: "block", background: "rgba(251,191,36,0.1)", border: "1.5px solid rgba(251,191,36,0.4)",
-            color: "#fbbf24", textDecoration: "none", borderRadius: 14, padding: "13px", fontSize: 14, fontWeight: 800, marginBottom: 8,
-          }}>
-            점운 메인 보러가기 →
-          </Link>
-          <Link href="/main-v2/payment" style={{
-            display: "block", background: "linear-gradient(135deg,#dc2626,#991b1b)",
-            color: "#fef3c7", textDecoration: "none", borderRadius: 14, padding: "13px", fontSize: 14, fontWeight: 900,
-            boxShadow: "0 4px 14px rgba(220,38,38,0.35)",
-          }}>
-            내 사주 990원에 보기 →
-          </Link>
-        </div>
-
-        {/* 캡처 안내 + 저장 버튼 */}
-        <div style={{ ...S.card, textAlign: "center" as const, borderColor: `${data.color}44`, background: `${data.color}11` }}>
-          <p style={{ fontWeight: 700, color: data.color, margin: "0 0 6px", fontSize: 14 }}>📸 이 부적을 캡처해서 간직하세요</p>
-          <p style={{ color: "#c9a876", fontSize: 12, margin: "0 0 16px" }}>폰 배경화면이나 잠금화면으로 저장해두면 좋아요</p>
+        {/* 1. 저장 버튼 */}
+        <div style={{ ...S.card, textAlign: "center" as const, marginTop: 20, borderColor: `${data.color}44`, background: `${data.color}11` }}>
           <button onClick={saveImage} disabled={saving} style={{
             width: "100%", background: saving ? "rgba(255,255,255,0.1)" : "linear-gradient(135deg,#fbbf24,#d97706)",
             color: "#1a0a05", border: "none", borderRadius: 16, padding: "14px", fontSize: 15, fontWeight: 900,
@@ -267,28 +266,17 @@ export default function BokmunResultPage() {
           </button>
         </div>
 
-        {/* 주의사항 카드 */}
-        <div style={{ ...S.card }}>
-          <p style={{ fontWeight: 700, color: "#fbbf24", margin: "0 0 8px", fontSize: 13 }}>⚠️ 기운을 지키는 법</p>
-          <p style={{ color: "#e5d5c0", fontSize: 13, lineHeight: 1.7, margin: 0 }}>{data.caution}</p>
-        </div>
-
-        {/* 공유 */}
+        {/* 2. 공유 */}
         <button onClick={handleShare} style={{
           width: "100%", background: "rgba(251,191,36,0.12)", border: "1.5px solid rgba(251,191,36,0.4)",
           color: "#fbbf24", borderRadius: 16, padding: "15px", fontSize: 15, fontWeight: 700, cursor: "pointer",
           marginBottom: 16,
         }}>
-          {shared ? "✅ 복사됐어요!" : "📤 부적 공유하기"}
+          {shared ? "✅ 복사됐어요!" : "📤 친구에게 공유하기"}
         </button>
 
-        {/* 나도 받기 */}
-        <Link href="/bokmun" style={{ display: "block", textAlign: "center" as const, background: "rgba(251,191,36,0.08)", border: "1.5px solid rgba(251,191,36,0.35)", borderRadius: 16, padding: "14px", color: "#fbbf24", textDecoration: "none", fontSize: 14, fontWeight: 900, marginBottom: 12 }}>
-          나도 내 띠 부적 받기 (무료) →
-        </Link>
-
-        {/* 사주 CTA — 안 하면 손해 프레이밍 */}
-        <div style={{ background: "linear-gradient(135deg,rgba(220,38,38,0.18),rgba(139,92,246,0.12))", border: "1px solid rgba(220,38,38,0.35)", borderRadius: 20, padding: "22px 18px", textAlign: "center" as const, marginBottom: 40 }}>
+        {/* 3. 사주 CTA — 판매는 하나만 */}
+        <div style={{ background: "linear-gradient(135deg,rgba(220,38,38,0.18),rgba(139,92,246,0.12))", border: "1px solid rgba(220,38,38,0.35)", borderRadius: 20, padding: "22px 18px", textAlign: "center" as const, marginBottom: 20 }}>
           <p style={{ fontWeight: 900, fontSize: 15, color: "#fde68a", margin: "0 0 6px" }}>
             🔮 부적은 기운을 담을 뿐, 열쇠는 사주에 있습니다
           </p>
@@ -306,6 +294,13 @@ export default function BokmunResultPage() {
           </Link>
           <p style={{ fontSize: 11, color: "rgba(251,191,36,0.6)", margin: "8px 0 0" }}>990원 · 단 1회 결제 · 반복청구 없음</p>
         </div>
+
+        {/* 4. 점운 앱 전체보기 — 맨 아래, 작게 */}
+        <p style={{ textAlign: "center" as const, marginBottom: 40 }}>
+          <Link href="/apps" style={{ fontSize: 12.5, color: "rgba(251,191,36,0.6)", textDecoration: "none" }}>
+            점운 앱 20개 보기 →
+          </Link>
+        </p>
       </div>
     </div>
   );

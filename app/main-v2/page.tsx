@@ -886,7 +886,7 @@ export default function MainV2() {
         {!isPartner && (
           <div style={{ marginBottom: 16 }}>
             <a href="/bokmun" style={{ display: "inline-block", fontSize: 15, fontWeight: 900, color: "#fef3c7", background: "linear-gradient(135deg,#dc2626,#991b1b)", padding: "14px 28px", borderRadius: 30, boxShadow: "0 6px 20px rgba(220,38,38,0.45)", textDecoration: "none", wordBreak: "keep-all" }}>
-              🧧 운수대통 부적 받기 — 내 띠 전용
+              🧧 운수대통 부적 무료로 받기 — 내 띠 전용
             </a>
           </div>
         )}

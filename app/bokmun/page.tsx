@@ -123,6 +123,7 @@ export default function BokmunPage() {
               <label style={S.label}>출생연도 <span style={{ color: "#dc2626" }}>*필수</span></label>
               <input style={S.input} placeholder="1990" maxLength={4} inputMode="numeric"
                 value={birthYear} onChange={e => setBirthYear(e.target.value.replace(/\D/g,"").slice(0,4))} />
+              <p style={{ margin: "4px 0 0", fontSize: 11, color: "#92400e" }}>* 양력 기준으로 적어주세요</p>
             </div>
             <div style={{ flex: 1 }}>
               <label style={S.label}>월 (선택)</label>
@@ -163,9 +164,10 @@ export default function BokmunPage() {
         {error && <p style={{ color: "#b91c1c", fontWeight: 700, fontSize: 13, textAlign: "center" as const, marginBottom: 12 }}>{error}</p>}
 
         <button onClick={analyze} style={S.btn}>
-          내 띠 부적 받기 🧧 →
+          내 띠 부적 무료로 받기 🧧 →
         </button>
         <p style={{ fontSize: 12, color: "#451a03", fontWeight: 700, textAlign: "center" as const, marginTop: 10 }}>완전 무료 · 12띠 사주 기반</p>
+        <p style={{ fontSize: 12, color: "#451a03", fontWeight: 700, textAlign: "center" as const, marginTop: 2 }}>결제 없음 · 생년월일만 입력</p>
         <p style={{ color: "#2d1608", fontSize: 14, fontWeight: 600, marginTop: 8, textAlign: "center" as const }}>오늘 <strong style={{ color: "#b91c1c", fontWeight: 900 }}>{count}</strong>명이 부적을 받았어요</p>
         <p style={{ textAlign: "center" as const, fontSize: 11, color: "#5c3a1e", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
           🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
