@@ -15,9 +15,7 @@ function getTodayCount() {
 
 export default function BokmunPage() {
   const count = getTodayCount();
-  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
   const [hpField, setHpField] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [marketingAgreed, setMarketingAgreed] = useState(false);
@@ -32,9 +30,7 @@ export default function BokmunPage() {
       const p = JSON.parse(localStorage.getItem("v2_saved_profile") || "{}");
       const verifiedPhone = localStorage.getItem("v2_verified_phone");
       const phoneOk = !!verifiedPhone && (p.phone || "").replace(/[^0-9]/g, "") === verifiedPhone;
-      if (phoneOk && p.name) setName(p.name);
       if (phoneOk && p.phone) setPhone(p.phone);
-      if (phoneOk && p.email) setEmail(p.email);
     } catch {}
   }, []);
 
@@ -50,7 +46,7 @@ export default function BokmunPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name, phone: cleanPhone, email,
+          phone: cleanPhone,
           birthYear: Number(birthYear),
           birthMonth: birthMonth ? Number(birthMonth) : undefined,
           birthDay: birthDay ? Number(birthDay) : undefined,
@@ -72,10 +68,10 @@ export default function BokmunPage() {
   };
 
   const S = {
-    wrap: { minHeight: "100vh", background: "#1a0a05", color: "#F5F1E8", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" },
-    input: { width: "100%", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "13px 14px", color: "white", fontSize: 15, outline: "none", boxSizing: "border-box" as const },
-    label: { fontSize: 12, color: "#d1a76a", marginBottom: 6, display: "block" as const },
-    btn: { width: "100%", background: "linear-gradient(135deg,#dc2626,#991b1b)", color: "#fef3c7", border: "1px solid #fbbf24", borderRadius: 22, padding: "17px", fontSize: 17, fontWeight: 900, cursor: "pointer" },
+    wrap: { minHeight: "100vh", background: "linear-gradient(180deg,#fdf1d6 0%,#f3dca0 55%,#ecd189 100%)", color: "#451a03", fontFamily: "'Apple SD Gothic Neo','Malgun Gothic',sans-serif" },
+    input: { width: "100%", background: "#fffdf5", border: "1.5px solid rgba(146,64,14,0.22)", borderRadius: 12, padding: "13px 14px", color: "#451a03", fontSize: 15, outline: "none", boxSizing: "border-box" as const },
+    label: { fontSize: 12, color: "#92400e", marginBottom: 6, display: "block" as const, fontWeight: 700 },
+    btn: { width: "100%", background: "linear-gradient(135deg,#dc2626,#991b1b)", color: "#fef3c7", border: "1.5px solid #b45309", borderRadius: 22, padding: "17px", fontSize: 17, fontWeight: 900, cursor: "pointer" },
   };
 
   if (loading) {
@@ -83,71 +79,48 @@ export default function BokmunPage() {
       <div style={{ ...S.wrap, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center" }}>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         <div style={{ fontSize: 52, animation: "spin 1s linear infinite", marginBottom: 20 }}>🧧</div>
-        <p style={{ color: "#fbbf24", fontSize: 16, fontWeight: 700 }}>내 띠 부적 준비 중...</p>
+        <p style={{ color: "#b45309", fontSize: 16, fontWeight: 800 }}>내 띠 부적 준비 중...</p>
       </div>
     );
   }
 
   return (
     <div style={S.wrap}>
-      <style>{`@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} } @keyframes glow { 0%,100%{box-shadow:0 0 20px #fbbf2444;} 50%{box-shadow:0 0 40px #fbbf2488;} }`}</style>
+      <style>{`@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }`}</style>
 
-      <div style={{ background: "linear-gradient(180deg,#2d0f08 0%,#1a0a05 100%)" }}>
-        <div style={{ maxWidth: 440, margin: "0 auto", padding: "40px 24px 0", textAlign: "center" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-            <Link href="/main-v2" style={{ color: "#fbbf24", fontSize: 13, textDecoration: "none" }}>← 점운 홈</Link>
-            <button onClick={() => { const d = { title: "점운 복문 — 내 띠 전용 부적", text: "내 생년월일로 내 띠 부적을 무료로 받아보세요! 🧧", url: "https://jeomun.com/bokmun" }; const _k=(window as any).Kakao; if(_k?.isInitialized()&&_k?.Share){_k.Share.sendDefault({objectType:"feed",content:{title:d.title,description:d.text,imageUrl:"https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg",link:{mobileWebUrl:d.url,webUrl:d.url}},buttons:[{title:"바로 보기",link:{mobileWebUrl:d.url,webUrl:d.url}},{title:"나도 해보기 →",link:{mobileWebUrl:d.url,webUrl:d.url}}]});}else{window.location.href=`kakaotalk://msg/send?text=${encodeURIComponent(d.text+'\n'+d.url)}`;}; }} style={{ fontSize: 12, color: "#fbbf24", fontWeight: 700, background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.4)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
-          </div>
-
-          <div style={{ fontSize: 56, marginBottom: 12, animation: "float 3s ease-in-out infinite" }}>🧧</div>
-          <h1 style={{ fontSize: 27, fontWeight: 900, margin: "0 0 8px", lineHeight: 1.3 }}>
-            내 띠 전용<br />
-            <span style={{ background: "linear-gradient(135deg,#fbbf24,#dc2626)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              복문(福文) 부적
-            </span>
-          </h1>
-          <p style={{ color: "#f5d9a8", fontSize: 14, lineHeight: 1.7, margin: "0 0 20px" }}>
-            생년월일 → 12띠 판별 → 나만의 부적<br />
-            캡처해서 폰에 간직하세요
-          </p>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 6, marginBottom: 28, padding: "0 8px" }}>
-            {ZODIAC_PREVIEW.map((e, i) => (
-              <div key={i} style={{ position: "relative", width: "100%", paddingBottom: "100%" }}>
-                <div style={{ position: "absolute", inset: 0, borderRadius: 12, background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>
-                  {e}
-                </div>
-              </div>
-            ))}
-          </div>
+      <div style={{ maxWidth: 440, margin: "0 auto", padding: "20px 20px 60px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+          <Link href="/main-v2" style={{ color: "#92400e", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>← 점운 홈</Link>
+          <button onClick={() => { const d = { title: "점운 복문 — 내 띠 전용 부적", text: "내 생년월일로 내 띠 부적을 무료로 받아보세요! 🧧", url: "https://jeomun.com/bokmun" }; const _k=(window as any).Kakao; if(_k?.isInitialized()&&_k?.Share){_k.Share.sendDefault({objectType:"feed",content:{title:d.title,description:d.text,imageUrl:"https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg",link:{mobileWebUrl:d.url,webUrl:d.url}},buttons:[{title:"바로 보기",link:{mobileWebUrl:d.url,webUrl:d.url}},{title:"나도 해보기 →",link:{mobileWebUrl:d.url,webUrl:d.url}}]});}else{window.location.href=`kakaotalk://msg/send?text=${encodeURIComponent(d.text+'\n'+d.url)}`;}; }} style={{ fontSize: 12, color: "#92400e", fontWeight: 700, background: "rgba(180,83,9,0.1)", border: "1px solid rgba(180,83,9,0.3)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
         </div>
-      </div>
 
-      <div style={{ maxWidth: 440, margin: "0 auto", padding: "24px 20px 80px" }}>
-        <div style={{ background: "rgba(251,191,36,0.06)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 20, padding: "20px 18px", marginBottom: 20 }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#fbbf24", margin: "0 0 16px" }}>🎯 정보 입력</p>
+        <div style={{ textAlign: "center" as const, marginBottom: 16 }}>
+          <div style={{ fontSize: 40, marginBottom: 4, animation: "float 3s ease-in-out infinite" }}>🧧</div>
+          <h1 style={{ fontSize: 22, fontWeight: 900, margin: "0 0 4px", lineHeight: 1.3, color: "#78350f" }}>
+            내 띠 전용 <span style={{ color: "#b91c1c" }}>복문(福文) 부적</span>
+          </h1>
+          <p style={{ color: "#8a5a26", fontSize: 12.5, lineHeight: 1.6, margin: 0 }}>
+            생년월일만 입력하면 12띠 맞춤 부적 완성 · 완전 무료
+          </p>
+        </div>
 
-          <div style={{ marginBottom: 10 }}>
-            <label style={S.label}>이름 또는 별명 (선택)</label>
-            <input style={S.input} placeholder="예) 에스더" value={name} onChange={e => setName(e.target.value)} />
-          </div>
-          <div style={{ marginBottom: 10 }}>
-            <label style={S.label}>전화번호 (필수)</label>
-            <input style={{ ...S.input, border: `1px solid ${error && !phone ? "rgba(248,113,113,0.6)" : "rgba(255,255,255,0.12)"}` }} placeholder="010-0000-0000" inputMode="tel" value={phone} onChange={e => { setPhone(e.target.value); setError(""); }} />
+        {/* 정보 입력 폼 — 첫 화면 최상단에 위치 */}
+        <div style={{ background: "#fffaf0", border: "1.5px solid rgba(146,64,14,0.22)", borderRadius: 20, padding: "20px 18px", marginBottom: 16, boxShadow: "0 4px 20px rgba(146,64,14,0.08)" }}>
+          <p style={{ fontSize: 13, fontWeight: 800, color: "#92400e", margin: "0 0 14px" }}>🎯 정보 입력</p>
+
+          <div style={{ marginBottom: 12, position: "relative" as const }}>
+            <label style={S.label}>전화번호 <span style={{ color: "#dc2626" }}>*필수</span></label>
+            <input style={{ ...S.input, border: `1.5px solid ${error && !phone ? "rgba(220,38,38,0.6)" : "rgba(146,64,14,0.22)"}` }} placeholder="010-0000-0000" inputMode="tel" value={phone} onChange={e => { setPhone(e.target.value); setError(""); }} />
             <input
               type="text" name="website" value={hpField} onChange={e => setHpField(e.target.value)}
               autoComplete="off" tabIndex={-1} aria-hidden="true"
               style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
             />
           </div>
-          <div style={{ marginBottom: 14 }}>
-            <label style={S.label}>이메일 (선택)</label>
-            <input style={S.input} placeholder="example@email.com" inputMode="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
-          </div>
 
           <div style={{ display: "flex", gap: 8 }}>
             <div style={{ flex: 1.3 }}>
-              <label style={S.label}>출생연도 *</label>
+              <label style={S.label}>출생연도 <span style={{ color: "#dc2626" }}>*필수</span></label>
               <input style={S.input} placeholder="1990" maxLength={4} inputMode="numeric"
                 value={birthYear} onChange={e => setBirthYear(e.target.value.replace(/\D/g,"").slice(0,4))} />
             </div>
@@ -162,38 +135,52 @@ export default function BokmunPage() {
                 value={birthDay} onChange={e => setBirthDay(e.target.value.replace(/\D/g,"").slice(0,2))} />
             </div>
           </div>
-          <div style={{ marginTop: 14 }}>
-            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer" }}>
-              <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
-                style={{ marginTop: 3, accentColor: "#dc2626", width: 16, height: 16, flexShrink: 0 }} />
-              <span style={{ fontSize: 11, color: "#c9a876", lineHeight: 1.6 }}>
-                <strong style={{ color: "#f5f1e8" }}>[필수] 개인정보 수집·이용 동의</strong><br />
-                점운(jeomun.com)이 전화번호·이메일을 서비스 제공에 활용하며, 3년간 보유 후 파기합니다.
-              </span>
-            </label>
-            <label style={{ display: "flex", alignItems: "flex-start", gap: 8, cursor: "pointer", marginTop: 8 }}>
-              <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)}
-                style={{ marginTop: 3, accentColor: "#dc2626", width: 16, height: 16, flexShrink: 0 }} />
-              <span style={{ fontSize: 11, color: "#c9a876", lineHeight: 1.6 }}>
-                <strong style={{ color: "#f5f1e8" }}>[선택] 마케팅 수신 동의</strong><br />
-                이벤트·할인·운세 소식을 문자·카카오로 받습니다. 언제든지 수신거부 가능합니다.
-              </span>
-            </label>
+
+          <div style={{ marginTop: 14, display: "flex", flexDirection: "column" as const, gap: 8 }}>
+            <div style={{ padding: "10px 12px", borderRadius: 12, border: "1.5px solid rgba(220,38,38,0.35)", background: "rgba(220,38,38,0.06)" }}>
+              <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
+                <input type="checkbox" checked={agreed} onChange={e => { setAgreed(e.target.checked); setError(""); }}
+                  style={{ marginTop: 2, accentColor: "#dc2626", width: 22, height: 22, flexShrink: 0 }} />
+                <span style={{ fontSize: 13, color: "#451a03", lineHeight: 1.6, fontWeight: 600 }}>
+                  <strong style={{ color: "#b91c1c", fontSize: 13 }}>[필수] 개인정보 수집·이용 동의</strong><br />
+                  점운(jeomun.com)이 전화번호를 서비스 제공에 활용하며, 3년간 보유 후 파기합니다.
+                </span>
+              </label>
+            </div>
+            <div style={{ padding: "10px 12px", borderRadius: 12, border: "1px solid rgba(146,64,14,0.18)", background: "rgba(146,64,14,0.04)" }}>
+              <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
+                <input type="checkbox" checked={marketingAgreed} onChange={e => setMarketingAgreed(e.target.checked)}
+                  style={{ marginTop: 2, accentColor: "#dc2626", width: 20, height: 20, flexShrink: 0 }} />
+                <span style={{ fontSize: 12.5, color: "#6b4423", lineHeight: 1.6, fontWeight: 500 }}>
+                  <strong style={{ color: "#78350f" }}>[선택] 마케팅 수신 동의</strong><br />
+                  이벤트·할인·운세 소식을 문자·카카오로 받습니다. 언제든지 수신거부 가능합니다.
+                </span>
+              </label>
+            </div>
           </div>
         </div>
 
-        {error && <p style={{ color: "#f87171", fontSize: 13, textAlign: "center", marginBottom: 12 }}>{error}</p>}
+        {error && <p style={{ color: "#b91c1c", fontWeight: 700, fontSize: 13, textAlign: "center" as const, marginBottom: 12 }}>{error}</p>}
 
         <button onClick={analyze} style={S.btn}>
           내 띠 부적 받기 🧧 →
         </button>
-        <p style={{ fontSize: 11, color: "#8a7355", textAlign: "center", marginTop: 10 }}>완전 무료 · 12띠 사주 기반</p>
-        <p style={{ color: '#c9a876', fontSize: 13, marginTop: 8, textAlign: 'center' }}>오늘 <strong style={{ color: '#fbbf24' }}>{count}</strong>명이 부적을 받았어요</p>
-        <p style={{ textAlign: "center", fontSize: 11, color: "rgba(251,191,36,0.55)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
+        <p style={{ fontSize: 11, color: "#92400e", textAlign: "center" as const, marginTop: 10 }}>완전 무료 · 12띠 사주 기반</p>
+        <p style={{ color: "#78350f", fontSize: 13, marginTop: 8, textAlign: "center" as const }}>오늘 <strong style={{ color: "#b45309" }}>{count}</strong>명이 부적을 받았어요</p>
+        <p style={{ textAlign: "center" as const, fontSize: 11, color: "rgba(146,64,14,0.65)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
           🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
         </p>
 
-        <div style={{ marginTop: 28 }}>
+        {/* 12띠 미리보기 — 장식용, CTA 아래로 이동 + 축소 */}
+        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" as const, gap: 6, margin: "22px 0" }}>
+          {ZODIAC_PREVIEW.map((e, i) => (
+            <div key={i} style={{ width: 30, height: 30, borderRadius: 8, background: "rgba(180,83,9,0.08)", border: "1px solid rgba(180,83,9,0.22)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>
+              {e}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: 8 }}>
           {[
             { icon: "🐯", t: "12띠 전용 부적", s: "월별이 아닌 내 띠에 딱 맞는\n고유한 부적을 받아보세요" },
             { icon: "📸", t: "캡처해서 간직", s: "부적 이미지를 저장해서\n폰 배경화면이나 잠금화면으로 써보세요" },
@@ -202,15 +189,15 @@ export default function BokmunPage() {
             <div key={f.t} style={{ display: "flex", gap: 12, marginBottom: 16, alignItems: "flex-start" }}>
               <span style={{ fontSize: 24, flexShrink: 0 }}>{f.icon}</span>
               <div>
-                <p style={{ fontWeight: 700, margin: "0 0 2px", fontSize: 14, color: "#f5d9a8" }}>{f.t}</p>
-                <p style={{ color: "#c9a876", fontSize: 12, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" }}>{f.s}</p>
+                <p style={{ fontWeight: 700, margin: "0 0 2px", fontSize: 14, color: "#78350f" }}>{f.t}</p>
+                <p style={{ color: "#8a5a26", fontSize: 12, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" as const }}>{f.s}</p>
               </div>
             </div>
           ))}
         </div>
 
       {/* 회사정보 */}
-      <footer style={{ padding: "32px 20px 24px", textAlign: "center" }}>
+      <footer style={{ padding: "32px 0 0", textAlign: "center" as const }}>
         <div style={{ maxWidth: 380, margin: "0 auto", padding: "20px 18px", borderRadius: 20, background: "#120500", border: "1px solid rgba(255,255,255,0.15)" }}>
           <p style={{ color: "#fbbf24", fontSize: 11, fontWeight: 700, margin: "0 0 10px" }}>© 2026 점운 · Powered by 점운</p>
           <div style={{ color: "#94a3b8", fontSize: 10.5, lineHeight: 1.9, marginBottom: 14 }}>
