@@ -50,8 +50,6 @@ export default function BokmunResultPage() {
     const el = cardRef.current;
     const sparkle = el.querySelector<HTMLElement>(".bokmun-sparkle");
     const prevElAnim = el.style.animation;
-    const prevElShadow = el.style.boxShadow;
-    const prevElOverflow = el.style.overflow;
     const prevSparkleAnim = sparkle?.style.animation || "";
     const prevSparkleOpacity = sparkle?.style.opacity || "";
     const hexToRgba = (hex: string, alpha: number) => {
@@ -63,14 +61,10 @@ export default function BokmunResultPage() {
     };
     const freeze = () => {
       el.style.animation = "none";
-      el.style.boxShadow = `0 0 28px ${hexToRgba(data.color, 0.4)}`;
-      el.style.overflow = "visible";
       if (sparkle) { sparkle.style.animation = "none"; sparkle.style.opacity = "1"; }
     };
     const unfreeze = () => {
       el.style.animation = prevElAnim;
-      el.style.boxShadow = prevElShadow;
-      el.style.overflow = prevElOverflow;
       if (sparkle) { sparkle.style.animation = prevSparkleAnim; sparkle.style.opacity = prevSparkleOpacity; }
     };
     try {
@@ -78,19 +72,41 @@ export default function BokmunResultPage() {
       const isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
       await document.fonts.ready;
       freeze();
-      const PAD = 40;
-      const canvas = await html2canvas(el, {
+      const rawCanvas = await html2canvas(el, {
         backgroundColor: null,
         scale: 2,
         useCORS: true,
         allowTaint: true,
         logging: false,
-        x: -PAD,
-        y: -PAD,
-        width: el.offsetWidth + PAD * 2,
-        height: el.offsetHeight + PAD * 2,
       });
       unfreeze();
+
+      // html2canvas가 CSS box-shadow(빛나는 테두리)를 제대로 캡처하지 못해서
+      // 캔버스에 직접 빛나는 테두리를 그려 합성한다.
+      const SCALE = 2;
+      const PAD = 32 * SCALE;
+      const RADIUS = 24 * SCALE;
+      const canvas = document.createElement("canvas");
+      canvas.width = rawCanvas.width + PAD * 2;
+      canvas.height = rawCanvas.height + PAD * 2;
+      const ctx = canvas.getContext("2d")!;
+      const roundedRectPath = (x: number, y: number, w: number, h: number, r: number) => {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      };
+      ctx.save();
+      ctx.shadowColor = hexToRgba(data.color, 0.6);
+      ctx.shadowBlur = 28 * SCALE;
+      ctx.fillStyle = hexToRgba(data.color, 0.6);
+      roundedRectPath(PAD, PAD, rawCanvas.width, rawCanvas.height, RADIUS);
+      ctx.fill();
+      ctx.restore();
+      ctx.drawImage(rawCanvas, PAD, PAD);
       if (isIOSDevice) {
         const w = window.open(canvas.toDataURL("image/png"), "_blank");
         if (w) {
