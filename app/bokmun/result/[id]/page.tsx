@@ -107,6 +107,30 @@ export default function BokmunResultPage() {
       ctx.fill();
       ctx.restore();
       ctx.drawImage(rawCanvas, PAD, PAD);
+
+      // html2canvas는 다중 radial-gradient 배경(.bokmun-sparkle 반짝이)을 캡처하지 못하고
+      // 그냥 건너뛰어버려서, 카드 이미지 위에 반짝이 점을 직접 그려 합성한다.
+      ctx.save();
+      roundedRectPath(PAD, PAD, rawCanvas.width, rawCanvas.height, RADIUS);
+      ctx.clip();
+      const drawSparkleLayer = (color: string, size: number, offsetX: number, offsetY: number, dotRadius: number) => {
+        const step = size * SCALE;
+        const startX = PAD + offsetX * SCALE;
+        const startY = PAD + offsetY * SCALE;
+        ctx.fillStyle = color;
+        for (let y = startY - step; y < PAD + rawCanvas.height + step; y += step) {
+          for (let x = startX - step; x < PAD + rawCanvas.width + step; x += step) {
+            ctx.beginPath();
+            ctx.arc(x, y, dotRadius * SCALE, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      };
+      drawSparkleLayer("rgba(255,230,150,0.9)", 48, 0, 0, 1.2);
+      drawSparkleLayer("rgba(255,215,0,0.7)", 72, 24, 36, 1.2);
+      drawSparkleLayer("rgba(255,255,255,0.6)", 36, 12, 8, 1.2);
+      ctx.restore();
+
       if (isIOSDevice) {
         const w = window.open(canvas.toDataURL("image/png"), "_blank");
         if (w) {
