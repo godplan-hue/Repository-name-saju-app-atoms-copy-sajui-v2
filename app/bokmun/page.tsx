@@ -175,7 +175,7 @@ export default function BokmunPage() {
         </p>
 
         {/* 12띠 미리보기 — 장식용, CTA 아래로 이동 + 축소 */}
-        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" as const, gap: 6, margin: "22px 0" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 30px)", justifyContent: "center", gap: 6, margin: "22px 0" }}>
           {ZODIAC_PREVIEW.map((e, i) => (
             <div key={i} style={{ width: 30, height: 30, borderRadius: 8, background: "#fffaf0", border: "1.5px solid rgba(146,64,14,0.35)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>
               {e}
