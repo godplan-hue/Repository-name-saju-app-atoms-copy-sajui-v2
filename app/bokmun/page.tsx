@@ -124,7 +124,6 @@ export default function BokmunPage() {
               <label style={S.label}>출생연도 <span style={{ color: "#dc2626" }}>*필수</span></label>
               <input style={S.input} placeholder="1990" maxLength={4} inputMode="numeric"
                 value={birthYear} onChange={e => setBirthYear(e.target.value.replace(/\D/g,"").slice(0,4))} />
-              <p style={{ margin: "4px 0 0", fontSize: 11, color: "#92400e" }}>* 양력 기준으로 적어주세요</p>
             </div>
             <div style={{ flex: 1 }}>
               <label style={S.label}>월 (선택)</label>
@@ -137,6 +136,7 @@ export default function BokmunPage() {
                 value={birthDay} onChange={e => setBirthDay(e.target.value.replace(/\D/g,"").slice(0,2))} />
             </div>
           </div>
+          <p style={{ margin: "4px 0 0", fontSize: 11, color: "#92400e" }}>* 양력 기준으로 적어주세요</p>
 
           <div style={{ marginTop: 14, display: "flex", flexDirection: "column" as const, gap: 8 }}>
             <div style={{ padding: "10px 12px", borderRadius: 12, border: "1.5px solid rgba(220,38,38,0.35)", background: "rgba(220,38,38,0.06)" }}>

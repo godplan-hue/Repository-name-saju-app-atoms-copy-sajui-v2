@@ -278,7 +278,7 @@ export default function BokmunResultPage() {
         {/* 3. 사주 CTA — 판매는 하나만 */}
         <div style={{ background: "linear-gradient(135deg,rgba(220,38,38,0.18),rgba(139,92,246,0.12))", border: "1px solid rgba(220,38,38,0.35)", borderRadius: 20, padding: "22px 18px", textAlign: "center" as const, marginBottom: 20 }}>
           <p style={{ fontWeight: 900, fontSize: 15, color: "#fde68a", margin: "0 0 6px" }}>
-            🔮 부적은 기운을 담을 뿐, 열쇠는 사주에 있습니다
+            🔮 부적은 기운을 담을 뿐,<br />열쇠는 사주에 있습니다
           </p>
           <p style={{ fontSize: 13, color: "#e5d5c0", lineHeight: 1.6, margin: "0 0 16px" }}>
             이 부적의 기운이 실제로 언제, 어떻게 열리는지는<br />
