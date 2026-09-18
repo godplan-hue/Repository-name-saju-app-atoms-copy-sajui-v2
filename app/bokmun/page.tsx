@@ -165,16 +165,16 @@ export default function BokmunPage() {
         <button onClick={analyze} style={S.btn}>
           내 띠 부적 받기 🧧 →
         </button>
-        <p style={{ fontSize: 11, color: "#92400e", textAlign: "center" as const, marginTop: 10 }}>완전 무료 · 12띠 사주 기반</p>
-        <p style={{ color: "#78350f", fontSize: 13, marginTop: 8, textAlign: "center" as const }}>오늘 <strong style={{ color: "#b45309" }}>{count}</strong>명이 부적을 받았어요</p>
-        <p style={{ textAlign: "center" as const, fontSize: 11, color: "rgba(146,64,14,0.65)", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
+        <p style={{ fontSize: 12, color: "#451a03", fontWeight: 700, textAlign: "center" as const, marginTop: 10 }}>완전 무료 · 12띠 사주 기반</p>
+        <p style={{ color: "#2d1608", fontSize: 14, fontWeight: 600, marginTop: 8, textAlign: "center" as const }}>오늘 <strong style={{ color: "#b91c1c", fontWeight: 900 }}>{count}</strong>명이 부적을 받았어요</p>
+        <p style={{ textAlign: "center" as const, fontSize: 11, color: "#5c3a1e", marginTop: 10, lineHeight: 1.6, letterSpacing: "0.02em" }}>
           🏆 탈잉 2년 연속 1위 · 크몽 상위 2% 프라임<br />기획의신 에스더(Esther)가 직접 만들고 검증한 앱
         </p>
 
         {/* 12띠 미리보기 — 장식용, CTA 아래로 이동 + 축소 */}
         <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" as const, gap: 6, margin: "22px 0" }}>
           {ZODIAC_PREVIEW.map((e, i) => (
-            <div key={i} style={{ width: 30, height: 30, borderRadius: 8, background: "rgba(180,83,9,0.08)", border: "1px solid rgba(180,83,9,0.22)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>
+            <div key={i} style={{ width: 30, height: 30, borderRadius: 8, background: "#fffaf0", border: "1.5px solid rgba(146,64,14,0.35)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>
               {e}
             </div>
           ))}
@@ -189,8 +189,8 @@ export default function BokmunPage() {
             <div key={f.t} style={{ display: "flex", gap: 12, marginBottom: 16, alignItems: "flex-start" }}>
               <span style={{ fontSize: 24, flexShrink: 0 }}>{f.icon}</span>
               <div>
-                <p style={{ fontWeight: 700, margin: "0 0 2px", fontSize: 14, color: "#78350f" }}>{f.t}</p>
-                <p style={{ color: "#8a5a26", fontSize: 12, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" as const }}>{f.s}</p>
+                <p style={{ fontWeight: 800, margin: "0 0 3px", fontSize: 14.5, color: "#2d1608" }}>{f.t}</p>
+                <p style={{ color: "#5c3a1e", fontSize: 12.5, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" as const }}>{f.s}</p>
               </div>
             </div>
           ))}
