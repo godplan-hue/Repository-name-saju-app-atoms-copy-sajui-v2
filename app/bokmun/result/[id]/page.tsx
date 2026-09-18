@@ -52,15 +52,23 @@ export default function BokmunResultPage() {
     const prevElAnim = el.style.animation;
     const prevElShadow = el.style.boxShadow;
     const prevSparkleAnim = sparkle?.style.animation || "";
+    const prevSparkleOpacity = sparkle?.style.opacity || "";
+    const hexToRgba = (hex: string, alpha: number) => {
+      const h = hex.replace("#", "");
+      const r = parseInt(h.slice(0, 2), 16);
+      const g = parseInt(h.slice(2, 4), 16);
+      const b = parseInt(h.slice(4, 6), 16);
+      return `rgba(${r},${g},${b},${alpha})`;
+    };
     const freeze = () => {
       el.style.animation = "none";
-      el.style.boxShadow = `0 0 28px ${data.color}66`;
-      if (sparkle) sparkle.style.animation = "none";
+      el.style.boxShadow = `0 0 28px ${hexToRgba(data.color, 0.4)}`;
+      if (sparkle) { sparkle.style.animation = "none"; sparkle.style.opacity = "1"; }
     };
     const unfreeze = () => {
       el.style.animation = prevElAnim;
       el.style.boxShadow = prevElShadow;
-      if (sparkle) sparkle.style.animation = prevSparkleAnim;
+      if (sparkle) { sparkle.style.animation = prevSparkleAnim; sparkle.style.opacity = prevSparkleOpacity; }
     };
     try {
       const html2canvas = (await import("html2canvas")).default;
