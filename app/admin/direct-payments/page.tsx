@@ -381,6 +381,7 @@ export default function AdminDirectPayments() {
                 { key: "toss-gwangyeoradar", label: "토스연락통계", emoji: "📡", activeBg: "#4338ca", inactiveBg: "#e0e7ff", activeText: "white", inactiveText: "#4338ca" },
                 { key: "sonjeolgak", label: "점운손절각", emoji: "✂️", activeBg: "#db2777", inactiveBg: "#fdf2f8", activeText: "white", inactiveText: "#db2777" },
                 { key: "toss-sonjeolgak", label: "토스손절각", emoji: "✂️", activeBg: "#be185d", inactiveBg: "#fce7f3", activeText: "white", inactiveText: "#be185d" },
+                { key: "bokmun", label: "복문", emoji: "🧧", activeBg: "#991b1b", inactiveBg: "#fee2e2", activeText: "white", inactiveText: "#991b1b" },
               ]).map(f => {
                 const matchKeys = MERGED_SOURCES[f.key] ?? [f.key];
                 const cnt = f.key === "all" ? leads.length : leads.filter(l => (l.sources ?? [l.source ?? "free"]).some(s => matchKeys.includes(s))).length;
