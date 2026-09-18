@@ -4,6 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
+const ZODIAC_HANJA: Record<string, string> = {
+  쥐: "子", 소: "丑", 호랑이: "寅", 토끼: "卯", 용: "辰", 뱀: "巳",
+  말: "午", 양: "未", 원숭이: "申", 닭: "酉", 개: "戌", 돼지: "亥",
+};
+
 interface BokmunResult {
   id: string;
   name?: string;
@@ -62,19 +67,9 @@ export default function BokmunResultPage() {
         setSaving(false);
         return;
       }
-      canvas.toBlob(async blob => {
+      canvas.toBlob(blob => {
         if (!blob) { setSaving(false); return; }
         const filename = `점운_${data?.zodiac || "부적"}띠_복문.png`;
-        const file = new File([blob], filename, { type: "image/png" });
-        try {
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({ files: [file], title: "점운 복문 부적" });
-            setSaving(false);
-            return;
-          }
-        } catch (e: any) {
-          if (e?.name === "AbortError") { setSaving(false); return; }
-        }
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.download = filename;
@@ -83,6 +78,7 @@ export default function BokmunResultPage() {
         link.click();
         document.body.removeChild(link);
         setTimeout(() => URL.revokeObjectURL(url), 60000);
+        if (window.innerWidth < 768) setTimeout(() => alert("✅ 사진 앱(갤러리)에 저장됐어요!"), 0);
         setSaving(false);
       }, "image/png");
     } catch (e) {
@@ -148,9 +144,25 @@ export default function BokmunResultPage() {
   return (
     <div style={S.wrap}>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Song+Myung&display=swap');
         @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
         @keyframes spin { to{transform:rotate(360deg);} }
         @keyframes glow { 0%,100%{box-shadow:0 0 20px ${data.color}44;} 50%{box-shadow:0 0 40px ${data.color}88;} }
+        @keyframes twinkle { 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+        .bokmun-sparkle {
+          position:absolute; inset:0; border-radius:24px; pointer-events:none; overflow:hidden;
+          background-image:
+            radial-gradient(circle, rgba(255,230,150,0.9) 1px, transparent 1.5px),
+            radial-gradient(circle, rgba(255,215,0,0.7) 1px, transparent 1.5px),
+            radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1.5px);
+          background-size: 48px 48px, 72px 72px, 36px 36px;
+          background-position: 0 0, 24px 36px, 12px 8px;
+          animation: twinkle 2.6s ease-in-out infinite;
+        }
+        .bokmun-gold-text {
+          color: #f2c14e;
+          text-shadow: 1px 1px 0 rgba(120,72,0,0.7), 2px 2px 3px rgba(0,0,0,0.6), 0 0 16px rgba(255,215,0,0.5);
+        }
       `}</style>
 
       <div style={{ background: "linear-gradient(180deg,#2d0f08 0%,#1a0a05 100%)", paddingBottom: 20 }}>
@@ -164,30 +176,55 @@ export default function BokmunResultPage() {
 
             {/* 부적 카드 (캡처 대상) */}
             <div ref={cardRef} style={{
-              background: "linear-gradient(160deg,#3d1a0a 0%,#1f0d05 100%)",
+              background: "radial-gradient(circle at 50% 30%,#241206 0%,#140a04 60%,#0c0603 100%)",
               border: `2px solid ${data.color}`,
               borderRadius: 24,
               padding: "32px 24px",
               animation: "fadeUp 0.6s ease, glow 3s ease-in-out infinite",
               position: "relative" as const,
+              overflow: "hidden",
             }}>
+              <div className="bokmun-sparkle" />
               <div style={{ position: "absolute", top: 14, left: 14, fontSize: 18, color: `${data.color}aa` }}>◆</div>
               <div style={{ position: "absolute", top: 14, right: 14, fontSize: 18, color: `${data.color}aa` }}>◆</div>
               <div style={{ position: "absolute", bottom: 14, left: 14, fontSize: 18, color: `${data.color}aa` }}>◆</div>
               <div style={{ position: "absolute", bottom: 14, right: 14, fontSize: 18, color: `${data.color}aa` }}>◆</div>
 
-              <div style={{ fontSize: 64, marginBottom: 12 }}>{data.emoji}</div>
-              <p style={{ fontSize: 20, fontWeight: 900, color: data.color, margin: "0 0 10px", lineHeight: 1.4 }}>
+              <div style={{ fontSize: 28, marginBottom: 4, position: "relative" as const }}>🪙</div>
+
+              <div style={{ position: "relative" as const, display: "inline-block", margin: "0 auto 14px" }}>
+                <div className="bokmun-gold-text" style={{
+                  fontFamily: "'Song Myung', serif",
+                  writingMode: "vertical-rl" as const,
+                  fontSize: 44,
+                  fontWeight: 900,
+                  letterSpacing: 6,
+                  lineHeight: 1.25,
+                  padding: "4px 6px",
+                }}>
+                  {ZODIAC_HANJA[data.zodiac] || data.zodiac}招福
+                </div>
+                <div style={{
+                  position: "absolute" as const, bottom: -8, right: -10, width: 30, height: 30,
+                  background: "linear-gradient(135deg,#b91c1c,#7f1d1d)", color: "#fde68a",
+                  fontSize: 15, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center",
+                  borderRadius: 4, boxShadow: "0 2px 8px rgba(0,0,0,0.5)", fontFamily: "'Song Myung', serif",
+                  transform: "rotate(-8deg)", border: "1px solid rgba(255,215,0,0.5)",
+                }}>福</div>
+              </div>
+
+              <div style={{ fontSize: 48, marginBottom: 10, position: "relative" as const }}>{data.emoji}</div>
+              <p className="bokmun-gold-text" style={{ fontSize: 21, fontWeight: 900, margin: "0 0 10px", lineHeight: 1.4, position: "relative" as const }}>
                 {data.title}
               </p>
-              <p style={{ fontSize: 14, color: "#f5d9a8", fontStyle: "italic", margin: "0 0 18px", lineHeight: 1.6 }}>
+              <p style={{ fontSize: 14, color: "#f5d9a8", fontStyle: "italic", margin: "0 0 18px", lineHeight: 1.6, position: "relative" as const }}>
                 &ldquo;{data.incantation}&rdquo;
               </p>
-              <div style={{ height: 1, background: `${data.color}44`, margin: "0 0 18px" }} />
-              <p style={{ fontSize: 13, color: "#e5d5c0", lineHeight: 1.8, margin: 0, textAlign: "left" as const }}>
+              <div style={{ height: 1, background: `${data.color}44`, margin: "0 0 18px", position: "relative" as const }} />
+              <p style={{ fontSize: 13, color: "#e5d5c0", lineHeight: 1.8, margin: 0, textAlign: "left" as const, position: "relative" as const }}>
                 {data.meaning}
               </p>
-              <p style={{ fontSize: 11, color: "rgba(245,241,232,0.4)", marginTop: 18, marginBottom: 0 }}>
+              <p style={{ fontSize: 11, color: "rgba(245,241,232,0.4)", marginTop: 18, marginBottom: 0, position: "relative" as const }}>
                 점운 · jeomun.com
               </p>
             </div>
