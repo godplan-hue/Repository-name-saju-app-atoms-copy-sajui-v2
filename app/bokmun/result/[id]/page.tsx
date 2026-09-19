@@ -243,9 +243,12 @@ export default function BokmunResultPage() {
           <Link href="/bokmun" style={{ color: "#fbbf24", fontSize: 13, textDecoration: "none", display: "block", marginBottom: 20 }}>← 다시 받기</Link>
 
           <div style={{ textAlign: "center" }}>
-            <div style={{ display: "inline-block", background: `${data.color}22`, border: `1.5px solid ${data.color}66`, borderRadius: 20, padding: "6px 14px", fontSize: 13, fontWeight: 700, color: data.color, marginBottom: 16 }}>
+            <div style={{ display: "inline-block", background: `${data.color}22`, border: `1.5px solid ${data.color}66`, borderRadius: 20, padding: "6px 14px", fontSize: 13, fontWeight: 700, color: data.color, marginBottom: 10 }}>
               {data.emoji} {data.name ? `${data.name}님의 ` : ""}{data.zodiac}띠 전용 부적
             </div>
+            <p style={{ fontSize: 13, fontWeight: 800, color: "#fbbf24", margin: "0 0 16px" }}>
+              🎉 5만원 상당의 복문 부적을 받으셨습니다
+            </p>
 
             {/* 부적 카드 (캡처 대상) */}
             <div ref={cardRef} style={{

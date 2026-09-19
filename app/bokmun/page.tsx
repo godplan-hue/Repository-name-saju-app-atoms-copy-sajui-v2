@@ -89,6 +89,11 @@ export default function BokmunPage() {
       <style>{`@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }`}</style>
 
       <div style={{ maxWidth: 440, margin: "0 auto", padding: "20px 20px 60px" }}>
+        <div style={{ textAlign: "center" as const, marginBottom: 10 }}>
+          <span style={{ display: "inline-block", background: "rgba(220,38,38,0.08)", border: "1.5px solid rgba(220,38,38,0.3)", borderRadius: 20, padding: "6px 12px", fontSize: 12, fontWeight: 800, color: "#991b1b", whiteSpace: "nowrap" as const }}>
+            신당 시세 <span style={{ textDecoration: "line-through", opacity: 0.6 }}>50,000원</span> → 점운 오픈기념 무료
+          </span>
+        </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
           <Link href="/main-v2" style={{ color: "#92400e", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>← 점운 홈</Link>
           <button onClick={() => { const d = { title: "점운 복문 — 내 띠 전용 부적", text: "내 생년월일로 내 띠 부적을 무료로 받아보세요! 🧧", url: "https://jeomun.com/bokmun" }; const _k=(window as any).Kakao; if(_k?.isInitialized()&&_k?.Share){_k.Share.sendDefault({objectType:"feed",content:{title:d.title,description:d.text,imageUrl:"https://i.pinimg.com/736x/bc/72/81/bc7281694d741c357b826a29c17023b3.jpg",link:{mobileWebUrl:d.url,webUrl:d.url}},buttons:[{title:"바로 보기",link:{mobileWebUrl:d.url,webUrl:d.url}},{title:"나도 해보기 →",link:{mobileWebUrl:d.url,webUrl:d.url}}]});}else{window.location.href=`kakaotalk://msg/send?text=${encodeURIComponent(d.text+'\n'+d.url)}`;}; }} style={{ fontSize: 12, color: "#92400e", fontWeight: 700, background: "rgba(180,83,9,0.1)", border: "1px solid rgba(180,83,9,0.3)", borderRadius: 20, padding: "5px 12px", cursor: "pointer" }}>🔗 공유</button>
@@ -103,6 +108,11 @@ export default function BokmunPage() {
           <p style={{ color: "#8a5a26", fontSize: 12.5, lineHeight: 1.6, margin: 0 }}>
             생년월일만 입력하면 12띠 맞춤 부적 완성 · 완전 무료
           </p>
+          <div style={{ marginTop: 10 }}>
+            <span style={{ display: "inline-block", background: "rgba(220,38,38,0.08)", border: "1.5px solid rgba(220,38,38,0.3)", borderRadius: 20, padding: "6px 12px", fontSize: 12, fontWeight: 800, color: "#991b1b", whiteSpace: "nowrap" as const }}>
+              신당 시세 <span style={{ textDecoration: "line-through", opacity: 0.6 }}>50,000원</span> → 점운 오픈기념 무료
+            </span>
+          </div>
         </div>
 
         {/* 정보 입력 폼 — 첫 화면 최상단에 위치 */}
@@ -165,7 +175,7 @@ export default function BokmunPage() {
         {error && <p style={{ color: "#b91c1c", fontWeight: 700, fontSize: 13, textAlign: "center" as const, marginBottom: 12 }}>{error}</p>}
 
         <button onClick={analyze} style={S.btn}>
-          내 띠 부적 무료로 받기 🧧 →
+          🧧 5만원 복문 부적 무료로 받기
         </button>
         <p style={{ fontSize: 12, color: "#451a03", fontWeight: 700, textAlign: "center" as const, marginTop: 10 }}>완전 무료 · 12띠 사주 기반</p>
         <p style={{ fontSize: 12, color: "#451a03", fontWeight: 700, textAlign: "center" as const, marginTop: 2 }}>결제 없음 · 생년월일만 입력</p>
